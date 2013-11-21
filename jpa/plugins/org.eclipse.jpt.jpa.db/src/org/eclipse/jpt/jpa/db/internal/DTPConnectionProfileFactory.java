@@ -17,6 +17,7 @@ import org.eclipse.datatools.enablement.jdt.classpath.DriverClasspathContainer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -130,7 +131,7 @@ public final class DTPConnectionProfileFactory
 	private static class LocalProfileListener
 		implements IProfileListener1
 	{
-		private final ListenerList<ConnectionProfileListener> listenerList = new ListenerList<ConnectionProfileListener>(ConnectionProfileListener.class);
+		private final ListenerList<ConnectionProfileListener> listenerList = ModelTools.listenerList();
 
 		LocalProfileListener() {
 			super();

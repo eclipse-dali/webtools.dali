@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.ui.jface.StructuredStateProvider;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.swt.graphics.Image;
 import com.ibm.icu.text.MessageFormat;
 
@@ -68,7 +69,7 @@ abstract class AbstractItemStructuredStateProviderManager<V extends StructuredVi
 
 	private final ResourceManager resourceManager;
 
-	private final ListenerList<ILabelProviderListener> listenerList = new ListenerList<ILabelProviderListener>(ILabelProviderListener.class);
+	private final ListenerList<ILabelProviderListener> listenerList = ModelTools.listenerList();
 	private final ExceptionHandler exceptionHandler;
 
 	/* private-protected */ final static JptCommonUiPlugin PLUG_IN = JptCommonUiPlugin.instance();

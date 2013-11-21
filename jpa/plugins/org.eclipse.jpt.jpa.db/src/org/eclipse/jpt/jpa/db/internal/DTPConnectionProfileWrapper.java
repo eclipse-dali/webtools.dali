@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
@@ -392,7 +393,7 @@ final class DTPConnectionProfileWrapper
 	private class LocalConnectionListener
 		implements IManagedConnectionOfflineListener
 	{
-		private ListenerList<ConnectionListener> listenerList = new ListenerList<ConnectionListener>(ConnectionListener.class);
+		private ListenerList<ConnectionListener> listenerList = ModelTools.listenerList();
 
 		LocalConnectionListener() {
 			super();

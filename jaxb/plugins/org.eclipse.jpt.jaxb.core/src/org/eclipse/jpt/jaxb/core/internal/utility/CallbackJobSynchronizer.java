@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.jpt.jaxb.core.utility.CallbackSynchronizer;
 
 /**
@@ -29,7 +30,7 @@ public class CallbackJobSynchronizer
 	extends JobSynchronizer
 	implements CallbackSynchronizer
 {
-	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = ModelTools.listenerList();
 
 
 	// ********** construction **********

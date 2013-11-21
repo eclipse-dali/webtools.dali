@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -94,12 +95,12 @@ public class TableModelAdapter<E> {
 	/**
 	 * Clients that are interested in selection change events.
 	 */
-	protected final ListenerList<SelectionChangeListener<E>> selectionChangeListenerList;
+	protected final ListenerList<SelectionChangeListener<E>> selectionChangeListenerList = ModelTools.listenerList();
 
 	/**
 	 * Clients that are interested in double click events.
 	 */
-	protected final ListenerList<DoubleClickListener<E>> doubleClickListenerList;
+	protected final ListenerList<DoubleClickListener<E>> doubleClickListenerList = ModelTools.listenerList();
 
 	/**
 	 * A listener that allows us to stop listening to stuff when the table
@@ -216,9 +217,6 @@ public class TableModelAdapter<E> {
 		this.tableSelectionListener = this.buildTableSelectionListener();
 		this.table.addSelectionListener(this.tableSelectionListener);
 
-		this.selectionChangeListenerList = this.buildSelectionChangeListenerList();
-		this.doubleClickListenerList = this.buildDoubleClickListenerList();
-
 		this.tableDisposeListener = this.buildTableDisposeListener();
 		this.table.addDisposeListener(this.tableDisposeListener);
 
@@ -297,16 +295,6 @@ public class TableModelAdapter<E> {
 				return "TableModelAdapter table selection listener";
 			}
 		};
-	}
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	protected ListenerList<DoubleClickListener<E>> buildDoubleClickListenerList() {
-		return new ListenerList(DoubleClickListener.class);
-	}
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	protected ListenerList<SelectionChangeListener<E>> buildSelectionChangeListenerList() {
-		return new ListenerList(SelectionChangeListener.class);
 	}
 
 	protected DisposeListener buildTableDisposeListener() {

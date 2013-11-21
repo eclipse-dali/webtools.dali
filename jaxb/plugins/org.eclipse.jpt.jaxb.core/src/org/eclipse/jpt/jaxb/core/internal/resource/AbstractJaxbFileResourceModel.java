@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 
 public abstract class AbstractJaxbFileResourceModel<S>
@@ -36,8 +37,7 @@ public abstract class AbstractJaxbFileResourceModel<S>
 
 	protected final S state;
 
-	protected final ListenerList<JptResourceModelListener> resourceModelListenerList =
-			new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
+	protected final ListenerList<JptResourceModelListener> resourceModelListenerList = ModelTools.listenerList();
 
 
 	protected AbstractJaxbFileResourceModel(IFile file) {

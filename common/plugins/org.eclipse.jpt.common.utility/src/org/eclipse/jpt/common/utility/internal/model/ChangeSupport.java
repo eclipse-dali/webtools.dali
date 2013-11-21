@@ -91,7 +91,6 @@ public class ChangeSupport {
 	 * Construct support for the specified source of change events.
 	 * The source cannot be <code>null</code>.
 	 */
-	// TODO remove
 	public ChangeSupport(Model source) {
 		this(source, DefaultExceptionHandler.instance());
 	}
@@ -2715,21 +2714,23 @@ public class ChangeSupport {
 	 * listeners.
 	 */
 	static abstract class AspectListenerListPair<L extends EventListener> {
+		private final Class<? extends EventListener> listenerClass;
 		final ListenerList<L> listenerList;
 
 		AspectListenerListPair(Class<L> listenerClass, L listener) {
 			super();
-			this.listenerList = new ListenerList<L>(listenerClass, listener);
+			this.listenerClass = listenerClass;
+			this.listenerList = ModelTools.listenerList(listener);
 		}
 
 		abstract String getAspectName();
 
-		boolean matches(Class<? extends EventListener> listenerClass, @SuppressWarnings("unused") String aspectName) {
-			return this.listenerList.getListenerType() == listenerClass;
+		boolean matches(Class<? extends EventListener> listenerType, @SuppressWarnings("unused") String aspectName) {
+			return this.listenerClass == listenerType;
 		}
 
-		boolean matches(Class<? extends EventListener> listenerClass) {
-			return this.matches(listenerClass, null);
+		boolean matches(Class<? extends EventListener> listenerType) {
+			return this.matches(listenerType, null);
 		}
 
 		@Override

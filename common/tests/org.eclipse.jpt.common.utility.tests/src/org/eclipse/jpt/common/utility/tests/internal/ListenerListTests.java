@@ -23,7 +23,7 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testGetListeners() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		Listener listener1 = new LocalListener();
 		Listener listener2 = new LocalListener();
 		assertEquals(0, IterableTools.size(listenerList));
@@ -36,7 +36,7 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testSize() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		Listener listener1 = new LocalListener();
 		Listener listener2 = new LocalListener();
 		assertEquals(0, listenerList.size());
@@ -47,7 +47,7 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testIsEmpty() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		Listener listener1 = new LocalListener();
 		Listener listener2 = new LocalListener();
 		assertTrue(listenerList.isEmpty());
@@ -58,7 +58,7 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testAdd_null() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		boolean exCaught = false;
 		try {
 			listenerList.add(null);
@@ -70,7 +70,7 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testAdd_duplicate() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		Listener listener = new LocalListener();
 		listenerList.add(listener);
 
@@ -85,7 +85,7 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testRemove() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		Listener listener1 = new LocalListener();
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);
@@ -102,19 +102,19 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testRemove_null() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		boolean exCaught = false;
 		try {
 			listenerList.remove(null);
 			fail("invalid listener list: " + listenerList);
-		} catch (NullPointerException ex) {
+		} catch (IllegalArgumentException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
 	}
 
 	public void testRemove_unregistered() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		Listener listener = new LocalListener();
 		listenerList.add(listener);
 		listenerList.remove(listener);
@@ -130,7 +130,7 @@ public class ListenerListTests extends TestCase {
 	}
 
 	public void testClear() throws Exception {
-		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		ListenerList<Listener> listenerList = new ListenerList<Listener>();
 		Listener listener1 = new LocalListener();
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);

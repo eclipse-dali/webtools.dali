@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 
 /**
  * JAR and external types
@@ -28,7 +29,7 @@ abstract class RootBinaryModel
 	private final AnnotationProvider annotationProvider;
 
 	/** listeners notified whenever the resource model changes */
-	private final ListenerList<JptResourceModelListener> resourceModelListenerList = new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
+	private final ListenerList<JptResourceModelListener> resourceModelListenerList = ModelTools.listenerList();
 
 
 	// ********** construction **********

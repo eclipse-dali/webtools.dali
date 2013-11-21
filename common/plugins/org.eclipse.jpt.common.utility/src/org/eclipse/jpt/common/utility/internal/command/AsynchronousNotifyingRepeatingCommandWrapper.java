@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.command.NotifyingRepeatingCommand;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 
 /**
  * Extend the asynchronous repeating command to notify listeners
@@ -28,7 +29,7 @@ public class AsynchronousNotifyingRepeatingCommandWrapper
 	extends AsynchronousRepeatingCommandWrapper
 	implements NotifyingRepeatingCommand
 {
-	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = ModelTools.listenerList();
 
 	/**
 	 * This handles any exceptions thrown by the listeners.

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -20,44 +19,41 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
  * 
  * @param <L> the type of listeners held by the list
  */
-public class ListenerList<L>
+public final class ListenerList<L>
 	implements Iterable<L>
 {
 	/**
 	 * We can mark this <code>volatile</code> and not synchronize the read
 	 * methods because we never change the <em>contents</em> of the array.
 	 */
-	private transient volatile L[] listeners;
+	@SuppressWarnings("unchecked")
+	private transient volatile L[] listeners = (L[]) ObjectTools.EMPTY_OBJECT_ARRAY;
 
 
 	/**
-	 * Construct a listener list for listeners of the specified type.
+	 * Construct a listener list initialized with the specified listener.
 	 */
-	public ListenerList(Class<L> listenerClass) {
-		super();
-		this.listeners = this.buildListenerArray(listenerClass, 0);
-	}
-
-	/**
-	 * Construct a listener list for listeners of the specified type.
-	 * Add the specified listener to the list.
-	 */
-	public ListenerList(Class<L> listenerClass, L listener) {
-		super();
+	@SuppressWarnings("unchecked")
+	public ListenerList(L listener) {
+		this();
 		if (listener == null) {
 			throw new NullPointerException();
 		}
-		this.listeners = this.buildListenerArray(listenerClass, 1);
-		this.listeners[0] = listener;
-	}
-
-	@SuppressWarnings("unchecked")
-	private L[] buildListenerArray(Class<L> listenerClass, int length) {
-		return (L[]) Array.newInstance(listenerClass, length);
+		this.listeners = (L[]) new Object[] { listener };
 	}
 
 	/**
-	 * Return the listeners.
+	 * Construct an empty listener list.
+	 */
+	public ListenerList() {
+		super();
+	}
+
+	/**
+	 * Return the listeners. The returned list will be a "snapshot" of the list
+	 * of listeners at the time this method is called. There is no possibility
+	 * of a {@link java.util.ConcurrentModificationException} with the returned
+	 * iterator.
 	 */
 	public Iterator<L> iterator() {
 		return IteratorTools.iterator(this.listeners);
@@ -81,10 +77,14 @@ public class ListenerList<L>
 	 * Add the specified listener to the listener list.
 	 * Duplicate listeners are not allowed.
 	 */
-	public synchronized void add(L listener) {
+	public void add(L listener) {
 		if (listener == null) {
 			throw new NullPointerException();
 		}
+		this.add_(listener);
+	}
+
+	private synchronized void add_(L listener) {
 		if (ArrayTools.contains(this.listeners, listener)) {
 			throw new IllegalArgumentException("duplicate listener: " + listener); //$NON-NLS-1$
 		}
@@ -95,10 +95,11 @@ public class ListenerList<L>
 	 * Remove the specified listener from the listener list.
 	 * Removing a listener that is not on the list is not allowed.
 	 */
-	public synchronized void remove(L listener) {
-		if (listener == null) {
-			throw new NullPointerException();
-		}
+	public void remove(L listener) {
+		this.remove_(listener);
+	}
+
+	private synchronized void remove_(L listener) {
 		int index = ArrayTools.indexOf(this.listeners, listener);
 		if (index == -1) {
 			throw new IllegalArgumentException("unregistered listener: " + listener); //$NON-NLS-1$
@@ -109,16 +110,9 @@ public class ListenerList<L>
 	/**
 	 * Clear the listener list.
 	 */
-	public synchronized void clear() {
-		this.listeners = ArrayTools.clear(this.listeners);
-	}
-
-	/**
-	 * Return the type of listeners held by the listener list.
-	 */
 	@SuppressWarnings("unchecked")
-	public Class<L> getListenerType() {
-		return (Class<L>) this.listeners.getClass().getComponentType();
+	public synchronized void clear() {
+		this.listeners = (L[]) ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
 	@Override

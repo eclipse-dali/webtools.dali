@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 
 /**
  * <strong>NB:</strong> If another execution cycle is initiated while we are
@@ -35,7 +36,7 @@ public class NotifyingRepeatingCommandWrapper
 	extends RepeatingCommandWrapper
 	implements NotifyingRepeatingCommand
 {
-	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = ModelTools.listenerList();
 
 
 	// ********** construction **********

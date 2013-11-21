@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.command.CommandContext;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 
 /**
  * Java compilation unit (source file)
@@ -43,7 +44,7 @@ public abstract class SourceCompilationUnit
 	private final CommandContext modifySharedDocumentCommandContext;
 
 	/** listeners notified whenever the resource model changes */
-	private final ListenerList<JptResourceModelListener> resourceModelListenerList;
+	private final ListenerList<JptResourceModelListener> resourceModelListenerList = ModelTools.listenerList();
 
 
 	// ********** construction **********
@@ -58,7 +59,6 @@ public abstract class SourceCompilationUnit
 		this.annotationProvider = annotationProvider;
 		this.annotationEditFormatter = annotationEditFormatter;
 		this.modifySharedDocumentCommandContext = modifySharedDocumentCommandContext;
-		this.resourceModelListenerList = new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
 	}
 
 	void openCompilationUnit() {

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.utility.command.JobCommandContext;
 import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 
 /**
  * @see org.eclipse.jpt.common.utility.internal.command.NotifyingRepeatingCommandWrapper
@@ -24,7 +25,7 @@ public class NotifyingRepeatingJobCommandWrapper
 	extends RepeatingJobCommandWrapper
 	implements NotifyingRepeatingJobCommand
 {
-	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = ModelTools.listenerList();
 
 
 	// ********** construction **********

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.utility;
 
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.jpt.jaxb.core.utility.CallbackSynchronizer;
 
 /**
@@ -34,7 +35,7 @@ public class CallbackSynchronousSynchronizer
 	extends SynchronousSynchronizer
 	implements CallbackSynchronizer
 {
-	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = ModelTools.listenerList();
 
 
 	// ********** construction **********

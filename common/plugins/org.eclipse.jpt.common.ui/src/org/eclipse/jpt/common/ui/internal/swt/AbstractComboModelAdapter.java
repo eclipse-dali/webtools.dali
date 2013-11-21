@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -105,14 +106,12 @@ public abstract class AbstractComboModelAdapter<E> {
 	/**
 	 * Clients that are interested in selection change events.
 	 */
-	@SuppressWarnings("unchecked")
-	protected final ListenerList<SelectionChangeListener> selectionChangeListenerList;
+	protected final ListenerList<SelectionChangeListener> selectionChangeListenerList = ModelTools.listenerList();
 
 	/**
 	 * Clients that are interested in double click events.
 	 */
-	@SuppressWarnings("unchecked")
-	protected final ListenerList<DoubleClickListener> doubleClickListenerList;
+	protected final ListenerList<DoubleClickListener> doubleClickListenerList = ModelTools.listenerList();
 
 	/**
 	 * A listener that allows us to stop listening to stuff when the combo
@@ -159,9 +158,6 @@ public abstract class AbstractComboModelAdapter<E> {
 			this.comboSelectionListener = this.buildComboSelectionListener();
 			this.comboHolder.addSelectionListener(this.comboSelectionListener);
 		}
-
-		this.selectionChangeListenerList = this.buildSelectionChangeListenerList();
-		this.doubleClickListenerList = this.buildDoubleClickListenerList();
 
 		this.comboDisposeListener = this.buildComboDisposeListener();
 		this.comboHolder.addDisposeListener(this.comboDisposeListener);
@@ -240,16 +236,6 @@ public abstract class AbstractComboModelAdapter<E> {
 				return "combo modify listener";
 			}
 		};
-	}
-
-	@SuppressWarnings("unchecked")
-	protected ListenerList<DoubleClickListener> buildDoubleClickListenerList() {
-		return new ListenerList<DoubleClickListener>(DoubleClickListener.class);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected ListenerList<SelectionChangeListener> buildSelectionChangeListenerList() {
-		return new ListenerList<SelectionChangeListener>(SelectionChangeListener.class);
 	}
 
 	protected DisposeListener buildComboDisposeListener() {

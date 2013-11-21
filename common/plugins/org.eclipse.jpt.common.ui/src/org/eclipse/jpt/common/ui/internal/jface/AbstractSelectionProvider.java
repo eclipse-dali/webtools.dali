@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 
 /**
  * Provide support for {@link ISelectionChangedListener selection change
@@ -26,7 +27,7 @@ public abstract class AbstractSelectionProvider
 	implements ISelectionProvider
 {
 	private final ExceptionHandler exceptionHandler;
-	private ListenerList<ISelectionChangedListener> listenerList = new ListenerList<ISelectionChangedListener>(ISelectionChangedListener.class);
+	private final ListenerList<ISelectionChangedListener> listenerList = ModelTools.listenerList();
 
 
 	protected AbstractSelectionProvider(ExceptionHandler exceptionHandler) {

@@ -41,6 +41,7 @@ import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.model.ModelTools;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
 
@@ -54,7 +55,7 @@ public abstract class AbstractJptGenerator implements JptGenerator
 	
 	private final IJavaProject javaProject;
 	private final String projectLocation;
-	private final ListenerList<LaunchConfigListener> launchConfigListenerList;
+	private final ListenerList<LaunchConfigListener> launchConfigListenerList = ModelTools.listenerList();
 
 	private boolean isDebug = false;
 
@@ -64,7 +65,6 @@ public abstract class AbstractJptGenerator implements JptGenerator
 		super();
 		this.javaProject = javaProject;
 		this.projectLocation = javaProject.getProject().getLocation().toString();
-		this.launchConfigListenerList = this.buildLaunchConfigListenerList();
 		this.initialize();
 	}
 
@@ -441,9 +441,6 @@ public abstract class AbstractJptGenerator implements JptGenerator
 		this.isDebug = isDebug;
 	}
 	
-	private ListenerList<LaunchConfigListener> buildLaunchConfigListenerList() {
-		return new ListenerList<LaunchConfigListener>(LaunchConfigListener.class);
-	}
 
 	// ********** listener **********
 	
