@@ -14,9 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.eclipse.jpt.common.utility.internal.collection.RepeatingElementList;
 import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.GraphIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.TreeIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.RepeatingElementIterator;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -97,16 +95,15 @@ public final class ObjectTools {
 	 * the specified {@link Transformer transformer}.
 	 * @see ChainIterable
 	 */
-	public static <E> ChainIterable<E> chain(E object, Transformer<? super E, ? extends E> transformer) {
+	public static <E> Iterable<E> chain(E object, Transformer<? super E, ? extends E> transformer) {
 		return IterableTools.chainIterable(object, transformer);
 	}
 
 	/**
 	 * Return an iterable that will return the specified object followed
 	 * by its children etc. as determined by the specified transformer.
-	 * @see GraphIterable
 	 */
-	public static <E> GraphIterable<E> graph(E object, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
+	public static <E> Iterable<E> graph(E object, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return IterableTools.graphIterable(object, transformer);
 	}
 
@@ -122,9 +119,8 @@ public final class ObjectTools {
 	/**
 	 * Construct an iterable that returns the nodes of a tree
 	 * with the specified object as its root and transformer.
-	 * @see TreeIterable
 	 */
-	public static <E> TreeIterable<E> tree(E object, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
+	public static <E> Iterable<E> tree(E object, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
 		return IterableTools.treeIterable(object, transformer);
 	}
 
@@ -282,9 +278,11 @@ public final class ObjectTools {
 	}
 
 	/**
-	 * Return a string suitable for a <em>singleton</em>; which is the simple
-	 * name of the object's class, since there should only be one.
-	 * 
+	 * Return a string suitable for a <em>singleton</em>; which is the
+	 * "qualified simple" name of the object's class, since there should only
+	 * be one:<pre>
+	 *     TopLevelClass.MemberClassName
+	 * </pre>
 	 * @see ClassTools#toStringName(Class)
 	 * @see Object#toString()
 	 */
