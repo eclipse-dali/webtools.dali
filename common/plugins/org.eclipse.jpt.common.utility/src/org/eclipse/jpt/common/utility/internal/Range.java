@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,34 +14,43 @@ import java.io.Serializable;
 /**
  * This simple container class simply puts a bit of semantics
  * around a pair of numbers.
+ * <p>
+ * <strong>NB:</strong> The {@link #start} will be less than (or equal to)
+ * the {@link #end}.
  */
 public class Range
 	implements Cloneable, Serializable
 {
-	/** The starting index of the range. */
+	/**
+	 * The range's starting index. This will always be less than or equal to
+	 * {@link #end the range's ending index}.
+	 */
 	public final int start;
 
-	/** The ending index of the range. */
+	/**
+	 * The range's ending index. This will always be greater than or equal to
+	 * {@link #start the range's starting index}.
+	 */
 	public final int end;
 
 	/**
-	 * The size can be negative if the ending index
-	 * is less than the starting index.
+	 * The range's length. The range's length will never be negative.
 	 */
-	public final int size;
+	public final int length;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * Construct with the specified start and end,
-	 * both of which are immutable.
+	 * Construct a range with the specified start and end, both of which are
+	 * mmutable. If the specified end is less than the specified start, the
+	 * values will be swapped in the range.
 	 */
 	public Range(int start, int end) {
 		super();
-		this.start = start;
-		this.end = end;
-		this.size = end - start + 1;
+		this.start = Math.min(start, end);
+		this.end = Math.max(start, end);
+		this.length = this.end - this.start + 1;
 	}
 
 	/**
@@ -81,7 +90,16 @@ public class Range
 
 	@Override
 	public String toString() {
-		return '[' + this.start + ", " + this.end + ']'; //$NON-NLS-1$
+		StringBuilder sb = new StringBuilder();
+		this.toString(sb);
+		return sb.toString();
 	}
 
+	public void toString(StringBuilder sb) {
+		sb.append('[');
+		sb.append(this.start);
+		sb.append(", "); //$NON-NLS-1$
+		sb.append(this.end);
+		sb.append(']');
+	}
 }
