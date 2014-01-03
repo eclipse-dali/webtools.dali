@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2014 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,8 +24,8 @@ import java.util.Map;
  */
 public class ResultSetTools {
 	/**
-	 * Return an iterator the returns the first object in each row of the
-	 * specified result set. The first object in each must be of type
+	 * Return an iterator that returns the first object in each row of the
+	 * specified result set. The first object in each row must be of type
 	 * {@code <E>}. The iterator will close the result set once it has returned
 	 * all its elements.
 	 * @see ResultSetIterator
@@ -68,7 +67,7 @@ public class ResultSetTools {
 	}
 
 	/**
-	 * Return an iterator the returns the objects produced by the specified row
+	 * Return an iterator that the returns the objects produced by the specified row
 	 * transformer. The transformer will be used to convert each row in the
 	 * result set into an object. The iterator will close the result set once
 	 * it has returned all its elements.
@@ -84,7 +83,7 @@ public class ResultSetTools {
 	 * corresponding row values. The result set will be closed upon return
 	 * from this method.
 	 */
-	public static List<Map<String, Object>> convertToMaps(ResultSet resultSet) throws SQLException {
+	public static ArrayList<Map<String, Object>> convertToMaps(ResultSet resultSet) throws SQLException {
 		return convertToList(resultSet, mapRowTransformer(resultSet));
 	}
 
@@ -94,8 +93,8 @@ public class ResultSetTools {
 	 * corresponding row values. The result set will be closed upon return
 	 * from this method.
 	 */
-	public static <E> List<E> convertToList(ResultSet resultSet, ResultSetRowTransformer<? extends E> rowTransformer) throws SQLException {
-		List<E> rows = new ArrayList<E>();
+	public static <E> ArrayList<E> convertToList(ResultSet resultSet, ResultSetRowTransformer<? extends E> rowTransformer) throws SQLException {
+		ArrayList<E> rows = new ArrayList<E>();
 		for (ResultSetIterator<E> stream = iterator(resultSet, rowTransformer); stream.hasNext(); ) {
 			rows.add(stream.next());
 		}
@@ -162,7 +161,7 @@ public class ResultSetTools {
 		}
 
 		@Override
-		public Map<String, Object> transform(ResultSet resultSet) throws SQLException {
+		public LinkedHashMap<String, Object> transform(ResultSet resultSet) throws SQLException {
 			// use a linked hash map so the column order is preserved
 			LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>(this.columnCount);
 			for (int i = 1; i < this.columnCount; i++) {  // NB: start with 1 (ResultSet is 1-based)
@@ -191,7 +190,7 @@ public class ResultSetTools {
 	 * The result set will be closed upon return from this method.
 	 */
 	public static void dumpOn(ResultSet resultSet, PrintWriter pw) throws SQLException {
-		List<Map<String, Object>> maps = convertToMaps(resultSet);
+		ArrayList<Map<String, Object>> maps = convertToMaps(resultSet);
 		for (Iterator<Map<String, Object>> mapStream = maps.iterator(); mapStream.hasNext(); ) {
 			for (Map.Entry<String, Object> entry : mapStream.next().entrySet()) {
 				pw.print(entry.getKey());
