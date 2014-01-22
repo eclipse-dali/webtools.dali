@@ -40,6 +40,7 @@
             </goals>
             <configuration>
               <excludes>
+                <plugin id="javax.wsdl"/>
                 <plugin id="org.eclipse.jpt.dbws.eclipselink.branding"/>
               </excludes>
             </configuration>
