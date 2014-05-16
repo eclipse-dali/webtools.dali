@@ -26,6 +26,14 @@
    <includes
          id="org.eclipse.jpt.jpa.feature.source"
          version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.persistence.jpa.jpql.source"
+         download-size="0"
+         install-size="0"
+         version="2.0.1.qualifier"
+         unpack="false"/>
+
 <!-- Fix for build failure
    <plugin
          id="org.eclipse.jpt.doc.isv"

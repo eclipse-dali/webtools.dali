@@ -84,13 +84,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.persistence.jpa.jpql.source"
-         download-size="0"
-         install-size="0"
-         version="2.0.1.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.commons.collections"
          download-size="0"
          install-size="0"
