@@ -26,6 +26,10 @@
   <version>3.4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <properties>
+    <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/dali/webtools.dali.git</tycho.scmUrl>
+  </properties>
+
   <modules>
     <!-- assembly -->
     <module>assembly/features/org.eclipse.jpt.assembly.feature</module>
