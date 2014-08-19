@@ -27,7 +27,7 @@
 
   <properties>
     <org.eclipse.jpt.jpa.jar>${project.build.directory}/dependency/javax.persistence-2.1.0.jar</org.eclipse.jpt.jpa.jar>
-    <org.eclipse.jpt.eclipselink.jar>${project.build.directory}/dependency/eclipselink-2.5.1.jar</org.eclipse.jpt.eclipselink.jar>
+    <org.eclipse.jpt.eclipselink.jar>${project.build.directory}/dependency/eclipselink-2.5.2.jar</org.eclipse.jpt.eclipselink.jar>
     <testSuite>${project.artifactId}</testSuite>
     <testClass>org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclipseLinkCoreResourceModelTests</testClass>
   </properties>

@@ -27,7 +27,7 @@
 
   <properties>
     <jpt-javax-xml-bind-jar>${project.build.directory}/dependency/javax.xml.bind-2.2.0.v201105210648.jar</jpt-javax-xml-bind-jar>
-    <org.eclipse.jpt.eclipselink.jar>${project.build.directory}/dependency/eclipselink-2.5.1.jar</org.eclipse.jpt.eclipselink.jar>
+    <org.eclipse.jpt.eclipselink.jar>${project.build.directory}/dependency/eclipselink-2.5.2.jar</org.eclipse.jpt.eclipselink.jar>
   </properties>
 
   <build>
