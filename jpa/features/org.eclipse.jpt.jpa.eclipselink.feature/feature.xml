@@ -36,7 +36,7 @@
          id="org.eclipse.persistence.asm"
          download-size="0"
          install-size="0"
-         version="3.3.1.qualifier"
+         version="5.0.1.qualifier"
          unpack="false"/>
 
    <plugin
