@@ -59,6 +59,9 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho.version}</version>
+        <configuration>
+          <skipTests>${skipWithIssues}</skipTests>
+        </configuration>
         <executions>
           <execution>
             <id>default-test</id>
