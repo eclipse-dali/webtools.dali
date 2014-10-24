@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.jaxb.eclipselink.feature</artifactId>
-  <version>1.4.100-SNAPSHOT</version>
+  <version>1.4.101-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>
