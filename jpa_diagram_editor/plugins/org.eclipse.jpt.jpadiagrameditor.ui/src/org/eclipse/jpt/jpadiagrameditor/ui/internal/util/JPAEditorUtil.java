@@ -38,6 +38,7 @@ import java.util.jar.JarFile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -1345,6 +1346,10 @@ public class JPAEditorUtil {
 	
 	static private File getFile(IPath classPathEntry) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IResource resource = root.findMember(classPathEntry);
+		if(resource != null && resource.exists() && !(resource instanceof IFile)) {
+			return null;
+		}
 		IFile f = root.getFile(classPathEntry);
 		if ((f != null) && f.exists()) {
 			URI uri = f.getLocationURI();
