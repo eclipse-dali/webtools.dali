@@ -143,5 +143,9 @@ public class RemoveRelationFeature extends AbstractFeature implements IRemoveFea
 			remove((IRemoveContext)context);
 		}
 	}
+
+	public boolean isRemoveAbort() {
+		return false;
+	}
 	
 }
