@@ -79,7 +79,9 @@ public class JaxbLibraryValidatorTools {
 		if (javaVersion == JavaFacet.VERSION_1_7) {
 			return FACET_VERSION_2_2;
 		}
-		
+		if (javaVersion == JavaFacet.VERSION_1_8) {
+			return FACET_VERSION_2_2;
+		}
 		return null;
 	}
 
