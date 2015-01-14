@@ -24,7 +24,7 @@
 	
     <groupId>org.eclipse.webtools.dali</groupId>
 	<artifactId>org.eclipse.jpt.jpadiagrameditor.ui.tests</artifactId>
-    <version>1.2.100-SNAPSHOT</version>
+    <version>1.2.101-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<name>JPA Diagram Editor Test Plug-in</name>
 
