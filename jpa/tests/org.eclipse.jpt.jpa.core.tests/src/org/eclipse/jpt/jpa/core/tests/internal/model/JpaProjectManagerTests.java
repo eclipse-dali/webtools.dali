@@ -145,6 +145,7 @@ public class JpaProjectManagerTests
 		assertTrue(this.projectTestHarness.getProject().isOpen());
 		jpaProject = this.getJpaProject();
 		assertNotNull("JpaProject is null", jpaProject);
+		assertEquals(1, IterableTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 		assertEquals(4, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.projectTestHarness, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.projectTestHarness, "src/test/pkg/TestEntity2.java")));
@@ -179,6 +180,7 @@ public class JpaProjectManagerTests
 		assertTrue(ProjectTools.hasFacet(project, JpaProject.FACET));
 		jpaProject = this.getJpaProject(project);
 		assertNotNull(jpaProject);
+		assertEquals(1, IterableTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 		assertEquals(4, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.projectTestHarness, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.projectTestHarness, "src/test/pkg/TestEntity2.java")));
