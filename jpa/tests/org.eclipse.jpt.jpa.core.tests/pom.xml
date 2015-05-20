@@ -87,13 +87,6 @@
               <systemProperties combine.children="append">
                 <org.eclipse.jpt.jpa.jar>${org.eclipse.jpt.jpa.jar}</org.eclipse.jpt.jpa.jar>
               </systemProperties>
-              <dependencies>
-                <dependency>
-                  <type>p2-installable-unit</type>
-                  <artifactId>javax.persistence</artifactId>
-                  <version>0.0.0</version>
-                </dependency>
-              </dependencies>
             </configuration>
             <goals>
               <goal>test</goal>
@@ -108,13 +101,6 @@
               <systemProperties combine.children="append">
                 <org.eclipse.jpt.jpa.jar>${org.eclipse.jpt.jpa.jar}</org.eclipse.jpt.jpa.jar>
               </systemProperties>
-              <dependencies>
-                <dependency>
-                  <type>p2-installable-unit</type>
-                  <artifactId>javax.persistence</artifactId>
-                  <version>0.0.0</version>
-                </dependency>
-              </dependencies>
             </configuration>
             <goals>
               <goal>test</goal>
@@ -129,13 +115,6 @@
               <systemProperties combine.children="append">
                 <org.eclipse.jpt.jpa.jar>${org.eclipse.jpt.jpa.jar}</org.eclipse.jpt.jpa.jar>
               </systemProperties>
-              <dependencies>
-                <dependency>
-                  <type>p2-installable-unit</type>
-                  <artifactId>javax.persistence</artifactId>
-                  <version>0.0.0</version>
-                </dependency>
-              </dependencies>
             </configuration>
             <goals>
               <goal>test</goal>
