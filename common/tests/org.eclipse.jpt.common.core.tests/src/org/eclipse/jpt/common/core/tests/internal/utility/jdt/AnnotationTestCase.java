@@ -461,26 +461,30 @@ public abstract class AnnotationTestCase
 		return ASTTools.buildASTRoot(cu);
 	}
 
+	protected boolean compilationUnitContains(String s, ICompilationUnit cu) throws JavaModelException {
+		String source = this.getSource(cu).replaceAll("\\s+","");
+		return !(source.indexOf(s.replaceAll("\\s+","")) == -1);
+	}
+
 
 	// ********** test validation **********
 
 	protected void assertSourceContains(String s, ICompilationUnit cu) throws JavaModelException {
-		String source = this.getSource(cu);
-		boolean found = source.indexOf(s) > -1;
+		boolean found = this.compilationUnitContains(s, cu);
 		if ( ! found) {
 			String msg = "source does not contain the expected string: " + s + " (see System console)";
 			System.out.println("*** " + this.getName() + " ****");
 			System.out.println(msg);
-			System.out.println(source);
+			System.out.println(this.getSource(cu));
 			System.out.println();
 			fail(msg);
 		}
 	}
 
 	protected void assertSourceDoesNotContain(String s, ICompilationUnit cu) throws JavaModelException {
-		String source = this.getSource(cu);
-		int pos = source.indexOf(s);
-		if (pos != -1) {
+		if (this.compilationUnitContains(s, cu)) {
+			String source = this.getSource(cu);
+			int pos = source.indexOf(s);
 			String msg = "unexpected string in source (position: " + pos + "): " + s + " (see System console)";
 			System.out.println("*** " + this.getName() + " ****");
 			System.out.println(msg);
