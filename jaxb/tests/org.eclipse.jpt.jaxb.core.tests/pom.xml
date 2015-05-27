@@ -59,11 +59,6 @@
                 <id>javax.xml.bind</id>
                 <versionRange>2.2.0.v201105210648</versionRange>
               </requirement>
-              <requirement>
-                <type>eclipse-plugin</type>
-                <id>org.eclipse.wst.xsl.core</id>
-                <versionRange>1.1.301.v201405151730</versionRange>
-              </requirement>
             </extraRequirements>
           </dependency-resolution>
         </configuration>
