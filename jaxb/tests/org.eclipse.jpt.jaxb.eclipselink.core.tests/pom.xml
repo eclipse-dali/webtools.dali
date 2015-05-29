@@ -26,7 +26,7 @@
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
-    <jpt-javax-xml-bind-jar>${project.build.directory}/dependency/javax.xml.bind-2.2.0.v201105210648.jar</jpt-javax-xml-bind-jar>
+    <jpt-javax-xml-bind-jar>${project.build.directory}/dependency/javax.xml.bind-2.2.12.v201410011542.jar</jpt-javax-xml-bind-jar>
     <org.eclipse.jpt.eclipselink.jar>${project.build.directory}/dependency/eclipselink-2.5.2.jar</org.eclipse.jpt.eclipselink.jar>
   </properties>
 
