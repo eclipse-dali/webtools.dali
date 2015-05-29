@@ -74,7 +74,7 @@
               <requirement>
                 <type>eclipse-plugin</type>
                 <id>javax.xml.bind</id>
-                <versionRange>2.2.0.v201105210648</versionRange>
+                <versionRange>0.0.0</versionRange>
               </requirement>
             </extraRequirements>
           </dependency-resolution>
