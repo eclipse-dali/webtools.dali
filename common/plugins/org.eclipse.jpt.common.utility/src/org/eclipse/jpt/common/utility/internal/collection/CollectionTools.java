@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.collection;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -537,6 +538,19 @@ public final class CollectionTools {
 		}
 		collection.clear();
 		return true;
+	}
+
+
+	// ********** to array fix **********
+
+	/**
+	 * Return an array containing all of the elements in the specified collection.
+	 * This is a compile-time type-safe alternative to
+	 * {@link Collection#toArray(Object[])}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> E[] toArray(Collection<? extends E> collection, Class<E> clazz) {
+		return collection.toArray((E[]) Array.newInstance(clazz, collection.size()));
 	}
 
 
