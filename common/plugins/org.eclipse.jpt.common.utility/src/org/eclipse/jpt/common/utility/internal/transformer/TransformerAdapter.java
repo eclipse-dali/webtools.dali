@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,9 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public class TransformerAdapter<I, O>
 	implements Transformer<I, O>
 {
+	/**
+	 * It is possible the specified input is <code>null</code>.
+	 */
 	public O transform(I input) {
 		return null;
 	}
