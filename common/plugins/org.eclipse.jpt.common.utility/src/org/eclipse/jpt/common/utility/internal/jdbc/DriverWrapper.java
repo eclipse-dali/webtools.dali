@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,9 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
+import java.util.logging.Logger;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
@@ -89,6 +91,11 @@ public class DriverWrapper
 
 	public boolean jdbcCompliant() {
 		return this.driver.jdbcCompliant();
+	}
+
+	// JDBC 4.1
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return this.driver.getParentLogger();
 	}
 
 	@Override
