@@ -679,7 +679,7 @@ public final class ClassTools {
 	 */
 	public static <T> Iterable<Constructor<T>> declaredConstructors(Class<T> javaClass) {
 		@SuppressWarnings("unchecked")
-		Constructor<T>[] constructors = javaClass.getDeclaredConstructors();
+		Constructor<T>[] constructors = (Constructor<T>[]) javaClass.getDeclaredConstructors();
 		return makeAccessible(IterableTools.iterable(constructors));
 	}
 
