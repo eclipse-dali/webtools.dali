@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,12 +25,14 @@ public class SystemToolsTests
 		String version = SystemTools.javaSpecificationVersion();
 		if (version.equals("1.4")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.3"));
-		} else if(version.equals("1.5")) {
+		} else if (version.equals("1.5")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.4"));
-		} else if(version.equals("1.6")) {
+		} else if (version.equals("1.6")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.5"));
-		} else if(version.equals("1.7")) {
+		} else if (version.equals("1.7")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.6"));
+		} else if (version.equals("1.8")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.7"));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -40,11 +42,13 @@ public class SystemToolsTests
 		String version = SystemTools.javaSpecificationVersion();
 		if (version.equals("1.4")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("1.5"));
-		} else if(version.equals("1.5")) {
+		} else if (version.equals("1.5")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("1.6"));
-		} else if(version.equals("1.6")) {
+		} else if (version.equals("1.6")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("1.7"));
-		} else if(version.equals("1.7")) {
+		} else if (version.equals("1.7")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("2.0"));
+		} else if (version.equals("1.8")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("2.0"));
 		} else {
 			fail("untested Java specification version: " + version);
@@ -56,14 +60,17 @@ public class SystemToolsTests
 		if (version.equals("1.4")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.3"));
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.4"));
-		} else if(version.equals("1.5")) {
+		} else if (version.equals("1.5")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.4"));
-		} else if(version.equals("1.6")) {
+		} else if (version.equals("1.6")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.5"));
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.6"));
-		} else if(version.equals("1.7")) {
+		} else if (version.equals("1.7")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.6"));
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.7"));
+		} else if (version.equals("1.8")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.7"));
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.8"));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -74,14 +81,17 @@ public class SystemToolsTests
 		if (version.equals("1.4")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.5"));
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.4"));
-		} else if(version.equals("1.5")) {
+		} else if (version.equals("1.5")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.5"));
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.6"));
-		} else if(version.equals("1.6")) {
+		} else if (version.equals("1.6")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.6"));
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.7"));
-		} else if(version.equals("1.7")) {
+		} else if (version.equals("1.7")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.7"));
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("2.0"));
+		} else if (version.equals("1.8")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.8"));
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("2.0"));
 		} else {
 			fail("untested Java specification version: " + version);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -380,9 +380,9 @@ public final class TypeDeclarationTools {
 	 * Return whether the specified "simple" class name is a public class in the
 	 * current release of the <code>java.lang</code> package (i.e. a class that
 	 * can be declared with a "simple" name and no corresponding
-	 * <code>import</code> statement).\
+	 * <code>import</code> statement).
 	 * <p>
-	 * The current release is jdk 1.7.
+	 * The current release is jdk 1.8.
 	 */
 	public static boolean isJavaLangClass(String simpleClassName) {
 		return ArrayTools.binarySearch(JAVA_LANG_CLASS_NAMES_ARRAY, simpleClassName);
@@ -576,11 +576,42 @@ public final class TypeDeclarationTools {
 	 */
 	public static final Iterable<String> JAVA_LANG_CLASS_NAMES_7 = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY_7);
 
-	// the current release is jdk 1.7
-	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY = JAVA_LANG_CLASS_NAMES_ARRAY_7;
+	/**
+	 * JDK 1.8
+	 * @see #isJavaLangClass(String)
+	 */
+	public static boolean isJavaLangClass8(String simpleClassName) {
+		return ArrayTools.binarySearch(JAVA_LANG_CLASS_NAMES_ARRAY_8, simpleClassName);
+	}
 
 	/**
-	 * The current release is jdk 1.7.
+	 * @see #isJavaLangClass8(String)
+	 */
+	public static boolean isJavaLangClass8(char[] simpleClassName) {
+		return isJavaLangClass8(String.copyValueOf(simpleClassName));
+	}
+
+	// jdk 1.7
+	@SuppressWarnings("nls")
+	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY_8 = ArrayTools.sort(
+		ArrayTools.concatenate(
+			JAVA_LANG_CLASS_NAMES_ARRAY_7,
+			new String[] {
+				"FunctionalInterface"
+			}
+		)
+	);
+
+	/**
+	 * JDK 1.8.
+	 */
+	public static final Iterable<String> JAVA_LANG_CLASS_NAMES_8 = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY_8);
+
+	// the current release is jdk 1.8
+	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY = JAVA_LANG_CLASS_NAMES_ARRAY_8;
+
+	/**
+	 * The current release is jdk 1.8.
 	 */
 	public static final Iterable<String> JAVA_LANG_CLASS_NAMES = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY);
 

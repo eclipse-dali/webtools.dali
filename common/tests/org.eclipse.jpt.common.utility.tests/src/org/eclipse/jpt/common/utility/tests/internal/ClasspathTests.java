@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -267,7 +267,7 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testJavaExtensionClasspathEntries() {
-		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.7")) {
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.8")) {
 			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
 		}
 
@@ -286,7 +286,7 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testJavaExtensionClassNames() {
-		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.7")) {
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.8")) {
 			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
 		}
 

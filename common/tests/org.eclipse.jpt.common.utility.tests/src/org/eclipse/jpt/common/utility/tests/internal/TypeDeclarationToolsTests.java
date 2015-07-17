@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -268,6 +268,7 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass("Object"));
 		assertTrue(TypeDeclarationTools.isJavaLangClass("String"));
 		assertTrue(TypeDeclarationTools.isJavaLangClass("AutoCloseable"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass("FunctionalInterface"));
 		assertFalse(TypeDeclarationTools.isJavaLangClass(""));
 		assertFalse(TypeDeclarationTools.isJavaLangClass("Collection"));
 	}
@@ -276,6 +277,7 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass("Object".toCharArray()));
 		assertTrue(TypeDeclarationTools.isJavaLangClass("String".toCharArray()));
 		assertTrue(TypeDeclarationTools.isJavaLangClass("AutoCloseable".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass("FunctionalInterface".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass("".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass("Collection".toCharArray()));
 	}
@@ -284,6 +286,7 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass5("Object"));
 		assertTrue(TypeDeclarationTools.isJavaLangClass5("String"));
 		assertFalse(TypeDeclarationTools.isJavaLangClass5("AutoCloseable"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass5("FunctionalInterface"));
 		assertFalse(TypeDeclarationTools.isJavaLangClass5(""));
 		assertFalse(TypeDeclarationTools.isJavaLangClass5("Collection"));
 	}
@@ -292,6 +295,7 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass5("Object".toCharArray()));
 		assertTrue(TypeDeclarationTools.isJavaLangClass5("String".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass5("AutoCloseable".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass5("FunctionalInterface".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass5("".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass5("Collection".toCharArray()));
 	}
@@ -300,6 +304,7 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass6("Object"));
 		assertTrue(TypeDeclarationTools.isJavaLangClass6("String"));
 		assertFalse(TypeDeclarationTools.isJavaLangClass6("AutoCloseable"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass6("FunctionalInterface"));
 		assertFalse(TypeDeclarationTools.isJavaLangClass6(""));
 		assertFalse(TypeDeclarationTools.isJavaLangClass6("Collection"));
 	}
@@ -308,6 +313,7 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass6("Object".toCharArray()));
 		assertTrue(TypeDeclarationTools.isJavaLangClass6("String".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass6("AutoCloseable".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass6("FunctionalInterface".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass6("".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass6("Collection".toCharArray()));
 	}
@@ -316,6 +322,7 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass7("Object"));
 		assertTrue(TypeDeclarationTools.isJavaLangClass7("String"));
 		assertTrue(TypeDeclarationTools.isJavaLangClass7("AutoCloseable"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass7("FunctionalInterface"));
 		assertFalse(TypeDeclarationTools.isJavaLangClass7(""));
 		assertFalse(TypeDeclarationTools.isJavaLangClass7("Collection"));
 	}
@@ -324,12 +331,31 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass7("Object".toCharArray()));
 		assertTrue(TypeDeclarationTools.isJavaLangClass7("String".toCharArray()));
 		assertTrue(TypeDeclarationTools.isJavaLangClass7("AutoCloseable".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass7("FunctionalInterface".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass7("".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass7("Collection".toCharArray()));
 	}
 
+	public void testIsJavaLangClass8String() {
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("Object"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("String"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("AutoCloseable"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("FunctionalInterface"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass8(""));
+		assertFalse(TypeDeclarationTools.isJavaLangClass8("Collection"));
+	}
+
+	public void testIsJavaLangClass8CharArray() {
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("Object".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("String".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("AutoCloseable".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass8("FunctionalInterface".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass8("".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass8("Collection".toCharArray()));
+	}
+
 	public void testJDKVersion() {
 		assertTrue("update TypeDeclarationTools.JAVA_LANG_CLASS_NAMES for new JDK...",
-				SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.7"));
+				SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.8"));
 	}
 }
