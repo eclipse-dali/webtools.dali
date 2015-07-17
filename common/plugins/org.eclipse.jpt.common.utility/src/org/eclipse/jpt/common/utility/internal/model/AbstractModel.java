@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,8 +42,7 @@ public abstract class AbstractModel
 	implements Model
 {
 	/**
-	 * Delegate state/property/collection/list change support to this
-	 * helper object.
+	 * Delegate state/property/collection/list change support to this.
 	 */
 	protected final ChangeSupport changeSupport;
 
@@ -51,9 +50,7 @@ public abstract class AbstractModel
 	// ********** constructors/initialization **********
 
 	/**
-	 * Construct a model that uses the specified exception handler to handle
-	 * any exceptions thrown by listeners. The exception handler cannot be
-	 * <code>null</code>.
+	 * Construct a model with a change support delegate.
 	 */
 	protected AbstractModel() {
 		super();
@@ -88,7 +85,7 @@ public abstract class AbstractModel
 	 * @see ChangeSupport#hasAnyChangeListeners()
 	 */
 	public boolean hasAnyChangeListeners() {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyChangeListeners();
+		return this.changeSupport.hasAnyChangeListeners();
 	}
 
 	/**
@@ -119,7 +116,7 @@ public abstract class AbstractModel
 	 * @see ChangeSupport#hasAnyStateChangeListeners()
 	 */
 	public boolean hasAnyStateChangeListeners() {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyStateChangeListeners();
+		return this.changeSupport.hasAnyStateChangeListeners();
 	}
 
 	/**
@@ -164,7 +161,7 @@ public abstract class AbstractModel
 	 * @see ChangeSupport#hasAnyPropertyChangeListeners(String)
 	 */
 	public boolean hasAnyPropertyChangeListeners(String propertyName) {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyPropertyChangeListeners(propertyName);
+		return this.changeSupport.hasAnyPropertyChangeListeners(propertyName);
 	}
 
 	/**
@@ -232,7 +229,7 @@ public abstract class AbstractModel
 	 * @see ChangeSupport#hasAnyCollectionChangeListeners(String)
 	 */
 	public boolean hasAnyCollectionChangeListeners(String collectionName) {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyCollectionChangeListeners(collectionName);
+		return this.changeSupport.hasAnyCollectionChangeListeners(collectionName);
 	}
 
 	/**
@@ -454,7 +451,7 @@ public abstract class AbstractModel
 	 * @see ChangeSupport#hasAnyListChangeListeners(String)
 	 */
 	public boolean hasAnyListChangeListeners(String listName) {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyListChangeListeners(listName);
+		return this.changeSupport.hasAnyListChangeListeners(listName);
 	}
 
 	/**
@@ -538,7 +535,7 @@ public abstract class AbstractModel
 	/**
 	 * @see ChangeSupport#fireItemsMoved(String, int, int, int)
 	 */
-	protected final <E> boolean fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
+	protected final boolean fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
 		return this.changeSupport.fireItemsMoved(listName, targetIndex, sourceIndex, length);
 	}
 
