@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -129,7 +129,7 @@ public abstract class StackTests
 		this.verifyClone(stack, TestTools.serialize(stack));
 	}
 
-	private void verifyClone(Stack<String> original, Stack<String> clone) {
+	protected void verifyClone(Stack<String> original, Stack<String> clone) {
 		assertNotSame(original, clone);
 		assertEquals(original.peek(), clone.peek());
 		assertEquals(original.pop(), clone.pop());

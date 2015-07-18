@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,20 +10,24 @@
 package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EmptyStackException;
 import org.eclipse.jpt.common.utility.collection.Stack;
 
 /**
- * Resizable-array implementation of the {@link Stack} interface.
+ * Resizable-array LIFO implementation of the {@link Stack} interface.
  * @param <E> the type of elements maintained by the stack
- * @see ArrayList
  */
 public class ArrayStack<E>
 	implements Stack<E>, Cloneable, Serializable
 {
-	private ArrayList<E> elements;
+	private transient E[] elements;
+
+	/** The index of where the next "pushed" element will go. */
+	private transient int next = 0;
+
+	private int size = 0;
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,9 +44,13 @@ public class ArrayStack<E>
 	/**
 	 * Construct an empty stack with the specified initial capacity.
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayStack(int initialCapacity) {
 		super();
-		this.elements = new ArrayList<E>(initialCapacity);
+		if (initialCapacity < 0) {
+			throw new IllegalArgumentException("Illegal capacity: " + initialCapacity); //$NON-NLS-1$
+		}
+		this.elements = (E[]) new Object[initialCapacity];
 	}
 
 	/**
@@ -50,38 +58,29 @@ public class ArrayStack<E>
 	 * collection. The stack will pop its elements in reverse of the
 	 * order they are returned by the collection's iterator (i.e. the
 	 * last element returned by the collection's iterator will be the
-	 * first element returned by {@link #pop()}).
+	 * first element returned by {@link #pop()}; the first, last.).
 	 */
-	public ArrayStack(Collection<? extends E> collection) {
+	@SuppressWarnings("unchecked")
+	public ArrayStack(Collection<? extends E> c) {
 		super();
-		this.elements = new ArrayList<E>(collection);
+		int len = c.size();
+		// add 10% for growth
+		int capacity = (int) Math.min((len * 110L) / 100, Integer.MAX_VALUE);
+		this.elements = (E[]) c.toArray(new Object[capacity]);
+		this.next = len;
+		this.size = len;
 	}
 
 
 	// ********** Stack implementation **********
 
 	public void push(E element) {
-		this.elements.add(element);
-	}
-
-	public E pop() {
-		try {
-			return this.elements.remove(this.elements.size() - 1);
-		} catch (IndexOutOfBoundsException ex) {
-			throw new EmptyStackException();
+		this.ensureCapacity(this.size + 1);
+		this.elements[this.next] = element;
+		if (++this.next == this.elements.length) {
+			this.next = 0;
 		}
-	}
-
-	public E peek() {
-		try {
-			return this.elements.get(this.elements.size() - 1);
-		} catch (IndexOutOfBoundsException ex) {
-			throw new EmptyStackException();
-		}
-	}
-
-	public boolean isEmpty() {
-		return this.elements.isEmpty();
+		this.size++;
 	}
 
 	/**
@@ -89,14 +88,78 @@ public class ArrayStack<E>
 	 * the specified minimum capacity.
 	 */
 	public void ensureCapacity(int minCapacity) {
-		this.elements.ensureCapacity(minCapacity);
+		int oldCapacity = this.elements.length;
+		if (oldCapacity < minCapacity) {
+			int newCapacity = ((oldCapacity * 3) >> 1) + 1;
+			if (newCapacity < minCapacity) {
+				newCapacity = minCapacity;
+			}
+			this.elements = this.copyElements(newCapacity);
+			this.next = this.size;
+		}
 	}
 
 	/**
 	 * Decrease the stack's capacity, if necessary, to match its current size.
 	 */
 	public void trimToSize() {
-		this.elements.trimToSize();
+		if (this.elements.length > this.size) {
+			this.elements = this.copyElements(this.size);
+			this.next = this.size;
+		}
+	}
+
+	private E[] copyElements(int newCapacity) {
+		@SuppressWarnings("unchecked")
+		E[] newElements = (E[]) new Object[newCapacity];
+		if (this.size != 0) {
+			Object oldElements[] = this.elements;
+			if (this.next >= this.size) {
+				// elements are contiguous, but not to end of array
+				System.arraycopy(oldElements, (this.next - this.size), newElements, 0, this.size);
+			} else if (this.next == 0) {
+				// elements are contiguous to end of array
+				System.arraycopy(oldElements, (oldElements.length - this.size), newElements, 0, this.size);
+			} else {
+				// elements wrap past end of array
+				int fragmentSize = this.size - this.next;
+				System.arraycopy(oldElements, (oldElements.length - fragmentSize), newElements, 0, fragmentSize);
+				System.arraycopy(oldElements, 0, newElements, fragmentSize, (this.size - fragmentSize));
+			}
+		}
+		return newElements;
+	}
+
+	public E pop() {
+		if (this.size == 0) {
+			throw new EmptyStackException();
+		}
+		int index = this.next;
+		if (index == 0) {
+			index = this.elements.length;
+		}
+		index--;
+		E element = this.elements[index];
+		this.elements[index] = null; // allow GC to work
+		this.next = index;
+		this.size--;
+		return element;
+	}
+
+	public E peek() {
+		if (this.size == 0) {
+			throw new EmptyStackException();
+		}
+		int index = this.next;
+		if (index == 0) {
+			index = this.elements.length;
+		}
+		index--;
+		return this.elements[index];
+	}
+
+	public boolean isEmpty() {
+		return this.size == 0;
 	}
 
 
@@ -107,9 +170,9 @@ public class ArrayStack<E>
 		try {
 			@SuppressWarnings("unchecked")
 			ArrayStack<E> clone = (ArrayStack<E>) super.clone();
-			@SuppressWarnings("unchecked")
-			ArrayList<E> list = (ArrayList<E>) this.elements.clone();
-			clone.elements = list;
+			@SuppressWarnings("cast")
+			E[] array = (E[]) this.elements.clone();
+			clone.elements = array;
 			return clone;
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
@@ -123,6 +186,46 @@ public class ArrayStack<E>
 	 */
 	@Override
 	public String toString() {
-		return this.elements.toString();
+		return Arrays.toString(this.copyElements(this.size));
+	}
+
+
+	// ********** Serializable "implementation" **********
+
+	private void writeObject(java.io.ObjectOutputStream stream) throws java.io.IOException {
+		// write size (and any hidden stuff)
+		stream.defaultWriteObject();
+		Object[] array = this.elements;
+		int elementsLength = array.length;
+		stream.writeInt(elementsLength);
+		if (this.size == 0) {
+			return;
+		}
+		// save the elements in contiguous order
+		if (this.next >= this.size) { // elements are contiguous
+			for (int i = (this.next - this.size); i < this.next; i++) {
+				stream.writeObject(array[i]);
+			}
+		} else { // (this.next < this.size) - elements wrap past end of array
+			for (int i = (elementsLength - (this.size - this.next)); i < elementsLength; i++) {
+				stream.writeObject(array[i]);
+			}
+			for (int i = 0; i < this.next; i++) {
+				stream.writeObject(array[i]);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void readObject(java.io.ObjectInputStream stream) throws java.io.IOException, ClassNotFoundException {
+		// read size (and any hidden stuff)
+		stream.defaultReadObject();
+		int elementsLength = stream.readInt();
+		Object[] array = new Object[elementsLength];
+		for (int i = 0; i < this.size; i++) {
+			array[i] = stream.readObject();
+		}
+		this.elements = (E[]) array;
+		this.next = this.size;
 	}
 }
