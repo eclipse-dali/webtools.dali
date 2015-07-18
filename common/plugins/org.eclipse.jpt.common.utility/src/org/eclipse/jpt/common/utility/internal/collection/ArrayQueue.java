@@ -67,10 +67,13 @@ public class ArrayQueue<E>
 	@SuppressWarnings("unchecked")
 	public ArrayQueue(Collection<? extends E> c) {
 		super();
-		this.size = c.size();
+		int len = c.size();
 		// add 10% for growth
-		int capacity = (int) Math.min((this.size * 110L) / 100, Integer.MAX_VALUE);
+		int capacity = (int) Math.min((len * 110L) / 100, Integer.MAX_VALUE);
 		this.elements = (E[]) c.toArray(new Object[capacity]);
+		this.head = 0;
+		this.tail = len;
+		this.size = len;
 	}
 
 
@@ -125,7 +128,7 @@ public class ArrayQueue<E>
 				// elements wrap past end of array
 				int fragmentSize = oldElements.length - this.head;
 				System.arraycopy(oldElements, this.head, newElements, 0, fragmentSize);
-				System.arraycopy(oldElements, 0, newElements, fragmentSize, this.size - fragmentSize);
+				System.arraycopy(oldElements, 0, newElements, fragmentSize, (this.size - fragmentSize));
 			}
 		}
 		return newElements;
@@ -186,19 +189,21 @@ public class ArrayQueue<E>
 		Object[] array = this.elements;
 		int elementsLength = array.length;
 		stream.writeInt(elementsLength);
+		if (this.size == 0) {
+			return;
+		}
+		// save the elements in contiguous order
 		if (this.head < this.tail) { // elements are contiguous
 			for (int i = this.head; i < this.tail; i++) {
 				stream.writeObject(array[i]);
 			}
-		} else if (this.head > this.tail) { // elements wrap past end of array
+		} else { // (this.head >= this.tail) - elements wrap past end of array
 			for (int i = this.head; i < elementsLength; i++) {
 				stream.writeObject(array[i]);
 			}
 			for (int i = 0; i < this.tail; i++) {
 				stream.writeObject(array[i]);
 			}
-		} else { // (this.head == this.tail)
-			// nothing to write
 		}
 	}
 
