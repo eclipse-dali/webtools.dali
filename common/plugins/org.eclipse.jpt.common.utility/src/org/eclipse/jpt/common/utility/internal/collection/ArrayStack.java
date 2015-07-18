@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.collection.Stack;
 /**
  * Resizable-array LIFO implementation of the {@link Stack} interface.
  * @param <E> the type of elements maintained by the stack
+ * @see FixedSizeArrayStack
  */
 public class ArrayStack<E>
 	implements Stack<E>, Cloneable, Serializable
