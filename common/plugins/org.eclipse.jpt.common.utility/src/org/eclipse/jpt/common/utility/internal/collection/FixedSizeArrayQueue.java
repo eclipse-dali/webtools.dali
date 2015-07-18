@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.collection.Queue;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Fixed-sized array FIFO implementation of the {@link Queue} interface.
@@ -62,8 +63,10 @@ public class FixedSizeArrayQueue<E>
 	@SuppressWarnings("unchecked")
 	public FixedSizeArrayQueue(Collection<? extends E> c) {
 		super();
-		this.size = c.size();
-		this.elements = (E[]) c.toArray(new Object[this.size]);
+		int len = c.size();
+		this.elements = (E[]) c.toArray(new Object[len]);
+		this.size = len;
+		// head and tail stay at zero
 	}
 
 
@@ -131,6 +134,23 @@ public class FixedSizeArrayQueue<E>
 
 	@Override
 	public String toString() {
-		return Arrays.toString(this.elements);
+		return Arrays.toString(this.copyElements());
+	}
+
+	private Object[] copyElements() {
+		if (this.size == 0) {
+			return ObjectTools.EMPTY_OBJECT_ARRAY;
+		}
+		Object[] result = new Object[this.size];
+		if ((this.head == 0) || (this.head < this.tail) || (this.tail == 0)) {
+			// elements are contiguous
+			System.arraycopy(this.elements, this.head, result, 0, this.size);
+		} else {
+			// elements wrap past end of array
+			int fragmentSize = this.elements.length - this.head;
+			System.arraycopy(this.elements, this.head, result, 0, fragmentSize);
+			System.arraycopy(this.elements, 0, result, fragmentSize, (this.size - fragmentSize));
+		}
+		return result;
 	}
 }

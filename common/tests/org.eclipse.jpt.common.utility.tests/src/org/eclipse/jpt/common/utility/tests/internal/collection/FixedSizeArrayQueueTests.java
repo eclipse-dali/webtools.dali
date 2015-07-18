@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.collection;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.internal.collection.FixedSizeArrayQueue;
 
@@ -23,6 +24,37 @@ public class FixedSizeArrayQueueTests
 	@Override
 	FixedSizeArrayQueue<String> buildQueue() {
 		return new FixedSizeArrayQueue<String>(10);
+	}
+
+	public void testCollectionConstructor() {
+		ArrayList<String> c = new ArrayList<String>();
+		c.add("first");
+		c.add("second");
+		c.add("third");
+		c.add("fourth");
+		c.add("fifth");
+		c.add("sixth");
+		c.add("seventh");
+		c.add("eighth");
+		c.add("ninth");
+		c.add("tenth");
+		Queue<String> queue = new FixedSizeArrayQueue<String>(c);
+
+		assertFalse(queue.isEmpty());
+		assertEquals("first", queue.peek());
+		assertEquals("first", queue.dequeue());
+		assertEquals("second", queue.dequeue());
+		assertFalse(queue.isEmpty());
+		assertEquals("third", queue.peek());
+		assertEquals("third", queue.dequeue());
+		assertEquals("fourth", queue.dequeue());
+		assertEquals("fifth", queue.dequeue());
+		assertEquals("sixth", queue.dequeue());
+		assertEquals("seventh", queue.dequeue());
+		assertEquals("eighth", queue.dequeue());
+		assertEquals("ninth", queue.dequeue());
+		assertEquals("tenth", queue.dequeue());
+		assertTrue(queue.isEmpty());
 	}
 
 	public void testIsFull() {
