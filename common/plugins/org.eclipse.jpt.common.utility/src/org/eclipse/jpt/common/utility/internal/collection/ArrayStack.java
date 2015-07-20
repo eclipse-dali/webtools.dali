@@ -113,20 +113,9 @@ public class ArrayStack<E>
 	private E[] copyElements(int newCapacity) {
 		@SuppressWarnings("unchecked")
 		E[] newElements = (E[]) new Object[newCapacity];
-		if (this.size != 0) {
-			Object oldElements[] = this.elements;
-			if (this.next >= this.size) {
-				// elements are contiguous, but not to end of array
-				System.arraycopy(oldElements, (this.next - this.size), newElements, 0, this.size);
-			} else if (this.next == 0) {
-				// elements are contiguous to end of array
-				System.arraycopy(oldElements, (oldElements.length - this.size), newElements, 0, this.size);
-			} else {
-				// elements wrap past end of array
-				int fragmentSize = this.size - this.next;
-				System.arraycopy(oldElements, (oldElements.length - fragmentSize), newElements, 0, fragmentSize);
-				System.arraycopy(oldElements, 0, newElements, fragmentSize, (this.size - fragmentSize));
-			}
+		int len = this.size;
+		if (len != 0) {
+			System.arraycopy(this.elements, 0, newElements, 0, len);
 		}
 		return newElements;
 	}
