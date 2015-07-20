@@ -31,6 +31,7 @@ public class JptCommonUtilityCollectionTests {
 		suite.addTestSuite(IdentityHashSetTests.class);
 		suite.addTestSuite(LinkedQueueTests.class);
 		suite.addTestSuite(LinkedStackTests.class);
+		suite.addTestSuite(ListQueueTests.class);
 		suite.addTestSuite(ListToolsTests.class);
 		suite.addTestSuite(MapToolsTests.class);
 		suite.addTestSuite(NullElementListTests.class);
