@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.EmptyStackException;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -21,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * This implementation will throw an exception if its capacity is exceeded.
  * @param <E> the type of elements maintained by the stack
  * @see ArrayStack
+ * @see StackTools
  */
 public class FixedSizeArrayStack<E>
 	implements Stack<E>, Cloneable, Serializable
@@ -47,22 +47,6 @@ public class FixedSizeArrayStack<E>
 			throw new IllegalArgumentException("Illegal capacity: " + capacity); //$NON-NLS-1$
 		}
 		this.elements = (E[]) new Object[capacity];
-	}
-
-	/**
-	 * Construct a stack containing the elements of the specified
-	 * collection. The stack will pop its elements in reverse of the
-	 * order they are returned by the collection's iterator (i.e. the
-	 * last element returned by the collection's iterator will be the
-	 * first element returned by {@link #pop()}; the first, last.).
-	 */
-	@SuppressWarnings("unchecked")
-	public FixedSizeArrayStack(Collection<? extends E> c) {
-		super();
-		int len = c.size();
-		this.elements = (E[]) c.toArray(new Object[len]);
-		this.size = len;
-		// next stays at zero
 	}
 
 

@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.EmptyStackException;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -19,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 /**
  * Linked LIFO implementation of the {@link Stack} interface.
  * @param <E> the type of elements maintained by the stack
+ * @see StackTools
  */
 public class LinkedStack<E>
 	implements Stack<E>, Cloneable, Serializable
@@ -58,34 +58,6 @@ public class LinkedStack<E>
 		super();
 		this.nodeFactory = nodeFactory;
 		this.head = null;
-	}
-
-	/**
-	 * Construct a stack containing the elements of the specified
-	 * collection and no node cache.
-	 * The stack will pop its elements in reverse of the
-	 * order they are returned by the collection's iterator (i.e. the
-	 * last element returned by the collection's iterator will be the
-	 * first element returned by {@link #pop()}).
-	 */
-	public LinkedStack(Collection<? extends E> collection) {
-		this(collection, 0);
-	}
-
-	/**
-	 * Construct a stack containing the elements of the specified
-	 * collection and a node cache with the specified size.
-	 * The stack will pop its elements in reverse of the
-	 * order they are returned by the collection's iterator (i.e. the
-	 * last element returned by the collection's iterator will be the
-	 * first element returned by {@link #pop()}).
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public LinkedStack(Collection<? extends E> collection, int cacheSize) {
-		this(cacheSize);
-		for (E element : collection) {
-			this.push(element);
-		}
 	}
 
 

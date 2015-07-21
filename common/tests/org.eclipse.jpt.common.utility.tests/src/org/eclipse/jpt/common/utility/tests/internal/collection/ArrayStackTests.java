@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.collection;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.internal.collection.ArrayStack;
+import org.eclipse.jpt.common.utility.internal.collection.StackTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -39,7 +40,7 @@ public class ArrayStackTests
 		c.add("eighth");
 		c.add("ninth");
 		c.add("tenth"); // force some free space
-		Stack<String> stack = new ArrayStack<String>(c);
+		Stack<String> stack = StackTools.arrayStack(c);
 
 		assertFalse(stack.isEmpty());
 		assertEquals("tenth", stack.peek());

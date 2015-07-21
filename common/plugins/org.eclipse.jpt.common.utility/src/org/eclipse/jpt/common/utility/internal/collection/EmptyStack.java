@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,11 @@ import java.io.Serializable;
 import java.util.EmptyStackException;
 import org.eclipse.jpt.common.utility.collection.Stack;
 
+/**
+ * Empty implementation of the {@link Stack} interface.
+ * @param <E> the type of elements maintained by the stack
+ * @see StackTools
+ */
 public final class EmptyStack<E>
 	implements Stack<E>, Serializable
 {

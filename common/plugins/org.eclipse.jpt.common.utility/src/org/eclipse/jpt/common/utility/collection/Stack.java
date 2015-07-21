@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,8 @@ package org.eclipse.jpt.common.utility.collection;
  * @param <E> the type of elements contained by the stack
  * @see org.eclipse.jpt.common.utility.internal.collection.ArrayStack
  * @see org.eclipse.jpt.common.utility.internal.collection.LinkedStack
- * @see Queue Queue - for an interface without the semantic baggage of a stack
+ * @see org.eclipse.jpt.common.utility.internal.collection.StackTools
+ * @see Queue Queue - for an interface without the semantic baggage of {@link java.util.Queue}
  */
 public interface Stack<E> {
 

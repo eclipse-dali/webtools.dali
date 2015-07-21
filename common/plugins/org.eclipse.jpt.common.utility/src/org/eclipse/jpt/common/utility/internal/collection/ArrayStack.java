@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.EmptyStackException;
 import org.eclipse.jpt.common.utility.collection.Stack;
 
@@ -19,6 +18,7 @@ import org.eclipse.jpt.common.utility.collection.Stack;
  * Resizable-array LIFO implementation of the {@link Stack} interface.
  * @param <E> the type of elements maintained by the stack
  * @see FixedSizeArrayStack
+ * @see StackTools
  */
 public class ArrayStack<E>
 	implements Stack<E>, Cloneable, Serializable
@@ -52,24 +52,6 @@ public class ArrayStack<E>
 			throw new IllegalArgumentException("Illegal capacity: " + initialCapacity); //$NON-NLS-1$
 		}
 		this.elements = (E[]) new Object[initialCapacity];
-	}
-
-	/**
-	 * Construct a stack containing the elements of the specified
-	 * collection. The stack will pop its elements in reverse of the
-	 * order they are returned by the collection's iterator (i.e. the
-	 * last element returned by the collection's iterator will be the
-	 * first element returned by {@link #pop()}; the first, last.).
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayStack(Collection<? extends E> c) {
-		super();
-		int len = c.size();
-		// add 10% for growth
-		int capacity = (int) Math.min((len * 110L) / 100, Integer.MAX_VALUE);
-		this.elements = (E[]) c.toArray(new Object[capacity]);
-		this.next = len;
-		this.size = len;
 	}
 
 

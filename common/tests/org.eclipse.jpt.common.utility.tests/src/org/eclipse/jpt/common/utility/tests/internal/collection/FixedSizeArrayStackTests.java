@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.collection;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.internal.collection.FixedSizeArrayStack;
+import org.eclipse.jpt.common.utility.internal.collection.StackTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -39,7 +40,7 @@ public class FixedSizeArrayStackTests
 		c.add("eighth");
 		c.add("ninth");
 		c.add("tenth");
-		Stack<String> stack = new FixedSizeArrayStack<String>(c);
+		Stack<String> stack = StackTools.fixedSizeStack(c);
 
 		assertFalse(stack.isEmpty());
 		assertEquals("tenth", stack.peek());

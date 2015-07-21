@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.collection.Stack;
  * Adapt a {@link List} to the {@link Stack} interface.
  * Elements are popped from the end of the list (i.e. index size - 1).
  * @param <E> the type of elements maintained by the stack
+ * @see StackTools
  */
 public class ListStack<E>
 	implements Stack<E>, Serializable
