@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.collection.Queue;
 
@@ -19,6 +18,7 @@ import org.eclipse.jpt.common.utility.collection.Queue;
  * Resizable-array FIFO implementation of the {@link Queue} interface.
  * @param <E> the type of elements maintained by the queue
  * @see FixedSizeArrayQueue
+ * @see QueueTools
  */
 public class ArrayQueue<E>
 	implements Queue<E>, Cloneable, Serializable
@@ -55,25 +55,6 @@ public class ArrayQueue<E>
 			throw new IllegalArgumentException("Illegal capacity: " + initialCapacity); //$NON-NLS-1$
 		}
 		this.elements = (E[]) new Object[initialCapacity];
-	}
-
-	/**
-	 * Construct a queue containing the elements of the specified
-	 * collection. The queue will dequeue its elements in the same
-	 * order they are returned by the collection's iterator (i.e. the
-	 * first element returned by the collection's iterator will be the
-	 * first element returned by {@link #dequeue()}).
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayQueue(Collection<? extends E> c) {
-		super();
-		int len = c.size();
-		// add 10% for growth
-		int capacity = (int) Math.min((len * 110L) / 100, Integer.MAX_VALUE);
-		this.elements = (E[]) c.toArray(new Object[capacity]);
-		this.head = 0;
-		this.tail = len;
-		this.size = len;
 	}
 
 

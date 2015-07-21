@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import org.eclipse.jpt.common.utility.collection.Queue;
@@ -135,6 +136,20 @@ public final class QueueTools {
 	// ********** factory methods **********
 
 	/**
+	 * Return an empty array-based FIFO queue.
+	 */
+	public static <E> ArrayQueue<E> queue() {
+		return arrayQueue();
+	}
+
+	/**
+	 * Return an empty array-based FIFO queue with specified initial capacity.
+	 */
+	public static <E> ArrayQueue<E> queue(int initialCapacity) {
+		return arrayQueue(initialCapacity);
+	}
+
+	/**
 	 * Return a FIFO queue corresponding to the specified iterable.
 	 */
 	public static <E> ArrayQueue<E> queue(Iterable<? extends E> iterable) {
@@ -172,6 +187,20 @@ public final class QueueTools {
 	}
 
 	/**
+	 * Return an empty array-based FIFO queue.
+	 */
+	public static <E> ArrayQueue<E> arrayQueue() {
+		return arrayQueue(10);
+	}
+
+	/**
+	 * Return an empty array-based FIFO queue with specified initial capacity.
+	 */
+	public static <E> ArrayQueue<E> arrayQueue(int initialCapacity) {
+		return new ArrayQueue<E>(initialCapacity);
+	}
+
+	/**
 	 * Return an array-based FIFO queue corresponding to the specified iterable.
 	 */
 	public static <E> ArrayQueue<E> arrayQueue(Iterable<? extends E> iterable) {
@@ -190,7 +219,7 @@ public final class QueueTools {
 	 * Return an array-based FIFO queue corresponding to the specified iterator.
 	 */
 	public static <E> ArrayQueue<E> arrayQueue(Iterator<? extends E> iterator) {
-		return enqueueAll(new ArrayQueue<E>(), iterator);
+		return enqueueAll(QueueTools.<E>arrayQueue(), iterator);
 	}
 
 	/**
@@ -198,35 +227,97 @@ public final class QueueTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> ArrayQueue<E> arrayQueue(Iterator<? extends E> iterator, int iteratorSize) {
-		return enqueueAll(new ArrayQueue<E>(iteratorSize), iterator);
+		return enqueueAll(QueueTools.<E>arrayQueue(iteratorSize), iterator);
 	}
 
 	/**
 	 * Return an array-based FIFO queue corresponding to the specified array.
 	 */
 	public static <E> ArrayQueue<E> arrayQueue(E... array) {
-		return enqueueAll(new ArrayQueue<E>(array.length), array);
+		return enqueueAll(QueueTools.<E>arrayQueue(array.length), array);
 	}
 
 	/**
-	 * Return an linked list-based FIFO queue corresponding to the specified iterable.
+	 * Return an empty link-based FIFO queue with no node cache.
+	 */
+	public static <E> LinkedQueue<E> linkedQueue() {
+		return linkedQueue(0);
+	}
+
+	/**
+	 * Return an empty link-based FIFO queue
+	 * with the specified node cache size.
+	 * Specify a cache size of -1 for an unlimited cache.
+	 */
+	public static <E> LinkedQueue<E> linkedQueue(int cacheSize) {
+		return new LinkedQueue<E>(cacheSize);
+	}
+
+	/**
+	 * Return a link-based FIFO queue corresponding to the specified iterable.
 	 */
 	public static <E> LinkedQueue<E> linkedQueue(Iterable<? extends E> iterable) {
-		return linkedQueue(iterable.iterator());
+		return linkedQueue(iterable, 0);
 	}
 
 	/**
-	 * Return an linked list-based FIFO queue corresponding to the specified iterator.
+	 * Return a link-based FIFO queue corresponding to the specified iterable
+	 * with the specified node cache size.
+	 * Specify a cache size of -1 for an unlimited cache.
+	 */
+	public static <E> LinkedQueue<E> linkedQueue(Iterable<? extends E> iterable, int cacheSize) {
+		return linkedQueue(iterable.iterator(), cacheSize);
+	}
+
+	/**
+	 * Return a link-based FIFO queue corresponding to the specified iterator.
 	 */
 	public static <E> LinkedQueue<E> linkedQueue(Iterator<? extends E> iterator) {
-		return enqueueAll(new LinkedQueue<E>(), iterator);
+		return linkedQueue(iterator, 0);
 	}
 
 	/**
-	 * Return an linked list-based FIFO queue corresponding to the specified array.
+	 * Return a link-based FIFO queue corresponding to the specified iterator
+	 * with the specified node cache size.
+	 * Specify a cache size of -1 for an unlimited cache.
+	 */
+	public static <E> LinkedQueue<E> linkedQueue(Iterator<? extends E> iterator, int cacheSize) {
+		return enqueueAll(QueueTools.<E>linkedQueue(cacheSize), iterator);
+	}
+
+	/**
+	 * Return a link-based FIFO queue corresponding to the specified array.
 	 */
 	public static <E> LinkedQueue<E> linkedQueue(E... array) {
-		return enqueueAll(new LinkedQueue<E>(), array);
+		return linkedQueue(array, 0);
+	}
+
+	/**
+	 * Return a link-based FIFO queue corresponding to the specified array
+	 * with the specified node cache size.
+	 * Specify a cache size of -1 for an unlimited cache.
+	 */
+	public static <E> LinkedQueue<E> linkedQueue(E[] array, int cacheSize) {
+		return enqueueAll(QueueTools.<E>linkedQueue(cacheSize), array);
+	}
+
+	/**
+	 * Return a fixed-size queue with the specified capacity.
+	 */
+	public static <E> FixedSizeArrayQueue<E> fixedSizeQueue(int capacity) {
+		return new FixedSizeArrayQueue<E>(capacity);
+	}
+
+	/**
+	 * Return a fized-size queue containing the elements of the specified
+	 * collection. The queue will dequeue its elements in the same
+	 * order they are returned by the collection's iterator (i.e. the
+	 * first element returned by the collection's iterator will be the
+	 * first element returned by {@link Queue#dequeue()}).
+	 * The queue's capacity will be match the collection's size.
+	 */
+	public static <E> FixedSizeArrayQueue<E> fixedSizeQueue(Collection<? extends E> collection) {
+		return enqueueAll(QueueTools.<E>fixedSizeQueue(collection.size()), collection);
 	}
 
 	/**
@@ -268,6 +359,28 @@ public final class QueueTools {
 	 */
 	public static <E> PriorityQueue<E> queue(SortedSet<E> elements) {
 		return new PriorityQueue<E>(elements);
+	}
+
+	/**
+	 * Adapt the specified list to the {@link Queue} interface.
+	 */
+	public static <E> ListQueue<E> wrap(List<E> list) {
+		return new ListQueue<E>(list);
+	}
+
+	/**
+	 * Return a queue that synchronizes the specified queue
+	 * with specified mutex.
+	 */
+	public static <E> SynchronizedQueue<E> synchronizedQueue(Queue<E> queue, Object mutex) {
+		return new SynchronizedQueue<E>(queue, mutex);
+	}
+
+	/**
+	 * Return a queue that synchronizes the specified queue.
+	 */
+	public static <E> SynchronizedQueue<E> synchronizedQueue(Queue<E> queue) {
+		return new SynchronizedQueue<E>(queue);
 	}
 
 	/**

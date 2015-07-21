@@ -10,9 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import org.eclipse.jpt.common.utility.collection.Queue;
 
 /**
@@ -21,6 +19,7 @@ import org.eclipse.jpt.common.utility.collection.Queue;
  * wrapped sorted set (i.e. {@link #dequeue} will return the element returned
  * by {@link SortedSet#first}.
  * @param <E> the type of elements maintained by the queue
+ * @see QueueTools
  */
 public class PriorityQueue<E>
 	implements Queue<E>, Serializable
@@ -29,16 +28,6 @@ public class PriorityQueue<E>
 
 	private static final long serialVersionUID = 1L;
 
-
-	/**
-	 * Construct a priority queue that uses the specified comparator
-	 * to determine the order elements will be dequeued
-	 * (i.e. {@link #dequeue} will return the current element with
-	 * the lowest position, as specified by the comparator).
-	 */
-	public PriorityQueue(Comparator<? super E> comparator) {
-		this(new TreeSet<E>(comparator));
-	}
 
 	public PriorityQueue(SortedSet<E> elements) {
 		super();

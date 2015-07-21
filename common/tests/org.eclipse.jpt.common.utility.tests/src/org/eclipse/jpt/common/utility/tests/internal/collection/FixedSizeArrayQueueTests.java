@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.collection;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.internal.collection.FixedSizeArrayQueue;
+import org.eclipse.jpt.common.utility.internal.collection.QueueTools;
 
 @SuppressWarnings("nls")
 public class FixedSizeArrayQueueTests
@@ -38,7 +39,7 @@ public class FixedSizeArrayQueueTests
 		c.add("eighth");
 		c.add("ninth");
 		c.add("tenth");
-		Queue<String> queue = new FixedSizeArrayQueue<String>(c);
+		Queue<String> queue = QueueTools.fixedSizeQueue(c);
 
 		assertFalse(queue.isEmpty());
 		assertEquals("first", queue.peek());

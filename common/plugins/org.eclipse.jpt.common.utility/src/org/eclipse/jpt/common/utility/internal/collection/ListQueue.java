@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.collection.Queue;
  * Adapt a {@link List} to the {@link Queue} interface.
  * Elements are dequeued from the front of the list (i.e. index 0).
  * @param <E> the type of elements maintained by the queue
+ * @see QueueTools
  */
 public class ListQueue<E>
 	implements Queue<E>, Serializable

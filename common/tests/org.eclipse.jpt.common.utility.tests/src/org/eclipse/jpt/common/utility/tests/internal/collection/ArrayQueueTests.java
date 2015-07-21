@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.collection;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.internal.collection.ArrayQueue;
+import org.eclipse.jpt.common.utility.internal.collection.QueueTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -39,7 +40,7 @@ public class ArrayQueueTests
 		c.add("eighth");
 		c.add("ninth");
 		c.add("tenth"); // force some free space
-		Queue<String> queue = new ArrayQueue<String>(c);
+		Queue<String> queue = QueueTools.arrayQueue(c);
 
 		assertFalse(queue.isEmpty());
 		assertEquals("first", queue.peek());

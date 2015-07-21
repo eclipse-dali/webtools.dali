@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -21,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * This implementation will throw an exception if its capacity is exceeded.
  * @param <E> the type of elements maintained by the queue
  * @see ArrayQueue
+ * @see QueueTools
  */
 public class FixedSizeArrayQueue<E>
 	implements Queue<E>, Cloneable, Serializable
@@ -50,23 +50,6 @@ public class FixedSizeArrayQueue<E>
 			throw new IllegalArgumentException("Illegal capacity: " + capacity); //$NON-NLS-1$
 		}
 		this.elements = (E[]) new Object[capacity];
-	}
-
-	/**
-	 * Construct a queue containing the elements of the specified
-	 * collection. The queue will dequeue its elements in the same
-	 * order they are returned by the collection's iterator (i.e. the
-	 * first element returned by the collection's iterator will be the
-	 * first element returned by {@link #dequeue()}).
-	 * The queue's capacity will be match the collection's size.
-	 */
-	@SuppressWarnings("unchecked")
-	public FixedSizeArrayQueue(Collection<? extends E> c) {
-		super();
-		int len = c.size();
-		this.elements = (E[]) c.toArray(new Object[len]);
-		this.size = len;
-		// head and tail stay at zero
 	}
 
 
