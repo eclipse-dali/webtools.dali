@@ -25,7 +25,7 @@ public class LinkedQueue<E>
 {
 	private final NodeFactory<E> nodeFactory;
 	private transient Node<E> head; // next element to dequeue
-	private transient Node<E> tail; // enqueue next element here
+	private transient Node<E> tail; // last element
 
 	private static final long serialVersionUID = 1L;
 
@@ -147,8 +147,7 @@ public class LinkedQueue<E>
 		// write nodeFactory (and any hidden stuff)
 		stream.defaultWriteObject();
 		Object[] elements = this.buildElements();
-		int len = elements.length;
-		stream.writeInt(len);
+		stream.writeInt(elements.length);
 		for (Object element : elements) {
 			stream.writeObject(element);
 		}
