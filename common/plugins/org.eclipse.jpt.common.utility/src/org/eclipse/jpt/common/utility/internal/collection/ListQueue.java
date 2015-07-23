@@ -50,19 +50,17 @@ public class ListQueue<E>
 	}
 
 	public E dequeue() {
-		try {
-			return this.list.remove(0);
-		} catch (IndexOutOfBoundsException ex) {
+		if (this.list.size() == 0) {
 			throw new NoSuchElementException();
 		}
+		return this.list.remove(0);
 	}
 
 	public E peek() {
-		try {
-			return this.list.get(0);
-		} catch (IndexOutOfBoundsException ex) {
+		if (this.list.size() == 0) {
 			throw new NoSuchElementException();
 		}
+		return this.list.get(0);
 	}
 
 	public boolean isEmpty() {
