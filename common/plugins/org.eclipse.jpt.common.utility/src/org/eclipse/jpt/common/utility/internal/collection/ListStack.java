@@ -50,19 +50,19 @@ public class ListStack<E>
 	}
 
 	public E pop() {
-		try {
-			return this.list.remove(this.list.size() - 1);
-		} catch (IndexOutOfBoundsException ex) {
+		int size = this.list.size();
+		if (size == 0) {
 			throw new EmptyStackException();
 		}
+		return this.list.remove(size - 1);
 	}
 
 	public E peek() {
-		try {
-			return this.list.get(this.list.size() - 1);
-		} catch (IndexOutOfBoundsException ex) {
+		int size = this.list.size();
+		if (size == 0) {
 			throw new EmptyStackException();
 		}
+		return this.list.get(size - 1);
 	}
 
 	public boolean isEmpty() {
