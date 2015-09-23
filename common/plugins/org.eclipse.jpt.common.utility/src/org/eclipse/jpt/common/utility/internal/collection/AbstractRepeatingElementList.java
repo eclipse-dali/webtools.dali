@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
@@ -217,7 +216,17 @@ public abstract class AbstractRepeatingElementList<E>
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.size);
+		StringBuilder sb = new StringBuilder();
+		sb.append('[');
+		for (int i = this.size; i-- > 0; ) {
+			sb.append(this.getElement());
+			sb.append(", "); //$NON-NLS-1$
+		}
+		if (sb.length() > 1) {
+			sb.setLength(sb.length() - 2);
+		}
+		sb.append(']');
+		return sb.toString();
 	}
 
 	private static final long serialVersionUID = 1L;

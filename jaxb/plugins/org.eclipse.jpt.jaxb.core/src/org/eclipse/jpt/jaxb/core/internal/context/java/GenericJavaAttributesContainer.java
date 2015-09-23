@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -137,7 +137,7 @@ public class GenericJavaAttributesContainer
 	 */
 	private void initializePublicMemberAccessAttributes() {
 		this.initializeFieldAttributes(JavaResourceField.IS_RELEVANT_FOR_PUBLIC_MEMBER_ACCESS);
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all persistable resource method getters
 		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
@@ -169,7 +169,7 @@ public class GenericJavaAttributesContainer
 	private void intializePropertyAccessAttributes() {
 		this.initializeFieldAttributes(JavaResourceAnnotatedElement.IS_ANNOTATED);
 		
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
@@ -245,7 +245,7 @@ public class GenericJavaAttributesContainer
 	}
 	
 	private void initializeAnnotatedPropertyAttributes() {
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
@@ -312,11 +312,11 @@ public class GenericJavaAttributesContainer
 	 * 4. all annotated methods (some will have a matching getter/setter, some will be standalone)
 	 */
 	private void syncPublicMemberAccessAttributes() {
-		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 		
 		this.syncFieldAttributes(contextAttributes, JavaResourceField.IS_RELEVANT_FOR_PUBLIC_MEMBER_ACCESS);
 		
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all persistable resource method getters
 		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
@@ -347,7 +347,7 @@ public class GenericJavaAttributesContainer
 	 * 2. all annotated methods getters/setters
 	 */
 	private void syncFieldAccessAttributes() {
-		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 		
 		this.syncFieldAttributes(contextAttributes, JavaResourceField.IS_RELEVANT_FOR_FIELD_ACCESS);
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
@@ -360,11 +360,11 @@ public class GenericJavaAttributesContainer
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
 	private void syncPropertyAccessAttributes() {
-		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 		
 		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
 		
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
@@ -395,14 +395,14 @@ public class GenericJavaAttributesContainer
 	 * 2. all annotated methods getters/setters (some will have a matching getter/setter, some will be standalone)
 	 */
 	private void syncNoneAccessAttributes() {
-		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
+		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 		
 		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
 	}
 	
 	private void syncAnnotatedPropertyAttributes(HashSet<JavaPersistentAttribute> contextAttributes) {
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);

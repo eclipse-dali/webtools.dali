@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -73,7 +73,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	}
 
 	private Collection<String> adapterCollection() {
-		return CollectionTools.collection(this.adapter.iterator());
+		return CollectionTools.hashBag(this.adapter.iterator());
 	}
 
 	public void testStaleValue() {
@@ -114,7 +114,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 
 		Collection<String> adapterCollection = this.adapterCollection();
 		assertEquals(this.wrappedCollection, adapterCollection);
-		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
+		assertEquals(this.wrappedCollection, CollectionTools.hashBag(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}
 
@@ -136,7 +136,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 
 		Collection<String> adapterCollection = this.adapterCollection();
 		assertEquals(this.wrappedCollection, adapterCollection);
-		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
+		assertEquals(this.wrappedCollection, CollectionTools.hashBag(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}
 

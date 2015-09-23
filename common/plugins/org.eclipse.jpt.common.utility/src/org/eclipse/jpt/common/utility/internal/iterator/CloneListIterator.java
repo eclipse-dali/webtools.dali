@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,7 +68,7 @@ public class CloneListIterator<E>
 		}
 		// build a copy of the list and keep it in sync with original (if the mutator allows changes)
 		// that way the nested list iterator will maintain some of our state
-		this.listIterator = ListTools.list(array).listIterator();
+		this.listIterator = ListTools.arrayList(array).listIterator();
 		this.adapter = adapter;
 		this.cursor = 0;
 		this.state = State.UNKNOWN;

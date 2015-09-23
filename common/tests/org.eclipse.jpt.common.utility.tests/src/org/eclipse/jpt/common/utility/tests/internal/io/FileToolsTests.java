@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,22 +54,22 @@ public class FileToolsTests
 	}
 
 	public void testFilesIn() {
-		Collection<File> files = CollectionTools.collection(FileTools.files(this.tempDir.getPath()));
+		Collection<File> files = CollectionTools.hashBag(FileTools.files(this.tempDir.getPath()));
 		assertEquals("invalid file count", 3, files.size());
 	}
 
 	public void testDirectoriesIn() {
-		Collection<File> files = CollectionTools.collection(FileTools.directories(this.tempDir.getPath()));
+		Collection<File> files = CollectionTools.hashBag(FileTools.directories(this.tempDir.getPath()));
 		assertEquals("invalid directory count", 2, files.size());
 	}
 
 	public void testFilesInTree() {
-		Collection<File> files = CollectionTools.collection(FileTools.allFiles(this.tempDir.getPath()));
+		Collection<File> files = CollectionTools.hashBag(FileTools.allFiles(this.tempDir.getPath()));
 		assertEquals("invalid file count", 9, files.size());
 	}
 
 	public void testDirectoriesInTree() {
-		Collection<File> files = CollectionTools.collection(FileTools.allDirectories(this.tempDir.getPath()));
+		Collection<File> files = CollectionTools.hashBag(FileTools.allDirectories(this.tempDir.getPath()));
 		assertEquals("invalid directory count", 3, files.size());
 	}
 
@@ -159,7 +159,7 @@ public class FileToolsTests
 
 		FileFilter filter = this.buildFileFilter(prefix);
 		Iterator<File> filteredFilesIterator = FileTools.filter(FileTools.files(this.tempDir), filter);
-		Collection<File> filteredFiles = CollectionTools.collection(filteredFilesIterator);
+		Collection<File> filteredFiles = CollectionTools.hashBag(filteredFilesIterator);
 		assertEquals(2, filteredFiles.size());
 		assertTrue(filteredFiles.contains(testFile1));
 		assertTrue(filteredFiles.contains(testFile2));

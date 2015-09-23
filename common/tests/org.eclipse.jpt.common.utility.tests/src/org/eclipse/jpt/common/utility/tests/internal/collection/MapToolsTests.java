@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,24 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.collection;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.collection.Queue;
-import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.MapTools;
-import org.eclipse.jpt.common.utility.internal.collection.QueueTools;
-import org.eclipse.jpt.common.utility.internal.collection.StackTools;
 import org.eclipse.jpt.common.utility.internal.factory.FactoryTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.queue.QueueTools;
+import org.eclipse.jpt.common.utility.internal.stack.StackTools;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.queue.Queue;
+import org.eclipse.jpt.common.utility.stack.Stack;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class MapToolsTests
@@ -45,6 +47,15 @@ public class MapToolsTests
 		assertEquals(null, MapTools.get(map, "7", ""));
 	}
 
+	public void testGet_MapObjectObject() {
+		Map<String, String> map = this.buildMap();
+		assertEquals("one", MapTools.get_(map, "1", ""));
+		assertEquals("", MapTools.get_(map, "7", ""));
+		assertEquals("", map.get("7"));
+		map.put("7", null);
+		assertEquals("", MapTools.get_(map, "7", ""));
+	}
+
 	public void testGetMapObjectFactory() {
 		Factory<String> factory = FactoryTools.staticFactory("");
 		Map<String, String> map = this.buildMap();
@@ -55,6 +66,16 @@ public class MapToolsTests
 		assertEquals(null, MapTools.get(map, "7", factory));
 	}
 
+	public void testGet_MapObjectFactory() {
+		Factory<String> factory = FactoryTools.staticFactory("");
+		Map<String, String> map = this.buildMap();
+		assertEquals("one", MapTools.get_(map, "1", factory));
+		assertEquals("", MapTools.get_(map, "7", factory));
+		assertEquals("", map.get("7"));
+		map.put("7", null);
+		assertEquals("", MapTools.get_(map, "7", factory));
+	}
+
 	@SuppressWarnings("unchecked")
 	public void testGetMapObjectClass() {
 		ArrayList<String> list = new ArrayList<String>();
@@ -63,6 +84,36 @@ public class MapToolsTests
 		assertEquals(list, MapTools.get(map, "7", ArrayList.class));
 		map.put("7", null);
 		assertEquals(null, MapTools.get(map, "7", ArrayList.class));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testGet_MapObjectClass() {
+		ArrayList<String> list = new ArrayList<String>();
+		Map<String, ArrayList<String>> map = this.buildListMap();
+		assertEquals(list, MapTools.get_(map, "1", ArrayList.class));
+		assertEquals(list, MapTools.get_(map, "7", ArrayList.class));
+		map.put("7", null);
+		assertEquals(list, MapTools.get_(map, "7", ArrayList.class));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testGetMapObjectClassClassObject() {
+		ArrayList<String> list = new ArrayList<String>();
+		Map<String, ArrayList<String>> map = this.buildListMap();
+		assertEquals(list, MapTools.get(map, "1", ArrayList.class, Collection.class, new ArrayList<String>()));
+		assertEquals(list, MapTools.get(map, "7", ArrayList.class, Collection.class, new ArrayList<String>()));
+		map.put("7", null);
+		assertEquals(null, MapTools.get(map, "7", ArrayList.class, Collection.class, new ArrayList<String>()));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testGet_MapObjectClassClassObject() {
+		ArrayList<String> list = new ArrayList<String>();
+		Map<String, ArrayList<String>> map = this.buildListMap();
+		assertEquals(list, MapTools.get_(map, "1", ArrayList.class, Collection.class, new ArrayList<String>()));
+		assertEquals(list, MapTools.get_(map, "7", ArrayList.class, Collection.class, new ArrayList<String>()));
+		map.put("7", null);
+		assertEquals(new ArrayList<String>(), MapTools.get_(map, "7", ArrayList.class, Collection.class, new ArrayList<String>()));
 	}
 
 	public void testAddMapObjectTransformer() {
@@ -96,7 +147,7 @@ public class MapToolsTests
 		strings.add("baz");
 		Queue<String> queue = QueueTools.arrayQueue(strings);
 		Map<String, String> map = new HashMap<String, String>();
-		MapTools.addAll(map, queue, REVERSE_STRING_TRANSFORMER);
+		QueueTools.drainTo(queue, map, REVERSE_STRING_TRANSFORMER);
 		assertEquals("foo", map.get("oof"));
 		assertEquals("bar", map.get("rab"));
 		assertEquals("baz", map.get("zab"));
@@ -109,7 +160,7 @@ public class MapToolsTests
 		strings.add("baz");
 		Stack<String> stack = StackTools.arrayStack(strings);
 		Map<String, String> map = new HashMap<String, String>();
-		MapTools.addAll(map, stack, REVERSE_STRING_TRANSFORMER);
+		StackTools.popAllTo(stack, map, REVERSE_STRING_TRANSFORMER);
 		assertEquals("foo", map.get("oof"));
 		assertEquals("bar", map.get("rab"));
 		assertEquals("baz", map.get("zab"));
@@ -142,7 +193,7 @@ public class MapToolsTests
 		strings.add("baz");
 		Queue<String> queue = QueueTools.arrayQueue(strings);
 		Map<String, String> map = new HashMap<String, String>();
-		MapTools.addAll(map, queue, REVERSE_STRING_TRANSFORMER, SORT_STRING_TRANSFORMER);
+		QueueTools.drainTo(queue, map, REVERSE_STRING_TRANSFORMER, SORT_STRING_TRANSFORMER);
 		assertEquals("foo", map.get("oof"));
 		assertEquals("abr", map.get("rab"));
 		assertEquals("abz", map.get("zab"));
@@ -155,7 +206,7 @@ public class MapToolsTests
 		strings.add("baz");
 		Stack<String> stack = StackTools.arrayStack(strings);
 		Map<String, String> map = new HashMap<String, String>();
-		MapTools.addAll(map, stack, REVERSE_STRING_TRANSFORMER, SORT_STRING_TRANSFORMER);
+		StackTools.popAllTo(stack, map, REVERSE_STRING_TRANSFORMER, SORT_STRING_TRANSFORMER);
 		assertEquals("foo", map.get("oof"));
 		assertEquals("abr", map.get("rab"));
 		assertEquals("abz", map.get("zab"));
@@ -175,10 +226,38 @@ public class MapToolsTests
 		assertEquals(this.buildMap(), map);
 	}
 
+	public void testPutAllMapListList_IAE() {
+		Map<String, String> map = new HashMap<String, String>();
+		boolean exCaught = false;
+		try {
+			List<String> values = this.buildValues();
+			values.remove(0);
+			MapTools.putAll(map, this.buildKeys(), values);
+			fail("bogus: " + map);
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
 	public void testPutAllMapArrayArray() {
 		Map<String, String> map = new HashMap<String, String>();
 		MapTools.putAll(map, this.buildKeys().toArray(StringTools.EMPTY_STRING_ARRAY), this.buildValues().toArray(StringTools.EMPTY_STRING_ARRAY));
 		assertEquals(this.buildMap(), map);
+	}
+
+	public void testPutAllMapArrayArray_IAE() {
+		Map<String, String> map = new HashMap<String, String>();
+		boolean exCaught = false;
+		try {
+			String[] values = this.buildValues().toArray(StringTools.EMPTY_STRING_ARRAY);
+			values = ArrayTools.removeElementAtIndex(values, 0);
+			MapTools.putAll(map, this.buildKeys().toArray(StringTools.EMPTY_STRING_ARRAY), values);
+			fail("bogus: " + map);
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 	}
 
 	public void testContainsAllKeysMapIterable() {
@@ -197,24 +276,6 @@ public class MapToolsTests
 		assertFalse(MapTools.containsAllKeys(map, (Object[]) keys));
 	}
 
-	public void testContainsAllKeysMapQueue() {
-		Map<String, String> map = this.buildMap();
-		Queue<String> keys = QueueTools.arrayQueue(this.buildKeys());
-		assertTrue(MapTools.containsAllKeys(map, keys));
-		map.remove("1");
-		keys = QueueTools.arrayQueue(this.buildKeys()); // rebuild queue
-		assertFalse(MapTools.containsAllKeys(map, keys));
-	}
-
-	public void testContainsAllKeysMapStack() {
-		Map<String, String> map = this.buildMap();
-		Stack<String> keys = StackTools.arrayStack(this.buildKeys());
-		assertTrue(MapTools.containsAllKeys(map, keys));
-		map.remove("1");
-		keys = StackTools.arrayStack(this.buildKeys()); // rebuild stack
-		assertFalse(MapTools.containsAllKeys(map, keys));
-	}
-
 	public void testContainsAllValuesMapIterable() {
 		Map<String, String> map = this.buildMap();
 		Iterable<String> values = this.buildValues();
@@ -231,24 +292,6 @@ public class MapToolsTests
 		assertFalse(MapTools.containsAllValues(map, (Object[]) values));
 	}
 
-	public void testContainsAllValuesMapQueue() {
-		Map<String, String> map = this.buildMap();
-		Queue<String> values = QueueTools.arrayQueue(this.buildValues());
-		assertTrue(MapTools.containsAllValues(map, values));
-		map.remove("1");
-		values = QueueTools.arrayQueue(this.buildValues()); // rebuild queue
-		assertFalse(MapTools.containsAllValues(map, values));
-	}
-
-	public void testContainsAllValuesMapStack() {
-		Map<String, String> map = this.buildMap();
-		Stack<String> values = StackTools.arrayStack(this.buildValues());
-		assertTrue(MapTools.containsAllValues(map, values));
-		map.remove("1");
-		values = StackTools.arrayStack(this.buildValues()); // rebuild stack
-		assertFalse(MapTools.containsAllValues(map, values));
-	}
-
 	public void testRemoveAllMapIterable() {
 		Map<String, String> map = this.buildMap();
 		Iterable<String> keys = this.buildKeys();
@@ -262,22 +305,6 @@ public class MapToolsTests
 		String[] keys = this.buildKeys().toArray(StringTools.EMPTY_STRING_ARRAY);
 		assertFalse(map.isEmpty());
 		MapTools.removeAll(map, (Object[]) keys);
-		assertTrue(map.isEmpty());
-	}
-
-	public void testRemoveAllMapQueue() {
-		Map<String, String> map = this.buildMap();
-		Queue<String> keys = QueueTools.arrayQueue(this.buildKeys());
-		assertFalse(map.isEmpty());
-		MapTools.removeAll(map, keys);
-		assertTrue(map.isEmpty());
-	}
-
-	public void testRemoveAllMapStack() {
-		Map<String, String> map = this.buildMap();
-		Stack<String> keys = StackTools.arrayStack(this.buildKeys());
-		assertFalse(map.isEmpty());
-		MapTools.removeAll(map, keys);
 		assertTrue(map.isEmpty());
 	}
 
@@ -321,6 +348,27 @@ public class MapToolsTests
 		assertTrue(map.isEmpty());
 	}
 
+	public void testRetainAllMapIterableInt() {
+		Map<String, String> map = this.buildMap();
+		Iterable<String> keys = this.buildKeys();
+		assertFalse(map.isEmpty());
+		MapTools.retainAll(map, keys, 77);
+		assertEquals(this.buildMap(), map);
+		Collection<String> temp = this.buildKeys();
+		temp.remove("3");
+		keys = temp;
+		MapTools.retainAll(map, keys);
+		assertFalse(map.containsKey("3"));
+	}
+
+	public void testRetainAllMapIterableInt_empty() {
+		Map<String, String> map = this.buildMap();
+		Iterable<String> keys = new ArrayList<String>();
+		assertFalse(map.isEmpty());
+		MapTools.retainAll(map, keys, 77);
+		assertTrue(map.isEmpty());
+	}
+
 	public void testRetainAllMapArray() {
 		Map<String, String> map = this.buildMap();
 		String[] keys = this.buildKeys().toArray(StringTools.EMPTY_STRING_ARRAY);
@@ -337,48 +385,6 @@ public class MapToolsTests
 		String[] keys = StringTools.EMPTY_STRING_ARRAY;
 		assertFalse(map.isEmpty());
 		MapTools.retainAll(map, (Object[]) keys);
-		assertTrue(map.isEmpty());
-	}
-
-	public void testRetainAllMapQueue() {
-		Map<String, String> map = this.buildMap();
-		Queue<String> keys = QueueTools.arrayQueue(this.buildKeys());
-		assertFalse(map.isEmpty());
-		MapTools.retainAll(map, keys);
-		assertEquals(this.buildMap(), map);
-		Collection<String> temp = this.buildKeys();
-		temp.remove("3");
-		keys = QueueTools.arrayQueue(temp);
-		MapTools.retainAll(map, keys);
-		assertFalse(map.containsKey("3"));
-	}
-
-	public void testRetainAllMapQueue_empty() {
-		Map<String, String> map = this.buildMap();
-		Queue<String> keys = QueueTools.emptyQueue();
-		assertFalse(map.isEmpty());
-		MapTools.retainAll(map, keys);
-		assertTrue(map.isEmpty());
-	}
-
-	public void testRetainAllMapStack() {
-		Map<String, String> map = this.buildMap();
-		Stack<String> keys = StackTools.arrayStack(this.buildKeys());
-		assertFalse(map.isEmpty());
-		MapTools.retainAll(map, keys);
-		assertEquals(this.buildMap(), map);
-		Collection<String> temp = this.buildKeys();
-		temp.remove("3");
-		keys = StackTools.arrayStack(temp);
-		MapTools.retainAll(map, keys);
-		assertFalse(map.containsKey("3"));
-	}
-
-	public void testRetainAllMapStack_empty() {
-		Map<String, String> map = this.buildMap();
-		Stack<String> keys = StackTools.emptyStack();
-		assertFalse(map.isEmpty());
-		MapTools.retainAll(map, keys);
 		assertTrue(map.isEmpty());
 	}
 
@@ -413,6 +419,21 @@ public class MapToolsTests
 		assertEquals("owt", map.get("2"));
 		assertEquals("eerht", map.get("3"));
 		assertEquals("ruof", map.get("4"));
+	}
+
+	public void testConstructor() {
+		boolean exCaught = false;
+		try {
+			Object at = ClassTools.newInstance(MapTools.class);
+			fail("bogus: " + at); //$NON-NLS-1$
+		} catch (RuntimeException ex) {
+			if (ex.getCause() instanceof InvocationTargetException) {
+				if (ex.getCause().getCause() instanceof UnsupportedOperationException) {
+					exCaught = true;
+				}
+			}
+		}
+		assertTrue(exCaught);
 	}
 
 	private List<String> buildKeys() {

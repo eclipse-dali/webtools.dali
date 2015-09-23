@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -126,16 +126,16 @@ public class TransformationListValueModelTests extends TestCase {
 
 	public void testIterator() {
 		this.transformedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
-		assertEquals(this.buildTransformedList(), ListTools.list(this.transformedListHolder.iterator()));
+		assertEquals(this.buildTransformedList(), ListTools.arrayList(this.transformedListHolder.iterator()));
 	}
 
 	public void testStaleValues() {
 		ListChangeListener listener = this.buildListener();
 		this.transformedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, listener);
-		assertEquals(this.buildTransformedList(), ListTools.list(this.transformedListHolder.iterator()));
+		assertEquals(this.buildTransformedList(), ListTools.arrayList(this.transformedListHolder.iterator()));
 
 		this.transformedListHolder.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
-		assertEquals(Collections.EMPTY_LIST, ListTools.list(this.transformedListHolder.iterator()));
+		assertEquals(Collections.EMPTY_LIST, ListTools.arrayList(this.transformedListHolder.iterator()));
 	}
 
 	public void testSize() {
@@ -152,7 +152,7 @@ public class TransformationListValueModelTests extends TestCase {
 	}
 
 	private boolean transformedListContainsAny(Collection<String> items) {
-		List<String> transformedList = ListTools.list(this.transformedListHolder.iterator());
+		List<String> transformedList = ListTools.arrayList(this.transformedListHolder.iterator());
 		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
 			if (transformedList.contains(stream.next())) {
 				return true;
@@ -229,7 +229,7 @@ public class TransformationListValueModelTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildTransformedList(), ListTools.list(((ListAddEvent) this.event).getItems()));
+		assertEquals(this.buildTransformedList(), ListTools.arrayList(((ListAddEvent) this.event).getItems()));
 
 		this.event = null;
 		this.eventType = null;

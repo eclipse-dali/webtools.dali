@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -461,7 +461,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		 */
 		protected void sync(boolean sync) {
 			@SuppressWarnings("unchecked")
-			HashSet<C> contextElements = (HashSet<C>) CollectionTools.set(this.elements.toArray());
+			HashSet<C> contextElements = (HashSet<C>) CollectionTools.hashSet(this.elements.toArray());
 			ArrayList<C> contextElementsToSync = new ArrayList<C>(contextElements.size());
 			int resourceIndex = 0;
 

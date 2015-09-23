@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -103,7 +103,7 @@ public abstract class JpaMapping implements IMapping {
 	protected ITypeDeclaration[] buildGenericTypeDeclarations() {
 		JavaSpecifiedPersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
 		JavaResourceAttribute resource = javaPersistentAttribute == null ? null : javaPersistentAttribute.getResourceAttribute();
-		List<ITypeDeclaration> declarations = ListTools.list(buildGenericTypeDeclarations(resource));
+		List<ITypeDeclaration> declarations = ListTools.arrayList(buildGenericTypeDeclarations(resource));
 		return declarations.toArray(new ITypeDeclaration[declarations.size()]);
 	}
 

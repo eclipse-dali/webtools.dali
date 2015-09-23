@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -278,7 +278,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		if(this.fetchTablesJobIsRunning()) {
 			return Collections.<Table> emptyList();
 		}
-		return CollectionTools.collection(schema.getTables());
+		return CollectionTools.hashBag(schema.getTables());
 	}
 
 	private Collection<Table> possibleTables() {
@@ -636,7 +636,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 							schema.getName()));
 					subMonitor.worked(20);
 
-					tables.addAll(CollectionTools.collection(schema.getTables()));
+					tables.addAll(CollectionTools.hashBag(schema.getTables()));
 					
 					subMonitor.worked(95);
 				}

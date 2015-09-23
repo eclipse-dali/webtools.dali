@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -114,7 +114,7 @@ public abstract class AbstractTreeNodeValueModel<V>
 	
 	@SuppressWarnings("unchecked")
 	public TreeNodeValueModel<V>[] path() {
-		List<TreeNodeValueModel<V>> path = ListTools.reverse(ListTools.list(this.backPath()));
+		List<TreeNodeValueModel<V>> path = ListTools.reverse(ListTools.arrayList(this.backPath()));
 		return path.toArray(new TreeNodeValueModel[path.size()]);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -750,7 +750,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		javaSecondaryTable.addUniqueConstraint().addColumnName("BAR");
 		javaSecondaryTable.addUniqueConstraint().addColumnName("BAZ");
 
-		List<UniqueConstraint> uniqueConstraints = ListTools.list(ormSecondaryTable.getUniqueConstraints());
+		List<UniqueConstraint> uniqueConstraints = ListTools.arrayList(ormSecondaryTable.getUniqueConstraints());
 		assertEquals(3, uniqueConstraints.size());
 		assertEquals("FOO", uniqueConstraints.get(0).getColumnName(0));
 		assertEquals("BAR", uniqueConstraints.get(1).getColumnName(0));

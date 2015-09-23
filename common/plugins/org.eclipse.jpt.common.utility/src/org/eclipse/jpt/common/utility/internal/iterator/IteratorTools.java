@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
-import org.eclipse.jpt.common.utility.collection.Queue;
-import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -32,6 +30,8 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.queue.Queue;
+import org.eclipse.jpt.common.utility.stack.Stack;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -46,7 +46,7 @@ public final class IteratorTools {
 	 * Return a bag corresponding to the specified iterator.
 	 */
 	public static <E> HashBag<E> bag(Iterator<? extends E> iterator) {
-		return CollectionTools.bag(iterator);
+		return CollectionTools.hashBag(iterator);
 	}
 
 	/**
@@ -54,22 +54,22 @@ public final class IteratorTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> HashBag<E> bag(Iterator<? extends E> iterator, int iteratorSize) {
-		return CollectionTools.bag(iterator, iteratorSize);
+		return CollectionTools.hashBag(iterator, iteratorSize);
 	}
 
 	/**
-	 * Return a collection corresponding to the specified iterator.
+	 * Return a hash bag corresponding to the specified iterator.
 	 */
-	public static <E> HashBag<E> collection(Iterator<? extends E> iterator) {
-		return CollectionTools.collection(iterator);
+	public static <E> HashBag<E> hashBag(Iterator<? extends E> iterator) {
+		return CollectionTools.hashBag(iterator);
 	}
 
 	/**
-	 * Return a collection corresponding to the specified iterator.
+	 * Return a hash bag corresponding to the specified iterator.
 	 * The specified iterator size is a performance hint.
 	 */
-	public static <E> HashBag<E> collection(Iterator<? extends E> iterator, int iteratorSize) {
-		return CollectionTools.collection(iterator, iteratorSize);
+	public static <E> HashBag<E> hashBag(Iterator<? extends E> iterator, int iteratorSize) {
+		return CollectionTools.hashBag(iterator, iteratorSize);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public final class IteratorTools {
 	 * elements in the specified collection.
 	 */
 	public static boolean containsAll(Iterator<?> iterator, Collection<?> collection) {
-		return collection.isEmpty() || CollectionTools.set(iterator).containsAll(collection);
+		return collection.isEmpty() || CollectionTools.hashSet(iterator).containsAll(collection);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public final class IteratorTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static boolean containsAll(Iterator<?> iterator, int iteratorSize, Collection<?> collection) {
-		return collection.isEmpty() || CollectionTools.set(iterator, iteratorSize).containsAll(collection);
+		return collection.isEmpty() || CollectionTools.hashSet(iterator, iteratorSize).containsAll(collection);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator 2.
 	 */
 	public static boolean containsAll(Iterator<?> iterator1, Iterator<?> iterator2) {
-		return isEmpty(iterator2) || CollectionTools.containsAll(CollectionTools.set(iterator1), iterator2);
+		return isEmpty(iterator2) || CollectionTools.containsAll(CollectionTools.hashSet(iterator1), iterator2);
 	}
 
 	/**
@@ -198,7 +198,7 @@ public final class IteratorTools {
 	 * The specified iterator 1 size is a performance hint.
 	 */
 	public static boolean containsAll(Iterator<?> iterator1, int iterator1Size, Iterator<?> iterator2) {
-		return isEmpty(iterator2) || CollectionTools.containsAll(CollectionTools.set(iterator1, iterator1Size), iterator2);
+		return isEmpty(iterator2) || CollectionTools.containsAll(CollectionTools.hashSet(iterator1, iterator1Size), iterator2);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public final class IteratorTools {
 	 * elements in the specified array.
 	 */
 	public static boolean containsAll(Iterator<?> iterator, Object... array) {
-		return (array.length == 0) || CollectionTools.containsAll(CollectionTools.set(iterator), array);
+		return (array.length == 0) || CollectionTools.containsAll(CollectionTools.hashSet(iterator), array);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public final class IteratorTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static boolean containsAll(Iterator<?> iterator, int iteratorSize, Object... array) {
-		return (array.length == 0) || CollectionTools.containsAll(CollectionTools.set(iterator, iteratorSize), array);
+		return (array.length == 0) || CollectionTools.containsAll(CollectionTools.hashSet(iterator, iteratorSize), array);
 	}
 
 	/**
@@ -472,7 +472,7 @@ public final class IteratorTools {
 	 * Return a list corresponding to the specified iterator.
 	 */
 	public static <E> ArrayList<E> list(Iterator<? extends E> iterator) {
-		return ListTools.list(iterator);
+		return ListTools.arrayList(iterator);
 	}
 
 	/**
@@ -480,7 +480,7 @@ public final class IteratorTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> ArrayList<E> list(Iterator<? extends E> iterator, int iteratorSize) {
-		return ListTools.list(iterator, iteratorSize);
+		return ListTools.arrayList(iterator, iteratorSize);
 	}
 
 	/**
@@ -533,7 +533,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return ListTools.sort(ListTools.list(iterator), comparator).listIterator();
+		return ListTools.sort(ListTools.arrayList(iterator), comparator).listIterator();
 	}
 
 	/**
@@ -544,7 +544,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return ListTools.sort(ListTools.list(iterator, iteratorSize), comparator).listIterator();
+		return ListTools.sort(ListTools.arrayList(iterator, iteratorSize), comparator).listIterator();
 	}
 
 	/**

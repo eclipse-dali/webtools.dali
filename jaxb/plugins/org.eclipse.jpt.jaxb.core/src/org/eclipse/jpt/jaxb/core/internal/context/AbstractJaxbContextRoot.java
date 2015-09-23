@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -93,7 +93,7 @@ public abstract class AbstractJaxbContextRoot
 		Set<String> totalTypeNames = new HashSet<String>();
 		
 		// process types with annotations and in jaxb.index files
-		for (String typeName: CollectionTools.set(calculateInitialTypeNames())) {  // ensure iterable is unique
+		for (String typeName: CollectionTools.hashSet(calculateInitialTypeNames())) {  // ensure iterable is unique
 			totalTypeNames.add(typeName);
 			addType_(buildType(typeName));
 		}
@@ -122,18 +122,18 @@ public abstract class AbstractJaxbContextRoot
 		super.update();
 		
 		// keep a master list of these so that objects are updated only once
-		final Set<String> packagesToUpdate = CollectionTools.<String>set();
-		final Set<String> typesToUpdate = CollectionTools.<String>set();
+		final Set<String> packagesToUpdate = CollectionTools.<String>hashSet();
+		final Set<String> typesToUpdate = CollectionTools.<String>hashSet();
 		
 		// keep a (shrinking) running list of these so that we know which ones we do eventually need to remove
-		final Set<String> packagesToRemove = CollectionTools.set(this.packages.keySet());
-		final Set<String> typesToRemove = CollectionTools.set(this.types.keySet());
+		final Set<String> packagesToRemove = CollectionTools.hashSet(this.packages.keySet());
+		final Set<String> typesToRemove = CollectionTools.hashSet(this.types.keySet());
 		
 		// keep a master list of all types that we've processed so we don't process them again
-		final Set<String> totalTypes = CollectionTools.<String>set();
+		final Set<String> totalTypes = CollectionTools.<String>hashSet();
 		
 		// keep a running list of types that we need to scan for further referenced types
-		final Set<String> typesToScan = CollectionTools.<String>set();
+		final Set<String> typesToScan = CollectionTools.<String>hashSet();
 		
 		// process packages with annotations first
 		for (String pkg : calculateInitialPackageNames()) {
@@ -148,7 +148,7 @@ public abstract class AbstractJaxbContextRoot
 		
 		// calculate initial types (annotated or listed in jaxb.index files)
 		final Set<String> resourceTypesToProcess 
-				= CollectionTools.set(calculateInitialTypeNames());
+				= CollectionTools.hashSet(calculateInitialTypeNames());
 		
 		// store set of types that are referenced (and should therefore be default mapped)
 		final Set<String> referencedTypes = new HashSet<String>();
@@ -215,7 +215,7 @@ public abstract class AbstractJaxbContextRoot
 	 * calculate set of packages that can be determined purely by presence of package annotations
 	 */
 	protected Set<String> calculateInitialPackageNames() {
-		return CollectionTools.set(
+		return CollectionTools.hashSet(
 				IterableTools.transform(getJaxbProject().getAnnotatedJavaResourcePackages(), JavaResourcePackage.NAME_TRANSFORMER));
 	}
 	
@@ -223,7 +223,7 @@ public abstract class AbstractJaxbContextRoot
 	 * calculate set of packages that can be determined from type names
 	 */
 	protected Set<String> calculatePackageNames(Set<String> typeNames) {
-		Set<String> packageNames = CollectionTools.<String>set();
+		Set<String> packageNames = CollectionTools.<String>hashSet();
 		for (String typeName : typeNames) {
 			JavaType jaxbType = this.types.get(typeName);
 			if (jaxbType != null) {

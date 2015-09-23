@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -89,15 +89,15 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	public void testIterator() {
-		assertEquals(this.buildList(), ListTools.list(this.listHolder.iterator()));
+		assertEquals(this.buildList(), ListTools.arrayList(this.listHolder.iterator()));
 	}
 
 	public void testListIterator() {
-		assertEquals(this.buildList(), ListTools.list(this.listHolder.listIterator()));
+		assertEquals(this.buildList(), ListTools.arrayList(this.listHolder.listIterator()));
 	}
 
 	public void testListIteratorInt() {
-		assertEquals(ListTools.list(this.buildList().listIterator(1)), ListTools.list(this.listHolder.listIterator(1)));
+		assertEquals(ListTools.arrayList(this.buildList().listIterator(1)), ListTools.arrayList(this.listHolder.listIterator(1)));
 	}
 
 	public void testSize() {
@@ -113,7 +113,7 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	private boolean listContainsAny(Collection<String> items) {
-		Set<String> set = CollectionTools.set(this.listHolder.iterator());
+		Set<String> set = CollectionTools.hashSet(this.listHolder.iterator());
 		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
 			if (set.contains(stream.next())) {
 				return true;
@@ -287,7 +287,7 @@ public class SimpleListValueModelTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildList(), ListTools.list(((ListAddEvent) this.event).getItems()));
+		assertEquals(this.buildList(), ListTools.arrayList(((ListAddEvent) this.event).getItems()));
 
 		this.event = null;
 		this.eventType = null;

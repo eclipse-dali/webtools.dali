@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ public final class NameTools {
 	 * @see #uniqueName(String, Collection)
 	 */
 	public static String uniqueName(String rootName, Iterable<String> existingNames) {
-		return uniqueName(rootName, CollectionTools.set(existingNames));
+		return uniqueName(rootName, CollectionTools.hashSet(existingNames));
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public final class NameTools {
 	 * @see #uniqueNameIgnoreCase(String, Collection)
 	 */
 	public static String uniqueNameIgnoreCase(String rootName, Iterable<String> existingNames) {
-		return uniqueNameIgnoreCase(rootName, CollectionTools.set(existingNames));
+		return uniqueNameIgnoreCase(rootName, CollectionTools.hashSet(existingNames));
 	}
 
 	/**
@@ -193,7 +193,7 @@ public final class NameTools {
 	 * Java Language Keywords</a>
 	 */
 	public static final SortedSet<String> JAVA_RESERVED_WORDS = 
-		Collections.unmodifiableSortedSet(CollectionTools.sortedSet(JAVA_RESERVED_WORDS_ARRAY));
+		Collections.unmodifiableSortedSet(CollectionTools.treeSet(JAVA_RESERVED_WORDS_ARRAY));
 
 	/**
 	 * Return whether the specified string consists of Java identifier

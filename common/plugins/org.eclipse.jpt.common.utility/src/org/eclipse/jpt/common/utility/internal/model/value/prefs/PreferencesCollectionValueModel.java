@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -133,7 +133,7 @@ public class PreferencesCollectionValueModel<P>
 	@Override
 	protected void fireAspectChanged(Object oldValue, Object newValue) {
     	@SuppressWarnings("unchecked") Iterator<PreferencePropertyValueModel<P>> iterator = (Iterator<PreferencePropertyValueModel<P>>) newValue;
-		this.fireCollectionChanged(VALUES, CollectionTools.collection(iterator));
+		this.fireCollectionChanged(VALUES, CollectionTools.hashBag(iterator));
 	}
 
     @Override

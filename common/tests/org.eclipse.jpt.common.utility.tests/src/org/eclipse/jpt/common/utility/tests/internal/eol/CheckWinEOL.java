@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 1998, 2014 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2015 Oracle and/or its affiliates. All rights reserved.
  * This program and the accompanying materials are made available under the 
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License
  * v1.0, both of which accompany this distribution.
@@ -47,7 +47,7 @@ public class CheckWinEOL {
 		Iterable<File> invalidJavaFiles = getAllJavaFilesWithInvalidWinEOL(rootDirectoryName);
 		int count = 0;
 		System.out.println("Java files with bogus EOL:");
-		for (String invalidFileName : CollectionTools.sortedSet(IterableTools.transform(invalidJavaFiles, FILE_ABSOLUTE_PATH_TRANSFORMER))) {
+		for (String invalidFileName : CollectionTools.treeSet(IterableTools.transform(invalidJavaFiles, FILE_ABSOLUTE_PATH_TRANSFORMER))) {
 			count++;
 			System.out.print('\t');
 			System.out.println(invalidFileName);

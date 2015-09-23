@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 		Collection<String> sortedSet = new TreeSet<String>(comparator);
 		sortedSet.addAll(expected);
 		List<String> expectedList = new ArrayList<String>(sortedSet);
-		List<String> actualList = ListTools.list(actual);
+		List<String> actualList = ListTools.arrayList(actual);
 		assertEquals(expectedList, actualList);
 	}
 
@@ -98,7 +98,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.arrayList(this.sortedListModel), sortedSynchList);
 	}
 
 	public void testRemoveItem() {
@@ -118,7 +118,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.arrayList(this.sortedListModel), sortedSynchList);
 	}
 
 	public void testReplaceItem() {
@@ -138,7 +138,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.arrayList(this.sortedListModel), sortedSynchList);
 	}
 
 	public void testListSynch() {
@@ -179,7 +179,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.arrayList(this.sortedListModel), sortedSynchList);
 
 		this.sortedListModel.setComparator(ComparatorTools.<String>reverseComparator());
 		this.verifyList(this.list, this.sortedListModel, ComparatorTools.<String>reverseComparator());

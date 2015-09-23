@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,7 +53,7 @@ public final class EnumerationTools {
 	 * elements in the specified collection.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration, Collection<?> collection) {
-		return CollectionTools.set(iterator(enumeration)).containsAll(collection);
+		return CollectionTools.hashSet(iterator(enumeration)).containsAll(collection);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public final class EnumerationTools {
 	 * The specified enumeration size is a performance hint.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration, int enumerationSize, Collection<?> collection) {
-		return CollectionTools.set(iterator(enumeration), enumerationSize).containsAll(collection);
+		return CollectionTools.hashSet(iterator(enumeration), enumerationSize).containsAll(collection);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public final class EnumerationTools {
 	 * elements in the specified iterable.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration, Iterable<?> iterable) {
-		return CollectionTools.containsAll(CollectionTools.set(iterator(enumeration)), iterable);
+		return CollectionTools.containsAll(CollectionTools.hashSet(iterator(enumeration)), iterable);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public final class EnumerationTools {
 	 * The specified enumeration size is a performance hint.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration, int enumerationSize, Iterable<?> iterable) {
-		return CollectionTools.containsAll(CollectionTools.set(iterator(enumeration), enumerationSize), iterable);
+		return CollectionTools.containsAll(CollectionTools.hashSet(iterator(enumeration), enumerationSize), iterable);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public final class EnumerationTools {
 	 * elements in the specified enumeration 2.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration1, Enumeration<?> enumeration2) {
-		return CollectionTools.containsAll(CollectionTools.set(iterator(enumeration1)), iterator(enumeration2));
+		return CollectionTools.containsAll(CollectionTools.hashSet(iterator(enumeration1)), iterator(enumeration2));
 	}
 
 	/**
@@ -96,7 +96,7 @@ public final class EnumerationTools {
 	 * The specified iterator 1 size is a performance hint.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration1, int enumeration1Size, Enumeration<?> enumeration2) {
-		return CollectionTools.containsAll(CollectionTools.set(iterator(enumeration1), enumeration1Size), iterator(enumeration2));
+		return CollectionTools.containsAll(CollectionTools.hashSet(iterator(enumeration1), enumeration1Size), iterator(enumeration2));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public final class EnumerationTools {
 	 * elements in the specified array.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration, Object... array) {
-		return CollectionTools.containsAll(CollectionTools.set(iterator(enumeration)), array);
+		return CollectionTools.containsAll(CollectionTools.hashSet(iterator(enumeration)), array);
 	}
 
 	/**
@@ -113,7 +113,7 @@ public final class EnumerationTools {
 	 * The specified enumeration size is a performance hint.
 	 */
 	public static boolean containsAll(Enumeration<?> enumeration, int enumerationSize, Object... array) {
-		return CollectionTools.containsAll(CollectionTools.set(iterator(enumeration), enumerationSize), array);
+		return CollectionTools.containsAll(CollectionTools.hashSet(iterator(enumeration), enumerationSize), array);
 	}
 
 	/**

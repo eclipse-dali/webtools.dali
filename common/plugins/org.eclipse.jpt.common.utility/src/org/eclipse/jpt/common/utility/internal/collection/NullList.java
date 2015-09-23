@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -100,7 +100,10 @@ public final class NullList<E>
 	}
 
 	public ListIterator<E> listIterator(int index) {
-		return EmptyListIterator.instance();
+		if (index == 0) {
+			return EmptyListIterator.instance();
+		}
+		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public boolean remove(Object o) {
@@ -128,7 +131,10 @@ public final class NullList<E>
 	}
 
 	public List<E> subList(int fromIndex, int toIndex) {
-		return this;
+		if ((fromIndex == 0) && (toIndex == 0)) {
+			return this;
+		}
+		throw new IndexOutOfBoundsException("Index: " + fromIndex + ", Size: 0"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public Object[] toArray() {
@@ -141,7 +147,7 @@ public final class NullList<E>
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName();
+		return "[]"; //$NON-NLS-1$
 	}
 
 	private static final long serialVersionUID = 1L;

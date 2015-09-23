@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -619,7 +619,7 @@ public abstract class SpecifiedOrmPersistentType
 	 * </ol>
 	 */
 	private void syncFieldAccessDefaultAttributes() {
-		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
+		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getDefaultAttributes());
 
 		this.syncFieldDefaultAttributes(contextAttributes, this.buildResourceFieldIsRelevant());
 		if ( ! this.mapping.isMetadataComplete()) {
@@ -640,13 +640,13 @@ public abstract class SpecifiedOrmPersistentType
 	 * </ol>
 	 */
 	private void syncPropertyAccessDefaultAttributes() {
-		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
+		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getDefaultAttributes());
 
 		if ( ! this.mapping.isMetadataComplete()) {
 			this.syncFieldDefaultAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
 		}
 
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getJavaResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getJavaResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getJavaResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);
@@ -688,7 +688,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	private void syncAnnotatedPropertyDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes) {
-		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getJavaResourceMethods());
+		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getJavaResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getJavaResourcePropertyGetters()) {
 			JavaResourceMethod setterMethod = JavaResourceMethod.SET_METHOD_TRANSFORMER.transform(getterMethod);

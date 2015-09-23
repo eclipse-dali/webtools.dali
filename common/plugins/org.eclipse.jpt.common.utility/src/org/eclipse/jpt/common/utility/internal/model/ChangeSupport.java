@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1233,7 +1233,7 @@ public class ChangeSupport {
 	 * no empty checks
 	 */
 	protected boolean removeItemsFromCollection_(Iterator<?> items, Collection<?> collection, String collectionName) {
-		HashBag<?> removedItems = CollectionTools.collection(items);
+		HashBag<?> removedItems = CollectionTools.hashBag(items);
 		removedItems.retainAll(collection);
 		boolean changed = collection.removeAll(removedItems);
 
@@ -1305,8 +1305,8 @@ public class ChangeSupport {
 	 * no empty checks
 	 */
 	protected boolean retainItemsInCollection_(Iterator<?> items, Collection<?> collection, String collectionName) {
-		HashBag<?> retainedItems = CollectionTools.collection(items);
-		HashBag<?> removedItems = CollectionTools.collection(collection);
+		HashBag<?> retainedItems = CollectionTools.hashBag(items);
+		HashBag<?> removedItems = CollectionTools.hashBag(collection);
 		removedItems.removeAll(retainedItems);
 		boolean changed = collection.retainAll(retainedItems);
 
@@ -1378,7 +1378,7 @@ public class ChangeSupport {
 			return this.addItemsToCollection_(newCollection, collection, collectionName);
 		}
 
-		return this.synchronizeCollection_(CollectionTools.collection(newCollection), collection, collectionName);
+		return this.synchronizeCollection_(CollectionTools.hashBag(newCollection), collection, collectionName);
 	}
 
 	/**
@@ -2191,7 +2191,7 @@ public class ChangeSupport {
 			return false;
 		}
 
-		ArrayList<E> addedItems = ListTools.list(items);
+		ArrayList<E> addedItems = ListTools.arrayList(items);
 		if (list.addAll(index, addedItems)) {
 			this.fireItemsAdded(listName, index, addedItems);
 			return true;
@@ -2264,7 +2264,7 @@ public class ChangeSupport {
 	 * no empty check
 	 */
 	protected <E> boolean addItemsToList_(Iterator<? extends E> items, List<E> list, String listName) {
-		ArrayList<E> addedItems = ListTools.list(items);
+		ArrayList<E> addedItems = ListTools.arrayList(items);
 		int index = list.size();
 		if (list.addAll(addedItems)) {
 			this.fireItemsAdded(listName, index, addedItems);
@@ -2467,8 +2467,8 @@ public class ChangeSupport {
 	 * no empty checks
 	 */
 	protected boolean retainItemsInList_(Iterator<?> items, List<?> list, String listName) {
-		HashBag<?> retainedItems = CollectionTools.collection(items);
-		HashBag<?> removedItems = CollectionTools.collection(list);
+		HashBag<?> retainedItems = CollectionTools.hashBag(items);
+		HashBag<?> removedItems = CollectionTools.hashBag(list);
 		removedItems.removeAll(retainedItems);
 		return this.removeItemsFromList(removedItems, list, listName);
 	}
@@ -2642,7 +2642,7 @@ public class ChangeSupport {
 		if (list.isEmpty()) {
 			return this.addItemsToList_(newList, list, listName);
 		}
-		return this.synchronizeList_(ListTools.list(newList), list, listName);
+		return this.synchronizeList_(ListTools.arrayList(newList), list, listName);
 	}
 
 	/**

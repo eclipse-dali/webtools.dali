@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1137,7 +1137,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		void collectionChanged() {
-			this.fireCollectionChanged(CollectionValueModel.VALUES, CollectionTools.collection(this.iterator()));
+			this.fireCollectionChanged(CollectionValueModel.VALUES, CollectionTools.hashBag(this.iterator()));
 		}
 
 		public Iterator<String> iterator() {
@@ -1377,7 +1377,7 @@ public class JpaProjectPropertiesPage
 		private void processJavaProjectDelta(IJavaElementDelta delta) {
 			IJavaProject javaProject = (IJavaProject) delta.getElement();
 			if (javaProject.equals(this.subject.getJavaProject()) && this.classpathHasChanged(delta)) {
-				this.fireCollectionChanged(CollectionValueModel.VALUES, CollectionTools.collection(this.iterator()));
+				this.fireCollectionChanged(CollectionValueModel.VALUES, CollectionTools.hashBag(this.iterator()));
 			}
 		}
 

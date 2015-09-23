@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -440,7 +440,7 @@ public class EclipseLinkPersistenceUnit
 	 * unit's scope, with duplicates removed.
 	 */
 	public Iterable<String> getUniqueConverterNames() {
-		return CollectionTools.set(this.getNonEmptyConverterNames(), this.getConvertersSize());
+		return CollectionTools.hashSet(this.getNonEmptyConverterNames(), this.getConvertersSize());
 	}
 
 	protected Iterable<String> getNonEmptyConverterNames() {
@@ -460,7 +460,7 @@ public class EclipseLinkPersistenceUnit
 	 * @see #buildQueries()
 	 */
 	protected Iterable<EclipseLinkConverter> buildConverters() {
-		ArrayList<EclipseLinkConverter> result = ListTools.list(this.getMappingFileConverters());
+		ArrayList<EclipseLinkConverter> result = ListTools.arrayList(this.getMappingFileConverters());
 
 		HashSet<String> mappingFileConverterNames = this.convertToNames(result);
 		HashMap<String, ArrayList<EclipseLinkConverter>> javaConverters = this.mapByName(this.getAllJavaConverters());
@@ -1370,7 +1370,7 @@ public class EclipseLinkPersistenceUnit
 	protected <M extends JpaNamedContextModel> HashMap<String, ArrayList<M>> extractEclipseLinkConvertibleJavaModels(Iterable<M> allJavaModels, Iterable<M> mappingFileModels, EquivalencyAdapter<M> adapter) {
 		HashMap<String, ArrayList<M>> convertibleModels = new HashMap<String, ArrayList<M>>();
 
-		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.list(mappingFileModels));
+		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.arrayList(mappingFileModels));
 		HashMap<String, ArrayList<M>> allJavaModelsByName = this.mapByName(allJavaModels);
 		for (Map.Entry<String, ArrayList<M>> entry : allJavaModelsByName.entrySet()) {
 			String javaModelName = entry.getKey();

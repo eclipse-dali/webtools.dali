@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -120,7 +120,7 @@ public abstract class BaseJoinColumnStateObject
 		if (table == null) {
 			return EmptyListIterator.instance();
 		}
-		return ListTools.list(table.getSortedColumnIdentifiers()).listIterator();
+		return ListTools.arrayList(table.getSortedColumnIdentifiers()).listIterator();
 	}
 	
 	private static int columnsSize(Table table) {
@@ -340,8 +340,8 @@ public abstract class BaseJoinColumnStateObject
 	}
 
 	public void setTable(String table) {
-		ArrayList<String> oldNames = ListTools.list(this.names());
-		ArrayList<String> oldRefColNames = ListTools.list(this.referenceColumnNames());
+		ArrayList<String> oldNames = ListTools.arrayList(this.names());
+		ArrayList<String> oldRefColNames = ListTools.arrayList(this.referenceColumnNames());
 		String oldTable = this.table;
 		this.table = table;
 		this.firePropertyChanged(TABLE_PROPERTY, oldTable, table);

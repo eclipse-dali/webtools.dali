@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -219,8 +219,8 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	protected boolean hintsAreEquivalentTo(Query other) {
 		// get fixed lists of the hints
-		ArrayList<OrmQueryHint> hints1 = ListTools.list(this.getHints());
-		ArrayList<? extends QueryHint> hints2 = ListTools.list(other.getHints());
+		ArrayList<OrmQueryHint> hints1 = ListTools.arrayList(this.getHints());
+		ArrayList<? extends QueryHint> hints2 = ListTools.arrayList(other.getHints());
 		if (hints1.size() != hints2.size()) {
 			return false;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -244,7 +244,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals(0, entity.getQueryContainer().getNamedNativeQueriesSize());
 		
 		// test the mapping file queries have correct values
-		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.collection(entityMappings.getQueryContainer().getNamedNativeQueries());
+		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.hashBag(entityMappings.getQueryContainer().getNamedNativeQueries());
 
 		// test the first mapping file query
 		OrmNamedNativeQuery nnq1 = selectModelNamed(namedNativeQueries, "nnq1");
@@ -407,7 +407,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals(0, mappedSuperclass.getQueryContainer().getNamedNativeQueriesSize());
 		
 		// test the mapping file queries have correct values
-		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.collection(entityMappings.getQueryContainer().getNamedNativeQueries());
+		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.hashBag(entityMappings.getQueryContainer().getNamedNativeQueries());
 
 		// test the first mapping file query
 		OrmNamedNativeQuery nnq1 = selectModelNamed(namedNativeQueries, "nnq1");

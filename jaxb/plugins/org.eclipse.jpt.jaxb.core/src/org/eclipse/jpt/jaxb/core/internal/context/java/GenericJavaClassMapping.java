@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -532,8 +532,8 @@ public class GenericJavaClassMapping
 	
 	protected void updateIncludedAttributes() {
 		HashSet<JaxbClassMapping> oldSuperclasses 
-				= CollectionTools.set(this.includedAttributesContainers.keySet());
-		Set<JaxbPersistentAttribute> oldAttributes = CollectionTools.set(getIncludedAttributes());
+				= CollectionTools.hashSet(this.includedAttributesContainers.keySet());
+		Set<JaxbPersistentAttribute> oldAttributes = CollectionTools.hashSet(getIncludedAttributes());
 		
 		if (! isXmlTransient()) {
 			JaxbClassMapping superclass = this.superclass;
@@ -554,7 +554,7 @@ public class GenericJavaClassMapping
 			this.includedAttributesContainers.remove(oldSuperclass);
 		}
 		
-		Set<JaxbPersistentAttribute> newAttributes = CollectionTools.set(getIncludedAttributes());
+		Set<JaxbPersistentAttribute> newAttributes = CollectionTools.hashSet(getIncludedAttributes());
 		if (IterableTools.elementsAreDifferent(oldAttributes, newAttributes)) {
 			fireCollectionChanged(INCLUDED_ATTRIBUTES_COLLECTION, newAttributes);
 		}
@@ -773,7 +773,7 @@ public class GenericJavaClassMapping
 		// no nonexistent attributes (attributes mapped otherwise allowed) ...
 		// *except* no transient attributes allowed
 		
-		Bag<String> props = CollectionTools.bag(getPropOrder());
+		Bag<String> props = CollectionTools.hashBag(getPropOrder());
 		Set<String> allAttributes = new HashSet<String>();
 		Set<String> requiredAttributes = new HashSet<String>();
 		Set<String> transientAttributes = new HashSet<String>();

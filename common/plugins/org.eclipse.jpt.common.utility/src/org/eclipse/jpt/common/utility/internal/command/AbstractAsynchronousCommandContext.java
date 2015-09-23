@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,9 @@ import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
-import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.queue.QueueTools;
+import org.eclipse.jpt.common.utility.internal.queue.SynchronizedQueue;
 
 /**
  * This command context will dispatch commands to be executed in a separate
@@ -44,7 +45,7 @@ public abstract class AbstractAsynchronousCommandContext<E extends StatefulComma
 	 * to execute the new command once the currently executing command has
 	 * finished executing.
 	 */
-	private final SynchronizedQueue<Command> commands = new SynchronizedQueue<Command>();
+	private final SynchronizedQueue<Command> commands = QueueTools.synchronizedQueue();
 
 	/**
 	 * Most of the thread-related behavior is delegated to this coordinator.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,13 +12,14 @@ package org.eclipse.jpt.common.utility.tests.internal.collection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.IdentityHashSet;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class IdentityHashSetTests
@@ -83,8 +84,10 @@ public class IdentityHashSetTests
 	}
 
 	public void testCtorInt() {
-		boolean exCaught;
+		this.set = new IdentityHashSet<String>(20);
+		assertNotNull(this.set);
 
+		boolean exCaught;
 		exCaught = false;
 		try {
 			this.set = new IdentityHashSet<String>(-20);
@@ -161,12 +164,20 @@ public class IdentityHashSetTests
 	}
 
 	public void testEquals() {
+		assertEquals(this.set, this.set);
 		IdentityHashSet<String> set2 = this.buildSet();
 		assertEquals(this.set, set2);
 		set2.add("five");
 		assertFalse(this.set.equals(set2));
 		Collection<String> c = new ArrayList<String>(this.set);
 		assertFalse(this.set.equals(c));
+	}
+
+	public void testEquals_set() {
+		HashSet<String> set2 = new HashSet<String>(this.set);
+		assertEquals(this.set, set2);
+		set2.add("five");
+		assertFalse(this.set.equals(set2));
 	}
 
 	public void testHashCode() {
@@ -291,6 +302,21 @@ public class IdentityHashSetTests
 		assertFalse(this.set.retainAll(c));
 	}
 
+	public void testRetainAll_IHS() {
+		Collection<String> c = new IdentityHashSet<String>();
+		c.add(this.one);
+		c.add(new String(this.two));
+		c.add(this.three);
+		assertTrue(this.set.retainAll(c));
+		assertTrue(this.set.contains(this.one));
+		assertFalse(this.set.contains(this.two));
+		assertTrue(this.set.contains(this.three));
+		assertFalse(this.set.contains(this.four));
+		assertFalse(this.set.remove(this.two));
+		assertFalse(this.set.remove(this.four));
+		assertFalse(this.set.retainAll(c));
+	}
+
 	public void testSize() {
 		assertEquals(5, this.set.size());
 		String five = "five";
@@ -307,13 +333,13 @@ public class IdentityHashSetTests
 
 		assertTrue("same object?", this.set != set2);
 		assertEquals(5, set2.size());
-		assertEquals(CollectionTools.set(this.set.iterator()), CollectionTools.set(set2.iterator()));
+		assertEquals(CollectionTools.hashSet(this.set.iterator()), CollectionTools.hashSet(set2.iterator()));
 		// look for similar elements
-		assertTrue(CollectionTools.set(set2.iterator()).contains(null));
-		assertTrue(CollectionTools.set(set2.iterator()).contains("one"));
-		assertTrue(CollectionTools.set(set2.iterator()).contains("two"));
-		assertTrue(CollectionTools.set(set2.iterator()).contains("three"));
-		assertTrue(CollectionTools.set(set2.iterator()).contains("four"));
+		assertTrue(CollectionTools.hashSet(set2.iterator()).contains(null));
+		assertTrue(CollectionTools.hashSet(set2.iterator()).contains("one"));
+		assertTrue(CollectionTools.hashSet(set2.iterator()).contains("two"));
+		assertTrue(CollectionTools.hashSet(set2.iterator()).contains("three"));
+		assertTrue(CollectionTools.hashSet(set2.iterator()).contains("four"));
 
 		int nullCount = 0, oneCount = 0, twoCount = 0, threeCount = 0, fourCount = 0;
 		for (String next : set2) {

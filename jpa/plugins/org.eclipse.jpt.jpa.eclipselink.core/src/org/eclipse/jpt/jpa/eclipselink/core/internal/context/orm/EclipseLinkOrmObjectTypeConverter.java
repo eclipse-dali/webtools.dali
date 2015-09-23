@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -431,8 +431,8 @@ public class EclipseLinkOrmObjectTypeConverter
 
 	protected boolean conversionValuesAreEquivalentTo(EclipseLinkObjectTypeConverter converter) {
 		// get fixed lists of the conversion values
-		ArrayList<EclipseLinkOrmConversionValue> conversionValues1 = ListTools.list(this.getConversionValues());
-		ArrayList<? extends EclipseLinkConversionValue> conversionValues2 = ListTools.list(converter.getConversionValues());
+		ArrayList<EclipseLinkOrmConversionValue> conversionValues1 = ListTools.arrayList(this.getConversionValues());
+		ArrayList<? extends EclipseLinkConversionValue> conversionValues2 = ListTools.arrayList(converter.getConversionValues());
 		if (conversionValues1.size() != conversionValues2.size()) {
 			return false;
 		}

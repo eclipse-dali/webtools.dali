@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -159,7 +159,7 @@ public class ELJavaXmlJoinNode
 										StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER));
 			}
 			
-			return CollectionTools.sortedSet(result);
+			return CollectionTools.treeSet(result);
 		}
 		
 		return EmptyIterable.instance();

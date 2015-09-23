@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -134,14 +134,14 @@ public class ListAspectAdapterTests extends TestCase {
 	}
 
 	public void testSubjectHolder() {
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		this.subjectHolder1.setValue(this.subject2);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(this.subject2Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject2Names(), ListTools.arrayList(this.aa1.listIterator()));
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
@@ -155,11 +155,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testAdd() {
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		this.subject1.addName("jam");
@@ -170,7 +170,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals("jam", ((ListAddEvent) this.event1).getItems().iterator().next());
 		List<String> namesPlus = this.subject1Names();
 		namesPlus.add("jam");
-		assertEquals(namesPlus, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesPlus, ListTools.arrayList(this.aa1.listIterator()));
 
 		this.event1 = null;
 		this.aa1.add(2, "jaz");
@@ -180,11 +180,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(2, ((ListAddEvent) this.event1).getIndex());
 		assertEquals("jaz", ((ListAddEvent) this.event1).getItems().iterator().next());
 		namesPlus.add(2, "jaz");
-		assertEquals(namesPlus, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesPlus, ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testDefaultAdd() {
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		List<String> items = new ArrayList<String>();
@@ -202,11 +202,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals("jam", ((ListAddEvent) this.event1).getItems().iterator().next());
 		List<String> namesPlus = this.subject1Names();
 		namesPlus.addAll(2, items);
-		assertEquals(namesPlus, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesPlus, ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testRemove() {
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		String removedName = this.subject1.removeName(0);	// should be "foo"
@@ -217,7 +217,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(removedName, ((ListRemoveEvent) this.event1).getItems().iterator().next());
 		List<String> namesMinus = this.subject1Names();
 		namesMinus.remove(0);
-		assertEquals(namesMinus, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesMinus, ListTools.arrayList(this.aa1.listIterator()));
 
 		this.event1 = null;
 		Object removedItem = this.aa1.remove(0);	
@@ -227,11 +227,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(0, ((ListRemoveEvent) this.event1).getIndex());
 		assertEquals(removedItem, ((ListRemoveEvent) this.event1).getItems().iterator().next());
 		namesMinus.remove(0);
-		assertEquals(namesMinus, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesMinus, ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testDefaultLength() {
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		List<String> items = new ArrayList<String>();
@@ -248,11 +248,11 @@ public class ListAspectAdapterTests extends TestCase {
 		List<String> namesPlus = this.subject1Names();
 		namesPlus.remove(1);
 		namesPlus.remove(1);
-		assertEquals(namesPlus, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesPlus, ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testReplace() {
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		String replacedName = this.subject1.setName(0, "jelly");	// should be "foo"
@@ -264,7 +264,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(replacedName, ((ListReplaceEvent) this.event1).getOldItems().iterator().next());
 		List<String> namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
-		assertEquals(namesChanged, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesChanged, ListTools.arrayList(this.aa1.listIterator()));
 
 		this.event1 = null;
 		replacedName = this.subject1.setName(1, "roll");	// should be "bar"
@@ -277,11 +277,11 @@ public class ListAspectAdapterTests extends TestCase {
 		namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
 		namesChanged.set(1, "roll");
-		assertEquals(namesChanged, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesChanged, ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testListChange() {
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		this.subject1.addTwoNames("jam", "jaz");
@@ -291,12 +291,12 @@ public class ListAspectAdapterTests extends TestCase {
 		List<String> namesPlus2 = this.subject1Names();
 		namesPlus2.add(0, "jaz");
 		namesPlus2.add(0, "jam");
-		assertEquals(namesPlus2, ListTools.list(this.aa1.listIterator()));
+		assertEquals(namesPlus2, ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testIterator() {
-		assertEquals(this.subject1Names(), ListTools.list(this.subject1.names()));
-		assertEquals(this.subject1Names(), ListTools.list(this.aa1.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.subject1.names()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.aa1.listIterator()));
 	}
 
 	public void testGet() {

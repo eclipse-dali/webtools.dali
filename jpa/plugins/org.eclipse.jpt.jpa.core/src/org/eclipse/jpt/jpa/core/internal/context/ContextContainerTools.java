@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -94,7 +94,7 @@ public class ContextContainerTools {
 	 * <em>updated</em> (<code>false</code>).
 	 */
 	protected static <C extends JpaContextModel, R> void sync(Adapter<C, R> adapter, boolean sync) {
-		HashSet<C> contextElements = CollectionTools.set(adapter.getContextElements());
+		HashSet<C> contextElements = CollectionTools.hashSet(adapter.getContextElements());
 		ArrayList<C> contextElementsToSync = new ArrayList<C>(contextElements.size());
 		int resourceIndex = 0;
 

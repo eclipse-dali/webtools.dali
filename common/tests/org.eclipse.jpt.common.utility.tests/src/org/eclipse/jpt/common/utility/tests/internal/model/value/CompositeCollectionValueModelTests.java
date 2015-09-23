@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -71,51 +71,51 @@ public class CompositeCollectionValueModelTests
 		assertEquals(3, familiesSynch.size());
 		assertEquals(12, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(12, membersSynch.size());
-		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(this.neighborhood.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 
 		jetsons.removeMember(jetsons.memberNamed("Astro"));
 		assertEquals(3, familiesSynch.size());
 		assertEquals(11, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
-		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(this.neighborhood.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 
 		jetsons.removeMember(jetsons.memberNamed("Judy"));
 		assertEquals(3, familiesSynch.size());
 		assertEquals(10, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(10, membersSynch.size());
-		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(this.neighborhood.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 
 		jetsons.addMember("Fido");
 		assertEquals(3, familiesSynch.size());
 		assertEquals(11, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
-		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(this.neighborhood.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 
 		this.neighborhood.removeFamily(jetsons);
 		assertEquals(2, familiesSynch.size());
 		assertEquals(7, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(7, membersSynch.size());
-		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(this.neighborhood.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 
 		Family bears = this.neighborhood.addFamily("Bear");
 			bears.addMember("Yogi");
 		assertEquals(3, familiesSynch.size());
 		assertEquals(8, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(8, membersSynch.size());
-		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(this.neighborhood.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 
 		bears.addMember("Boo-Boo");
 		assertEquals(3, familiesSynch.size());
 		assertEquals(9, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(9, membersSynch.size());
-		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(this.neighborhood.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 
 		Neighborhood n2 = new Neighborhood("Hanna-Barbera 2");
 		this.neighborhoodHolder.setValue(n2);
@@ -123,8 +123,8 @@ public class CompositeCollectionValueModelTests
 		assertEquals(3, familiesSynch.size());
 		assertEquals(12, IteratorTools.size(n2.allMembers()));
 		assertEquals(12, membersSynch.size());
-		assertEquals(CollectionTools.bag(n2.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
+		assertEquals(CollectionTools.hashBag(n2.allMembers()), membersSynch);
+		assertEquals(membersSynch, CollectionTools.hashBag(compositeCVM.iterator()));
 	}
 
 	public void testNoTransformer() {

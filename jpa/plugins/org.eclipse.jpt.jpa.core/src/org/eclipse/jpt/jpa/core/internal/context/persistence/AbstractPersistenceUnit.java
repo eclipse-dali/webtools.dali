@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1564,7 +1564,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public Iterable<String> getUniqueGeneratorNames() {
-		return CollectionTools.set(this.getNonEmptyGeneratorNames(), this.getGeneratorsSize());
+		return CollectionTools.hashSet(this.getNonEmptyGeneratorNames(), this.getGeneratorsSize());
 	}
 
 	protected Iterable<String> getNonEmptyGeneratorNames() {
@@ -1584,7 +1584,7 @@ public abstract class AbstractPersistenceUnit
 	 * @see #buildQueries()
 	 */
 	protected Iterable<Generator> buildGenerators() {
-		ArrayList<Generator> result = ListTools.list(this.getMappingFileGenerators());
+		ArrayList<Generator> result = ListTools.arrayList(this.getMappingFileGenerators());
 
 		HashSet<String> mappingFileGeneratorNames = this.convertToNames(result);
 		HashMap<String, ArrayList<Generator>> allJavaGenerators = this.mapByName(this.getAllJavaGenerators());
@@ -1664,7 +1664,7 @@ public abstract class AbstractPersistenceUnit
 	 * or multiple, non-overridden Java queries with the same name.
 	 */
 	protected Iterable<Query> buildQueries() {
-		ArrayList<Query> result = ListTools.list(this.getMappingFileQueries());
+		ArrayList<Query> result = ListTools.arrayList(this.getMappingFileQueries());
 
 		HashSet<String> mappingFileQueryNames = this.convertToNames(result);
 		HashMap<String, ArrayList<Query>> allJavaQueries = this.mapByName(this.getAllJavaQueries());
@@ -1984,7 +1984,7 @@ public abstract class AbstractPersistenceUnit
 	 * type mappings (by full qualified class name).
 	 */
 	protected Iterable<TypeMapping> getActiveTypeMappings(){
-		ArrayList<TypeMapping> result = ListTools.list(this.getMappingFileTypeMappings());
+		ArrayList<TypeMapping> result = ListTools.arrayList(this.getMappingFileTypeMappings());
 
 		HashSet<String> mappingFileClassNames = this.convertToClassNames(result);
 		HashMap<String, ArrayList<TypeMapping>> javaTypeMappings = this.mapTypeMappingsByClassName(this.getJavaTypeMappings());
@@ -2047,7 +2047,7 @@ public abstract class AbstractPersistenceUnit
 		SubMonitor sm = SubMonitor.convert(monitor, 4);
 
 		// gather up all the annotated Java types and types listed in the mapping files
-		HashSet<JavaResourceAbstractType> newClasses = CollectionTools.set(this.getJpaProject().getPotentialJavaSourceTypes());
+		HashSet<JavaResourceAbstractType> newClasses = CollectionTools.hashSet(this.getJpaProject().getPotentialJavaSourceTypes());
 		HashSet<String> mappingFileTypeNames = this.getMappingFileTypeNames();
 
 		// calculate the class refs to be removed
@@ -2245,7 +2245,7 @@ public abstract class AbstractPersistenceUnit
 	protected <M extends JpaNamedContextModel> ArrayList<M> extractConvertibleJavaModels(Iterable<M> allJavaModels, Iterable<M> mappingFileModels) {
 		ArrayList<M> convertibleModels = new ArrayList<M>();
 
-		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.list(mappingFileModels));
+		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.arrayList(mappingFileModels));
 		HashMap<String, ArrayList<M>> allJavaModelsByName = this.mapByName(allJavaModels);
 		for (Map.Entry<String, ArrayList<M>> entry : allJavaModelsByName.entrySet()) {
 			String javaModelName = entry.getKey();
@@ -2300,7 +2300,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForMultiplePersistenceUnitMetadata(List<IMessage> messages) {
-		ArrayList<MappingFileRef> pumdMappingFileRefs = ListTools.list(this.getPersistenceUnitMetadataMappingFileRefs());
+		ArrayList<MappingFileRef> pumdMappingFileRefs = ListTools.arrayList(this.getPersistenceUnitMetadataMappingFileRefs());
 		if (pumdMappingFileRefs.size() > 1) {
 			for (MappingFileRef mappingFileRef : pumdMappingFileRefs) {
 				messages.add(

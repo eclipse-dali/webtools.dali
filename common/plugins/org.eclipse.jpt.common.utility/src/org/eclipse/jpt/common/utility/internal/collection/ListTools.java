@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
-import org.eclipse.jpt.common.utility.collection.Queue;
-import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -61,7 +59,14 @@ public final class ListTools {
 	 * Return whether the list changed as a result.
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, Iterator<? extends E> iterator) {
-		return iterator.hasNext() && list.addAll(index, list(iterator));
+		return iterator.hasNext() && addAll_(list, index, iterator);
+	}
+
+	/**
+	 * assume the iterator is not empty
+	 */
+	private static <E> boolean addAll_(List<? super E> list, int index, Iterator<? extends E> iterator) {
+		return (index == list.size()) ? CollectionTools.addAll_(list, iterator) : list.addAll(index, arrayList(iterator));
 	}
 
 	/**
@@ -71,7 +76,7 @@ public final class ListTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, Iterator<? extends E> iterator, int iteratorSize) {
-		return iterator.hasNext() && list.addAll(index, list(iterator, iteratorSize));
+		return iterator.hasNext() && list.addAll(index, arrayList(iterator, iteratorSize));
 	}
 
 	/**
@@ -81,48 +86,6 @@ public final class ListTools {
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, E... array) {
 		return (array.length != 0) && list.addAll(index, Arrays.asList(array));
-	}
-
-	/**
-	 * Add all the elements in the specified queue
-	 * to the specified list at the specified index,
-	 * draining the queue in the process.
-	 * Return whether the list changed as a result.
-	 */
-	public static <E> boolean addAll(List<? super E> list, int index, Queue<? extends E> queue) {
-		return ( ! queue.isEmpty()) && list.addAll(index, list(queue));
-	}
-
-	/**
-	 * Add all the elements in the specified queue
-	 * to the specified list at the specified index,
-	 * draining the queue in the process.
-	 * Return whether the list changed as a result.
-	 * The specified queue size is a performance hint.
-	 */
-	public static <E> boolean addAll(List<? super E> list, int index, Queue<? extends E> queue, int queueSize) {
-		return ( ! queue.isEmpty()) && list.addAll(index, list(queue, queueSize));
-	}
-
-	/**
-	 * Add all the elements in the specified stack
-	 * to the specified list at the specified index,
-	 * draining the stack in the process.
-	 * Return whether the list changed as a result.
-	 */
-	public static <E> boolean addAll(List<? super E> list, int index, Stack<? extends E> stack) {
-		return ( ! stack.isEmpty()) && list.addAll(index, list(stack));
-	}
-
-	/**
-	 * Add all the elements in the specified stack
-	 * to the specified list at the specified index,
-	 * draining the stack in the process.
-	 * Return whether the list changed as a result.
-	 * The specified stack size is a performance hint.
-	 */
-	public static <E> boolean addAll(List<? super E> list, int index, Stack<? extends E> stack, int stackSize) {
-		return ( ! stack.isEmpty()) && list.addAll(index, list(stack, stackSize));
 	}
 
 
@@ -585,7 +548,7 @@ public final class ListTools {
 	 * Return a new list with transformations of the
 	 * elements in the specified list.
 	 */
-	public static <I, O> ArrayList<O> transform(List<I> list, Transformer<? super I, ? extends O> transformer) {
+	public static <I, O> ArrayList<O> transform(Collection<I> list, Transformer<? super I, ? extends O> transformer) {
 		ArrayList<O> result = new ArrayList<O>(list.size());
 		for (I each : list) {
 			result.add(transformer.transform(each));
@@ -683,36 +646,36 @@ public final class ListTools {
 	// ********** factory methods **********
 
 	/**
-	 * Return a list corresponding to the specified iterable.
+	 * Return an array list corresponding to the specified iterable.
 	 */
-	public static <E> ArrayList<E> list(Iterable<? extends E> iterable) {
-		return list(iterable.iterator());
+	public static <E> ArrayList<E> arrayList(Iterable<? extends E> iterable) {
+		return arrayList(iterable.iterator());
 	}
 
 	/**
-	 * Return a list corresponding to the specified iterable.
+	 * Return an array list corresponding to the specified iterable.
 	 * The specified iterable size is a performance hint.
 	 */
-	public static <E> ArrayList<E> list(Iterable<? extends E> iterable, int iterableSize) {
-		return list(iterable.iterator(), iterableSize);
+	public static <E> ArrayList<E> arrayList(Iterable<? extends E> iterable, int iterableSize) {
+		return arrayList(iterable.iterator(), iterableSize);
 	}
 
 	/**
-	 * Return a list corresponding to the specified iterator.
+	 * Return an array list corresponding to the specified iterator.
 	 */
-	public static <E> ArrayList<E> list(Iterator<? extends E> iterator) {
-		return list(iterator, new ArrayList<E>());
+	public static <E> ArrayList<E> arrayList(Iterator<? extends E> iterator) {
+		return arrayList(iterator, new ArrayList<E>());
 	}
 
 	/**
-	 * Return a list corresponding to the specified iterator.
+	 * Return an array list corresponding to the specified iterator.
 	 * The specified iterator size is a performance hint.
 	 */
-	public static <E> ArrayList<E> list(Iterator<? extends E> iterator, int iteratorSize) {
-		return list(iterator, new ArrayList<E>(iteratorSize));
+	public static <E> ArrayList<E> arrayList(Iterator<? extends E> iterator, int iteratorSize) {
+		return arrayList(iterator, new ArrayList<E>(iteratorSize));
 	}
 
-	private static <E> ArrayList<E> list(Iterator<? extends E> iterator, ArrayList<E> list) {
+	private static <E> ArrayList<E> arrayList(Iterator<? extends E> iterator, ArrayList<E> list) {
 		while (iterator.hasNext()) {
 			list.add(iterator.next());
 		}
@@ -720,62 +683,14 @@ public final class ListTools {
 	}
 
 	/**
-	 * Return a list corresponding to the specified array.
+	 * Return an array list corresponding to the specified array.
 	 * Unlike {@link Arrays#asList(Object[])}, the list
 	 * is modifiable and is not backed by the array.
 	 */
-	public static <E> ArrayList<E> list(E... array) {
+	public static <E> ArrayList<E> arrayList(E... array) {
 		ArrayList<E> list = new ArrayList<E>(array.length);
 		for (E e : array) {
 			list.add(e);
-		}
-		return list;
-	}
-
-	/**
-	 * Return a list corresponding to the specified queue,
-	 * draining the queue in the process.
-	 */
-	public static <E> ArrayList<E> list(Queue<? extends E> queue) {
-		return list(queue, new ArrayList<E>());
-	}
-
-	/**
-	 * Return a list corresponding to the specified queue,
-	 * draining the queue in the process.
-	 * The specified queue size is a performance hint.
-	 */
-	public static <E> ArrayList<E> list(Queue<? extends E> queue, int queueSize) {
-		return list(queue, new ArrayList<E>(queueSize));
-	}
-
-	private static <E> ArrayList<E> list(Queue<? extends E> queue, ArrayList<E> list) {
-		while ( ! queue.isEmpty()) {
-			list.add(queue.dequeue());
-		}
-		return list;
-	}
-
-	/**
-	 * Return a list corresponding to the specified stack,
-	 * draining the stack in the process.
-	 */
-	public static <E> ArrayList<E> list(Stack<? extends E> stack) {
-		return list(stack, new ArrayList<E>());
-	}
-
-	/**
-	 * Return a list corresponding to the specified stack,
-	 * draining the stack in the process.
-	 * The specified stack size is a performance hint.
-	 */
-	public static <E> ArrayList<E> list(Stack<? extends E> stack, int stackSize) {
-		return list(stack, new ArrayList<E>(stackSize));
-	}
-
-	private static <E> ArrayList<E> list(Stack<? extends E> stack, ArrayList<E> list) {
-		while ( ! stack.isEmpty()) {
-			list.add(stack.pop());
 		}
 		return list;
 	}
@@ -820,7 +735,7 @@ public final class ListTools {
 	 * <em>read-only</em> {@link ListIterator}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> Transformer<List<? extends E>, ListIterator<? extends E>> readOnlyListIteratorTransformer() {
+	public static <E> Transformer<List<? extends E>, ListIterator<E>> readOnlyListIteratorTransformer() {
 		return READ_ONLY_LIST_ITERATOR_TRANSFORMER;
 	}
 
@@ -836,10 +751,10 @@ public final class ListTools {
 	 * <em>read-only</em> {@link ListIterator}.
 	 */
 	public static class ReadOnlyListIteratorTransformer<E>
-		implements Transformer<List<? extends E>, ListIterator<? extends E>>
+		implements Transformer<List<? extends E>, ListIterator<E>>
 	{
-		public ListIterator<? extends E> transform(List<? extends E> list) {
-			return IteratorTools.readOnly(list.listIterator());
+		public ListIterator<E> transform(List<? extends E> list) {
+			return IteratorTools.<E>readOnly(list.listIterator());
 		}
 		@Override
 		public String toString() {
@@ -884,7 +799,7 @@ public final class ListTools {
 	 * <em>read-only</em> {@link ListIterable}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> Transformer<List<? extends E>, ListIterable<? extends E>> readOnlyListIterableTransformer() {
+	public static <E> Transformer<List<? extends E>, ListIterable<E>> readOnlyListIterableTransformer() {
 		return READ_ONLY_LIST_ITERABLE_TRANSFORMER;
 	}
 
@@ -900,10 +815,10 @@ public final class ListTools {
 	 * <em>read-only</em> {@link ListIterable}.
 	 */
 	public static class ReadOnlyListIterableTransformer<E>
-		implements Transformer<List<? extends E>, ListIterable<? extends E>>
+		implements Transformer<List<? extends E>, ListIterable<E>>
 	{
-		public ListIterable<? extends E> transform(List<? extends E> list) {
-			return IterableTools.listIterable(list);
+		public ListIterable<E> transform(List<? extends E> list) {
+			return IterableTools.<E>readOnly(IterableTools.listIterable(list));
 		}
 		@Override
 		public String toString() {

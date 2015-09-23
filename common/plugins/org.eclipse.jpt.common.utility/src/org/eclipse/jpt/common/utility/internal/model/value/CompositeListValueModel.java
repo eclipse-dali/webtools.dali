@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -479,14 +479,14 @@ public class CompositeListValueModel<E1, E2>
 
 	protected Iterable<? extends E1> buildSubListHolder(int fromIndex) {
 		int listModelSize = this.listModel.size();
-		return ListTools.list(this.listModel, listModelSize).subList(fromIndex, listModelSize);
+		return ListTools.arrayList(this.listModel, listModelSize).subList(fromIndex, listModelSize);
 	}
 
 	protected Iterable<? extends E1> buildSubListHolder(int fromIndex, int toIndex) {
 		int listModelSize = this.listModel.size();
 		return ((fromIndex == 0) && (toIndex == listModelSize)) ?
 				this.listModel :
-				ListTools.list(this.listModel, listModelSize).subList(fromIndex, toIndex);
+				ListTools.arrayList(this.listModel, listModelSize).subList(fromIndex, toIndex);
 	}
 
 	@Override

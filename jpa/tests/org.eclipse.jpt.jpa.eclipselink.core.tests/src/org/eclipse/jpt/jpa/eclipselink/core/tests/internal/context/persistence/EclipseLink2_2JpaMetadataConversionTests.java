@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -449,7 +449,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		assertEquals(mapping.getConverterContainer().getConvertersSize(), 0);
 		
 		// test the mapping file converter have correct values
-		Collection<EclipseLinkOrmCustomConverter> customConverters = CollectionTools.collection(entityMappings.getConverterContainer().getCustomConverters());
+		Collection<EclipseLinkOrmCustomConverter> customConverters = CollectionTools.hashBag(entityMappings.getConverterContainer().getCustomConverters());
 		EclipseLinkCustomConverter custom1 = Generic2_0JpaMetadataConversionTests.selectModelNamed(customConverters, "custom1");
 		assertEquals("custom1", custom1.getName());
 		assertEquals("foo1", custom1.getConverterClass());

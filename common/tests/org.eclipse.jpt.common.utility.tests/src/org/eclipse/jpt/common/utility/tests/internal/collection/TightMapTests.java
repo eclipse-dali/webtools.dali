@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.TightMap;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class TightMapTests
@@ -62,6 +62,13 @@ public class TightMapTests
 	protected void tearDown() throws Exception {
 		TestTools.clear(this);
 		super.tearDown();
+	}
+
+	public void testCtorMap() {
+		Map<String, String> map2 = new HashMap<String, String>();
+		
+		this.map = new TightMap<String, String>(map2);
+		assertEquals(this.map, map2);
 	}
 
 	public void testSize() {
@@ -200,6 +207,10 @@ public class TightMapTests
 		assertFalse(this.map.containsKey("7"));
 		assertEquals(3, this.map.size());
 		assertFalse(this.map.containsValue("seven"));
+
+		assertEquals("one", this.map.remove("1"));
+		assertEquals("two", this.map.remove("2"));
+		assertEquals("four", this.map.remove("4"));
 	}
 
 	public void testPutAll() {
@@ -740,14 +751,14 @@ public class TightMapTests
 		Collection<String> values = this.map.values();
 		HashMap<String, String> map2 = new HashMap<String, String>();
 		this.populateMap(map2);
-		assertTrue(CollectionTools.bag(values).equals(CollectionTools.bag(map2.values())));
+		assertTrue(CollectionTools.hashBag(values).equals(CollectionTools.hashBag(map2.values())));
 	}
 
 	public void testValues_hashCode() {
 		Collection<String> values = this.map.values();
 		HashMap<String, String> map2 = new HashMap<String, String>();
 		this.populateMap(map2);
-		assertEquals(CollectionTools.bag(values).hashCode(), CollectionTools.bag(map2.values()).hashCode());
+		assertEquals(CollectionTools.hashBag(values).hashCode(), CollectionTools.hashBag(map2.values()).hashCode());
 	}
 
 	public void testValues_removeAll() {
@@ -763,7 +774,7 @@ public class TightMapTests
 		Collection<String> values2 = map2.values();
 		assertTrue(values2.removeAll(remove));
 
-		assertEquals(CollectionTools.bag(values2), CollectionTools.bag(values));
+		assertEquals(CollectionTools.hashBag(values2), CollectionTools.hashBag(values));
 	}
 
 	public void testValues_add() {
@@ -821,7 +832,7 @@ public class TightMapTests
 		Collection<String> values2 = map2.values();
 		assertTrue(values2.retainAll(retain));
 
-		assertEquals(CollectionTools.bag(values2), CollectionTools.bag(values));
+		assertEquals(CollectionTools.hashBag(values2), CollectionTools.hashBag(values));
 	}
 
 	public void testValues_toArray() {
@@ -1017,18 +1028,84 @@ public class TightMapTests
 		assertTrue(exCaught);
 	}
 
+	public void testEntrySet_iterator_entry_setValueObject() {
+		assertEquals(6, this.map.size());
+		assertTrue(this.map.containsKey("2"));
+		assertTrue(this.map.containsValue("two"));
+		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
+		assertEquals(6, entrySet.size());
+		for (Iterator<Map.Entry<String, String>> stream = entrySet.iterator(); stream.hasNext(); ) {
+			Map.Entry<String, String> entry = stream.next();
+			if (ObjectTools.equals(entry.getKey(), "2")) {
+				entry.setValue("XXX");
+			}
+		}
+		assertEquals(6, entrySet.size());
+		assertTrue(this.map.containsKey("2"));
+		assertFalse(this.map.containsValue("two"));
+		assertEquals("XXX", this.map.get("2"));
+		assertTrue(this.map.containsValue("XXX"));
+		assertEquals(6, this.map.size());
+	}
+
+	public void testEntrySet_iterator_entry_equalsObject() {
+		assertEquals(6, this.map.size());
+		assertTrue(this.map.containsKey("2"));
+		assertTrue(this.map.containsValue("two"));
+		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
+		assertEquals(6, entrySet.size());
+		for (Iterator<Map.Entry<String, String>> stream = entrySet.iterator(); stream.hasNext(); ) {
+			Map.Entry<String, String> entry = stream.next();
+			if (ObjectTools.equals(entry.getKey(), "2")) {
+				assertFalse(entry.equals("XXX"));
+			}
+		}
+	}
+
+	public void testEntrySet_iterator_entry_equalsObject2() {
+		Map<String, String> map1 = new TightMap<String, String>();
+		map1.put("foo", "bar");
+		Map<String, String> map2 = new TightMap<String, String>();
+		map2.put("foo", "XXX");
+		Set<Map.Entry<String, String>> entrySet1 = map1.entrySet();
+		Set<Map.Entry<String, String>> entrySet2 = map2.entrySet();
+		Map.Entry<String, String> entry1 = entrySet1.iterator().next();
+		Map.Entry<String, String> entry2 = entrySet2.iterator().next();
+		assertFalse(entry1.equals(entry2));
+	}
+
 	public void testEntrySet_size() {
 		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
 		assertEquals(6, entrySet.size());
 	}
 
-	public void testEntrySet_contains() {
+	public void testEntrySet_contains1() {
 		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
 		HashMap<String, String> map2 = new HashMap<String, String>();
 		this.populateMap(map2);
 		for (Map.Entry<String, String> entry : map2.entrySet()) {
 			assertTrue(entrySet.contains(entry));
 		}
+	}
+
+	public void testEntrySet_contains2() {
+		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
+		HashMap<String, String> map2 = new HashMap<String, String>();
+		this.populateMap(map2);
+		map2.put("xxx", "XXX");
+		for (Map.Entry<String, String> entry : map2.entrySet()) {
+			String key = entry.getKey();
+			if ((key != null) && key.equals("xxx")) {
+				assertFalse(entrySet.contains(entry));
+			} else {
+				assertTrue(entrySet.contains(entry));
+			}
+		}
+	}
+
+	public void testEntrySet_contains3() {
+		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
+		assertFalse(entrySet.contains("XXX"));
 	}
 
 	@SuppressWarnings("null")
@@ -1063,6 +1140,20 @@ public class TightMapTests
 		assertEquals(6, this.map.size());
 	}
 
+	public void testEntrySet_remove3() {
+		Map<String, String> map1 = new TightMap<String, String>();
+		Set<Map.Entry<String, String>> entrySet1 = map1.entrySet();
+
+		Map<String, String> map2 = new TightMap<String, String>();
+		map2.put("foo", "FOO");
+		Set<Map.Entry<String, String>> entrySet2 = map2.entrySet();
+		Map.Entry<String, String> entry2 = entrySet2.iterator().next();
+
+		assertFalse(entrySet1.remove(entry2));
+		map1.put("foo", "XXX");
+		assertFalse(entrySet1.remove(entry2));
+	}
+
 	public void testEntrySet_clear() {
 		assertEquals(6, this.map.size());
 		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
@@ -1076,14 +1167,14 @@ public class TightMapTests
 		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
 		HashMap<String, String> map2 = new HashMap<String, String>();
 		this.populateMap(map2);
-		assertTrue(CollectionTools.bag(entrySet).equals(CollectionTools.bag(map2.entrySet())));
+		assertTrue(CollectionTools.hashBag(entrySet).equals(CollectionTools.hashBag(map2.entrySet())));
 	}
 
 	public void testEntrySet_hashCode() {
 		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
 		HashMap<String, String> map2 = new HashMap<String, String>();
 		this.populateMap(map2);
-		assertEquals(CollectionTools.bag(entrySet).hashCode(), CollectionTools.bag(map2.entrySet()).hashCode());
+		assertEquals(CollectionTools.hashBag(entrySet).hashCode(), CollectionTools.hashBag(map2.entrySet()).hashCode());
 	}
 
 	public void testEntrySet_removeAll() {
@@ -1106,7 +1197,7 @@ public class TightMapTests
 		assertTrue(entrySet.removeAll(remove));
 		assertTrue(entrySet2.removeAll(remove));
 
-		assertEquals(CollectionTools.bag(entrySet2), CollectionTools.bag(entrySet));
+		assertEquals(CollectionTools.hashBag(entrySet2), CollectionTools.hashBag(entrySet));
 	}
 
 	public void testEntrySet_add() {
@@ -1198,7 +1289,7 @@ public class TightMapTests
 		Set<Map.Entry<String, String>> entrySet = this.map.entrySet();
 		assertTrue(entrySet.retainAll(retain));
 		assertTrue(entrySet2.retainAll(retain));
-		assertEquals(CollectionTools.bag(entrySet2), CollectionTools.bag(entrySet));
+		assertEquals(CollectionTools.hashBag(entrySet2), CollectionTools.hashBag(entrySet));
 	}
 
 	public void testEntrySet_toArray() {
@@ -1285,6 +1376,17 @@ public class TightMapTests
 		HashMap<String, String> map2 = new HashMap<String, String>();
 		this.populateMap(map2);
 		assertTrue(this.map.equals(map2));
+	}
+
+	public void testEquals7() {
+		TightMap<String, String> map1 = new TightMap<String, String>();
+		map1.put("null", null);
+		HashMap<String, String> map2 = new HashMap<String, String>();
+		assertFalse(map1.equals(map2));
+		map2.put("null", "null");
+		assertFalse(map1.equals(map2));
+		map2.put("null", null);
+		assertTrue(map1.equals(map2));
 	}
 
 	public void testHashCode1() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,7 +70,7 @@ public abstract class AbstractRepeatingElementListTests
 
 		boolean exCaught = false;
 		try {
-			list.addAll(CollectionTools.collection("foo", "bar"));
+			list.addAll(CollectionTools.hashBag("foo", "bar"));
 			fail("bogus list: " + list);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
@@ -84,7 +84,7 @@ public abstract class AbstractRepeatingElementListTests
 
 		boolean exCaught = false;
 		try {
-			list.addAll(1, CollectionTools.collection("foo", "bar"));
+			list.addAll(1, CollectionTools.hashBag("foo", "bar"));
 			fail("bogus list: " + list);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
@@ -168,6 +168,9 @@ public abstract class AbstractRepeatingElementListTests
 		List<String> list = this.buildList(3);
 		assertEquals(0, list.indexOf(this.getElement()));
 		assertEquals(-1, list.indexOf(new Object()));
+
+		list = this.buildList(0);
+		assertEquals(-1, list.indexOf(this.getElement()));
 	}
 
 	public void testIsEmpty() {
@@ -206,6 +209,10 @@ public abstract class AbstractRepeatingElementListTests
 	public void testLastIndexOfObject() {
 		List<String> list = this.buildList(3);
 		assertEquals(2, list.lastIndexOf(this.getElement()));
+		assertEquals(-1, list.lastIndexOf(new Object()));
+
+		list = this.buildList(0);
+		assertEquals(-1, list.indexOf(this.getElement()));
 		assertEquals(-1, list.lastIndexOf(new Object()));
 	}
 
@@ -472,6 +479,19 @@ public abstract class AbstractRepeatingElementListTests
 		assertEquals(this.getElement(), array[6]);
 		assertNull(array[7]);
 		assertNull(array[20]);
+	}
+
+	public void testToString() {
+		List<String> list1 = this.buildList(3);
+		List<String> list2 = new ArrayList<String>();
+		list2.add(this.getElement());
+		list2.add(this.getElement());
+		list2.add(this.getElement());
+		assertEquals(list2.toString(), list1.toString());
+
+		list1 = this.buildList(0);
+		list2 = new ArrayList<String>();
+		assertEquals(list2.toString(), list1.toString());
 	}
 
 	public abstract List<String> buildList(int size);

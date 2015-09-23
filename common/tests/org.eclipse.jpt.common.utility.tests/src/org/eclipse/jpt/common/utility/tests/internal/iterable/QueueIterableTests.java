@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,9 @@
 package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.collection.Queue;
-import org.eclipse.jpt.common.utility.internal.collection.LinkedQueue;
 import org.eclipse.jpt.common.utility.internal.iterable.QueueIterable;
+import org.eclipse.jpt.common.utility.internal.queue.LinkedQueue;
+import org.eclipse.jpt.common.utility.queue.Queue;
 
 @SuppressWarnings("nls")
 public class QueueIterableTests extends TestCase {

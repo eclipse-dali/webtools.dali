@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,7 +57,7 @@ final class BinaryPackageFragment
 	private Collection<JavaResourceClassFile> buildClassFiles() {
 		IJavaElement[] children = this.getJDTChildren();
 		ArrayList<JavaResourceClassFile> result = new ArrayList<JavaResourceClassFile>(children.length);
-		Collection<String> annotationNames = CollectionTools.collection(this.getAnnotationProvider().getAnnotationNames());
+		Collection<String> annotationNames = CollectionTools.hashBag(this.getAnnotationProvider().getAnnotationNames());
 		for (IJavaElement child : children) {
 			IClassFile jdtClassFile = (IClassFile) child;
 			IType jdtType = jdtClassFile.getType();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -441,8 +441,8 @@ public class GenericOrmTableGenerator
 
 	protected boolean uniqueConstraintsAreEquivalentTo(TableGenerator generator) {
 		// get fixed lists of the unique constraints
-		ArrayList<OrmSpecifiedUniqueConstraint> uniqueConstraints1 = ListTools.list(this.getUniqueConstraints());
-		ArrayList<SpecifiedUniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());
+		ArrayList<OrmSpecifiedUniqueConstraint> uniqueConstraints1 = ListTools.arrayList(this.getUniqueConstraints());
+		ArrayList<SpecifiedUniqueConstraint> uniqueConstraints2 = ListTools.arrayList(generator.getUniqueConstraints());
 		if (uniqueConstraints1.size() != uniqueConstraints2.size()) {
 			return false;
 		}

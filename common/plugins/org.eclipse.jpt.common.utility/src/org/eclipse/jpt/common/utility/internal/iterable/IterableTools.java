@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
-import org.eclipse.jpt.common.utility.collection.Queue;
-import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.closure.DisabledClosure;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -30,6 +28,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.queue.Queue;
+import org.eclipse.jpt.common.utility.stack.Stack;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -56,18 +56,18 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return a collection corresponding to the specified iterable.
+	 * Return a hash bag corresponding to the specified iterable.
 	 */
-	public static <E> HashBag<E> collection(Iterable<? extends E> iterable) {
-		return IteratorTools.collection(iterable.iterator());
+	public static <E> HashBag<E> hashBag(Iterable<? extends E> iterable) {
+		return IteratorTools.hashBag(iterable.iterator());
 	}
 
 	/**
-	 * Return a collection corresponding to the specified iterable.
+	 * Return a hash bag corresponding to the specified iterable.
 	 * The specified iterable size is a performance hint.
 	 */
-	public static <E> HashBag<E> collection(Iterable<? extends E> iterable, int iterableSize) {
-		return IteratorTools.collection(iterable.iterator(), iterableSize);
+	public static <E> HashBag<E> hashBag(Iterable<? extends E> iterable, int iterableSize) {
+		return IteratorTools.hashBag(iterable.iterator(), iterableSize);
 	}
 
 	/**
@@ -388,7 +388,7 @@ public final class IterableTools {
 	public static <E> Iterable<E> sort(Iterable<? extends E> iterable, Comparator<? super E> comparator) {
 		Iterator<? extends E> iterator = iterable.iterator();
 		if (iterator.hasNext()) {
-			return ListTools.sort(ListTools.list(iterator), comparator);
+			return ListTools.sort(ListTools.arrayList(iterator), comparator);
 		}
 		return emptyIterable();
 	}
@@ -400,7 +400,7 @@ public final class IterableTools {
 	public static <E> Iterable<E> sort(Iterable<? extends E> iterable, Comparator<? super E> comparator, int iterableSize) {
 		Iterator<? extends E> iterator = iterable.iterator();
 		if (iterator.hasNext()) {
-			return ListTools.sort(ListTools.list(iterator, iterableSize), comparator);
+			return ListTools.sort(ListTools.arrayList(iterator, iterableSize), comparator);
 		}
 		return emptyIterable();
 	}

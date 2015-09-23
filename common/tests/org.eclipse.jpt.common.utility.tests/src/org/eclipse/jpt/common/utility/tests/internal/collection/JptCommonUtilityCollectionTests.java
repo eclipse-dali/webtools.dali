@@ -20,25 +20,17 @@ public class JptCommonUtilityCollectionTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonUtilityCollectionTests.class.getPackage().getName());
 
-		suite.addTestSuite(ArrayQueueTests.class);
-		suite.addTestSuite(ArrayStackTests.class);
-		suite.addTestSuite(BagTests.class);
 		suite.addTestSuite(CollectionToolsTests.class);
-		suite.addTestSuite(FixedSizeArrayQueueTests.class);
-		suite.addTestSuite(FixedSizeArrayStackTests.class);
+		suite.addTestSuite(EmptyBagTests.class);
 		suite.addTestSuite(HashBagTests.class);
 		suite.addTestSuite(IdentityHashBagTests.class);
 		suite.addTestSuite(IdentityHashSetTests.class);
-		suite.addTestSuite(LinkedQueueTests.class);
-		suite.addTestSuite(LinkedStackTests.class);
-		suite.addTestSuite(ListQueueTests.class);
-		suite.addTestSuite(ListStackTests.class);
 		suite.addTestSuite(ListToolsTests.class);
 		suite.addTestSuite(MapToolsTests.class);
 		suite.addTestSuite(NullElementListTests.class);
+		suite.addTestSuite(NullListTests.class);
 		suite.addTestSuite(RepeatingElementListTests.class);
-		suite.addTestSuite(SynchronizedQueueTests.class);
-		suite.addTestSuite(SynchronizedStackTests.class);
+		suite.addTestSuite(SynchronizedBagTests.class);
 		suite.addTestSuite(TightMapTests.class);
 
 		return suite;

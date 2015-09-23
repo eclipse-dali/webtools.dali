@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -297,21 +297,21 @@ public class SetCollectionValueModelTests extends TestCase {
 	}
 
 	private void verify(CollectionValueModel<String> cvm, String... expectedItems) {
-		Bag<String> actual = CollectionTools.bag(cvm);
-		Bag<String> expected = CollectionTools.bag(expectedItems);
+		Bag<String> actual = CollectionTools.hashBag(cvm);
+		Bag<String> expected = CollectionTools.hashBag(expectedItems);
 		assertEquals(expected, actual);
 	}
 
 	private void verifyEvent(CollectionAddEvent event, Object source, Object... expectedItems) {
 		assertEquals(source, event.getSource());
 		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
-		assertEquals(CollectionTools.bag(expectedItems), CollectionTools.bag(event.getItems()));
+		assertEquals(CollectionTools.hashBag(expectedItems), CollectionTools.hashBag(event.getItems()));
 	}
 
 	private void verifyEvent(CollectionRemoveEvent event, Object source, Object... expectedItems) {
 		assertEquals(source, event.getSource());
 		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
-		assertEquals(CollectionTools.bag(expectedItems), CollectionTools.bag(event.getItems()));
+		assertEquals(CollectionTools.hashBag(expectedItems), CollectionTools.hashBag(event.getItems()));
 	}
 
 	private void verifyEvent(CollectionClearEvent event, Object source) {
@@ -322,7 +322,7 @@ public class SetCollectionValueModelTests extends TestCase {
 	private void verifyEvent(CollectionChangeEvent event, Object source, Object... expectedItems) {
 		assertEquals(source, event.getSource());
 		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
-		assertEquals(CollectionTools.bag(expectedItems), CollectionTools.bag(event.getCollection()));
+		assertEquals(CollectionTools.hashBag(expectedItems), CollectionTools.hashBag(event.getCollection()));
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -103,7 +103,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 
 	public void testIterator() {
 		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
-		assertEquals(this.buildExtendedList(), ListTools.list(this.extendedListHolder.iterator()));
+		assertEquals(this.buildExtendedList(), ListTools.arrayList(this.extendedListHolder.iterator()));
 	}
 
 	public void testSize() {
@@ -121,7 +121,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	}
 
 	private boolean extendedListContainsAny(Collection<String> items) {
-		List<String> extendedList = ListTools.list(this.extendedListHolder.iterator());
+		List<String> extendedList = ListTools.arrayList(this.extendedListHolder.iterator());
 		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
 			if (extendedList.contains(stream.next())) {
 				return true;
@@ -226,7 +226,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildList(), ListTools.list(((ListAddEvent) this.event).getItems()));
+		assertEquals(this.buildList(), ListTools.arrayList(((ListAddEvent) this.event).getItems()));
 
 		this.event = null;
 		this.eventType = null;

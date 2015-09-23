@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -296,8 +296,8 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 
 	protected boolean parametersAreEquivalentTo(NamedStoredProcedureQuery2_1 other) {
 		// get fixed lists of the stored procedure parameters
-		ArrayList<JavaStoredProcedureParameter2_1> parameter1 = ListTools.list(this.getParameters());
-		ArrayList<? extends StoredProcedureParameter2_1> parameter2 = ListTools.list(other.getParameters());
+		ArrayList<JavaStoredProcedureParameter2_1> parameter1 = ListTools.arrayList(this.getParameters());
+		ArrayList<? extends StoredProcedureParameter2_1> parameter2 = ListTools.arrayList(other.getParameters());
 		if (parameter1.size() != parameter2.size()) {
 			return false;
 		}

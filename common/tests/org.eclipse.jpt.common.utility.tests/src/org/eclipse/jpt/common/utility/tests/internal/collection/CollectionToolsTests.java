@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,17 +20,18 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.collection.EmptyBag;
+import org.eclipse.jpt.common.utility.internal.collection.IdentityHashBag;
+import org.eclipse.jpt.common.utility.internal.collection.SynchronizedBag;
 import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class CollectionToolsTests
@@ -164,7 +165,7 @@ public class CollectionToolsTests
 		String[] a = this.buildStringArray1();
 		assertTrue(CollectionTools.addAll(list, a));
 		assertEquals(6, list.size());
-		assertTrue(list.containsAll(CollectionTools.collection(a)));
+		assertTrue(list.containsAll(CollectionTools.hashBag(a)));
 	}
 
 	public void testAddAllCollectionObjectArray_StringListEmptyArray() {
@@ -177,7 +178,7 @@ public class CollectionToolsTests
 		String[] a = this.buildStringArray1();
 		assertFalse(CollectionTools.addAll(set, a));
 		assertEquals(3, set.size());
-		assertTrue(set.containsAll(CollectionTools.collection(a)));
+		assertTrue(set.containsAll(CollectionTools.hashBag(a)));
 
 		assertFalse(CollectionTools.addAll(set, new String[0]));
 	}
@@ -193,7 +194,7 @@ public class CollectionToolsTests
 
 		assertTrue(CollectionTools.addAll(list, a));
 		assertEquals(6, list.size());
-		assertTrue(list.containsAll(CollectionTools.collection(a)));
+		assertTrue(list.containsAll(CollectionTools.hashBag(a)));
 	}
 
 	public void testAddAllCollectionObjectArray_ObjectUnmodified() {
@@ -201,115 +202,78 @@ public class CollectionToolsTests
 		Set<Object> set = this.buildObjectSet1();
 		assertFalse(CollectionTools.addAll(set, a));
 		assertEquals(3, set.size());
-		assertTrue(set.containsAll(CollectionTools.collection(a)));
+		assertTrue(set.containsAll(CollectionTools.hashBag(a)));
 	}
 
 
-	// ********** bag **********
+	// ********** hash bag **********
 
-	public void testBagIterable() {
+	public void testHashBagIntFloat() {
+		Collection<String> c = CollectionTools.hashBag(42, 0.88f);
+		assertEquals(0, c.size());
+		assertTrue(c.isEmpty());
+	}
+
+	public void testHashBagIterable() {
 		Iterable<String> iterable = this.buildStringList1();
-		Bag<String> b = CollectionTools.bag(iterable);
-		assertEquals(3, b.size());
-		assertTrue(b.containsAll(this.buildStringList1()));
+		Collection<String> c = CollectionTools.hashBag(iterable);
+		assertEquals(3, c.size());
+		assertTrue(c.containsAll(this.buildStringList1()));
 	}
 
-	public void testBagIterableInt() {
+	public void testHashBagIterableInt() {
 		Iterable<String> iterable = this.buildStringList1();
-		Bag<String> b = CollectionTools.bag(iterable, 3);
-		assertEquals(3, b.size());
-		assertTrue(b.containsAll(this.buildStringList1()));
-	}
-
-	public void testBagIterator_String() {
-		Bag<String> b = CollectionTools.bag(this.buildStringList1().iterator());
-		assertEquals(3, b.size());
-		assertTrue(b.containsAll(this.buildStringList1()));
-	}
-
-	public void testBagIterator_StringObject() {
-		Collection<String> c = new ArrayList<String>();
-		c.add("zero");
-		c.add("one");
-		c.add("two");
-		c.add("three");
-		Bag<Object> b = CollectionTools.<Object>bag(c.iterator());
-		assertEquals(4, b.size());
-		assertTrue(b.containsAll(c));
-	}
-
-	public void testBagIterator_Empty() {
-		Bag<String> b = CollectionTools.bag(EmptyIterator.<String>instance());
-		assertEquals(0, b.size());
-	}
-
-	public void testBagIteratorInt() {
-		Bag<String> b = CollectionTools.bag(this.buildStringList1().iterator(), 3);
-		assertEquals(3, b.size());
-		assertTrue(b.containsAll(this.buildStringList1()));
-	}
-
-	public void testBagIteratorInt_Empty() {
-		Bag<String> b = CollectionTools.bag(EmptyIterator.<String>instance(), 3);
-		assertEquals(0, b.size());
-	}
-
-	public void testBagObjectArray() {
-		Bag<String> b = CollectionTools.bag(this.buildStringArray1());
-		assertEquals(3, b.size());
-		assertTrue(CollectionTools.containsAll(b, (Object[]) this.buildStringArray1()));
-	}
-
-	public void testBagObjectArray_Vararg() {
-		Bag<String> b = CollectionTools.bag("foo", "bar", "baz");
-		assertEquals(3, b.size());
-		assertTrue(CollectionTools.containsAll(b, new Object[]{"foo", "bar", "baz"}));
-	}
-
-	public void testBagObjectArray_Empty() {
-		Bag<String> b = CollectionTools.bag(EmptyBag.<String>instance());
-		assertEquals(0, b.size());
-	}
-
-
-	// ********** collection **********
-
-	public void testCollectionIterable() {
-		Iterable<String> iterable = this.buildStringList1();
-		Collection<String> c = CollectionTools.collection(iterable);
+		Collection<String> c = CollectionTools.hashBag(iterable, 3);
 		assertEquals(3, c.size());
 		assertTrue(c.containsAll(this.buildStringList1()));
 	}
 
-	public void testCollectionIterableInt() {
-		Iterable<String> iterable = this.buildStringList1();
-		Collection<String> c = CollectionTools.collection(iterable, 3);
+	public void testHashBagIterator() {
+		Collection<String> c = CollectionTools.hashBag(this.buildStringList1().iterator());
 		assertEquals(3, c.size());
 		assertTrue(c.containsAll(this.buildStringList1()));
 	}
 
-	public void testCollectionIterator() {
-		Collection<String> c = CollectionTools.collection(this.buildStringList1().iterator());
+	public void testHashBagIterator_ObjectString() {
+		Collection<Object> c = CollectionTools.<Object>hashBag(this.buildStringList1().iterator());
 		assertEquals(3, c.size());
 		assertTrue(c.containsAll(this.buildStringList1()));
 	}
 
-	public void testCollectionIterator_ObjectString() {
-		Collection<Object> c = CollectionTools.<Object>collection(this.buildStringList1().iterator());
+	public void testHashBagIteratorInt() {
+		Collection<String> c = CollectionTools.hashBag(this.buildStringList1().iterator(), 3);
 		assertEquals(3, c.size());
 		assertTrue(c.containsAll(this.buildStringList1()));
 	}
 
-	public void testCollectionIteratorInt() {
-		Collection<String> c = CollectionTools.collection(this.buildStringList1().iterator(), 3);
-		assertEquals(3, c.size());
-		assertTrue(c.containsAll(this.buildStringList1()));
-	}
-
-	public void testCollectionObjectArray() {
-		Collection<String> c = CollectionTools.collection(this.buildStringArray1());
+	public void testHashBagObjectArray() {
+		Collection<String> c = CollectionTools.hashBag(this.buildStringArray1());
 		assertEquals(3, c.size());
 		assertTrue(CollectionTools.containsAll(c, (Object[]) this.buildStringArray1()));
+	}
+
+
+	// ********** synchronized bag **********
+
+	public void testSynchronizedBagObject() {
+		Object mutex = "foo";
+		SynchronizedBag<String> sBag = CollectionTools.synchronizedBag(mutex);
+		assertEquals(mutex, sBag.getMutex());
+	}
+
+	public void testSynchronizedBagBagObject() {
+		Bag<String> bag = CollectionTools.hashBag();
+		Object mutex = "foo";
+		SynchronizedBag<String> sBag = CollectionTools.synchronizedBag(bag, mutex);
+		assertEquals(mutex, sBag.getMutex());
+	}
+
+
+	// ********** identity hash bag **********
+
+	public void testIdentityHashBagIntFloat() {
+		IdentityHashBag<String> bag = CollectionTools.identityHashBag(42, 0.88f);
+		assertTrue(bag.isEmpty());
 	}
 
 
@@ -348,21 +312,49 @@ public class CollectionToolsTests
 	// ********** filter **********
 
 	public void testFilterCollectionFilter() {
-		Collection<String> c = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
+		Collection<String> c = CollectionTools.hashBag(new String[] { "zero", "one", "two", "three", "four" });
 		Collection<String> actual = CollectionTools.filter(c, new ArrayToolsTests.StringLengthEquals(3));
-		Collection<String> expected = CollectionTools.collection(new String[] { "one", "two" });
+		Collection<String> expected = CollectionTools.hashBag(new String[] { "one", "two" });
 		assertEquals(expected, actual);
 	}
 
 	public void testFilterCollectionFilterTransparent() {
-		Collection<String> c = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
+		Collection<String> c = CollectionTools.hashBag(new String[] { "zero", "one", "two", "three", "four" });
 		Collection<String> actual = CollectionTools.filter(c, PredicateTools.<String>true_());
-		Collection<String> expected = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
+		Collection<String> expected = CollectionTools.hashBag(new String[] { "zero", "one", "two", "three", "four" });
 		assertEquals(expected, actual);
 		assertNotSame(expected, actual);
 	}
 
+	// ********** identity bag **********
+
+	// tested in IdentityHashBagTests
+
 	// ********** partition **********
+
+	public void testPartitionCollectionInt_negative() {
+		this.verifyPartitionCollectionException(-3);
+	}
+
+	public void testPartitionCollectionInt_0() {
+		this.verifyPartitionCollectionException(0);
+	}
+
+	public void testPartitionCollectionInt_tooMany() {
+		this.verifyPartitionCollectionException(6);
+	}
+
+	public void verifyPartitionCollectionException(int count) {
+		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		boolean exCaught = false;
+		try {
+			ArrayList<ArrayList<String>> actual = CollectionTools.partition(c, count);
+			fail("bogus partition: " + actual);
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
 
 	public void testPartitionCollectionInt_1() {
 		Collection<String> c = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
@@ -792,6 +784,18 @@ public class CollectionToolsTests
 	}
 
 
+	// ********** to array fix **********
+
+	public void testToArrayCollectionClass() {
+		List<String> list = Arrays.asList(new String[] { "zero", "one", "two" });
+		String[] actual = CollectionTools.toArray(list, String.class);
+		assertEquals(3, actual.length);
+		assertEquals("zero", actual[0]);
+		assertEquals("one", actual[1]);
+		assertEquals("two", actual[2]);
+	}
+
+
 	// ********** transform **********
 
 	public void testTransformCollectionTransformer() {
@@ -804,23 +808,23 @@ public class CollectionToolsTests
 	}
 
 
-	// ********** set **********
+	// ********** hash set **********
 
-	public void testSetIterable() {
+	public void testHashSetIterable() {
 		Iterable<String> iterable = this.buildStringSet1();
-		assertEquals(this.buildStringSet1(), CollectionTools.set(iterable));
+		assertEquals(this.buildStringSet1(), CollectionTools.hashSet(iterable));
 	}
 
-	public void testSetIterableInt() {
+	public void testHashSetIterableInt() {
 		Iterable<String> iterable = this.buildStringSet1();
-		assertEquals(this.buildStringSet1(), CollectionTools.set(iterable, 22));
+		assertEquals(this.buildStringSet1(), CollectionTools.hashSet(iterable, 22));
 	}
 
-	public void testSetIterator_String() {
-		assertEquals(this.buildStringSet1(), CollectionTools.set(this.buildStringSet1().iterator()));
+	public void testHashSetIterator_String() {
+		assertEquals(this.buildStringSet1(), CollectionTools.hashSet(this.buildStringSet1().iterator()));
 	}
 
-	public void testSetIterator_Object() {
+	public void testHashSetIterator_Object() {
 		List<String> list = new ArrayList<String>();
 		list.add("0");
 		list.add("1");
@@ -833,21 +837,21 @@ public class CollectionToolsTests
 		Set<String> set = new HashSet<String>();
 		set.addAll(list);
 
-		assertEquals(set, CollectionTools.<Object>set(list.iterator()));
+		assertEquals(set, CollectionTools.<Object>hashSet(list.iterator()));
 	}
 
-	public void testSetIteratorInt() {
-		assertEquals(this.buildStringSet1(), CollectionTools.set(this.buildStringSet1().iterator(), 3));
+	public void testHashSetIteratorInt() {
+		assertEquals(this.buildStringSet1(), CollectionTools.hashSet(this.buildStringSet1().iterator(), 3));
 	}
 
-	public void testSetObjectArray() {
-		assertEquals(this.buildStringSet1(), CollectionTools.set(this.buildStringSet1().toArray()));
+	public void testHashSetObjectArray() {
+		assertEquals(this.buildStringSet1(), CollectionTools.hashSet(this.buildStringSet1().toArray()));
 	}
 
 
-	// ********** sorted set **********
+	// ********** tree set **********
 
-	public void testSortedSetIterable() {
+	public void testTreeSetIterable() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("0");
 		list.add("2");
@@ -858,11 +862,11 @@ public class CollectionToolsTests
 		ss1.addAll(list);
 
 		Iterable<String> iterable = list;
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable);
+		SortedSet<String> ss2 = CollectionTools.<String>treeSet(iterable);
 		assertEquals(ss1, ss2);
 	}
 
-	public void testSortedSetIterableInt() {
+	public void testTreeSetIterableInt() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("0");
 		list.add("2");
@@ -873,11 +877,11 @@ public class CollectionToolsTests
 		ss1.addAll(list);
 
 		Iterable<String> iterable = list;
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable, 5);
+		SortedSet<String> ss2 = CollectionTools.<String>treeSet(iterable, 5);
 		assertEquals(ss1, ss2);
 	}
 
-	public void testSortedSetIterableComparator() {
+	public void testTreeSetIterableComparator() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("0");
 		list.add("2");
@@ -888,11 +892,11 @@ public class CollectionToolsTests
 		ss1.addAll(list);
 
 		Iterable<String> iterable = list;
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable, ComparatorTools.<String>reverseComparator());
+		SortedSet<String> ss2 = CollectionTools.<String>treeSet(iterable, ComparatorTools.<String>reverseComparator());
 		assertEquals(ss1, ss2);
 	}
 
-	public void testSortedSetIterableComparatorInt() {
+	public void testTreeSetIterableComparatorInt() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("0");
 		list.add("2");
@@ -903,34 +907,34 @@ public class CollectionToolsTests
 		ss1.addAll(list);
 
 		Iterable<String> iterable = list;
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(iterable, ComparatorTools.<String>reverseComparator(), 5);
+		SortedSet<String> ss2 = CollectionTools.<String>treeSet(iterable, ComparatorTools.<String>reverseComparator(), 5);
 		assertEquals(ss1, ss2);
 	}
 
-	public void testSortedSetIterator() {
-		assertEquals(this.buildSortedStringSet1(), CollectionTools.sortedSet(this.buildSortedStringSet1().iterator()));
+	public void testTreeSetIterator() {
+		assertEquals(this.buildSortedStringSet1(), CollectionTools.treeSet(this.buildSortedStringSet1().iterator()));
 	}
 
-	public void testSortedSetIterator_TreeSet() {
+	public void testTreeSetIterator_TreeSet() {
 		SortedSet<String> ss1 = new TreeSet<String>();
 		ss1.add("0");
 		ss1.add("2");
 		ss1.add("3");
 		ss1.add("1");
 
-		SortedSet<String> set2 = CollectionTools.<String>sortedSet(ss1.iterator());
+		SortedSet<String> set2 = CollectionTools.<String>treeSet(ss1.iterator());
 		assertEquals(ss1, set2);
 	}
 
-	public void testSortedSetIteratorInt() {
-		assertEquals(this.buildSortedStringSet1(), CollectionTools.sortedSet(this.buildSortedStringSet1().iterator(), 8));
+	public void testTreeSetIteratorInt() {
+		assertEquals(this.buildSortedStringSet1(), CollectionTools.treeSet(this.buildSortedStringSet1().iterator(), 8));
 	}
 
-	public void testSortedSetObjectArray() {
-		assertEquals(this.buildSortedStringSet1(), CollectionTools.sortedSet(this.buildStringSet1().toArray(new String[0])));
+	public void testTreeSetObjectArray() {
+		assertEquals(this.buildSortedStringSet1(), CollectionTools.treeSet(this.buildStringSet1().toArray(new String[0])));
 	}
 
-	public void testSortedSetObjectArrayComparator() {
+	public void testTreeSetObjectArrayComparator() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("0");
 		list.add("2");
@@ -941,9 +945,10 @@ public class CollectionToolsTests
 		ss1.addAll(list);
 
 		String[] array = list.toArray(new String[list.size()]);
-		SortedSet<String> ss2 = CollectionTools.<String>sortedSet(array, ComparatorTools.<String>reverseComparator());
+		SortedSet<String> ss2 = CollectionTools.<String>treeSet(array, ComparatorTools.<String>reverseComparator());
 		assertEquals(ss1, ss2);
 	}
+
 
 
 	// ********** Old School Vector **********

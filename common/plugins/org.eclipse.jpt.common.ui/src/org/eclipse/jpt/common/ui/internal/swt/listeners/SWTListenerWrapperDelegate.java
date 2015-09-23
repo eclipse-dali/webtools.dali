@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,8 @@ import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
-import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
+import org.eclipse.jpt.common.utility.internal.queue.QueueTools;
+import org.eclipse.jpt.common.utility.internal.queue.SynchronizedQueue;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -36,7 +37,7 @@ final class SWTListenerWrapperDelegate<E extends EventObject> {
 	private final Display display;
 	private final Runnable forwardEventsRunnable = new ForwardEventsRunnable();
 	private final ExceptionHandler exceptionHandler;
-	private final SynchronizedQueue<E> events = new SynchronizedQueue<E>();
+	private final SynchronizedQueue<E> events = QueueTools.synchronizedQueue();
 
 
 	SWTListenerWrapperDelegate(Wrapper<E> wrapper, Display display, ExceptionHandler exceptionHandler) {

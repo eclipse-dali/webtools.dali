@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -134,8 +134,8 @@ public class ASTToolsTests
 		Iterable<String> actual = ASTTools.resolveFullyQualifiedNames(daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		
 		assertEquals(
-				ListTools.list(new String[] {fqOtherClassName, fqOtherClassName2}),
-				ListTools.list(actual));
+				ListTools.arrayList(new String[] {fqOtherClassName, fqOtherClassName2}),
+				ListTools.arrayList(actual));
 	}
 	
 	public void testResolveFullyQualifiedNames2() throws Exception {
@@ -162,8 +162,8 @@ public class ASTToolsTests
 		Iterable<String> actual = ASTTools.resolveFullyQualifiedNames(daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		
 		assertEquals(
-				ListTools.list(new String[] {null, fqOtherClassName}),
-				ListTools.list(actual));
+				ListTools.arrayList(new String[] {null, fqOtherClassName}),
+				ListTools.arrayList(actual));
 	}
 	
 	public void testResolveFullyQualifiedNames3() throws Exception {
@@ -190,7 +190,7 @@ public class ASTToolsTests
 		Iterable<String> actual = ASTTools.resolveFullyQualifiedNames(daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		
 		assertEquals(
-				ListTools.list(new String[] {null, fqOtherClassName}),
-				ListTools.list(actual));
+				ListTools.arrayList(new String[] {null, fqOtherClassName}),
+				ListTools.arrayList(actual));
 	}
 }

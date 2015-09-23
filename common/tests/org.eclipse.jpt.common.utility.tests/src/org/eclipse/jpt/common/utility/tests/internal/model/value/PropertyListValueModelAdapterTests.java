@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,7 +53,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 	}
 
 	private Collection<String> wrappedList() {
-		return ListTools.list(new SingleElementIterator<String>(this.wrappedValueHolder.getValue()));
+		return ListTools.arrayList(new SingleElementIterator<String>(this.wrappedValueHolder.getValue()));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 		});
 		assertFalse(this.adapter.iterator().hasNext());
 		this.wrappedValueHolder.setValue("foo");
-		List<String> adapterList = ListTools.list(this.adapter.iterator());
+		List<String> adapterList = ListTools.arrayList(this.adapter.iterator());
 		assertEquals(1, adapterList.size());
 		assertEquals(this.wrappedList(), adapterList);
 		assertEquals("foo", adapterList.iterator().next());
@@ -108,18 +108,18 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 		};
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
-		List<String> adapterList = ListTools.list(this.adapter.iterator());
+		List<String> adapterList = ListTools.arrayList(this.adapter.iterator());
 		assertEquals(1, adapterList.size());
 		assertEquals(this.wrappedList(), adapterList);
 		assertEquals("foo", adapterList.iterator().next());
 
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterList = ListTools.list(this.adapter.iterator());
+		adapterList = ListTools.arrayList(this.adapter.iterator());
 		assertEquals(0, adapterList.size());
 		assertEquals(new ArrayList<String>(), adapterList);
 
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterList = ListTools.list(this.adapter.iterator());
+		adapterList = ListTools.arrayList(this.adapter.iterator());
 		assertEquals(1, adapterList.size());
 		assertEquals(this.wrappedList(), adapterList);
 		assertEquals("foo", adapterList.iterator().next());

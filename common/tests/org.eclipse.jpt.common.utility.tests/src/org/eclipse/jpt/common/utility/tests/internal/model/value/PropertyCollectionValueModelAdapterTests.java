@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,7 +50,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	}
 
 	private Collection<String> wrappedCollection() {
-		return CollectionTools.collection(new SingleElementIterator<String>(this.wrappedValueHolder.getValue()));
+		return CollectionTools.hashBag(new SingleElementIterator<String>(this.wrappedValueHolder.getValue()));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 			public void itemsAdded(CollectionAddEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
-		Collection<String> adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = CollectionTools.hashBag(this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
@@ -78,18 +78,18 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		};
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
-		Collection<String> adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = CollectionTools.hashBag(this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
 
 		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, listener);
-		adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		adapterCollection = CollectionTools.hashBag(this.adapter.iterator());
 		assertEquals(0, adapterCollection.size());
 		assertEquals(new HashBag<String>(), adapterCollection);
 
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
-		adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		adapterCollection = CollectionTools.hashBag(this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());

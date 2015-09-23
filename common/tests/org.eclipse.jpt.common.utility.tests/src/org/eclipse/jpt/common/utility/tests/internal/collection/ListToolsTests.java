@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,11 +18,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -31,7 +31,10 @@ import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class ListToolsTests
@@ -40,6 +43,9 @@ public class ListToolsTests
 	public ListToolsTests(String name) {
 		super(name);
 	}
+
+	// ********** add all **********
+
 	public void testAddAllListIntObjectArray() {
 		List<String> list = this.buildStringList1();
 		ListTools.addAll(list, 2, new String[] { "X", "X", "X" });
@@ -171,7 +177,7 @@ public class ListToolsTests
 
 	// ********** diff **********
 
-	public void testIndexOfDifference() {
+	public void testIndexOfDifference_none() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("a");
 		list1.add("b");
@@ -183,7 +189,78 @@ public class ListToolsTests
 		assertEquals(3, ListTools.indexOfDifference(list1, list2));
 	}
 
-	public void testLastIndexOfDifference() {
+	public void testIndexOfDifference_none_null() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add(null);
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(null);
+		list2.add(new String("c"));
+		assertEquals(3, ListTools.indexOfDifference(list1, list2));
+	}
+
+	public void testIndexOfDifference_first() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add(new String("b"));
+		list2.add(new String("c"));
+		assertEquals(0, ListTools.indexOfDifference(list1, list2));
+	}
+
+	public void testIndexOfDifference_middle() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("X"));
+		list2.add(new String("c"));
+		assertEquals(1, ListTools.indexOfDifference(list1, list2));
+	}
+
+	public void testIndexOfDifference_middle_null() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add(null);
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("X"));
+		list2.add(new String("c"));
+		assertEquals(1, ListTools.indexOfDifference(list1, list2));
+	}
+
+	public void testIndexOfDifference_last() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("b"));
+		list2.add(new String("X"));
+		assertEquals(2, ListTools.indexOfDifference(list1, list2));
+	}
+
+	public void testIndexOfDifference_last_size() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("b"));
+		assertEquals(2, ListTools.indexOfDifference(list1, list2));
+	}
+
+	public void testLastIndexOfDifference_none() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("a");
 		list1.add("b");
@@ -195,7 +272,90 @@ public class ListToolsTests
 		assertEquals(-1, ListTools.lastIndexOfDifference(list1, list2));
 	}
 
-	public void testDifferenceRange() {
+	public void testLastIndexOfDifference_none_null() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add(null);
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(null);
+		list2.add(new String("c"));
+		assertEquals(-1, ListTools.lastIndexOfDifference(list1, list2));
+	}
+
+	public void testLastIndexOfDifference_first() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("b"));
+		list2.add(new String("X"));
+		assertEquals(2, ListTools.lastIndexOfDifference(list1, list2));
+	}
+
+	public void testLastIndexOfDifference_first_size() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("b"));
+		assertEquals(2, ListTools.lastIndexOfDifference(list1, list2));
+	}
+
+	public void testLastIndexOfDifference_middle() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("X"));
+		list2.add(new String("c"));
+		assertEquals(1, ListTools.lastIndexOfDifference(list1, list2));
+	}
+
+	public void testLastIndexOfDifference_middle_null1() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add(null);
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(new String("b"));
+		list2.add(new String("c"));
+		assertEquals(1, ListTools.lastIndexOfDifference(list1, list2));
+	}
+
+	public void testLastIndexOfDifference_middle_null2() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add(null);
+		list2.add(new String("c"));
+		assertEquals(1, ListTools.lastIndexOfDifference(list1, list2));
+	}
+
+	public void testLastIndexOfDifference_last() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add(new String("b"));
+		list2.add(new String("c"));
+		assertEquals(0, ListTools.lastIndexOfDifference(list1, list2));
+	}
+
+	public void testDifferenceRange_none() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("a");
 		list1.add("b");
@@ -205,6 +365,42 @@ public class ListToolsTests
 		list2.add(new String("b"));
 		list2.add(new String("c"));
 		assertNull(ListTools.differenceRange(list1, list2));
+	}
+
+	public void testDifferenceRange_single() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add(new String("b"));
+		list2.add(new String("c"));
+		assertEquals(new Range(0, 0), ListTools.differenceRange(list1, list2));
+	}
+
+	public void testDifferenceRange_some() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add(new String("Y"));
+		list2.add(new String("c"));
+		assertEquals(new Range(0, 1), ListTools.differenceRange(list1, list2));
+	}
+
+	public void testDifferenceRange_all() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add(new String("Y"));
+		list2.add(new String("Z"));
+		assertEquals(new Range(0, 2), ListTools.differenceRange(list1, list2));
 	}
 
 
@@ -228,7 +424,7 @@ public class ListToolsTests
 
 	// ********** identity diff **********
 
-	public void testIndexOfIdentityDifference() {
+	public void testIndexOfIdentityDifference_none() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("a");
 		list1.add("b");
@@ -240,7 +436,31 @@ public class ListToolsTests
 		assertEquals(3, ListTools.indexOfIdentityDifference(list1, list2));
 	}
 
-	public void testLastIndexOfIdentityDifference() {
+	public void testIndexOfIdentityDifference_zero() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add("b");
+		list2.add("c");
+		assertEquals(0, ListTools.indexOfIdentityDifference(list1, list2));
+	}
+
+	public void testIndexOfIdentityDifference_last() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add("a");
+		list2.add("b");
+		list2.add(new String("c"));
+		assertEquals(2, ListTools.indexOfIdentityDifference(list1, list2));
+	}
+
+	public void testLastIndexOfIdentityDifference_none() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("a");
 		list1.add("b");
@@ -252,7 +472,42 @@ public class ListToolsTests
 		assertEquals(-1, ListTools.lastIndexOfIdentityDifference(list1, list2));
 	}
 
-	public void testIdentityDifferenceRange() {
+	public void testLastIndexOfIdentityDifference_zero() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("a"));
+		list2.add("b");
+		list2.add("c");
+		assertEquals(0, ListTools.lastIndexOfIdentityDifference(list1, list2));
+	}
+
+	public void testLastIndexOfIdentityDifference_first() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add("a");
+		list2.add("b");
+		list2.add(new String("c"));
+		assertEquals(2, ListTools.lastIndexOfIdentityDifference(list1, list2));
+	}
+
+	public void testLastIndexOfIdentityDifference_size() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add("a");
+		list2.add("b");
+		assertEquals(2, ListTools.lastIndexOfIdentityDifference(list1, list2));
+	}
+
+	public void testIdentityDifferenceRange_none() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("a");
 		list1.add("b");
@@ -264,6 +519,42 @@ public class ListToolsTests
 		assertNull(ListTools.identityDifferenceRange(list1, list2));
 	}
 
+	public void testIdentityDifferenceRange_single() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add("b");
+		list2.add("c");
+		assertEquals(new Range(0, 0), ListTools.identityDifferenceRange(list1, list2));
+	}
+
+	public void testIdentityDifferenceRange_some() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add(new String("Y"));
+		list2.add("c");
+		assertEquals(new Range(0, 1), ListTools.identityDifferenceRange(list1, list2));
+	}
+
+	public void testIdentityDifferenceRange_all() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		List<String> list2 = new ArrayList<String>();
+		list2.add(new String("X"));
+		list2.add(new String("Y"));
+		list2.add(new String("Z"));
+		assertEquals(new Range(0, 2), ListTools.identityDifferenceRange(list1, list2));
+	}
+
 
 	// ********** index of **********
 
@@ -273,6 +564,7 @@ public class ListToolsTests
 		assertEquals(1, ListTools.indexOf(list, "B", 1));
 		assertEquals(-1, ListTools.indexOf(list, "B", 2));
 		assertEquals(-1, ListTools.indexOf(list, "B", 22));
+		assertEquals(-1, ListTools.indexOf(new ArrayList<String>(), "B", 1));
 	}
 
 	public void testIndexOfListObjectInt_Null() {
@@ -287,9 +579,12 @@ public class ListToolsTests
 		String s = "B";
 		List<String> list = Arrays.asList(new String[] { "A", s, "C", "D" });
 		assertEquals(1, ListTools.identityIndexOf(list, s, -11));
+		assertEquals(1, ListTools.identityIndexOf(list, s, 0));
 		assertEquals(1, ListTools.identityIndexOf(list, s, 1));
 		assertEquals(-1, ListTools.identityIndexOf(list, s, 2));
 		assertEquals(-1, ListTools.identityIndexOf(list, s, 22));
+		assertEquals(-1, ListTools.identityIndexOf(list, s, 4));
+		assertEquals(-1, ListTools.identityIndexOf(new ArrayList<String>(), s, 1));
 	}
 
 	public void testIdentityIndexOfListObjectInt_NotFound() {
@@ -395,7 +690,12 @@ public class ListToolsTests
 		assertEquals(-1, ListTools.lastIndexOf(list, "B", -11));
 		assertEquals(1, ListTools.lastIndexOf(list, "B", 1));
 		assertEquals(1, ListTools.lastIndexOf(list, "B", 2));
+		assertEquals(1, ListTools.lastIndexOf(list, "B", 4));
+		assertEquals(-1, ListTools.lastIndexOf(list, null, 4));
 		assertEquals(1, ListTools.lastIndexOf(list, "B", 22));
+		assertEquals(0, ListTools.lastIndexOf(list, "A", 22));
+		assertEquals(-1, ListTools.lastIndexOf(list, "XXXs", 22));
+		assertEquals(-1, ListTools.lastIndexOf(new ArrayList<String>(), "XXXs", 22));
 	}
 
 	public void testLastIndexOfListObjectInt_Null() {
@@ -404,6 +704,8 @@ public class ListToolsTests
 		assertEquals(1, ListTools.lastIndexOf(list, null, 1));
 		assertEquals(1, ListTools.lastIndexOf(list, null, 2));
 		assertEquals(1, ListTools.lastIndexOf(list, null, 22));
+		list = Arrays.asList(new String[] { null, "A", "C", "D" });
+		assertEquals(0, ListTools.lastIndexOf(list, null, 22));
 	}
 
 	public void testLastIdentityIndexOfListObjectInt() {
@@ -412,7 +714,9 @@ public class ListToolsTests
 		assertEquals(-1, ListTools.lastIdentityIndexOf(list, s, -11));
 		assertEquals(1, ListTools.lastIdentityIndexOf(list, s, 1));
 		assertEquals(1, ListTools.lastIdentityIndexOf(list, s, 2));
+		assertEquals(1, ListTools.lastIdentityIndexOf(list, s, 4));
 		assertEquals(1, ListTools.lastIdentityIndexOf(list, s, 22));
+		assertEquals(-1, ListTools.lastIdentityIndexOf(new ArrayList<String>(), s, 22));
 	}
 
 	public void testLastIdentityIndexOfListObjectInt_NotFound() {
@@ -426,49 +730,49 @@ public class ListToolsTests
 	}
 
 
-	// ********** list **********
+	// ********** array list **********
 
-	public void testListIterable() {
+	public void testArrayListIterable() {
 		Iterable<String> iterable = this.buildStringList1();
-		assertEquals(this.buildStringList1(), ListTools.list(iterable));
+		assertEquals(this.buildStringList1(), ListTools.arrayList(iterable));
 	}
 
-	public void testListIterableInt() {
+	public void testArrayListIterableInt() {
 		Iterable<String> iterable = this.buildStringList1();
-		assertEquals(this.buildStringList1(), ListTools.list(iterable, 3));
+		assertEquals(this.buildStringList1(), ListTools.arrayList(iterable, 3));
 	}
 
-	public void testListIterator_String() {
-		List<String> list = ListTools.list(this.buildStringList1().iterator());
+	public void testArrayListIterator_String() {
+		List<String> list = ListTools.arrayList(this.buildStringList1().iterator());
 		assertEquals(this.buildStringList1(), list);
 	}
 
-	public void testListIterator_StringObject() {
+	public void testArrayListIterator_StringObject() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("0");
 		list1.add("1");
 		list1.add("2");
 		list1.add("3");
 
-		List<Object> list2 = ListTools.<Object>list(list1.iterator());
+		List<Object> list2 = ListTools.<Object>arrayList(list1.iterator());
 		assertEquals(list1, list2);
 	}
 
-	public void testListIterator_Empty() {
-		assertEquals(0, ListTools.list(EmptyIterator.instance()).size());
+	public void testArrayListIterator_Empty() {
+		assertEquals(0, ListTools.arrayList(EmptyIterator.instance()).size());
 	}
 
-	public void testListIteratorInt() {
-		List<String> list = ListTools.list(this.buildStringList1().iterator(), 3);
+	public void testArrayListIteratorInt() {
+		List<String> list = ListTools.arrayList(this.buildStringList1().iterator(), 3);
 		assertEquals(this.buildStringList1(), list);
 	}
 
-	public void testListIteratorInt_Empty() {
-		assertEquals(0, ListTools.list(EmptyIterator.instance(), 5).size());
+	public void testArrayListIteratorInt_Empty() {
+		assertEquals(0, ListTools.arrayList(EmptyIterator.instance(), 5).size());
 	}
 
-	public void testListObjectArray() {
-		List<String> list = ListTools.list(this.buildStringArray1());
+	public void testArrayListObjectArray() {
+		List<String> list = ListTools.arrayList(this.buildStringArray1());
 		assertEquals(this.buildStringList1(), list);
 	}
 
@@ -712,6 +1016,16 @@ public class ListToolsTests
 		}
 	}
 
+	public void testReverseList() {
+		List<String> list = this.buildStringList1();
+		List<String> result = ListTools.reverse(list);
+		assertSame(list, result);
+		assertEquals("two", list.get(0));
+		assertEquals("one", list.get(1));
+		assertEquals("zero", list.get(2));
+		assertEquals(3, list.size());
+	}
+
 	public void testShuffleList() {
 		List<String> list = this.buildStringList1();
 		List<String> result = ListTools.shuffle(list);
@@ -730,6 +1044,22 @@ public class ListToolsTests
 		ss.addAll(list);
 		List<String> result = ListTools.sort(list);
 		assertSame(list, result);
+		Iterator<String> ssIterator = ss.iterator();
+		for (Iterator<String> listIterator = list.iterator(); listIterator.hasNext(); ) {
+			assertEquals(ssIterator.next(), listIterator.next());
+		}
+	}
+
+	public void testSortListComparator() {
+		List<String> list = this.buildStringList1();
+		SortedSet<String> ss = new TreeSet<String>(ComparatorTools.<String>reverseComparator());
+		ss.addAll(list);
+		List<String> result = ListTools.sort(list, ComparatorTools.<String>reverseComparator());
+		assertSame(list, result);
+		Iterator<String> ssIterator = ss.iterator();
+		for (Iterator<String> listIterator = list.iterator(); listIterator.hasNext(); ) {
+			assertEquals(ssIterator.next(), listIterator.next());
+		}
 	}
 
 	public void testSwapListIntInt() {
@@ -740,6 +1070,87 @@ public class ListToolsTests
 		assertEquals(original.get(0), result.get(1));
 		assertEquals(original.get(1), result.get(0));
 		assertEquals(original.get(2), result.get(2));
+	}
+
+
+	// ********** transformers **********
+
+	public void testListIteratorTransformer() {
+		Transformer<List<String>, ListIterator<String>> transformer = ListTools.listIteratorTransformer();
+		assertNotNull(transformer);
+		assertNotNull(transformer.toString());
+		List<String> list = this.buildStringList1();
+		ListIterator<String> iterator = transformer.transform(list);
+		assertNotNull(iterator);
+		assertEquals("zero", iterator.next());
+		assertEquals("one", iterator.next());
+		iterator.set("XXX");
+		assertEquals("two", iterator.next());
+		assertFalse(iterator.hasNext());
+		assertEquals("XXX", list.get(1));
+	}
+
+	public void testReadOnlyListIteratorTransformer() {
+		Transformer<List<? extends String>, ListIterator<String>> transformer = ListTools.readOnlyListIteratorTransformer();
+		assertNotNull(transformer);
+		assertNotNull(transformer.toString());
+		List<String> list = this.buildStringList1();
+		ListIterator<String> iterator = transformer.transform(list);
+		assertNotNull(iterator);
+		assertEquals("zero", iterator.next());
+		assertEquals("one", iterator.next());
+
+		boolean exCaught = false;
+		try {
+			iterator.set("XXX");
+			fail("bogus: " + iterator); //$NON-NLS-1$
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		assertEquals("two", iterator.next());
+		assertFalse(iterator.hasNext());
+		assertEquals("one", list.get(1));
+	}
+
+	public void testListIterableTransformer() {
+		Transformer<List<String>, ListIterable<String>> transformer = ListTools.listIterableTransformer();
+		assertNotNull(transformer);
+		assertNotNull(transformer.toString());
+		List<String> list = this.buildStringList1();
+		ListIterator<String> iterator = transformer.transform(list).iterator();
+		assertNotNull(iterator);
+		assertEquals("zero", iterator.next());
+		assertEquals("one", iterator.next());
+		iterator.set("XXX");
+		assertEquals("two", iterator.next());
+		assertFalse(iterator.hasNext());
+		assertEquals("XXX", list.get(1));
+	}
+
+	public void testReadOnlyListIterableTransformer() {
+		Transformer<List<? extends String>, ListIterable<String>> transformer = ListTools.readOnlyListIterableTransformer();
+		assertNotNull(transformer);
+		assertNotNull(transformer.toString());
+		List<String> list = this.buildStringList1();
+		ListIterator<String> iterator = transformer.transform(list).iterator();
+		assertNotNull(iterator);
+		assertEquals("zero", iterator.next());
+		assertEquals("one", iterator.next());
+
+		boolean exCaught = false;
+		try {
+			iterator.set("XXX");
+			fail("bogus: " + iterator); //$NON-NLS-1$
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		assertEquals("two", iterator.next());
+		assertFalse(iterator.hasNext());
+		assertEquals("one", list.get(1));
 	}
 
 

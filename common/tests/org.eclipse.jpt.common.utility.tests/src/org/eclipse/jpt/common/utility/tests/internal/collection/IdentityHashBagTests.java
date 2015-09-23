@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,17 +14,19 @@ import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.IdentityHashBag;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class IdentityHashBagTests extends TestCase {
+public class IdentityHashBagTests
+	extends TestCase
+{
 	private IdentityHashBag<String> bag;
 	private String one = "one";
 	private String two = "two";
@@ -44,19 +46,23 @@ public class IdentityHashBagTests extends TestCase {
 	}
 	
 	protected IdentityHashBag<String> buildBag() {
-		IdentityHashBag<String> result = new IdentityHashBag<String>();
-		result.add(null);
-		result.add(this.one);
-		result.add(this.two);
-		result.add(this.two);
-		result.add(this.three);
-		result.add(this.three);
-		result.add(this.three);
-		result.add(this.four);
-		result.add(this.four);
-		result.add(this.four);
-		result.add(this.four);
-		return result;
+		return CollectionTools.identityHashBag(this.buildBagContents());
+	}
+	
+	protected Collection<String> buildBagContents() {
+		ArrayList<String> c = new ArrayList<String>();
+		c.add(null);
+		c.add(this.one);
+		c.add(this.two);
+		c.add(this.two);
+		c.add(this.three);
+		c.add(this.three);
+		c.add(this.three);
+		c.add(this.four);
+		c.add(this.four);
+		c.add(this.four);
+		c.add(this.four);
+		return c;
 	}
 	
 	@Override
@@ -199,17 +205,32 @@ public class IdentityHashBagTests extends TestCase {
 		assertEquals(0, this.bag.count("five"));
 	}
 	
-	public void testEquals() {
-		IdentityHashBag<String> bag2 = this.buildBag();
+	public void testEqualsObject() {
+		assertEquals(this.bag, this.bag);
+		IdentityHashBag<String> bag2 = CollectionTools.identityHashBag(this.buildBagContents(), 20);
 		assertEquals(this.bag, bag2);
-		bag2.add("five");
-		assertFalse(this.bag.equals(bag2));
+
+		bag2.add(this.four);
+		assertFalse(this.bag.equals(bag2)); // same unique counts; different sizes
+		bag2.remove(this.four);
+
+		String five = "five";
+		bag2.add(five);
+		bag2.remove(this.four);
+		assertFalse(this.bag.equals(bag2)); // same sizes; different unique counts
+		bag2.remove(five);
+		bag2.add(this.four);
+
+		bag2.remove(this.two);
+		bag2.add(this.four);
+		assertFalse(this.bag.equals(bag2)); // same sizes; same unique counts
+
 		Collection<String> c = new ArrayList<String>(this.bag);
 		assertFalse(this.bag.equals(c));
 	}
 	
 	public void testHashCode() {
-		IdentityHashBag<String> bag2 = this.buildBag();
+		IdentityHashBag<String> bag2 = CollectionTools.identityHashBag(this.buildBagContents().toArray(StringTools.EMPTY_STRING_ARRAY));
 		assertEquals(this.bag.hashCode(), bag2.hashCode());
 	}
 	
@@ -287,6 +308,30 @@ public class IdentityHashBagTests extends TestCase {
 		assertTrue("ConcurrentModificationException not thrown", exCaught);
 	}
 	
+	public void testEmptyUniqueIterator() {
+		this.bag.clear();
+		Iterator<String> iterator = this.bag.uniqueIterator();
+		assertFalse(iterator.hasNext());
+
+		boolean exCaught = false;
+		Object element = null;
+		try {
+			element = iterator.next();
+			fail(element.toString());
+		} catch (NoSuchElementException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		exCaught = false;
+		try {
+			iterator.remove();
+		} catch (IllegalStateException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
 	public void testUniqueIterator() {
 		int i = 0;
 		Iterator<String> iterator = this.bag.uniqueIterator();
@@ -333,6 +378,30 @@ public class IdentityHashBagTests extends TestCase {
 		try {
 			iterator.next();
 		} catch (ConcurrentModificationException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testEmptyEntries() {
+		this.bag.clear();
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		assertFalse(iterator.hasNext());
+
+		boolean exCaught = false;
+		Object element = null;
+		try {
+			element = iterator.next();
+			fail(element.toString());
+		} catch (NoSuchElementException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		exCaught = false;
+		try {
+			iterator.remove();
+		} catch (IllegalStateException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
@@ -386,6 +455,25 @@ public class IdentityHashBagTests extends TestCase {
 		exCaught = false;
 		try {
 			iterator.next();
+		} catch (ConcurrentModificationException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testEntries_remove_CME() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		assertTrue(iterator.hasNext());
+		boolean exCaught = false;
+		try {
+			Bag.Entry<String> next = null;
+			while (iterator.hasNext()) {
+				next = iterator.next();
+				if (next.getElement().equals(this.four)) {
+					this.bag.remove(this.two);
+					iterator.remove();
+				}
+			}
 		} catch (ConcurrentModificationException ex) {
 			exCaught = true;
 		}
@@ -501,13 +589,13 @@ public class IdentityHashBagTests extends TestCase {
 	
 		assertTrue("same object?", this.bag != bag2);
 		assertEquals(11, bag2.size());
-		assertEquals(CollectionTools.bag(this.bag.iterator()), CollectionTools.bag(bag2.iterator()));
+		assertEquals(CollectionTools.hashBag(this.bag.iterator()), CollectionTools.hashBag(bag2.iterator()));
 		// look for similar elements
-		assertTrue(CollectionTools.bag(bag2.iterator()).contains(null));
-		assertTrue(CollectionTools.bag(bag2.iterator()).contains("one"));
-		assertTrue(CollectionTools.bag(bag2.iterator()).contains("two"));
-		assertTrue(CollectionTools.bag(bag2.iterator()).contains("three"));
-		assertTrue(CollectionTools.bag(bag2.iterator()).contains("four"));
+		assertTrue(CollectionTools.hashBag(bag2.iterator()).contains(null));
+		assertTrue(CollectionTools.hashBag(bag2.iterator()).contains("one"));
+		assertTrue(CollectionTools.hashBag(bag2.iterator()).contains("two"));
+		assertTrue(CollectionTools.hashBag(bag2.iterator()).contains("three"));
+		assertTrue(CollectionTools.hashBag(bag2.iterator()).contains("four"));
 	
 		int nullCount = 0, oneCount = 0, twoCount = 0, threeCount = 0, fourCount = 0;
 		for (String next : bag2) {
@@ -527,6 +615,15 @@ public class IdentityHashBagTests extends TestCase {
 		assertEquals(2, twoCount);
 		assertEquals(3, threeCount);
 		assertEquals(4, fourCount);
+	}
+
+	public void testSerialization_empty() throws Exception {
+		this.bag.clear();
+		Bag<String> bag2 = TestTools.serialize(this.bag);
+
+		assertTrue("same object?", this.bag != bag2);
+		assertEquals(0, bag2.size());
+		assertEquals(this.bag, bag2);
 	}
 	
 	public void testToArray() {
@@ -571,4 +668,169 @@ public class IdentityHashBagTests extends TestCase {
 		assertTrue(s.indexOf("null") != -1);
 	}
 
+	public void testEntry_setCount_increase() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		assertEquals(4, this.bag.count(this.four));
+		Bag.Entry<String> next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement().equals(this.four)) {
+				assertEquals(4, next.setCount(42));
+				break;
+			}
+		}
+		assertEquals(42, this.bag.count(this.four));
+		assertEquals(49, this.bag.size());
+	}
+
+	public void testEntry_setCount_same() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		assertEquals(4, this.bag.count(this.four));
+		Bag.Entry<String> next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement().equals(this.four)) {
+				assertEquals(4, next.setCount(4));
+				break;
+			}
+		}
+		assertEquals(4, this.bag.count(this.four));
+		assertEquals(11, this.bag.size());
+	}
+
+	public void testEntry_setCount_derease() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		assertEquals(4, this.bag.count(this.four));
+		Bag.Entry<String> next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement().equals(this.four)) {
+				assertEquals(4, next.setCount(2));
+				break;
+			}
+		}
+		assertEquals(2, this.bag.count(this.four));
+		assertEquals(9, this.bag.size());
+	}
+
+	public void testEntry_setCount_IAE1() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		boolean exCaught = false;
+		try {
+			Bag.Entry<String> next = null;
+			while (iterator.hasNext()) {
+				next = iterator.next();
+				if (next.getElement().equals(this.four)) {
+					next.setCount(0);
+					fail(next.toString());
+				}
+			}
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testEntry_setCount_IAE2() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		boolean exCaught = false;
+		try {
+			Bag.Entry<String> next = null;
+			while (iterator.hasNext()) {
+				next = iterator.next();
+				if (next.getElement().equals(this.four)) {
+					next.setCount(-33);
+					fail(next.toString());
+				}
+			}
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	@SuppressWarnings("null")
+	public void testEntry_equalsObject() {
+		Iterator<Bag.Entry<String>> iterator1 = this.bag.entries();
+		Bag<String> bag2 = this.buildBag();
+		Bag.Entry<String> next1 = null;
+		while (iterator1.hasNext()) {
+			next1 = iterator1.next();
+			if (next1.getElement().equals(this.four)) {
+				break;
+			}
+		}
+		assertFalse(next1.equals(this.four));
+		Iterator<Bag.Entry<String>> iterator2 = bag2.entries();
+		Bag.Entry<String> next2 = null;
+		while (iterator2.hasNext()) {
+			next2 = iterator2.next();
+			if (next2.getElement().equals(this.four)) {
+				break;
+			}
+		}
+		assertEquals(next1, next2);
+
+		bag2.remove(this.four);
+		iterator1 = this.bag.entries();
+		while (iterator1.hasNext()) {
+			next1 = iterator1.next();
+			if (next1.getElement().equals(this.four)) {
+				break;
+			}
+		}
+		iterator2 = bag2.entries();
+		while (iterator2.hasNext()) {
+			next2 = iterator2.next();
+			if (next2.getElement().equals(this.four)) {
+				break;
+			}
+		}
+		assertEquals(next1.getElement(), next2.getElement());
+		assertFalse(next1.equals(next2));
+
+		iterator1 = this.bag.entries();
+		while (iterator1.hasNext()) {
+			next1 = iterator1.next();
+			if (next1.getElement().equals(this.three)) {
+				break;
+			}
+		}
+		assertEquals(next1.getCount(), next2.getCount());
+		assertFalse(next1.equals(next2));
+	}
+
+	@SuppressWarnings("null")
+	public void testEntry_hashCode() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		Bag.Entry<String> next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement().equals(this.four)) {
+				break;
+			}
+		}
+		assertEquals(4 * this.four.hashCode(), next.hashCode());
+
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement() == null) {
+				break;
+			}
+		}
+		assertEquals(0, next.hashCode());
+	}
+
+	@SuppressWarnings("null")
+	public void testEntry_toString() {
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		Bag.Entry<String> next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement().equals(this.four)) {
+				break;
+			}
+		}
+		assertEquals("four=>4", next.toString());
+	}
 }

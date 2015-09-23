@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,8 @@ package org.eclipse.jpt.common.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
-import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
+import org.eclipse.jpt.common.utility.internal.queue.QueueTools;
+import org.eclipse.jpt.common.utility.internal.queue.SynchronizedQueue;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 
@@ -30,7 +31,7 @@ public final class AWTStateChangeListenerWrapper
 	implements StateChangeListener
 {
 	private final StateChangeListener listener;
-	private final SynchronizedQueue<StateChangeEvent> events = new SynchronizedQueue<StateChangeEvent>();
+	private final SynchronizedQueue<StateChangeEvent> events = QueueTools.synchronizedQueue();
 
 
 	public AWTStateChangeListenerWrapper(StateChangeListener listener) {

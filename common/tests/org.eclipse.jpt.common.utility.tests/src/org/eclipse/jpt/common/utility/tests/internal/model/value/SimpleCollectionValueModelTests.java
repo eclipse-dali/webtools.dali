@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -97,8 +97,8 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	public void testIterator() {
-		assertEquals(this.buildBag(), CollectionTools.bag(this.bagHolder.iterator()));
-		assertEquals(this.buildSet(), CollectionTools.set(this.setHolder.iterator()));
+		assertEquals(this.buildBag(), CollectionTools.hashBag(this.bagHolder.iterator()));
+		assertEquals(this.buildSet(), CollectionTools.hashSet(this.setHolder.iterator()));
 	}
 
 	public void testSize() {
@@ -123,7 +123,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	private boolean bagHolderContainsAny(Collection<String> items) {
-		Bag<String> bag = CollectionTools.bag(this.bagHolder.iterator());
+		Bag<String> bag = CollectionTools.hashBag(this.bagHolder.iterator());
 		for (String string : items) {
 			if (bag.contains(string)) {
 				return true;
@@ -133,7 +133,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	private boolean setHolderContainsAny(Collection<String> items) {
-		Set<String> set = CollectionTools.set(this.setHolder.iterator());
+		Set<String> set = CollectionTools.hashSet(this.setHolder.iterator());
 		for (String string : items) {
 			if (set.contains(string)) {
 				return true;
@@ -291,7 +291,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.bagEventType = null;
 		this.bagHolder.addAll(this.buildBag());
 		this.verifyBagEvent(ADD);
-		assertEquals(this.buildBag(), CollectionTools.bag(((CollectionAddEvent) this.bagEvent).getItems()));
+		assertEquals(this.buildBag(), CollectionTools.hashBag(((CollectionAddEvent) this.bagEvent).getItems()));
 	}
 
 	private void verifySetChange() {

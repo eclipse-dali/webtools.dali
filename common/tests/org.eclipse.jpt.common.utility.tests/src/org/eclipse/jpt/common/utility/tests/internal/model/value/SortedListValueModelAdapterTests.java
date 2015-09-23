@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,7 +69,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		Collection<String> sortedSet = new TreeSet<String>(comparator);
 		sortedSet.addAll(expected);
 		List<String> expectedList = new ArrayList<String>(sortedSet);
-		List<String> actualList = ListTools.list(actual.iterator());
+		List<String> actualList = ListTools.arrayList(actual.iterator());
 		assertEquals(expectedList, actualList);
 	}
 
@@ -100,7 +100,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		assertEquals(6, this.wrappedCollection.size());
 
 		this.verifyList(this.wrappedCollection, this.adapter);
-		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
+		assertEquals(this.wrappedCollection, CollectionTools.hashBag(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}
 
@@ -120,7 +120,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		assertEquals(4, this.wrappedCollection.size());
 
 		this.verifyList(this.wrappedCollection, this.adapter);
-		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
+		assertEquals(this.wrappedCollection, CollectionTools.hashBag(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}
 
@@ -161,12 +161,12 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		assertEquals(6, this.wrappedCollection.size());
 
 		this.verifyList(this.wrappedCollection, this.adapter);
-		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
+		assertEquals(this.wrappedCollection, CollectionTools.hashBag(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 
 		this.adapter.setComparator(ComparatorTools.<String>reverseComparator());
 		this.verifyList(this.wrappedCollection, this.adapter, ComparatorTools.<String>reverseComparator());
-		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
+		assertEquals(this.wrappedCollection, CollectionTools.hashBag(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}
 

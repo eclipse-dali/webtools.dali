@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -125,14 +125,14 @@ public final class ListCuratorTests
 	}
 
 	public void testSubjectHolder() {
-		assertEquals(this.subject1Names(), ListTools.list(this.curator.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.curator.listIterator()));
 		assertNull(this.event1);
 
 		this.subjectHolder1.setValue(this.subject2);
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(this.subject2Names(), ListTools.list(this.curator.listIterator()));
+		assertEquals(this.subject2Names(), ListTools.arrayList(this.curator.listIterator()));
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
@@ -146,11 +146,11 @@ public final class ListCuratorTests
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(this.subject1Names(), ListTools.list(this.curator.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.curator.listIterator()));
 	}
 
 	public void testAdd() {
-		assertEquals(this.subject1Names(), ListTools.list(this.curator.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.curator.listIterator()));
 		assertNull(this.event1);
 
 		this.subject1.addString("echo");
@@ -161,7 +161,7 @@ public final class ListCuratorTests
 		assertEquals("echo", ((ListAddEvent) this.event1).getItems().iterator().next());
 		List<String> stringsPlus = this.subject1Names();
 		stringsPlus.add("echo");
-		assertEquals(stringsPlus, ListTools.list(this.curator.listIterator()));
+		assertEquals(stringsPlus, ListTools.arrayList(this.curator.listIterator()));
 
 		this.event1 = null;
 		this.subject1.addString(0, "zulu");
@@ -171,11 +171,11 @@ public final class ListCuratorTests
 		assertEquals(0, ((ListAddEvent) this.event1).getIndex());
 		assertEquals("zulu", ((ListAddEvent) this.event1).getItems().iterator().next());
 		stringsPlus.add(0, "zulu");
-		assertEquals(stringsPlus, ListTools.list(this.curator.listIterator()));
+		assertEquals(stringsPlus, ListTools.arrayList(this.curator.listIterator()));
 	}
 	
 	public void testRemove() {
-		assertEquals(this.subject1Names(), ListTools.list(this.curator.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.curator.listIterator()));
 		assertNull(this.event1);
 
 		String removedString = this.subject1.removeString(0);	// should be "alpha"
@@ -186,7 +186,7 @@ public final class ListCuratorTests
 		assertEquals(removedString, ((ListRemoveEvent) this.event1).getItems().iterator().next());
 		List<String> stringsMinus = this.subject1Names();
 		stringsMinus.remove(0);
-		assertEquals(stringsMinus, ListTools.list(this.curator.listIterator()));
+		assertEquals(stringsMinus, ListTools.arrayList(this.curator.listIterator()));
 		
 		removedString = this.subject1.removeString(2);	// should be "delta"
 		assertNotNull(this.event1);
@@ -195,11 +195,11 @@ public final class ListCuratorTests
 		assertEquals(2, ((ListRemoveEvent) this.event1).getIndex());
 		assertEquals(removedString, ((ListRemoveEvent) this.event1).getItems().iterator().next());
 		stringsMinus.remove(2);
-		assertEquals(stringsMinus, ListTools.list(this.curator.listIterator()));
+		assertEquals(stringsMinus, ListTools.arrayList(this.curator.listIterator()));
 	}
 	
 	public void testCompleteListChange() {
-		assertEquals(this.subject1Names(), ListTools.list(this.curator.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.curator.listIterator()));
 		assertNull(this.event1);
 		
 		this.subject1.setStrings(this.subject2Names());
@@ -207,20 +207,20 @@ public final class ListCuratorTests
 		assertEquals(this.curator, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
 		List<String> newStrings = this.subject2Names();
-		assertEquals(newStrings, ListTools.list(this.curator.listIterator()));
+		assertEquals(newStrings, ListTools.arrayList(this.curator.listIterator()));
 	}
 	
 	public void testPartialListChange() {
-		List<String> startingList = ListTools.list(this.curator.listIterator());
+		List<String> startingList = ListTools.arrayList(this.curator.listIterator());
 		assertEquals(this.subject1Names(), startingList);
 		assertNull(this.event1);
 		
 		String identicalString = startingList.get(1);  // should be "bravo"
 		String nonidenticalString = startingList.get(0); // should be "alpha"
-		List<String> newStrings = ListTools.list(new String[] {new String("bravo"), new String("alpha"), "echo", "delta", "foxtrot"});
+		List<String> newStrings = ListTools.arrayList(new String[] {new String("bravo"), new String("alpha"), "echo", "delta", "foxtrot"});
 		this.subject1.setStrings(newStrings);
 		
-		List<String> finalList = ListTools.list(this.curator.listIterator());
+		List<String> finalList = ListTools.arrayList(this.curator.listIterator());
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
@@ -230,8 +230,8 @@ public final class ListCuratorTests
 	}
 	
 	public void testIterator() {
-		assertEquals(this.subject1Names(), ListTools.list(this.subject1.strings()));
-		assertEquals(this.subject1Names(), ListTools.list(this.curator.listIterator()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.subject1.strings()));
+		assertEquals(this.subject1Names(), ListTools.arrayList(this.curator.listIterator()));
 	}
 	
 	public void testGet() {
@@ -339,7 +339,7 @@ public final class ListCuratorTests
 		}
 		
 		public void setStrings(String[] strings) {
-			this.strings = ListTools.list(strings);
+			this.strings = ListTools.arrayList(strings);
 			this.fireStateChanged();
 		}
 	}

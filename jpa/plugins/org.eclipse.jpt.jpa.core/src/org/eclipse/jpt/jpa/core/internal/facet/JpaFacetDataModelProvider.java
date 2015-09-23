@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -481,7 +481,7 @@ public abstract class JpaFacetDataModelProvider
 	 * put a null entry at the top of the list (for <none>)
 	 */
 	protected List<String> buildValidConnectionNames() {
-		List<String> connectionNames = ListTools.sort(ListTools.list(this.getConnectionProfileNames()));
+		List<String> connectionNames = ListTools.sort(ListTools.arrayList(this.getConnectionProfileNames()));
 		connectionNames.add(0, null);
 		return connectionNames;
 	}
@@ -518,7 +518,7 @@ public abstract class JpaFacetDataModelProvider
 	 * put an entry for the default at the top of the list
 	 */
 	protected List<String> buildValidStrings(Iterable<String> strings, String defaultString) {
-		List<String> validStrings = ListTools.list(strings);
+		List<String> validStrings = ListTools.arrayList(strings);
 		if ((defaultString != null) && ! validStrings.contains(defaultString)) {
 			validStrings.add(0, defaultString);
 		}

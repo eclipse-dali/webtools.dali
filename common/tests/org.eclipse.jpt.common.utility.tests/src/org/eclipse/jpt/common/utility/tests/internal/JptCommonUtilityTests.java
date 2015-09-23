@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.eclipse.jpt.common.utility.tests.internal.collection.JptCommonUtilityCollectionTests;
 import org.eclipse.jpt.common.utility.tests.internal.command.JptCommonUtilityCommandTests;
 import org.eclipse.jpt.common.utility.tests.internal.comparator.JptCommonUtilityComparatorTests;
+import org.eclipse.jpt.common.utility.tests.internal.deque.JptCommonUtilityDequeTests;
 import org.eclipse.jpt.common.utility.tests.internal.enumeration.JptCommonUtilityEnumerationTests;
 import org.eclipse.jpt.common.utility.tests.internal.exception.JptCommonUtilityExceptionTests;
 import org.eclipse.jpt.common.utility.tests.internal.factory.JptCommonUtilityFactoryTests;
@@ -24,8 +23,12 @@ import org.eclipse.jpt.common.utility.tests.internal.jdbc.JptCommonUtilityJDBCTe
 import org.eclipse.jpt.common.utility.tests.internal.model.JptCommonUtilityModelTests;
 import org.eclipse.jpt.common.utility.tests.internal.node.JptCommonUtilityNodeTests;
 import org.eclipse.jpt.common.utility.tests.internal.predicate.JptCommonUtilityPredicateTests;
+import org.eclipse.jpt.common.utility.tests.internal.queue.JptCommonUtilityQueueTests;
 import org.eclipse.jpt.common.utility.tests.internal.reference.JptCommonUtilityReferenceTests;
+import org.eclipse.jpt.common.utility.tests.internal.stack.JptCommonUtilityStackTests;
 import org.eclipse.jpt.common.utility.tests.internal.transformer.JptCommonUtilityTransformerTests;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * decentralize test creation code
@@ -38,6 +41,7 @@ public class JptCommonUtilityTests {
 		suite.addTest(JptCommonUtilityCollectionTests.suite());
 		suite.addTest(JptCommonUtilityCommandTests.suite());
 		suite.addTest(JptCommonUtilityComparatorTests.suite());
+		suite.addTest(JptCommonUtilityDequeTests.suite());
 		suite.addTest(JptCommonUtilityEnumerationTests.suite());
 		suite.addTest(JptCommonUtilityExceptionTests.suite());
 		suite.addTest(JptCommonUtilityFactoryTests.suite());
@@ -48,7 +52,9 @@ public class JptCommonUtilityTests {
 		suite.addTest(JptCommonUtilityModelTests.suite());
 		suite.addTest(JptCommonUtilityNodeTests.suite());
 		suite.addTest(JptCommonUtilityPredicateTests.suite());
+		suite.addTest(JptCommonUtilityQueueTests.suite());
 		suite.addTest(JptCommonUtilityReferenceTests.suite());
+		suite.addTest(JptCommonUtilityStackTests.suite());
 		suite.addTest(JptCommonUtilityTransformerTests.suite());
 
 		suite.addTestSuite(ArrayToolsTests.class);

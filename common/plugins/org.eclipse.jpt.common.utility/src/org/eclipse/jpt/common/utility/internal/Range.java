@@ -43,7 +43,7 @@ public class Range
 
 	/**
 	 * Construct a range with the specified start and end, both of which are
-	 * mmutable. If the specified end is less than the specified start, the
+	 * immutable. If the specified end is less than the specified start, the
 	 * values will be swapped in the range.
 	 */
 	public Range(int start, int end) {

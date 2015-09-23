@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -160,7 +160,7 @@ public final class ArrayTools {
 	 */
 	public static Object[] array(Iterator<?> iterator) {
 		return iterator.hasNext() ?
-				ListTools.list(iterator).toArray() :
+				ListTools.arrayList(iterator).toArray() :
 				ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
@@ -171,7 +171,7 @@ public final class ArrayTools {
 	 */
 	public static Object[] array(Iterator<?> iterator, int iteratorSize) {
 		return iterator.hasNext() ?
-				ListTools.list(iterator, iteratorSize).toArray() :
+				ListTools.arrayList(iterator, iteratorSize).toArray() :
 				ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
@@ -183,7 +183,7 @@ public final class ArrayTools {
 	public static <E> E[] array(Iterator<?> iterator, Class<E> componentType) {
 		E[] array = newInstance(componentType, 0);
 		return iterator.hasNext() ?
-				ListTools.list(iterator).toArray(array) :
+				ListTools.arrayList(iterator).toArray(array) :
 				array;
 	}
 
@@ -195,7 +195,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] array(Iterator<?> iterator, int iteratorSize, Class<E> componentType) {
 		return iterator.hasNext() ?
-				ListTools.list(iterator, iteratorSize).toArray(newInstance(componentType, iteratorSize)) :
+				ListTools.arrayList(iterator, iteratorSize).toArray(newInstance(componentType, iteratorSize)) :
 				newInstance(componentType, 0);
 	}
 
@@ -209,7 +209,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, E[] array) {
 		return iterator.hasNext() ?
-				ListTools.list(iterator).toArray(array) :
+				ListTools.arrayList(iterator).toArray(array) :
 				emptyArray(array);
 	}
 
@@ -224,7 +224,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, int iteratorSize, E[] array) {
 		return iterator.hasNext() ?
-				ListTools.list(iterator, iteratorSize).toArray(array) :
+				ListTools.arrayList(iterator, iteratorSize).toArray(array) :
 				emptyArray(array);
 	}
 
@@ -423,7 +423,7 @@ public final class ArrayTools {
 	 * in the specified iterator.
 	 */
 	public static <E> E[] addAll(E[] array, Iterator<? extends E> iterator) {
-		return iterator.hasNext() ? addAll_(array, ListTools.list(iterator)) : array;
+		return iterator.hasNext() ? addAll_(array, ListTools.arrayList(iterator)) : array;
 	}
 
 	/**
@@ -433,7 +433,7 @@ public final class ArrayTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> E[] addAll(E[] array, Iterator<? extends E> iterator, int iteratorSize) {
-		return iterator.hasNext() ? addAll_(array, ListTools.list(iterator, iteratorSize)) : array;
+		return iterator.hasNext() ? addAll_(array, ListTools.arrayList(iterator, iteratorSize)) : array;
 	}
 
 	/**
@@ -597,7 +597,7 @@ public final class ArrayTools {
 	 * in the specified iterator inserted at the specified index.
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterator<? extends E> iterator) {
-		return iterator.hasNext() ? addAll_(array, index, ListTools.list(iterator)) : array;
+		return iterator.hasNext() ? addAll_(array, index, ListTools.arrayList(iterator)) : array;
 	}
 
 	/**
@@ -607,7 +607,7 @@ public final class ArrayTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterator<? extends E> iterator, int iteratorSize) {
-		return iterator.hasNext() ? addAll_(array, index, ListTools.list(iterator, iteratorSize)) : array;
+		return iterator.hasNext() ? addAll_(array, index, ListTools.arrayList(iterator, iteratorSize)) : array;
 	}
 
 	/**
@@ -1025,7 +1025,7 @@ public final class ArrayTools {
 	 */
 	public static boolean containsAll(Object[] array, Iterator<?> iterator) {
 		// use hashed lookup
-		HashSet<Object> set = CollectionTools.set(array);
+		HashSet<Object> set = CollectionTools.hashSet(array);
 		while (iterator.hasNext()) {
 			if ( ! set.contains(iterator.next())) {
 				return false;
@@ -1040,7 +1040,7 @@ public final class ArrayTools {
 	 */
 	public static boolean containsAll(Object[] array1, Object... array2) {
 		// use hashed lookup
-		HashSet<Object> set = CollectionTools.set(array1);
+		HashSet<Object> set = CollectionTools.hashSet(array1);
 		for (int i = array2.length; i-- > 0; ) {
 			if ( ! set.contains(array2[i])) {
 				return false;
@@ -2054,7 +2054,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] removeAll(E[] array, Iterator<?> iterator) {
 		// convert to a set to take advantage of hashed look-up
-		return iterator.hasNext() ? removeAll_(array, CollectionTools.set(iterator)) : array;
+		return iterator.hasNext() ? removeAll_(array, CollectionTools.hashSet(iterator)) : array;
 	}
 
 	/**
@@ -2064,7 +2064,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] removeAll(E[] array, Iterator<?> iterator, int iteratorSize) {
 		// convert to a set to take advantage of hashed look-up
-		return iterator.hasNext() ? removeAll_(array, CollectionTools.set(iterator, iteratorSize)) : array;
+		return iterator.hasNext() ? removeAll_(array, CollectionTools.hashSet(iterator, iteratorSize)) : array;
 	}
 
 	/**
@@ -2118,7 +2118,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] removeAll(E[] array1, Object... array2) {
 		// convert to a set to take advantage of hashed look-up
-		return (array2.length == 0) ? array1 : removeAll_(array1, CollectionTools.set(array2));
+		return (array2.length == 0) ? array1 : removeAll_(array1, CollectionTools.hashSet(array2));
 	}
 
 	/**
@@ -2553,7 +2553,7 @@ public final class ArrayTools {
 	 */
 	private static <E> E[] retainAll(E[] array, int arrayLength, Iterator<?> iterator) {
 		return iterator.hasNext() ?
-				retainAll_(array, CollectionTools.set(iterator), arrayLength) :
+				retainAll_(array, CollectionTools.hashSet(iterator), arrayLength) :
 				newInstance(array, 0);
 	}
 
@@ -2562,7 +2562,7 @@ public final class ArrayTools {
 	 */
 	private static <E> E[] retainAll(E[] array, int arrayLength, Iterator<?> iterator, int iteratorSize) {
 		return iterator.hasNext() ?
-				retainAll_(array, CollectionTools.set(iterator, iteratorSize), arrayLength) :
+				retainAll_(array, CollectionTools.hashSet(iterator, iteratorSize), arrayLength) :
 				newInstance(array, 0);
 	}
 
@@ -2616,7 +2616,7 @@ public final class ArrayTools {
 				array1 :
 				(array2.length == 0) ?
 					newInstance(array1, 0) :
-					retainAll(array1, CollectionTools.set(array2), array1Length);
+					retainAll(array1, CollectionTools.hashSet(array2), array1Length);
 	}
 
 	/**
