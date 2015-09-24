@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -160,15 +162,17 @@ public class Generic2_1JpaMetadataConversionTests
 		EntityMappings entityMappings = getEntityMappings();
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
-		persistenceUnit.convertJavaQueries(entityMappings, progressMonitor);
+		persistenceUnit.convertJavaQueries(entityMappings, this.progressMonitor);
 		
 		// test Java queries are converted to orm.xml and removed from the Java entity
 		assertEquals(2, ((QueryContainer2_1) entityMappings.getQueryContainer()).getNamedStoredProcedureQueriesSize());
 		assertEquals(0, ((QueryContainer2_1) entity.getQueryContainer()).getNamedStoredProcedureQueriesSize());
 		
 		// test the mapping file queries have correct values
-		ListIterator<OrmNamedStoredProcedureQuery2_1> procedureQueries= ((OrmQueryContainer2_1) entityMappings.getQueryContainer()).getNamedStoredProcedureQueries().iterator();
-		OrmNamedStoredProcedureQuery2_1 procedureQuery1 = procedureQueries.next();
+		Iterable<OrmNamedStoredProcedureQuery2_1> queries = ((OrmQueryContainer2_1) entityMappings.getQueryContainer()).getNamedStoredProcedureQueries();
+		queries = IterableTools.sort(queries, JpaNamedContextModel.NAME_COMPARATOR);
+		Iterator<OrmNamedStoredProcedureQuery2_1> queriesIterator = queries.iterator();
+		OrmNamedStoredProcedureQuery2_1 procedureQuery1 = queriesIterator.next();
 		
 		// ----- the first mapping file query -----
 		
@@ -218,7 +222,7 @@ public class Generic2_1JpaMetadataConversionTests
 			assertEquals("bbb", nq1hint2.getValue());
 		
 		// ----- the second mapping file query -----
-		OrmNamedStoredProcedureQuery2_1 procedureQuery2 = procedureQueries.next();
+		OrmNamedStoredProcedureQuery2_1 procedureQuery2 = queriesIterator.next();
 		assertEquals("nq2", (procedureQuery2.getName()));
 		assertEquals("efgh", (procedureQuery2.getProcedureName()));
 		assertEquals(1,  procedureQuery2.getParametersSize());
@@ -307,8 +311,10 @@ public class Generic2_1JpaMetadataConversionTests
 		assertEquals(0, ((QueryContainer2_1) mappedSuperclass.getQueryContainer()).getNamedStoredProcedureQueriesSize());
 		
 		// test the mapping file queries have correct values
-		ListIterator<OrmNamedStoredProcedureQuery2_1> procedureQueries= ((OrmQueryContainer2_1) entityMappings.getQueryContainer()).getNamedStoredProcedureQueries().iterator();
-		OrmNamedStoredProcedureQuery2_1 procedureQuery1 = procedureQueries.next();
+		Iterable<OrmNamedStoredProcedureQuery2_1> queries = ((OrmQueryContainer2_1) entityMappings.getQueryContainer()).getNamedStoredProcedureQueries();
+		queries = IterableTools.sort(queries, JpaNamedContextModel.NAME_COMPARATOR);
+		Iterator<OrmNamedStoredProcedureQuery2_1> queriesIterator = queries.iterator();
+		OrmNamedStoredProcedureQuery2_1 procedureQuery1 = queriesIterator.next();
 		
 		// ----- the first mapping file query -----
 		
@@ -358,7 +364,7 @@ public class Generic2_1JpaMetadataConversionTests
 			assertEquals("bbb", nq1hint2.getValue());
 		
 		// ----- the second mapping file query -----
-		OrmNamedStoredProcedureQuery2_1 procedureQuery2 = procedureQueries.next();
+		OrmNamedStoredProcedureQuery2_1 procedureQuery2 = queriesIterator.next();
 		assertEquals("nq2", (procedureQuery2.getName()));
 		assertEquals("efgh", (procedureQuery2.getProcedureName()));
 		assertEquals(1,  procedureQuery2.getParametersSize());

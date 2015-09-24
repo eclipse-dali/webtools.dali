@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -190,8 +191,10 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals(0, entity.getQueryContainer().getNamedQueriesSize());
 		
 		// test the mapping file queries have correct values
-		ListIterator<OrmNamedQuery> namedQueries= entityMappings.getQueryContainer().getNamedQueries().iterator();
-		OrmNamedQuery nq1 = namedQueries.next();
+		Iterable<OrmNamedQuery> queries = entityMappings.getQueryContainer().getNamedQueries();
+		queries = IterableTools.sort(queries, JpaNamedContextModel.NAME_COMPARATOR);
+		Iterator<OrmNamedQuery> queriesIterator = queries.iterator();
+		OrmNamedQuery nq1 = queriesIterator.next();
 		
 		// test the first mapping file query
 		assertEquals("nq1", (nq1.getName()));
@@ -212,7 +215,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals("bbb", nq1hint2.getValue());
 		
 		// test the second mapping file query
-		OrmNamedQuery nq2 = namedQueries.next();
+		OrmNamedQuery nq2 = queriesIterator.next();
 		assertEquals("nq2", (nq2.getName()));
 		assertEquals("efgh", (nq2.getQuery()));
 		assertEquals(1, (nq2.getHintsSize()));
@@ -353,8 +356,10 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals(0, mappedSuperclass.getQueryContainer().getNamedQueriesSize());
 		
 		// test the mapping file queries have correct values
-		ListIterator<OrmNamedQuery> namedQueries= entityMappings.getQueryContainer().getNamedQueries().iterator();
-		OrmNamedQuery nq1 = namedQueries.next();
+		Iterable<OrmNamedQuery> queries = entityMappings.getQueryContainer().getNamedQueries();
+		queries = IterableTools.sort(queries, JpaNamedContextModel.NAME_COMPARATOR);
+		Iterator<OrmNamedQuery> queriesIterator = queries.iterator();
+		OrmNamedQuery nq1 = queriesIterator.next();
 		
 		// test the first mapping file query
 		assertEquals("nq1", (nq1.getName()));
@@ -375,7 +380,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals("bbb", nq1hint2.getValue());
 		
 		// test the second mapping file query
-		OrmNamedQuery nq2 = namedQueries.next();
+		OrmNamedQuery nq2 = queriesIterator.next();
 		assertEquals("nq2", (nq2.getName()));
 		assertEquals("efgh", (nq2.getQuery()));
 		assertEquals(1, (nq2.getHintsSize()));
