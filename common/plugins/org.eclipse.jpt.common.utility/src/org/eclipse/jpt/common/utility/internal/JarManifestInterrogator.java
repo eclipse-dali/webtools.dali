@@ -106,6 +106,12 @@ public class JarManifestInterrogator {
 			return result;
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
+		} finally {
+			try {
+				jarFile.close();
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
 		}
 	}
 
