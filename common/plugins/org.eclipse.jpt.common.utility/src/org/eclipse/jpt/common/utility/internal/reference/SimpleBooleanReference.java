@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -77,8 +77,20 @@ public class SimpleBooleanReference
 		return this.value = ! this.value;
 	}
 
-	public boolean setNot(boolean v) {
-		return this.setValue( ! v);
+	public boolean and(boolean b) {
+		return this.value &= b;
+	}
+
+	public boolean or(boolean b) {
+		return this.value |= b;
+	}
+
+	public boolean xor(boolean b) {
+		return this.value ^= b;
+	}
+
+	public boolean setNot(boolean b) {
+		return this.setValue( ! b);
 	}
 
 	public boolean setTrue() {
@@ -87,6 +99,27 @@ public class SimpleBooleanReference
 
 	public boolean setFalse() {
 		return this.setValue(false);
+	}
+
+	public boolean commit(boolean newValue, boolean expectedValue) {
+		if (this.value == expectedValue) {
+			this.value = newValue;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean swap(ModifiableBooleanReference other) {
+	    if (other == this) {
+	        return this.value;
+	    }
+	    boolean thisValue = this.value;
+	    boolean otherValue = other.getValue();
+	    if (thisValue != otherValue) {
+	        other.setValue(thisValue);
+	        this.value = otherValue;
+	    }
+	    return otherValue;
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -131,7 +131,6 @@ public class SynchronizedBoolean
 
 	/**
 	 * If the value changes, all waiting threads are notified.
-	 * Return the new value.
 	 */
 	public boolean flip() {
 		synchronized (this.mutex) {
@@ -140,7 +139,6 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Set the value to <code>value & b</code> and return the new value.
 	 * If the value changes, all waiting threads are notified.
 	 */
 	public boolean and(boolean b) {
@@ -150,7 +148,6 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Set the value to <code>value | b</code> and return the new value.
 	 * If the value changes, all waiting threads are notified.
 	 */
 	public boolean or(boolean b) {
@@ -160,7 +157,6 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Set the value to <code>value ^ b</code> and return the new value.
 	 * If the value changes, all waiting threads are notified.
 	 */
 	public boolean xor(boolean b) {
@@ -200,18 +196,46 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Set the value to the specified new value if it is currently the specified
-	 * expected value. If the value changes, all waiting threads are notified.
-	 * Return whether the commit was successful.
+	 * If the value changes, all waiting threads are notified.
 	 */
-	public boolean commit(boolean expectedValue, boolean newValue) {
+	public boolean commit(boolean newValue, boolean expectedValue) {
 		synchronized (this.mutex) {
-			boolean success = (this.value == expectedValue);
-			if (success) {
-				this.setValue_(newValue);
-			}
-			return success;
+			return this.commit_(newValue, expectedValue);
 		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private boolean commit_(boolean newValue, boolean expectedValue) {
+		if (this.value == expectedValue) {
+			this.setValue_(newValue);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * If the value changes, all waiting threads are notified.
+	 */
+	public boolean swap(ModifiableBooleanReference other) {
+		if (other == this) {
+			return this.getValue();
+		}
+		if (other instanceof SynchronizedBoolean) {
+			return this.swap_((SynchronizedBoolean) other);
+		}
+
+		boolean thisValue = false;
+	    boolean otherValue = other.getValue();
+		synchronized (this.mutex) {
+		    thisValue = this.value;
+		    if (thisValue != otherValue) {
+		        this.setChangedValue_(otherValue);
+		    }
+		}
+        other.setValue(thisValue);
+	    return otherValue;
 	}
 
 	/**
@@ -223,9 +247,13 @@ public class SynchronizedBoolean
 	 * Return the new value.
 	 */
 	public boolean swap(SynchronizedBoolean other) {
-		if (other == this) {
-			return this.getValue();
-		}
+		return (other == this) ? this.getValue() : this.swap_(other);
+	}
+
+	/**
+	 * Pre-condition: not same object
+	 */
+	private boolean swap_(SynchronizedBoolean other) {
 		boolean thisFirst = System.identityHashCode(this) < System.identityHashCode(other);
 		SynchronizedBoolean first = thisFirst ? this : other;
 		SynchronizedBoolean second = thisFirst ? other : this;
@@ -319,6 +347,17 @@ public class SynchronizedBoolean
 
 	/**
 	 * Suspend the current thread until the <code>boolean</code> value
+	 * changes to the specified value,
+	 * then change it back to the NOT of the specified value and continue executing.
+	 * If the <code>boolean</code> value is already the specified value,
+	 * set the value to the NOT of the specified value immediately.
+	 */
+	public void waitToSetValueNot(boolean b) throws InterruptedException {
+		this.waitToSetValue( ! b);
+	}
+
+	/**
+	 * Suspend the current thread until the <code>boolean</code> value
 	 * changes to <code>false</code>,
 	 * then change it back to <code>true</code> and continue executing.
 	 * If the <code>boolean</code> value is already <code>false</code>,
@@ -346,11 +385,9 @@ public class SynchronizedBoolean
 	 * If the <code>boolean</code> value is already equal to the specified
 	 * value, execute the specified command immediately.
 	 */
-	public void whenEqual(boolean b, InterruptibleCommand command) throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitUntilValueIs_(b);
-			command.execute();
-		}
+	public void whenValueIs(boolean b, InterruptibleCommand command) throws InterruptedException {
+		this.waitUntilValueIs(b);
+		command.execute();
 	}
 
 	/**
@@ -360,8 +397,8 @@ public class SynchronizedBoolean
 	 * If the <code>boolean</code> value is already the NOT of the specified
 	 * value, execute the specified command immediately.
 	 */
-	public void whenNotEqual(boolean b, InterruptibleCommand command) throws InterruptedException {
-		this.whenEqual( ! b, command);
+	public void whenValueIsNot(boolean b, InterruptibleCommand command) throws InterruptedException {
+		this.whenValueIs( ! b, command);
 	}
 
 	/**
@@ -371,8 +408,8 @@ public class SynchronizedBoolean
 	 * If the <code>boolean</code> value is already <code>true</code>,
 	 * execute the specified command immediately.
 	 */
-	public void whenTrue(InterruptibleCommand command) throws InterruptedException {
-		this.whenEqual(true, command);
+	public void whenTrueExecute(InterruptibleCommand command) throws InterruptedException {
+		this.whenValueIs(true, command);
 	}
 
 	/**
@@ -382,8 +419,8 @@ public class SynchronizedBoolean
 	 * If the <code>boolean</code> value is already <code>false</code>,
 	 * execute the specified command immediately.
 	 */
-	public void whenFalse(InterruptibleCommand command) throws InterruptedException {
-		this.whenEqual(false, command);
+	public void whenFalseExecute(InterruptibleCommand command) throws InterruptedException {
+		this.whenValueIs(false, command);
 	}
 
 
@@ -469,7 +506,7 @@ public class SynchronizedBoolean
 	 * Suspend the current thread until the <code>boolean</code> value changes
 	 * to the NOT of the specified value, then change it back to the specified
 	 * value and continue executing. If the <code>boolean</code> value does not
-	 * change to <code>false</code> before the time-out, simply continue
+	 * change to the NOT of the specified before the time-out, simply continue
 	 * executing without changing the value.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
 	 * if the value was set to the specified value; return <code>false</code>
@@ -487,6 +524,24 @@ public class SynchronizedBoolean
 			}
 			return success;
 		}
+	}
+
+	/**
+	 * Suspend the current thread until the <code>boolean</code> value changes
+	 * to the specified value, then change it back to the NOT of the specified
+	 * value and continue executing. If the <code>boolean</code> value does not
+	 * change to the specified before the time-out, simply continue
+	 * executing without changing the value.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value was set to the NOT of the specified value; return <code>false</code>
+	 * if a time-out occurred.
+	 * If the <code>boolean</code> value is already
+	 * the specified value, set the value to the NOT of the specified value
+	 * immediately and return <code>true</code>.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public void waitToSetValueNot(boolean b, long timeout) throws InterruptedException {
+		this.waitToSetValue( ! b, timeout);
 	}
 
 	/**
@@ -534,14 +589,15 @@ public class SynchronizedBoolean
 	 * execute the specified command immediately and return <code>true</code>.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean whenEqual(boolean b, InterruptibleCommand command, long timeout) throws InterruptedException {
+	public boolean whenValueIs(boolean b, InterruptibleCommand command, long timeout) throws InterruptedException {
+		boolean success = false;
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIs_(b, timeout);
-			if (success) {
-				command.execute();
-			}
-			return success;
+			success = this.waitUntilValueIs_(b, timeout);
 		}
+		if (success) {
+			command.execute();
+		}
+		return success;
 	}
 
 	/**
@@ -555,8 +611,8 @@ public class SynchronizedBoolean
 	 * execute the specified command immediately and return <code>true</code>.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean whenNotEqual(boolean b, InterruptibleCommand command, long timeout) throws InterruptedException {
-		return this.whenEqual( ! b, command, timeout);
+	public boolean whenValueIsNot(boolean b, InterruptibleCommand command, long timeout) throws InterruptedException {
+		return this.whenValueIs( ! b, command, timeout);
 	}
 
 	/**
@@ -570,8 +626,8 @@ public class SynchronizedBoolean
 	 * execute the specified command immediately and return <code>true</code>.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean whenTrue(InterruptibleCommand command, long timeout) throws InterruptedException {
-		return this.whenEqual(true, command, timeout);
+	public boolean whenTrueExecute(InterruptibleCommand command, long timeout) throws InterruptedException {
+		return this.whenValueIs(true, command, timeout);
 	}
 
 	/**
@@ -585,8 +641,8 @@ public class SynchronizedBoolean
 	 * execute the specified command immediately and return <code>true</code>.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean whenFalse(InterruptibleCommand command, long timeout) throws InterruptedException {
-		return this.whenEqual(false, command, timeout);
+	public boolean whenFalseExecute(InterruptibleCommand command, long timeout) throws InterruptedException {
+		return this.whenValueIs(false, command, timeout);
 	}
 
 

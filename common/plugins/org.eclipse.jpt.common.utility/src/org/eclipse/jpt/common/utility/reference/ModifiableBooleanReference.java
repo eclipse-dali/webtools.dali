@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,10 +35,31 @@ public interface ModifiableBooleanReference
 	boolean flip();
 
 	/**
+	 * Set the <code>boolean</code> value to the AND of the current value and
+	 * the specified value.
+	 * Return the new value.
+	 */
+	boolean and(boolean b);
+
+	/**
+	 * Set the <code>boolean</code> value to the OR of the current value and
+	 * the specified value.
+	 * Return the new value.
+	 */
+	boolean or(boolean b);
+
+	/**
+	 * Set the <code>boolean</code> value to the XOR of the current value and
+	 * the specified value.
+	 * Return the new value.
+	 */
+	boolean xor(boolean b);
+
+	/**
 	 * Set the <code>boolean</code> value to the NOT of the specified value.
 	 * Return the previous value.
 	 */
-	boolean setNot(boolean v);
+	boolean setNot(boolean b);
 
 	/**
 	 * Set the <code>boolean</code> value to <code>true</code>.
@@ -51,4 +72,18 @@ public interface ModifiableBooleanReference
 	 * Return the previous value.
 	 */
 	boolean setFalse();
+
+	/**
+	 * Set the <code>boolean</code> value to the specified new value if it is
+	 * currently the specified expected value.
+	 * Return whether the set was successful.
+	 */
+	boolean commit(boolean newValue, boolean expectedValue);
+
+	/**
+ 	 * Swap the <code>boolean</code> value of the <code>boolean</code> reference with
+ 	 * the value of the specified <code>boolean</code> reference.
+ 	 * Return the new value.
+	 */
+	boolean swap(ModifiableBooleanReference other);
 }
