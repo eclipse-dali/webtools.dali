@@ -529,22 +529,24 @@ public final class IteratorTools {
 	/**
 	 * Return the iterator after it has been "sorted".
 	 */
-	public static <E> ListIterator<E> sort(Iterator<? extends E> iterator, Comparator<? super E> comparator) {
+	@SuppressWarnings("unchecked")
+	public static <E2, E1 extends E2> ListIterator<E2> sort(Iterator<E1> iterator, Comparator<? super E1> comparator) {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return ListTools.sort(ListTools.arrayList(iterator), comparator).listIterator();
+		return (ListIterator<E2>) ListTools.sort(ListTools.arrayList(iterator), comparator).listIterator();
 	}
 
 	/**
 	 * Return the iterator after it has been "sorted".
 	 * The specified iterator size is a performance hint.
 	 */
-	public static <E> ListIterator<E> sort(Iterator<? extends E> iterator, Comparator<? super E> comparator, int iteratorSize) {
+	@SuppressWarnings("unchecked")
+	public static <E2, E1 extends E2> ListIterator<E2> sort(Iterator<E1> iterator, Comparator<? super E1> comparator, int iteratorSize) {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return ListTools.sort(ListTools.arrayList(iterator, iteratorSize), comparator).listIterator();
+		return (ListIterator<E2>) ListTools.sort(ListTools.arrayList(iterator, iteratorSize), comparator).listIterator();
 	}
 
 	/**

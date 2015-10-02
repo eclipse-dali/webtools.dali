@@ -363,16 +363,18 @@ public final class EnumerationTools {
 	/**
 	 * Return the enumeration after it has been "sorted".
 	 */
-	public static <E> Enumeration<E> sort(Enumeration<? extends E> enumeration, Comparator<? super E> comparator) {
-		return ListTools.sort(CollectionTools.vector(iterator(enumeration)), comparator).elements();
+	@SuppressWarnings("unchecked")
+	public static <E2, E1 extends E2> Enumeration<E2> sort(Enumeration<E1> enumeration, Comparator<? super E1> comparator) {
+		return (Enumeration<E2>) ListTools.sort(CollectionTools.vector(iterator(enumeration)), comparator).elements();
 	}
 
 	/**
 	 * Return the enumeration after it has been "sorted".
 	 * The specified enumeration size is a performance hint.
 	 */
-	public static <E> Enumeration<E> sort(Enumeration<? extends E> enumeration, Comparator<? super E> comparator, int enumerationSize) {
-		return ListTools.sort(CollectionTools.vector(iterator(enumeration), enumerationSize), comparator).elements();
+	@SuppressWarnings("unchecked")
+	public static <E2, E1 extends E2> Enumeration<E2> sort(Enumeration<E1> enumeration, Comparator<? super E1> comparator, int enumerationSize) {
+		return (Enumeration<E2>) ListTools.sort(CollectionTools.vector(iterator(enumeration), enumerationSize), comparator).elements();
 	}
 
 	/**

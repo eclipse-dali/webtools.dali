@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -592,7 +592,7 @@ public class IteratorToolsTests
 		ss.addAll(list);
 
 		Iterator<String> iterator1 = list.iterator();
-		Iterator<String> iterator2 = IteratorTools.<String>sort(iterator1, ComparatorTools.<String>reverseComparator());
+		Iterator<String> iterator2 = IteratorTools.<String, String>sort(iterator1, ComparatorTools.<String>reverseComparator());
 		assertTrue(IteratorTools.elementsAreEqual(ss.iterator(), iterator2));
 	}
 
@@ -607,7 +607,7 @@ public class IteratorToolsTests
 		ss.addAll(list);
 
 		Iterator<String> iterator1 = list.iterator();
-		Iterator<String> iterator2 = IteratorTools.<String>sort(iterator1, ComparatorTools.<String>reverseComparator(), 77);
+		Iterator<String> iterator2 = IteratorTools.<String, String>sort(iterator1, ComparatorTools.<String>reverseComparator(), 77);
 		assertTrue(IteratorTools.elementsAreEqual(ss.iterator(), iterator2));
 	}
 

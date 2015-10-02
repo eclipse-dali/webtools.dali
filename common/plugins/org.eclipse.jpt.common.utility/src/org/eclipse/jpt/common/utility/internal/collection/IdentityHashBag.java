@@ -724,7 +724,7 @@ public class IdentityHashBag<E>
 
 
 	private class EntryIterator
-		implements Iterator<Entry>
+		implements Iterator<Bag.Entry<E>>
 	{
 		private int index = IdentityHashBag.this.table.length;	// start at the end of the table
 		private Entry nextEntry = null;

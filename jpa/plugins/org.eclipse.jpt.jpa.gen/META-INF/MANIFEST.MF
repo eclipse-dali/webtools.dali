@@ -8,7 +8,7 @@ Bundle-Activator: org.eclipse.jpt.jpa.gen.internal.plugin.JptJpaGenPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jpt.common.utility;bundle-version="[2.0.0,3.0.0)",
