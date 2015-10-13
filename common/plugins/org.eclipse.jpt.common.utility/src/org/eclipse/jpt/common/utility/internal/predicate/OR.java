@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,7 @@ public class OR<V>
 	 * Construct a predicate that will evaluate to <code>true</code> if <em>any</em>
 	 * the specified predicates evaluates to <code>true</code>.
 	 */
+	@SafeVarargs
 	public OR(Predicate<? super V>... predicates) {
 		super(predicates);
 	}

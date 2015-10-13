@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,12 +24,13 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 public abstract class AbstractCompoundPredicate<V>
 	implements CompoundPredicate<V>
 {
-	protected Predicate<? super V>[] predicates;
+	protected final Predicate<? super V>[] predicates;
 
 
 	/**
 	 * Construct a compound predicate for the specified list of predicates.
 	 */
+	@SafeVarargs
 	protected AbstractCompoundPredicate(Predicate<? super V>... predicates) {
 		super();
 		if (ArrayTools.isOrContainsNull(predicates)) {
@@ -66,13 +67,14 @@ public abstract class AbstractCompoundPredicate<V>
 		StringBuilderTools.appendHashCodeToString(sb, this);
 		sb.append('(');
 		if (this.predicates.length > 0) {
+			String operatorString = this.operatorString();
 			for (Predicate<? super V> predicate : this.predicates) {
 				sb.append(predicate);
 				sb.append(' ');
-				sb.append(this.operatorString());
+				sb.append(operatorString);
 				sb.append(' ');
 			}
-			sb.setLength(sb.length() - this.operatorString().length() - 2);
+			sb.setLength(sb.length() - operatorString.length() - 2);
 		}
 		sb.append(')');
 		return sb.toString();

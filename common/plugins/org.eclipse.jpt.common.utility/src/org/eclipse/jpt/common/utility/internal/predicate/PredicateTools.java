@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -115,13 +115,14 @@ public final class PredicateTools {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> CompoundPredicate<V> and(Iterator<Predicate<? super V>> predicates) {
-		return and(IteratorTools.toArray(predicates, EMPTY_ARRAY));
+		return and((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
 	}
 
 	/**
 	 * Return a predicate that will AND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
+	@SafeVarargs
 	public static <V> CompoundPredicate<V> and(Predicate<? super V>... predicates) {
 		return new AND<V>(predicates);
 	}
@@ -143,13 +144,14 @@ public final class PredicateTools {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> CompoundPredicate<V> or(Iterator<Predicate<? super V>> predicates) {
-		return or(IteratorTools.toArray(predicates, EMPTY_ARRAY));
+		return or((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
 	}
 
 	/**
 	 * Return a predicate that will OR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
+	@SafeVarargs
 	public static <V> CompoundPredicate<V> or(Predicate<? super V>... predicates) {
 		return new OR<V>(predicates);
 	}
@@ -182,13 +184,14 @@ public final class PredicateTools {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> nand(Iterator<Predicate<? super V>> predicates) {
-		return nand(IteratorTools.toArray(predicates, EMPTY_ARRAY));
+		return nand((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
 	}
 
 	/**
 	 * Return a predicate that will NAND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
+	@SafeVarargs
 	public static <V> Predicate<V> nand(Predicate<? super V>... predicates) {
 		return not(and(predicates));
 	}
@@ -210,13 +213,14 @@ public final class PredicateTools {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> nor(Iterator<Predicate<? super V>> predicates) {
-		return nor(IteratorTools.toArray(predicates, EMPTY_ARRAY));
+		return nor((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
 	}
 
 	/**
 	 * Return a predicate that will NOR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
+	@SafeVarargs
 	public static <V> Predicate<V> nor(Predicate<? super V>... predicates) {
 		return not(or(predicates));
 	}

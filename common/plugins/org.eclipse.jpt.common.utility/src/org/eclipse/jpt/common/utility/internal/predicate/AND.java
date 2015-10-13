@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,7 @@ public class AND<V>
 	 * Construct a predicate that will evaluate to <code>true</code> if <em>all</em>
 	 * the specified predicates evaluate to <code>true</code>.
 	 */
+	@SafeVarargs
 	public AND(Predicate<? super V>... predicates) {
 		super(predicates);
 	}
