@@ -378,51 +378,6 @@ public class SynchronizedBoolean
 		this.waitToSetValue(false);
 	}
 
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value
-	 * changes to the specified value,
-	 * then execute the specified command.
-	 * If the <code>boolean</code> value is already equal to the specified
-	 * value, execute the specified command immediately.
-	 */
-	public void whenValueIs(boolean b, InterruptibleCommand command) throws InterruptedException {
-		this.waitUntilValueIs(b);
-		command.execute();
-	}
-
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value
-	 * changes to the NOT of the specified value,
-	 * then execute the specified command.
-	 * If the <code>boolean</code> value is already the NOT of the specified
-	 * value, execute the specified command immediately.
-	 */
-	public void whenValueIsNot(boolean b, InterruptibleCommand command) throws InterruptedException {
-		this.whenValueIs( ! b, command);
-	}
-
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value
-	 * changes to <code>true</code>,
-	 * then execute the specified command.
-	 * If the <code>boolean</code> value is already <code>true</code>,
-	 * execute the specified command immediately.
-	 */
-	public void whenTrueExecute(InterruptibleCommand command) throws InterruptedException {
-		this.whenValueIs(true, command);
-	}
-
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value
-	 * changes to <code>false</code>,
-	 * then execute the specified command.
-	 * If the <code>boolean</code> value is already <code>false</code>,
-	 * execute the specified command immediately.
-	 */
-	public void whenFalseExecute(InterruptibleCommand command) throws InterruptedException {
-		this.whenValueIs(false, command);
-	}
-
 
 	// ********** timed waits **********
 
@@ -576,73 +531,6 @@ public class SynchronizedBoolean
 	 */
 	public boolean waitToSetFalse(long timeout) throws InterruptedException {
 		return this.waitToSetValue(false, timeout);
-	}
-
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value changes
-	 * to the specified value or the specified time-out occurs;
-	 * then, if a time-out did not occur, execute the specified command.
-	 * The time-out is specified in milliseconds. Return <code>true</code> if
-	 * the command was executed;
-	 * return <code>false</code> if a time-out occurred.
-	 * If the <code>boolean</code> value is already the specified value,
-	 * execute the specified command immediately and return <code>true</code>.
-	 * If the time-out is zero, wait indefinitely.
-	 */
-	public boolean whenValueIs(boolean b, InterruptibleCommand command, long timeout) throws InterruptedException {
-		boolean success = false;
-		synchronized (this.mutex) {
-			success = this.waitUntilValueIs_(b, timeout);
-		}
-		if (success) {
-			command.execute();
-		}
-		return success;
-	}
-
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value changes
-	 * to the NOT of the specified value or the specified time-out occurs;
-	 * then, if a time-out did not occur, execute the specified command.
-	 * The time-out is specified in milliseconds. Return <code>true</code> if
-	 * the command was executed;
-	 * return <code>false</code> if a time-out occurred.
-	 * If the <code>boolean</code> value is already the NOT of the specified value,
-	 * execute the specified command immediately and return <code>true</code>.
-	 * If the time-out is zero, wait indefinitely.
-	 */
-	public boolean whenValueIsNot(boolean b, InterruptibleCommand command, long timeout) throws InterruptedException {
-		return this.whenValueIs( ! b, command, timeout);
-	}
-
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value changes
-	 * to <code>true</code> or the specified time-out occurs;
-	 * then, if a time-out did not occur, execute the specified command.
-	 * The time-out is specified in milliseconds. Return <code>true</code> if
-	 * the command was executed;
-	 * return <code>false</code> if a time-out occurred.
-	 * If the <code>boolean</code> value is already <code>true</code>,
-	 * execute the specified command immediately and return <code>true</code>.
-	 * If the time-out is zero, wait indefinitely.
-	 */
-	public boolean whenTrueExecute(InterruptibleCommand command, long timeout) throws InterruptedException {
-		return this.whenValueIs(true, command, timeout);
-	}
-
-	/**
-	 * Suspend the current thread until the <code>boolean</code> value changes
-	 * to <code>false</code> or the specified time-out occurs;
-	 * then, if a time-out did not occur, execute the specified command.
-	 * The time-out is specified in milliseconds. Return <code>true</code> if
-	 * the command was executed;
-	 * return <code>false</code> if a time-out occurred.
-	 * If the <code>boolean</code> value is already <code>false</code>,
-	 * execute the specified command immediately and return <code>true</code>.
-	 * If the time-out is zero, wait indefinitely.
-	 */
-	public boolean whenFalseExecute(InterruptibleCommand command, long timeout) throws InterruptedException {
-		return this.whenValueIs(false, command, timeout);
 	}
 
 
