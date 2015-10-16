@@ -37,6 +37,22 @@ public class IntPredicateTools {
 	}
 
 	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * if the variable is even.
+	 */
+	public static IntPredicate isEven() {
+		return IsEven.instance();
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * if the variable is odd.
+	 */
+	public static IntPredicate isOdd() {
+		return IsOdd.instance();
+	}
+
+	/**
 	 * Return a predicate that will throw an exception when it is
 	 * evaluated.
 	 */
@@ -95,6 +111,54 @@ public class IntPredicateTools {
 	 */
 	public static IntPredicate isLessThanOrEqual(int criterion) {
 		return new IsLessThanOrEqual(criterion);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any variable that has set the specified flag.
+	 */
+	public static IntPredicate flagIsSet(int flag) {
+		return new FlagIsSet(flag);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any variable that has cleared the specified flag.
+	 */
+	public static IntPredicate flagIsOff(int flag) {
+		return new FlagIsOff(flag);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any variable that has set <em>only</em> the specified flag.
+	 */
+	public static IntPredicate onlyFlagIsSet(int flag) {
+		return new OnlyFlagIsSet(flag);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any variable that has cleared <em>only</em> the specified flag.
+	 */
+	public static IntPredicate onlyFlagIsOff(int flag) {
+		return new OnlyFlagIsOff(flag);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any variable that has set <em>any</em> of the specified flags.
+	 */
+	public static IntPredicate anyFlagsAreSet(int flags) {
+		return new AnyFlagsAreSet(flags);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any variable that has cleared <em>any</em> of the specified flags.
+	 */
+	public static IntPredicate anyFlagsAreOff(int flags) {
+		return new AnyFlagsAreOff(flags);
 	}
 
 
