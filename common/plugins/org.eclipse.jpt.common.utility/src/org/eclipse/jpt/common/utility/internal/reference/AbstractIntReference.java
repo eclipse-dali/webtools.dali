@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.reference;
 
+import org.eclipse.jpt.common.utility.predicate.IntPredicate;
 import org.eclipse.jpt.common.utility.reference.IntReference;
 
 /**
@@ -25,12 +26,12 @@ public abstract class AbstractIntReference
 		super();
 	}
 
-	public boolean equals(int v) {
-		return this.getValue() == v;
+	public boolean equals(int i) {
+		return this.getValue() == i;
 	}
 
-	public boolean notEqual(int v) {
-		return this.getValue() != v;
+	public boolean notEqual(int i) {
+		return this.getValue() != i;
 	}
 
 	public boolean isZero() {
@@ -41,20 +42,20 @@ public abstract class AbstractIntReference
 		return this.getValue() != 0;
 	}
 
-	public boolean isGreaterThan(int v) {
-		return this.getValue() > v;
+	public boolean isGreaterThan(int i) {
+		return this.getValue() > i;
 	}
 
-	public boolean isGreaterThanOrEqual(int v) {
-		return this.getValue() >= v;
+	public boolean isGreaterThanOrEqual(int i) {
+		return this.getValue() >= i;
 	}
 
-	public boolean isLessThan(int v) {
-		return this.getValue() < v;
+	public boolean isLessThan(int i) {
+		return this.getValue() < i;
 	}
 
-	public boolean isLessThanOrEqual(int v) {
-		return this.getValue() <= v;
+	public boolean isLessThanOrEqual(int i) {
+		return this.getValue() <= i;
 	}
 
 	public boolean isPositive() {
@@ -73,56 +74,45 @@ public abstract class AbstractIntReference
 		return this.isGreaterThanOrEqual(0);
 	}
 
-	public int abs() {
-		return Math.abs(this.getValue());
+	public boolean isMemberOf(IntPredicate predicate) {
+		return predicate.evaluate(this.getValue());
 	}
 
-	public int neg() {
-		return -this.getValue();
-	}
-
-	public int add(int v) {
-		return this.getValue() + v;
-	}
-
-	public int subtract(int v) {
-		return this.getValue() - v;
-	}
-
-	public int multiply(int v) {
-		return this.getValue() * v;
-	}
-
-	public int divide(int v) {
-		return this.getValue() / v;
-	}
-
-	public int remainder(int v) {
-		return this.getValue() % v;
-	}
-
-	public int min(int v) {
-		return Math.min(this.getValue(), v);
-	}
-
-	public int max(int v) {
-		return Math.max(this.getValue(), v);
-	}
-
-	public double pow(int v) {
-		return Math.pow(this.getValue(), v);
+	public boolean isNotMemberOf(IntPredicate predicate) {
+		return ! this.isMemberOf(predicate);
 	}
 
 
-	// ********** Comparable implementation **********
+	// ********** Comparable **********
 
-	public int compareTo(IntReference ref) {
-		int v = ref.getValue();
-		return (this.getValue() < v) ? -1 : ((this.getValue() == v) ? 0 : 1);
+	public int compareTo(IntReference other) {
+		int thisValue = this.getValue();
+		int otherValue = other.getValue();
+		return (thisValue < otherValue) ? -1 : ((thisValue == otherValue) ? 0 : 1);
 	}
 
 
 	// ********** standard methods **********
+
+	/**
+	 * Object identity is critical to int references.
+	 * There is no reason for two different int references to be
+	 * <em>equal</em>.
+	 * 
+	 * @see #equals(int)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	/**
+	 * @see #equals(Object)
+	 */
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 
 	@Override
 	public String toString() {

@@ -21,6 +21,7 @@ public class JptCommonUtilityReferenceTests {
 		TestSuite suite = new TestSuite(JptCommonUtilityReferenceTests.class.getPackage().getName());
 
 		suite.addTestSuite(AbstractBooleanReferenceTests.class);
+		suite.addTestSuite(AbstractIntReferenceTests.class);
 		suite.addTestSuite(SimpleBooleanReferenceTests.class);
 		suite.addTestSuite(SimpleIntReferenceTests.class);
 		suite.addTestSuite(SimpleObjectReferenceTests.class);

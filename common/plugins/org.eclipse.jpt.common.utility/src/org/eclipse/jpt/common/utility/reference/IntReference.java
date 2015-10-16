@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.reference;
+
+import org.eclipse.jpt.common.utility.predicate.IntPredicate;
 
 /**
  * Interface for a container for holding an <code>int</code>.
@@ -32,13 +34,13 @@ public interface IntReference
 	 * Return whether the current <code>int</code> value is equal to the
 	 * specified value.
 	 */
-	boolean equals(int v);
+	boolean equals(int i);
 
 	/**
 	 * Return whether the current <code>int</code> value is not equal to
 	 * the specified value.
 	 */
-	boolean notEqual(int v);
+	boolean notEqual(int i);
 
 	/**
 	 * Return whether the current <code>int</code> value is zero.
@@ -54,25 +56,25 @@ public interface IntReference
 	 * Return whether the current <code>int</code> value is greater than
 	 * the specified value.
 	 */
-	boolean isGreaterThan(int v);
+	boolean isGreaterThan(int i);
 
 	/**
 	 * Return whether the current <code>int</code> value is greater than
 	 * or equal to the specified value.
 	 */
-	boolean isGreaterThanOrEqual(int v);
+	boolean isGreaterThanOrEqual(int i);
 
 	/**
 	 * Return whether the current <code>int</code> value is less than
 	 * the specified value.
 	 */
-	boolean isLessThan(int v);
+	boolean isLessThan(int i);
 
 	/**
 	 * Return whether the current <code>int</code> value is less than
 	 * or equal to the specified value.
 	 */
-	boolean isLessThanOrEqual(int v);
+	boolean isLessThanOrEqual(int i);
 
 	/**
 	 * Return whether the current <code>int</code> value is positive.
@@ -97,56 +99,14 @@ public interface IntReference
 	boolean isNotNegative();
 
 	/**
-	 * Return the absolute value of the current <code>int</code> value.
+	 * Return whether the current <code>int</code> value is a
+	 * member of the set specified by the specified predicate.
 	 */
-	int abs();
+	boolean isMemberOf(IntPredicate predicate);
 
 	/**
-	 * Return the negative value of the current <code>int</code> value.
+	 * Return whether the current <code>int</code> value is not a
+	 * member of the set specified by the specified predicate.
 	 */
-	int neg();
-
-	/**
-	 * Return the current <code>int</code> value plus the specified value.
-	 */
-	int add(int v);
-
-	/**
-	 * Return current <code>int</code> value minus the specified value.
-	 */
-	int subtract(int v);
-
-	/**
-	 * Return current <code>int</code> value multiplied by the specified value.
-	 */
-	int multiply(int v);
-
-	/**
-	 * Return current <code>int</code> value divided by the specified value.
-	 */
-	int divide(int v);
-
-	/**
-	 * Return the remainder of the current <code>int</code> value divided by
-	 * the specified value.
-	 */
-	int remainder(int v);
-
-	/**
-	 * Return the minimum of the current <code>int</code> value and
-	 * the specified value.
-	 */
-	int min(int v);
-
-	/**
-	 * Return the maximum of the current <code>int</code> value and
-	 * the specified value.
-	 */
-	int max(int v);
-
-	/**
-	 * Return the current <code>int</code> value raised to the power
-	 * of the specified value.
-	 */
-	double pow(int v);
+	boolean isNotMemberOf(IntPredicate predicate);
 }

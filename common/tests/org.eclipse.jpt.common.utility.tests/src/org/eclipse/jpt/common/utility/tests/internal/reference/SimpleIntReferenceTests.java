@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,8 +14,9 @@ import org.eclipse.jpt.common.utility.internal.reference.SimpleIntReference;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class SimpleIntReferenceTests extends TestCase {
-
+public class SimpleIntReferenceTests
+	extends TestCase
+{
 	public SimpleIntReferenceTests(String name) {
 		super(name);
 	}
@@ -173,11 +174,11 @@ public class SimpleIntReferenceTests extends TestCase {
 		SimpleIntReference ir;
 		ir = new SimpleIntReference(-3);
 		assertEquals(-3, ir.getValue());
-		assertEquals(3, ir.neg());
+		assertEquals(3, ir.negate());
 
 		ir.setValue(3);
 		assertEquals(3, ir.getValue());
-		assertEquals(-3, ir.neg());
+		assertEquals(-3, ir.negate());
 	}
 
 	public void testSetZero() {
@@ -264,7 +265,8 @@ public class SimpleIntReferenceTests extends TestCase {
 		ir = new SimpleIntReference(25);
 		assertEquals(25, ir.getValue());
 		assertEquals(3, ir.min(3));
-		assertEquals(25, ir.min(33));
+		assertEquals(3, ir.getValue());
+		assertEquals(3, ir.min(33));
 	}
 
 	public void testMaxInt() {
@@ -273,13 +275,6 @@ public class SimpleIntReferenceTests extends TestCase {
 		assertEquals(25, ir.getValue());
 		assertEquals(25, ir.max(3));
 		assertEquals(30, ir.max(30));
-	}
-
-	public void testPowInt() {
-		SimpleIntReference ir;
-		ir = new SimpleIntReference(5);
-		assertEquals(5, ir.getValue());
-		assertTrue(ir.pow(2) == 25L);
 	}
 
 	public void testCompareToIntReference() {
@@ -311,5 +306,4 @@ public class SimpleIntReferenceTests extends TestCase {
 		ir = new SimpleIntReference(5);
 		assertEquals("[5]", ir.toString());
 	}
-
 }

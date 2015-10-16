@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -161,12 +161,12 @@ public class SynchronizedIntTests
 	}
 
 	public void testNeg() throws Exception {
-		assertEquals(0, this.si.neg());
+		assertEquals(0, this.si.negate());
 		assertEquals(0, this.si.getValue());
 		this.si.setValue(this.value);
-		assertEquals(-this.value, this.si.neg());
+		assertEquals(-this.value, this.si.negate());
 		this.si.setValue(-this.value);
-		assertEquals(this.value, this.si.neg());
+		assertEquals(this.value, this.si.negate());
 	}
 
 	public void testSetZero() throws Exception {
