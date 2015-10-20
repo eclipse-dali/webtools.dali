@@ -276,8 +276,8 @@ public final class SimpleIntReference
 	}
 
 	/**
-	 * Object identity is critical to int references.
-	 * There is no reason for two different int references to be
+	 * Object identity is critical to <code>int</code> references.
+	 * There is no reason for two different <code>int</code> references to be
 	 * <em>equal</em>.
 	 * 
 	 * @see #equals(int)

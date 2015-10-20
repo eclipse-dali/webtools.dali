@@ -195,7 +195,13 @@ public abstract class AbstractModifiableIntReference
 	}
 
 	public int swap(ModifiableIntReference other) {
+		if (other == this) {
+			return this.getValue();
+		}
 		int otherValue = other.getValue();
+		if (otherValue == this.getValue()) {
+			return this.getValue();
+		}
 		other.setValue(this.getValue());
 		this.setValue(otherValue);
 		return otherValue;
