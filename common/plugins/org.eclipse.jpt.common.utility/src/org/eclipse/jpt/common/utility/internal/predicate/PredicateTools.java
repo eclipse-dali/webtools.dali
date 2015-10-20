@@ -76,7 +76,7 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will evaluate to <code>true</code>
-	 * for any object {@link Object#equals(Object) equal to} the specified
+	 * for any object {@link Object#equals(Object) equal} to the specified
 	 * criterion. If the criterion is <code>null</code>, the predicate
 	 * will evaluate to <code>true</code> if the variable is also
 	 * <code>null</code>.
@@ -84,6 +84,18 @@ public final class PredicateTools {
 	 */
 	public static <V> Predicate<V> isEqual(V criterion) {
 		return new Equals<V>(criterion);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any object <em>not</em> {@link Object#equals(Object) equal} to the specified
+	 * criterion. If the criterion is <code>null</code>, the predicate
+	 * will evaluate to <code>true</code> if the variable is not
+	 * <code>null</code>.
+	 * @param <V> the type of objects to be evaluated by the predicate
+	 */
+	public static <V> Predicate<V> isNotEqual(V criterion) {
+		return new NOT<V>(isEqual(criterion));
 	}
 
 	/**
@@ -96,6 +108,18 @@ public final class PredicateTools {
 	 */
 	public static <V> Predicate<V> isIdentical(V criterion) {
 		return new IsIdentical<V>(criterion);
+	}
+
+	/**
+	 * Return a predicate that will evaluate to <code>true</code>
+	 * for any object that is <em>not</em> identical (<code>==</code>) the specified
+	 * criterion. If the criterion is <code>null</code>, the predicate
+	 * will evaluate to <code>true</code> if the variable is not
+	 * <code>null</code>.
+	 * @param <V> the type of objects to be evaluated by the predicate
+	 */
+	public static <V> Predicate<V> isNotIdentical(V criterion) {
+		return new NOT<V>(isIdentical(criterion));
 	}
 
 
