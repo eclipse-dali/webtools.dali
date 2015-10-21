@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.internal.reference;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.reference.ModifiableObjectReference;
 
 /**
@@ -47,7 +48,7 @@ public class SimpleObjectReference<V>
 	}
 
 
-	// ********** value **********
+	// ********** ObjectReference **********
 
 	public V getValue() {
 		return this.value;
@@ -61,6 +62,14 @@ public class SimpleObjectReference<V>
 		return ObjectTools.notEquals(this.value, object);
 	}
 
+	public boolean is(Object object) {
+		return this.value == object;
+	}
+
+	public boolean isNot(Object object) {
+		return this.value != object;
+	}
+
 	public boolean isNull() {
 		return this.value == null;
 	}
@@ -68,6 +77,17 @@ public class SimpleObjectReference<V>
 	public boolean isNotNull() {
 		return this.value != null;
 	}
+
+	public boolean isMemberOf(Predicate<? super V> predicate) {
+		return predicate.evaluate(this.value);
+	}
+
+	public boolean isNotMemberOf(Predicate<? super V> predicate) {
+		return ! predicate.evaluate(this.value);
+	}
+
+
+	// ********** ModifiableObjectReference **********
 
 	public V setValue(V value) {
 		V old = this.value;
@@ -77,6 +97,27 @@ public class SimpleObjectReference<V>
 
 	public V setNull() {
 		return this.setValue(null);
+	}
+
+	public boolean commit(V newValue, V expectedValue) {
+		if (ObjectTools.equals(this.value, expectedValue)) {
+			this.value = newValue;
+			return true;
+		}
+		return false;
+	}
+
+	public V swap(ModifiableObjectReference<V> other) {
+		if (other == this) {
+			return this.value;
+		}
+		V otherValue = other.getValue();
+		if (ObjectTools.equals(this.value, otherValue)) {
+			return this.value;
+		}
+		other.setValue(this.value);
+		this.value = otherValue;
+		return otherValue;
 	}
 
 
@@ -91,6 +132,26 @@ public class SimpleObjectReference<V>
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
+	}
+
+	/**
+	 * Object identity is critical to object references.
+	 * There is no reason for two different object references to be
+	 * <em>equal</em>.
+	 * 
+	 * @see #valueEquals(Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	/**
+	 * @see #equals(Object)
+	 */
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	@Override

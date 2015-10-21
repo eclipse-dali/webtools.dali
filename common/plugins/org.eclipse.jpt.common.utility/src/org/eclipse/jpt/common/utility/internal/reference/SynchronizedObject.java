@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.utility.internal.reference;
 import java.io.Serializable;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.reference.ModifiableObjectReference;
 
 /**
@@ -66,7 +68,7 @@ public class SynchronizedObject<V>
 	}
 
 
-	// ********** accessors **********
+	// ********** ObjectReference **********
 
 	public V getValue() {
 		synchronized (this.mutex) {
@@ -75,11 +77,27 @@ public class SynchronizedObject<V>
 	}
 
 	public boolean valueEquals(Object object) {
-		return ObjectTools.equals(this.getValue(), object);
+		synchronized (this.mutex) {
+			return ObjectTools.equals(this.value, object);
+		}
 	}
 
 	public boolean valueNotEqual(Object object) {
-		return ObjectTools.notEquals(this.getValue(), object);
+		synchronized (this.mutex) {
+			return ObjectTools.notEquals(this.value, object);
+		}
+	}
+
+	public boolean is(Object object) {
+		synchronized (this.mutex) {
+			return this.value == object;
+		}
+	}
+
+	public boolean isNot(Object object) {
+		synchronized (this.mutex) {
+			return this.value != object;
+		}
 	}
 
 	public boolean isNull() {
@@ -94,6 +112,21 @@ public class SynchronizedObject<V>
 		}
 	}
 
+	public boolean isMemberOf(Predicate<? super V> predicate) {
+		synchronized (this.mutex) {
+			return predicate.evaluate(this.value);
+		}
+	}
+
+	public boolean isNotMemberOf(Predicate<? super V> predicate) {
+		synchronized (this.mutex) {
+			return ! predicate.evaluate(this.value);
+		}
+	}
+
+
+	// ********** ModifiableObjectReference **********
+
 	/**
 	 * Set the value. If the value changes, all waiting
 	 * threads are notified. Return the previous value.
@@ -105,6 +138,7 @@ public class SynchronizedObject<V>
 	}
 
 	/**
+	 * Return the previous value.
 	 * Pre-condition: synchronized
 	 */
 	private V setValue_(V v) {
@@ -113,6 +147,7 @@ public class SynchronizedObject<V>
 	}
 
 	/**
+	 * Return the previous value.
 	 * Pre-condition: synchronized and new value is different
 	 */
 	private V setChangedValue_(V v) {
@@ -120,6 +155,7 @@ public class SynchronizedObject<V>
 	}
 
 	/**
+	 * Return the previous value.
 	 * Pre-condition: synchronized and new value is different
 	 */
 	private V setValue_(V v, V old) {
@@ -137,20 +173,77 @@ public class SynchronizedObject<V>
 	}
 
 	/**
-	 * If the current value is the specified expected value, set it to the
+	 * If the current value is {@link Object#equals(Object) equal} to
+	 * the specified expected value, set it to the
 	 * specified new value. Return the previous value.
 	 */
-	public V compareAndSwap(V expectedValue, V newValue) {
+	public boolean commit(V newValue, V expectedValue) {
 		synchronized (this.mutex) {
-			return this.compareAndSwap_(expectedValue, newValue);
+			return this.commit_(newValue, expectedValue);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private V compareAndSwap_(V expectedValue, V newValue) {
-		return ObjectTools.equals(this.value, expectedValue) ? this.setValue_(newValue) : this.value;
+	private boolean commit_(V newValue, V expectedValue) {
+		if (ObjectTools.equals(this.value, expectedValue)) {
+			this.setValue_(newValue);
+			return true;
+		}
+		return false;
+	}
+
+	public V swap(ModifiableObjectReference<V> other) {
+		if (other == this) {
+			return this.getValue();
+		}
+		if (other instanceof SynchronizedObject) {
+			return this.swap_((SynchronizedObject<V>) other);
+		}
+
+		V thisValue = null;
+		V otherValue = other.getValue();
+		synchronized (this.mutex) {
+		    thisValue = this.value;
+		    if (ObjectTools.notEquals(thisValue, otherValue)) {
+		        this.setChangedValue_(otherValue);
+		    }
+		}
+        other.setValue(thisValue);
+	    return otherValue;
+	}
+
+	/**
+	 * Atomically swap the value of this synchronized object with the value of
+	 * the specified synchronized object. Make assumptions about the value of
+	 * <em>identity hash code</em> to avoid deadlock when two synchronized
+	 * objects swap values with each other simultaneously.
+	 * If either value changes, the corresponding waiting threads are notified.
+	 * Return the new value.
+	 */
+	public V swap(SynchronizedObject<V> other) {
+		return (other == this) ? this.getValue() : this.swap_(other);
+	}
+
+	/**
+	 * Pre-condition: not same object
+	 */
+	private V swap_(SynchronizedObject<V> other) {
+		boolean thisFirst = System.identityHashCode(this) < System.identityHashCode(other);
+		SynchronizedObject<V> first = thisFirst ? this : other;
+		SynchronizedObject<V> second = thisFirst ? other : this;
+		synchronized (first.mutex) {
+			synchronized (second.mutex) {
+				V thisValue = this.value;
+				V otherValue = other.value;
+				if (ObjectTools.equals(thisValue, otherValue)) {
+					return thisValue;  // nothing changes
+				}
+				other.setChangedValue_(thisValue);
+				return this.setChangedValue_(otherValue);
+			}
+		}
 	}
 
 	/**
@@ -166,43 +259,67 @@ public class SynchronizedObject<V>
 
 	/**
 	 * Suspend the current thread until the value changes
-	 * to the specified value. If the value is already the
-	 * specified value, return immediately.
+	 * to belong to the set specified by the specified predicate.
+	 * If the value already belongs to the set, return immediately.
 	 */
-	public void waitUntilValueIs(V v) throws InterruptedException {
+	public void waitUntil(Predicate<? super V> predicate) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIs_(v);
+			this.waitUntil_(predicate);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void waitUntilValueIs_(V v) throws InterruptedException {
-		while (ObjectTools.notEquals(this.value, v)) {
+	private void waitUntil_(Predicate<? super V> predicate) throws InterruptedException {
+		while ( ! predicate.evaluate(this.value)) {
 			this.mutex.wait();
 		}
 	}
 
 	/**
 	 * Suspend the current thread until the value changes
-	 * to something other than the specified value. If the
-	 * value is already <em>not</em> the specified value,
-	 * return immediately.
+	 * to no longer belong to the set specified by the specified predicate.
+	 * If the value is already outside the set, return immediately.
 	 */
-	public void waitUntilValueIsNot(V v) throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitUntilValueIsNot_(v);
-		}
+	public void waitUntilNot(Predicate<? super V> predicate) throws InterruptedException {
+		this.waitUntil(PredicateTools.not(predicate));
 	}
 
 	/**
-	 * Pre-condition: synchronized
+	 * Suspend the current thread until the value changes
+	 * to be {@link Object#equals(Object) equal} to the specified object.
+	 * If the value is already equal to the specified object, return immediately.
 	 */
-	private void waitUntilValueIsNot_(V v) throws InterruptedException {
-		while (ObjectTools.equals(this.value, v)) {
-			this.mutex.wait();
-		}
+	public void waitUntilValueEquals(V object) throws InterruptedException {
+		this.waitUntil(PredicateTools.isEqual(object));
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to be <em>not</em> {@link Object#equals(Object) equal} to the specified object.
+	 * If the value is already unequal to the specified object, return immediately.
+	 */
+	public void waitUntilValueNotEqual(V object) throws InterruptedException {
+		this.waitUntil(PredicateTools.isNotEqual(object));
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to the specified object. If the value is already the
+	 * specified object, return immediately.
+	 */
+	public void waitUntilValueIs(V object) throws InterruptedException {
+		this.waitUntil(PredicateTools.isIdentical(object));
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to something other than the specified object. If the value is already
+	 * something other than the specified object, return immediately.
+	 */
+	public void waitUntilValueIsNot(V object) throws InterruptedException {
+		this.waitUntil(PredicateTools.isNotIdentical(object));
 	}
 
 	/**
@@ -225,15 +342,16 @@ public class SynchronizedObject<V>
 
 	/**
 	 * Suspend the current thread until the value changes to
-	 * something other than the specified value, then change
+	 * something not {@link Object#equals(Object) equal} to
+	 * the specified value, then change
 	 * it back to the specified value and continue executing.
-	 * If the value is already <em>not</em> the specified value, set
+	 * If the value is already unequal to the specified value, set
 	 * the value immediately.
 	 * Return the previous value.
 	 */
 	public V waitToSetValue(V v) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIsNot_(v);
+			this.waitUntil_(PredicateTools.isNotEqual(v));
 			return this.setChangedValue_(v);
 		}
 	}
@@ -252,15 +370,16 @@ public class SynchronizedObject<V>
 
 	/**
 	 * Suspend the current thread until the value changes to
-	 * the specified expected value, then change it
+	 * be {@link Object#equals(Object) equal} to the specified
+	 * expected value, then change it
 	 * to the specified new value and continue executing.
-	 * If the value is already the specified expected value,
+	 * If the value is already equal to the specified expected value,
 	 * set the value to the specified new value immediately.
 	 * Return the previous value.
 	 */
-	public V waitToSwap(V expectedValue, V newValue) throws InterruptedException {
+	public V waitToCommit(V newValue, V expectedValue) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIs_(expectedValue);
+			this.waitUntil_(PredicateTools.isEqual(expectedValue));
 			return this.setValue_(newValue);
 		}
 	}
@@ -270,75 +389,112 @@ public class SynchronizedObject<V>
 
 	/**
 	 * Suspend the current thread until the value changes
-	 * to the specified value or the specified time-out occurs.
+	 * to belong to the set specified by the specified predicate
+	 * or the specified time-out occurs.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
-	 * if the specified value was achieved; return <code>false</code>
+	 * if the value became a member of the set; return <code>false</code>
 	 * if a time-out occurred.
-	 * If the value is already the specified value, return true immediately.
+	 * If the value already belongs to the set, return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitUntilValueIs(V v, long timeout) throws InterruptedException {
+	public boolean waitUntil(Predicate<? super V> predicate, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			return this.waitUntilValueIs_(v, timeout);
+			return this.waitUntil_(predicate, timeout);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private boolean waitUntilValueIs_(V v, long timeout) throws InterruptedException {
+	private boolean waitUntil_(Predicate<? super V> predicate, long timeout) throws InterruptedException {
 		if (timeout == 0L) {
-			this.waitUntilValueIs_(v);  // wait indefinitely until notified
+			this.waitUntil_(predicate);  // wait indefinitely until notified
 			return true;  // if it ever comes back, the condition was met
 		}
 
 		long stop = System.currentTimeMillis() + timeout;
 		long remaining = timeout;
-		while (ObjectTools.notEquals(this.value, v) && (remaining > 0L)) {
+		while (( ! predicate.evaluate(this.value)) && (remaining > 0L)) {
 			this.mutex.wait(remaining);
 			remaining = stop - System.currentTimeMillis();
 		}
-		return ObjectTools.equals(this.value, v);
+		return predicate.evaluate(this.value);
 	}
 
 	/**
-	 * Suspend the current thread until the value changes to something
-	 * other than the specified value or the specified time-out occurs.
+	 * Suspend the current thread until the value changes
+	 * to no longer belong to the set specified by the specified predicate
+	 * or the specified time-out occurs.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
-	 * if the specified value was removed; return <code>false</code> if a
-	 * time-out occurred. If the value is already <em>not</em> the specified
+	 * if the value moved outside of the set; return <code>false</code>
+	 * if a time-out occurred.
+	 * If the value is already outside the set, return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilNot(Predicate<? super V> predicate, long timeout) throws InterruptedException {
+		return this.waitUntil(PredicateTools.not(predicate), timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to be {@link Object#equals(Object) equal} to the specified object
+	 * or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code> if a
+	 * time-out occurred. If the value is already equal to the specified
+	 * object, return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilValueEquals(V object, long timeout) throws InterruptedException {
+		return this.waitUntil(PredicateTools.isEqual(object), timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to be <em>not</em> {@link Object#equals(Object) equal} to the specified object
+	 * or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value changed to be unequal; return <code>false</code> if a
+	 * time-out occurred. If the value is already unequal to the specified
+	 * object, return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilValueNotEqual(V object, long timeout) throws InterruptedException {
+		return this.waitUntil(PredicateTools.isNotEqual(object), timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to be the specified object or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code> if a
+	 * time-out occurred. If the value is already the specified
+	 * object, return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilValueIs(V object, long timeout) throws InterruptedException {
+		return this.waitUntil(PredicateTools.isIdentical(object), timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to be <em>not</em> {@link Object#equals(Object) equal} to the specified object
+	 * or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value changed to be unequal; return <code>false</code> if a
+	 * time-out occurred. If the value is already unequal to the specified
 	 * value, return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitUntilValueIsNot(V v, long timeout) throws InterruptedException {
-		synchronized (this.mutex) {
-			return this.waitUntilValueIsNot_(v, timeout);
-		}
-	}
-
-	/**
-	 * Pre-condition: synchronized
-	 */
-	private boolean waitUntilValueIsNot_(V v, long timeout) throws InterruptedException {
-		if (timeout == 0L) {
-			this.waitUntilValueIsNot_(v);	// wait indefinitely until notified
-			return true;	// if it ever comes back, the condition was met
-		}
-
-		long stop = System.currentTimeMillis() + timeout;
-		long remaining = timeout;
-		while (ObjectTools.equals(this.value, v) && (remaining > 0L)) {
-			this.mutex.wait(remaining);
-			remaining = stop - System.currentTimeMillis();
-		}
-		return ObjectTools.notEquals(this.value, v);
+	public boolean waitUntilValueIsNot(V object, long timeout) throws InterruptedException {
+		return this.waitUntil(PredicateTools.isNotIdentical(object), timeout);
 	}
 
 	/**
 	 * Suspend the current thread until the value changes
 	 * to <code>null</code> or the specified time-out occurs.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
-	 * if the specified value was achieved; return <code>false</code>
+	 * if the value changes to <code>null</code>; return <code>false</code>
 	 * if a time-out occurred. If the value is already <code>null</code>,
 	 * return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
@@ -351,7 +507,7 @@ public class SynchronizedObject<V>
 	 * Suspend the current thread until the value changes
 	 * to something other than <code>null</code> or the specified time-out occurs.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
-	 * if the specified value was achieved; return <code>false</code>
+	 * if the value changes to something other than <code>null</code>; return <code>false</code>
 	 * if a time-out occurred. If the value is already <em>not</em>
 	 * <code>null</code>, return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
@@ -362,21 +518,21 @@ public class SynchronizedObject<V>
 
 	/**
 	 * Suspend the current thread until the value changes to
-	 * something other than the specified value, then change
+	 * something unequal to the specified value, then change
 	 * it back to the specified value and continue executing.
-	 * If the value does not change to something other than the
+	 * If the value does not change to something unequal to the
 	 * specified value before the time-out, simply continue executing
 	 * without changing the value.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
 	 * if the value was set to the specified value; return <code>false</code>
 	 * if a time-out occurred.
-	 * If the value is already something other than the specified value, set
+	 * If the value is already something unequal to the specified value, set
 	 * the value immediately and return <code>true</code>.
 	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitToSetValue(V v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIsNot_(v, timeout);
+			boolean success = this.waitUntil_(PredicateTools.isNotEqual(v), timeout);
 			if (success) {
 				this.setChangedValue_(v);
 			}
@@ -403,7 +559,8 @@ public class SynchronizedObject<V>
 
 	/**
 	 * Suspend the current thread until the value changes to
-	 * the specified expected value, then change it
+	 * be {@link Object#equals(Object) equal} to the specified
+	 * expected value, then change it
 	 * to the specified new value and continue executing.
 	 * If the value does not change to the specified expected value
 	 * before the time-out, simply continue executing without changing
@@ -416,9 +573,9 @@ public class SynchronizedObject<V>
 	 * Return the previous value.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitToSwap(V expectedValue, V newValue, long timeout) throws InterruptedException {
+	public boolean waitToSwap(V newValue, V expectedValue, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIs_(expectedValue, timeout);
+			boolean success = this.waitUntil_(PredicateTools.isEqual(expectedValue), timeout);
 			if (success) {
 				this.setValue_(newValue);
 			}

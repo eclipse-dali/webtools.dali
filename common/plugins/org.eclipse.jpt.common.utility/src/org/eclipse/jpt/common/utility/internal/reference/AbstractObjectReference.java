@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.reference;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.reference.ObjectReference;
 
 /**
@@ -36,12 +37,51 @@ public abstract class AbstractObjectReference<V>
 		return ObjectTools.notEquals(this.getValue(), object);
 	}
 
+	public boolean is(Object object) {
+		return this.getValue() == object;
+	}
+
+	public boolean isNot(Object object) {
+		return this.getValue() != object;
+	}
+
 	public boolean isNull() {
 		return this.getValue() == null;
 	}
 
 	public boolean isNotNull() {
 		return this.getValue() != null;
+	}
+
+	public boolean isMemberOf(Predicate<? super V> predicate) {
+		return predicate.evaluate(this.getValue());
+	}
+
+	public boolean isNotMemberOf(Predicate<? super V> predicate) {
+		return ! predicate.evaluate(this.getValue());
+	}
+
+
+	// ********** standard methods **********
+
+	/**
+	 * Object identity is critical to object references.
+	 * There is no reason for two different object references to be
+	 * <em>equal</em>.
+	 * 
+	 * @see #valueEquals(Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	/**
+	 * @see #equals(Object)
+	 */
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	@Override
