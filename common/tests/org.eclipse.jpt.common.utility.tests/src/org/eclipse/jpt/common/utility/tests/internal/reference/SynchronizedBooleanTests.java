@@ -694,6 +694,7 @@ public class SynchronizedBooleanTests
 	public void testClone() {
 		SynchronizedBoolean clone = this.sb.clone();
 		assertFalse(clone.getValue());
+		assertNotSame(clone, this.sb);
 	}
 
 	public void testToString() {
