@@ -22,9 +22,9 @@
 
    <requires>
       <import feature="org.eclipse.jpt.common.feature" version="1.2.0"/>
-      <import feature="org.eclipse.datatools.enablement.feature" version="1.9.0"/>
-      <import feature="org.eclipse.datatools.sqldevtools.feature" version="1.9.0"/>
-      <import feature="org.eclipse.datatools.connectivity.feature" version="1.9.0"/>
+      <import feature="org.eclipse.datatools.enablement.feature" version="2"/>
+      <import feature="org.eclipse.datatools.sqldevtools.feature" version="2"/>
+      <import feature="org.eclipse.datatools.connectivity.feature" version="2"/>
    </requires>
 
    <plugin
