@@ -241,7 +241,8 @@ public class SynchronizedObject<V>
 					return thisValue;  // nothing changes
 				}
 				other.setChangedValue_(thisValue);
-				return this.setChangedValue_(otherValue);
+				this.setChangedValue_(otherValue);
+				return otherValue;
 			}
 		}
 	}
@@ -573,7 +574,7 @@ public class SynchronizedObject<V>
 	 * Return the previous value.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitToSwap(V newValue, V expectedValue, long timeout) throws InterruptedException {
+	public boolean waitToCommit(V newValue, V expectedValue, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
 			boolean success = this.waitUntil_(PredicateTools.isEqual(expectedValue), timeout);
 			if (success) {

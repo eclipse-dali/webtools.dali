@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.reference;
 
 import org.eclipse.jpt.common.utility.internal.reference.AbstractBooleanReference;
+import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
@@ -43,8 +44,10 @@ public class AbstractBooleanReferenceTests
 	}
 
 	public void testIsFalse() {
-		LocalBooleanReference br = new LocalBooleanReference();
+		BooleanReference br = new LocalBooleanReference();
 		assertFalse(br.isFalse());
+		br = new FalseLocalBooleanReference();
+		assertTrue(br.isFalse());
 	}
 
 	public void testEquals() {
@@ -72,6 +75,17 @@ public class AbstractBooleanReferenceTests
 		}
 		public boolean getValue() {
 			return true;
+		}
+	}
+
+	private class FalseLocalBooleanReference
+		extends AbstractBooleanReference
+	{
+		FalseLocalBooleanReference() {
+			super();
+		}
+		public boolean getValue() {
+			return false;
 		}
 	}
 }

@@ -9,8 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.reference;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.internal.reference.SimpleObjectReference;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedObject;
+import org.eclipse.jpt.common.utility.reference.ModifiableObjectReference;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
+import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class SynchronizedObjectTests
@@ -31,11 +35,19 @@ public class SynchronizedObjectTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.so = new SynchronizedObject<Object>();
+		this.so = new SynchronizedObject<>();
 		this.timeoutOccurred = false;
 		this.startTime = 0;
 		this.endTime = 0;
 		this.soValue = null;
+	}
+
+	public void testCtorObjectObject() throws Exception {
+		String v = "foo";
+		String mutex = "lock";
+		this.so = new SynchronizedObject<>(v, mutex);
+		assertEquals(v, this.so.getValue());
+		assertEquals(mutex, this.so.getMutex());
 	}
 
 	public void testAccessors() throws Exception {
@@ -57,11 +69,162 @@ public class SynchronizedObjectTests
 		assertSame(this.so, this.so.getMutex());
 	}
 
+	public void testValueEqualsObject() throws Exception {
+		String v = "foo";
+		this.so.setValue(null);
+		assertTrue(this.so.valueEquals(null));
+		assertFalse(this.so.valueEquals(v));
+
+		this.so.setValue(v);
+		assertTrue(this.so.valueEquals(v));
+		assertFalse(this.so.valueEquals(null));
+	}
+
+	public void testValueNotEqualObject() throws Exception {
+		String v = "foo";
+		this.so.setValue(null);
+		assertFalse(this.so.valueNotEqual(null));
+		assertTrue(this.so.valueNotEqual(v));
+
+		this.so.setValue(v);
+		assertFalse(this.so.valueNotEqual(v));
+		assertTrue(this.so.valueNotEqual(null));
+	}
+
+	public void testIsObject() throws Exception {
+		String v = "foo";
+		this.so.setValue(null);
+		assertTrue(this.so.is(null));
+		assertFalse(this.so.is(v));
+
+		this.so.setValue(v);
+		assertTrue(this.so.is(v));
+		assertFalse(this.so.is(null));
+		assertFalse(this.so.is(new String(v)));
+	}
+
+	public void testIsNotObject() throws Exception {
+		String v = "foo";
+		this.so.setValue(null);
+		assertFalse(this.so.isNot(null));
+		assertTrue(this.so.isNot(v));
+
+		this.so.setValue(v);
+		assertFalse(this.so.isNot(v));
+		assertTrue(this.so.isNot(null));
+		assertTrue(this.so.isNot(new String(v)));
+	}
+
+	public void testIsMemberOfPredicate() throws Exception {
+		String v = "foo";
+		this.so.setValue(null);
+		assertTrue(this.so.isMemberOf(PredicateTools.isNull()));
+		assertFalse(this.so.isMemberOf(PredicateTools.isNotNull()));
+
+		this.so.setValue(v);
+		assertFalse(this.so.isMemberOf(PredicateTools.isNull()));
+		assertTrue(this.so.isMemberOf(PredicateTools.isNotNull()));
+	}
+
+	public void testIsNotMemberOfPredicate() throws Exception {
+		String v = "foo";
+		this.so.setValue(null);
+		assertFalse(this.so.isNotMemberOf(PredicateTools.isNull()));
+		assertTrue(this.so.isNotMemberOf(PredicateTools.isNotNull()));
+
+		this.so.setValue(v);
+		assertTrue(this.so.isNotMemberOf(PredicateTools.isNull()));
+		assertFalse(this.so.isNotMemberOf(PredicateTools.isNotNull()));
+	}
+
+	public void testCommit() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(null);
+		assertTrue(this.so.commit(v1, null));
+		assertEquals(v1, this.so.getValue());
+		assertFalse(this.so.commit(v1, null));
+		assertEquals(v1, this.so.getValue());
+
+		String v2 = "bar";
+		assertTrue(this.so.commit(v2, v1));
+		assertEquals(v2, this.so.getValue());
+		assertFalse(this.so.commit(v2, v1));
+		assertEquals(v2, this.so.getValue());
+	}
+
+	public void testSwapRef() throws Exception {
+		this.so.setValue(null);
+		ModifiableObjectReference<Object> temp = this.so;
+		assertEquals(null, this.so.swap(temp));
+
+		ModifiableObjectReference<Object> ref = new SimpleObjectReference<>("foo");
+		assertEquals("foo", this.so.swap(ref));
+		assertEquals("foo", this.so.getValue());
+		assertEquals(null, ref.getValue());
+
+		this.so.setValue("foo");
+		ref.setValue("foo");
+		assertEquals("foo", this.so.swap(ref));
+		assertEquals("foo", this.so.getValue());
+		assertEquals("foo", ref.getValue());
+	}
+
+	public void testSwapSyncObject() throws Exception {
+		this.so.setValue(null);
+		assertEquals(null, this.so.swap(this.so));
+
+		ModifiableObjectReference<Object> ref = new SynchronizedObject<>("foo");
+		assertEquals("foo", this.so.swap(ref));
+		assertEquals("foo", this.so.getValue());
+		assertEquals(null, ref.getValue());
+
+		this.so.setValue("foo");
+		ref.setValue("foo");
+		assertEquals("foo", this.so.swap(ref));
+		assertEquals("foo", this.so.getValue());
+		assertEquals("foo", ref.getValue());
+
+		ref.setValue("bar");
+		assertEquals("foo", ref.swap(this.so));
+		assertEquals("bar", this.so.getValue());
+		assertEquals("foo", ref.getValue());
+	}
+
+	public void testSwapSyncInt2() throws Exception {
+		this.so.setValue(null);
+		assertEquals(null, this.so.swap(this.so));
+
+		SynchronizedObject<Object> ref = new SynchronizedObject<>("foo");
+		assertEquals("foo", this.so.swap(ref));
+		assertEquals("foo", this.so.getValue());
+		assertEquals(null, ref.getValue());
+
+		this.so.setValue("foo");
+		ref.setValue("foo");
+		assertEquals("foo", this.so.swap(ref));
+		assertEquals("foo", this.so.getValue());
+		assertEquals("foo", ref.getValue());
+	}
+
 	/**
 	 * t2 will wait indefinitely until t1 sets the value to null
 	 */
 	public void testWaitUntilNull() throws Exception {
-		this.verifyWaitUntilNull(0);
+		this.verifyWaitUntilNull(-1);  // explicit indefinite wait
+		// no timeout occurs...
+		assertFalse(this.timeoutOccurred);
+		// ...and the value should be set to null by t2
+		assertNull(this.so.getValue());
+		// make a reasonable guess about how long t2 took
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TICK + "): " + time, time > TICK);
+	}
+
+	/**
+	 * t2 will wait indefinitely until t1 sets the value to null
+	 */
+	public void testWaitUntilNul2l() throws Exception {
+		this.verifyWaitUntilNull(0);  // 0 = indefinite wait
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to null by t2
@@ -85,8 +248,101 @@ public class SynchronizedObjectTests
 		assertTrue("t2 finished a bit late (expected value should be < " + THREE_TICKS + "): " + time, time < THREE_TICKS);
 	}
 
+	/**
+	 * t2 will NOT time out waiting for t1 to set the value to null
+	 */
+	public void testWaitUntilNullTimeout2() throws Exception {
+		this.verifyWaitUntilNull(THREE_TICKS);
+		// no timeout occurs...
+		assertFalse(this.timeoutOccurred);
+		// ...and the value should be set to null by t2
+		assertNull(this.so.getValue());
+		// make a reasonable guess about how long t2 took
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be >= " + TWO_TICKS + "): " + time, time >= TWO_TICKS);
+	}
+
 	private void verifyWaitUntilNull(long t2Timeout) throws Exception {
 		this.executeThreads(this.buildSetNullCommand(), this.buildWaitUntilNullCommand(t2Timeout));
+	}
+
+	private Command buildWaitUntilNullCommand(final long timeout) {
+		return new Command() {
+			public void execute(SynchronizedObject<Object> sObject) throws InterruptedException {
+				SynchronizedObjectTests.this.startTime = System.currentTimeMillis();
+				SynchronizedObjectTests.this.timeoutOccurred = this.timeoutOccurred(sObject);
+				SynchronizedObjectTests.this.endTime = System.currentTimeMillis();
+			}
+			private boolean timeoutOccurred(SynchronizedObject<Object> sObject) throws InterruptedException {
+				if (timeout < 0) {
+					sObject.waitUntilNull();
+					return false;
+				}
+				return ! sObject.waitUntilNull(timeout);
+			}
+		};
+	}
+
+	public void testWaitUntilNotPredicate() throws Exception {
+		this.so.setValue(this.value);
+		this.so.waitUntilNot(PredicateTools.isNull());
+		assertEquals(this.value, this.so.getValue());
+	}
+
+	public void testWaitUntilValueEqualsObject() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		String v2 = new String(v1);
+		this.so.waitUntilValueEquals(v2);
+		assertEquals(v2, this.so.getValue());
+	}
+
+	public void testWaitUntilValueNotEqualObject() throws Exception {
+		String v = "foo";
+		this.so.setValue(v);
+		this.so.waitUntilValueNotEqual(null);
+		assertEquals(v, this.so.getValue());
+	}
+
+	public void testWaitUntilValueIsObject() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		this.so.waitUntilValueIs(v1);
+		assertEquals(v1, this.so.getValue());
+	}
+
+	public void testWaitUntilValueIsNotObject() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		String v2 = new String(v1);
+		this.so.waitUntilValueIsNot(v2);
+		assertSame(v1, this.so.getValue());
+		assertNotSame(v2, this.so.getValue());
+	}
+
+	public void testWaitUntilNotNull() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		this.so.waitUntilNotNull();
+		assertEquals(v1, this.so.getValue());
+	}
+
+	public void testWaitToSetValueObject() throws Exception {
+		this.so.setValue(null);
+		assertNull(this.so.waitToSetValue(this.value));
+		assertEquals(this.value, this.so.getValue());
+	}
+
+	public void testWaitToSetNull() throws Exception {
+		this.so.setValue(this.value);
+		assertEquals(this.value, this.so.waitToSetNull());
+		assertNull(this.so.getValue());
+	}
+
+	public void testWaitToCommit() throws Exception {
+		this.so.setValue(this.value);
+		assertEquals(this.value, this.so.waitToCommit("foo", this.value));
+		assertEquals("foo", this.so.getValue());
 	}
 
 	/**
@@ -94,7 +350,22 @@ public class SynchronizedObjectTests
 	 * then t2 will set the value to an object
 	 */
 	public void testWaitToSetValue() throws Exception {
-		this.verifyWaitToSetValue(0);
+		this.verifyWaitToSetValue(-1);  // explicit indefinite wait
+		// no timeout occurs...
+		assertFalse(this.timeoutOccurred);
+		// ...and the value should be set to an object by t2
+		assertTrue(this.so.isNotNull());
+		// make a reasonable guess about how long t2 took
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TICK + "): " + time, time > TICK);
+	}
+
+	/**
+	 * t2 will wait indefinitely until t1 sets the value to null;
+	 * then t2 will set the value to an object
+	 */
+	public void testWaitToSetValue2() throws Exception {
+		this.verifyWaitToSetValue(0);  // 0 = indefinite wait
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to an object by t2
@@ -118,8 +389,39 @@ public class SynchronizedObjectTests
 		assertTrue("t2 finished a bit late (expected value should be < " + THREE_TICKS + "): " + time, time < THREE_TICKS);
 	}
 
+	/**
+	 * t2 will NOT time out waiting for t1 to set the value to null
+	 */
+	public void testWaitToSetValueTimeout2() throws Exception {
+		this.verifyWaitToSetValue(THREE_TICKS);
+		// no timeout occurs...
+		assertFalse(this.timeoutOccurred);
+		// ...and the value should be set to a value by t2
+		assertFalse(this.so.isNull());
+		// make a reasonable guess about how long t2 took
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be >= " + TWO_TICKS + "): " + time, time >= TWO_TICKS);
+	}
+
 	private void verifyWaitToSetValue(long t2Timeout) throws Exception {
 		this.executeThreads(this.buildSetNullCommand(), this.buildWaitToSetValueCommand(t2Timeout));
+	}
+
+	private Command buildWaitToSetValueCommand(final long timeout) {
+		return new Command() {
+			public void execute(SynchronizedObject<Object> sObject) throws InterruptedException {
+				SynchronizedObjectTests.this.startTime = System.currentTimeMillis();
+				SynchronizedObjectTests.this.timeoutOccurred = this.timeoutOccurred(sObject);
+				SynchronizedObjectTests.this.endTime = System.currentTimeMillis();
+			}
+			private boolean timeoutOccurred(SynchronizedObject<Object> sObject) throws InterruptedException {
+				if (timeout < 0) {
+					sObject.waitToSetValue(SynchronizedObjectTests.this.value);
+					return false;
+				}
+				return ! sObject.waitToSetValue(SynchronizedObjectTests.this.value, timeout);
+			}
+		};
 	}
 
 	/**
@@ -160,26 +462,6 @@ public class SynchronizedObjectTests
 		return new Command() {
 			public void execute(SynchronizedObject<Object> sObject) {
 				sObject.setNull();
-			}
-		};
-	}
-
-	private Command buildWaitUntilNullCommand(final long timeout) {
-		return new Command() {
-			public void execute(SynchronizedObject<Object> sObject) throws InterruptedException {
-				SynchronizedObjectTests.this.startTime = System.currentTimeMillis();
-				SynchronizedObjectTests.this.timeoutOccurred = ! sObject.waitUntilNull(timeout);
-				SynchronizedObjectTests.this.endTime = System.currentTimeMillis();
-			}
-		};
-	}
-
-	private Command buildWaitToSetValueCommand(final long timeout) {
-		return new Command() {
-			public void execute(SynchronizedObject<Object> sObject) throws InterruptedException {
-				SynchronizedObjectTests.this.startTime = System.currentTimeMillis();
-				SynchronizedObjectTests.this.timeoutOccurred = ! sObject.waitToSetValue(SynchronizedObjectTests.this.value, timeout);
-				SynchronizedObjectTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
@@ -230,10 +512,110 @@ public class SynchronizedObjectTests
 		return this.endTime - this.startTime;
 	}
 
+	public void testWaitUntilNotPredicateTimeout() throws Exception {
+		this.so.setValue(this.value);
+		this.so.waitUntilNot(PredicateTools.isNull(), TWO_TICKS);
+		assertEquals(this.value, this.so.getValue());
+	}
+
+	public void testWaitUntilValueEqualsObjectTimeout() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		String v2 = new String(v1);
+		this.so.waitUntilValueEquals(v2, TWO_TICKS);
+		assertEquals(v2, this.so.getValue());
+	}
+
+	public void testWaitUntilValueNotEqualObjectTimeout() throws Exception {
+		String v = "foo";
+		this.so.setValue(v);
+		this.so.waitUntilValueNotEqual(null, TWO_TICKS);
+		assertEquals(v, this.so.getValue());
+	}
+
+	public void testWaitUntilValueIsObjectTimeout() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		this.so.waitUntilValueIs(v1, TWO_TICKS);
+		assertEquals(v1, this.so.getValue());
+	}
+
+	public void testWaitUntilValueIsNotObjectTimeout() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		String v2 = new String(v1);
+		this.so.waitUntilValueIsNot(v2, TWO_TICKS);
+		assertSame(v1, this.so.getValue());
+		assertNotSame(v2, this.so.getValue());
+	}
+
+	public void testWaitUntilNotNullTimeout() throws Exception {
+		String v1 = "foo";
+		this.so.setValue(v1);
+		this.so.waitUntilNotNull(TWO_TICKS);
+		assertEquals(v1, this.so.getValue());
+	}
+
+	public void testWaitToSetValueObjectTimeout() throws Exception {
+		this.so.setValue(null);
+		assertTrue(this.so.waitToSetValue(this.value, TWO_TICKS));
+		assertEquals(this.value, this.so.getValue());
+	}
+
+	public void testWaitToSetNullTimeout() throws Exception {
+		this.so.setValue(this.value);
+		assertTrue(this.so.waitToSetNull(TWO_TICKS));
+		assertNull(this.so.getValue());
+	}
+
+	public void testWaitToCommitTimeout() throws Exception {
+		this.so.setValue(this.value);
+		assertTrue(this.so.waitToCommit("foo", this.value, TWO_TICKS));
+		assertEquals("foo", this.so.getValue());
+	}
+
 
 	// ********** Command interface **********
 
 	private interface Command {
 		void execute(SynchronizedObject<Object> so) throws InterruptedException;
+	}
+
+
+	// ********** standard methods **********
+
+	public void testEquals() {
+		SynchronizedObject<Object> so2 = new SynchronizedObject<>();
+		assertTrue(this.so.equals(this.so));
+		assertFalse(this.so.equals(so2));
+	}
+
+	public void testHashCode() {
+		assertEquals(this.so.hashCode(), this.so.hashCode());
+	}
+
+	public void testClone() {
+		this.so.setValue(null);
+		SynchronizedObject<Object> clone = this.so.clone();
+		assertNull(clone.getValue());
+		assertNotSame(clone, this.so);
+
+		this.so.setValue("foo");
+		clone = this.so.clone();
+		assertEquals("foo", clone.getValue());
+		assertNotSame(clone, this.so);
+	}
+
+	public void testSerialization() throws Exception {
+		this.so.setValue("foo");
+		SynchronizedObject<Object> clone = TestTools.serialize(this.so);
+		assertNotSame(this.so, clone);
+		assertEquals("foo", clone.getValue());
+	}
+
+	public void testToString() {
+		assertEquals("[null]", this.so.toString());
+		this.so.setValue("foo");
+		assertEquals("[foo]", this.so.toString());
 	}
 }

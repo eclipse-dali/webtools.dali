@@ -517,9 +517,6 @@ public class SynchronizedIntTests
 		assertSame(this.si, this.si.getMutex());
 	}
 
-
-	// ********** indefinite waits **********
-
 	/**
 	 * t2 will wait indefinitely until t1 sets the value to 0
 	 */
@@ -775,7 +772,7 @@ public class SynchronizedIntTests
 	}
 
 	/**
-	 * t2 will time out waiting for t1 to set the value to 0
+	 * t2 will NOT time out waiting for t1 to set the value to 0
 	 */
 	public void testWaitToSetValueTimeout2() throws Exception {
 		this.verifyWaitToSetValue(THREE_TICKS);
