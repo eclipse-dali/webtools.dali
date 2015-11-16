@@ -101,7 +101,7 @@ public class SimpleObjectReference<V>
 
 	public boolean commit(V newValue, V expectedValue) {
 		if (ObjectTools.equals(this.value, expectedValue)) {
-			this.value = newValue;
+			this.setValue(newValue);
 			return true;
 		}
 		return false;
@@ -116,7 +116,7 @@ public class SimpleObjectReference<V>
 			return this.value;
 		}
 		other.setValue(this.value);
-		this.value = otherValue;
+		this.setValue(otherValue);
 		return otherValue;
 	}
 

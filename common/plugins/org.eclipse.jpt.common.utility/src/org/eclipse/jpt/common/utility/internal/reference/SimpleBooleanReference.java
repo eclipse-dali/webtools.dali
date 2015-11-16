@@ -45,7 +45,7 @@ public class SimpleBooleanReference
 	}
 
 
-	// ********** accessors **********
+	// ********** BooleanReference **********
 
 	public boolean getValue() {
 		return this.value;
@@ -66,6 +66,9 @@ public class SimpleBooleanReference
 	public boolean isFalse() {
 		return ! this.value;
 	}
+
+
+	// ********** ModifiableBooleanReference **********
 
 	public boolean setValue(boolean value) {
 		boolean old = this.value;

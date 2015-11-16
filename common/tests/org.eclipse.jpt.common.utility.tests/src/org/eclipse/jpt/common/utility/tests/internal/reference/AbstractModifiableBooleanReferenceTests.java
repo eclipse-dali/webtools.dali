@@ -9,31 +9,37 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.reference;
 
-import org.eclipse.jpt.common.utility.internal.reference.AbstractBooleanReference;
-import org.eclipse.jpt.common.utility.reference.BooleanReference;
+import org.eclipse.jpt.common.utility.internal.reference.AbstractModifiableBooleanReference;
+import org.eclipse.jpt.common.utility.reference.ModifiableBooleanReference;
 
-public class AbstractBooleanReferenceTests
-	extends BooleanReferenceTests
+public class AbstractModifiableBooleanReferenceTests
+	extends ModifiableBooleanReferenceTests
 {
-	public AbstractBooleanReferenceTests(String name) {
+	public AbstractModifiableBooleanReferenceTests(String name) {
 		super(name);
 	}
 
 	@Override
-	protected BooleanReference buildBooleanReference(boolean value) {
+	protected ModifiableBooleanReference buildBooleanReference(boolean value) {
 		return new LocalBooleanReference(value);
 	}
 
 	private class LocalBooleanReference
-		extends AbstractBooleanReference
+		extends AbstractModifiableBooleanReference
 	{
-		private final boolean value;
+		private boolean value;
 		LocalBooleanReference(boolean value) {
 			super();
 			this.value = value;
 		}
 		public boolean getValue() {
 			return this.value;
+		}
+
+		public boolean setValue(boolean value) {
+			boolean old = this.value;
+			this.value = value;
+			return old;
 		}
 	}
 }

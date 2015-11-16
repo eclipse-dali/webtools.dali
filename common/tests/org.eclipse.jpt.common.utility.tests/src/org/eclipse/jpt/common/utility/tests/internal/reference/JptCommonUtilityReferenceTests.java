@@ -22,14 +22,21 @@ public class JptCommonUtilityReferenceTests {
 
 		suite.addTestSuite(AbstractBooleanReferenceTests.class);
 		suite.addTestSuite(AbstractIntReferenceTests.class);
+		suite.addTestSuite(AbstractModifiableBooleanReferenceTests.class);
+		suite.addTestSuite(AbstractModifiableIntReferenceTests.class);
 		suite.addTestSuite(AbstractModifiableObjectReferenceTests.class);
 		suite.addTestSuite(AbstractObjectReferenceTests.class);
+		suite.addTestSuite(FalseBooleanReferenceTests.class);
+		suite.addTestSuite(FlaggedObjectReferenceTests.class);
+		suite.addTestSuite(LazyObjectReferenceTests.class);
+		suite.addTestSuite(ReferenceToolsTests.class);
 		suite.addTestSuite(SimpleBooleanReferenceTests.class);
 		suite.addTestSuite(SimpleIntReferenceTests.class);
 		suite.addTestSuite(SimpleObjectReferenceTests.class);
 		suite.addTestSuite(SynchronizedBooleanTests.class);
 		suite.addTestSuite(SynchronizedIntTests.class);
 		suite.addTestSuite(SynchronizedObjectTests.class);
+		suite.addTestSuite(TrueBooleanReferenceTests.class);
 
 		return suite;
 	}

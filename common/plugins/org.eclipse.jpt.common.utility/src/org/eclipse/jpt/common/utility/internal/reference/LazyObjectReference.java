@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.reference;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.reference.ObjectReference;
+import org.eclipse.jpt.common.utility.factory.Factory;
 
 /**
  * Provide a thread-safe, reasonably performing container for holding an
@@ -29,28 +28,26 @@ import org.eclipse.jpt.common.utility.reference.ObjectReference;
  * @see SimpleObjectReference
  * @see SynchronizedObject
  */
-public abstract class LazyObjectReference<V>
-	implements ObjectReference<V>, Cloneable, Serializable
+public final class LazyObjectReference<V>
+	extends AbstractObjectReference<V>
+	implements Cloneable, Serializable
 {
-	/** Backing value. */
 	private volatile V value = null;
+
+	private final Factory<V> factory;
 
 	private static final long serialVersionUID = 1L;
 
 
-	// ********** constructors **********
-
 	/**
 	 * Create a lazy object reference.
 	 */
-	protected LazyObjectReference() {
+	public LazyObjectReference(Factory<V> factory) {
 		super();
+		this.factory = factory;
 	}
 
-
-	// ********** value **********
-
-	/**
+	/*
 	 * In JDK 5 and later, this "double-checked locking" idiom works as long
 	 * as the instance variable is marked <code>volatile</code>.
 	 */
@@ -60,33 +57,12 @@ public abstract class LazyObjectReference<V>
 			synchronized (this) {
 				result = this.value;
 				if (result == null) {
-					this.value = result = this.buildValue();
+					result = this.value = this.factory.create();
 				}
 			}
 		}
 		return result;
 	}
-
-	protected abstract V buildValue();
-
-	public boolean valueEquals(Object object) {
-		return ObjectTools.equals(this.getValue(), object);
-	}
-
-	public boolean valueNotEqual(Object object) {
-		return ObjectTools.notEquals(this.getValue(), object);
-	}
-
-	public boolean isNull() {
-		return this.getValue() == null;
-	}
-
-	public boolean isNotNull() {
-		return this.getValue() != null;
-	}
-
-
-	// ********** standard methods **********
 
 	@Override
 	public LazyObjectReference<V> clone() {
@@ -97,13 +73,5 @@ public abstract class LazyObjectReference<V>
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
-	}
-
-	/**
-	 * This method will <em>not</em> trigger the "lazy-initialization".
-	 */
-	@Override
-	public String toString() {
-		return '[' + String.valueOf(this.value) + ']';
 	}
 }
