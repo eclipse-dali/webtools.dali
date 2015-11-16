@@ -11,20 +11,21 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class GraphIterableTests
 	extends TestCase
 {
 	/** this will be populated with all the nodes created for the test */
-	Collection<GraphNode> nodes = new ArrayList<GraphNode>();
+	Collection<GraphNode> nodes = new ArrayList<>();
 
 	public GraphIterableTests(String name) {
 		super(name);
@@ -43,7 +44,7 @@ public class GraphIterableTests
 	}
 
 	private Iterable<GraphNode> buildGraphIterable() {
-		return IterableTools.graphIterable(this.buildGraphRoot(), CHILDREN_TRANSFORMER);
+		return ObjectTools.graph(this.buildGraphRoot(), CHILDREN_TRANSFORMER);
 	}
 
 	public void testNeighbors_roots() {
@@ -73,7 +74,7 @@ public class GraphIterableTests
 		assertTrue(exCaught);
 	}
 
-	private GraphNode buildGraphRoot() {
+	public GraphNode buildGraphRoot() {
 		GraphNode ncNode = new GraphNode("North Carolina");
 		GraphNode vaNode = new GraphNode("Virginia");
 		GraphNode scNode = new GraphNode("South Carolina");
@@ -108,7 +109,7 @@ public class GraphIterableTests
 	public class GraphNode {
 		private String name;
 
-		private Collection<GraphNode> neighbors = new ArrayList<GraphNode>();
+		private Collection<GraphNode> neighbors = new ArrayList<>();
 
 		public GraphNode(String name) {
 			super();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -113,7 +113,7 @@ public final class ObjectTools {
 	 * @see RepeatingElementIterator
 	 */
 	public static <E> RepeatingElementList<E> repeat(E object, int size) {
-		return new RepeatingElementList<E>(object, size);
+		return new RepeatingElementList<>(object, size);
 	}
 
 	/**
@@ -291,7 +291,7 @@ public final class ObjectTools {
 	}
 
 
-	// ********** fields **********
+	// ********** field values **********
 
 	/**
 	 * Return the value of the specified object's field with the specified
@@ -343,6 +343,9 @@ public final class ObjectTools {
 		field_(object, fieldName).set(object, value);
 	}
 
+
+	// ********** fields **********
+
 	/**
 	 * @see ClassTools#field(Class, String)
 	 */
@@ -371,7 +374,7 @@ public final class ObjectTools {
 	}
 
 
-	// ********** methods **********
+	// ********** method execution **********
 
 	/**
 	 * Execute the specified zero-argument method.
@@ -441,6 +444,9 @@ public final class ObjectTools {
 	{
 		return method_(object, methodName, parameterTypes).invoke(object, arguments);
 	}
+
+
+	// ********** methods **********
 
 	/**
 	 * Return the zero-argument method for the specified object

@@ -21,7 +21,7 @@ import junit.framework.TestCase;
 @SuppressWarnings("nls")
 public class TreeIterableTests extends TestCase {
 	/** this will be populated with all the nodes created for the test */
-	Collection<TreeNode> nodes = new ArrayList<TreeNode>();
+	Collection<TreeNode> nodes = new ArrayList<>();
 
 	public TreeIterableTests(String name) {
 		super(name);
@@ -46,7 +46,7 @@ public class TreeIterableTests extends TestCase {
 	}
 
 	public void testToString() {
-		assertNotNull(IterableTools.treeIterable(this.buildTree(), CHILDREN_TRANSFORMER).toString());
+		assertNotNull(ObjectTools.tree(this.buildTree(), CHILDREN_TRANSFORMER).toString());
 	}
 
 	private TreeNode buildTree() {
