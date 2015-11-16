@@ -57,6 +57,7 @@ public class JptCommonUtilityTests {
 		suite.addTest(JptCommonUtilityStackTests.suite());
 		suite.addTest(JptCommonUtilityTransformerTests.suite());
 
+		suite.addTestSuite(AbstractPairTests.class);
 		suite.addTestSuite(ArrayToolsTests.class);
 		suite.addTestSuite(BitToolsTests.class);
 		suite.addTestSuite(BooleanToolsTests.class);
