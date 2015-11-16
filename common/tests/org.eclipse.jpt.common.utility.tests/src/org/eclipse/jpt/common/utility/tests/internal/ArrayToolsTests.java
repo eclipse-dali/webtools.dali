@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
@@ -25,11 +24,15 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.closure.ClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.closure.InterruptibleClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
+import org.eclipse.jpt.common.utility.internal.exception.ExceptionHandlerAdapter;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class ArrayToolsTests
@@ -80,6 +83,20 @@ public class ArrayToolsTests
 		assertEquals(5, array.length);
 	}
 
+	public void testNewInstanceClassInt_Object() {
+		Object[] array = ArrayTools.newInstance(Object.class, 5);
+		array[0] = "foo";
+		array[4] = "bar";
+		assertEquals(Object.class, array.getClass().getComponentType());
+		assertEquals(5, array.length);
+	}
+
+	public void testNewInstanceClassInt_Object_empty() {
+		Object[] array = ArrayTools.newInstance(Object.class, 0);
+		assertEquals(Object.class, array.getClass().getComponentType());
+		assertEquals(0, array.length);
+	}
+
 	public void testNewInstanceClassInt_Exception() {
 		Object[] array = ArrayTools.newInstance(String.class, 5);
 		boolean exCaught = false;
@@ -127,6 +144,20 @@ public class ArrayToolsTests
 		assertTrue(ArrayTools.containsAll(a, this.buildStringList1().iterator()));
 	}
 
+	public void testArrayIterableClass() {
+		Iterable<String> iterable = this.buildStringList1();
+		String[] a = ArrayTools.array(iterable, String.class);
+		assertEquals(3, a.length);
+		assertTrue(ArrayTools.containsAll(a, this.buildStringList1().iterator()));
+	}
+
+	public void testArrayIterableIntClass() {
+		Iterable<String> iterable = this.buildStringList1();
+		String[] a = ArrayTools.array(iterable, 3, String.class);
+		assertEquals(3, a.length);
+		assertTrue(ArrayTools.containsAll(a, this.buildStringList1().iterator()));
+	}
+
 	public void testArrayIterableObjectArray_String() {
 		Iterable<String> iterable = this.buildStringList1();
 		String[] a = ArrayTools.array(iterable, new String[0]);
@@ -167,6 +198,28 @@ public class ArrayToolsTests
 
 	public void testArrayIteratorInt_Empty() {
 		Object[] a = ArrayTools.array(EmptyIterator.instance(), 3);
+		assertEquals(0, a.length);
+	}
+
+	public void testArrayIteratorClass() {
+		String[] a = ArrayTools.array(this.buildStringList1().iterator(), String.class);
+		assertEquals(3, a.length);
+		assertTrue(ArrayTools.containsAll(a, this.buildStringList1().iterator()));
+	}
+
+	public void testArrayIteratorClass_Empty() {
+		String[] a = ArrayTools.array(EmptyIterator.instance(), String.class);
+		assertEquals(0, a.length);
+	}
+
+	public void testArrayIteratorIntClass() {
+		String[] a = ArrayTools.array(this.buildStringList1().iterator(), 3, String.class);
+		assertEquals(3, a.length);
+		assertTrue(ArrayTools.containsAll(a, this.buildStringList1().iterator()));
+	}
+
+	public void testArrayIteratorIntClass_Empty() {
+		String[] a = ArrayTools.array(EmptyIterator.instance(), 3, String.class);
 		assertEquals(0, a.length);
 	}
 
@@ -380,7 +433,7 @@ public class ArrayToolsTests
 
 	public void testAddAllObjectArrayCollection_EmptyCollection() {
 		String[] a = this.buildStringArray1();
-		Collection<String> c = new ArrayList<String>();
+		Collection<String> c = new ArrayList<>();
 		String[] newArray = ArrayTools.addAll(a, c);
 
 		assertEquals(3, newArray.length);
@@ -428,7 +481,7 @@ public class ArrayToolsTests
 
 	public void testAddAllObjectArrayIntCollection_EmptyCollection() {
 		String[] a = this.buildStringArray1();
-		Collection<String> c = new ArrayList<String>();
+		Collection<String> c = new ArrayList<>();
 		String[] newArray = ArrayTools.addAll(a, 1, c);
 
 		assertEquals(3, newArray.length);
@@ -454,7 +507,7 @@ public class ArrayToolsTests
 
 	public void testAddAllObjectArrayIntIterable_EmptyIterable() {
 		String[] a = this.buildStringArray1();
-		Iterable<String> iterable = new ArrayList<String>();
+		Iterable<String> iterable = new ArrayList<>();
 		String[] newArray = ArrayTools.addAll(a, 1, iterable);
 
 		assertEquals(3, newArray.length);
@@ -480,7 +533,7 @@ public class ArrayToolsTests
 
 	public void testAddAllObjectArrayIntIterableInt_EmptyIterable() {
 		String[] a = this.buildStringArray1();
-		Iterable<String> iterable = new ArrayList<String>();
+		Iterable<String> iterable = new ArrayList<>();
 		String[] newArray = ArrayTools.addAll(a, 1, iterable, 0);
 
 		assertEquals(3, newArray.length);
@@ -849,6 +902,16 @@ public class ArrayToolsTests
 		assertTrue(Arrays.equals(expected, actual));
 	}
 
+	public void testConcatenateObjectArrayArray_oneEmpty() {
+		String[] aArray = new String[] { "a", "b", "c", "d" };
+		String[] eArray = new String[0];
+		String[] iArray = new String[] { "i", "j", "k", "l" };
+
+		String[] expected = new String[] { "a", "b", "c", "d", "i", "j", "k", "l" };
+		String[] actual = ArrayTools.concatenate(aArray, eArray, iArray);
+		assertTrue(Arrays.equals(expected, actual));
+	}
+
 	public void testConcatenateObjectArrayArray_Empty() {
 		String[] aArray = new String[] {  };
 		String[] eArray = new String[0];
@@ -870,6 +933,16 @@ public class ArrayToolsTests
 		assertTrue(Arrays.equals(expected, actual));
 	}
 
+	public void testConcatenateCharArrayArray_oneEmpty() {
+		char[] aArray = new char[] { 'a', 'b', 'c', 'd' };
+		char[] eArray = new char[0];
+		char[] iArray = new char[] { 'i', 'j', 'k', 'l' };
+
+		char[] expected = new char[] { 'a', 'b', 'c', 'd', 'i', 'j', 'k', 'l' };
+		char[] actual = ArrayTools.concatenate(aArray, eArray, iArray);
+		assertTrue(Arrays.equals(expected, actual));
+	}
+
 	public void testConcatenateCharArrayArray_Empty() {
 		char[] aArray = new char[] {  };
 		char[] eArray = new char[0];
@@ -887,6 +960,16 @@ public class ArrayToolsTests
 		int[] iArray = new int[] { 'i', 'j', 'k', 'l' };
 
 		int[] expected = new int[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' };
+		int[] actual = ArrayTools.concatenate(aArray, eArray, iArray);
+		assertTrue(Arrays.equals(expected, actual));
+	}
+
+	public void testConcatenateIntArrayArray_oneEmpty() {
+		int[] aArray = new int[] { 'a', 'b', 'c', 'd' };
+		int[] eArray = new int[0];
+		int[] iArray = new int[] { 'i', 'j', 'k', 'l' };
+
+		int[] expected = new int[] { 'a', 'b', 'c', 'd', 'i', 'j', 'k', 'l' };
 		int[] actual = ArrayTools.concatenate(aArray, eArray, iArray);
 		assertTrue(Arrays.equals(expected, actual));
 	}
@@ -913,6 +996,14 @@ public class ArrayToolsTests
 		assertTrue(ArrayTools.isOrContainsNull(a2));
 		a2 = null;
 		assertTrue(ArrayTools.isOrContainsNull(a2));
+	}
+
+	public void testContainsNullObjectArray() {
+		Object[] a = this.buildObjectArray1();
+		assertFalse(ArrayTools.containsNull(a));
+		assertFalse(ArrayTools.contains(a, null));
+		Object[] a2 = ArrayTools.add(a, null);
+		assertTrue(ArrayTools.containsNull(a2));
 	}
 
 	public void testContainsObjectArrayObject() {
@@ -1474,6 +1565,7 @@ public class ArrayToolsTests
 		Object[] a1 = null;
 		Object[] a2 = new Object[0];
 		assertFalse(ArrayTools.elementsAreIdentical(a1, a2));
+		assertFalse(ArrayTools.elementsAreIdentical(a2, a1));
 	}
 
 	public void testElementsAreIdenticalObjectArrayObjectArray_DifferentLengths() {
@@ -1488,6 +1580,7 @@ public class ArrayToolsTests
 	public void testIndexOfObjectArrayObject() {
 		Object[] a = this.buildObjectArray1();
 		assertEquals(1, ArrayTools.indexOf(a, "one"));
+		assertEquals(-1, ArrayTools.indexOf(new Object[0], "one"));
 	}
 
 	public void testIndexOfObjectArrayObjectInt() {
@@ -1496,6 +1589,7 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.indexOf(a, "one", 1));
 		assertEquals(-1, ArrayTools.indexOf(a, "one", 2));
 		assertEquals(-1, ArrayTools.indexOf(a, "one", 22));
+		assertEquals(-1, ArrayTools.indexOf(new Object[0], "one", 0));
 	}
 
 	public void testIndexOfObjectArrayObject_NotFound() {
@@ -1551,6 +1645,7 @@ public class ArrayToolsTests
 		a[1] = bar;
 		a[2] = baz;
 		assertEquals(1, ArrayTools.identityIndexOf(a, bar));
+		assertEquals(-1, ArrayTools.identityIndexOf(new Object[0], bar));
 	}
 
 	public void testIdentityIndexOfObjectArrayObjectInt() {
@@ -1565,6 +1660,7 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.identityIndexOf(a, bar, 1));
 		assertEquals(-1, ArrayTools.identityIndexOf(a, bar, 2));
 		assertEquals(-1, ArrayTools.identityIndexOf(a, bar, 22));
+		assertEquals(-1, ArrayTools.identityIndexOf(new Object[0], bar, 0));
 	}
 
 	public void testIdentityIndexOfObjectArrayObject_NotFound() {
@@ -1597,6 +1693,7 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.indexOf(a, 'b'));
 		a = ArrayTools.add(a, 'd');
 		assertEquals(a.length - 1, ArrayTools.indexOf(a, 'd'));
+		assertEquals(-1, ArrayTools.indexOf(new char[0], 'b'));
 	}
 
 	public void testIndexOfCharArrayCharInt() {
@@ -1610,6 +1707,7 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.indexOf(a, 'd', 1));
 		assertEquals(-1, ArrayTools.indexOf(a, 'd', 4));
 		assertEquals(-1, ArrayTools.indexOf(a, 'd', 22));
+		assertEquals(-1, ArrayTools.indexOf(new char[0], 'b', 0));
 	}
 
 	public void testIndexOfCharArrayChar_NotFound() {
@@ -1630,6 +1728,7 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.indexOf(a, 10));
 		a = ArrayTools.add(a, 30);
 		assertEquals(a.length - 1, ArrayTools.indexOf(a, 30));
+		assertEquals(-1, ArrayTools.indexOf(new int[0], 22));
 	}
 
 	public void testIndexOfIntArrayIntInt() {
@@ -1643,6 +1742,7 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.indexOf(a, 30, 1));
 		assertEquals(-1, ArrayTools.indexOf(a, 30, 4));
 		assertEquals(-1, ArrayTools.indexOf(a, 30, 22));
+		assertEquals(-1, ArrayTools.indexOf(new int[0], 22, 0));
 	}
 
 	public void testIndexOfIntArrayInt_NotFound() {
@@ -1703,6 +1803,66 @@ public class ArrayToolsTests
 	}
 
 
+	// ********** iterable **********
+
+	public void testIterableObjectArray() {
+		String[] a = new String[] { "A", "C", "D" };
+		Iterable<String> iterable = ArrayTools.iterable(a);
+		assertEquals("A", IterableTools.get(iterable, 0));
+		assertEquals("D", IterableTools.get(iterable, 2));
+		assertEquals(3, IterableTools.size(iterable));
+	}
+
+	public void testIterableObjectArrayInt() {
+		String[] a = new String[] { "A", "C", "D" };
+		Iterable<String> iterable = ArrayTools.iterable(a, 2);
+		assertEquals("D", IterableTools.get(iterable, 0));
+		assertEquals(1, IterableTools.size(iterable));
+	}
+
+	public void testIterableObjectArrayIntInt() {
+		String[] a = new String[] { "A", "C", "D" };
+		Iterable<String> iterable = ArrayTools.iterable(a, 1, 3);
+		assertEquals("C", IterableTools.get(iterable, 0));
+		assertEquals("D", IterableTools.get(iterable, 1));
+		assertEquals(2, IterableTools.size(iterable));
+	}
+
+
+	// ********** iterator **********
+
+	public void testIteratorObjectArray() {
+		String[] a = new String[] { "A", "C", "D" };
+		Iterator<String> iterator;
+		iterator = ArrayTools.iterator(a);
+		assertEquals("A", IteratorTools.get(iterator, 0));
+		iterator = ArrayTools.iterator(a);
+		assertEquals("D", IteratorTools.get(iterator, 2));
+		iterator = ArrayTools.iterator(a);
+		assertEquals(3, IteratorTools.size(iterator));
+	}
+
+	public void testIteratorObjectArrayInt() {
+		String[] a = new String[] { "A", "C", "D" };
+		Iterator<String> iterator;
+		iterator = ArrayTools.iterator(a, 2);
+		assertEquals("D", IteratorTools.get(iterator, 0));
+		iterator = ArrayTools.iterator(a, 2);
+		assertEquals(1, IteratorTools.size(iterator));
+	}
+
+	public void testIteratorObjectArrayIntInt() {
+		String[] a = new String[] { "A", "C", "D" };
+		Iterator<String> iterator;
+		iterator = ArrayTools.iterator(a, 1, 3);
+		assertEquals("C", IteratorTools.get(iterator, 0));
+		iterator = ArrayTools.iterator(a, 1, 3);
+		assertEquals("D", IteratorTools.get(iterator, 1));
+		iterator = ArrayTools.iterator(a, 1, 3);
+		assertEquals(2, IteratorTools.size(iterator));
+	}
+
+
 	// ********** last insertion index of **********
 
 	public void testLastInsertionIndexOfObjectArrayComparable() {
@@ -1752,6 +1912,7 @@ public class ArrayToolsTests
 	public void testLastIndexOfObjectArrayObject() {
 		Object[] a = this.buildObjectArray1();
 		assertEquals(1, ArrayTools.lastIndexOf(a, "one"));
+		assertEquals(-1, ArrayTools.lastIndexOf(new Object[0], "one"));
 	}
 
 	public void testLastIndexOfObjectArrayObjectInt() {
@@ -1760,6 +1921,7 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.lastIndexOf(a, "one", 2));
 		assertEquals(1, ArrayTools.lastIndexOf(a, "one", 1));
 		assertEquals(-1, ArrayTools.lastIndexOf(a, "one", -11));
+		assertEquals(-1, ArrayTools.lastIndexOf(new Object[0], "one", 0));
 	}
 
 	public void testLastIndexOfObjectArrayObject_NotFound() {
@@ -1808,6 +1970,7 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.lastIndexOf(a, 'b'));
 		a = ArrayTools.add(a, 'd');
 		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 'd'));
+		assertEquals(-1, ArrayTools.lastIndexOf(new char[0], 'b'));
 	}
 
 	public void testLastIndexOfCharArrayIntChar() {
@@ -1821,6 +1984,7 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 'd', a.length - 1));
 		assertEquals(-1, ArrayTools.lastIndexOf(a, 'd', 1));
 		assertEquals(-1, ArrayTools.lastIndexOf(a, 'd', -11));
+		assertEquals(-1, ArrayTools.lastIndexOf(new char[0], 'b', 0));
 	}
 
 	public void testLastIndexOfCharArrayChar_NotFound() {
@@ -1841,6 +2005,7 @@ public class ArrayToolsTests
 		assertEquals(1, ArrayTools.lastIndexOf(a, 10));
 		a = ArrayTools.add(a, 30);
 		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 30));
+		assertEquals(-1, ArrayTools.lastIndexOf(new int[0], 30));
 	}
 
 	public void testLastIndexOfIntArrayIntInt() {
@@ -1854,6 +2019,7 @@ public class ArrayToolsTests
 		assertEquals(a.length - 1, ArrayTools.lastIndexOf(a, 30, a.length - 1));
 		assertEquals(-1, ArrayTools.lastIndexOf(a, 30, 1));
 		assertEquals(-1, ArrayTools.lastIndexOf(a, 30, -11));
+		assertEquals(-1, ArrayTools.lastIndexOf(new int[0], 30, 0));
 	}
 
 	public void testLastIndexOfIntArrayInt_NotFound() {
@@ -1869,11 +2035,100 @@ public class ArrayToolsTests
 		assertEquals(-1, ArrayTools.lastIndexOf(a, 1000, -11));
 	}
 
+	public void testLastIdentityIndexOfObjectArrayObject() {
+		String foo = "foo";
+		String bar = "bar";
+		String baz = "baz";
+		Object[] a = new Object[3];
+		a[0] = foo;
+		a[1] = bar;
+		a[2] = baz;
+		assertEquals(1, ArrayTools.lastIdentityIndexOf(a, bar));
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(new Object[0], bar));
+	}
+
+	public void testLastIdentityIndexOfObjectArrayObjectInt() {
+		String foo = "foo";
+		String bar = "bar";
+		String baz = "baz";
+		Object[] a = new Object[3];
+		a[0] = foo;
+		a[1] = bar;
+		a[2] = baz;
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(a, bar, -11));
+		assertEquals(1, ArrayTools.lastIdentityIndexOf(a, bar, 1));
+		assertEquals(1, ArrayTools.lastIdentityIndexOf(a, bar, 2));
+		assertEquals(1, ArrayTools.lastIdentityIndexOf(a, bar, 22));
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(new Object[0], bar, 0));
+	}
+
+	public void testLastIdentityIndexOfObjectArrayObject_NotFound() {
+		String foo = "foo";
+		String bar = "bar";
+		String baz = "baz";
+		Object[] a = new Object[3];
+		a[0] = foo;
+		a[1] = bar;
+		a[2] = baz;
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(a, new String("bar")));
+	}
+
+	public void testLastIdentityIndexOfObjectArrayObjectInt_NotFound() {
+		String foo = "foo";
+		String bar = "bar";
+		String baz = "baz";
+		Object[] a = new Object[3];
+		a[0] = foo;
+		a[1] = bar;
+		a[2] = baz;
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(a, new String("bar"), -11));
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(a, new String("bar"), 1));
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(a, new String("bar"), 2));
+		assertEquals(-1, ArrayTools.lastIdentityIndexOf(a, new String("bar"), 22));
+	}
+
 
 	// ********** min/max **********
 
+	public void testMinObjectArray() {
+		assertEquals("one", ArrayTools.min(this.buildStringArray1()));
+		assertEquals("one", ArrayTools.min(ArrayTools.reverse(this.buildStringArray1())));
+		assertEquals("one", ArrayTools.min(new String[] {"one"}));
+	}
+
+	public void testMinObjectArray_exception() {
+		String[] array = new String[0];
+		boolean exCaught = false;
+		try {
+			String min = ArrayTools.min(array);
+			fail("bogus min: " + min);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testMinObjectArrayComparator() {
+		assertEquals("zero", ArrayTools.min(this.buildStringArray1(), ComparatorTools.reverseComparator()));
+		assertEquals("zero", ArrayTools.min(ArrayTools.reverse(this.buildStringArray1()), ComparatorTools.reverseComparator()));
+		assertEquals("one", ArrayTools.min(new String[] {"one"}, ComparatorTools.reverseComparator()));
+	}
+
+	public void testMinObjectArrayComparator_exception() {
+		String[] array = new String[0];
+		boolean exCaught = false;
+		try {
+			String min = ArrayTools.min(array, ComparatorTools.reverseComparator());
+			fail("bogus min: " + min);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
 	public void testMinCharArray() {
 		assertEquals('a', ArrayTools.min(this.buildCharArray()));
+		assertEquals('a', ArrayTools.min(ArrayTools.reverse(this.buildCharArray())));
 	}
 
 	public void testMinCharArray_Exception() {
@@ -1890,6 +2145,7 @@ public class ArrayToolsTests
 
 	public void testMinIntArray() {
 		assertEquals(0, ArrayTools.min(this.buildIntArray()));
+		assertEquals(0, ArrayTools.min(ArrayTools.reverse(this.buildIntArray())));
 	}
 
 	public void testMinIntArray_Exception() {
@@ -1904,13 +2160,51 @@ public class ArrayToolsTests
 		assertTrue(exCaught);
 	}
 
+	public void testMaxObjectArray() {
+		assertEquals("zero", ArrayTools.max(this.buildStringArray1()));
+		assertEquals("zero", ArrayTools.max(ArrayTools.reverse(this.buildStringArray1())));
+		assertEquals("one", ArrayTools.max(new String[] {"one"}));
+	}
+
+	public void testMaxObjectArray_exception() {
+		String[] array = new String[0];
+		boolean exCaught = false;
+		try {
+			String min = ArrayTools.max(array);
+			fail("bogus max: " + min);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testMaxObjectArrayComparator() {
+		assertEquals("one", ArrayTools.max(this.buildStringArray1(), ComparatorTools.reverseComparator()));
+		assertEquals("one", ArrayTools.max(ArrayTools.reverse(this.buildStringArray1()), ComparatorTools.reverseComparator()));
+		assertEquals("one", ArrayTools.max(new String[] {"one"}, ComparatorTools.reverseComparator()));
+	}
+
+	public void testMaxObjectArrayComparator_exception() {
+		String[] array = new String[0];
+		boolean exCaught = false;
+		try {
+			String min = ArrayTools.max(array, ComparatorTools.reverseComparator());
+			fail("bogus max: " + min);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
 	public void testMaxCharArray1() {
 		assertEquals('c', ArrayTools.max(this.buildCharArray()));
+		assertEquals('c', ArrayTools.max(ArrayTools.reverse(this.buildCharArray())));
 	}
 
 	public void testMaxCharArray2() {
 		char[] array = new char[] { 'x', 'a', 'b', 'c' };
 		assertEquals('x', ArrayTools.max(array));
+		assertEquals('x', ArrayTools.max(ArrayTools.reverse(array)));
 	}
 
 	public void testMaxCharArray_Exception() {
@@ -1927,11 +2221,13 @@ public class ArrayToolsTests
 
 	public void testMaxIntArray1() {
 		assertEquals(20, ArrayTools.max(this.buildIntArray()));
+		assertEquals(20, ArrayTools.max(ArrayTools.reverse(this.buildIntArray())));
 	}
 
 	public void testMaxIntArray2() {
 		int[] array = new int[] { 77, 3, 1, -3 };
 		assertEquals(77, ArrayTools.max(array));
+		assertEquals(77, ArrayTools.max(ArrayTools.reverse(array)));
 	}
 
 	public void testMaxIntArray_Exception() {
@@ -2273,7 +2569,7 @@ public class ArrayToolsTests
 
 	public void testRemoveAllObjectArrayCollection_Empty() {
 		String[] a1 = new String[] { "A", "A", "B", "B", "C", "C", "D", "D", "E", "E", "F", "F" };
-		Collection<String> collection = new ArrayList<String>();
+		Collection<String> collection = new ArrayList<>();
 		String[] a3 = ArrayTools.removeAll(a1, collection);
 		assertTrue(Arrays.equals(a1, a3));
 	}
@@ -2543,6 +2839,18 @@ public class ArrayToolsTests
 		assertEquals(0, a.length);
 	}
 
+	public void testRemoveElementsAtIndexObjectArrayIntInt_exception() {
+		String[] a = new String[] { "A", "B", "A", "C", "A", "D" };
+		boolean exCaught = false;
+		try {
+			a = ArrayTools.removeElementsAtIndex(a, 1, 6);
+			fail("bogus: " + Arrays.toString(a));
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
 	public void testRemoveElementsAtIndexCharArrayIntInt() {
 		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
 		a = ArrayTools.removeElementsAtIndex(a, 0, 5);
@@ -2561,6 +2869,18 @@ public class ArrayToolsTests
 		assertEquals(0, a.length);
 	}
 
+	public void testRemoveElementsAtIndexCharArrayIntInt_exception() {
+		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
+		boolean exCaught = false;
+		try {
+			a = ArrayTools.removeElementsAtIndex(a, 1, 6);
+			fail("bogus: " + Arrays.toString(a));
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
 	public void testRemoveElementsAtIndexIntArrayIntInt() {
 		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
 		a = ArrayTools.removeElementsAtIndex(a, 3, 3);
@@ -2577,6 +2897,18 @@ public class ArrayToolsTests
 		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
 		a = ArrayTools.removeElementsAtIndex(a, 0, 6);
 		assertEquals(0, a.length);
+	}
+
+	public void testRemoveElementsAtIndexIntArrayIntInt_exception() {
+		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
+		boolean exCaught = false;
+		try {
+			a = ArrayTools.removeElementsAtIndex(a, 1, 6);
+			fail("bogus: " + Arrays.toString(a));
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 	}
 
 
@@ -2633,6 +2965,42 @@ public class ArrayToolsTests
 		String[] a1 = new String[] { "0", "1", "2", "3", "4", "5" };
 		String[] a2 = new String[] { "0", "1", "2", "3", "4", "5", null, null };
 		assertTrue(Arrays.equals(a2, ArrayTools.resize(a1, a2.length)));
+	}
+
+	public void testExpandObjectArrayInt() {
+		String[] a1 = new String[] { "0", "1", "2", "3", "4", "5" };
+		String[] a2 = ArrayTools.expand(a1, 3);
+		assertEquals(9, a2.length);
+		for (int i = 0; i < a1.length; i++) {
+			assertEquals(a1[i], a2[i]);
+		}
+		for (int i = a1.length; i < a2.length; i++) {
+			assertNull(a2[i]);
+		}
+	}
+
+	public void testExpandObjectArrayInt_zero() {
+		String[] a1 = new String[] { "0", "1", "2", "3", "4", "5" };
+		String[] a2 = ArrayTools.expand(a1, 0);
+		assertEquals(6, a2.length);
+		for (int i = 0; i < a1.length; i++) {
+			assertEquals(a1[i], a2[i]);
+		}
+		for (int i = a1.length; i < a2.length; i++) {
+			assertNull(a2[i]);
+		}
+	}
+
+	public void testExpandObjectArrayInt_empty() {
+		String[] a1 = new String[0];
+		String[] a2 = ArrayTools.expand(a1, 3);
+		assertEquals(3, a2.length);
+		for (int i = 0; i < a1.length; i++) {
+			assertEquals(a1[i], a2[i]);
+		}
+		for (int i = a1.length; i < a2.length; i++) {
+			assertNull(a2[i]);
+		}
 	}
 
 
@@ -2742,7 +3110,7 @@ public class ArrayToolsTests
 
 	public void testRetainAllObjectArrayCollection_EmptyCollection() {
 		String[] a1 = new String[] { "A", "A", "B", "B", "C", "C", "D", "D", "E", "E", "F", "F" };
-		Collection<String> collection = new ArrayList<String>();
+		Collection<String> collection = new ArrayList<>();
 		String[] a3 = ArrayTools.retainAll(a1, collection);
 		assertEquals(0, a3.length);
 	}
@@ -3067,6 +3435,18 @@ public class ArrayToolsTests
 
 	// ********** sub-array **********
 
+	public void testSubArrayObjectArrayInt() {
+		String[] array = new String[] {"foo", "bar", "baz", "joo", "jar", "jaz"};
+		String[] result = new String[] {"foo", "bar", "baz", "joo", "jar", "jaz"};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 0)));
+
+		result = new String[] {"jar", "jaz"};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 4)));
+
+		result = new String[0];
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 6)));
+	}
+
 	public void testSubArrayObjectArrayIntInt() {
 		String[] array = new String[] {"foo", "bar", "baz", "joo", "jar", "jaz"};
 		String[] result = new String[] {"foo", "bar", "baz", "joo"};
@@ -3075,11 +3455,26 @@ public class ArrayToolsTests
 		result = new String[] {"jar"};
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 4, 5)));
 
+		result = new String[] {"foo", "bar", "baz", "joo", "jar", "jaz"};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 0, 6)));
+
 		result = new String[0];
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 5, 5)));
 
 		result = new String[] {"joo", "jar", "jaz"};
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 3, 6)));
+	}
+
+	public void testSubArrayIntArrayInt() {
+		int[] array = new int[] {77, 99, 333, 4, 9090, 42};
+		int[] result = new int[] {77, 99, 333, 4, 9090, 42};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 0)));
+
+		result = new int[] {9090, 42};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 4)));
+
+		result = new int[0];
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 6)));
 	}
 
 	public void testSubArrayIntArrayIntInt() {
@@ -3090,11 +3485,26 @@ public class ArrayToolsTests
 		result = new int[] {9090};
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 4, 5)));
 
+		result = new int[] {77, 99, 333, 4, 9090, 42};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 0, 6)));
+
 		result = new int[0];
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 5, 5)));
 
 		result = new int[] {4, 9090, 42};
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 3, 6)));
+	}
+
+	public void testSubArrayCharArrayInt() {
+		char[] array = new char[] {'a', 'b', 'c', 'd', 'e', 'f'};
+		char[] result = new char[] {'a', 'b', 'c', 'd', 'e', 'f'};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 0)));
+
+		result = new char[] {'e', 'f'};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 4)));
+
+		result = new char[0];
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 6)));
 	}
 
 	public void testSubArrayCharArrayIntInt() {
@@ -3104,6 +3514,9 @@ public class ArrayToolsTests
 
 		result = new char[] {'e'};
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 4, 5)));
+
+		result = new char[] {'a', 'b', 'c', 'd', 'e', 'f'};
+		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 0, 6)));
 
 		result = new char[0];
 		assertTrue(Arrays.equals(result, ArrayTools.subArray(array, 5, 5)));
@@ -3163,11 +3576,21 @@ public class ArrayToolsTests
 
 	// ********** execute **********
 
-	public void testExecuteObjectArrayParmCommand() {
+	public void testExecuteObjectArrayClosure() {
 		String[] a = this.buildStringArray1();
 		ConcatenateClosure command = new ConcatenateClosure();
 		ArrayTools.execute(a, command);
 		assertEquals("zeroonetwo", command.string);
+	}
+
+	public void testExecuteObjectArrayClosureExceptionHandler() {
+		String[] a = this.buildStringArray1();
+		a = ArrayTools.add(a, 2, null);
+		ConcatenateClosure command = new ConcatenateClosure();
+		ExceptionCounter handler = new ExceptionCounter();
+		ArrayTools.execute(a, command, handler);
+		assertEquals("zeroonetwo", command.string);
+		assertEquals(1, handler.count);
 	}
 
 	public static class ConcatenateClosure
@@ -3177,15 +3600,38 @@ public class ArrayToolsTests
 
 		@Override
 		public void execute(String s) {
+			if (s == null) {
+				throw new NullPointerException();
+			}
 			this.string += s;
 		}
 	}
 
-	public void testExecuteObjectArrayInterruptibleParmCommand() throws Exception {
+	public static class ExceptionCounter
+		extends ExceptionHandlerAdapter
+	{
+		public int count = 0;
+		@Override
+		public void handleException(Throwable t) {
+			this.count++;
+		}
+	}
+
+	public void testExecuteObjectArrayInterruptibleClosure() throws Exception {
 		String[] a = this.buildStringArray1();
 		InterruptibleConcatenateClosure command = new InterruptibleConcatenateClosure();
 		ArrayTools.execute(a, command);
 		assertEquals("zeroonetwo", command.string);
+	}
+
+	public void testExecuteObjectArrayInterruptibleClosureExceptionHandler() throws Exception {
+		String[] a = this.buildStringArray1();
+		a = ArrayTools.add(a, 2, null);
+		InterruptibleConcatenateClosure command = new InterruptibleConcatenateClosure();
+		ExceptionCounter handler = new ExceptionCounter();
+		ArrayTools.execute(a, command, handler);
+		assertEquals("zeroonetwo", command.string);
+		assertEquals(1, handler.count);
 	}
 
 	public static class InterruptibleConcatenateClosure
@@ -3195,6 +3641,9 @@ public class ArrayToolsTests
 
 		@Override
 		public void execute(String s) throws InterruptedException {
+			if (s == null) {
+				throw new NullPointerException();
+			}
 			this.string += s;
 		}
 	}
@@ -3264,6 +3713,78 @@ public class ArrayToolsTests
 
 
 	// ********** Arrays enhancements **********
+
+	public void testNotEqualsBoolean() {
+		boolean[] a1 = new boolean[] { true, false, true };
+		boolean[] a2 = new boolean[] { true, false, true };
+		boolean[] a3 = new boolean[] { true, false, false };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsByte() {
+		byte[] a1 = new byte[] { 3, 3, 7 };
+		byte[] a2 = new byte[] { 3, 3, 7 };
+		byte[] a3 = new byte[] { 3, 3, 8 };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsChar() {
+		char[] a1 = new char[] { 'a', 'b', 'z' };
+		char[] a2 = new char[] { 'a', 'b', 'z' };
+		char[] a3 = new char[] { 'a', 'b', 'x' };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsDouble() {
+		double[] a1 = new double[] { 3.3, 3.1, 7.7 };
+		double[] a2 = new double[] { 3.3, 3.1, 7.7 };
+		double[] a3 = new double[] { 3.3, 3.1, 7.8 };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsFloat() {
+		float[] a1 = new float[] { 3.3f, 3.1f, 7.7f };
+		float[] a2 = new float[] { 3.3f, 3.1f, 7.7f };
+		float[] a3 = new float[] { 3.3f, 3.1f, 7.8f };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsInt() {
+		int[] a1 = new int[] { 3, 3, 7 };
+		int[] a2 = new int[] { 3, 3, 7 };
+		int[] a3 = new int[] { 3, 3, 8 };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsObject() {
+		String[] a1 = new String[] { "3", "3", "7" };
+		String[] a2 = new String[] { "3", "3", "7" };
+		String[] a3 = new String[] { "3", "3", "8" };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsLong() {
+		long[] a1 = new long[] { 3, 3, 7 };
+		long[] a2 = new long[] { 3, 3, 7 };
+		long[] a3 = new long[] { 3, 3, 8 };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
+
+	public void testNotEqualsShort() {
+		short[] a1 = new short[] { 3, 3, 7 };
+		short[] a2 = new short[] { 3, 3, 7 };
+		short[] a3 = new short[] { 3, 3, 8 };
+		assertFalse(ArrayTools.notEquals(a1, a2));
+		assertTrue(ArrayTools.notEquals(a1, a3));
+	}
 
 	public void testFillBooleanArrayBoolean() {
 		boolean[] a1 = new boolean[9];
@@ -3842,6 +4363,73 @@ public class ArrayToolsTests
 	}
 
 
+	// ********** binary search **********
+
+	public void testBinarySearchByte() {
+		byte[] a = new byte[] { 3, 22, 33, 77 };
+		assertTrue(ArrayTools.binarySearch(a, (byte) 3));
+		assertTrue(ArrayTools.binarySearch(a, (byte) 33));
+		assertFalse(ArrayTools.binarySearch(a, (byte) 222));
+	}
+
+	public void testBinarySearchChar() {
+		char[] a = new char[] { 'a', 'c', 'e', 'z' };
+		assertTrue(ArrayTools.binarySearch(a, 'a'));
+		assertTrue(ArrayTools.binarySearch(a, 'e'));
+		assertFalse(ArrayTools.binarySearch(a, 'x'));
+	}
+
+	public void testBinarySearchDouble() {
+		double[] a = new double[] { 3.3, 22.22, 33.33, 77.77 };
+		assertTrue(ArrayTools.binarySearch(a, 3.3));
+		assertTrue(ArrayTools.binarySearch(a, 33.33));
+		assertFalse(ArrayTools.binarySearch(a, 222.222));
+	}
+
+	public void testBinarySearchFloat() {
+		float[] a = new float[] { 3.3f, 22.22f, 33.33f, 77.77f };
+		assertTrue(ArrayTools.binarySearch(a, 3.3f));
+		assertTrue(ArrayTools.binarySearch(a, 33.33f));
+		assertFalse(ArrayTools.binarySearch(a, 222.222f));
+	}
+
+	public void testBinarySearchInt() {
+		int[] a = new int[] { 3, 22, 33, 77 };
+		assertTrue(ArrayTools.binarySearch(a, 3));
+		assertTrue(ArrayTools.binarySearch(a, 33));
+		assertFalse(ArrayTools.binarySearch(a, 222));
+	}
+
+	public void testBinarySearchLong() {
+		long[] a = new long[] { 3, 22, 33, 77 };
+		assertTrue(ArrayTools.binarySearch(a, 3));
+		assertTrue(ArrayTools.binarySearch(a, 33));
+		assertFalse(ArrayTools.binarySearch(a, 222));
+	}
+
+	public void testBinarySearchObject() {
+		String[] a = new String[] { "a", "b", "c", "z" };
+		assertTrue(ArrayTools.binarySearch(a, "a"));
+		assertTrue(ArrayTools.binarySearch(a, "c"));
+		assertFalse(ArrayTools.binarySearch(a, "x"));
+	}
+
+	public void testBinarySearchObjectComparator() {
+		String[] a = new String[] { "a", "b", "c", "z" };
+		a = ArrayTools.sort(a, ComparatorTools.reverseComparator());
+		assertTrue(ArrayTools.binarySearch(a, "a", ComparatorTools.reverseComparator()));
+		assertTrue(ArrayTools.binarySearch(a, "c", ComparatorTools.reverseComparator()));
+		assertFalse(ArrayTools.binarySearch(a, "x", ComparatorTools.reverseComparator()));
+	}
+
+	public void testBinarySearchShort() {
+		short[] a = new short[] { 3, 22, 33, 77 };
+		assertTrue(ArrayTools.binarySearch(a, (short) 3));
+		assertTrue(ArrayTools.binarySearch(a, (short) 33));
+		assertFalse(ArrayTools.binarySearch(a, (short) 222));
+	}
+
+
 	// ********** constructor **********
 
 	public void testConstructor() {
@@ -3887,13 +4475,13 @@ public class ArrayToolsTests
 	}
 
 	private List<String> buildStringList1() {
-		List<String> l = new ArrayList<String>();
+		List<String> l = new ArrayList<>();
 		this.addToCollection1(l);
 		return l;
 	}
 
 	private List<Object> buildObjectList1() {
-		List<Object> l = new ArrayList<Object>();
+		List<Object> l = new ArrayList<>();
 		this.addToCollection1(l);
 		return l;
 	}
@@ -3905,7 +4493,7 @@ public class ArrayToolsTests
 	}
 
 	private List<String> buildStringList2() {
-		List<String> l = new ArrayList<String>();
+		List<String> l = new ArrayList<>();
 		this.addToCollection2(l);
 		return l;
 	}
@@ -3917,7 +4505,7 @@ public class ArrayToolsTests
 	}
 
 	private Vector<String> buildStringVector1() {
-		Vector<String> v = new Vector<String>();
+		Vector<String> v = new Vector<>();
 		this.addToCollection1(v);
 		return v;
 	}

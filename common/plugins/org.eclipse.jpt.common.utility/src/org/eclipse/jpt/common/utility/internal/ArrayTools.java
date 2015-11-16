@@ -441,6 +441,7 @@ public final class ArrayTools {
 	 * specified array 1 followed by the elements
 	 * in the specified array 2.
 	 */
+	@SafeVarargs
 	public static <E> E[] addAll(E[] array1, E... array2) {
 		return addAll(array1, array2, array2.length);
 	}
@@ -481,6 +482,7 @@ public final class ArrayTools {
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
 	 */
+	@SafeVarargs
 	public static <E> E[] addAll(E[] array1, int index, E... array2) {
 		return addAll(array1, index, array2, array2.length);
 	}
@@ -822,6 +824,7 @@ public final class ArrayTools {
 	 * specified arrays, concatenated in the specified order.
 	 * This is useful for building constant arrays out of other constant arrays.
 	 */
+	@SafeVarargs
 	public static <E> E[] concatenate(E[]... arrays) {
 		int len = 0;
 		for (E[] array : arrays) {
@@ -2280,13 +2283,14 @@ public final class ArrayTools {
 	 * Remove any duplicate elements from the specified array,
 	 * while maintaining the order.
 	 */
+	@SafeVarargs
 	public static <E> E[] removeDuplicateElements(E... array) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 
-		LinkedHashSet<E> temp = new LinkedHashSet<E>(len);  // take advantage of hashed look-up
+		LinkedHashSet<E> temp = new LinkedHashSet<>(len);  // take advantage of hashed look-up
 		boolean modified = false;
 		for (E item : array) {
 			if ( ! temp.add(item)) {
@@ -2703,9 +2707,10 @@ public final class ArrayTools {
 	/**
 	 * Return the array, reversed.
 	 */
+	@SafeVarargs
 	public static <E> E[] reverse(E... array) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		for (int i = 0, mid = len >> 1, j = len - 1; i < mid; i++, j--) {
@@ -2719,9 +2724,13 @@ public final class ArrayTools {
 	 */
 	public static char[] reverse(char... array) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
-			return array;
-		}
+		return (len <= 1) ? array : reverse(array, len);
+	}
+
+	/**
+	 * Assume length > 1
+	 */
+	/* package */ static char[] reverse(char[] array, int len) {
 		for (int i = 0, mid = len >> 1, j = len - 1; i < mid; i++, j--) {
 			swap(array, i, j);
 		}
@@ -2733,7 +2742,7 @@ public final class ArrayTools {
 	 */
 	public static int[] reverse(int... array) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		for (int i = 0, mid = len >> 1, j = len - 1; i < mid; i++, j--) {
@@ -2748,6 +2757,7 @@ public final class ArrayTools {
 	/**
 	 * Return the rotated array after rotating it one position.
 	 */
+	@SafeVarargs
 	public static <E> E[] rotate(E... array) {
 		return rotate(array, 1);
 	}
@@ -2757,7 +2767,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] rotate(E[] array, int distance) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		distance = distance % len;
@@ -2796,7 +2806,7 @@ public final class ArrayTools {
 	 */
 	public static char[] rotate(char[] array, int distance) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		distance = distance % len;
@@ -2835,7 +2845,7 @@ public final class ArrayTools {
 	 */
 	public static int[] rotate(int[] array, int distance) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		distance = distance % len;
@@ -2870,6 +2880,7 @@ public final class ArrayTools {
 	/**
 	 * Return the array after "shuffling" it.
 	 */
+	@SafeVarargs
 	public static <E> E[] shuffle(E... array) {
 		return shuffle(array, RANDOM);
 	}
@@ -2879,7 +2890,7 @@ public final class ArrayTools {
 	 */
 	public static <E> E[] shuffle(E[] array, Random random) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		for (int i = len; i-- > 0; ) {
@@ -2900,7 +2911,7 @@ public final class ArrayTools {
 	 */
 	public static char[] shuffle(char[] array, Random random) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		for (int i = len; i-- > 0; ) {
@@ -2921,7 +2932,7 @@ public final class ArrayTools {
 	 */
 	public static int[] shuffle(int[] array, Random random) {
 		int len = array.length;
-		if ((len == 0) || (len == 1)) {
+		if (len <= 1) {
 			return array;
 		}
 		for (int i = len; i-- > 0; ) {
@@ -3499,6 +3510,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(Object[])
 	 */
+	@SafeVarargs
 	public static <E> E[] sort(E... array) {
 		Arrays.sort(array);
 		return array;
