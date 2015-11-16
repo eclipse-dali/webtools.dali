@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -175,7 +175,7 @@ public final class ClassTools {
 		if (javaClass == null) {
 			return IterableTools.emptyIterable();
 		}
-		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+		ArrayList<Class<?>> classes = new ArrayList<>();
 		do {
 			classes.add(javaClass);
 			javaClass = javaClass.getSuperclass();
@@ -192,7 +192,7 @@ public final class ClassTools {
 	 * @see Class#getInterfaces()
 	 */
 	public static Iterable<Class<?>> allInterfaces(Class<?> javaClass) {
-		ArrayList<Class<?>> interfaces = new ArrayList<Class<?>>();
+		ArrayList<Class<?>> interfaces = new ArrayList<>();
 		for (Class<?> tempClass = javaClass; tempClass != null; tempClass = tempClass.getSuperclass()) {
 			CollectionTools.<Class<?>>addAll(interfaces, tempClass.getInterfaces());
 		}
@@ -200,7 +200,7 @@ public final class ClassTools {
 	}
 
 
-	// ********** fields **********
+	// ********** static field values **********
 
 	/**
 	 * Return the value of the specified class's static field with the specified
@@ -251,6 +251,9 @@ public final class ClassTools {
 		field_(javaClass, fieldName).set(null, value);
 	}
 
+
+	// ********** fields **********
+
 	/**
 	 * Return the specified class's field with the specified name.
 	 * If the class does not directly
@@ -293,7 +296,7 @@ public final class ClassTools {
 	 * @see Class#getDeclaredFields()
 	 */
 	public static Iterable<Field> allFields(Class<?> javaClass) {
-		ArrayList<Field> fields = new ArrayList<Field>();
+		ArrayList<Field> fields = new ArrayList<>();
 		for (Class<?> tempClass = javaClass; tempClass != null; tempClass = tempClass.getSuperclass()) {
 			CollectionTools.addAll(fields, declaredFields(tempClass));
 		}
@@ -310,7 +313,7 @@ public final class ClassTools {
 	}
 
 
-	// ********** methods **********
+	// ********** static method execution **********
 
 	/**
 	 * Execute the specified zero-argument static method.
@@ -373,6 +376,9 @@ public final class ClassTools {
 	{
 		return staticMethod_(javaClass, methodName, parameterTypes).invoke(null, arguments);
 	}
+
+
+	// ********** methods **********
 
 	/**
 	 * Return the specified class's zero-argument method with the specified
@@ -518,7 +524,7 @@ public final class ClassTools {
 	 * Make any private/package/protected methods accessible.
 	 */
 	public static Iterable<Method> allMethods(Class<?> javaClass) {
-		ArrayList<Method> methods = new ArrayList<Method>();
+		ArrayList<Method> methods = new ArrayList<>();
 		for (Class<?> tempClass = javaClass; tempClass != null; tempClass = tempClass.getSuperclass()) {
 			CollectionTools.addAll(methods, declaredMethods(tempClass));
 		}
@@ -1160,7 +1166,7 @@ public final class ClassTools {
 	 */
 	public static String buildMethodSignature(String methodName, Class<?>[] parameterTypes) {
 		StringBuilder sb = new StringBuilder(200);
-		appendMethodSignature(sb, methodName, parameterTypes);
+		appendMethodSignature_(sb, methodName, parameterTypes);
 		return sb.toString();
 	}
 
@@ -1168,6 +1174,13 @@ public final class ClassTools {
 		// method name is null for constructors
 		if (methodName != null) {
 			sb.append('.');
+		}
+		appendMethodSignature_(sb, methodName, parameterTypes);
+	}
+
+	private static void appendMethodSignature_(StringBuilder sb, String methodName, Class<?>[] parameterTypes) {
+		// method name is null for constructors
+		if (methodName != null) {
 			sb.append(methodName);
 		}
 		sb.append('(');
