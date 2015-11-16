@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Locale;
+import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -38,21 +39,40 @@ public final class CharArrayTools {
 	/** empty char array array */
 	public static final char[][] EMPTY_CHAR_ARRAY_ARRAY = new char[0][0];
 
+	public static final Transformer<char[], String> STRING_TRANSFORMER = new StringTransformer();
+	/* CU private */ static class StringTransformer
+		implements Transformer<char[], String>, Serializable
+	{
+		public String transform(char[] string) {
+			return String.valueOf(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return STRING_TRANSFORMER;
+		}
+	}
+
 
 	// ********** reverse **********
 
 	/**
-	 * Return a new string with the reverse the characters of the specified string.
+	 * @see StringTools#reverse(String)
 	 */
 	public static char[] reverse(char[] string) {
-		return (string.length == 0) ? string : ArrayTools.reverse(string.clone());
+		int len = string.length;
+		return (len <= 1) ? string : ArrayTools.reverse(string.clone(), len);
 	}
 
 
 	// ********** last **********
 
 	/**
-	 * Return the last character of the specified string.
+	 * @see StringTools#last(String)
 	 */
 	public static char last(char[] string) {
 		return string[string.length - 1];
@@ -62,9 +82,16 @@ public final class CharArrayTools {
 	// ********** concatenation **********
 
 	/**
-	 * Return a concatenation of the specified strings.
+	 * @see StringTools#concatenate(String...)
 	 */
 	public static char[] concatenate(char[]... strings) {
+		return (strings.length == 0) ? EMPTY_CHAR_ARRAY : ((strings.length == 1) ? strings[0] : concatenate_(strings));
+	}
+
+	/**
+	 * Pre-condition: array length > 1
+	 */
+	private static char[] concatenate_(char[]... strings) {
 		int stringLength = 0;
 		for (char[] string : strings) {
 			stringLength += string.length;
@@ -85,20 +112,94 @@ public final class CharArrayTools {
 	}
 
 	/**
-	 * Return a concatenation of the specified strings.
+	 * @see StringTools#concatenate(Iterable)
 	 */
 	public static char[] concatenate(Iterable<char[]> strings) {
 		return concatenate(strings.iterator());
 	}
 
 	/**
-	 * Return a concatenation of the specified strings.
+	 * @see StringTools#concatenate(Iterator)
 	 */
 	public static char[] concatenate(Iterator<char[]> strings) {
+		return strings.hasNext() ? concatenate_(strings) : EMPTY_CHAR_ARRAY;
+	}
+
+	/**
+	 * Pre-condition: iterator is not empty
+	 */
+	private static char[] concatenate_(Iterator<char[]> strings) {
 		StringBuilder sb = new StringBuilder();
 		while (strings.hasNext()) {
 			sb.append(strings.next());
 		}
+		return sb.toString().toCharArray();
+	}
+
+	/**
+	 * @see StringTools#concatenate(String[], String)
+	 */
+	public static char[] concatenate(char[][] strings, char[] separator) {
+		int stringsLength = strings.length;
+		if (stringsLength == 0) {
+			return EMPTY_CHAR_ARRAY;
+		}
+		if (stringsLength == 1) {
+			return strings[0];
+		}
+		int separatorLength = separator.length;
+		if (separatorLength == 0) {
+			return concatenate_(strings);
+		}
+		int stringLength = 0;
+		for (char[] string : strings) {
+			stringLength += string.length;
+		}
+		stringLength += ((stringsLength - 1) * separatorLength);
+		char[] buffer = new char[stringLength];
+		int i = 0;
+		for (char[] string : strings) {
+			int len = string.length;
+			if (len > 0) {
+				System.arraycopy(string, 0, buffer, i, len);
+				i += len;
+			}
+			if (i < stringLength) {
+				System.arraycopy(separator, 0, buffer, i, separatorLength);
+				i += separatorLength;
+			}
+		}
+		return buffer;
+	}
+
+	/**
+	 * @see StringTools#concatenate(Iterable, String)
+	 */
+	public static char[] concatenate(Iterable<char[]> strings, char[] separator) {
+		return concatenate(strings.iterator(), separator);
+	}
+
+	/**
+	 * @see StringTools#concatenate(Iterator, String)
+	 */
+	public static char[] concatenate(Iterator<char[]> strings, char[] separator) {
+		return strings.hasNext() ? concatenate_(strings, separator) : EMPTY_CHAR_ARRAY;
+	}
+
+	/**
+	 * Pre-condition: iterator is not empty
+	 */
+	private static char[] concatenate_(Iterator<char[]> strings, char[] separator) {
+		int separatorLength = separator.length;
+		if (separatorLength == 0) {
+			return concatenate_(strings);
+		}
+		StringBuilder sb = new StringBuilder();
+		while (strings.hasNext()) {
+			sb.append(strings.next());
+			sb.append(separator);
+		}
+		sb.setLength(sb.length() - separatorLength);  // chop off trailing separator
 		return sb.toString().toCharArray();
 	}
 
@@ -390,7 +491,7 @@ public final class CharArrayTools {
 		}
 		@Override
 		public String toString() {
-			return ObjectTools.toString(this, this.delimiter);
+			return ObjectTools.toString(this, convertToJavaStringLiteral(this.delimiter));
 		}
 	}
 
@@ -466,7 +567,7 @@ public final class CharArrayTools {
 		int stringLength = string.length;
 		int resultLength = stringLength - 2;
 		if (resultLength < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+			throw new IllegalArgumentException("invalid string: \"" + String.valueOf(string) + '"'); //$NON-NLS-1$
 		}
 		if (resultLength == 0) {
 			return EMPTY_CHAR_ARRAY;
@@ -486,7 +587,7 @@ public final class CharArrayTools {
 		}
 		int resultLength = string.length - (2 * count);
 		if (resultLength < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+			throw new IllegalArgumentException("invalid string: \"" + String.valueOf(string) + '"'); //$NON-NLS-1$
 		}
 		if (resultLength == 0) {
 			return EMPTY_CHAR_ARRAY;
@@ -610,14 +711,20 @@ public final class CharArrayTools {
 	 * @see StringTools#commonPrefixLength(String, String)
 	 */
 	public static int commonPrefixLength(char[] s1, char[] s2) {
-		return commonPrefixLength(s1, s2, Math.min(s1.length, s2.length));
+		return commonPrefixLength_(s1, s2, Math.min(s1.length, s2.length));
 	}
 
 	/**
-	 * Return the length of the common prefix shared by the specified strings;
-	 * but limit the length to the specified maximum.
+	 * @see StringTools#commonPrefixLength(String, String, int)
 	 */
 	public static int commonPrefixLength(char[] s1, char[] s2, int max) {
+		return commonPrefixLength_(s1, s2, Math.min(max, Math.min(s1.length, s2.length)));
+	}
+
+	/**
+	 * no max check
+	 */
+	private static int commonPrefixLength_(char[] s1, char[] s2, int max) {
 		for (int i = 0; i < max; i++) {
 			if (s1[i] != s2[i]) {
 				return i;
@@ -696,8 +803,7 @@ public final class CharArrayTools {
 		// if both the first and second characters are capitalized,
 		// return the string unchanged
 		if ((stringLength > 1)
-				&& Character.isUpperCase(string[1])
-				&& Character.isUpperCase(string[0])){
+				&& Character.isUpperCase(string[1])){
 			return true;
 		}
 		return false;
@@ -762,6 +868,28 @@ public final class CharArrayTools {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * @see #isBlank(char[])
+	 */
+	public static final Predicate<char[]> IS_BLANK = new IsBlank();
+
+	/* CU private */ static class IsBlank
+		implements Predicate<char[]>, Serializable
+	{
+		public boolean evaluate(char[] string) {
+			return isBlank(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return IS_BLANK;
+		}
 	}
 
 	/**
@@ -833,17 +961,31 @@ public final class CharArrayTools {
 	}
 
 	/**
+	 * @see #startsWithIgnoreCase(char[], char[])
+	 */
+	public static class StartsWithIgnoreCase
+		extends CriterionPredicate<char[], char[]>
+	{
+		public StartsWithIgnoreCase(char[] prefix) {
+			super(prefix);
+		}
+		public boolean evaluate(char[] string) {
+			return startsWithIgnoreCase(string, this.criterion);
+		}
+	}
+
+	/**
 	 * @see StringTools#isUppercase(String)
 	 */
 	public static boolean isUppercase(char[] string) {
-		return (string.length != 0) && StringTools.isUppercase_(new String(string));
+		return (string.length != 0) && StringTools.isUppercase_(String.valueOf(string));
 	}
 
 	/**
 	 * @see StringTools#isLowercase(String)
 	 */
 	public static boolean isLowercase(char[] string) {
-		return (string.length != 0) && StringTools.isLowercase_(new String(string));
+		return (string.length != 0) && StringTools.isLowercase_(String.valueOf(string));
 	}
 
 
@@ -858,7 +1000,7 @@ public final class CharArrayTools {
 			return ByteArrayTools.EMPTY_BYTE_ARRAY;
 		}
 		if (BitTools.isOdd(hexStringLength)) {
-			throw new IllegalArgumentException("Odd-sized hexadecimal string: " + new String(hexString) + " (" + hexStringLength + " characters)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			throw new IllegalArgumentException("Odd-sized hexadecimal string: " + String.valueOf(hexString) + " (" + hexStringLength + " characters)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return convertHexStringToByteArray(hexString, hexStringLength);
 	}
@@ -883,7 +1025,7 @@ public final class CharArrayTools {
 	}
 
 	private static String buildIllegalHexCharMessage(char[] hexString, int index) {
-		return StringTools.buildIllegalHexCharMessage(new String(hexString), index);
+		return StringTools.buildIllegalHexCharMessage(String.valueOf(hexString), index);
 	}
 
 
@@ -1139,9 +1281,9 @@ public final class CharArrayTools {
 	/**
 	 * @see #convertToDoubleQuotedXmlAttributeValueContent(char[])
 	 */
-	public static final Transformer<char[], char[]> XML_DOUBLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlDoubleQuotedAttributeValueContentTransformer();
+	public static final Transformer<char[], char[]> DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new DoubleQuotedXmlAttributeValueContentTransformer();
 
-	/* CU private */ static class XmlDoubleQuotedAttributeValueContentTransformer
+	/* CU private */ static class DoubleQuotedXmlAttributeValueContentTransformer
 		implements Transformer<char[], char[]>, Serializable
 	{
 		public char[] transform(char[] string) {
@@ -1154,7 +1296,7 @@ public final class CharArrayTools {
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
-			return XML_DOUBLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
+			return DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 		}
 	}
 
@@ -1211,9 +1353,9 @@ public final class CharArrayTools {
 	/**
 	 * @see #convertToSingleQuotedXmlAttributeValueContent(char[])
 	 */
-	public static final Transformer<char[], char[]> XML_SINGLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlSingleQuotedAttributeValueContentTransformer();
+	public static final Transformer<char[], char[]> SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new SingleQuotedXmlAttributeValueContentTransformer();
 
-	/* CU private */ static class XmlSingleQuotedAttributeValueContentTransformer
+	/* CU private */ static class SingleQuotedXmlAttributeValueContentTransformer
 		implements Transformer<char[], char[]>, Serializable
 	{
 		public char[] transform(char[] string) {
@@ -1226,7 +1368,7 @@ public final class CharArrayTools {
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
-			return XML_SINGLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
+			return SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 		}
 	}
 
@@ -1612,7 +1754,7 @@ public final class CharArrayTools {
 	 * @see String#lastIndexOf(int)
 	 */
 	public static int lastIndexOf(char[] string, int c) {
-		return indexOf(string, c, string.length - 1);
+		return lastIndexOf(string, c, string.length - 1);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,6 +35,27 @@ public final class StringBuilderTools {
 		char[] result = new char[len];
 		sb.getChars(0, len, result, 0);
 		return result;
+	}
+
+
+	// ********** reverse **********
+
+	/**
+	 * Reverse the specified string.
+	 */
+	public static void reverse(StringBuilder sb, String string) {
+		for (int i = string.length(); i-- > 0; ) {
+			sb.append(string.charAt(i));
+		}
+	}
+
+	/**
+	 * Reverse the specified string.
+	 */
+	public static void reverse(StringBuilder sb, char[] string) {
+		for (int i = string.length; i-- > 0; ) {
+			sb.append(string[i]);
+		}
 	}
 
 
@@ -680,7 +701,7 @@ public final class StringBuilderTools {
 		int stringLength = string.length;
 		int resultLength = stringLength - 2;
 		if (resultLength < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+			throw new IllegalArgumentException("invalid string: \"" + String.valueOf(string) + '"'); //$NON-NLS-1$
 		}
 		if (resultLength == 0) {
 			return;
@@ -745,7 +766,7 @@ public final class StringBuilderTools {
 		}
 		int resultLength = string.length - (2 * count);
 		if (resultLength < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+			throw new IllegalArgumentException("invalid string: \"" + String.valueOf(string) + '"'); //$NON-NLS-1$
 		}
 		if (resultLength == 0) {
 			return;

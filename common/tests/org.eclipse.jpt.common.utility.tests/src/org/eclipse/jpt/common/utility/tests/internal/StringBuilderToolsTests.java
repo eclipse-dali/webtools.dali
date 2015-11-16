@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,28 +9,40 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.junit.Assert;
 
 @SuppressWarnings("nls")
 public class StringBuilderToolsTests
-	extends TestCase
+	extends AbstractStringBuilderToolsTests
 {
 	public StringBuilderToolsTests(String name) {
 		super(name);
 	}
 
-	// ********** padding/truncating/centering/repeating **********
-
-	public void testCenter() {
-		this.verifyCenter("fred", "fred", 4);
-		this.verifyCenter(" fred ", "fred", 6);
-		this.verifyCenter(" fred  ", "fred", 7);
-		this.verifyCenter("re", "fred", 2);
-		this.verifyCenter("fre", "fred", 3);
+	@Override
+	protected void verifyConvertToCharArray(String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		sb.append(string);
+		Assert.assertArrayEquals(string.toCharArray(), StringBuilderTools.convertToCharArray(sb));
 	}
 
-	private void verifyCenter(String expected, String s, int len) {
+	@Override
+	protected void verifyReverse(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringBuilderTools.reverse(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.reverse(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyCenter(String expected, String s, int len) {
 		StringBuilder sb;
 		sb = new StringBuilder();
 		StringBuilderTools.center(sb, s, len);
@@ -41,324 +53,244 @@ public class StringBuilderToolsTests
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testPad() {
+	@Override
+	protected void verifyPad(String expected, String string, int length) {
 		StringBuilder sb;
 		sb = new StringBuilder();
-		StringBuilderTools.pad(sb, "fred", 4);
-		assertEquals("fred", sb.toString());
+		StringBuilderTools.pad(sb, string, length);
+		assertEquals(expected, sb.toString());
 
 		sb = new StringBuilder();
-		StringBuilderTools.pad(sb, "fred", 6);
-		assertEquals("fred  ", sb.toString());
+		StringBuilderTools.pad(sb, string.toCharArray(), length);
+		assertEquals(expected, sb.toString());
+	}
 
+	@Override
+	protected void verifyFit(String expected, String string, int length) {
+		StringBuilder sb;
 		sb = new StringBuilder();
-		boolean exThrown = false;
-		try {
-			StringBuilderTools.pad(sb, "fred", 2);
-			fail();
-		} catch (IllegalArgumentException ex) {
-			exThrown = true;
-		}
-		assertTrue(exThrown);
-	}
-
-	public void testFit() {
-		this.verifyFit("fred", "fred", 4);
-		this.verifyFit("fred  ", "fred", 6);
-		this.verifyFit("fr", "fred", 2);
-	}
-
-	private void verifyFit(String expected, String string, int length) {
-		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.fit(sb, string, length);
 		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.fit(sb, string.toCharArray(), length);
+		assertEquals(expected, sb.toString());
 	}
 
-	public void testZeroPad() {
+	@Override
+	protected void verifyZeroPad(String expected, String string, int length) {
 		StringBuilder sb;
 		sb = new StringBuilder();
-		StringBuilderTools.zeroPad(sb, "1234", 4);
-		assertEquals("1234", sb.toString());
+		StringBuilderTools.zeroPad(sb, string, length);
+		assertEquals(expected, sb.toString());
 
 		sb = new StringBuilder();
-		StringBuilderTools.zeroPad(sb, "1234", 6);
-		assertEquals("001234", sb.toString());
+		StringBuilderTools.zeroPad(sb, string.toCharArray(), length);
+		assertEquals(expected, sb.toString());
+	}
 
+	@Override
+	protected void verifyZeroFit(String expected, String string, int length) {
+		StringBuilder sb;
 		sb = new StringBuilder();
-		boolean exThrown = false;
-		try {
-			StringBuilderTools.zeroPad(sb, "1234", 2);
-			fail();
-		} catch (IllegalArgumentException ex) {
-			exThrown = true;
-		}
-		assertTrue(exThrown);
-	}
-
-	public void testZeroFit() {
-		this.verifyZeroFit("1234", "1234", 4);
-		this.verifyZeroFit("001234", "1234", 6);
-		this.verifyZeroFit("34", "1234", 2);
-	}
-
-	private void verifyZeroFit(String expected, String string, int length) {
-		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.zeroFit(sb, string, length);
 		assertEquals(expected, sb.toString());
-	}
 
-	public void testRepeat() {
-		this.verifyRepeat("", "1234", 0);
-		this.verifyRepeat("12", "1234", 2);
-		this.verifyRepeat("1234", "1234", 4);
-		this.verifyRepeat("123412", "1234", 6);
-		this.verifyRepeat("12341234", "1234", 8);
-		this.verifyRepeat("123412341234123412341", "1234", 21);
-	}
-
-	private void verifyRepeat(String expected, String string, int length) {
-		StringBuilder sb = new StringBuilder();
-		StringBuilderTools.repeat(sb, string, length);
+		sb = new StringBuilder();
+		StringBuilderTools.zeroFit(sb, string.toCharArray(), length);
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testRepeatCharArray() {
-		this.verifyRepeatCharArray("", "1234", 0);
-		this.verifyRepeatCharArray("12", "1234", 2);
-		this.verifyRepeatCharArray("1234", "1234", 4);
-		this.verifyRepeatCharArray("123412", "1234", 6);
-		this.verifyRepeatCharArray("12341234", "1234", 8);
-		this.verifyRepeatCharArray("123412341234123412341", "1234", 21);
-	}
+	@Override
+	protected void verifyRepeat(String expected, String string, int length) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringBuilderTools.repeat(sb, string, length);
+		assertEquals(expected, sb.toString());
 
-	private void verifyRepeatCharArray(String expected, String string, int length) {
-		StringBuilder sb = new StringBuilder();
+		sb = new StringBuilder();
 		StringBuilderTools.repeat(sb, string.toCharArray(), length);
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testSeparateOnStringCharInt() {
-		this.verifySeparate("012345", '-', 22, "012345");
-		this.verifySeparate("012345", '-',  6, "012345");
-		this.verifySeparate("012345", '-',  5, "01234-5");
-		this.verifySeparate("012345", '-',  4, "0123-45");
-		this.verifySeparate("012345", '-',  3, "012-345");
-		this.verifySeparate("012345", '-',  2, "01-23-45");
-		this.verifySeparate("012345", '-',  1, "0-1-2-3-4-5");
-	}
-
-	private void verifySeparate(String string, char separator, int segmentLength, String expected) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifySeparate(String expected, String string, char separator, int segmentLength) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.separate(sb, string, separator, segmentLength);
 		assertEquals(expected, sb.toString());
-	}
 
-	public void testSeparateOnCharArrayCharInt() {
-		this.verifySeparateCharArray("012345", '-', 22, "012345");
-		this.verifySeparateCharArray("012345", '-',  6, "012345");
-		this.verifySeparateCharArray("012345", '-',  5, "01234-5");
-		this.verifySeparateCharArray("012345", '-',  4, "0123-45");
-		this.verifySeparateCharArray("012345", '-',  3, "012-345");
-		this.verifySeparateCharArray("012345", '-',  2, "01-23-45");
-		this.verifySeparateCharArray("012345", '-',  1, "0-1-2-3-4-5");
-	}
-
-	private void verifySeparateCharArray(String string, char separator, int segmentLength, String expected) {
-		StringBuilder sb = new StringBuilder();
+		sb = new StringBuilder();
 		StringBuilderTools.separate(sb, string.toCharArray(), separator, segmentLength);
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testDelimit() {
-		this.verifyDelimit("Employee", "123", "123Employee123");
-		this.verifyDelimit("123", "123", "123123123");
-		this.verifyDelimit("", "123", "123123");
-	}
-
-	private void verifyDelimit(String string, String delimiter, String expectedString) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyDelimit(String expected, String string, String delimiter) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.delimit(sb, string, delimiter);
-		assertEquals(expectedString, sb.toString());
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.delimit(sb, string.toCharArray(), delimiter.toCharArray());
+		assertEquals(expected, sb.toString());
 	}
 
-	public void testQuote() {
-		this.verifyQuote("Employee", "\"Employee\"");
-		this.verifyQuote("123", "\"123\"");
-		this.verifyQuote("", "\"\"");
-		this.verifyQuote("Emp\"loyee", "\"Emp\"\"loyee\"");
-	}
-
-	private void verifyQuote(String string, String expectedString) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyQuote(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.quote(sb, string);
-		assertEquals(expectedString, sb.toString());
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.quote(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
 	}
 
-	public void testRemoveFirstOccurrence() {
-		this.verifyRemoveFirstOccurrence("Emplo&yee", '&', "Employee");
-		this.verifyRemoveFirstOccurrence("Emplo&yee&", '&', "Employee&");
-		this.verifyRemoveFirstOccurrence("Employee &Foo", '&', "Employee Foo");
-		this.verifyRemoveFirstOccurrence("Employee&", '&', "Employee");
-		this.verifyRemoveFirstOccurrence("&Employee", '&', "Employee");
-	}
-
-	private void verifyRemoveFirstOccurrence(String string, char charToRemove, String expectedString) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyRemoveFirstOccurrence(String expected, String string, char charToRemove) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.removeFirstOccurrence(sb, string, charToRemove);
-		assertEquals(expectedString, sb.toString());
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.removeFirstOccurrence(sb, string.toCharArray(), charToRemove);
+		assertEquals(expected, sb.toString());
 	}
 
-	public void testRemoveAllOccurrences() {
-		this.verifyRemoveAllOccurrences("Employee Fred", ' ', "EmployeeFred");
-		this.verifyRemoveAllOccurrences(" Employee ", ' ', "Employee");
-		this.verifyRemoveAllOccurrences("Employee   Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllOccurrences(" Emp loyee   Foo", ' ', "EmployeeFoo");
-	}
-
-	private void verifyRemoveAllOccurrences(String string, char charToRemove, String expectedString) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyRemoveAllOccurrences(String expected, String string, char charToRemove) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.removeAllOccurrences(sb, string, charToRemove);
-		assertEquals(expectedString, sb.toString());
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.removeAllOccurrences(sb, string.toCharArray(), charToRemove);
+		assertEquals(expected, sb.toString());
 	}
 
-	public void testRemoveAllWhitespace() {
-		this.verifyRemoveAllWhitespace("Employee Fred\t", "EmployeeFred");
-		this.verifyRemoveAllWhitespace("\tEmployee\n", "Employee");
-		this.verifyRemoveAllWhitespace("Employee \t Foo", "EmployeeFoo");
-		this.verifyRemoveAllWhitespace(" Emp\tloyee \n Foo", "EmployeeFoo");
+	@Override
+	protected void verifyRemoveAllSpaces(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringBuilderTools.removeAllSpaces(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.removeAllSpaces(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
 	}
 
-	private void verifyRemoveAllWhitespace(String string, String expectedString) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyRemoveAllWhitespace(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.removeAllWhitespace(sb, string);
-		assertEquals(expectedString, sb.toString());
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.removeAllWhitespace(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
 	}
 
-	public void testCompressWhitespace() {
-		this.verifyCompressWhitespace("Employee      Fred\t", "Employee Fred ");
-		this.verifyCompressWhitespace("\tEmployee  \n", " Employee ");
-		this.verifyCompressWhitespace("Employee \t Foo", "Employee Foo");
-		this.verifyCompressWhitespace(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
-	}
-
-	private void verifyCompressWhitespace(String string, String expectedString) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyCompressWhitespace(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.compressWhitespace(sb, string);
-		assertEquals(expectedString, sb.toString());
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.compressWhitespace(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
 	}
 
-	public void testCapitalizeOnString() {
-		this.verifyCapitalizeOnString("Oracle", "Oracle");
-		this.verifyCapitalizeOnString("Oracle", "oracle");
-		this.verifyCapitalizeOnString("   ", "   ");
-		this.verifyCapitalizeOnString("ORACLE", "ORACLE");
-		this.verifyCapitalizeOnString("", "");
-		this.verifyCapitalizeOnString("A", "a");
-		this.verifyCapitalizeOnString("\u00C9cole", "\u00E9cole"); // e'cole -> E'cole
-	}
-
-	private void verifyCapitalizeOnString(String expected, String string) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyCapitalize(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.capitalize(sb, string);
 		assertEquals(expected, sb.toString());
-	}
 
-	public void testCapitalizeOnCharArray() {
-		this.verifyCapitalizeOnCharArray("Oracle", new char[] { 'O', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyCapitalizeOnCharArray("Oracle", new char[] { 'o', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyCapitalizeOnCharArray("   ", new char[] { ' ', ' ', ' ' });
-		this.verifyCapitalizeOnCharArray("ORACLE", new char[] { 'O', 'R', 'A', 'C', 'L', 'E' });
-		this.verifyCapitalizeOnCharArray("", new char[0]);
-		this.verifyCapitalizeOnCharArray("A", new char[] { 'a' });
-		this.verifyCapitalizeOnCharArray("\u00C9cole", new char[] { '\u00E9', 'c', 'o', 'l', 'e' });
-	}
-
-	private void verifyCapitalizeOnCharArray(String expected, char[] string) {
-		StringBuilder sb = new StringBuilder();
-		StringBuilderTools.capitalize(sb, string);
+		sb = new StringBuilder();
+		StringBuilderTools.capitalize(sb, string.toCharArray());
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testUncapitalizeOnString() {
-		this.verifyUncapitalizeOnString("oracle", "Oracle");
-		this.verifyUncapitalizeOnString("oracle", "oracle");
-		this.verifyUncapitalizeOnString("   ", "   ");
-		this.verifyUncapitalizeOnString("ORACLE", "ORACLE");
-		this.verifyUncapitalizeOnString("", "");
-		this.verifyUncapitalizeOnString("a", "A");
-		this.verifyUncapitalizeOnString("\u00E9cole", "\u00C9cole"); // E'cole -> e'cole
-	}
-
-	private void verifyUncapitalizeOnString(String expected, String string) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyUncapitalize(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.uncapitalize(sb, string);
 		assertEquals(expected, sb.toString());
-	}
 
-	public void testUncapitalizeOnCharArray() {
-		this.verifyUncapitalizeOnCharArray("oracle", new char[] { 'O', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyUncapitalizeOnCharArray("oracle", new char[] { 'o', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyUncapitalizeOnCharArray("   ", new char[] { ' ', ' ', ' ' });
-		this.verifyUncapitalizeOnCharArray("ORACLE", new char[] { 'O', 'R', 'A', 'C', 'L', 'E' });
-		this.verifyUncapitalizeOnCharArray("", new char[0]);
-		this.verifyUncapitalizeOnCharArray("a", new char[] { 'A' });
-		this.verifyUncapitalizeOnCharArray("\u00E9cole", new char[] { '\u00C9', 'c', 'o', 'l', 'e' });
-	}
-
-	private void verifyUncapitalizeOnCharArray(String expected, char[] string) {
-		StringBuilder sb = new StringBuilder();
-		StringBuilderTools.uncapitalize(sb, string);
+		sb = new StringBuilder();
+		StringBuilderTools.uncapitalize(sb, string.toCharArray());
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testConvertToHexString() {
-		this.verifyConvertToHexString("74657374", "test"); // UTF-8 values
-	}
-
-	public void testConvertToHexString_negative() {
-		this.verifyConvertToHexString(this.getHexCafe(), "caf\u00E9"); // UTF-8 values
-	}
-
-	private String getHexCafe() {
-		return StringToolsTests.getHexCafe();
-	}
-
-	private void verifyConvertToHexString(String expected, String string) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyConvertToHexString(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.convertToHexString(sb, string.getBytes());
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testConvertCamelCaseToAllCaps() {
-		this.verifyConvertCamelCaseToAllCaps("TEST", "test");
-		this.verifyConvertCamelCaseToAllCaps("TEST", "TEST");
-		this.verifyConvertCamelCaseToAllCaps("TEST_TEST", "testTest");
-		this.verifyConvertCamelCaseToAllCaps("TEST_TEST", "TestTest");
-		this.verifyConvertCamelCaseToAllCaps("TEST_TEST_TEST", "testTESTTest");
-		this.verifyConvertCamelCaseToAllCaps("TEST_TEST_TEST", "TestTESTTest");
-		this.verifyConvertCamelCaseToAllCaps("TEST_TEST_TEST_T", "TestTESTTestT");
-	}
-
-	private void verifyConvertCamelCaseToAllCaps(String expected, String string) {
-		StringBuilder sb = new StringBuilder();
+	@Override
+	protected void verifyConvertCamelCaseToAllCaps(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
 		StringBuilderTools.convertCamelCaseToAllCaps(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertCamelCaseToAllCaps(sb, string.toCharArray());
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testUndelimit() {
-		this.verifyUndelimit("\"foo\"", "foo");
-		this.verifyUndelimit("\"\"", "");
-		this.verifyUndelimit("'foo'", "foo");
-		this.verifyUndelimit("\"fo\"\"o\"", "fo\"o");
-		this.verifyUndelimit("\"foo\"\"\"", "foo\"");
-		this.verifyUndelimit("\"\"\"foo\"", "\"foo");
-		this.verifyUndelimit("[foo]", "foo");
-		this.verifyUndelimit("\"\"\"", "\"");
-		this.verifyUndelimit("\"foo\"bar\"", "foo\"");
-		this.verifyUndelimit("\"foo\"\"", "foo\"");
+	@Override
+	protected void verifyConvertCamelCaseToAllCapsMaxLength(String expected, String string, int maxLength) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringBuilderTools.convertCamelCaseToAllCaps(sb, string, maxLength);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertCamelCaseToAllCaps(sb, string.toCharArray(), maxLength);
+		assertEquals(expected, sb.toString());
 	}
 
-	private void verifyUndelimit(String s, String expected) {
+	@Override
+	protected void verifyConvertAllCapsToCamelCase(String expected, String string) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringBuilderTools.convertAllCapsToCamelCase(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertAllCapsToCamelCase(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertAllCapsToCamelCase(String expected, String string, boolean capFirst) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringBuilderTools.convertAllCapsToCamelCase(sb, string, capFirst);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertAllCapsToCamelCase(sb, string.toCharArray(), capFirst);
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyUndelimit(String expected, String s) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.undelimit(sb, s);
 		assertEquals(expected, sb.toString());
@@ -368,13 +300,8 @@ public class StringBuilderToolsTests
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testUndelimitCount() {
-		this.verifyUndelimitCount("\"foo\"", 2, "o");
-		this.verifyUndelimitCount("\"\"\"\"", 2, "");
-		this.verifyUndelimitCount("XXfooXX", 2, "foo");
-	}
-
-	private void verifyUndelimitCount(String s, int count, String expected) {
+	@Override
+	protected void verifyUndelimitCount(String expected, String s, int count) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.undelimit(sb, s, count);
 		assertEquals(expected, sb.toString());
@@ -384,17 +311,8 @@ public class StringBuilderToolsTests
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testConvertToJavaStringLiteral() {
-		this.verifyConvertToJavaStringLiteral("", "\"\"");
-		this.verifyConvertToJavaStringLiteral("\"\"", "\"\\\"\\\"\"");
-		this.verifyConvertToJavaStringLiteral("'foo'", "\"'foo'\"");
-		this.verifyConvertToJavaStringLiteral("foo\bbar", "\"foo\\bbar\"");
-		this.verifyConvertToJavaStringLiteral("foo\n\tbar", "\"foo\\n\\tbar\"");
-		this.verifyConvertToJavaStringLiteral("foo\"bar", "\"foo\\\"bar\"");
-		this.verifyConvertToJavaStringLiteral("foo\\bar", "\"foo\\\\bar\"");
-	}
-
-	private void verifyConvertToJavaStringLiteral(String s, String expected) {
+	@Override
+	protected void verifyConvertToJavaStringLiteral(String expected, String s) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.convertToJavaStringLiteral(sb, s);
 		assertEquals(expected, sb.toString());
@@ -404,17 +322,8 @@ public class StringBuilderToolsTests
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testConvertToJavaStringLiteralContent() {
-		this.verifyConvertToJavaStringLiteralContent("", "");
-		this.verifyConvertToJavaStringLiteralContent("\"\"", "\\\"\\\"");
-		this.verifyConvertToJavaStringLiteralContent("'foo'", "'foo'");
-		this.verifyConvertToJavaStringLiteralContent("foo\bbar", "foo\\bbar");
-		this.verifyConvertToJavaStringLiteralContent("foo\n\tbar", "foo\\n\\tbar");
-		this.verifyConvertToJavaStringLiteralContent("foo\"bar", "foo\\\"bar");
-		this.verifyConvertToJavaStringLiteralContent("foo\\bar", "foo\\\\bar");
-	}
-
-	private void verifyConvertToJavaStringLiteralContent(String s, String expected) {
+	@Override
+	protected void verifyConvertToJavaStringLiteralContent(String expected, String s) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilderTools.convertToJavaStringLiteralContent(sb, s);
 		assertEquals(expected, sb.toString());
@@ -422,5 +331,176 @@ public class StringBuilderToolsTests
 		sb = new StringBuilder();
 		StringBuilderTools.convertToJavaStringLiteralContent(sb, s.toCharArray());
 		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToXmlAttributeValue(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToXmlAttributeValue(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToXmlAttributeValue(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToDoubleQuotedXmlAttributeValue(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToDoubleQuotedXmlAttributeValue(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToDoubleQuotedXmlAttributeValue(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToDoubleQuotedXmlAttributeValueContent(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToDoubleQuotedXmlAttributeValueContent(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToDoubleQuotedXmlAttributeValueContent(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToSingleQuotedXmlAttributeValue(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToSingleQuotedXmlAttributeValue(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToSingleQuotedXmlAttributeValue(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToSingleQuotedXmlAttributeValueContent(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToSingleQuotedXmlAttributeValueContent(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToSingleQuotedXmlAttributeValueContent(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToXmlElementText(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToXmlElementText(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToXmlElementText(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToXmlElementCDATA(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToXmlElementCDATA(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToXmlElementCDATA(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected void verifyConvertToXmlElementCDATAContent(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.convertToXmlElementCDATAContent(sb, string);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringBuilderTools.convertToXmlElementCDATAContent(sb, string.toCharArray());
+		assertEquals(expected, sb.toString());
+	}
+
+	@Override
+	protected Class<?> getToolsClass() {
+		return StringBuilderTools.class;
+	}
+
+	// ********** StringBuilderTools-specific **********
+
+	public void testAppendObjectArray_null() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Object[] array = null;
+		StringBuilderTools.append(sb, array);
+		assertEquals("null", sb.toString());
+	}
+
+	public void testAppendObjectArray_empty() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Object[] array = new Object[0];
+		StringBuilderTools.append(sb, array);
+		assertEquals("[]", sb.toString());
+	}
+
+	public void testAppendObjectArray_one() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Object[] array = new Object[] {"foo"};
+		StringBuilderTools.append(sb, array);
+		assertEquals("[foo]", sb.toString());
+	}
+
+	public void testAppendObjectArray_multiple() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Object[] array = new Object[] {"foo", "bar", "baz"};
+		StringBuilderTools.append(sb, array);
+		assertEquals("[foo, bar, baz]", sb.toString());
+	}
+
+	public void testAppendIterable_empty() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Iterable<Object> iterable = IterableTools.iterable(new Object[0]);
+		StringBuilderTools.append(sb, iterable);
+		assertEquals("[]", sb.toString());
+	}
+
+	public void testAppendIterable_one() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Iterable<Object> iterable = IterableTools.iterable(new Object[] {"foo"});
+		StringBuilderTools.append(sb, iterable);
+		assertEquals("[foo]", sb.toString());
+	}
+
+	public void testAppendIterable_multiple() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Iterable<Object> iterable = IterableTools.iterable(new Object[] {"foo", "bar", "baz"});
+		StringBuilderTools.append(sb, iterable);
+		assertEquals("[foo, bar, baz]", sb.toString());
+	}
+
+	public void testAppendHashCodeToString() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Object object = new Object();
+		StringBuilderTools.appendHashCodeToString(sb, object);
+		String string = sb.toString();
+		String prefix = "Object[";
+		assertTrue(string.startsWith(prefix));
+		assertTrue(string.endsWith("]"));
+		for (int i = prefix.length(); i < string.length() - 1; i++) {
+			char c = string.charAt(i);
+			assertTrue(((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'F')) || (c == '-'));
+		}
+	}
+
+	public void testAppendIdentityToString() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Object object = new Object();
+		StringBuilderTools.appendIdentityToString(sb, object); // "java.lang.Object@3cb5cdba"
+		String string = sb.toString();
+		String prefix = "java.lang.Object@";
+		assertTrue(string.startsWith(prefix));
+		for (int i = prefix.length(); i < string.length(); i++) {
+			char c = string.charAt(i);
+			assertTrue(((c >= '0') && (c <= '9')) || ((c >= 'a') && (c <= 'f')));
+		}
 	}
 }

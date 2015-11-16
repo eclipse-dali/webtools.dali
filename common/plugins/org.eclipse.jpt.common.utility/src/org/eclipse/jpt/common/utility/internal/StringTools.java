@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -36,14 +35,33 @@ public final class StringTools {
 	/** empty string array */
 	public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
+	public static final Transformer<String, char[]> CHAR_ARRAY_TRANSFORMER = new CharArrayTransformer();
+	/* CU private */ static class CharArrayTransformer
+		implements Transformer<String, char[]>, Serializable
+	{
+		public char[] transform(String string) {
+			return string.toCharArray();
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return CHAR_ARRAY_TRANSFORMER;
+		}
+	}
+
 
 	// ********** reverse **********
 
 	/**
-	 * Reverse the characters of the specified string.
+	 * Return a string with the reversed characters of the specified string.
 	 */
 	public static String reverse(String string) {
-		return (string.length() == 0) ? string : new String(ArrayTools.reverse(string.toCharArray()));
+		int len = string.length();
+		return (len <= 1) ? string : String.valueOf(ArrayTools.reverse(string.toCharArray(), len));
 	}
 
 
@@ -63,7 +81,30 @@ public final class StringTools {
 	 * Return a concatenation of the specified strings.
 	 */
 	public static String concatenate(String... strings) {
-		return (strings.length != 0) ? concatenate_(IteratorTools.iterator(strings)) : EMPTY_STRING;
+		return (strings.length == 0) ? EMPTY_STRING : ((strings.length == 1) ? strings[0] : concatenate_(strings));
+	}
+
+	/**
+	 * Pre-condition: array length > 1
+	 */
+	private static String concatenate_(String... strings) {
+		int stringLength = 0;
+		for (String string : strings) {
+			stringLength += string.length();
+		}
+		if (stringLength == 0) {
+			return EMPTY_STRING;
+		}
+		char[] buffer = new char[stringLength];
+		int i = 0;
+		for (String string : strings) {
+			int len = string.length();
+			if (len > 0) {
+				string.getChars(0, len, buffer, i);
+				i += len;
+			}
+		}
+		return String.valueOf(buffer);
 	}
 
 	/**
@@ -96,7 +137,36 @@ public final class StringTools {
 	 * inserting the specified separator between them.
 	 */
 	public static String concatenate(String[] strings, String separator) {
-		return (strings.length != 0) ? concatenate_(IteratorTools.iterator(strings), separator) : EMPTY_STRING;
+		int stringsLength = strings.length;
+		if (stringsLength == 0) {
+			return EMPTY_STRING;
+		}
+		if (stringsLength == 1) {
+			return strings[0];
+		}
+		int separatorLength = separator.length();
+		if (separatorLength == 0) {
+			return concatenate_(strings);
+		}
+		int stringLength = 0;
+		for (String string : strings) {
+			stringLength += string.length();
+		}
+		stringLength += ((stringsLength - 1) * separatorLength);
+		char[] buffer = new char[stringLength];
+		int i = 0;
+		for (String string : strings) {
+			int len = string.length();
+			if (len > 0) {
+				string.getChars(0, len, buffer, i);
+				i += len;
+			}
+			if (i < stringLength) {
+				separator.getChars(0, separatorLength, buffer, i);
+				i += separatorLength;
+			}
+		}
+		return String.valueOf(buffer);
 	}
 
 	/**
@@ -171,7 +241,7 @@ public final class StringTools {
 		Arrays.fill(result, 0, begin, c);
 		string.getChars(0, stringLength, result, begin);
 		Arrays.fill(result, begin + stringLength, length, c);
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 	/**
@@ -244,7 +314,7 @@ public final class StringTools {
 		char[] result = new char[length];
 		string.getChars(0, stringLength, result, 0);
 		Arrays.fill(result, stringLength, length, c);
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 	/**
@@ -320,7 +390,7 @@ public final class StringTools {
 		int padLength = length - stringLength;
 		string.getChars(0, stringLength, result, padLength);
 		Arrays.fill(result, 0, padLength, c);
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 	/**
@@ -384,7 +454,7 @@ public final class StringTools {
 			segCount++;
 			result[j++] = c;
 		}
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 
@@ -461,7 +531,7 @@ public final class StringTools {
 		delimiter.getChars(0, delimiterLength, result, 0);
 		string.getChars(0, stringLength, result, delimiterLength);
 		delimiter.getChars(0, delimiterLength, result, delimiterLength+stringLength);
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 	/**
@@ -482,7 +552,7 @@ public final class StringTools {
 		}
 		@Override
 		public String toString() {
-			return ObjectTools.toString(this, this.delimiter);
+			return ObjectTools.toString(this, convertToJavaStringLiteral(this.delimiter));
 		}
 	}
 
@@ -620,7 +690,7 @@ public final class StringTools {
 	private static String undelimit(String string, int count, int resultLength) {
 		char[] result = new char[resultLength];
 		string.getChars(count, count+resultLength, result, 0);
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 
@@ -721,7 +791,7 @@ public final class StringTools {
 	 */
 	public static String compressWhitespace(String string) {
 		int first = indexOfWhitespace(string);
-		return (first == -1) ? string : new String(compressWhitespace(string, first));
+		return (first == -1) ? string : compressWhitespace(string, first);
 	}
 
 	/**
@@ -784,7 +854,7 @@ public final class StringTools {
 		char[] result = new char[stringLength];
 		result[0] = Character.toUpperCase(string.charAt(0));
 		string.getChars(1, stringLength, result, 1);
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 	/**
@@ -835,8 +905,7 @@ public final class StringTools {
 		// if both the first and second characters are capitalized,
 		// return the string unchanged
 		if ((stringLength > 1)
-				&& Character.isUpperCase(string.charAt(1))
-				&& Character.isUpperCase(string.charAt(0))){
+				&& Character.isUpperCase(string.charAt(1))){
 			return true;
 		}
 		return false;
@@ -849,7 +918,7 @@ public final class StringTools {
 		char[] result = new char[stringLength];
 		result[0] = Character.toLowerCase(string.charAt(0));
 		string.getChars(1, stringLength, result, 1);
-		return new String(result);
+		return String.valueOf(result);
 	}
 
 	/**
@@ -905,6 +974,28 @@ public final class StringTools {
 	}
 
 	/**
+	 * @see #isBlank(String)
+	 */
+	public static final Predicate<String> IS_BLANK = new IsBlank();
+
+	/* CU private */ static class IsBlank
+		implements Predicate<String>, Serializable
+	{
+		public boolean evaluate(String string) {
+			return isBlank(string);
+		}
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName();
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return IS_BLANK;
+		}
+	}
+
+	/**
 	 * Return whether the specified string is non-<code>null</code>, non-empty,
 	 * and does not contain only whitespace characters.
 	 */
@@ -951,6 +1042,9 @@ public final class StringTools {
 		return string.regionMatches(true, 0, prefix, 0, prefix.length());
 	}
 
+	/**
+	 * @see #startsWithIgnoreCase(String, String)
+	 */
 	public static class StartsWithIgnoreCase
 		extends CriterionPredicate<String, String>
 	{
@@ -972,7 +1066,7 @@ public final class StringTools {
 	/**
 	 * no length check
 	 */
-	static boolean isUppercase_(String string) {
+	/* package */ static boolean isUppercase_(String string) {
 		return string.equals(string.toUpperCase());
 	}
 
@@ -986,7 +1080,7 @@ public final class StringTools {
 	/**
 	 * no length check
 	 */
-	static boolean isLowercase_(String string) {
+	/* package */ static boolean isLowercase_(String string) {
 		return string.equals(string.toLowerCase());
 	}
 
@@ -1027,7 +1121,7 @@ public final class StringTools {
 		return bytes;
 	}
 
-	static String buildIllegalHexCharMessage(String hexString, int index) {
+	/* package */ static String buildIllegalHexCharMessage(String hexString, int index) {
 		StringBuilder sb = new StringBuilder(hexString.length() + 40);
 		sb.append("Illegal hexadecimal character: "); //$NON-NLS-1$
 		sb.append(hexString, 0, index);
@@ -1359,9 +1453,9 @@ public final class StringTools {
 	/**
 	 * @see #convertToDoubleQuotedXmlAttributeValueContent(String)
 	 */
-	public static final Transformer<String, String> XML_DOUBLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlDoubleQuotedAttributeValueContentTransformer();
+	public static final Transformer<String, String> DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new DoubleQuotedXmlAttributeValueContentTransformer();
 
-	/* CU private */ static class XmlDoubleQuotedAttributeValueContentTransformer
+	/* CU private */ static class DoubleQuotedXmlAttributeValueContentTransformer
 		implements Transformer<String, String>, Serializable
 	{
 		public String transform(String string) {
@@ -1374,7 +1468,7 @@ public final class StringTools {
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
-			return XML_DOUBLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
+			return DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 		}
 	}
 
@@ -1435,9 +1529,9 @@ public final class StringTools {
 	/**
 	 * @see #convertToSingleQuotedXmlAttributeValueContent(String)
 	 */
-	public static final Transformer<String, String> XML_SINGLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlSingleQuotedAttributeValueContentTransformer();
+	public static final Transformer<String, String> SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new SingleQuotedXmlAttributeValueContentTransformer();
 
-	/* CU private */ static class XmlSingleQuotedAttributeValueContentTransformer
+	/* CU private */ static class SingleQuotedXmlAttributeValueContentTransformer
 		implements Transformer<String, String>, Serializable
 	{
 		public String transform(String string) {
@@ -1450,7 +1544,7 @@ public final class StringTools {
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
-			return XML_SINGLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
+			return SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 		}
 	}
 

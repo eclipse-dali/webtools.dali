@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,770 +9,454 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class StringToolsTests
-	extends TestCase
+	extends AbstractStringToolsTests
 {
 	public StringToolsTests(String name) {
 		super(name);
 	}
 
-	// ********** padding/truncating/centering/repeating **********
-
-	public void testCenter() {
-		assertEquals("fred", StringTools.center("fred", 4));
-		assertEquals(" fred ", StringTools.center("fred", 6));
-		assertEquals(" fred  ", StringTools.center("fred", 7));
-		assertEquals("re", StringTools.center("fred", 2));
-		assertEquals("fre", StringTools.center("fred", 3));
+	@Override
+	protected String CR() {
+		return StringTools.CR;
 	}
 
-	public void testPad() {
-		assertEquals("fred", StringTools.pad("fred", 4));
-		assertEquals("fred  ", StringTools.pad("fred", 6));
-		boolean exThrown = false;
-		try {
-			assertEquals("fr", StringTools.pad("fred", 2));
-		} catch (IllegalArgumentException ex) {
-			exThrown = true;
-		}
-		assertTrue(exThrown);
+	@Override
+	protected void verifyReverse(String expected, String string) {
+		assertEquals(expected, StringTools.reverse(string));
 	}
 
-	public void testFit() {
-		assertEquals("fred", StringTools.fit("fred", 4));
-		assertEquals("fred  ", StringTools.fit("fred", 6));
-		assertEquals("fr", StringTools.fit("fred", 2));
+	@Override
+	protected void verifyLast(char expected, String string) {
+		assertEquals(expected, StringTools.last(string));
 	}
 
-	public void testZeroPad() {
-		assertEquals("1234", StringTools.zeroPad("1234", 4));
-		assertEquals("001234", StringTools.zeroPad("1234", 6));
-		boolean exThrown = false;
-		try {
-			assertEquals("12", StringTools.zeroPad("1234", 2));
-		} catch (IllegalArgumentException ex) {
-			exThrown = true;
-		}
-		assertTrue(exThrown);
+	@Override
+	protected void verifyConcatenate(String expected, String[] array) {
+		assertEquals(expected, StringTools.concatenate(array));
+		Iterable<String> iterable = IterableTools.iterable(array);
+		assertEquals(expected, StringTools.concatenate(iterable));
+		assertEquals(expected, StringTools.concatenate(iterable.iterator()));
 	}
 
-	public void testZeroFit() {
-		assertEquals("1234", StringTools.zeroFit("1234", 4));
-		assertEquals("001234", StringTools.zeroFit("1234", 6));
-		assertEquals("34", StringTools.zeroFit("1234", 2));
+	@Override
+	protected void verifyConcatenate(String expected, String[] array, String delim) {
+		assertEquals(expected, StringTools.concatenate(array, delim));
+		Iterable<String> iterable = IterableTools.iterable(array);
+		assertEquals(expected, StringTools.concatenate(iterable, delim));
+		assertEquals(expected, StringTools.concatenate(iterable.iterator(), delim));
 	}
 
-	public void testRepeat() {
-		this.verifyRepeat("", "1234", 0);
-		this.verifyRepeat("12", "1234", 2);
-		this.verifyRepeat("1234", "1234", 4);
-		this.verifyRepeat("123412", "1234", 6);
-		this.verifyRepeat("12341234", "1234", 8);
-		this.verifyRepeat("123412341234123412341", "1234", 21);
+	@Override
+	protected void verifyCenter(String expected, String string, int len) {
+		assertEquals(expected, StringTools.center(string, len));
 	}
 
-	private void verifyRepeat(String expected, String string, int length) {
+	@Override
+	protected void verifyPad(String expected, String string, int len) {
+		assertEquals(expected, StringTools.pad(string, len));
+	}
+
+	@Override
+	protected void verifyFit(String expected, String string, int len) {
+		assertEquals(expected, StringTools.fit(string, len));
+	}
+
+	@Override
+	protected void verifyZeroPad(String expected, String string, int len) {
+		assertEquals(expected, StringTools.zeroPad(string, len));
+	}
+
+	@Override
+	protected void verifyZeroFit(String expected, String string, int len) {
+		assertEquals(expected, StringTools.zeroFit(string, len));
+	}
+
+	@Override
+	protected void verifyRepeat(String expected, String string, int length) {
 		assertEquals(expected, StringTools.repeat(string, length));
 	}
 
-	// ********** separating **********
-
-	public void testSeparateCharInt() {
-		this.verifySeparate("012345", '-', 22, "012345");
-		this.verifySeparate("012345", '-',  6, "012345");
-		this.verifySeparate("012345", '-',  5, "01234-5");
-		this.verifySeparate("012345", '-',  4, "0123-45");
-		this.verifySeparate("012345", '-',  3, "012-345");
-		this.verifySeparate("012345", '-',  2, "01-23-45");
-		this.verifySeparate("012345", '-',  1, "0-1-2-3-4-5");
-	}
-
-	private void verifySeparate(String string, char separator, int segmentLength, String expected) {
+	@Override
+	protected void verifySeparate(String expected, String string, char separator, int segmentLength) {
 		assertEquals(expected, StringTools.separate(string, separator, segmentLength));
 	}
 
-	// ********** delimiting **********
-
-	public void testDelimit() {
-		this.verifyDelimit("Employee", "123", "123Employee123");
-		this.verifyDelimit("123", "123", "123123123");
-		this.verifyDelimit("", "123", "123123");
+	@Override
+	protected void verifyQuote(String expected, String string) {
+		assertEquals(expected, StringTools.quote(string));
 	}
 
-	private void verifyDelimit(String string, String delimiter, String expectedString) {
-		assertEquals(expectedString, StringTools.delimit(string, delimiter));
+	@Override
+	protected void verifyCharDelimiter(String expected, String string, char delimiter) {
+		Transformer<String, String> transformer = this.buildCharDelimiter(delimiter);
+		assertEquals(expected, transformer.transform(string));
 	}
 
-	public void testQuote() {
-		this.verifyQuote("Employee", "\"Employee\"");
-		this.verifyQuote("123", "\"123\"");
-		this.verifyQuote("", "\"\"");
-		this.verifyQuote("Emp\"loyee", "\"Emp\"\"loyee\"");
+	@Override
+	protected Transformer<String, String> buildCharDelimiter(char delimiter) {
+		return new StringTools.CharDelimiter(delimiter);
 	}
 
-	private void verifyQuote(String string, String expectedString) {
-		assertEquals(expectedString, StringTools.quote(string));
+	@Override
+	protected void verifyDelimit(String expected, String string, String delimiter) {
+		assertEquals(expected, StringTools.delimit(string, delimiter));
 	}
 
-	// ********** removing characters **********
-
-	public void testRemoveFirstOccurrence() {
-		this.verifyRemoveFirstOccurrence("Emplo&yee", '&', "Employee");
-		this.verifyRemoveFirstOccurrence("Emplo&yee&", '&', "Employee&");
-		this.verifyRemoveFirstOccurrence("Employee &Foo", '&', "Employee Foo");
-		this.verifyRemoveFirstOccurrence("Employee&", '&', "Employee");
-		this.verifyRemoveFirstOccurrence("&Employee", '&', "Employee");
+	@Override
+	protected void verifyStringDelimiter(String expected, String string, String delimiter) {
+		Transformer<String, String> transformer = this.buildStringDelimiter(delimiter);
+		assertEquals(expected, transformer.transform(string));
 	}
 
-	private void verifyRemoveFirstOccurrence(String string, char charToRemove, String expectedString) {
-		assertEquals(expectedString, StringTools.removeFirstOccurrence(string, charToRemove));
+	@Override
+	protected Transformer<String, String> buildStringDelimiter(String string) {
+		return new StringTools.StringDelimiter(string);
 	}
 
-	public void testRemoveAllOccurrences() {
-		this.verifyRemoveAllOccurrences("Employee Fred", ' ', "EmployeeFred");
-		this.verifyRemoveAllOccurrences(" Employee ", ' ', "Employee");
-		this.verifyRemoveAllOccurrences("Employee   Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllOccurrences(" Emp loyee   Foo", ' ', "EmployeeFoo");
+	@Override
+	protected void verifyRemoveFirstOccurrence(String expected, String string, char charToRemove) {
+		assertEquals(expected, StringTools.removeFirstOccurrence(string, charToRemove));
 	}
 
-	private void verifyRemoveAllOccurrences(String string, char charToRemove, String expectedString) {
-		assertEquals(expectedString, StringTools.removeAllOccurrences(string, charToRemove));
+	@Override
+	protected void verifyRemoveAllOccurrences(String expected, String string, char charToRemove) {
+		assertEquals(expected, StringTools.removeAllOccurrences(string, charToRemove));
 	}
 
-	public void testRemoveAllWhitespace() {
-		this.verifyRemoveAllWhitespace("Employee Fred\t", "EmployeeFred");
-		this.verifyRemoveAllWhitespace("\tEmployee\n", "Employee");
-		this.verifyRemoveAllWhitespace("Employee \t Foo", "EmployeeFoo");
-		this.verifyRemoveAllWhitespace(" Emp\tloyee \n Foo", "EmployeeFoo");
+	@Override
+	protected void verifyRemoveAllSpaces(String expected, String string) {
+		assertEquals(expected, StringTools.removeAllSpaces(string));
 	}
 
-	private void verifyRemoveAllWhitespace(String string, String expectedString) {
-		assertEquals(expectedString, StringTools.removeAllWhitespace(string));
+	@Override
+	protected void verifyRemoveAllWhitespace(String expected, String string) {
+		assertEquals(expected, StringTools.removeAllWhitespace(string));
 	}
 
-	public void testCompressWhitespace() {
-		this.verifyCompressWhitespace("Employee      Fred\t", "Employee Fred ");
-		this.verifyCompressWhitespace("\tEmployee  \n", " Employee ");
-		this.verifyCompressWhitespace("Employee \t Foo", "Employee Foo");
-		this.verifyCompressWhitespace(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
+	@Override
+	protected void verifyCompressWhitespace(String expected, String string) {
+		assertEquals(expected, StringTools.compressWhitespace(string));
 	}
 
-	private void verifyCompressWhitespace(String string, String expectedString) {
-		assertEquals(expectedString, StringTools.compressWhitespace(string));
+	@Override
+	protected void verifyCommonPrefixLength(int expected, String string1, String string2) {
+		assertEquals(expected, StringTools.commonPrefixLength(string1, string2));
 	}
 
-	// ********** common prefix **********
-
-	public void testCommonPrefixLength() {
-		assertEquals(3, StringTools.commonPrefixLength("fooZZZ", "fooBBB"));
-		assertEquals(3, StringTools.commonPrefixLength("foo", "fooBBB"));
-		assertEquals(3, StringTools.commonPrefixLength("fooZZZ", "foo"));
-		assertEquals(3, StringTools.commonPrefixLength("foo", "foo"));
+	@Override
+	protected void verifyCommonPrefixLengthMax(int expected, String string1, String string2, int max) {
+		assertEquals(expected, StringTools.commonPrefixLength(string1, string2, max));
 	}
 
-	public void testCommonPrefixLengthMax() {
-		assertEquals(2, StringTools.commonPrefixLength("fooZZZ", "fooBBB", 2));
-		assertEquals(2, StringTools.commonPrefixLength("foo", "fooBBB", 2));
-		assertEquals(2, StringTools.commonPrefixLength("fooZZZ", "foo", 2));
-		assertEquals(2, StringTools.commonPrefixLength("foo", "foo", 2));
-	}
-
-	// ********** capitalization **********
-
-	public void testCapitalize() {
-		this.verifyCapitalize("Oracle", "Oracle");
-		this.verifyCapitalize("Oracle", "oracle");
-		this.verifyCapitalize("   ", "   ");
-		this.verifyCapitalize("ORACLE", "ORACLE");
-		this.verifyCapitalize("", "");
-		this.verifyCapitalize("A", "a");
-		this.verifyCapitalize("\u00C9cole", "\u00E9cole"); // e'cole -> E'cole
-	}
-
-	private void verifyCapitalize(String expected, String string) {
+	@Override
+	protected void verifyCapitalize(String expected, String string) {
 		assertEquals(expected, StringTools.capitalize(string));
+		assertEquals(expected, StringTools.CAPITALIZER.transform(string));
 	}
 
-	public void testUncapitalize() {
-		this.verifyUncapitalize("oracle", "Oracle");
-		this.verifyUncapitalize("oracle", "oracle");
-		this.verifyUncapitalize("   ", "   ");
-		this.verifyUncapitalize("ORACLE", "ORACLE");
-		this.verifyUncapitalize("", "");
-		this.verifyUncapitalize("a", "A");
-		this.verifyUncapitalize("\u00E9cole", "\u00C9cole"); // E'cole -> e'cole
+	@Override
+	protected Object getCapitalizer() {
+		return StringTools.CAPITALIZER;
 	}
 
-	private void verifyUncapitalize(String expected, String string) {
+	@Override
+	protected void verifyUncapitalize(String expected, String string) {
 		assertEquals(expected, StringTools.uncapitalize(string));
+		assertEquals(expected, StringTools.UNCAPITALIZER.transform(string));
 	}
 
-	// ********** queries **********
-
-	public void testIsBlank() {
-		assertTrue(StringTools.isBlank((String) null));
-		assertTrue(StringTools.isBlank(""));
-		assertTrue(StringTools.isBlank("      "));
-		assertTrue(StringTools.isBlank("      \t\t   "));
-		assertTrue(StringTools.isBlank("      \t\t   " + StringTools.CR));
+	@Override
+	protected Object getUncapitalizer() {
+		return StringTools.UNCAPITALIZER;
 	}
 
-	public void testEquals() {
-		assertTrue(ObjectTools.equals((String) null, (String) null));
-		assertFalse(ObjectTools.equals(null, "asdf"));
-		assertFalse(ObjectTools.equals("asdf", null));
-		assertTrue(ObjectTools.equals("asdf", "asdf"));
-		assertFalse(ObjectTools.equals("asdf", "ASDF"));
+	@Override
+	protected void verifyIsBlank(boolean expected, String string) {
+		assertEquals(expected, StringTools.isBlank(string));
+		assertEquals(expected, StringTools.IS_BLANK.evaluate(string));
 	}
 
-	public void testEqualsIgnoreCase() {
-		assertTrue(StringTools.equalsIgnoreCase((String) null, (String) null));
-		assertFalse(StringTools.equalsIgnoreCase(null, "asdf"));
-		assertFalse(StringTools.equalsIgnoreCase("asdf", null));
-		assertTrue(StringTools.equalsIgnoreCase("asdf", "asdf"));
-		assertTrue(StringTools.equalsIgnoreCase("asdf", "ASDF"));
+	@Override
+	protected Object getIsBlankPredicate() {
+		return StringTools.IS_BLANK;
 	}
 
-	public void testStartsWithIgnoreCase() {
-		assertTrue(StringTools.startsWithIgnoreCase("asdf", "as"));
-		assertTrue(StringTools.startsWithIgnoreCase("asdf", "aS"));
-		assertTrue(StringTools.startsWithIgnoreCase("asdf", ""));
-		assertTrue(StringTools.startsWithIgnoreCase("asdf", "A"));
-
-		assertFalse(StringTools.startsWithIgnoreCase("asdf", "bsdf"));
-		assertFalse(StringTools.startsWithIgnoreCase("asdf", "g"));
-		assertFalse(StringTools.startsWithIgnoreCase("asdf", "asdg"));
-		assertFalse(StringTools.startsWithIgnoreCase("asdf", "asdfg"));
-		assertFalse(StringTools.startsWithIgnoreCase("asdf", "asdfgggggg"));
+	@Override
+	protected void verifyIsNotBlank(boolean expected, String string) {
+		assertEquals(expected, StringTools.isNotBlank(string));
+		assertEquals(expected, StringTools.IS_NOT_BLANK.evaluate(string));
 	}
 
-	public void testIsUppercase() {
-		this.verifyIsUppercase("FOO");
-		this.verifyIsUppercase("FOO2");
-		this.verifyIsUppercase("F O O");
-		this.denyIsUppercase("Foo");
-		this.denyIsUppercase("");
+	@Override
+	protected Object getIsNotBlankPredicate() {
+		return StringTools.IS_NOT_BLANK;
 	}
 
-	private void verifyIsUppercase(String s) {
-		assertTrue(StringTools.isUppercase(s));
+	@Override
+	protected void verifyEqualsIgnoreCase(boolean expected, String string1, String string2) {
+		assertEquals(expected, StringTools.equalsIgnoreCase(string1, string2));
 	}
 
-	private void denyIsUppercase(String s) {
-		assertFalse(StringTools.isUppercase(s));
+	@Override
+	protected void verifyStartsWithIgnoreCase(boolean expected, String string, String prefix) {
+		assertEquals(expected, StringTools.startsWithIgnoreCase(string, prefix));
+		Predicate<String> predicate = new StringTools.StartsWithIgnoreCase(prefix);
+		assertEquals(expected, predicate.evaluate(string));
 	}
 
-	public void testIsLowercase() {
-		this.verifyIsLowercase("foo");
-		this.verifyIsLowercase("foo2");
-		this.verifyIsLowercase("f o o");
-		this.denyIsLowercase("Foo");
-		this.denyIsLowercase("");
+	@Override
+	protected void verifyIsUppercase(String string) {
+		assertTrue(StringTools.isUppercase(string));
 	}
 
-	private void verifyIsLowercase(String s) {
-		assertTrue(StringTools.isLowercase(s));
+	@Override
+	protected void denyIsUppercase(String string) {
+		assertFalse(StringTools.isUppercase(string));
 	}
 
-	private void denyIsLowercase(String s) {
-		assertFalse(StringTools.isLowercase(s));
+	@Override
+	protected void verifyIsLowercase(String string) {
+		assertTrue(StringTools.isLowercase(string));
 	}
 
-	// ********** byte arrays **********
-
-	public void testConvertHexStringToByteArray_empty() throws Exception {
-		String s = StringTools.EMPTY_STRING;
-		byte[] byteArray = StringTools.convertHexStringToByteArray(s);
-		assertEquals(0, byteArray.length);
-		assertTrue(Arrays.equals(ByteArrayTools.EMPTY_BYTE_ARRAY, byteArray));
+	@Override
+	protected void denyIsLowercase(String string) {
+		assertFalse(StringTools.isLowercase(string));
 	}
 
-	public void testConvertHexStringToByteArray_oddLength() throws Exception {
-		String s = "CAFEE";
-		boolean exCaught = false;
-		try {
-			byte[] byteArray = StringTools.convertHexStringToByteArray(s);
-			fail("bogus byte array: " + Arrays.toString(byteArray));
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
+	@Override
+	protected byte[] convertHexStringToByteArray(String string) {
+		return StringTools.convertHexStringToByteArray(string);
 	}
 
-	public void testConvertHexStringToByteArray_illegalCharacter1() throws Exception {
-		this.verifyConvertHexStringToByteArray_illegalCharacter("CAFEX0CAFEX0");
+	@Override
+	protected void verifyConvertCamelCaseToAllCaps(String expected, String string) {
+		assertEquals(expected, StringTools.convertCamelCaseToAllCaps(string));
 	}
 
-	public void testConvertHexStringToByteArray_illegalCharacter2() throws Exception {
-		this.verifyConvertHexStringToByteArray_illegalCharacter("CAFE0XCAFE0x");
+	@Override
+	protected void verifyConvertCamelCaseToAllCapsMaxLength(String expected, String string, int max) {
+		assertEquals(expected, StringTools.convertCamelCaseToAllCaps(string, max));
 	}
 
-	private void verifyConvertHexStringToByteArray_illegalCharacter(String s) throws Exception {
-		boolean exCaught = false;
-		try {
-			byte[] byteArray = StringTools.convertHexStringToByteArray(s);
-			fail("bogus byte array: " + Arrays.toString(byteArray));
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
+	@Override
+	protected void verifyConvertAllCapsToCamelCase(String expected, String string) {
+		assertEquals(expected, StringTools.convertAllCapsToCamelCase(string));
 	}
 
-	public void testConvertHexStringToByteArray_ok() throws Exception {
-		String s = "74657374"; // UTF-8 values
-		assertEquals("test", new String(StringTools.convertHexStringToByteArray(s)));
+	@Override
+	protected void verifyConvertAllCapsToCamelCase(String expected, String string, boolean capFirst) {
+		assertEquals(expected, StringTools.convertAllCapsToCamelCase(string, capFirst));
 	}
 
-	public void testConvertHexStringToByteArray_negative() throws Exception {
-		String s = getHexCafe();
-		assertEquals("caf\u00E9", new String(StringTools.convertHexStringToByteArray(s)));
+	@Override
+	protected void verifyIsQuoted(String string) {
+		assertTrue(StringTools.isQuoted(string));
 	}
 
-	public void testConvertHexStringToByteArray_lowercase() throws Exception {
-		String s = getHexCafe().toLowerCase();
-		assertEquals("caf\u00E9", new String(StringTools.convertHexStringToByteArray(s)));
+	@Override
+	protected void denyIsQuoted(String string) {
+		assertFalse(StringTools.isQuoted(string));
 	}
 
-	public static String getHexCafe() {
-		if (SystemTools.fileEncodingIsWindows()) {
-			return "636166E9";
-		}
-		if (SystemTools.fileEncodingIsUTF8()) {
-			return "636166C3A9";
-		}
-		return null;
+	@Override
+	protected void verifyIsParenthetical(String string) {
+		assertTrue(StringTools.isParenthetical(string));
 	}
 
-	// ********** convert camel-case to all-caps **********
-
-	public void testConvertCamelCaseToAllCaps() {
-		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("test"));
-		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("TEST"));
-		assertEquals("TEST_TEST", StringTools.convertCamelCaseToAllCaps("testTest"));
-		assertEquals("TEST_TEST", StringTools.convertCamelCaseToAllCaps("TestTest"));
-		assertEquals("TEST_TEST_TEST", StringTools.convertCamelCaseToAllCaps("testTESTTest"));
-		assertEquals("TEST_TEST_TEST", StringTools.convertCamelCaseToAllCaps("TestTESTTest"));
-		assertEquals("TEST_TEST_TEST_T", StringTools.convertCamelCaseToAllCaps("TestTESTTestT"));
+	@Override
+	protected void denyIsParenthetical(String string) {
+		assertFalse(StringTools.isParenthetical(string));
 	}
 
-	public void testConvertCamelCaseToAllCapsMaxLength() {
-		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("test", 44));
-		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("test", 4));
-		assertEquals("TES", StringTools.convertCamelCaseToAllCaps("test", 3));
-		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("TEST", 5));
-		assertEquals("TE", StringTools.convertCamelCaseToAllCaps("TEST", 2));
-		assertEquals("TEST_TEST", StringTools.convertCamelCaseToAllCaps("testTest", 9));
-		assertEquals("TEST_TES", StringTools.convertCamelCaseToAllCaps("testTest", 8));
-		assertEquals("TEST_T", StringTools.convertCamelCaseToAllCaps("testTest", 6));
-		assertEquals("TEST_", StringTools.convertCamelCaseToAllCaps("testTest", 5));
-		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("testTest", 4));
-		assertEquals("TEST_TEST", StringTools.convertCamelCaseToAllCaps("TestTest", 9));
-		assertEquals("TEST_TEST", StringTools.convertCamelCaseToAllCaps("TestTest", 1100));
-		assertEquals("TEST_TEST_", StringTools.convertCamelCaseToAllCaps("testTESTTest", 10));
-		assertEquals("TEST_TEST_TEST", StringTools.convertCamelCaseToAllCaps("TestTESTTest", 14));
-		assertEquals("TEST_TEST_TEST_T", StringTools.convertCamelCaseToAllCaps("TestTESTTestT", 16));
-		assertEquals("TEST_TEST_TEST_", StringTools.convertCamelCaseToAllCaps("TestTESTTestT", 15));
+	@Override
+	protected void verifyIsBracketed(String string) {
+		assertTrue(StringTools.isBracketed(string));
 	}
 
-	// ********** convert all-caps to camel case **********
-
-	public void testConvertAllCapsToCamelCase() {
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("TEST", false));
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("TEST_", false));
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("TEST____", false));
-		assertEquals("Test", StringTools.convertAllCapsToCamelCase("TEST", true));
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("TeST", false));
-		assertEquals("testTest", StringTools.convertAllCapsToCamelCase("TEST_TEST", false));
-		assertEquals("testTest", StringTools.convertAllCapsToCamelCase("TEST___TEST", false));
-		assertEquals("TestTest", StringTools.convertAllCapsToCamelCase("TEST_TEST", true));
-		assertEquals("testTestTest", StringTools.convertAllCapsToCamelCase("TEST_TEST_TEST", false));
-		assertEquals("TestTestTest", StringTools.convertAllCapsToCamelCase("TEST_TEST_TEST", true));
-		assertEquals("testTestTestT", StringTools.convertAllCapsToCamelCase("TEST_TEST_TEST_T", false));
-		assertEquals("testTestTestT", StringTools.convertAllCapsToCamelCase("_TEST_TEST_TEST_T", false));
-		assertEquals("testTestTestT", StringTools.convertAllCapsToCamelCase("__TEST_TEST_TEST_T", false));
-		assertEquals("TestTestTestT", StringTools.convertAllCapsToCamelCase("TEST_TEST_TEST_T", true));
-		assertEquals("TestTestTestT", StringTools.convertAllCapsToCamelCase("_TEST_TEST_TEST_T", true));
-		assertEquals("TestTestTestT", StringTools.convertAllCapsToCamelCase("__TEST_TEST_TEST_T", true));
+	@Override
+	protected void denyIsBracketed(String string) {
+		assertFalse(StringTools.isBracketed(string));
 	}
 
-	public void testConvertAllCapsToCamelCaseLowercase() {
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("test", false));
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("test_", false));
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("test____", false));
-		assertEquals("Test", StringTools.convertAllCapsToCamelCase("test", true));
-		assertEquals("test", StringTools.convertAllCapsToCamelCase("test", false));
-		assertEquals("testTest", StringTools.convertAllCapsToCamelCase("test_test", false));
-		assertEquals("testTest", StringTools.convertAllCapsToCamelCase("test___test", false));
-		assertEquals("TestTest", StringTools.convertAllCapsToCamelCase("test_test", true));
-		assertEquals("testTestTest", StringTools.convertAllCapsToCamelCase("test_test_test", false));
-		assertEquals("TestTestTest", StringTools.convertAllCapsToCamelCase("test_test_test", true));
-		assertEquals("testTestTestT", StringTools.convertAllCapsToCamelCase("test_test_test_t", false));
-		assertEquals("testTestTestT", StringTools.convertAllCapsToCamelCase("_test_test_test_t", false));
-		assertEquals("testTestTestT", StringTools.convertAllCapsToCamelCase("__test_test_test_t", false));
-		assertEquals("TestTestTestT", StringTools.convertAllCapsToCamelCase("test_test_test_t", true));
-		assertEquals("TestTestTestT", StringTools.convertAllCapsToCamelCase("_test_test_test_t", true));
-		assertEquals("TestTestTestT", StringTools.convertAllCapsToCamelCase("__test_test_test_t", true));
+	@Override
+	protected void verifyIsBraced(String string) {
+		assertTrue(StringTools.isBraced(string));
 	}
 
-	// ********** delimiting **********
-
-	public void testIsQuoted() {
-		this.denyIsQuoted("foo");
-		this.verifyIsQuoted("\"foo\"");
-
-		this.denyIsQuoted("");
-		this.verifyIsQuoted("\"\"");
-
-		this.denyIsQuoted("\"");
-		this.denyIsQuoted(" ");
-		this.denyIsQuoted("''");
-		this.denyIsQuoted("'foo'");
+	@Override
+	protected void denyIsBraced(String string) {
+		assertFalse(StringTools.isBraced(string));
 	}
 
-	private void verifyIsQuoted(String s) {
-		assertTrue(StringTools.isQuoted(s));
+	@Override
+	protected void verifyIsChevroned(String string) {
+		assertTrue(StringTools.isChevroned(string));
 	}
 
-	private void denyIsQuoted(String s) {
-		assertFalse(StringTools.isQuoted(s));
+	@Override
+	protected void denyIsChevroned(String string) {
+		assertFalse(StringTools.isChevroned(string));
 	}
 
-	public void testIsParenthetical() {
-		this.denyIsParenthetical("foo");
-		this.verifyIsParenthetical("(foo)");
-
-		this.denyIsParenthetical("");
-		this.verifyIsParenthetical("()");
-
-		this.denyIsParenthetical("(");
-		this.denyIsParenthetical(" ");
-		this.denyIsParenthetical("''");
-		this.denyIsParenthetical("'foo'");
+	@Override
+	protected void verifyIsDelimited(String string, char c) {
+		assertTrue(StringTools.isDelimited(string, c));
 	}
 
-	private void verifyIsParenthetical(String s) {
-		assertTrue(StringTools.isParenthetical(s));
+	@Override
+	protected void denyIsDelimited(String string, char c) {
+		assertFalse(StringTools.isDelimited(string, c));
 	}
 
-	private void denyIsParenthetical(String s) {
-		assertFalse(StringTools.isParenthetical(s));
+	@Override
+	protected void verifyIsDelimited2(String string, char start, char end) {
+		assertTrue(StringTools.isDelimited(string, start, end));
 	}
 
-	public void testIsBracketed() {
-		this.denyIsBracketed("foo");
-		this.verifyIsBracketed("[foo]");
-
-		this.denyIsBracketed("");
-		this.verifyIsBracketed("[]");
-
-		this.denyIsBracketed("[");
-		this.denyIsBracketed(" ");
-		this.denyIsBracketed("''");
-		this.denyIsBracketed("'foo'");
+	@Override
+	protected void denyIsDelimited2(String string, char start, char end) {
+		assertFalse(StringTools.isDelimited(string, start, end));
 	}
 
-	private void verifyIsBracketed(String s) {
-		assertTrue(StringTools.isBracketed(s));
+	@Override
+	protected void verifyUndelimit(String expected, String string) {
+		assertEquals(expected, StringTools.undelimit(string));
 	}
 
-	private void denyIsBracketed(String s) {
-		assertFalse(StringTools.isBracketed(s));
+	@Override
+	protected void verifyUndelimitInt(String expected, String string, int count) {
+		assertEquals(expected, StringTools.undelimit(string, count));
 	}
 
-	public void testIsBraced() {
-		this.denyIsBraced("foo");
-		this.verifyIsBraced("{foo}");
-
-		this.denyIsBraced("");
-		this.verifyIsBraced("{}");
-
-		this.denyIsBraced("{");
-		this.denyIsBraced(" ");
-		this.denyIsBraced("''");
-		this.denyIsBraced("'foo'");
+	@Override
+	protected void verifyConvertToJavaStringLiteral(String expected, String string) {
+		assertEquals(expected, StringTools.convertToJavaStringLiteral(string));
+		assertEquals(expected, StringTools.JAVA_STRING_LITERAL_TRANSFORMER.transform(string));
 	}
 
-	private void verifyIsBraced(String s) {
-		assertTrue(StringTools.isBraced(s));
+	@Override
+	protected Object getJavaStringLiteralTransformer() {
+		return StringTools.JAVA_STRING_LITERAL_TRANSFORMER;
 	}
 
-	private void denyIsBraced(String s) {
-		assertFalse(StringTools.isBraced(s));
+	@Override
+	protected void verifyConvertToJavaStringLiteralContent(String expected, String string) {
+		assertEquals(expected, StringTools.convertToJavaStringLiteralContent(string));
+		assertEquals(expected, StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER.transform(string));
 	}
 
-	public void testIsChevroned() {
-		this.denyIsChevroned("foo");
-		this.verifyIsChevroned("<foo>");
-
-		this.denyIsChevroned("");
-		this.verifyIsChevroned("<>");
-
-		this.denyIsChevroned("{");
-		this.denyIsChevroned(" ");
-		this.denyIsChevroned("''");
-		this.denyIsChevroned("'foo'");
+	@Override
+	protected Object getJavaStringLiteralContentTransformer() {
+		return StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER;
 	}
 
-	private void verifyIsChevroned(String s) {
-		assertTrue(StringTools.isChevroned(s));
+	@Override
+	protected void verifyConvertToXmlAttributeValue(String expected, String string) {
+		assertEquals(expected, StringTools.convertToXmlAttributeValue(string));
+		assertEquals(expected, StringTools.XML_ATTRIBUTE_VALUE_TRANSFORMER.transform(string));
 	}
 
-	private void denyIsChevroned(String s) {
-		assertFalse(StringTools.isChevroned(s));
+	@Override
+	protected Object getXmlAttributeValueTransformer() {
+		return StringTools.XML_ATTRIBUTE_VALUE_TRANSFORMER;
 	}
 
-	public void testIsDelimited() {
-		this.denyIsDelimited("foo", '?');
-		this.verifyIsDelimited("?foo?", '?');
-
-		this.denyIsDelimited("", '?');
-		this.verifyIsDelimited("\"\"", '"');
-		this.verifyIsDelimited("?xx?", '?');
-		this.denyIsDelimited("?xx]", '?');
-
-		this.denyIsDelimited("\"", '"');
-		this.denyIsDelimited(" ", ' ');
-		this.denyIsDelimited("''", '"');
-		this.denyIsDelimited("'foo'", '?');
+	@Override
+	protected void verifyConvertToDoubleQuotedXmlAttributeValue(String expected, String string) {
+		assertEquals(expected, StringTools.convertToDoubleQuotedXmlAttributeValue(string));
+		assertEquals(expected, StringTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER.transform(string));
 	}
 
-	private void verifyIsDelimited(String s, char c) {
-		assertTrue(StringTools.isDelimited(s, c));
+	@Override
+	protected Object getDoubleQuotedXmlAttributeValueTransformer() {
+		return StringTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER;
 	}
 
-	private void denyIsDelimited(String s, char c) {
-		assertFalse(StringTools.isDelimited(s, c));
+	@Override
+	protected void verifyConvertToDoubleQuotedXmlAttributeValueContent(String expected, String string) {
+		assertEquals(expected, StringTools.convertToDoubleQuotedXmlAttributeValueContent(string));
+		assertEquals(expected, StringTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER.transform(string));
 	}
 
-	public void testIsDelimited2() {
-		this.denyIsDelimited2("foo", '[', ']');
-		this.verifyIsDelimited2("{foo}", '{', '}');
-
-		this.denyIsDelimited2("", '[', ']');
-		this.verifyIsDelimited2("[]", '[', ']');
-		this.verifyIsDelimited2("[xx]", '[', ']');
-		this.denyIsDelimited2("?xx]", '[', ']');
-
-		this.denyIsDelimited2("\"", '[', ']');
-		this.denyIsDelimited2(" ", '[', ']');
-		this.denyIsDelimited2("''", '[', ']');
-		this.denyIsDelimited2("'foo'", '[', ']');
+	@Override
+	protected Object getDoubleQuotedXmlAttributeValueContentTransformer() {
+		return StringTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 	}
 
-	private void verifyIsDelimited2(String s, char start, char end) {
-		assertTrue(StringTools.isDelimited(s, start, end));
+	@Override
+	protected void verifyConvertToSingleQuotedXmlAttributeValue(String expected, String string) {
+		assertEquals(expected, StringTools.convertToSingleQuotedXmlAttributeValue(string));
+		assertEquals(expected, StringTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER.transform(string));
 	}
 
-	private void denyIsDelimited2(String s, char start, char end) {
-		assertFalse(StringTools.isDelimited(s, start, end));
+	@Override
+	protected Object getSingleQuotedXmlAttributeValueTransformer() {
+		return StringTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER;
 	}
 
-	// ********** undelimiting **********
-
-	public void testUndelimit() {
-		this.verifyUndelimit("\"foo\"", "foo");
-		this.verifyUndelimit("\"\"", "");
-		this.verifyUndelimit("'foo'", "foo");
-		this.verifyUndelimit("\"fo\"\"o\"", "fo\"o");
-		this.verifyUndelimit("\"foo\"\"\"", "foo\"");
-		this.verifyUndelimit("\"\"\"foo\"", "\"foo");
-		this.verifyUndelimit("[foo]", "foo");
-		this.verifyUndelimit("\"\"\"", "\"");
-		this.verifyUndelimit("\"foo\"bar\"", "foo\"");
-		this.verifyUndelimit("\"foo\"\"", "foo\"");
+	@Override
+	protected void verifyConvertToSingleQuotedXmlAttributeValueContent(String expected, String string) {
+		assertEquals(expected, StringTools.convertToSingleQuotedXmlAttributeValueContent(string));
+		assertEquals(expected, StringTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER.transform(string));
 	}
 
-	private void verifyUndelimit(String s, String expected) {
-		assertEquals(expected, StringTools.undelimit(s));
+	@Override
+	protected Object getSingleQuotedXmlAttributeValueContentTransformer() {
+		return StringTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 	}
 
-	public void testUndelimitInt() {
-		this.verifyUndelimitInt("\"foo\"", 2, "o");
-		this.verifyUndelimitInt("\"\"foo\"\"", 2, "foo");
-		this.verifyUndelimitInt("'foo'", 2, "o");
+	@Override
+	protected void verifyConvertToXmlElementText(String expected, String string) {
+		assertEquals(expected, StringTools.convertToXmlElementText(string));
+		assertEquals(expected, StringTools.XML_ELEMENT_TEXT_TRANSFORMER.transform(string));
 	}
 
-	private void verifyUndelimitInt(String s, int count, String expected) {
-		assertEquals(expected, StringTools.undelimit(s, count));
+	@Override
+	protected Object getXmlElementTextTransformer() {
+		return StringTools.XML_ELEMENT_TEXT_TRANSFORMER;
 	}
 
-	public void testUndelimitIntException() {
-		this.denyUndelimitInt("\"\"", 2);
-		this.denyUndelimitInt("'o'", 2);
+	@Override
+	protected void verifyConvertToXmlElementCDATA(String expected, String string) {
+		assertEquals(expected, StringTools.convertToXmlElementCDATA(string));
+		assertEquals(expected, StringTools.XML_ELEMENT_CDATA_TRANSFORMER.transform(string));
 	}
 
-	private void denyUndelimitInt(String s, int count) {
-		boolean exCaught = false;
-		try {
-			String bogus = StringTools.undelimit(s, count);
-			fail("invalid string: " + bogus);
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
+	@Override
+	protected Object getXmlElementCDATATransformer() {
+		return StringTools.XML_ELEMENT_CDATA_TRANSFORMER;
 	}
 
-	// ********** converting to Java string literal **********
-
-	public void testConvertToJavaStringLiteral() {
-		this.verifyConvertToJavaStringLiteral("", "\"\"");
-		this.verifyConvertToJavaStringLiteral("\"\"", "\"\\\"\\\"\"");
-		this.verifyConvertToJavaStringLiteral("'foo'", "\"'foo'\"");
-		this.verifyConvertToJavaStringLiteral("foo\bbar", "\"foo\\bbar\"");
-		this.verifyConvertToJavaStringLiteral("foo\n\tbar", "\"foo\\n\\tbar\"");
-		this.verifyConvertToJavaStringLiteral("foo\"bar", "\"foo\\\"bar\"");
-		this.verifyConvertToJavaStringLiteral("foo\\bar", "\"foo\\\\bar\"");
+	@Override
+	protected void verifyConvertToXmlElementCDATAContent(String expected, String string) {
+		assertEquals(expected, StringTools.convertToXmlElementCDATAContent(string));
+		assertEquals(expected, StringTools.XML_ELEMENT_CDATA_CONTENT_TRANSFORMER.transform(string));
 	}
 
-	private void verifyConvertToJavaStringLiteral(String s, String expected) {
-		assertEquals(expected, StringTools.convertToJavaStringLiteral(s));
+	@Override
+	protected Object getXmlElementCDATAContentTransformer() {
+		return StringTools.XML_ELEMENT_CDATA_CONTENT_TRANSFORMER;
 	}
 
-	public void testConvertToJavaStringLiteralContent() {
-		this.verifyConvertToJavaStringLiteralContent("", "");
-		this.verifyConvertToJavaStringLiteralContent("\"\"", "\\\"\\\"");
-		this.verifyConvertToJavaStringLiteralContent("'foo'", "'foo'");
-		this.verifyConvertToJavaStringLiteralContent("foo\bbar", "foo\\bbar");
-		this.verifyConvertToJavaStringLiteralContent("foo\n\tbar", "foo\\n\\tbar");
-		this.verifyConvertToJavaStringLiteralContent("foo\"bar", "foo\\\"bar");
-		this.verifyConvertToJavaStringLiteralContent("foo\\bar", "foo\\\\bar");
+	@Override
+	protected Class<?> getToolsClass() {
+		return StringTools.class;
 	}
 
-	private void verifyConvertToJavaStringLiteralContent(String s, String expected) {
-		assertEquals(expected, StringTools.convertToJavaStringLiteralContent(s));
-	}
+	// ********** StringTools-specific **********
 
-	// ********** converting to XML **********
-
-	public void testConvertToXmlAttributeValue() {
-		this.verifyConvertToXmlAttributeValue("", "\"\"");
-		this.verifyConvertToXmlAttributeValue("\"", "'\"'");
-		this.verifyConvertToXmlAttributeValue("\"\"", "'\"\"'");
-		this.verifyConvertToXmlAttributeValue("'", "\"'\"");
-		this.verifyConvertToXmlAttributeValue("''", "\"''\"");
-		this.verifyConvertToXmlAttributeValue("\"'\"", "\"&quot;'&quot;\"");
-		this.verifyConvertToXmlAttributeValue("\"''\"", "\"&quot;''&quot;\"");
-		this.verifyConvertToXmlAttributeValue("'foo'", "\"'foo'\"");
-		this.verifyConvertToXmlAttributeValue("\"foo\"", "'\"foo\"'");
-		this.verifyConvertToXmlAttributeValue("\"foo\" 'bar'", "\"&quot;foo&quot; 'bar'\"");
-		this.verifyConvertToXmlAttributeValue("foo & bar", "\"foo &amp; bar\"");
-		this.verifyConvertToXmlAttributeValue("\"foo & bar\"", "'\"foo &amp; bar\"'");
-		this.verifyConvertToXmlAttributeValue("foo <<< bar", "\"foo &lt;&lt;&lt; bar\"");
-		this.verifyConvertToXmlAttributeValue("\"foo <<< bar\"", "'\"foo &lt;&lt;&lt; bar\"'");
-	}
-
-	private void verifyConvertToXmlAttributeValue(String s, String expected) {
-		assertEquals(expected, StringTools.convertToXmlAttributeValue(s));
-	}
-
-	public void testConvertToXmlElementText() {
-		this.verifyConvertToXmlElementText("", "");
-		this.verifyConvertToXmlElementText("\"", "\"");
-		this.verifyConvertToXmlElementText("\"\"", "\"\"");
-		this.verifyConvertToXmlElementText("'", "'");
-		this.verifyConvertToXmlElementText("''", "''");
-		this.verifyConvertToXmlElementText("\"'\"", "\"'\"");
-		this.verifyConvertToXmlElementText("\"''\"", "\"''\"");
-		this.verifyConvertToXmlElementText("'foo'", "'foo'");
-		this.verifyConvertToXmlElementText("foo & bar", "foo &amp; bar");
-		this.verifyConvertToXmlElementText("foo &", "foo &amp;");
-		this.verifyConvertToXmlElementText("& bar", "&amp; bar");
-		this.verifyConvertToXmlElementText("\"foo & bar\"", "\"foo &amp; bar\"");
-		this.verifyConvertToXmlElementText("foo <<< bar", "foo &lt;&lt;&lt; bar");
-		this.verifyConvertToXmlElementText("\"foo <<< bar\"", "\"foo &lt;&lt;&lt; bar\"");
-	}
-
-	private void verifyConvertToXmlElementText(String s, String expected) {
-		assertEquals(expected, StringTools.convertToXmlElementText(s));
-	}
-
-	public void testConvertToXmlElementCDATA() {
-		String START = "<![CDATA[";
-		String END = "]]>";
-		this.verifyConvertToXmlElementCDATA("", START + END);
-		this.verifyConvertToXmlElementCDATA("\"", START + "\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"\"", START + "\"\"" + END);
-		this.verifyConvertToXmlElementCDATA("'", START + "'" + END);
-		this.verifyConvertToXmlElementCDATA("''", START + "''" + END);
-		this.verifyConvertToXmlElementCDATA("\"'\"", START + "\"'\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"''\"", START + "\"''\"" + END);
-		this.verifyConvertToXmlElementCDATA("'foo'", START + "'foo'" + END);
-		this.verifyConvertToXmlElementCDATA("foo & bar", START + "foo & bar" + END);
-		this.verifyConvertToXmlElementCDATA("foo &", START + "foo &" + END);
-		this.verifyConvertToXmlElementCDATA("& bar", START + "& bar" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo & bar\"", START + "\"foo & bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("foo <<< bar", START + "foo <<< bar" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <<< bar\"", START + "\"foo <<< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <&< bar\"", START + "\"foo <&< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <]< bar\"", START + "\"foo <]< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <]]< bar\"", START + "\"foo <]]< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <]]>< bar\"", START + "\"foo <]]&gt;< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("foo <]", START + "foo <]" + END);
-		this.verifyConvertToXmlElementCDATA("foo <]]", START + "foo <]]" + END);
-		this.verifyConvertToXmlElementCDATA("foo <]]>", START + "foo <]]&gt;" + END);
-		this.verifyConvertToXmlElementCDATA("]foo", START + "]foo" + END);
-		this.verifyConvertToXmlElementCDATA("]]foo", START + "]]foo" + END);
-		this.verifyConvertToXmlElementCDATA("]]>foo", START + "]]&gt;foo" + END);
-	}
-
-	private void verifyConvertToXmlElementCDATA(String s, String expected) {
-		assertEquals(expected, StringTools.convertToXmlElementCDATA(s));
-	}
-	
-	public void testConcatenate() throws Exception {
-		String[] array = new String[0];
-		Iterable<String> iterable = IterableTools.iterable(array);
-		
-		String result = "";
-		
-		assertEquals(result, StringTools.concatenate(array));
-		assertEquals(result, StringTools.concatenate(iterable));
-		assertEquals(result, StringTools.concatenate(iterable.iterator()));
-		
-		String delim = "";
-		result = "";
-		
-		assertEquals(result, StringTools.concatenate(array, delim));
-		assertEquals(result, StringTools.concatenate(iterable, delim));
-		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
-		
-		delim = ";";
-		result = "";
-		
-		assertEquals(result, StringTools.concatenate(array, delim));
-		assertEquals(result, StringTools.concatenate(iterable, delim));
-		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
-		
-		array = new String[] {"foo", "bar", "baz"};
-		iterable = IterableTools.iterable(array);
-		
-		result = "foobarbaz";
-		
-		assertEquals(result, StringTools.concatenate(array));
-		assertEquals(result, StringTools.concatenate(iterable));
-		assertEquals(result, StringTools.concatenate(iterable.iterator()));
-		
-		delim = "";
-		result = "foobarbaz";
-		
-		assertEquals(result, StringTools.concatenate(array, delim));
-		assertEquals(result, StringTools.concatenate(iterable, delim));
-		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
-		
-		delim = ";";
-		result = "foo;bar;baz";
-		
-		assertEquals(result, StringTools.concatenate(array, delim));
-		assertEquals(result, StringTools.concatenate(iterable, delim));
-		assertEquals(result, StringTools.concatenate(iterable.iterator(), delim));
+	public void testCharArrayTransformer() throws Exception {
+		Transformer<String, char[]> transformer = StringTools.CHAR_ARRAY_TRANSFORMER;
+		TestTools.assertEquals("foo", transformer.transform("foo"));
+		assertEquals("CharArrayTransformer", transformer.toString());
+		assertSame(transformer, TestTools.serialize(transformer));
 	}
 }

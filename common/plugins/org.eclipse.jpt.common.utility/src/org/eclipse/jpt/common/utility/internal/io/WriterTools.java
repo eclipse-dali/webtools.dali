@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,27 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * @see StringTools
  */
 public final class WriterTools {
+
+	// ********** reverse **********
+
+	/**
+	 * Reverse the specified string.
+	 */
+	public static void reverse(Writer writer, String string) throws IOException {
+		for (int i = string.length(); i-- > 0; ) {
+			writer.write(string.charAt(i));
+		}
+	}
+
+	/**
+	 * Reverse the specified string.
+	 */
+	public static void reverse(Writer writer, char[] string) throws IOException {
+		for (int i = string.length; i-- > 0; ) {
+			writer.write(string[i]);
+		}
+	}
+
 
 	// ********** padding/truncating/centering/repeating **********
 
@@ -659,7 +680,7 @@ public final class WriterTools {
 		int stringLength = string.length;
 		int resultLength = stringLength - 2;
 		if (resultLength < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+			throw new IllegalArgumentException("invalid string: \"" + String.valueOf(string) + '"'); //$NON-NLS-1$
 		}
 		if (resultLength == 0) {
 			return;
@@ -724,7 +745,7 @@ public final class WriterTools {
 		}
 		int resultLength = string.length - (2 * count);
 		if (resultLength < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+			throw new IllegalArgumentException("invalid string: \"" + String.valueOf(string) + '"'); //$NON-NLS-1$
 		}
 		if (resultLength == 0) {
 			return;

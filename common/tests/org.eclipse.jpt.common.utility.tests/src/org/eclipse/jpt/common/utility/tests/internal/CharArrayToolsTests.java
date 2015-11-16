@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,593 +9,474 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
+import java.nio.charset.Charset;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
 import org.eclipse.jpt.common.utility.internal.CharArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.junit.Assert;
 
 @SuppressWarnings("nls")
 public class CharArrayToolsTests
-	extends TestCase
+	extends AbstractStringToolsTests
 {
-	// ********** padding/truncating/centering/repeating **********
-
-	public void testCenter() {
-		TestTools.assertEquals("fred", CharArrayTools.center("fred".toCharArray(), 4));
-		TestTools.assertEquals(" fred ", CharArrayTools.center("fred".toCharArray(), 6));
-		TestTools.assertEquals(" fred  ", CharArrayTools.center("fred".toCharArray(), 7));
-		TestTools.assertEquals("re", CharArrayTools.center("fred".toCharArray(), 2));
-		TestTools.assertEquals("fre", CharArrayTools.center("fred".toCharArray(), 3));
+	public CharArrayToolsTests(String name) {
+		super(name);
 	}
 
-	public void testPad() {
-		TestTools.assertEquals("fred", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 4));
-		TestTools.assertEquals("fred  ", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 6));
-		boolean exThrown = false;
-		try {
-			TestTools.assertEquals("fr", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 2));
-		} catch (IllegalArgumentException ex) {
-			exThrown = true;
+	@Override
+	protected String CR() {
+		return String.valueOf(CharArrayTools.CR);
+	}
+
+	@Override
+	protected void verifyReverse(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.reverse(string.toCharArray()));
+	}
+
+	@Override
+	protected void verifyLast(char expected, String string) {
+		assertEquals(expected, CharArrayTools.last(string.toCharArray()));
+	}
+
+	@Override
+	protected void verifyConcatenate(String expected, String[] array) {
+		TestTools.assertEquals(expected, CharArrayTools.concatenate(this.convert(array)));
+		Iterable<char[]> iterable = IterableTools.transform(IterableTools.iterable(array), StringTools.CHAR_ARRAY_TRANSFORMER);
+		TestTools.assertEquals(expected, CharArrayTools.concatenate(iterable));
+		TestTools.assertEquals(expected, CharArrayTools.concatenate(iterable.iterator()));
+	}
+
+	private char[][] convert(String[] stringArray) {
+		char[][] array = new char[stringArray.length][];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = stringArray[i].toCharArray();
 		}
-		assertTrue(exThrown);
+		return array;
 	}
 
-	public void testFit() {
-		TestTools.assertEquals("fred", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 4));
-		TestTools.assertEquals("fred  ", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 6));
-		TestTools.assertEquals("fr", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 2));
+	@Override
+	protected void verifyConcatenate(String expected, String[] array, String delim) {
+		TestTools.assertEquals(expected, CharArrayTools.concatenate(this.convert(array), delim.toCharArray()));
+		Iterable<char[]> iterable = IterableTools.transform(IterableTools.iterable(array), StringTools.CHAR_ARRAY_TRANSFORMER);
+		TestTools.assertEquals(expected, CharArrayTools.concatenate(iterable, delim.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.concatenate(iterable.iterator(), delim.toCharArray()));
 	}
 
-	public void testZeroPad() {
-		TestTools.assertEquals("1234", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 4));
-		TestTools.assertEquals("001234", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 6));
-		boolean exThrown = false;
-		try {
-			TestTools.assertEquals("12", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 2));
-		} catch (IllegalArgumentException ex) {
-			exThrown = true;
-		}
-		assertTrue(exThrown);
+	@Override
+	protected void verifyCenter(String expected, String string, int len) {
+		TestTools.assertEquals(expected, CharArrayTools.center(string.toCharArray(), len));
 	}
 
-	public void testZeroFit() {
-		TestTools.assertEquals("1234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 4));
-		TestTools.assertEquals("001234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 6));
-		TestTools.assertEquals("34", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 2));
+	@Override
+	protected void verifyPad(String expected, String string, int len) {
+		TestTools.assertEquals(expected, CharArrayTools.pad(string.toCharArray(), len));
 	}
 
-	public void testRepeat() {
-		this.verifyRepeat("", "1234", 0);
-		this.verifyRepeat("12", "1234", 2);
-		this.verifyRepeat("1234", "1234", 4);
-		this.verifyRepeat("123412", "1234", 6);
-		this.verifyRepeat("12341234", "1234", 8);
-		this.verifyRepeat("123412341234123412341", "1234", 21);
+	@Override
+	protected void verifyFit(String expected, String string, int len) {
+		TestTools.assertEquals(expected, CharArrayTools.fit(string.toCharArray(), len));
 	}
 
-	private void verifyRepeat(String expected, String string, int length) {
+	@Override
+	protected void verifyZeroPad(String expected, String string, int len) {
+		TestTools.assertEquals(expected, CharArrayTools.zeroPad(string.toCharArray(), len));
+	}
+
+	@Override
+	protected void verifyZeroFit(String expected, String string, int len) {
+		TestTools.assertEquals(expected, CharArrayTools.zeroFit(string.toCharArray(), len));
+	}
+
+	@Override
+	protected void verifyRepeat(String expected, String string, int length) {
 		TestTools.assertEquals(expected, CharArrayTools.repeat(string.toCharArray(), length));
 	}
 
-	// ********** separating **********
-
-	public void testSeparate() {
-		this.verifySeparate("012345", '-', 22, "012345");
-		this.verifySeparate("012345", '-',  6, "012345");
-		this.verifySeparate("012345", '-',  5, "01234-5");
-		this.verifySeparate("012345", '-',  4, "0123-45");
-		this.verifySeparate("012345", '-',  3, "012-345");
-		this.verifySeparate("012345", '-',  2, "01-23-45");
-		this.verifySeparate("012345", '-',  1, "0-1-2-3-4-5");
-	}
-
-	private void verifySeparate(String string, char separator, int segmentLength, String expected) {
+	@Override
+	protected void verifySeparate(String expected, String string, char separator, int segmentLength) {
 		TestTools.assertEquals(expected, CharArrayTools.separate(string.toCharArray(), separator, segmentLength));
 	}
 
-	// ********** removing characters **********
-
-	public void testRemoveFirstOccurrence() {
-		this.verifyRemoveFirstOccurrence("Emplo&yee", '&', "Employee");
-		this.verifyRemoveFirstOccurrence("Emplo&yee&", '&', "Employee&");
-		this.verifyRemoveFirstOccurrence("Employee &Foo", '&', "Employee Foo");
-		this.verifyRemoveFirstOccurrence("Employee&", '&', "Employee");
-		this.verifyRemoveFirstOccurrence("&Employee", '&', "Employee");
+	@Override
+	protected void verifyQuote(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.quote(string.toCharArray()));
 	}
 
-	private void verifyRemoveFirstOccurrence(String string, char charToRemove, String expectedString) {
-		TestTools.assertEquals(expectedString, CharArrayTools.removeFirstOccurrence(string.toCharArray(), charToRemove));
+	@Override
+	protected void verifyCharDelimiter(String expected, String string, char delimiter) {
+		Transformer<char[], char[]> transformer = this.buildCharDelimiter(delimiter);
+		TestTools.assertEquals(expected, transformer.transform(string.toCharArray()));
 	}
 
-	public void testRemoveAllOccurrences() {
-		this.verifyRemoveAllOccurrences("Employee Fred", ' ', "EmployeeFred");
-		this.verifyRemoveAllOccurrences(" Employee ", ' ', "Employee");
-		this.verifyRemoveAllOccurrences("Employee   Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllOccurrences(" Emp loyee   Foo", ' ', "EmployeeFoo");
+	@Override
+	protected Transformer<char[], char[]> buildCharDelimiter(char delimiter) {
+		return new CharArrayTools.CharDelimiter(delimiter);
 	}
 
-	private void verifyRemoveAllOccurrences(String string, char charToRemove, String expectedString) {
-		TestTools.assertEquals(expectedString, CharArrayTools.removeAllOccurrences(string.toCharArray(), charToRemove));
+	@Override
+	protected void verifyDelimit(String expected, String string, String delimiter) {
+		TestTools.assertEquals(expected, CharArrayTools.delimit(string.toCharArray(), delimiter.toCharArray()));
 	}
 
-	public void testRemoveAllWhitespace() {
-		this.verifyRemoveAllWhitespace("Employee Fred\t", "EmployeeFred");
-		this.verifyRemoveAllWhitespace("\tEmployee\n", "Employee");
-		this.verifyRemoveAllWhitespace("Employee \t Foo", "EmployeeFoo");
-		this.verifyRemoveAllWhitespace(" Emp\tloyee \n Foo", "EmployeeFoo");
+	@Override
+	protected void verifyStringDelimiter(String expected, String string, String delimiter) {
+		Transformer<char[], char[]> transformer = this.buildStringDelimiter(delimiter);
+		TestTools.assertEquals(expected, transformer.transform(string.toCharArray()));
 	}
 
-	private void verifyRemoveAllWhitespace(String string, String expectedString) {
-		TestTools.assertEquals(expectedString, CharArrayTools.removeAllWhitespace(string.toCharArray()));
+	@Override
+	protected Transformer<char[], char[]> buildStringDelimiter(String delimiter) {
+		return new CharArrayTools.CharArrayDelimiter(delimiter.toCharArray());
 	}
 
-	public void testCompressWhitespace() {
-		this.verifyCompressWhitespace("Employee      Fred\t", "Employee Fred ");
-		this.verifyCompressWhitespace("\tEmployee  \n", " Employee ");
-		this.verifyCompressWhitespace("Employee \t Foo", "Employee Foo");
-		this.verifyCompressWhitespace(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
+	@Override
+	protected void verifyRemoveFirstOccurrence(String expected, String string, char charToRemove) {
+		TestTools.assertEquals(expected, CharArrayTools.removeFirstOccurrence(string.toCharArray(), charToRemove));
 	}
 
-	private void verifyCompressWhitespace(String string, String expectedString) {
-		TestTools.assertEquals(expectedString, CharArrayTools.compressWhitespace(string.toCharArray()));
+	@Override
+	protected void verifyRemoveAllOccurrences(String expected, String string, char charToRemove) {
+		TestTools.assertEquals(expected, CharArrayTools.removeAllOccurrences(string.toCharArray(), charToRemove));
 	}
-
-	// ********** common prefix **********
-
-	// ********** capitalization **********
 
-	public void testCapitalize() {
-		this.verifyCapitalize("Oracle", new char[] { 'O', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyCapitalize("Oracle", new char[] { 'o', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyCapitalize("   ", new char[] { ' ', ' ', ' ' });
-		this.verifyCapitalize("ORACLE", new char[] { 'O', 'R', 'A', 'C', 'L', 'E' });
-		this.verifyCapitalize("", new char[0]);
-		this.verifyCapitalize("A", new char[] { 'a' });
-		this.verifyCapitalize("\u00C9cole", new char[] { '\u00E9', 'c', 'o', 'l', 'e' });
+	@Override
+	protected void verifyRemoveAllSpaces(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.removeAllSpaces(string.toCharArray()));
 	}
 
-	private void verifyCapitalize(String expected, char[] string) {
-		TestTools.assertEquals(expected, CharArrayTools.capitalize(string));
+	@Override
+	protected void verifyRemoveAllWhitespace(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.removeAllWhitespace(string.toCharArray()));
 	}
 
-	public void testUnapitalize() {
-		this.verifyUncapitalize("oracle", new char[] { 'O', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyUncapitalize("oracle", new char[] { 'o', 'r', 'a', 'c', 'l', 'e' });
-		this.verifyUncapitalize("   ", new char[] { ' ', ' ', ' ' });
-		this.verifyUncapitalize("ORACLE", new char[] { 'O', 'R', 'A', 'C', 'L', 'E' });
-		this.verifyUncapitalize("", new char[0]);
-		this.verifyUncapitalize("a", new char[] { 'A' });
-		this.verifyUncapitalize("\u00E9cole", new char[] { '\u00C9', 'c', 'o', 'l', 'e' });
+	@Override
+	protected void verifyCompressWhitespace(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.compressWhitespace(string.toCharArray()));
 	}
 
-	private void verifyUncapitalize(String expected, char[] string) {
-		TestTools.assertEquals(expected, CharArrayTools.uncapitalize(string));
+	@Override
+	protected void verifyCommonPrefixLength(int expected, String string1, String string2) {
+		assertEquals(expected, CharArrayTools.commonPrefixLength(string1.toCharArray(), string2.toCharArray()));
 	}
 
-	// ********** queries **********
-
-	public void testIsBlank() {
-		assertTrue(CharArrayTools.isBlank((char[]) null));
-		this.verifyIsBlank("");
-		this.verifyIsBlank("      \t\t   ");
-		this.verifyIsBlank("      ");
-		this.verifyIsBlank("      \t\t   " + StringTools.CR);
+	@Override
+	protected void verifyCommonPrefixLengthMax(int expected, String string1, String string2, int max) {
+		assertEquals(expected, CharArrayTools.commonPrefixLength(string1.toCharArray(), string2.toCharArray(), max));
 	}
 
-	private void verifyIsBlank(String string) {
-		assertTrue(CharArrayTools.isBlank(string.toCharArray()));
+	@Override
+	protected void verifyCapitalize(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.capitalize(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.CAPITALIZER.transform(string.toCharArray()));
 	}
 
-	public void testEqualsIgnoreCase() {
-		assertTrue(CharArrayTools.equalsIgnoreCase((char[]) null, (char[]) null));
-		assertFalse(CharArrayTools.equalsIgnoreCase((char[]) null, "asdf".toCharArray()));
-		assertFalse(CharArrayTools.equalsIgnoreCase("asdf".toCharArray(), (char[]) null));
-		assertTrue(CharArrayTools.equalsIgnoreCase("asdf".toCharArray(), "asdf".toCharArray()));
-		assertTrue(CharArrayTools.equalsIgnoreCase("asdf".toCharArray(), "ASDF".toCharArray()));
+	@Override
+	protected Object getCapitalizer() {
+		return CharArrayTools.CAPITALIZER;
 	}
 
-	public void testStartsWithIgnoreCase() {
-		assertTrue(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "as".toCharArray()));
-		assertTrue(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "aS".toCharArray()));
-		assertTrue(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "".toCharArray()));
-		assertTrue(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "A".toCharArray()));
-		assertTrue(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "ASDF".toCharArray()));
-		assertTrue(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "asdf".toCharArray()));
-
-		assertFalse(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "bsdf".toCharArray()));
-		assertFalse(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "g".toCharArray()));
-		assertFalse(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "asdg".toCharArray()));
-		assertFalse(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "asdfg".toCharArray()));
-		assertFalse(CharArrayTools.startsWithIgnoreCase("asdf".toCharArray(), "asdfgggggg".toCharArray()));
+	@Override
+	protected void verifyUncapitalize(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.uncapitalize(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.UNCAPITALIZER.transform(string.toCharArray()));
 	}
 
-	public void testIsUppercase() {
-		this.verifyIsUppercase("FOO");
-		this.verifyIsUppercase("FOO2");
-		this.verifyIsUppercase("F O O");
-		this.denyIsUppercase("Foo");
-		this.denyIsUppercase("");
+	@Override
+	protected Object getUncapitalizer() {
+		return CharArrayTools.UNCAPITALIZER;
 	}
 
-	private void verifyIsUppercase(String s) {
-		assertTrue(CharArrayTools.isUppercase(s.toCharArray()));
+	@Override
+	protected void verifyIsBlank(boolean expected, String string) {
+		assertEquals(expected, CharArrayTools.isBlank(this.convert(string)));
+		assertEquals(expected, CharArrayTools.IS_BLANK.evaluate(this.convert(string)));
 	}
 
-	private void denyIsUppercase(String s) {
-		assertFalse(CharArrayTools.isUppercase(s.toCharArray()));
+	@Override
+	protected Object getIsBlankPredicate() {
+		return CharArrayTools.IS_BLANK;
 	}
 
-	public void testIsLowercase() {
-		this.verifyIsLowercase("foo");
-		this.verifyIsLowercase("foo2");
-		this.verifyIsLowercase("f o o");
-		this.denyIsLowercase("Foo");
-		this.denyIsLowercase("");
+	@Override
+	protected void verifyIsNotBlank(boolean expected, String string) {
+		assertEquals(expected, CharArrayTools.isNotBlank(this.convert(string)));
+		assertEquals(expected, CharArrayTools.IS_NOT_BLANK.evaluate(this.convert(string)));
 	}
 
-	private void verifyIsLowercase(String s) {
-		assertTrue(CharArrayTools.isLowercase(s.toCharArray()));
+	@Override
+	protected Object getIsNotBlankPredicate() {
+		return CharArrayTools.IS_NOT_BLANK;
 	}
 
-	private void denyIsLowercase(String s) {
-		assertFalse(CharArrayTools.isLowercase(s.toCharArray()));
+	@Override
+	protected void verifyEqualsIgnoreCase(boolean expected, String string1, String string2) {
+		assertEquals(expected, CharArrayTools.equalsIgnoreCase(this.convert(string1), this.convert(string2)));
 	}
-
-	// ********** byte arrays **********
 
-	public void testConvertHexStringToByteArray_empty() throws Exception {
-		char[] s = CharArrayTools.EMPTY_CHAR_ARRAY;
-		byte[] byteArray = CharArrayTools.convertHexStringToByteArray(s);
-		assertEquals(0, byteArray.length);
-		assertTrue(Arrays.equals(ByteArrayTools.EMPTY_BYTE_ARRAY, byteArray));
+	/**
+	 * add <code>null</code> check
+	 */
+	private char[] convert(String string) {
+		return (string == null) ? null : string.toCharArray();
 	}
 
-	public void testConvertHexStringToByteArray_oddLength() throws Exception {
-		String s = "CAFEE";
-		boolean exCaught = false;
-		try {
-			byte[] byteArray = CharArrayTools.convertHexStringToByteArray(s.toCharArray());
-			fail("bogus byte array: " + Arrays.toString(byteArray));
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
+	@Override
+	protected void verifyStartsWithIgnoreCase(boolean expected, String string, String prefix) {
+		assertEquals(expected, CharArrayTools.startsWithIgnoreCase(string.toCharArray(), prefix.toCharArray()));
+		Predicate<char[]> predicate = new CharArrayTools.StartsWithIgnoreCase(prefix.toCharArray());
+		assertEquals(expected, predicate.evaluate(string.toCharArray()));
 	}
 
-	public void testConvertHexStringToByteArray_illegalCharacter1() throws Exception {
-		this.verifyConvertHexStringToByteArray_illegalCharacter("CAFEX0CAFE");
+	@Override
+	protected void verifyIsUppercase(String string) {
+		assertTrue(CharArrayTools.isUppercase(string.toCharArray()));
 	}
 
-	public void testConvertHexStringToByteArray_illegalCharacter2() throws Exception {
-		this.verifyConvertHexStringToByteArray_illegalCharacter("CAFE0XCAFE");
+	@Override
+	protected void denyIsUppercase(String string) {
+		assertFalse(CharArrayTools.isUppercase(string.toCharArray()));
 	}
 
-	private void verifyConvertHexStringToByteArray_illegalCharacter(String s) throws Exception {
-		boolean exCaught = false;
-		try {
-			byte[] byteArray = CharArrayTools.convertHexStringToByteArray(s.toCharArray());
-			fail("bogus byte array: " + Arrays.toString(byteArray));
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
+	@Override
+	protected void verifyIsLowercase(String string) {
+		assertTrue(CharArrayTools.isLowercase(string.toCharArray()));
 	}
 
-	public void testConvertHexStringToByteArray_ok() throws Exception {
-		String s = "74657374"; // UTF-8 values
-		TestTools.assertEquals("test", CharArrayTools.convertHexStringToByteArray(s.toCharArray()));
+	@Override
+	protected void denyIsLowercase(String string) {
+		assertFalse(CharArrayTools.isLowercase(string.toCharArray()));
 	}
 
-	public void testConvertHexStringToByteArray_negative() throws Exception {
-		String s = this.getHexCafe();
-		TestTools.assertEquals("caf\u00E9", CharArrayTools.convertHexStringToByteArray(s.toCharArray()));
+	@Override
+	protected byte[] convertHexStringToByteArray(String string) {
+		return CharArrayTools.convertHexStringToByteArray(string.toCharArray());
 	}
 
-	public void testConvertHexStringToByteArray_lowercase() throws Exception {
-		String s = this.getHexCafe().toLowerCase();
-		TestTools.assertEquals("caf\u00E9", CharArrayTools.convertHexStringToByteArray(s.toCharArray()));
+	@Override
+	protected void verifyConvertCamelCaseToAllCaps(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertCamelCaseToAllCaps(string.toCharArray()));
 	}
 
-	private String getHexCafe() {
-		return StringToolsTests.getHexCafe();
+	@Override
+	protected void verifyConvertCamelCaseToAllCapsMaxLength(String expected, String string, int max) {
+		TestTools.assertEquals(expected, CharArrayTools.convertCamelCaseToAllCaps(string.toCharArray(), max));
 	}
 
-	// ********** convert camel-case to all-caps **********
-
-	// ********** convert all-caps to camel case **********
-
-	// ********** delimiting **********
-
-	public void testIsQuoted() {
-		this.denyIsQuoted("foo");
-		this.verifyIsQuoted("\"foo\"");
-
-		this.denyIsQuoted("");
-		this.verifyIsQuoted("\"\"");
-
-		this.denyIsQuoted("\"");
-		this.denyIsQuoted(" ");
-		this.denyIsQuoted("''");
-		this.denyIsQuoted("'foo'");
+	@Override
+	protected void verifyConvertAllCapsToCamelCase(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertAllCapsToCamelCase(string.toCharArray()));
 	}
 
-	private void verifyIsQuoted(String s) {
-		assertTrue(CharArrayTools.isQuoted(s.toCharArray()));
+	@Override
+	protected void verifyConvertAllCapsToCamelCase(String expected, String string, boolean capFirst) {
+		TestTools.assertEquals(expected, CharArrayTools.convertAllCapsToCamelCase(string.toCharArray(), capFirst));
 	}
 
-	private void denyIsQuoted(String s) {
-		assertFalse(CharArrayTools.isQuoted(s.toCharArray()));
+	@Override
+	protected void verifyIsQuoted(String string) {
+		assertTrue(CharArrayTools.isQuoted(string.toCharArray()));
 	}
-
-	public void testIsParenthetical() {
-		this.denyIsParenthetical("foo");
-		this.verifyIsParenthetical("(foo)");
-
-		this.denyIsParenthetical("");
-		this.verifyIsParenthetical("()");
 
-		this.denyIsParenthetical("(");
-		this.denyIsParenthetical(" ");
-		this.denyIsParenthetical("''");
-		this.denyIsParenthetical("'foo'");
+	@Override
+	protected void denyIsQuoted(String string) {
+		assertFalse(CharArrayTools.isQuoted(string.toCharArray()));
 	}
 
-	private void verifyIsParenthetical(String s) {
-		assertTrue(CharArrayTools.isParenthetical(s.toCharArray()));
+	@Override
+	protected void verifyIsParenthetical(String string) {
+		assertTrue(CharArrayTools.isParenthetical(string.toCharArray()));
 	}
 
-	private void denyIsParenthetical(String s) {
-		assertFalse(CharArrayTools.isParenthetical(s.toCharArray()));
+	@Override
+	protected void denyIsParenthetical(String string) {
+		assertFalse(CharArrayTools.isParenthetical(string.toCharArray()));
 	}
 
-	public void testIsBracketed() {
-		this.denyIsBracketed("foo");
-		this.verifyIsBracketed("[foo]");
-
-		this.denyIsBracketed("");
-		this.verifyIsBracketed("[]");
-
-		this.denyIsBracketed("[");
-		this.denyIsBracketed(" ");
-		this.denyIsBracketed("''");
-		this.denyIsBracketed("'foo'");
+	@Override
+	protected void verifyIsBracketed(String string) {
+		assertTrue(CharArrayTools.isBracketed(string.toCharArray()));
 	}
 
-	private void verifyIsBracketed(String s) {
-		assertTrue(CharArrayTools.isBracketed(s.toCharArray()));
+	@Override
+	protected void denyIsBracketed(String string) {
+		assertFalse(CharArrayTools.isBracketed(string.toCharArray()));
 	}
 
-	private void denyIsBracketed(String s) {
-		assertFalse(CharArrayTools.isBracketed(s.toCharArray()));
+	@Override
+	protected void verifyIsBraced(String string) {
+		assertTrue(CharArrayTools.isBraced(string.toCharArray()));
 	}
-
-	public void testIsBraced() {
-		this.denyIsBraced("foo");
-		this.verifyIsBraced("{foo}");
 
-		this.denyIsBraced("");
-		this.verifyIsBraced("{}");
-
-		this.denyIsBraced("{");
-		this.denyIsBraced(" ");
-		this.denyIsBraced("''");
-		this.denyIsBraced("'foo'");
+	@Override
+	protected void denyIsBraced(String string) {
+		assertFalse(CharArrayTools.isBraced(string.toCharArray()));
 	}
 
-	private void verifyIsBraced(String s) {
-		assertTrue(CharArrayTools.isBraced(s.toCharArray()));
+	@Override
+	protected void verifyIsChevroned(String string) {
+		assertTrue(CharArrayTools.isChevroned(string.toCharArray()));
 	}
 
-	private void denyIsBraced(String s) {
-		assertFalse(CharArrayTools.isBraced(s.toCharArray()));
+	@Override
+	protected void denyIsChevroned(String string) {
+		assertFalse(CharArrayTools.isChevroned(string.toCharArray()));
 	}
-
-	public void testIsChevroned() {
-		this.denyIsChevroned("foo");
-		this.verifyIsChevroned("<foo>");
 
-		this.denyIsChevroned("");
-		this.verifyIsChevroned("<>");
-
-		this.denyIsChevroned("{");
-		this.denyIsChevroned(" ");
-		this.denyIsChevroned("''");
-		this.denyIsChevroned("'foo'");
+	@Override
+	protected void verifyIsDelimited(String string, char c) {
+		assertTrue(CharArrayTools.isDelimited(string.toCharArray(), c));
 	}
 
-	private void verifyIsChevroned(String s) {
-		assertTrue(CharArrayTools.isChevroned(s.toCharArray()));
+	@Override
+	protected void denyIsDelimited(String string, char c) {
+		assertFalse(CharArrayTools.isDelimited(string.toCharArray(), c));
 	}
 
-	private void denyIsChevroned(String s) {
-		assertFalse(CharArrayTools.isChevroned(s.toCharArray()));
+	@Override
+	protected void verifyIsDelimited2(String string, char start, char end) {
+		assertTrue(CharArrayTools.isDelimited(string.toCharArray(), start, end));
 	}
-
-	public void testIsDelimited() {
-		this.denyIsDelimited("foo", '?');
-		this.verifyIsDelimited("?foo?", '?');
 
-		this.denyIsDelimited("", '?');
-		this.verifyIsDelimited("\"\"", '"');
-		this.verifyIsDelimited("?xx?", '?');
-		this.denyIsDelimited("?xx]", '?');
-
-		this.denyIsDelimited("\"", '"');
-		this.denyIsDelimited(" ", ' ');
-		this.denyIsDelimited("''", '"');
-		this.denyIsDelimited("'foo'", '?');
+	@Override
+	protected void denyIsDelimited2(String string, char start, char end) {
+		assertFalse(CharArrayTools.isDelimited(string.toCharArray(), start, end));
 	}
 
-	private void verifyIsDelimited(String s, char c) {
-		assertTrue(CharArrayTools.isDelimited(s.toCharArray(), c));
+	@Override
+	protected void verifyUndelimit(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.undelimit(string.toCharArray()));
 	}
 
-	private void denyIsDelimited(String s, char c) {
-		assertFalse(CharArrayTools.isDelimited(s.toCharArray(), c));
+	@Override
+	protected void verifyUndelimitInt(String expected, String string, int count) {
+		TestTools.assertEquals(expected, CharArrayTools.undelimit(string.toCharArray(), count));
 	}
 
-	public void testIsDelimited2() {
-		this.denyIsDelimited2("foo", '[', ']');
-		this.verifyIsDelimited2("{foo}", '{', '}');
+	@Override
+	protected void verifyConvertToJavaStringLiteral(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToJavaStringLiteral(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.JAVA_STRING_LITERAL_TRANSFORMER.transform(string.toCharArray()));
+	}
 
-		this.denyIsDelimited2("", '[', ']');
-		this.verifyIsDelimited2("[]", '[', ']');
-		this.verifyIsDelimited2("[xx]", '[', ']');
-		this.denyIsDelimited2("?xx]", '[', ']');
+	@Override
+	protected Object getJavaStringLiteralTransformer() {
+		return CharArrayTools.JAVA_STRING_LITERAL_TRANSFORMER;
+	}
 
-		this.denyIsDelimited2("\"", '[', ']');
-		this.denyIsDelimited2(" ", '[', ']');
-		this.denyIsDelimited2("''", '[', ']');
-		this.denyIsDelimited2("'foo'", '[', ']');
+	@Override
+	protected void verifyConvertToJavaStringLiteralContent(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToJavaStringLiteralContent(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	private void verifyIsDelimited2(String s, char start, char end) {
-		assertTrue(CharArrayTools.isDelimited(s.toCharArray(), start, end));
+	@Override
+	protected Object getJavaStringLiteralContentTransformer() {
+		return CharArrayTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER;
 	}
 
-	private void denyIsDelimited2(String s, char start, char end) {
-		assertFalse(CharArrayTools.isDelimited(s.toCharArray(), start, end));
+	@Override
+	protected void verifyConvertToXmlAttributeValue(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToXmlAttributeValue(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.XML_ATTRIBUTE_VALUE_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	// ********** undelimiting **********
+	@Override
+	protected Object getXmlAttributeValueTransformer() {
+		return CharArrayTools.XML_ATTRIBUTE_VALUE_TRANSFORMER;
+	}
 
-	public void testUndelimit() {
-		this.verifyUndelimit("\"foo\"", "foo");
-		this.verifyUndelimit("\"\"", "");
-		this.verifyUndelimit("'foo'", "foo");
-		this.verifyUndelimit("\"fo\"\"o\"", "fo\"o");
-		this.verifyUndelimit("\"foo\"\"\"", "foo\"");
-		this.verifyUndelimit("\"\"\"foo\"", "\"foo");
-		this.verifyUndelimit("[foo]", "foo");
-		this.verifyUndelimit("\"\"\"", "\"");
-		this.verifyUndelimit("\"foo\"bar\"", "foo\"");
-		this.verifyUndelimit("\"foo\"\"", "foo\"");
+	@Override
+	protected void verifyConvertToDoubleQuotedXmlAttributeValue(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToDoubleQuotedXmlAttributeValue(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	private void verifyUndelimit(String s, String expected) {
-		TestTools.assertEquals(expected, CharArrayTools.undelimit(s.toCharArray()));
+	@Override
+	protected Object getDoubleQuotedXmlAttributeValueTransformer() {
+		return CharArrayTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER;
 	}
 
-	public void testUndelimitInt() {
-		this.verifyUndelimitInt("\"foo\"", 2, "o");
-		this.verifyUndelimitInt("\"\"foo\"\"", 2, "foo");
-		this.verifyUndelimitInt("'foo'", 2, "o");
+	@Override
+	protected void verifyConvertToDoubleQuotedXmlAttributeValueContent(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToDoubleQuotedXmlAttributeValueContent(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	private void verifyUndelimitInt(String s, int count, String expected) {
-		TestTools.assertEquals(expected, CharArrayTools.undelimit(s.toCharArray(), count));
+	@Override
+	protected Object getDoubleQuotedXmlAttributeValueContentTransformer() {
+		return CharArrayTools.DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 	}
 
-	public void testUndelimitIntException() {
-		this.denyUndelimitInt("\"\"", 2);
-		this.denyUndelimitInt("'o'", 2);
+	@Override
+	protected void verifyConvertToSingleQuotedXmlAttributeValue(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToSingleQuotedXmlAttributeValue(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	private void denyUndelimitInt(String s, int count) {
-		boolean exCaught = false;
-		try {
-			char[] bogus = CharArrayTools.undelimit(s.toCharArray(), count);
-			fail("invalid string: " + new String(bogus));
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
+	@Override
+	protected Object getSingleQuotedXmlAttributeValueTransformer() {
+		return CharArrayTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER;
 	}
 
-	// ********** converting to Java string literal **********
+	@Override
+	protected void verifyConvertToSingleQuotedXmlAttributeValueContent(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToSingleQuotedXmlAttributeValueContent(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER.transform(string.toCharArray()));
+	}
 
-	public void testConvertToJavaStringLiteral() {
-		this.verifyConvertToJavaStringLiteral("", "\"\"");
-		this.verifyConvertToJavaStringLiteral("\"\"", "\"\\\"\\\"\"");
-		this.verifyConvertToJavaStringLiteral("'foo'", "\"'foo'\"");
-		this.verifyConvertToJavaStringLiteral("foo\bbar", "\"foo\\bbar\"");
-		this.verifyConvertToJavaStringLiteral("foo\n\tbar", "\"foo\\n\\tbar\"");
-		this.verifyConvertToJavaStringLiteral("foo\"bar", "\"foo\\\"bar\"");
-		this.verifyConvertToJavaStringLiteral("foo\\bar", "\"foo\\\\bar\"");
+	@Override
+	protected Object getSingleQuotedXmlAttributeValueContentTransformer() {
+		return CharArrayTools.SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 	}
 
-	private void verifyConvertToJavaStringLiteral(String s, String expected) {
-		TestTools.assertEquals(expected, CharArrayTools.convertToJavaStringLiteral(s.toCharArray()));
+	@Override
+	protected void verifyConvertToXmlElementText(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementText(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.XML_ELEMENT_TEXT_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	// ********** converting to XML **********
+	@Override
+	protected Object getXmlElementTextTransformer() {
+		return CharArrayTools.XML_ELEMENT_TEXT_TRANSFORMER;
+	}
 
-	public void testConvertToXmlAttributeValue() {
-		this.verifyConvertToXmlAttributeValue("", "\"\"");
-		this.verifyConvertToXmlAttributeValue("\"", "'\"'");
-		this.verifyConvertToXmlAttributeValue("\"\"", "'\"\"'");
-		this.verifyConvertToXmlAttributeValue("'", "\"'\"");
-		this.verifyConvertToXmlAttributeValue("''", "\"''\"");
-		this.verifyConvertToXmlAttributeValue("\"'\"", "\"&quot;'&quot;\"");
-		this.verifyConvertToXmlAttributeValue("\"''\"", "\"&quot;''&quot;\"");
-		this.verifyConvertToXmlAttributeValue("'foo'", "\"'foo'\"");
-		this.verifyConvertToXmlAttributeValue("\"foo\"", "'\"foo\"'");
-		this.verifyConvertToXmlAttributeValue("\"foo\" 'bar'", "\"&quot;foo&quot; 'bar'\"");
-		this.verifyConvertToXmlAttributeValue("foo & bar", "\"foo &amp; bar\"");
-		this.verifyConvertToXmlAttributeValue("\"foo & bar\"", "'\"foo &amp; bar\"'");
-		this.verifyConvertToXmlAttributeValue("foo <<< bar", "\"foo &lt;&lt;&lt; bar\"");
-		this.verifyConvertToXmlAttributeValue("\"foo <<< bar\"", "'\"foo &lt;&lt;&lt; bar\"'");
+	@Override
+	protected void verifyConvertToXmlElementCDATA(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementCDATA(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.XML_ELEMENT_CDATA_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	private void verifyConvertToXmlAttributeValue(String s, String expected) {
-		TestTools.assertEquals(expected, CharArrayTools.convertToXmlAttributeValue(s.toCharArray()));
+	@Override
+	protected Object getXmlElementCDATATransformer() {
+		return CharArrayTools.XML_ELEMENT_CDATA_TRANSFORMER;
 	}
 
-	public void testConvertToXmlElementText() {
-		this.verifyConvertToXmlElementText("", "");
-		this.verifyConvertToXmlElementText("\"", "\"");
-		this.verifyConvertToXmlElementText("\"\"", "\"\"");
-		this.verifyConvertToXmlElementText("'", "'");
-		this.verifyConvertToXmlElementText("''", "''");
-		this.verifyConvertToXmlElementText("\"'\"", "\"'\"");
-		this.verifyConvertToXmlElementText("\"''\"", "\"''\"");
-		this.verifyConvertToXmlElementText("'foo'", "'foo'");
-		this.verifyConvertToXmlElementText("foo & bar", "foo &amp; bar");
-		this.verifyConvertToXmlElementText("foo &", "foo &amp;");
-		this.verifyConvertToXmlElementText("& bar", "&amp; bar");
-		this.verifyConvertToXmlElementText("\"foo & bar\"", "\"foo &amp; bar\"");
-		this.verifyConvertToXmlElementText("foo <<< bar", "foo &lt;&lt;&lt; bar");
-		this.verifyConvertToXmlElementText("\"foo <<< bar\"", "\"foo &lt;&lt;&lt; bar\"");
+	@Override
+	protected void verifyConvertToXmlElementCDATAContent(String expected, String string) {
+		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementCDATAContent(string.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.XML_ELEMENT_CDATA_CONTENT_TRANSFORMER.transform(string.toCharArray()));
 	}
 
-	private void verifyConvertToXmlElementText(String s, String expected) {
-		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementText(s.toCharArray()));
+	@Override
+	protected Object getXmlElementCDATAContentTransformer() {
+		return CharArrayTools.XML_ELEMENT_CDATA_CONTENT_TRANSFORMER;
 	}
 
-	public void testConvertToXmlElementCDATA() {
-		String START = "<![CDATA[";
-		String END = "]]>";
-		this.verifyConvertToXmlElementCDATA("", START + END);
-		this.verifyConvertToXmlElementCDATA("\"", START + "\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"\"", START + "\"\"" + END);
-		this.verifyConvertToXmlElementCDATA("'", START + "'" + END);
-		this.verifyConvertToXmlElementCDATA("''", START + "''" + END);
-		this.verifyConvertToXmlElementCDATA("\"'\"", START + "\"'\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"''\"", START + "\"''\"" + END);
-		this.verifyConvertToXmlElementCDATA("'foo'", START + "'foo'" + END);
-		this.verifyConvertToXmlElementCDATA("foo & bar", START + "foo & bar" + END);
-		this.verifyConvertToXmlElementCDATA("foo &", START + "foo &" + END);
-		this.verifyConvertToXmlElementCDATA("& bar", START + "& bar" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo & bar\"", START + "\"foo & bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("foo <<< bar", START + "foo <<< bar" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <<< bar\"", START + "\"foo <<< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <&< bar\"", START + "\"foo <&< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <]< bar\"", START + "\"foo <]< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <]]< bar\"", START + "\"foo <]]< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("\"foo <]]>< bar\"", START + "\"foo <]]&gt;< bar\"" + END);
-		this.verifyConvertToXmlElementCDATA("foo <]", START + "foo <]" + END);
-		this.verifyConvertToXmlElementCDATA("foo <]]", START + "foo <]]" + END);
-		this.verifyConvertToXmlElementCDATA("foo <]]>", START + "foo <]]&gt;" + END);
-		this.verifyConvertToXmlElementCDATA("]foo", START + "]foo" + END);
-		this.verifyConvertToXmlElementCDATA("]]foo", START + "]]foo" + END);
-		this.verifyConvertToXmlElementCDATA("]]>foo", START + "]]&gt;foo" + END);
+	@Override
+	protected Class<?> getToolsClass() {
+		return CharArrayTools.class;
 	}
+
+	// ********** CharArrayTools-specific **********
 
-	private void verifyConvertToXmlElementCDATA(String s, String expected) {
-		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementCDATA(s.toCharArray()));
+	public void testStringTransformer() throws Exception {
+		Transformer<char[], String> transformer = CharArrayTools.STRING_TRANSFORMER;
+		assertEquals("foo", transformer.transform("foo".toCharArray()));
+		assertEquals("StringTransformer", transformer.toString());
+		assertSame(transformer, TestTools.serialize(transformer));
 	}
 
 	// ********** String methods **********
@@ -644,6 +525,8 @@ public class CharArrayToolsTests
 		this.verifyCompareToIgnoreCase("foo", "FOO");
 		this.verifyCompareToIgnoreCase("foo", "zoo");
 		this.verifyCompareToIgnoreCase("foo", "ZOO");
+		this.verifyCompareToIgnoreCase("foo", "fooo");
+		this.verifyCompareToIgnoreCase("fooo", "foo");
 	}
 
 	private void verifyCompareToIgnoreCase(String s1, String s2) {
@@ -693,7 +576,7 @@ public class CharArrayToolsTests
 
 	private void verifyContainsCharArray(String s1, String s2) {
 		StringBuilder sb = new StringBuilder(s2);
-		assertEquals(s1.contains(sb), CharArrayTools.contains(s1.toCharArray(), s2));
+		assertEquals(s1.contains(sb), CharArrayTools.contains(s1.toCharArray(), s2.toCharArray()));
 	}
 
 	public void testContentEqualsCharSequence() {
@@ -746,6 +629,23 @@ public class CharArrayToolsTests
 		assertEquals(s1.endsWith(s2), CharArrayTools.endsWith(s1.toCharArray(), s2.toCharArray()));
 	}
 
+	public void testGetBytes() {
+		this.verifyGetBytes("foo");
+	}
+
+	private void verifyGetBytes(String string) {
+		Assert.assertArrayEquals(string.getBytes(), CharArrayTools.getBytes(string.toCharArray()));
+	}
+
+	public void testGetBytesCharSet() throws Exception {
+		this.verifyGetBytesCharSet("foo");
+	}
+
+	private void verifyGetBytesCharSet(String string) throws Exception {
+		String charset = Charset.defaultCharset().name();
+		Assert.assertArrayEquals(string.getBytes(charset), CharArrayTools.getBytes(string.toCharArray(), charset));
+	}
+
 	public void testGetChars() {
 		this.verifyGetChars("foo-bar-baz", 0, 11, 0);
 		this.verifyGetChars("foo-bar-baz", 11, 11, 11);
@@ -759,6 +659,38 @@ public class CharArrayToolsTests
 		char[] a2 = ArrayTools.fill(new char[42], 'x');
 		CharArrayTools.getChars(s.toCharArray(), srcBegin, srcEnd, a2, destBegin);
 		Assert.assertArrayEquals(a1, a2);
+	}
+
+	public void testIndexOfChar() {
+		this.verifyIndexOfChar("foo-bar-baz", ' ');
+		this.verifyIndexOfChar("foo-bar-baz", 'f');
+		this.verifyIndexOfChar("foo-bar-baz", 'b');
+		this.verifyIndexOfChar("foo-bar-baz", 'z');
+
+		this.verifyIndexOfChar("", ' ');
+		this.verifyIndexOfChar("", 'f');
+		this.verifyIndexOfChar("", 'b');
+		this.verifyIndexOfChar("", 'z');
+	}
+
+	private void verifyIndexOfChar(String string, char c) {
+		assertEquals(string.indexOf(c), CharArrayTools.indexOf(string.toCharArray(), c));
+	}
+
+	public void testIndexOfCharIndex() {
+		this.verifyIndexOfCharIndex("foo-bar-baz", ' ');
+		this.verifyIndexOfCharIndex("foo-bar-baz", 'f');
+		this.verifyIndexOfCharIndex("foo-bar-baz", 'b');
+		this.verifyIndexOfCharIndex("foo-bar-baz", 'z');
+
+		this.verifyIndexOfCharIndex("", ' ');
+		this.verifyIndexOfCharIndex("", 'f');
+		this.verifyIndexOfCharIndex("", 'b');
+		this.verifyIndexOfCharIndex("", 'z');
+	}
+
+	private void verifyIndexOfCharIndex(String string, char c) {
+		assertEquals(string.indexOf(c, 3), CharArrayTools.indexOf(string.toCharArray(), c, 3));
 	}
 
 	public void testIndexOfCharSequence() {
@@ -775,6 +707,7 @@ public class CharArrayToolsTests
 
 	private void verifyIndexOfCharSequence(String s1, String s2) {
 		assertEquals(s1.indexOf(s2), CharArrayTools.indexOf(s1.toCharArray(), s2));
+		assertEquals(s1.indexOf(s2), CharArrayTools.indexOf(s1.toCharArray(), s2, -3));
 	}
 
 	public void testIndexOfCharArray() {
@@ -791,6 +724,7 @@ public class CharArrayToolsTests
 
 	private void verifyIndexOfCharArray(String s1, String s2) {
 		assertEquals(s1.indexOf(s2), CharArrayTools.indexOf(s1.toCharArray(), s2.toCharArray()));
+		assertEquals(s1.indexOf(s2), CharArrayTools.indexOf(s1.toCharArray(), s2.toCharArray(), -3));
 	}
 
 	public void testLastIndexOf() {
@@ -807,6 +741,33 @@ public class CharArrayToolsTests
 
 	private void verifyLastIndexOf(String s1, String s2) {
 		assertEquals(s1.lastIndexOf(s2), CharArrayTools.lastIndexOf(s1.toCharArray(), s2.toCharArray()));
+		assertEquals(-1, CharArrayTools.lastIndexOf(s1.toCharArray(), s2.toCharArray(), -3));
+	}
+
+	public void testLastIndexOfChar() {
+		this.verifyLastIndexOfChar("foo-bar-baz", ' ');
+		this.verifyLastIndexOfChar("foo-bar-baz", 'f');
+		this.verifyLastIndexOfChar("foo-bar-baz", 'v');
+		this.verifyLastIndexOfChar("foo-bar-baz", 'z');
+
+		this.verifyLastIndexOfChar("", ' ');
+		this.verifyLastIndexOfChar("", 'f');
+		this.verifyLastIndexOfChar("", 'b');
+		this.verifyLastIndexOfChar("", 'z');
+	}
+
+	private void verifyLastIndexOfChar(String string, char c) {
+		assertEquals(string.lastIndexOf(c), CharArrayTools.lastIndexOf(string.toCharArray(), c));
+		assertEquals(-1, CharArrayTools.lastIndexOf(string.toCharArray(), c, -3));
+	}
+
+	public void testOffsetByCodePoints() {
+		this.verifyOffsetByCodePoints("foo-bar-baz", 3, 3);
+		this.verifyOffsetByCodePoints("aaaaab", 3, 3);
+	}
+
+	private void verifyOffsetByCodePoints(String string, int index, int codePointOffset) {
+		assertEquals(string.offsetByCodePoints(index, codePointOffset), CharArrayTools.offsetByCodePoints(string.toCharArray(), index, codePointOffset));
 	}
 
 	public void testMatches() {
@@ -848,6 +809,7 @@ public class CharArrayToolsTests
 	public void testReplace() {
 		this.verifyReplace("foo-bar-baz", 'b', 'x');
 		this.verifyReplace("foo-bar-baz", 'X', 'T');
+		this.verifyReplace("foo-bar-baz", 'X', 'X');
 	}
 
 	private void verifyReplace(String string, char oldChar, char newChar) {
