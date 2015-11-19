@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,17 +65,19 @@ public abstract class AbstractELJaxb_2_1_PlatformDefinition
 	
 	@Override
 	protected AnnotationDefinition[] buildAnnotationDefinitions() {
-		return ArrayTools.addAll(
-				getGenericJaxbPlatformDefinition().getAnnotationDefinitions(),
-				XmlInverseReferenceAnnotationDefinition.instance(),
-				XmlPathsAnnotationDefinition.instance());
+		return ArrayTools.addAll(getGenericJaxbPlatformDefinition().getAnnotationDefinitions(),
+				new AnnotationDefinition[] {
+					XmlInverseReferenceAnnotationDefinition.instance(),
+					XmlPathsAnnotationDefinition.instance()
+				});
 	}
 	
 	@Override
 	protected NestableAnnotationDefinition[] buildNestableAnnotationDefinitions() {
-		return ArrayTools.addAll(
+		return ArrayTools.add(
 				getGenericJaxbPlatformDefinition().getNestableAnnotationDefinitions(),
-				XmlPathAnnotationDefinition.instance());
+				XmlPathAnnotationDefinition.instance()
+			);
 	}
 	
 	@Override

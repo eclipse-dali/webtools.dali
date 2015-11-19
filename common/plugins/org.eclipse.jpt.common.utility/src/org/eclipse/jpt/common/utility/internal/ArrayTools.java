@@ -441,8 +441,7 @@ public final class ArrayTools {
 	 * specified array 1 followed by the elements
 	 * in the specified array 2.
 	 */
-	@SafeVarargs
-	public static <E> E[] addAll(E[] array1, E... array2) {
+	public static <E> E[] addAll(E[] array1, E[] array2) {
 		return addAll(array1, array2, array2.length);
 	}
 
@@ -482,8 +481,7 @@ public final class ArrayTools {
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
 	 */
-	@SafeVarargs
-	public static <E> E[] addAll(E[] array1, int index, E... array2) {
+	public static <E> E[] addAll(E[] array1, int index, E[] array2) {
 		return addAll(array1, index, array2, array2.length);
 	}
 
@@ -624,7 +622,7 @@ public final class ArrayTools {
 	 * specified array 1 followed by the elements
 	 * in the specified array 2.
 	 */
-	public static char[] addAll(char[] array1, char... array2) {
+	public static char[] addAll(char[] array1, char[] array2) {
 		return addAll(array1, array2, array2.length);
 	}
 
@@ -664,7 +662,7 @@ public final class ArrayTools {
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
 	 */
-	public static char[] addAll(char[] array1, int index, char... array2) {
+	public static char[] addAll(char[] array1, int index, char[] array2) {
 		return addAll(array1, index, array2, array2.length);
 	}
 
@@ -709,7 +707,7 @@ public final class ArrayTools {
 	 * specified array 1 followed by the elements
 	 * in the specified array 2.
 	 */
-	public static int[] addAll(int[] array1, int... array2) {
+	public static int[] addAll(int[] array1, int[] array2) {
 		return addAll(array1, array2, array2.length);
 	}
 
@@ -749,7 +747,7 @@ public final class ArrayTools {
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
 	 */
-	public static int[] addAll(int[] array1, int index, int... array2) {
+	public static int[] addAll(int[] array1, int index, int[] array2) {
 		return addAll(array1, index, array2, array2.length);
 	}
 
@@ -1041,7 +1039,7 @@ public final class ArrayTools {
 	 * Return whether the specified array 1 contains all of the
 	 * elements in the specified array 2.
 	 */
-	public static boolean containsAll(Object[] array1, Object... array2) {
+	public static boolean containsAll(Object[] array1, Object[] array2) {
 		// use hashed lookup
 		HashSet<Object> set = CollectionTools.hashSet(array1);
 		for (int i = array2.length; i-- > 0; ) {
@@ -1056,7 +1054,7 @@ public final class ArrayTools {
 	 * Return whether the specified array 1 contains all of the
 	 * elements in the specified array 2.
 	 */
-	public static boolean containsAll(char[] array1, char... array2) {
+	public static boolean containsAll(char[] array1, char[] array2) {
 		for (int i = array2.length; i-- > 0; ) {
 			if ( ! contains(array1, array2[i])) {
 				return false;
@@ -1069,7 +1067,7 @@ public final class ArrayTools {
 	 * Return whether the specified array 1 contains all of the
 	 * elements in the specified array 2.
 	 */
-	public static boolean containsAll(int[] array1, int... array2) {
+	public static boolean containsAll(int[] array1, int[] array2) {
 		for (int i = array2.length; i-- > 0; ) {
 			if ( ! contains(array1, array2[i])) {
 				return false;
@@ -1702,7 +1700,7 @@ public final class ArrayTools {
 	/**
 	 * Return the character from the specified array with the minimum value.
 	 */
-	public static char min(char... array) {
+	public static char min(char[] array) {
 		int len = array.length;
 		if (len == 0) {
 			throw new IndexOutOfBoundsException();
@@ -1721,7 +1719,7 @@ public final class ArrayTools {
 	/**
 	 * Return the integer from the specified array with the minimum value.
 	 */
-	public static int min(int... array) {
+	public static int min(int[] array) {
 		int len = array.length;
 		if (len == 0) {
 			throw new IndexOutOfBoundsException();
@@ -1778,7 +1776,7 @@ public final class ArrayTools {
 	/**
 	 * Return the character from the specified array with the maximum value.
 	 */
-	public static char max(char... array) {
+	public static char max(char[] array) {
 		int len = array.length;
 		if (len == 0) {
 			throw new IndexOutOfBoundsException();
@@ -1797,7 +1795,7 @@ public final class ArrayTools {
 	/**
 	 * Return the integer from the specified array with the maximum value.
 	 */
-	public static int max(int... array) {
+	public static int max(int[] array) {
 		int len = array.length;
 		if (len == 0) {
 			throw new IndexOutOfBoundsException();
@@ -2119,7 +2117,7 @@ public final class ArrayTools {
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
 	 */
-	public static <E> E[] removeAll(E[] array1, Object... array2) {
+	public static <E> E[] removeAll(E[] array1, Object[] array2) {
 		// convert to a set to take advantage of hashed look-up
 		return (array2.length == 0) ? array1 : removeAll_(array1, CollectionTools.hashSet(array2));
 	}
@@ -2128,7 +2126,7 @@ public final class ArrayTools {
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
 	 */
-	public static char[] removeAll(char[] array1, char... array2) {
+	public static char[] removeAll(char[] array1, char[] array2) {
 		if (array2.length == 0) {
 			return array1;
 		}
@@ -2158,7 +2156,7 @@ public final class ArrayTools {
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
 	 */
-	public static int[] removeAll(int[] array1, int... array2) {
+	public static int[] removeAll(int[] array1, int[] array2) {
 		if (array2.length == 0) {
 			return array1;
 		}
@@ -2283,8 +2281,7 @@ public final class ArrayTools {
 	 * Remove any duplicate elements from the specified array,
 	 * while maintaining the order.
 	 */
-	@SafeVarargs
-	public static <E> E[] removeDuplicateElements(E... array) {
+	public static <E> E[] removeDuplicateElements(E[] array) {
 		int len = array.length;
 		if (len <= 1) {
 			return array;
@@ -2627,7 +2624,7 @@ public final class ArrayTools {
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
 	 */
-	public static char[] retainAll(char[] array1, char... array2) {
+	public static char[] retainAll(char[] array1, char[] array2) {
 		int array1Length = array1.length;
 		return (array1Length == 0) ? array1 : retainAll(array1, array2, array1Length);
 	}
@@ -2666,7 +2663,7 @@ public final class ArrayTools {
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
 	 */
-	public static int[] retainAll(int[] array1, int... array2) {
+	public static int[] retainAll(int[] array1, int[] array2) {
 		int array1Length = array1.length;
 		return (array1Length == 0) ? array1 : retainAll(array1, array2, array1Length);
 	}
@@ -2707,8 +2704,7 @@ public final class ArrayTools {
 	/**
 	 * Return the array, reversed.
 	 */
-	@SafeVarargs
-	public static <E> E[] reverse(E... array) {
+	public static <E> E[] reverse(E[] array) {
 		int len = array.length;
 		if (len <= 1) {
 			return array;
@@ -2722,7 +2718,7 @@ public final class ArrayTools {
 	/**
 	 * Return the array, reversed.
 	 */
-	public static char[] reverse(char... array) {
+	public static char[] reverse(char[] array) {
 		int len = array.length;
 		return (len <= 1) ? array : reverse(array, len);
 	}
@@ -2740,7 +2736,7 @@ public final class ArrayTools {
 	/**
 	 * Return the array, reversed.
 	 */
-	public static int[] reverse(int... array) {
+	public static int[] reverse(int[] array) {
 		int len = array.length;
 		if (len <= 1) {
 			return array;
@@ -2757,8 +2753,7 @@ public final class ArrayTools {
 	/**
 	 * Return the rotated array after rotating it one position.
 	 */
-	@SafeVarargs
-	public static <E> E[] rotate(E... array) {
+	public static <E> E[] rotate(E[] array) {
 		return rotate(array, 1);
 	}
 
@@ -2797,7 +2792,7 @@ public final class ArrayTools {
 	/**
 	 * Return the rotated array after rotating it one position.
 	 */
-	public static char[] rotate(char... array) {
+	public static char[] rotate(char[] array) {
 		return rotate(array, 1);
 	}
 
@@ -2836,7 +2831,7 @@ public final class ArrayTools {
 	/**
 	 * Return the rotated array after rotating it one position.
 	 */
-	public static int[] rotate(int... array) {
+	public static int[] rotate(int[] array) {
 		return rotate(array, 1);
 	}
 
@@ -2880,8 +2875,7 @@ public final class ArrayTools {
 	/**
 	 * Return the array after "shuffling" it.
 	 */
-	@SafeVarargs
-	public static <E> E[] shuffle(E... array) {
+	public static <E> E[] shuffle(E[] array) {
 		return shuffle(array, RANDOM);
 	}
 
@@ -2902,7 +2896,7 @@ public final class ArrayTools {
 	/**
 	 * Return the array after "shuffling" it.
 	 */
-	public static char[] shuffle(char... array) {
+	public static char[] shuffle(char[] array) {
 		return shuffle(array, RANDOM);
 	}
 
@@ -2923,7 +2917,7 @@ public final class ArrayTools {
 	/**
 	 * Return the array after "shuffling" it.
 	 */
-	public static int[] shuffle(int... array) {
+	public static int[] shuffle(int[] array) {
 		return shuffle(array, RANDOM);
 	}
 
@@ -3420,7 +3414,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(byte[])
 	 */
-	public static byte[] sort(byte... array) {
+	public static byte[] sort(byte[] array) {
 		Arrays.sort(array);
 		return array;
 	}
@@ -3438,7 +3432,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(char[])
 	 */
-	public static char[] sort(char... array) {
+	public static char[] sort(char[] array) {
 		Arrays.sort(array);
 		return array;
 	}
@@ -3456,7 +3450,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(double[])
 	 */
-	public static double[] sort(double... array) {
+	public static double[] sort(double[] array) {
 		Arrays.sort(array);
 		return array;
 	}
@@ -3474,7 +3468,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(float[])
 	 */
-	public static float[] sort(float... array) {
+	public static float[] sort(float[] array) {
 		Arrays.sort(array);
 		return array;
 	}
@@ -3492,7 +3486,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(int[])
 	 */
-	public static int[] sort(int... array) {
+	public static int[] sort(int[] array) {
 		Arrays.sort(array);
 		return array;
 	}
@@ -3510,8 +3504,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(Object[])
 	 */
-	@SafeVarargs
-	public static <E> E[] sort(E... array) {
+	public static <E> E[] sort(E[] array) {
 		Arrays.sort(array);
 		return array;
 	}
@@ -3547,7 +3540,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(long[])
 	 */
-	public static long[] sort(long... array) {
+	public static long[] sort(long[] array) {
 		Arrays.sort(array);
 		return array;
 	}
@@ -3565,7 +3558,7 @@ public final class ArrayTools {
 	 * Return the array after it has been "sorted".
 	 * @see Arrays#sort(short[])
 	 */
-	public static short[] sort(short... array) {
+	public static short[] sort(short[] array) {
 		Arrays.sort(array);
 		return array;
 	}

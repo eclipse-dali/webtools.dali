@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,10 +60,12 @@ public class JpaFacetInstallPage
 	@Override
 	protected String[] getValidationPropertyNames() {
 		String[] validationPropertyNames = super.getValidationPropertyNames();
-		return ArrayTools.addAll(
-				validationPropertyNames,
-				USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH,
-				DB_DRIVER_NAME);
+		return ArrayTools.addAll(validationPropertyNames,
+				new String[] {
+					USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH,
+					DB_DRIVER_NAME
+				}
+			);
 	}
 	
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
@@ -207,8 +208,10 @@ public class SequenceGeneratorComposite2_0 extends SequenceGeneratorComposite
 		}
 	}
 
-	/* CU private */ static final Collection<String> SEQUENCE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(new String[0]),
-		SequenceGenerator2_0.DEFAULT_SCHEMA_PROPERTY,
-		SequenceGenerator2_0.SPECIFIED_SCHEMA_PROPERTY
+	/* CU private */ static final Collection<String> SEQUENCE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(StringTools.EMPTY_STRING_ARRAY),
+		new String[] {
+			SequenceGenerator2_0.DEFAULT_SCHEMA_PROPERTY,
+			SequenceGenerator2_0.SPECIFIED_SCHEMA_PROPERTY
+		}
 	));
 }

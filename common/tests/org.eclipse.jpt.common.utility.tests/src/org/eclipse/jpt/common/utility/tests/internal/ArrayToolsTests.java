@@ -670,8 +670,8 @@ public class ArrayToolsTests
 		String[] newArray = ArrayTools.addAll(a1, a2);
 
 		assertEquals(6, newArray.length);
-		assertTrue(ArrayTools.containsAll(newArray, (Object[]) a1));
-		assertTrue(ArrayTools.containsAll(newArray, (Object[]) a2));
+		assertTrue(ArrayTools.containsAll(newArray, a1));
+		assertTrue(ArrayTools.containsAll(newArray, a2));
 	}
 
 	public void testAddAllObjectArrayObjectArray_ObjectString() {
@@ -681,7 +681,7 @@ public class ArrayToolsTests
 
 		assertEquals(6, newArray.length);
 		assertTrue(ArrayTools.containsAll(newArray, a1));
-		assertTrue(ArrayTools.containsAll(newArray, (Object[]) a2));
+		assertTrue(ArrayTools.containsAll(newArray, a2));
 	}
 
 	public void testAddAllObjectArrayObjectArray_EmptyArray1() {
@@ -3394,14 +3394,14 @@ public class ArrayToolsTests
 		String[] array1 = this.buildStringArray1();
 		String[] array2 = ArrayTools.shuffle(this.buildStringArray1());
 		assertEquals(array1.length, array2.length);
-		assertTrue(ArrayTools.containsAll(array1, (Object[]) array2));
+		assertTrue(ArrayTools.containsAll(array1, array2));
 	}
 
 	public void testShuffleObjectArray_Singleton() {
 		String[] array1 = new String[] { "foo" };
 		String[] array2 = ArrayTools.shuffle(new String[] { "foo" });
 		assertEquals(array1.length, array2.length);
-		assertTrue(ArrayTools.containsAll(array1, (Object[]) array2));
+		assertTrue(ArrayTools.containsAll(array1, array2));
 	}
 
 	public void testShuffleCharArray() {
