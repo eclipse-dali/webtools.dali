@@ -31,3 +31,4 @@ Export-Package: org.eclipse.jpt.common.utility.tests.internal;x-internal:=true,
  org.eclipse.jpt.common.utility.tests.internal.reference;x-internal:=true,
  org.eclipse.jpt.common.utility.tests.internal.swing;x-internal:=true,
  org.eclipse.jpt.common.utility.tests.internal.transformer;x-internal:=true
+Import-Package: org.apache.commons.lang.math;version="2.6.0"

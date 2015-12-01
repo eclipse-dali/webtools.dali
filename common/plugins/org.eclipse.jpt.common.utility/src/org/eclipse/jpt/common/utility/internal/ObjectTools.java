@@ -506,6 +506,18 @@ public final class ObjectTools {
 	}
 
 
+	// ********** JSON **********
+
+	/**
+	 * @see #method(Object, String, Class[])
+	 */
+	public static String toJSON(Object object) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilderTools.appendJSON(sb, object);
+		return sb.toString();
+	}
+
+
 	// ********** suppressed constructor **********
 
 	/**

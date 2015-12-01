@@ -9,7 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
+import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.comparator.ComparatorAdapter;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
  * {@link StringBuilder} utility methods.
@@ -1983,6 +1987,1168 @@ public final class StringBuilderTools {
 			}
 		}
 	}
+
+
+	// ********** JSON **********
+
+	/**
+	 * Append the JSON representation of the specified object.
+	 * <ul>
+	 * <li>Nulls are appended as JSON nulls.
+	 * <li>Strings are delimited with double quotes and escaped appropriately.
+	 * <li>Character arrays treated like strings.
+	 * <li>Boolean primitives and wrappers are appended as JSON booleans.
+	 * <li>Maps with string keys are appended as JSON objects.
+	 * <li>Iterables, object arrrays, and primitive arrays are appended as JSON arrays.
+	 * <li>Number primitives and wrappers are appended as JSON numbers.
+	 * <li>All other types of objects are appended as JSON objects,
+	 *     with the attribute values derived using Java reflection.
+	 * </ul>
+	 * Circular object references are not supported and will result in a
+	 * {@link StackOverflowError}.
+	 */
+	public static void appendJSON(StringBuilder sb, Object object) {
+		if (object == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, object);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> object.
+	 */
+	private static void appendJSON_(StringBuilder sb, Object object) {
+		if (object instanceof String) {
+			appendJSON_(sb, (String) object);
+		}
+		else if (object instanceof char[]) {
+			appendJSON_(sb, (char[]) object);
+		}
+		else if (object instanceof Boolean) {
+			appendJSON_(sb, (Boolean) object);
+		}
+		else if (object instanceof Map) {
+			appendJSON_(sb, (Map<?, ?>) object);
+		}
+		else if (object instanceof Iterable) {
+			appendJSON_(sb, (Iterable<?>) object);
+		}
+		else if (object instanceof Object[]) {
+			appendJSON_(sb, (Object[]) object);
+		}
+		else if (object instanceof Number) {
+			appendJSON_(sb, (Number) object);
+		}
+		else if (object instanceof int[]) {
+			appendJSON_(sb, (int[]) object);
+		}
+		else if (object instanceof double[]) {
+			appendJSON_(sb, (double[]) object);
+		}
+		else if (object instanceof byte[]) {
+			appendJSON_(sb, (byte[]) object);
+		}
+		else if (object instanceof short[]) {
+			appendJSON_(sb, (short[]) object);
+		}
+		else if (object instanceof long[]) {
+			appendJSON_(sb, (long[]) object);
+		}
+		else if (object instanceof float[]) {
+			appendJSON_(sb, (float[]) object);
+		}
+		else if (object instanceof boolean[]) {
+			appendJSON_(sb, (boolean[]) object);
+		}
+		else {
+			appendJSON__(sb, object);
+		}
+	}
+
+	/**
+	 * Append the JSON representation of the specified map as a JSON object
+	 * if all the map's keys are strings; otherwise append a reflectively-derived
+	 * representation of the map.
+	 * Circular references are not supported and will result in a
+	 * {@link StackOverflowError}.
+	 */
+	public static void appendJSON(StringBuilder sb, Map<?, ?> map) {
+		if (map == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, map);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> map.
+	 */
+	private static void appendJSON_(StringBuilder sb, Map<?, ?> map) {
+		int resetIndex = sb.length();
+		boolean reset = false;
+		sb.append('{');
+		Iterator<?> stream = map.entrySet().iterator();
+		if (stream.hasNext()) {
+			do {
+				Map.Entry<?, ?> entry = (Map.Entry<?, ?>) stream.next();
+				Object key = entry.getKey();
+				if (key instanceof String) {
+					appendJSON(sb, (String) key);
+				}
+				else if (key instanceof char[]) { // unlikely (as not very useful)
+					appendJSON(sb, (char[]) key);
+				}
+				else {
+					sb.setLength(resetIndex);
+					reset = true;
+					break;
+				}
+				sb.append(':');
+				appendJSON(sb, entry.getValue());
+				sb.append(',');
+			} while (stream.hasNext());
+			if ( ! reset) {
+				sb.setLength(sb.length() - 1);  // strip off extra comma
+			}
+		}
+		if (reset) {
+			appendJSON__(sb, map); // object reflection
+		} else {
+			sb.append('}');
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> non-standard object.
+	 */
+	private static void appendJSON__(StringBuilder sb, Object object) {
+		sb.append('{');
+		Iterator<Field> stream = IterableTools.sort(ClassTools.allInstanceFields(object.getClass()), FIELD_COMPARATOR).iterator();
+		if (stream.hasNext()) {
+			do {
+				Field field = stream.next();
+				appendJSON(sb, field.getName());
+				sb.append(':');
+				field.setAccessible(true);
+				Object value;
+				try {
+					value = field.get(object);
+				} catch (IllegalAccessException ex) {
+					throw new RuntimeException(ex);
+				}
+				appendJSON(sb, value);
+				sb.append(',');
+			} while (stream.hasNext());
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append('}');
+	}
+
+	/**
+	 * Compare fields' names.
+	 */
+	private static final ComparatorAdapter<Field> FIELD_COMPARATOR = new FieldComparator();
+	static class FieldComparator
+		extends ComparatorAdapter<Field>
+	{
+		@Override
+		public int compare(Field field1, Field field2) {
+			return field1.getName().compareTo(field2.getName());
+		}
+	}
+
+	/**
+	 * Append a JSON null.
+	 */
+	public static void appendJSONNull(StringBuilder sb) {
+		sb.append(String.valueOf((Object) null)); // "null"
+	}
+
+	/**
+	 * Append the JSON representation of the specified string,
+	 * delimitint it with double quotes and escaping the appropriate characters.
+	 */
+	public static void appendJSON(StringBuilder sb, String string) {
+		if (string == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, string);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> string.
+	 */
+	private static void appendJSON_(StringBuilder sb, String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			sb.append(EMPTY_JSON_STRING_LITERAL);
+		} else {
+			sb.ensureCapacity(sb.length() + stringLength + 6);
+			appendJSON_(sb, string, stringLength);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> non-empty string.
+	 */
+	private static void appendJSON_(StringBuilder sb, String string, int stringLength) {
+		sb.append(CharacterTools.QUOTE);
+		appendJSONContent_(sb, string, stringLength);
+		sb.append(CharacterTools.QUOTE);
+	}
+
+	/**
+	 * Append the JSON string literal content for the specified string,
+	 * escaping the appropriate characters.
+	 */
+	public static void appendJSONContent(StringBuilder sb, String string) {
+		if (string == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSONContent_(sb, string);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> string.
+	 */
+	private static void appendJSONContent_(StringBuilder sb, String string) {
+		int stringLength = string.length();
+		if (stringLength != 0) {
+			sb.ensureCapacity(sb.length() + stringLength + 6);
+			appendJSONContent_(sb, string, stringLength);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> string.
+	 */
+	private static void appendJSONContent_(StringBuilder sb, String string, int stringLength) {
+		for (int i = 0; i < stringLength; i++) {
+			appendJSON(sb, string.charAt(i));
+		}
+	}
+
+	/**
+	 * Append the JSON representation of the specified string,
+	 * delimitint it with double quotes and escaping the appropriate characters.
+	 */
+	public static void appendJSON(StringBuilder sb, char[] string) {
+		if (string == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, string);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> string.
+	 */
+	private static void appendJSON_(StringBuilder sb, char[] string) {
+		int stringLength = string.length;
+		if (stringLength == 0) {
+			sb.append(EMPTY_JSON_STRING_LITERAL);
+		} else {
+			sb.ensureCapacity(sb.length() + stringLength + 6);
+			appendJSON_(sb, string, stringLength);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> non-empty string.
+	 */
+	private static void appendJSON_(StringBuilder sb, char[] string, int stringLength) {
+		sb.append(CharacterTools.QUOTE);
+		appendJSONContent_(sb, string, stringLength);
+		sb.append(CharacterTools.QUOTE);
+	}
+
+	/**
+	 * Append the JSON string literal content for the specified string,
+	 * escaping the appropriate characters.
+	 */
+	public static void appendJSONContent(StringBuilder sb, char[] string) {
+		if (string == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSONContent_(sb, string);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> string.
+	 */
+	private static void appendJSONContent_(StringBuilder sb, char[] string) {
+		int stringLength = string.length;
+		if (stringLength != 0) {
+			sb.ensureCapacity(sb.length() + stringLength + 6);
+			appendJSONContent_(sb, string, stringLength);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> string.
+	 */
+	private static void appendJSONContent_(StringBuilder sb, char[] string, int stringLength) {
+		for (int i = 0; i < stringLength; i++) {
+			appendJSON(sb, string[i]);
+		}
+	}
+
+	/**
+	 * Escape the character if necessary.
+	 */
+	private static void appendJSON(StringBuilder sb, char c) {
+		switch (c) {
+			case '"':  // double-quote
+				sb.append("\\\"");  //$NON-NLS-1$
+				break;
+			case '\\':  // backslash
+				sb.append("\\\\");  //$NON-NLS-1$
+				break;
+//			case '/':  // slash
+//				sb.append("\\/");  //$NON-NLS-1$
+//				break;
+			case '\b':  // backspace
+				sb.append("\\b");  //$NON-NLS-1$
+				break;
+			case '\f':  // form-feed FF
+				sb.append("\\f");  //$NON-NLS-1$
+				break;
+			case '\n':  // line-feed LF
+				sb.append("\\n");  //$NON-NLS-1$
+				break;
+			case '\r':  // carriage-return CR
+				sb.append("\\r");  //$NON-NLS-1$
+				break;
+			case '\t':  // horizontal tab
+				sb.append("\\t");  //$NON-NLS-1$
+				break;
+			default:
+				if (c < 32) {
+					if (c < 16) {
+						sb.append("\\u000"); //$NON-NLS-1$
+						sb.append(Integer.toHexString(c));
+					} else {
+						sb.append("\\u00"); //$NON-NLS-1$
+						sb.append(Integer.toHexString(c));
+					}
+				} else {
+					sb.append(c);
+				}
+				break;
+		}
+	}
+
+	/**
+	 * Append a JSON array representing the specified iterable.
+	 */
+	public static void appendJSON(StringBuilder sb, Iterable<?> objects) {
+		if (objects == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, objects);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> iterable.
+	 */
+	private static void appendJSON_(StringBuilder sb, Iterable<?> objects) {
+		sb.append('[');
+		Iterator<?> stream = objects.iterator();
+		if (stream.hasNext()) {
+			do {
+				appendJSON(sb, stream.next());
+				sb.append(',');
+			} while (stream.hasNext());
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Object[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Object[] array) {
+		if (array instanceof Boolean[]) {
+			appendJSON_(sb, (Boolean[]) array);
+		}
+		else if (array instanceof Number[]) {
+			appendJSON_(sb, (Number[]) array);
+		}
+		else {
+			appendJSON__(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> non-standard array.
+	 */
+	private static void appendJSON__(StringBuilder sb, Object[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Object each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Boolean[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Boolean[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Boolean each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	public static void appendJSON(StringBuilder sb, Boolean b) {
+		if (b == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, b);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Boolean b) {
+		appendJSON(sb, b.booleanValue());
+	}
+
+	public static void appendJSON(StringBuilder sb, boolean[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, boolean[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (boolean each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	public static void appendJSON(StringBuilder sb, boolean b) {
+		sb.append(b);
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Number[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Number[] array) {
+		if (array instanceof Integer[]) {
+			appendJSON_(sb, (Integer[]) array);
+		}
+		else if (array instanceof Double[]) {
+			appendJSON_(sb, (Double[]) array);
+		}
+		else if (array instanceof Byte[]) {
+			appendJSON_(sb, (Byte[]) array);
+		}
+		else if (array instanceof Float[]) {
+			appendJSON_(sb, (Float[]) array);
+		}
+		else if (array instanceof Long[]) {
+			appendJSON_(sb, (Long[]) array);
+		}
+		else if (array instanceof Short[]) {
+			appendJSON_(sb, (Short[]) array);
+		}
+		else if (array instanceof java.math.BigDecimal[]) {
+			appendJSON_(sb, (java.math.BigDecimal[]) array);
+		}
+		else if (array instanceof java.math.BigInteger[]) {
+			appendJSON_(sb, (java.math.BigInteger[]) array);
+		}
+		else {
+			appendJSON__(sb, array);
+		}
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, Number n) {
+		if (n == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, n);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Number n) {
+		if (n instanceof Integer) {
+			appendJSON_(sb, (Integer) n);
+		}
+		else if (n instanceof Double) {
+			appendJSON_(sb, (Double) n);
+		}
+		else if (n instanceof Byte) {
+			appendJSON_(sb, (Byte) n);
+		}
+		else if (n instanceof Float) {
+			appendJSON_(sb, (Float) n);
+		}
+		else if (n instanceof Long) {
+			appendJSON_(sb, (Long) n);
+		}
+		else if (n instanceof Short) {
+			appendJSON_(sb, (Short) n);
+		}
+		else if (n instanceof java.math.BigDecimal) {
+			appendJSON_(sb, (java.math.BigDecimal) n);
+		}
+		else if (n instanceof java.math.BigInteger) {
+			appendJSON_(sb, (java.math.BigInteger) n);
+		}
+		else {
+			appendJSON__(sb, n);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> non-standard number.
+	 */
+	private static void appendJSON__(StringBuilder sb, Number n) {
+		String s = n.toString();
+		try {
+			@SuppressWarnings("unused")
+			java.math.BigDecimal bd = new java.math.BigDecimal(s);
+			sb.append(s); // toString() produces valid "number"
+		} catch (NumberFormatException ex) {
+			appendJSON__(sb, (Object) n); // object reflection
+		}
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Integer[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Integer[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Integer each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, Integer i) {
+		if (i == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, i);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Integer i) {
+		appendJSON(sb, i.intValue());
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, int[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, int[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (int each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, int i) {
+		sb.append(i);
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Double[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Double[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Double each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, Double d) {
+		if (d == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, d);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Double d) {
+		appendJSON(sb, d.doubleValue());
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, double[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, double[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (double each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, double d) {
+		sb.append(d);
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Byte[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Byte[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Byte each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, Byte b) {
+		if (b == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, b);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Byte b) {
+		appendJSON(sb, b.byteValue());
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, byte[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, byte[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (byte each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, byte b) {
+		sb.append(b);
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Float[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Float[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Float each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, Float f) {
+		if (f == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, f);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Float f) {
+		appendJSON(sb, f.floatValue());
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, float[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, float[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (float each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, float f) {
+		sb.append(f);
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Long[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Long[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Long each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, Long l) {
+		if (l == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, l);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Long l) {
+		appendJSON(sb, l.longValue());
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, long[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, long[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (long each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, long l) {
+		sb.append(l);
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, Short[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, Short[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Short each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, Short s) {
+		if (s == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, s);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, Short s) {
+		appendJSON(sb, s.shortValue());
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, short[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, short[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (short each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, short s) {
+		sb.append(s);
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, java.math.BigDecimal[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, java.math.BigDecimal[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (java.math.BigDecimal each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, java.math.BigDecimal bd) {
+		if (bd == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, bd);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, java.math.BigDecimal bd) {
+		sb.append(bd.toString());
+	}
+
+	/**
+	 * Append a JSON array representing the specified array.
+	 */
+	public static void appendJSON(StringBuilder sb, java.math.BigInteger[] array) {
+		if (array == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, array);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> array.
+	 */
+	private static void appendJSON_(StringBuilder sb, java.math.BigInteger[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (java.math.BigInteger each : array) {
+				appendJSON(sb, each);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Append a JSON number literal representing the specified number.
+	 */
+	public static void appendJSON(StringBuilder sb, java.math.BigInteger bi) {
+		if (bi == null) {
+			appendJSONNull(sb);
+		} else {
+			appendJSON_(sb, bi);
+		}
+	}
+
+	/**
+	 * Assume non-<code>null</code> number.
+	 */
+	private static void appendJSON_(StringBuilder sb, java.math.BigInteger bi) {
+		sb.append(bi.toString());
+	}
+
+	/**
+	 * Assume non-<code>null</code> non-standard <code>Number</code> array.
+	 */
+	private static void appendJSON__(StringBuilder sb, Number[] array) {
+		sb.append('[');
+		if (array.length > 0) {
+			for (Number number : array) {
+				appendJSON(sb, number);
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
+		}
+		sb.append(']');
+	}
+
+	/**
+	 * Value: {@value}
+	 */
+	public static final String EMPTY_JSON_STRING_LITERAL = "\"\"";  //$NON-NLS-1$
 
 
 	// ********** toString() helper methods **********
