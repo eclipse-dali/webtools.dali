@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * {@link Class} utility methods.
@@ -288,6 +291,27 @@ public final class ClassTools {
 		field.setAccessible(true);
 		return field;
 	}
+
+	/**
+	 * Return all the instance (non-static) fields for the
+	 * specified class, including inherited fields.
+	 * Make any private/package/protected fields accessible.
+	 * @see Class#getDeclaredFields()
+	 */
+	public static Iterable<Field> allInstanceFields(Class<?> javaClass) {
+		return IterableTools.filter(allFields(javaClass), FIELD_IS_NOT_STATIC);
+	}
+
+	public static final Predicate<Field> FIELD_IS_STATIC = new FieldIsStatic();
+	public static class FieldIsStatic
+		extends PredicateAdapter<Field>
+	{
+		@Override
+		public boolean evaluate(Field field) {
+			return Modifier.isStatic(field.getModifiers());
+		}
+	}
+	public static final Predicate<Field> FIELD_IS_NOT_STATIC = PredicateTools.not(FIELD_IS_STATIC);
 
 	/**
 	 * Return all the fields for the
