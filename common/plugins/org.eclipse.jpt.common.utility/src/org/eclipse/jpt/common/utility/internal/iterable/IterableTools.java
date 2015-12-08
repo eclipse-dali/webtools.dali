@@ -447,6 +447,7 @@ public final class IterableTools {
 	 * in the specified iterables.
 	 * @see SimultaneousIterable
 	 */
+	@SafeVarargs
 	public static <E, I extends Iterable<? extends E>> Iterable<List<E>> align(I... iterables) {
 		int len = iterables.length;
 		if (len == 0) {
@@ -470,7 +471,7 @@ public final class IterableTools {
 	 * @see SimultaneousIterable
 	 */
 	public static <E, I extends Iterable<? extends E>> Iterable<List<E>> align(Iterable<I> iterables, int iterablesSize) {
-		return new SimultaneousIterable<E>(iterables, iterablesSize);
+		return new SimultaneousIterable<>(iterables, iterablesSize);
 	}
 
 	/**
@@ -478,6 +479,7 @@ public final class IterableTools {
 	 * in the specified iterables.
 	 * @see SimultaneousListIterable
 	 */
+	@SafeVarargs
 	public static <E, I extends ListIterable<E>> ListIterable<List<E>> alignList(I... iterables) {
 		int len = iterables.length;
 		if (len == 0) {
@@ -501,7 +503,7 @@ public final class IterableTools {
 	 * @see SimultaneousListIterable
 	 */
 	public static <E, I extends ListIterable<E>> ListIterable<List<E>> alignList(Iterable<I> iterables, int iterablesSize) {
-		return new SimultaneousListIterable<E>(iterables, iterablesSize);
+		return new SimultaneousListIterable<>(iterables, iterablesSize);
 	}
 
 	/**
@@ -509,7 +511,7 @@ public final class IterableTools {
 	 * @see LateralIterableWrapper
 	 */
 	public static <E1, E2> Iterable<E2> cast(Iterable<E1> iterable) {
-		return new LateralIterableWrapper<E1, E2>(iterable);
+		return new LateralIterableWrapper<>(iterable);
 	}
 
 	/**
@@ -517,7 +519,7 @@ public final class IterableTools {
 	 * @see LateralIterableWrapper
 	 */
 	public static <E1, E2> ListIterable<E2> cast(ListIterable<E1> iterable) {
-		return new LateralListIterableWrapper<E1, E2>(iterable);
+		return new LateralListIterableWrapper<>(iterable);
 	}
 
 	/**
@@ -525,7 +527,7 @@ public final class IterableTools {
 	 * @see SubIterableWrapper
 	 */
 	public static <E1, E2 extends E1> Iterable<E2> downCast(Iterable<E1> iterable) {
-		return new SubIterableWrapper<E1, E2>(iterable);
+		return new SubIterableWrapper<>(iterable);
 	}
 
 	/**
@@ -533,7 +535,7 @@ public final class IterableTools {
 	 * @see SubListIterableWrapper
 	 */
 	public static <E1, E2 extends E1> ListIterable<E2> downCast(ListIterable<E1> iterable) {
-		return new SubListIterableWrapper<E1, E2>(iterable);
+		return new SubListIterableWrapper<>(iterable);
 	}
 
 	/**
@@ -541,7 +543,7 @@ public final class IterableTools {
 	 * @see SuperIterableWrapper
 	 */
 	public static <E> Iterable<E> upCast(Iterable<? extends E> iterable) {
-		return new SuperIterableWrapper<E>(iterable);
+		return new SuperIterableWrapper<>(iterable);
 	}
 
 	/**
@@ -549,7 +551,7 @@ public final class IterableTools {
 	 * @see SuperListIterableWrapper
 	 */
 	public static <E> ListIterable<E> upCast(ListIterable<? extends E> iterable) {
-		return new SuperListIterableWrapper<E>(iterable);
+		return new SuperListIterableWrapper<>(iterable);
 	}
 
 	/**
@@ -561,12 +563,12 @@ public final class IterableTools {
 		if (first == null) {
 			return emptyIterable();
 		}
-		return new ChainIterable<E>(first, transformer);
+		return new ChainIterable<>(first, transformer);
 	}
 
 	/**
-	 * Return an iterable that clones the specified collection before returning
-	 * elements.
+	 * Return an iterable that clones the specified collection with each call to
+	 * {@link Iterable#iterator()}.
 	 * @see LiveCloneIterable
 	 */
 	public static <E> Iterable<E> cloneLive(Collection<? extends E> collection) {
@@ -574,17 +576,17 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return an iterable that clones the specified collection before returning
-	 * elements and uses the specified remove closure.
+	 * Return an iterable that clones the specified collection with each call to
+	 * {@link Iterable#iterator()} and uses the specified remove closure.
 	 * @see LiveCloneIterable
 	 */
 	public static <E> Iterable<E> cloneLive(Collection<? extends E> collection, Closure<? super E> removeClosure) {
-		return new LiveCloneIterable<E>(collection, removeClosure);
+		return new LiveCloneIterable<>(collection, removeClosure);
 	}
 
 	/**
-	 * Return a list iterable that clones the specified collection before returning
-	 * elements.
+	 * Return a list iterable that clones the specified list with each call to
+	 * {@link Iterable#iterator()}.
 	 * @see LiveCloneListIterable
 	 */
 	public static <E> ListIterable<E> cloneLive(List<? extends E> list) {
@@ -592,17 +594,17 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return a list iterable that clones the specified collection before returning
-	 * elements and uses the specified {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter adapter}.
+	 * Return a list iterable that clones the specified list with each call to
+	 * {@link Iterable#iterator()} and uses the specified
+	 * {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter adapter}.
 	 * @see LiveCloneListIterable
 	 */
 	public static <E> ListIterable<E> cloneLive(List<? extends E> list, CloneListIterator.Adapter<E> adapter) {
-		return new LiveCloneListIterable<E>(list, adapter);
+		return new LiveCloneListIterable<>(list, adapter);
 	}
 
 	/**
-	 * Return an iterable that clones the specified collection before returning
-	 * elements.
+	 * Return an iterable that is a clone of the specified collection.
 	 * @see SnapshotCloneIterable
 	 */
 	public static <E> Iterable<E> cloneSnapshot(Collection<? extends E> collection) {
@@ -610,20 +612,19 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return an iterable that clones the specified collection before returning
-	 * elements and uses the specified remove closure.
+	 * Return an iterable that is a clone of the specified collection
+	 * that uses the specified remove closure.
 	 * @see SnapshotCloneIterable
 	 */
 	public static <E> Iterable<E> cloneSnapshot(Collection<? extends E> collection, Closure<? super E> removeClosure) {
 		if (collection.isEmpty()) {
 			return emptyIterable();
 		}
-		return new SnapshotCloneIterable<E>(collection, removeClosure);
+		return new SnapshotCloneIterable<>(collection, removeClosure);
 	}
 
 	/**
-	 * Return a list iterable that clones the specified collection before returning
-	 * elements.
+	 * Return a list iterable that is a clone of the specified list.
 	 * @see SnapshotCloneListIterable
 	 */
 	public static <E> ListIterable<E> cloneSnapshot(List<? extends E> list) {
@@ -631,15 +632,16 @@ public final class IterableTools {
 	}
 
 	/**
-	 * Return a list iterable that clones the specified collection before returning
-	 * elements and uses the specified {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter adapter}.
+	 * Return a list iterable that is a clone of the specified list
+	 * and uses the specified
+	 * {@link org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter adapter}.
 	 * @see SnapshotCloneListIterable
 	 */
 	public static <E> ListIterable<E> cloneSnapshot(List<? extends E> list, CloneListIterator.Adapter<E> adapter) {
 		if (list.isEmpty()) {
 			return emptyListIterable();
 		}
-		return new SnapshotCloneListIterable<E>(list, adapter);
+		return new SnapshotCloneListIterable<>(list, adapter);
 	}
 
 	/**
@@ -647,7 +649,6 @@ public final class IterableTools {
 	 * elements in the specified iterable followed by the specified object.
 	 * @see CompositeIterable
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> Iterable<E> add(Iterable<? extends E> iterable, E object) {
 		return concatenate_(iterable, singletonIterable(object));
 	}
@@ -657,7 +658,6 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see CompositeIterable
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> Iterable<E> insert(E object, Iterable<? extends E> iterable) {
 		return concatenate_(singletonIterable(object), iterable);
 	}
@@ -682,6 +682,7 @@ public final class IterableTools {
 	/**
 	 * assume the list is not empty
 	 */
+	@SafeVarargs
 	private static <E> Iterable<E> concatenate_(Iterable<? extends E>... iterables) {
 		return concatenate(Arrays.asList(iterables));
 	}
@@ -692,7 +693,7 @@ public final class IterableTools {
 	 * @see CompositeIterable
 	 */
 	public static <E> Iterable<E> concatenate(Iterable<? extends Iterable<? extends E>> iterables) {
-		return new CompositeIterable<E>(iterables);
+		return new CompositeIterable<>(iterables);
 	}
 
 	/**
@@ -709,7 +710,6 @@ public final class IterableTools {
 	 * elements in the specified iterable followed by the specified object.
 	 * @see CompositeListIterable
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterable<E> add(ListIterable<E> iterable, E object) {
 		return concatenate_(iterable, singletonListIterable(object));
 	}
@@ -719,7 +719,6 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see CompositeListIterable
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterable<E> insert(E object, ListIterable<E> iterable) {
 		return concatenate_(singletonListIterable(object), iterable);
 	}
@@ -729,6 +728,7 @@ public final class IterableTools {
 	 * elements in the specified iterables.
 	 * @see CompositeListIterable
 	 */
+	@SafeVarargs
 	public static <E> ListIterable<E> concatenate(ListIterable<E>... iterables) {
 		int len = iterables.length;
 		if (len == 0) {
@@ -743,6 +743,7 @@ public final class IterableTools {
 	/**
 	 * assume the list is not empty
 	 */
+	@SafeVarargs
 	private static <E> ListIterable<E> concatenate_(ListIterable<E>... iterables) {
 		return concatenate(listIterable(iterables));
 	}
@@ -753,7 +754,7 @@ public final class IterableTools {
 	 * @see CompositeListIterable
 	 */
 	public static <E> ListIterable<E> concatenate(ListIterable<? extends ListIterable<E>> iterables) {
-		return new CompositeListIterable<E>(iterables);
+		return new CompositeListIterable<>(iterables);
 	}
 
 	/**
@@ -770,7 +771,6 @@ public final class IterableTools {
 	 * elements in the specified iterable followed by the specified object.
 	 * @see ReadOnlyCompositeListIterable
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterable<E> addReadOnly(ListIterable<? extends E> iterable, E object) {
 		return concatenateReadOnly_(iterable, singletonListIterable(object));
 	}
@@ -780,7 +780,6 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see ReadOnlyCompositeListIterable
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterable<E> insertReadOnly(E object, ListIterable<? extends E> iterable) {
 		return concatenateReadOnly_(singletonListIterable(object), iterable);
 	}
@@ -805,6 +804,7 @@ public final class IterableTools {
 	/**
 	 * assume the list is not empty
 	 */
+	@SafeVarargs
 	private static <E> ListIterable<E> concatenateReadOnly_(ListIterable<? extends E>... iterables) {
 		return concatenateReadOnly(listIterable(iterables));
 	}
@@ -815,7 +815,7 @@ public final class IterableTools {
 	 * @see ReadOnlyCompositeListIterable
 	 */
 	public static <E> ListIterable<E> concatenateReadOnly(ListIterable<? extends ListIterable<? extends E>> iterables) {
-		return new ReadOnlyCompositeListIterable<E>(iterables);
+		return new ReadOnlyCompositeListIterable<>(iterables);
 	}
 
 	/**
@@ -847,7 +847,7 @@ public final class IterableTools {
 	 * @see FilteringIterable
 	 */
 	public static <E> Iterable<E> filter(Iterable<? extends E> iterable, Predicate<? super E> predicate) {
-		return new FilteringIterable<E>(iterable, predicate);
+		return new FilteringIterable<>(iterable, predicate);
 	}
 
 	/**
@@ -886,12 +886,13 @@ public final class IterableTools {
 	 * @see GraphIterable
 	 */
 	public static <E> Iterable<E> graphIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
-		return new GraphIterable<E>(roots, transformer);
+		return new GraphIterable<>(roots, transformer);
 	}
 
 	/**
 	 * Return an iterable on the elements in the specified array.
 	 */
+	@SafeVarargs
 	public static <E> Iterable<E> iterable(E... array) {
 		return iterable(array, 0);
 	}
@@ -913,7 +914,7 @@ public final class IterableTools {
 		if (start == end) {
 			return emptyIterable();
 		}
-		return new ArrayIterable<E>(array, start, end);
+		return new ArrayIterable<>(array, start, end);
 	}
 
 	/**
@@ -921,7 +922,7 @@ public final class IterableTools {
 	 * @see Queue
 	 */
 	public static <E> Iterable<E> iterable(Queue<? extends E> queue) {
-		return new QueueIterable<E>(queue);
+		return new QueueIterable<>(queue);
 	}
 
 	/**
@@ -929,12 +930,13 @@ public final class IterableTools {
 	 * @see Stack
 	 */
 	public static <E> Iterable<E> iterable(Stack<? extends E> stack) {
-		return new StackIterable<E>(stack);
+		return new StackIterable<>(stack);
 	}
 
 	/**
 	 * Return a list iterable for the specified array.
 	 */
+	@SafeVarargs
 	public static <E> ListIterable<E> listIterable(E... array) {
 		return listIterable(array, 0);
 	}
@@ -956,14 +958,14 @@ public final class IterableTools {
 		if (start == end) {
 			return emptyListIterable();
 		}
-		return new ArrayListIterable<E>(array, start, end);
+		return new ArrayListIterable<>(array, start, end);
 	}
 
 	/**
 	 * Return a list iterable for the specified list.
 	 */
 	public static <E> ListIterable<E> listIterable(List<E> list) {
-		return new ListListIterable<E>(list);
+		return new ListListIterable<>(list);
 	}
 
 	/**
@@ -972,7 +974,7 @@ public final class IterableTools {
 	 * @see PeekableIterable
 	 */
 	public static <E> PeekableIterable<E> peekable(Iterable<? extends E> iterable) {
-		return new PeekableIterable<E>(iterable);
+		return new PeekableIterable<>(iterable);
 	}
 
 	/**
@@ -980,7 +982,7 @@ public final class IterableTools {
 	 * @see ReadOnlyIterable
 	 */
 	public static <E> Iterable<E> readOnly(Iterable<? extends E> iterable) {
-		return new ReadOnlyIterable<E>(iterable);
+		return new ReadOnlyIterable<>(iterable);
 	}
 
 	/**
@@ -988,7 +990,7 @@ public final class IterableTools {
 	 * @see ReadOnlyListIterable
 	 */
 	public static <E> ListIterable<E> readOnly(ListIterable<? extends E> iterable) {
-		return new ReadOnlyListIterable<E>(iterable);
+		return new ReadOnlyListIterable<>(iterable);
 	}
 
 	/**
@@ -997,7 +999,7 @@ public final class IterableTools {
 	 * @see SingleElementIterable
 	 */
 	public static <E> Iterable<E> singletonIterable(E value) {
-		return new SingleElementIterable<E>(value);
+		return new SingleElementIterable<>(value);
 	}
 
 	/**
@@ -1006,7 +1008,7 @@ public final class IterableTools {
 	 * @see SingleElementListIterable
 	 */
 	public static <E> ListIterable<E> singletonListIterable(E value) {
-		return new SingleElementListIterable<E>(value);
+		return new SingleElementListIterable<>(value);
 	}
 
 	/**
@@ -1054,7 +1056,7 @@ public final class IterableTools {
 	 * @see TreeIterable
 	 */
 	public static <E> Iterable<E> treeIterable(Iterable<? extends E> roots, Transformer<? super E, ? extends Iterable<? extends E>> transformer) {
-		return new TreeIterable<E>(roots, transformer);
+		return new TreeIterable<>(roots, transformer);
 	}
 
 
