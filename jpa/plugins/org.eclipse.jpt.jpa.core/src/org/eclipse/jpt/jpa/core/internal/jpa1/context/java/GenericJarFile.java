@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextModel;
@@ -40,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJarFile
 	extends AbstractPersistenceXmlContextModel<JarFileRef>
-	implements JarFile, PersistentType.Parent
+	implements JarFile, JavaPersistentType.Parent
 {
 	protected final JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot;
 
@@ -205,7 +206,7 @@ public class GenericJarFile
 	}
 
 
-	// ********** PersistentType.Parent implementation **********
+	// ********** JavaPersistentType.Parent implementation **********
 
 	public AccessType getDefaultPersistentTypeAccess() {
 		return this.getPersistenceUnit().getDefaultAccess();
@@ -214,6 +215,10 @@ public class GenericJarFile
 	public AccessType getOverridePersistentTypeAccess() {
 		// no access type at this level overrides any local access type specification
 		return null;
+	}
+
+	public void attributeChanged(JavaSpecifiedPersistentAttribute attribute) {
+		// NOP
 	}
 
 

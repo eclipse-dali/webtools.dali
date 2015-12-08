@@ -113,6 +113,17 @@ public abstract class AbstractJavaPersistentAttribute
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Notify the persistent type of any change.
+	 * This is relevant only when the persistent type's parent is an ORM persistent type,
+	 * which will update its default attribute corresponding to this attribute.
+	 */
+	@Override
+	public void stateChanged() {
+		this.parent.attributeChanged(this);
+		super.stateChanged();
+	}
+
 
 	// ********** name **********
 

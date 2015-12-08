@@ -119,6 +119,12 @@ public interface PersistentType
 	 */
 	TypeBinding getAttributeTypeBinding(PersistentAttribute attribute);
 
+	/**
+	 * One of the persistent type's attributes changed.
+	 * Notify interested parties (e.g. "virtual" copies of the attribute).
+	 */
+	void attributeChanged(PersistentAttribute attribute);
+
 
 	// ********** inheritance **********
 	

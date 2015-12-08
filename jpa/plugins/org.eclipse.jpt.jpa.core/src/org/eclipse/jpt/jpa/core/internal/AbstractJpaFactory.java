@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -205,7 +205,7 @@ public abstract class AbstractJpaFactory
 
 	// ********** Java Context Model **********
 	
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Parent parent, JavaResourceType jrt) {
+	public JavaPersistentType buildJavaPersistentType(JavaPersistentType.Parent parent, JavaResourceType jrt) {
 		return new GenericJavaPersistentType(parent, jrt);
 	}
 

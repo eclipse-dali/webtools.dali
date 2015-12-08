@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -129,10 +129,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	protected void syncMappingFile(boolean sync) {
 		Object newResourceMappingFile = this.resolveResourceMappingFile();
 		if (newResourceMappingFile == null) {
-			if (this.mappingFile != null) {
-				this.mappingFile.dispose();
-				this.setMappingFile(null);
-			}
+			this.setMappingFile(null);
 		} else {
 			if (this.mappingFile == null) {
 				this.setMappingFile(this.buildMappingFile(newResourceMappingFile));
@@ -152,7 +149,6 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 					// it will not be possible to hit it now that I null out the mappingFile in dispose() ~kfb]
 					// System.out.println("AbstractMappingFileRef.syncMappingFile");
 					// if the resource's content type has changed, we completely rebuild the mapping file
-					this.mappingFile.dispose();
 					this.setMappingFile(this.buildMappingFile(newResourceMappingFile));
 				}
 			}
@@ -186,14 +182,6 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
-	}
-
-	public void dispose() {
-		if (this.mappingFile != null) {
-			this.mappingFile.dispose();
-			//need to null this because we are storing the "potential" mappingFileRef in the PersistenceUnit
-			this.mappingFile = null; 
-		}
 	}
 
 	public Iterable<JpaStructureNode> getStructureChildren() {

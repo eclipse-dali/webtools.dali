@@ -336,9 +336,7 @@ public class EclipseLinkPersistenceUnit
 		if (this.usesImpliedEclipseLinkMappingFile()) {
 			this.setImpliedEclipseLinkMappingFileRef(this.potentialImpliedEclipseLinkMappingFileRef);
 			this.impliedEclipseLinkMappingFileRef.update();
-		}
-		else if (this.impliedEclipseLinkMappingFileRef != null) {
-			this.impliedEclipseLinkMappingFileRef.dispose();
+		} else {
 			this.setImpliedEclipseLinkMappingFileRef(null);
 		}
 	}

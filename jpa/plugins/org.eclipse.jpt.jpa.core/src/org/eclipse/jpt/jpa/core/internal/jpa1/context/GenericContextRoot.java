@@ -114,10 +114,7 @@ public class GenericContextRoot
 	protected void syncPersistenceXml(boolean sync) {
 		JptXmlResource xmlResource = this.resolvePersistenceXmlResource();
 		if (xmlResource == null) {
-			if (this.persistenceXml != null) {
-				this.persistenceXml.dispose();
-				this.setPersistenceXml(null);
-			}
+			this.setPersistenceXml(null);
 		} else {
 			if (this.persistenceXml == null) {
 				this.setPersistenceXml(this.buildPersistenceXml(xmlResource));

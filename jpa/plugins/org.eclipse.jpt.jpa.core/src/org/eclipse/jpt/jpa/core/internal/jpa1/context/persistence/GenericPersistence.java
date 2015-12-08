@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -140,7 +140,6 @@ public class GenericPersistence
 			throw this.buildIOOBE(index);
 		}
 		PersistenceUnit old = this.persistenceUnit;
-		this.persistenceUnit.dispose();
 		this.persistenceUnit = null;
 		this.xmlPersistence.getPersistenceUnits().remove(index);
 		this.fireItemRemoved(PERSISTENCE_UNITS_LIST, index, old);
@@ -187,7 +186,6 @@ public class GenericPersistence
 	protected void removePersistenceUnit_() {
 		PersistenceUnit old = this.persistenceUnit;
 		this.persistenceUnit = null;
-		old.dispose();
 		this.fireItemRemoved(PERSISTENCE_UNITS_LIST, 0, old);
 	}
 
@@ -284,12 +282,6 @@ public class GenericPersistence
 
 	public int getStructureChildrenSize() {
 		return this.structureChildren.size();
-	}
-
-	public void dispose() {
-		for (PersistenceUnit pu : this.getPersistenceUnits()) {
-			pu.dispose();
-		}
 	}
 
 

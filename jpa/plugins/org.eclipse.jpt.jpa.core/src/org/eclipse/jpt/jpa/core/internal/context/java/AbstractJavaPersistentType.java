@@ -57,7 +57,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaPersistentType
-		extends AbstractJavaManagedType<PersistentType.Parent>
+	extends AbstractJavaManagedType<JavaPersistentType.Parent>
 	implements JavaPersistentType
 {
 	protected AccessType specifiedAccess;
@@ -70,7 +70,7 @@ public abstract class AbstractJavaPersistentType
 	protected final Vector<JavaSpecifiedPersistentAttribute> structureChildren = new Vector<>();
 
 
-	protected AbstractJavaPersistentType(PersistentType.Parent parent, JavaResourceType resourceType) {
+	protected AbstractJavaPersistentType(JavaPersistentType.Parent parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
 		this.specifiedAccess = this.buildSpecifiedAccess();
 
@@ -650,6 +650,15 @@ public abstract class AbstractJavaPersistentType
 	 */
 	protected boolean includeProperty(JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
 		return (setterMethod != null) || getterMethod.isAnnotated();
+	}
+
+	/**
+	 * Forward notification to parent.
+	 * This is relevant only when the parent is an ORM persistent type,
+	 * which will update its default attributes.
+	 */
+	public void attributeChanged(PersistentAttribute attribute) {
+		this.parent.attributeChanged((JavaSpecifiedPersistentAttribute) attribute);
 	}
 
 

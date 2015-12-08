@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
@@ -32,7 +32,7 @@ public class GenericJavaPersistentType2_0
 	protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
 
 
-	public GenericJavaPersistentType2_0(PersistentType.Parent parent, JavaResourceType jrt) {
+	public GenericJavaPersistentType2_0(JavaPersistentType.Parent parent, JavaResourceType jrt) {
 		super(parent, jrt);
 		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();

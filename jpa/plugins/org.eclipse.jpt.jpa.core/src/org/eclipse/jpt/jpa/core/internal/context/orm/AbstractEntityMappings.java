@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -266,12 +266,6 @@ public abstract class AbstractEntityMappings
 			}
 		}
 		return this;
-	}
-
-	public void dispose() {
-		for (OrmPersistentType persistentType : this.getPersistentTypes()) {
-			persistentType.dispose();
-		}
 	}
 
 
@@ -857,13 +851,8 @@ public abstract class AbstractEntityMappings
 		managedType.removeXmlManagedTypeFrom(this.xmlEntityMappings);
 	}
 
-	/**
-	 * dispose and return the managed type
-	 */
 	protected OrmManagedType removeManagedType_(int index) {
-		OrmManagedType managedType = this.removeItemFromList(index, this.managedTypes, MANAGED_TYPES_LIST);
-		managedType.dispose();
-		return managedType;
+		return this.removeItemFromList(index, this.managedTypes, MANAGED_TYPES_LIST);
 	}
 
 	public void removeManagedType(OrmManagedType managedType) {

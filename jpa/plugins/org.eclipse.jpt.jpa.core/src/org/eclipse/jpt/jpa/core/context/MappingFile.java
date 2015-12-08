@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,13 +68,6 @@ public interface MappingFile
 	 * @see JpaFile#getRootStructureNodes()
 	 */
 	void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
-
-	/**
-	 * Dispose the structure node and its children.
-	 * Typically this would be used to update the structure node's
-	 * JPA file's root structure nodes.
-	 */
-	void dispose();
 
 
 	// ********** queries/generators **********

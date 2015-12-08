@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -140,10 +140,7 @@ public class GenericOrmXml
 				(newXmlEntityMappings == null) ||
 				ObjectTools.notEquals(this.resourceType, newResourceType)
 		) {
-			if (this.root != null) {
-				this.root.dispose();
-				this.setRoot(null);
-			}
+			this.setRoot(null);
 		}
 
 		this.resourceType = newResourceType;
@@ -273,12 +270,6 @@ public class GenericOrmXml
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		if (this.root != null) {
 			this.root.addRootStructureNodesTo(jpaFile, rootStructureNodes);
-		}
-	}
-
-	public void dispose() {
-		if (this.root != null) {
-			this.root.dispose();
 		}
 	}
 

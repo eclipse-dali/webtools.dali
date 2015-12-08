@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,9 +22,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdTypeMapping;
@@ -43,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmIdClassReference
 		extends AbstractOrmXmlContextModel<OrmIdTypeMapping>
-		implements OrmIdClassReference, PersistentType.Parent {
+		implements OrmIdClassReference, JavaPersistentType.Parent {
 	
 	protected String specifiedIdClassName;
 	protected String defaultIdClassName;
@@ -285,7 +285,7 @@ public class GenericOrmIdClassReference
 	}
 
 
-	// ********** PersistentType.Parent implementation **********
+	// ********** JavaPersistentType.Parent implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
 		return this.getPersistentType().getAccess();
@@ -294,6 +294,10 @@ public class GenericOrmIdClassReference
 	public AccessType getDefaultPersistentTypeAccess() {
 		// this shouldn't be needed, since we've specified an override access, but just to be safe ...
 		return this.getPersistentType().getAccess();
+	}
+
+	public void attributeChanged(JavaSpecifiedPersistentAttribute attribute) {
+		// NOP
 	}
 
 

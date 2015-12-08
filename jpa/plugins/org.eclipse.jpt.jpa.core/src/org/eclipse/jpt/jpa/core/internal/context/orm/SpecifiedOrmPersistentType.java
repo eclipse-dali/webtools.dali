@@ -48,6 +48,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
@@ -81,7 +82,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class SpecifiedOrmPersistentType
 	extends AbstractOrmManagedType<EntityMappings>
-	implements OrmPersistentType, PersistentType2_0, PersistentType.Parent
+	implements OrmPersistentType, PersistentType2_0, JavaPersistentType.Parent
 {
 	protected OrmTypeMapping mapping;  // never null
 
@@ -300,8 +301,12 @@ public abstract class SpecifiedOrmPersistentType
 	public TypeBinding getAttributeTypeBinding(PersistentAttribute attribute) {
 		return (this.getJavaPersistentType() == null) ? null : this.getJavaPersistentType().getAttributeTypeBinding(attribute);
 	}
-	
-	
+
+	public void attributeChanged(PersistentAttribute attribute) {
+		// NOP
+	}
+
+
 	// ********** attribute conversions **********
 
 	public OrmSpecifiedPersistentAttribute addAttributeToXml(OrmPersistentAttribute defaultAttribute) {
@@ -328,7 +333,6 @@ public abstract class SpecifiedOrmPersistentType
 		// silently remove the default attribute
 		int defaultIndex = this.defaultAttributes.indexOf(defaultAttribute);
 		this.defaultAttributes.remove(defaultIndex);
-		defaultAttribute.dispose();
 
 		// silently add the specified attribute
 		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
@@ -902,7 +906,6 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected void removeDefaultAttribute(OrmPersistentAttribute defaultAttribute) {
-		defaultAttribute.dispose();
 		this.removeItemFromList(defaultAttribute, this.defaultAttributes, DEFAULT_ATTRIBUTES_LIST);
 	}
 	
@@ -1058,14 +1061,8 @@ public abstract class SpecifiedOrmPersistentType
 		return this;
 	}
 
-	public void dispose() {
-		for (OrmPersistentAttribute defaultAttribute : this.getDefaultAttributes()) {
-			defaultAttribute.dispose();
-		}
-	}
 
-
-	// ********** PersistentType.Parent implementation **********
+	// ********** JavaPersistentType.Parent implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
 		if (this.specifiedAccess != null) {
@@ -1099,6 +1096,17 @@ public abstract class SpecifiedOrmPersistentType
 		}
 
 		return this.getEntityMappings().getDefaultPersistentTypeAccess();
+	}
+
+	/**
+	 * One of the {@link #javaManagedType} attributes changed.
+	 * Forward notification to the default attributes, as one of them
+	 * will need to sync with the Java attribute.
+	 */
+	public void attributeChanged(JavaSpecifiedPersistentAttribute javaAttribute) {
+		for (OrmPersistentAttribute attribute : this.getDefaultAttributes()) {
+			attribute.javaAttributeChanged(javaAttribute);
+		}
 	}
 
 

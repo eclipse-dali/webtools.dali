@@ -386,12 +386,6 @@ public abstract class AbstractPersistenceUnit
 		return this;
 	}
 
-	public void dispose() {
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			mappingFileRef.dispose();
-		}
-	}
-
 
 	// ********** name **********
 
@@ -621,8 +615,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<MappingFileRef, XmlMappingFileRef> buildSpecifiedMappingFileRefContainer() {
-		return new SpecifiedMappingFileRefContainer(SPECIFIED_MAPPING_FILE_REFS_LIST, new SpecifiedMappingFileRefContainerAdapter());
-		// return this.buildSpecifiedContextListContainer(SPECIFIED_MAPPING_FILE_REFS_LIST, new SpecifiedMappingFileRefContainerAdapter());
+		return this.buildSpecifiedContextListContainer(SPECIFIED_MAPPING_FILE_REFS_LIST, new SpecifiedMappingFileRefContainerAdapter());
 	}
 
 	/**
@@ -639,41 +632,6 @@ public abstract class AbstractPersistenceUnit
 		}
 		public XmlMappingFileRef extractResourceElement(MappingFileRef contextElement) {
 			return contextElement.getXmlMappingFileRef();
-		}
-	}
-
-	// TODO - remove once we remove need for dispose...
-	public class SpecifiedMappingFileRefContainer
-		extends SpecifiedContextListContainer<MappingFileRef, XmlMappingFileRef>
-	{
-		public SpecifiedMappingFileRefContainer(String aspectName, Container.Adapter<MappingFileRef, XmlMappingFileRef> adapter) {
-			super(aspectName, adapter);
-		}
-		@Override
-		public void clear() {
-			Object[] temp = this.elements.toArray();
-			super.clear();
-			for (Object element : temp) {
-				((MappingFileRef) element).dispose();
-			}
-		}
-		@Override
-		public MappingFileRef remove(int index) {
-			MappingFileRef element = super.remove(index);
-			element.dispose();
-			return element;
-		}
-		@Override
-		public void remove(MappingFileRef element) {
-			super.remove(element);
-			element.dispose();
-		}
-		@Override
-		public void removeAll(Iterable<MappingFileRef> contextElements) {
-			super.removeAll(contextElements);
-			for (MappingFileRef element : contextElements) {
-				element.dispose();
-			}
 		}
 	}
 
@@ -702,9 +660,7 @@ public abstract class AbstractPersistenceUnit
 		if (this.usesImpliedMappingFile()) {
 			this.setImpliedMappingFileRef(this.potentialImpliedMappingFileRef);
 			this.impliedMappingFileRef.update();
-		}
-		else if (this.impliedMappingFileRef != null) {
-			this.impliedMappingFileRef.dispose();
+		} else {
 			this.setImpliedMappingFileRef(null);
 		}
 	}

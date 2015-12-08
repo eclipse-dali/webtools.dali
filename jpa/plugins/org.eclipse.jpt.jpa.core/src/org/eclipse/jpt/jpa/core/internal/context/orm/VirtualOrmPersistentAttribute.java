@@ -54,33 +54,34 @@ public class VirtualOrmPersistentAttribute
 	 * because the Java attribute's <em>context</em> is the <code>orm.xml</code>
 	 * type (e.g. the Java attribute's default table is the table set in the
 	 * <code>orm.xml</code> type, not the Java type).
-	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
-	 * with any changes made via the Java context model.
+	 * We can keep this attribute in sync because we are notified of
+	 * any changes made via the Java context model
+	 * (see {@link org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute#stateChanged()}).
 	 */
 	protected final JavaSpecifiedPersistentAttribute annotatedJavaAttribute;
 
 	/**
 	 * This is the "original" Java persistent attribute corresponding to
 	 * {@link #javaAccessor} from the Java context model.
-	 * If it is found (it can be <code>null</code> if the <code>orm.xml</code>
-	 * access type differs from the Java access type), we need to listen to it
-	 * for changes so we can refresh our "local" Java attributes (since the
+	 * (It can be <code>null</code> if the <code>orm.xml</code>
+	 * access type differs from the Java access type.)
+	 * We are notified when it changes
+	 * (see {@link org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute#stateChanged()})
+	 * so we can refresh our "local" Java attributes (since the
 	 * Java resource model does not fire change events, and trigger a
 	 * <em>sync</em>, when it is modified by the Java context model - if there
 	 * is no Java context attribute, the Java resource model can only be
 	 * modified via source code editing and we will <em>sync</em> appropriately).
 	 */
 	protected JavaSpecifiedPersistentAttribute originalJavaAttribute;
-	protected StateChangeListener originalJavaAttributeListener;
 
 	/**
 	 * This is a simulated "unannotated" Java persistent attribute. It is built
 	 * only if necessary (i.e. when the <code>orm.xml</code> persistent type
 	 * has been tagged <em>metadata complete</em>). Like
 	 * {@link #annotatedJavaAttribute}, its parent is an
-	 * <code>orm.xml</code> persistent type.
-	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
-	 * with any changes made via the Java context model.
+	 * <code>orm.xml</code> persistent type and we are notified of any
+	 * changes made via the Java context model.
 	 */
 	protected JavaSpecifiedPersistentAttribute unannotatedJavaAttribute;
 
@@ -204,34 +205,7 @@ public class VirtualOrmPersistentAttribute
 	// ********** original Java persistent attribute **********
 
 	protected void updateOriginalJavaAttribute() {
-		JavaSpecifiedPersistentAttribute newJavaAttribute = this.resolveJavaPersistentAttribute(); //yes, this is the "original" java attribute
-		if (newJavaAttribute != this.originalJavaAttribute) {
-			if (newJavaAttribute == null) {
-				this.originalJavaAttribute.removeStateChangeListener(this.getOriginalJavaAttributeListener());
-				this.originalJavaAttribute = null;
-			} else {
-				if (this.originalJavaAttribute != null) {
-					this.originalJavaAttribute.removeStateChangeListener(this.getOriginalJavaAttributeListener());
-				}
-				this.originalJavaAttribute = newJavaAttribute;
-				this.originalJavaAttribute.addStateChangeListener(this.getOriginalJavaAttributeListener());
-			}
-		}
-	}
-
-	protected StateChangeListener getOriginalJavaAttributeListener() {
-		if (this.originalJavaAttributeListener == null) {
-			this.originalJavaAttributeListener = this.buildOriginalJavaAttributeListener();
-		}
-		return this.originalJavaAttributeListener;
-	}
-
-	protected StateChangeListener buildOriginalJavaAttributeListener() {
-		return new StateChangeListener() {
-			public void stateChanged(StateChangeEvent event) {
-				VirtualOrmPersistentAttribute.this.originalJavaAttributeChanged();
-			}
-		};
+		this.originalJavaAttribute = this.resolveJavaPersistentAttribute(); // yes, this is the "original" java attribute
 	}
 
 	/**
@@ -241,8 +215,10 @@ public class VirtualOrmPersistentAttribute
 	 * context model is modifying the Java resource model, but is redundant when
 	 * the Java resource model is triggering a <em>sync</em>.
 	 */
-	protected void originalJavaAttributeChanged() {
-		this.syncLocalJavaAttributes();
+	public void javaAttributeChanged(JavaSpecifiedPersistentAttribute attribute) {
+		if (this.originalJavaAttribute == attribute) {
+			this.syncLocalJavaAttributes();
+		}
 	}
 
 
@@ -334,12 +310,6 @@ public class VirtualOrmPersistentAttribute
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		throw new UnsupportedOperationException();
-	}
-
-	public void dispose() {
-		if (this.originalJavaAttribute != null) {
-			this.originalJavaAttribute.removeStateChangeListener(this.getOriginalJavaAttributeListener());
-		}
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -49,7 +50,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericClassRef
 	extends AbstractPersistenceXmlContextModel<PersistenceUnit>
-	implements ClassRef, PersistentType.Parent
+	implements ClassRef, JavaPersistentType.Parent
 {
 	/**
 	 * This is <code>null</code> for a <em>virtual</em> class ref.
@@ -301,7 +302,7 @@ public class GenericClassRef
 	}
 
 
-	// ********** PersistentType.Parent implementation **********
+	// ********** JavaPersistentType.Parent implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
 		// no access type at this level overrides any local access type specification
@@ -310,6 +311,10 @@ public class GenericClassRef
 
 	public AccessType getDefaultPersistentTypeAccess() {
 		return this.getPersistenceUnit().getDefaultAccess();
+	}
+
+	public void attributeChanged(JavaSpecifiedPersistentAttribute attribute) {
+		// NOP
 	}
 
 

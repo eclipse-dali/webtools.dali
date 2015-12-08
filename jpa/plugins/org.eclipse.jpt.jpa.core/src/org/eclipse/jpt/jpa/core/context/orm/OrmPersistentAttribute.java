@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -105,6 +105,12 @@ public interface OrmPersistentAttribute
 	 */
 	OrmSpecifiedPersistentAttribute addToXml(String mappingKey);
 
-	//TODO would like to remove this eventually
-	void dispose();
+
+	// ********** Java to virtual notification **********
+
+	/**
+	 * The specified Java persistent attribute changed in some way;
+	 * so the corresponding virtual persistent attribute may need to update its state.
+	 */
+	void javaAttributeChanged(JavaSpecifiedPersistentAttribute attribute);
 }
