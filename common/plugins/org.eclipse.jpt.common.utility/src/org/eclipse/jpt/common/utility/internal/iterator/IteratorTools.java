@@ -591,6 +591,7 @@ public final class IteratorTools {
 	 * in the specified iterators.
 	 * @see SimultaneousIterator
 	 */
+	@SafeVarargs
 	public static <E, I extends Iterator<? extends E>> Iterator<List<E>> align(I... iterators) {
 		int len = iterators.length;
 		if (len == 0) {
@@ -614,7 +615,7 @@ public final class IteratorTools {
 	 * @see SimultaneousIterator
 	 */
 	public static <E, I extends Iterator<? extends E>> Iterator<List<E>> align(Iterable<I> iterables, int iterablesSize) {
-		return new SimultaneousIterator<E>(iterables, iterablesSize);
+		return new SimultaneousIterator<>(iterables, iterablesSize);
 	}
 
 	/**
@@ -622,6 +623,7 @@ public final class IteratorTools {
 	 * in the specified iterators.
 	 * @see SimultaneousListIterator
 	 */
+	@SafeVarargs
 	public static <E, I extends ListIterator<E>> ListIterator<List<E>> alignList(I... iterators) {
 		int len = iterators.length;
 		if (len == 0) {
@@ -645,7 +647,7 @@ public final class IteratorTools {
 	 * @see SimultaneousListIterator
 	 */
 	public static <E, I extends ListIterator<E>> ListIterator<List<E>> alignList(Iterable<I> iterators, int iteratorsSize) {
-		return new SimultaneousListIterator<E>(iterators, iteratorsSize);
+		return new SimultaneousListIterator<>(iterators, iteratorsSize);
 	}
 
 	/**
@@ -656,7 +658,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new LateralIteratorWrapper<E1, E2>(iterator);
+		return new LateralIteratorWrapper<>(iterator);
 	}
 
 	/**
@@ -667,7 +669,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return new LateralListIteratorWrapper<E1, E2>(iterator);
+		return new LateralListIteratorWrapper<>(iterator);
 	}
 
 	/**
@@ -678,7 +680,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new SubIteratorWrapper<E1, E2>(iterator);
+		return new SubIteratorWrapper<>(iterator);
 	}
 
 	/**
@@ -689,7 +691,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return new SubListIteratorWrapper<E1, E2>(iterator);
+		return new SubListIteratorWrapper<>(iterator);
 	}
 
 	/**
@@ -700,7 +702,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new SuperIteratorWrapper<E>(iterator);
+		return new SuperIteratorWrapper<>(iterator);
 	}
 
 	/**
@@ -711,7 +713,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return new SuperListIteratorWrapper<E>(iterator);
+		return new SuperListIteratorWrapper<>(iterator);
 	}
 
 	/**
@@ -723,7 +725,7 @@ public final class IteratorTools {
 		if (first == null) {
 			return emptyIterator();
 		}
-		return new ChainIterator<E>(first, transformer);
+		return new ChainIterator<>(first, transformer);
 	}
 
 	/**
@@ -744,7 +746,7 @@ public final class IteratorTools {
 		if (collection.isEmpty()) {
 			return emptyIterator();
 		}
-		return new CloneIterator<E>(collection, removeClosure);
+		return new CloneIterator<>(collection, removeClosure);
 	}
 
 	/**
@@ -765,7 +767,7 @@ public final class IteratorTools {
 		if (list.isEmpty()) {
 			return emptyListIterator();
 		}
-		return new CloneListIterator<E>(list, adapter);
+		return new CloneListIterator<>(list, adapter);
 	}
 
 	/**
@@ -773,7 +775,6 @@ public final class IteratorTools {
 	 * elements in the specified iterator followed by the specified object.
 	 * @see CompositeIterator
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> Iterator<E> add(Iterator<? extends E> iterator, E object) {
 		if (isEmpty(iterator)) {
 			return singletonIterator(object);
@@ -786,7 +787,6 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see CompositeIterator
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> Iterator<E> insert(E object, Iterator<? extends E> iterator) {
 		if (isEmpty(iterator)) {
 			return singletonIterator(object);
@@ -814,6 +814,7 @@ public final class IteratorTools {
 	/**
 	 * assume the list is not empty
 	 */
+	@SafeVarargs
 	private static <E> Iterator<E> concatenate_(Iterator<? extends E>... iterators) {
 		return concatenate_(iterator(iterators));
 	}
@@ -834,7 +835,7 @@ public final class IteratorTools {
 	 * assume the list is not empty
 	 */
 	private static <E> Iterator<E> concatenate_(Iterator<? extends Iterator<? extends E>> iterators) {
-		return new CompositeIterator<E>(iterators);
+		return new CompositeIterator<>(iterators);
 	}
 
 	/**
@@ -851,7 +852,6 @@ public final class IteratorTools {
 	 * elements in the specified iterator followed by the specified object.
 	 * @see CompositeListIterator
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterator<E> add(ListIterator<E> iterator, E object) {
 		if (isEmpty(iterator)) {
 			return singletonListIterator(object);
@@ -864,7 +864,6 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see CompositeListIterator
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterator<E> insert(E object, ListIterator<E> iterator) {
 		if (isEmpty(iterator)) {
 			return singletonListIterator(object);
@@ -877,6 +876,7 @@ public final class IteratorTools {
 	 * elements in the specified iterators.
 	 * @see CompositeListIterator
 	 */
+	@SafeVarargs
 	public static <E> ListIterator<E> concatenate(ListIterator<E>... iterators) {
 		int len = iterators.length;
 		if (len == 0) {
@@ -891,6 +891,7 @@ public final class IteratorTools {
 	/**
 	 * assume the list is not empty
 	 */
+	@SafeVarargs
 	private static <E> ListIterator<E> concatenate_(ListIterator<E>... iterators) {
 		return concatenate_(listIterator(iterators));
 	}
@@ -911,7 +912,7 @@ public final class IteratorTools {
 	 * assume the list is not empty
 	 */
 	private static <E> ListIterator<E> concatenate_(ListIterator<? extends ListIterator<E>> iterators) {
-		return new CompositeListIterator<E>(iterators);
+		return new CompositeListIterator<>(iterators);
 	}
 
 	/**
@@ -928,7 +929,6 @@ public final class IteratorTools {
 	 * elements in the specified iterator followed by the specified object.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterator<E> addReadOnly(ListIterator<? extends E> iterator, E object) {
 		if (isEmpty(iterator)) {
 			return singletonListIterator(object);
@@ -941,7 +941,6 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> ListIterator<E> insertReadOnly(E object, ListIterator<? extends E> iterator) {
 		if (isEmpty(iterator)) {
 			return singletonListIterator(object);
@@ -969,6 +968,7 @@ public final class IteratorTools {
 	/**
 	 * assume the list is not empty
 	 */
+	@SafeVarargs
 	private static <E> ListIterator<E> concatenateReadOnly_(ListIterator<? extends E>... iterators) {
 		return concatenateReadOnly_(listIterator(iterators));
 	}
@@ -989,7 +989,7 @@ public final class IteratorTools {
 	 * assume the list is not empty
 	 */
 	private static <E> ListIterator<E> concatenateReadOnly_(ListIterator<? extends ListIterator<? extends E>> iterators) {
-		return new ReadOnlyCompositeListIterator<E>(iterators);
+		return new ReadOnlyCompositeListIterator<>(iterators);
 	}
 
 	/**
@@ -1024,7 +1024,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new FilteringIterator<E>(iterator, predicate);
+		return new FilteringIterator<>(iterator, predicate);
 	}
 
 	/**
@@ -1073,7 +1073,7 @@ public final class IteratorTools {
 	 * assume roots are present
 	 */
 	private static <E> Iterator<E> graphIterator_(Iterator<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
-		return new GraphIterator<E>(roots, transformer);
+		return new GraphIterator<>(roots, transformer);
 	}
 
 	/**
@@ -1083,12 +1083,13 @@ public final class IteratorTools {
 		if (EnumerationTools.isEmpty(enumeration)) {
 			return emptyIterator();
 		}
-		return new EnumerationIterator<E>(enumeration);
+		return new EnumerationIterator<>(enumeration);
 	}
 
 	/**
 	 * Return an iterator on the elements in the specified array.
 	 */
+	@SafeVarargs
 	public static <E> Iterator<E> iterator(E... array) {
 		return iterator(array, 0);
 	}
@@ -1110,7 +1111,7 @@ public final class IteratorTools {
 		if (start == end) {
 			return emptyIterator();
 		}
-		return new ArrayIterator<E>(array, start, end);
+		return new ArrayIterator<>(array, start, end);
 	}
 
 	/**
@@ -1118,7 +1119,7 @@ public final class IteratorTools {
 	 * @see Queue
 	 */
 	public static <E> Iterator<E> iterator(Queue<? extends E> queue) {
-		return new QueueIterator<E>(queue);
+		return new QueueIterator<>(queue);
 	}
 
 	/**
@@ -1126,12 +1127,13 @@ public final class IteratorTools {
 	 * @see Stack
 	 */
 	public static <E> Iterator<E> iterator(Stack<? extends E> stack) {
-		return new StackIterator<E>(stack);
+		return new StackIterator<>(stack);
 	}
 
 	/**
 	 * Return a list iterator for the specified array.
 	 */
+	@SafeVarargs
 	public static <E> ListIterator<E> listIterator(E... array) {
 		return listIterator(array, 0);
 	}
@@ -1153,7 +1155,7 @@ public final class IteratorTools {
 		if (start == end) {
 			return emptyListIterator();
 		}
-		return new ArrayListIterator<E>(array, start, end);
+		return new ArrayListIterator<>(array, start, end);
 	}
 
 	/**
@@ -1164,7 +1166,7 @@ public final class IteratorTools {
 		if (size == 0) {
 			return emptyIterator();
 		}
-		return new NullElementIterator<E>(size);
+		return new NullElementIterator<>(size);
 	}
 
 	/**
@@ -1175,14 +1177,14 @@ public final class IteratorTools {
 		if (size == 0) {
 			return emptyListIterator();
 		}
-		return new NullElementListIterator<E>(size);
+		return new NullElementListIterator<>(size);
 	}
 
 	/**
 	 * Return a "peekable" iterator.
 	 */
 	public static <E> PeekableIterator<E> peekable(Iterator<? extends E> iterator) {
-		return new PeekableIterator<E>(iterator);
+		return new PeekableIterator<>(iterator);
 	}
 
 	/**
@@ -1193,7 +1195,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new ReadOnlyIterator<E>(iterator);
+		return new ReadOnlyIterator<>(iterator);
 	}
 
 	/**
@@ -1204,7 +1206,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return new ReadOnlyListIterator<E>(iterator);
+		return new ReadOnlyListIterator<>(iterator);
 	}
 
 	/**
@@ -1216,7 +1218,7 @@ public final class IteratorTools {
 		if (size == 0) {
 			return emptyIterator();
 		}
-		return new RepeatingElementIterator<E>(element, size);
+		return new RepeatingElementIterator<>(element, size);
 	}
 
 	/**
@@ -1228,7 +1230,7 @@ public final class IteratorTools {
 		if (size == 0) {
 			return emptyListIterator();
 		}
-		return new RepeatingElementListIterator<E>(element, size);
+		return new RepeatingElementListIterator<>(element, size);
 	}
 
 	/**
@@ -1239,7 +1241,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new ReverseIterator<E>(iterator);
+		return new ReverseIterator<>(iterator);
 	}
 
 	/**
@@ -1251,7 +1253,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new ReverseIterator<E>(iterator, iteratorSize);
+		return new ReverseIterator<>(iterator, iteratorSize);
 	}
 
 	/**
@@ -1260,7 +1262,7 @@ public final class IteratorTools {
 	 * @see SingleElementIterator
 	 */
 	public static <E> Iterator<E> singletonIterator(E value) {
-		return new SingleElementIterator<E>(value);
+		return new SingleElementIterator<>(value);
 	}
 
 	/**
@@ -1269,7 +1271,7 @@ public final class IteratorTools {
 	 * @see SingleElementListIterator
 	 */
 	public static <E> ListIterator<E> singletonListIterator(E value) {
-		return new SingleElementListIterator<E>(value);
+		return new SingleElementListIterator<>(value);
 	}
 
 	/**
@@ -1280,7 +1282,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new SynchronizedIterator<E>(iterator);
+		return new SynchronizedIterator<>(iterator);
 	}
 
 	/**
@@ -1292,7 +1294,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
-		return new SynchronizedIterator<E>(iterator, mutex);
+		return new SynchronizedIterator<>(iterator, mutex);
 	}
 
 	/**
@@ -1303,7 +1305,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return new SynchronizedListIterator<E>(iterator);
+		return new SynchronizedListIterator<>(iterator);
 	}
 
 	/**
@@ -1315,7 +1317,7 @@ public final class IteratorTools {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
-		return new SynchronizedListIterator<E>(iterator, mutex);
+		return new SynchronizedListIterator<>(iterator, mutex);
 	}
 
 	/**
@@ -1379,7 +1381,7 @@ public final class IteratorTools {
 	 * assume roots are present
 	 */
 	private static <E> Iterator<E> treeIterator_(Iterator<? extends E> roots, Transformer<? super E, ? extends Iterator<? extends E>> transformer) {
-		return new TreeIterator<E>(roots, transformer);
+		return new TreeIterator<>(roots, transformer);
 	}
 
 	/**
