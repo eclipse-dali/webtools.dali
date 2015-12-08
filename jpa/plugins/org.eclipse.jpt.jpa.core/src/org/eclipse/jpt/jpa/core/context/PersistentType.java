@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -131,14 +131,14 @@ public interface PersistentType
 	/**
 	 * Return the persistent type's "persistence" inheritance hierarchy,
 	 * <em>including</em> the persistent type itself.
-	 * @see TypeMapping#getTypeMappingInheritanceHierarchy()
+	 * @see TypeMapping#getInheritanceHierarchy()
 	 */
 	Iterable<PersistentType> getInheritanceHierarchy();
 	
 	/**
 	 * Return the persistent type's "persistence" inheritance hierarchy,
 	 * <em>excluding</em> the persistent type itself.
-	 * @see TypeMapping#getAncesors()
+	 * @see TypeMapping#getAncestors()
 	 */
 	Iterable<PersistentType> getAncestors();
 	
@@ -162,7 +162,7 @@ public interface PersistentType
 	}
 
 
-	// ********** parent interface **********
+	// ********** parent **********
 
 	interface Parent
 		extends JpaContextModel
@@ -178,7 +178,6 @@ public interface PersistentType
 		 * <code>null</code> if there is no such access default.
 		 */
 		AccessType getDefaultPersistentTypeAccess();
-
 	}
 
 

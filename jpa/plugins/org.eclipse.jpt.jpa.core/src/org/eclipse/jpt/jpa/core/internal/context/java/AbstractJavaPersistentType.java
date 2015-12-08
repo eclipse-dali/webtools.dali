@@ -58,16 +58,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaPersistentType
 		extends AbstractJavaManagedType<PersistentType.Parent>
-		implements JavaPersistentType {
-	
+	implements JavaPersistentType
+{
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;  // never null
 
 	protected JavaTypeMapping mapping;  // never null
 
-	protected final Vector<JavaSpecifiedPersistentAttribute> attributes = new Vector<JavaSpecifiedPersistentAttribute>();
+	protected final Vector<JavaSpecifiedPersistentAttribute> attributes = new Vector<>();
 
-	protected final Vector<JavaSpecifiedPersistentAttribute> structureChildren = new Vector<JavaSpecifiedPersistentAttribute>();
+	protected final Vector<JavaSpecifiedPersistentAttribute> structureChildren = new Vector<>();
 
 
 	protected AbstractJavaPersistentType(PersistentType.Parent parent, JavaResourceType resourceType) {
@@ -103,7 +103,7 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	
-	// ***** inheritance *****
+	// ********** inheritance **********
 	
 	public PersistentType getSuperPersistentType() {
 		TypeMapping superTypeMapping = this.mapping.getSuperTypeMapping();
@@ -175,7 +175,7 @@ public abstract class AbstractJavaPersistentType
 	 * Check the access "specified" by the Java resource model:<ul>
 	 * <li>Check Java annotations first
 	 * <li>If <code>null</code>, check XML mapping specified access
-	 * <li>If still <code>null</code>, check {@link #superPersistentType} access
+	 * <li>If still <code>null</code>, check {@link #getSuperPersistentType()} access
 	 * <li>If still <code>null</code>, check <code>entity-mappings</code>
 	 *     specified access setting if the corresponding <code>persistent-type</code>
 	 *     is listed in a mapping (<code>orm.xml</code>) file
@@ -194,8 +194,9 @@ public abstract class AbstractJavaPersistentType
 			return accessType;
 		}
 
-		if (getSuperPersistentType() != null) {
-			accessType = getSuperPersistentType().getAccess();
+		PersistentType superType = this.getSuperPersistentType();
+		if (superType != null) {
+			accessType = superType.getAccess();
 			if (accessType != null) {
 				return accessType;
 			}
@@ -380,7 +381,8 @@ public abstract class AbstractJavaPersistentType
 			return stream.hasNext() ? null : attribute;
 		}
 		// recurse
-		return (getSuperPersistentType() == null) ? null : getSuperPersistentType().resolveAttribute(attributeName);
+		PersistentType superType = this.getSuperPersistentType();
+		return (superType == null) ? null : superType.resolveAttribute(attributeName);
 	}
 
 	protected Iterable<String> convertToNames(Iterable<? extends PersistentAttribute> attrs) {
@@ -654,11 +656,11 @@ public abstract class AbstractJavaPersistentType
 	// ********** inheritance **********
 	
 	public Iterable<PersistentType> getInheritanceHierarchy() {
-		return IterableTools.insert(this, getAncestors());
+		return IterableTools.insert(this, this.getAncestors());
 	}
 	
 	public Iterable<PersistentType> getAncestors() {
-		return IterableTools.transform(getMapping().getAncestors(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
+		return IterableTools.transform(this.getMapping().getAncestors(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
 	}
 	
 	protected Iterable<JavaResourceType> getResourceInheritanceHierarchy() {
@@ -671,10 +673,10 @@ public abstract class AbstractJavaPersistentType
 	 * Transform a Java resource type into its super Java resource type.
 	 */
 	protected class SuperJavaResourceTypeTransformer
-			extends TransformerAdapter<JavaResourceType, JavaResourceType> {
-		
+		extends TransformerAdapter<JavaResourceType, JavaResourceType>
+	{
 		// keep track of visited resource types to prevent cyclical inheritance
-		private final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<JavaResourceType>();
+		private final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<>();
 
 		@Override
 		public JavaResourceType transform(JavaResourceType jrt) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -649,7 +649,7 @@ public abstract class AbstractJavaPersistentAttribute
 	protected abstract JpaValidator buildAttributeValidator();
 
 	/**
-	 * If the attribute's owning type is an <code>orm.xml</code> persistent
+	 * If the attribute's declaring type is an <code>orm.xml</code> persistent
 	 * type, the attribute must be one of the type's default attributes.
 	 * (Actually, the Java attribute is held by a <em>virtual</em>
 	 * <code>orm.xml</code> attribute

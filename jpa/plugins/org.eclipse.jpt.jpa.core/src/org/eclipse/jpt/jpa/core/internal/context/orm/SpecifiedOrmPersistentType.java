@@ -88,16 +88,16 @@ public abstract class SpecifiedOrmPersistentType
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;  // never null
 
-	protected final Vector<OrmSpecifiedPersistentAttribute> specifiedAttributes = new Vector<OrmSpecifiedPersistentAttribute>();
+	protected final Vector<OrmSpecifiedPersistentAttribute> specifiedAttributes = new Vector<>();
 	protected final SpecifiedAttributeContainerAdapter specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
 
-	protected final Vector<OrmPersistentAttribute> defaultAttributes = new Vector<OrmPersistentAttribute>();
+	protected final Vector<OrmPersistentAttribute> defaultAttributes = new Vector<>();
 	
 	protected String declaringTypeName;
 
 	protected final MetamodelSourceType2_0.Synchronizer metamodelSynchronizer;
 
-	protected final Vector<OrmPersistentAttribute> structureChildren = new Vector<OrmPersistentAttribute>();
+	protected final Vector<OrmPersistentAttribute> structureChildren = new Vector<>();
 
 
 	protected SpecifiedOrmPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
@@ -493,7 +493,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected ListIterable<OrmPersistentAttribute> getReadOnlySpecifiedAttributes() {
-		return new SuperListIterableWrapper<OrmPersistentAttribute>(this.getSpecifiedAttributes());
+		return new SuperListIterableWrapper<>(this.getSpecifiedAttributes());
 	}
 
 	public int getSpecifiedAttributesSize() {

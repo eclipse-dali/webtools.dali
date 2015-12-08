@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -170,7 +170,8 @@ public class VirtualOrmPersistentAttribute
 	}
 
 	protected JavaSpecifiedPersistentAttribute buildAnnotatedJavaAttribute() {
-		return this.buildJavaAttribute(this.javaAccessor);
+		// pass in the orm persistent type as the parent...
+		return this.getJpaFactory().buildJavaPersistentAttribute(this.getDeclaringPersistentType(), this.javaAccessor);
 	}
 
 	protected JavaSpecifiedPersistentAttribute getUnannotatedJavaAttribute() {
@@ -183,11 +184,6 @@ public class VirtualOrmPersistentAttribute
 	protected JavaSpecifiedPersistentAttribute buildUnannotatedJavaAttribute() {
 		// pass in the orm persistent type as the parent...
 		return this.javaAccessor.buildUnannotatedJavaAttribute(this.getDeclaringPersistentType());
-	}
-
-	protected JavaSpecifiedPersistentAttribute buildJavaAttribute(Accessor accessor) {
-		// pass in the orm persistent type as the parent...
-		return this.getJpaFactory().buildJavaPersistentAttribute(this.getDeclaringPersistentType(), accessor);
 	}
 
 	protected void syncLocalJavaAttributes() {
