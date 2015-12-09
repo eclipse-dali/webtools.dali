@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -92,6 +92,7 @@ public final class ComparatorTools {
 	/**
 	 * @see #chain(Iterable)
 	 */
+	@SafeVarargs
 	public static <E> Comparator<E> chain(Comparator<? super E>... comparators) {
 		return chain(ArrayTools.iterable(comparators));
 	}
@@ -105,7 +106,7 @@ public final class ComparatorTools {
 	 * @param <E> the type of elements to be compared
 	 */
 	public static <E> Comparator<E> chain(Iterable<Comparator<? super E>> comparators) {
-		return new ComparatorChain<E>(comparators);
+		return new ComparatorChain<>(comparators);
 	}
 
 
@@ -137,7 +138,7 @@ public final class ComparatorTools {
 	 * @param <E> the type of elements to be compared
 	 */
 	public static <E> Comparator<E> nullsFirst(Comparator<? super E> comparator) {
-		return new NullsFirstComparator<E>(comparator);
+		return new NullsFirstComparator<>(comparator);
 	}
 
 	/**
@@ -147,7 +148,7 @@ public final class ComparatorTools {
 	 * @param <E> the type of elements to be compared
 	 */
 	public static <E> Comparator<E> nullsLast(Comparator<? super E> comparator) {
-		return new NullsLastComparator<E>(comparator);
+		return new NullsLastComparator<>(comparator);
 	}
 
 
@@ -169,7 +170,7 @@ public final class ComparatorTools {
 	 * @param <E> the type of elements to be compared
 	 */
 	public static <E> Comparator<E> reverse(Comparator<? super E> comparator) {
-		return new ReverseComparator<E>(comparator);
+		return new ReverseComparator<>(comparator);
 	}
 
 
@@ -236,7 +237,7 @@ public final class ComparatorTools {
 	 *     of the elements to be compared by the wrapped comaparator, if present
 	 */
 	public static <E, O> Comparator<E> transformationComparator(Transformer<? super E, ? extends O> transformer, Comparator<O> comparator) {
-		return new TransformationComparator<E, O>(transformer, comparator);
+		return new TransformationComparator<>(transformer, comparator);
 	}
 
 
@@ -290,7 +291,7 @@ public final class ComparatorTools {
 	 * @param <T> the type of comparable returned by the comparator's segment parser
 	 */
 	public static <T extends Comparable<T>> Comparator<String> versionComparator(String delimiters, SegmentParser<T> segmentParser) {
-		return new VersionComparator<T>(delimiters, segmentParser);
+		return new VersionComparator<>(delimiters, segmentParser);
 	}
 
 

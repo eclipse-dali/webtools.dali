@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -89,7 +89,7 @@ public class VersionComparator<T extends Comparable<T>>
 	 * compared individually.
 	 */
 	protected ArrayList<T> parseVersion(String s) {
-		ArrayList<T> segments = new ArrayList<T>();
+		ArrayList<T> segments = new ArrayList<>();
 		int i = 0;
 		for (StringTokenizer stream = new StringTokenizer(s, this.delimiters); stream.hasMoreTokens(); ) {
 			segments.add(this.segmentParser.parse(i++, stream.nextToken()));
