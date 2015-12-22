@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,7 +52,7 @@ public class GenericJpaFile
 	 * the root structure (context model) nodes corresponding to the resource
 	 * model
 	 */
-	protected final HashSet<JpaStructureNode> rootStructureNodes = new HashSet<JpaStructureNode>();
+	protected final HashSet<JpaStructureNode> rootStructureNodes = new HashSet<>();
 
 
 	// ********** construction **********
@@ -109,6 +109,7 @@ public class GenericJpaFile
 	}
 
 	/**
+	 * <ul>
 	 * <li>The JPA file for a <code>persistence.xml</code> will have one root
 	 * structure node: <code>Persistence</code>
 	 * <li>The JPA file for an <code>orm.xml</code> file will have one root
@@ -119,7 +120,7 @@ public class GenericJpaFile
 	 * classes will be included only if they are either annotated or listed in
 	 * the <code>persistence.xml</code>. The root structure nodes will be
 	 * instances of <code>JavaPersistentType</code>.
-	 * <br><br>
+	 * </ul>
 	 * If a class is listed in both the <code>persistence.xml</code> and an
 	 * <code>orm.xml</code> file, the root structure node will be the
 	 * <code>JavaPersistentType</code> that was built by the
@@ -140,7 +141,7 @@ public class GenericJpaFile
 			this.clearCollection(this.rootStructureNodes, ROOT_STRUCTURE_NODES_COLLECTION);
 			return;
 		}
-		Collection<JpaStructureNode> newRootStructureNodes = new HashSet<JpaStructureNode>();
+		Collection<JpaStructureNode> newRootStructureNodes = new HashSet<>();
 		persistenceXml.addRootStructureNodesTo(this, newRootStructureNodes);
 		this.synchronizeCollection(newRootStructureNodes, this.rootStructureNodes, ROOT_STRUCTURE_NODES_COLLECTION);
 	}
