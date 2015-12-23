@@ -231,25 +231,23 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected AccessType buildDefaultAccess() {
 		if ( ! this.mapping.isMetadataComplete()) {
-			if (this.getJavaPersistentType() != null) {
-				if (this.javaPersistentTypeHasSpecifiedAccess()) {
-					return this.getJavaPersistentType().getAccess();
+			JavaPersistentType jpt = this.getJavaPersistentType();
+			if (jpt != null) {
+				if (((jpt.getSpecifiedAccess() != null) || jpt.hasAnyAnnotatedAttributes())) {
+					return jpt.getAccess();
 				}
 			}
-			if (getSuperPersistentType() != null) {
-				return getSuperPersistentType().getAccess();
+			PersistentType superPT = this.getSuperPersistentType();
+			if (superPT != null) {
+				return superPT.getAccess();
 			}
 		}
 		AccessType access = this.getMappingFileRoot().getAccess();
-		return (access != null) ? access : AccessType.FIELD;  // default to FIELD if no specified access found
+		return (access != null) ? access : this.getDefaultDefaultAccess();
 	}
 
-	/**
-	 * pre-condition: {@link #getJavaPersistentType()} is not <code>null</code>
-	 */
-	protected boolean javaPersistentTypeHasSpecifiedAccess() {
-		return (this.getJavaPersistentType().getSpecifiedAccess() != null) ||
-				this.getJavaPersistentType().hasAnyAnnotatedAttributes();
+	protected AccessType getDefaultDefaultAccess() {
+		return AccessType.FIELD; // default to FIELD if no specified access found
 	}
 
 
