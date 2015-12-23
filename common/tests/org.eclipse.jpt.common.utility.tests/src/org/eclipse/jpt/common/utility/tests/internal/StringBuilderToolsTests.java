@@ -448,24 +448,14 @@ public class StringBuilderToolsTests
 		assertEquals("{\"left\":\"name\",\"right\":\"Fred\"}", sb.toString());
 	}
 
-	public void testAppendJSONMap_charArray() throws Exception {
-		StringBuilder sb = new StringBuilder();
-		Map<char[], String> map = new HashMap<>();
-		map.put("left".toCharArray(), "name");
-		map.put("right".toCharArray(), "Fred");
-		StringBuilderTools.appendJSON(sb, map);
-		assertEquals("{\"left\":\"name\",\"right\":\"Fred\"}", sb.toString());
-		sb = new StringBuilder();
-		StringBuilderTools.appendJSON(sb, (Object) map);
-		assertEquals("{\"left\":\"name\",\"right\":\"Fred\"}", sb.toString());
-	}
-
 	public void testAppendJSONMap_reflection() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		Map<Object, String> map = new HashMap<>();
 		map.put(Integer.valueOf(42), "Fred");
+		assertFalse(map.keySet().isEmpty()); // trigger creation of key set
+		assertFalse(map.entrySet().isEmpty()); // trigger creation of entry set
 		StringBuilderTools.appendJSON(sb, map);
-		String expected = "{\"entrySet\":[{\"hash\":42,\"key\":42,\"next\":null,\"value\":\"Fred\"}],\"keySet\":null,\"loadFactor\":0.75,\"modCount\":1,\"size\":1,\"table\":[null,null,null,null,null,null,null,null,null,null,{\"hash\":42,\"key\":42,\"next\":null,\"value\":\"Fred\"},null,null,null,null,null],\"threshold\":12,\"values\":null}";
+		String expected = "{\"entrySet\":[{\"hash\":42,\"key\":42,\"next\":null,\"value\":\"Fred\"}],\"keySet\":[42],\"loadFactor\":0.75,\"modCount\":1,\"size\":1,\"table\":[null,null,null,null,null,null,null,null,null,null,{\"hash\":42,\"key\":42,\"next\":null,\"value\":\"Fred\"},null,null,null,null,null],\"threshold\":12,\"values\":null}";
 		assertEquals(expected, sb.toString());
 		sb = new StringBuilder();
 		StringBuilderTools.appendJSON(sb, (Object) map);

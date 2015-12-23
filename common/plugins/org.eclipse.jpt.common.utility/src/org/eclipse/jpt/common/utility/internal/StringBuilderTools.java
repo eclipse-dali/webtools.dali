@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.utility.internal;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import org.eclipse.jpt.common.utility.internal.comparator.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
@@ -2083,40 +2085,29 @@ public final class StringBuilderTools {
 
 	/**
 	 * Assume non-<code>null</code> map.
+	 * Sort output by key.
 	 */
 	private static void appendJSON_(StringBuilder sb, Map<?, ?> map) {
-		int resetIndex = sb.length();
-		boolean reset = false;
-		sb.append('{');
-		Iterator<?> stream = map.entrySet().iterator();
-		if (stream.hasNext()) {
-			do {
-				Map.Entry<?, ?> entry = (Map.Entry<?, ?>) stream.next();
-				Object key = entry.getKey();
-				if (key instanceof String) {
-					appendJSON(sb, (String) key);
-				}
-				else if (key instanceof char[]) { // unlikely (as not very useful)
-					appendJSON(sb, (char[]) key);
-				}
-				else {
-					sb.setLength(resetIndex);
-					reset = true;
-					break;
-				}
-				sb.append(':');
-				appendJSON(sb, entry.getValue());
-				sb.append(',');
-			} while (stream.hasNext());
-			if ( ! reset) {
-				sb.setLength(sb.length() - 1);  // strip off extra comma
+		Set<?> keys = map.keySet();
+		for (Object key : keys) {
+			if ( ! (key instanceof String)) {
+				appendJSON__(sb, map); // object reflection
+				return;
 			}
 		}
-		if (reset) {
-			appendJSON__(sb, map); // object reflection
-		} else {
-			sb.append('}');
+		sb.append('{');
+		if ( ! keys.isEmpty()) {
+			@SuppressWarnings("unchecked")
+			TreeSet<String> sortedKeys = (TreeSet<String>) new TreeSet<>(map.keySet());
+			for (String key : sortedKeys) {
+				appendJSON(sb, key);
+				sb.append(':');
+				appendJSON(sb, map.get(key));
+				sb.append(',');
+			}
+			sb.setLength(sb.length() - 1);  // strip off extra comma
 		}
+		sb.append('}');
 	}
 
 	/**
