@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -86,11 +87,11 @@ public class EclipseLinkJavaArrayMapping2_3
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.column.update();
-		this.converter.update();
-		this.converterContainer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.column.update(monitor);
+		this.converter.update(monitor);
+		this.converterContainer.update(monitor);
 	}
 
 	// ********** column **********

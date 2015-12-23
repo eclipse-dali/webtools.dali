@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
@@ -224,31 +225,31 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
 		this.setDefaultTargetClass(this.buildDefaultTargetClass());
 		this.setFullyQualifiedTargetClass(this.buildFullyQualifiedTargetClass());
 		this.setDefaultFetch(this.buildDefaultFetch());
 
-		this.orderable.update();
-		this.collectionTable.update();
+		this.orderable.update(monitor);
+		this.collectionTable.update(monitor);
 
 		this.setValueType(this.buildValueType());
-		this.valueColumn.update();
-		this.converter.update();
-		this.valueAttributeOverrideContainer.update();
-		this.valueAssociationOverrideContainer.update();
+		this.valueColumn.update(monitor);
+		this.converter.update(monitor);
+		this.valueAttributeOverrideContainer.update(monitor);
+		this.valueAssociationOverrideContainer.update(monitor);
 
 		this.setKeyType(this.buildKeyType());
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
 
-		this.mapKeyColumn.update();
-		this.mapKeyConverter.update();
-		this.mapKeyAttributeOverrideContainer.update();
-		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
-		this.updateDefaultMapKeyJoinColumn();
+		this.mapKeyColumn.update(monitor);
+		this.mapKeyConverter.update(monitor);
+		this.mapKeyAttributeOverrideContainer.update(monitor);
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns(), monitor);
+		this.updateDefaultMapKeyJoinColumn(monitor);
 	}
 
 
@@ -1158,12 +1159,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return (this.defaultMapKeyJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultMapKeyJoinColumn() {
+	protected void updateDefaultMapKeyJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultMapKeyJoinColumn()) {
 			if (this.defaultMapKeyJoinColumn == null) {
 				this.setDefaultMapKeyJoinColumn(this.buildMapKeyJoinColumn(this.buildNullMapKeyJoinColumnAnnotation()));
 			} else {
-				this.defaultMapKeyJoinColumn.update();
+				this.defaultMapKeyJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultMapKeyJoinColumn(null);

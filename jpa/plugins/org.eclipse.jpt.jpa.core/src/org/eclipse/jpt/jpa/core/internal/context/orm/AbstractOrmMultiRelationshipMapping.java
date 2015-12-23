@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -165,10 +166,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
-		this.orderable.update();
+		this.orderable.update(monitor);
 
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
@@ -176,12 +177,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		this.setValueType(this.buildValueType());
 		this.setKeyType(this.buildKeyType());
 
-		this.mapKeyColumn.update();
-		this.mapKeyConverter.update();
+		this.mapKeyColumn.update(monitor);
+		this.mapKeyConverter.update(monitor);
 
-		this.mapKeyAttributeOverrideContainer.update();
-		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
-		this.updateDefaultMapKeyJoinColumn();
+		this.mapKeyAttributeOverrideContainer.update(monitor);
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns(), monitor);
+		this.updateDefaultMapKeyJoinColumn(monitor);
 	}
 
 
@@ -823,12 +824,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		return (this.defaultMapKeyJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultMapKeyJoinColumn() {
+	protected void updateDefaultMapKeyJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultMapKeyJoinColumn()) {
 			if (this.defaultMapKeyJoinColumn == null) {
 				this.setDefaultMapKeyJoinColumn(this.buildMapKeyJoinColumn(null));
 			} else {
-				this.defaultMapKeyJoinColumn.update();
+				this.defaultMapKeyJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultMapKeyJoinColumn(null);

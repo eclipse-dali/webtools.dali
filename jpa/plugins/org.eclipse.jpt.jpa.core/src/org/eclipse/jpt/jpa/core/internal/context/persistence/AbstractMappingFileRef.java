@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -74,9 +75,9 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateMappingFile();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateMappingFile(monitor);
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -112,7 +113,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	protected abstract MF buildMappingFile();
 
 	protected void syncMappingFile() {
-		this.syncMappingFile(true);
+		this.syncMappingFile(true, null);
 	}
 
 	/**
@@ -126,7 +127,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	 *     removed
 	 * </ul>
 	 */
-	protected void syncMappingFile(boolean sync) {
+	protected void syncMappingFile(boolean sync, IProgressMonitor monitor) {
 		Object newResourceMappingFile = this.resolveResourceMappingFile();
 		if (newResourceMappingFile == null) {
 			this.setMappingFile(null);
@@ -138,7 +139,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 					if (sync) {
 						this.mappingFile.synchronizeWithResourceModel();
 					} else {
-						this.mappingFile.update();
+						this.mappingFile.update(monitor);
 					}
 				} else {
 					// [seems like we should never get here; since if the file's
@@ -165,8 +166,8 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 		return (MF) this.getJpaFactory().buildMappingFile(this, resourceMappingFile);
 	}
 
-	protected void updateMappingFile() {
-		this.syncMappingFile(false);
+	protected void updateMappingFile(IProgressMonitor monitor) {
+		this.syncMappingFile(false, monitor);
 	}
 
 

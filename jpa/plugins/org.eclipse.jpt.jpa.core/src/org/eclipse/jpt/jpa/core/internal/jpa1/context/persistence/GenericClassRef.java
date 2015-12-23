@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -119,9 +120,9 @@ public class GenericClassRef
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateJavaManagedType();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateJavaManagedType(monitor);
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -177,7 +178,7 @@ public class GenericClassRef
 		this.firePropertyChanged(JAVA_MANAGED_TYPE_PROPERTY, old, managedType);
 	}
 
-	protected void updateJavaManagedType() {
+	protected void updateJavaManagedType(IProgressMonitor monitor) {
 		this.resourceType = this.resolveJavaResourceType();
 		if ((this.resourceType == null) || (this.resourceType.getAstNodeType() != AstNodeType.TYPE)) {
 			if (this.javaManagedType != null) {
@@ -190,7 +191,7 @@ public class GenericClassRef
 				this.setJavaManagedType(this.buildJavaManagedType(jrt, def));
 			} else {
 				if ((this.javaManagedType.getJavaResourceType() == jrt) && (this.javaManagedType.getManagedTypeType() == def.getManagedTypeType())) {
-					this.javaManagedType.update();
+					this.javaManagedType.update(monitor);
 				} else {
 					this.setJavaManagedType(this.buildJavaManagedType(jrt, def));
 				}

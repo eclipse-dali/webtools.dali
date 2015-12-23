@@ -82,19 +82,19 @@ public class GenericPersistenceXml
 	}
 
 	protected void syncPersistence() {
-		this.syncPersistence(true);
+		this.syncPersistence(true, null);
 	}
 
 	/**
-	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#update()
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#update(IProgressMonitor)
 	 */
 	@Override
-	public void update() {
-		this.updatePersistence();	
+	public void update(IProgressMonitor monitor) {
+		this.updatePersistence(monitor);	
 	}
 
-	protected void updatePersistence() {
-		this.syncPersistence(false);
+	protected void updatePersistence(IProgressMonitor monitor) {
+		this.syncPersistence(false, monitor);
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class GenericPersistenceXml
 	 * <li>an <em>update</em> will occur whenever the JPA file is added or removed: 
 	 *     when resource contents replaced from history EMF unloads the resource.
 	 */
-	protected void syncPersistence(boolean sync) {
+	protected void syncPersistence(boolean sync, IProgressMonitor monitor) {
 		XmlPersistence oldXmlPersistence = (this.root == null) ? null : this.root.getXmlPersistence();
 		XmlPersistence newXmlPersistence = (XmlPersistence) this.xmlResource.getRootObject();
 		JptResourceType newResourceType = this.xmlResource.getResourceType();
@@ -134,7 +134,7 @@ public class GenericPersistenceXml
 					this.root.synchronizeWithResourceModel();
 				}
 				else {
-					this.root.update();
+					this.root.update(monitor);
 				}
 			}
 		}

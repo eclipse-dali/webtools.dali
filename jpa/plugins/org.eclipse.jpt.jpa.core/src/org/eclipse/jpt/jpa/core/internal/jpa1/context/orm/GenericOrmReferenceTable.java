@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
@@ -59,10 +60,10 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getSpecifiedJoinColumns());
-		this.updateDefaultJoinColumn();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getSpecifiedJoinColumns(), monitor);
+		this.updateDefaultJoinColumn(monitor);
 	}
 
 
@@ -193,12 +194,12 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 		return (this.defaultJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultJoinColumn() {
+	protected void updateDefaultJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultJoinColumn()) {
 			if (this.defaultJoinColumn == null) {
 				this.setDefaultJoinColumn(this.buildJoinColumn(null));
 			} else {
-				this.defaultJoinColumn.update();
+				this.defaultJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultJoinColumn(null);

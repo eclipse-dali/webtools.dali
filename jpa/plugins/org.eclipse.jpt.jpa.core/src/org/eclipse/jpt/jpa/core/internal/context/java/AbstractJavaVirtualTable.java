@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
@@ -57,8 +58,8 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	// ********** synchronize/update **********
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
 		this.setSpecifiedName(this.buildSpecifiedName());
 		this.setDefaultName(this.buildDefaultName());
@@ -69,7 +70,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 		this.setSpecifiedCatalog(this.buildSpecifiedCatalog());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
 
-		this.updateUniqueConstraints();
+		this.updateUniqueConstraints(monitor);
 	}
 
 
@@ -196,8 +197,8 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 		return this.uniqueConstraintContainer.get(index);
 	}
 
-	protected void updateUniqueConstraints() {
-		this.uniqueConstraintContainer.update();
+	protected void updateUniqueConstraints(IProgressMonitor monitor) {
+		this.uniqueConstraintContainer.update(monitor);
 	}
 
 	protected ListIterable<UniqueConstraint> getOverriddenUniqueConstraints() {

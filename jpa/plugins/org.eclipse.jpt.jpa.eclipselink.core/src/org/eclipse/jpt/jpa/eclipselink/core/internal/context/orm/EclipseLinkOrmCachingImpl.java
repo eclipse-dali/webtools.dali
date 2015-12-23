@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -124,8 +125,8 @@ public class EclipseLinkOrmCachingImpl
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
 		boolean xmlCacheNotSpecified = (this.getXmlCache() == null);
 		EclipseLinkJavaCaching javaCaching = this.getJavaCachingForDefaults();
@@ -142,13 +143,13 @@ public class EclipseLinkOrmCachingImpl
 		this.setDefaultCoordinationType(useJavaValue ? javaCaching.getCoordinationType() : DEFAULT_COORDINATION_TYPE);
 
 		if (this.expiryTimeOfDay != null) {
-			this.expiryTimeOfDay.update();
+			this.expiryTimeOfDay.update(monitor);
 		}
 
 		// existence checking is its own xml attribute, it is not part of the cache xml element
 		this.setDefaultExistenceType(javaCacheSpecified ? javaCaching.getExistenceType() : DEFAULT_EXISTENCE_TYPE);
 
-		this.cacheable.update();
+		this.cacheable.update(monitor);
 
 		this.setDefaultIsolation(useJavaValue ? javaCaching.getIsolation() : DEFAULT_ISOLATION);
 	}

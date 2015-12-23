@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1990,14 +1990,23 @@ public abstract class AbstractJpaProject
 	 * Called by the {@link UpdateJobCommand#execute(IProgressMonitor)}.
 	 */
 	// TODO pass the monitor down
-	protected IStatus update(@SuppressWarnings("unused") IProgressMonitor monitor) {
-		this.contextRoot.update();
-		this.updateRootStructureNodes();
+	protected IStatus update(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		this.contextRoot.update(monitor);
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		this.updateRootStructureNodes(monitor);
 		return Status.OK_STATUS;
 	}
 
-	protected void updateRootStructureNodes() {
+	protected void updateRootStructureNodes(IProgressMonitor monitor) {
 		for (JpaFile jpaFile : this.getJpaFiles()) {
+			if (monitor.isCanceled()) {
+				return;
+			}
 			jpaFile.updateRootStructureNodes();
 		}
 	}

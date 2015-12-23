@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.ArrayList;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -87,15 +88,15 @@ public class GenericOrmTableGenerator
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setDefaultTableName(this.buildDefaultTableName());
 		this.setDefaultSchema(this.buildDefaultSchema());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
 		this.setDefaultPkColumnName(this.buildDefaultPkColumnName());
 		this.setDefaultValueColumnName(this.buildDefaultValueColumnName());
 		this.setDefaultPkColumnValue(this.buildDefaultPkColumnValue());
-		this.updateModels(this.getUniqueConstraints());
+		this.updateModels(this.getUniqueConstraints(), monitor);
 	}
 
 

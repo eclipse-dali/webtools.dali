@@ -70,9 +70,9 @@ public class GenericPersistence
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getPersistenceUnits());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getPersistenceUnits(), monitor);
 		this.updateStructureChildren();
 	}
 

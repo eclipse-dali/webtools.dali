@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -78,9 +79,9 @@ public abstract class AbstractJarFileRef
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateJarFile();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateJarFile(monitor);
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -175,7 +176,7 @@ public abstract class AbstractJarFileRef
 	 * file is still present, we can <code>sync</code> it. Of course, it might
 	 * still be obsolete if other things have changed....
 	 * 
-	 * @see #updateJarFile()
+	 * @see #updateJarFile(IProgressMonitor)
 	 */
 	protected void syncJarFile() {
 		if (this.jarFile != null) {
@@ -186,7 +187,7 @@ public abstract class AbstractJarFileRef
 	/**
 	 * @see #syncJarFile()
 	 */
-	protected void updateJarFile() {
+	protected void updateJarFile(IProgressMonitor monitor) {
 		JavaResourcePackageFragmentRoot jrpfr = this.resolveJavaResourcePackageFragmentRoot();
 		if (jrpfr == null) {
 			if (this.jarFile != null) {
@@ -197,7 +198,7 @@ public abstract class AbstractJarFileRef
 				this.setJarFile(this.buildJarFile(jrpfr));
 			} else {
 				if (this.jarFile.getJarResourcePackageFragmentRoot() == jrpfr) {
-					this.jarFile.update();
+					this.jarFile.update(monitor);
 				} else {
 					this.setJarFile(this.buildJarFile(jrpfr));
 				}

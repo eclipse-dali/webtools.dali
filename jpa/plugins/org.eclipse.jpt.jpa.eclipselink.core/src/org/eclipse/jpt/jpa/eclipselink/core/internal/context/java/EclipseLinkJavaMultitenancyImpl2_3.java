@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -101,15 +102,15 @@ public class EclipseLinkJavaMultitenancyImpl2_3
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getSpecifiedTenantDiscriminatorColumns());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getSpecifiedTenantDiscriminatorColumns(), monitor);
 		this.setSpecifiedMultitenant_(this.isMultitenantAnnotationSpecified());
 		this.setDefaultMultitenant(this.buildDefaultMultitenant());
 		this.setDefaultType(this.buildDefaultType());
 		this.setDefaultIncludeCriteria(this.buildDefaultIncludeCriteria());
 		this.setSpecifiedTenantDiscriminatorColumnsAllowed(this.buildSpecifiedTenantDiscriminatorColumnsAllowed());
-		this.updateDefaultTenantDiscriminatorColumns();
+		this.updateDefaultTenantDiscriminatorColumns(monitor);
 	}
 
 
@@ -366,8 +367,8 @@ public class EclipseLinkJavaMultitenancyImpl2_3
 	 * tenant discriminator columns.
 	 * @see #getTenantDiscriminatorColumnsForDefaults()
 	 */
-	protected void updateDefaultTenantDiscriminatorColumns() {
-		this.defaultTenantDiscriminatorColumnContainer.update();
+	protected void updateDefaultTenantDiscriminatorColumns(IProgressMonitor monitor) {
+		this.defaultTenantDiscriminatorColumnContainer.update(monitor);
 	}
 
 	protected EclipseLinkVirtualTenantDiscriminatorColumn2_3 buildVirtualTenantDiscriminatorColumn(EclipseLinkTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {

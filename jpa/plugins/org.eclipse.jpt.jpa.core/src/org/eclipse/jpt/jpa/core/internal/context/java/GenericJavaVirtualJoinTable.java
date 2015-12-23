@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -58,10 +59,10 @@ public class GenericJavaVirtualJoinTable
 	// ********** synchronize/update **********
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateSpecifiedInverseJoinColumns();
-		this.updateDefaultInverseJoinColumn();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateSpecifiedInverseJoinColumns(monitor);
+		this.updateDefaultInverseJoinColumn(monitor);
 	}
 
 
@@ -94,8 +95,8 @@ public class GenericJavaVirtualJoinTable
 		return this.specifiedInverseJoinColumnContainer.get(index);
 	}
 
-	protected void updateSpecifiedInverseJoinColumns() {
-		this.specifiedInverseJoinColumnContainer.update();
+	protected void updateSpecifiedInverseJoinColumns(IProgressMonitor monitor) {
+		this.specifiedInverseJoinColumnContainer.update(monitor);
 	}
 
 	protected ListIterable<JoinColumn> getOverriddenInverseJoinColumns() {
@@ -158,12 +159,12 @@ public class GenericJavaVirtualJoinTable
 		return (this.defaultInverseJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultInverseJoinColumn() {
+	protected void updateDefaultInverseJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultInverseJoinColumn()) {
 			if (this.defaultInverseJoinColumn == null) {
 				this.setDefaultInverseJoinColumn(this.buildInverseJoinColumn(this.getOverriddenTable().getDefaultInverseJoinColumn()));
 			} else {
-				this.defaultInverseJoinColumn.update();
+				this.defaultInverseJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultInverseJoinColumn(null);

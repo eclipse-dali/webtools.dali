@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
@@ -55,10 +56,10 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getSpecifiedJoinColumns());
-		this.updateDefaultJoinColumn();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getSpecifiedJoinColumns(), monitor);
+		this.updateDefaultJoinColumn(monitor);
 	}
 
 
@@ -185,12 +186,12 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		return (this.defaultJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultJoinColumn() {
+	protected void updateDefaultJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultJoinColumn()) {
 			if (this.defaultJoinColumn == null) {
 				this.setDefaultJoinColumn(this.buildJoinColumn(this.buildNullJoinColumnAnnotation()));
 			} else {
-				this.defaultJoinColumn.update();
+				this.defaultJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultJoinColumn(null);

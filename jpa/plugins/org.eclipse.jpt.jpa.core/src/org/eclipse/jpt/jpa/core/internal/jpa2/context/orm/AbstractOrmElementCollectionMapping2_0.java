@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -225,29 +226,29 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setDefaultTargetClass(this.buildDefaultTargetClass());
 		this.setFullyQualifiedTargetClass(this.buildFullyQualifiedTargetClass());
 		this.setDefaultFetch(this.buildDefaultFetch());
-		this.orderable.update();
-		this.collectionTable.update();
+		this.orderable.update(monitor);
+		this.collectionTable.update(monitor);
 
 		this.setValueType(this.buildValueType());
-		this.valueColumn.update();
-		this.converter.update();
-		this.valueAttributeOverrideContainer.update();
-		this.valueAssociationOverrideContainer.update();
+		this.valueColumn.update(monitor);
+		this.converter.update(monitor);
+		this.valueAttributeOverrideContainer.update(monitor);
+		this.valueAssociationOverrideContainer.update(monitor);
 
 		this.setKeyType(this.buildKeyType());
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
 
-		this.mapKeyColumn.update();
-		this.mapKeyConverter.update();
-		this.mapKeyAttributeOverrideContainer.update();
-		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
-		this.updateDefaultMapKeyJoinColumn();
+		this.mapKeyColumn.update(monitor);
+		this.mapKeyConverter.update(monitor);
+		this.mapKeyAttributeOverrideContainer.update(monitor);
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns(), monitor);
+		this.updateDefaultMapKeyJoinColumn(monitor);
 	}
 
 
@@ -1156,12 +1157,12 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return (this.defaultMapKeyJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultMapKeyJoinColumn() {
+	protected void updateDefaultMapKeyJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultMapKeyJoinColumn()) {
 			if (this.defaultMapKeyJoinColumn == null) {
 				this.setDefaultMapKeyJoinColumn(this.buildMapKeyJoinColumn(null));
 			} else {
-				this.defaultMapKeyJoinColumn.update();
+				this.defaultMapKeyJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultMapKeyJoinColumn(null);

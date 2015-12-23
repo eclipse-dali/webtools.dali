@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -61,9 +62,9 @@ public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends 
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getHints());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getHints(), monitor);
 	}
 
 

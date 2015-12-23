@@ -146,7 +146,7 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Big performance enhancement! 
 	 * Use with caution since this contains no duplicates (e.g. class is listed in 2 different mappings files)
-	 * Rebuilt at the *beginning* of {@link #update()}
+	 * Rebuilt at the *beginning* of {@link #update(IProgressMonitor)}
 	 * 
 	 * @see #rebuildManagedTypeMap()
 	 */
@@ -275,8 +275,8 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
 		//Rebuild the managed type map first. I *think* if anything changes to cause 
 		//this to be out of sync another update would be triggered by that change.
@@ -287,18 +287,18 @@ public abstract class AbstractPersistenceUnit
 		// update specified class refs before mapping file refs because of
 		// JpaFile root structure nodes - we want the mapping file to "win",
 		// as it would in a JPA runtime implementation
-		this.updateModels(this.getSpecifiedClassRefs());
+		this.updateModels(this.getSpecifiedClassRefs(), monitor);
 
-		this.updateModels(this.getSpecifiedMappingFileRefs());
-		this.updateImpliedMappingFileRef();
+		this.updateModels(this.getSpecifiedMappingFileRefs(), monitor);
+		this.updateImpliedMappingFileRef(monitor);
 
-		this.updateModels(this.getJarFileRefs());
+		this.updateModels(this.getJarFileRefs(), monitor);
 
 		// update the implied class refs after all the other types, both
 		// specified here and specified in the mapping files, are in place
-		this.updateImpliedClassRefs();
+		this.updateImpliedClassRefs(monitor);
 
-		this.updateModels(this.getProperties());
+		this.updateModels(this.getProperties(), monitor);
 
 		this.updatePersistenceUnitMetadata();
 
@@ -656,10 +656,10 @@ public abstract class AbstractPersistenceUnit
 		this.potentialImpliedMappingFileRef.synchronizeWithResourceModel();
 	}
 
-	protected void updateImpliedMappingFileRef() {
+	protected void updateImpliedMappingFileRef(IProgressMonitor monitor) {
 		if (this.usesImpliedMappingFile()) {
 			this.setImpliedMappingFileRef(this.potentialImpliedMappingFileRef);
-			this.impliedMappingFileRef.update();
+			this.impliedMappingFileRef.update(monitor);
 		} else {
 			this.setImpliedMappingFileRef(null);
 		}
@@ -892,8 +892,8 @@ public abstract class AbstractPersistenceUnit
 		return this.getContextModelFactory().buildClassRef(this, jrat);
 	}
 
-	protected void updateImpliedClassRefs() {
-		this.impliedClassRefContainer.update();
+	protected void updateImpliedClassRefs(IProgressMonitor monitor) {
+		this.impliedClassRefContainer.update(monitor);
 	}
 
 	protected Iterable<JavaResourceAbstractType> getImpliedClassResourceTypes() {

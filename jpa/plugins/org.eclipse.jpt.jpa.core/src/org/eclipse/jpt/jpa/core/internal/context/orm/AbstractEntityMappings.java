@@ -177,21 +177,21 @@ public abstract class AbstractEntityMappings
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
 		this.setDefaultSchema(this.buildDefaultSchema());
 
-		this.persistenceUnitMetadata.update();
+		this.persistenceUnitMetadata.update(monitor);
 
-		this.updateModels(this.getManagedTypes());
+		this.updateModels(this.getManagedTypes(), monitor);
 
-		this.updateModels(this.getSequenceGenerators());
-		this.updateModels(this.getTableGenerators());
+		this.updateModels(this.getSequenceGenerators(), monitor);
+		this.updateModels(this.getTableGenerators(), monitor);
 
-		this.queryContainer.update();
+		this.queryContainer.update(monitor);
 		this.updateStructureChildren();
 	}
 

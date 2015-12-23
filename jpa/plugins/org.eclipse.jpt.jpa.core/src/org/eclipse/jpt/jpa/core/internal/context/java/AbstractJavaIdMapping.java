@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
@@ -91,14 +92,14 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.column.update();
-		this.generatorContainer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.column.update(monitor);
+		this.generatorContainer.update(monitor);
 		if (this.generatedValue != null) {
-			this.generatedValue.update();
+			this.generatedValue.update(monitor);
 		}
-		this.converter.update();
+		this.converter.update(monitor);
 		this.setDerived(this.buildDerived());
 	}
 

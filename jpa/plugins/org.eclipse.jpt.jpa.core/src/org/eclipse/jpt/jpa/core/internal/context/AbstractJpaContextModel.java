@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -61,16 +63,18 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		}
 	}
 
-	public void update() {
-		// NOP
+	public void update(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 	}
 
 	/**
 	 * convenience method
 	 */
-	protected void updateModels(Iterable<? extends JpaContextModel> models) {
+	protected void updateModels(Iterable<? extends JpaContextModel> models, IProgressMonitor monitor) {
 		for (JpaContextModel model : models) {
-			model.update();
+			model.update(monitor);
 		}
 	}
 
@@ -444,14 +448,14 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		 * </ul>
 		 */
 		public void synchronizeWithResourceModel() {
-			this.sync(true);  // true = sync
+			this.sync(true, null);  // true = sync
 		}
 
 		/**
 		 * @see #synchronizeWithResourceModel()
 		 */
-		public void update() {
-			this.sync(false);  // false = update
+		public void update(IProgressMonitor monitor) {
+			this.sync(false, monitor);  // false = update
 		}
 
 		/**
@@ -459,7 +463,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		 * context nodes are either <em>synchronized</em> (<code>true</code>) or
 		 * <em>updated</em> (<code>false</code>).
 		 */
-		protected void sync(boolean sync) {
+		protected void sync(boolean sync, IProgressMonitor monitor) {
 			@SuppressWarnings("unchecked")
 			HashSet<C> contextElements = (HashSet<C>) CollectionTools.hashSet(this.elements.toArray());
 			ArrayList<C> contextElementsToSync = new ArrayList<C>(contextElements.size());
@@ -503,7 +507,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 				if (sync) {
 					contextElement.synchronizeWithResourceModel();
 				} else {
-					contextElement.update();
+					contextElement.update(monitor);
 				}
 			}
 		}

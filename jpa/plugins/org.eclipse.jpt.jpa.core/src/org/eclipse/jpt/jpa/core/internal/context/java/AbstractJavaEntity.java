@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -187,8 +188,8 @@ public abstract class AbstractJavaEntity
 	}
 	
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		
 		this.setDefaultName(this.buildDefaultName());
 		
@@ -198,16 +199,16 @@ public abstract class AbstractJavaEntity
 		
 		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
 		
-		this.table.update();
+		this.table.update(monitor);
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
 		
-		this.updateModels(this.getSecondaryTables());
+		this.updateModels(this.getSecondaryTables(), monitor);
 		
-		this.updateDefaultPrimaryKeyJoinColumn();
-		this.updateModels(this.getPrimaryKeyJoinColumns());
+		this.updateDefaultPrimaryKeyJoinColumn(monitor);
+		this.updateModels(this.getPrimaryKeyJoinColumns(), monitor);
 		
-		this.discriminatorColumn.update();
+		this.discriminatorColumn.update(monitor);
 		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 		
@@ -215,11 +216,11 @@ public abstract class AbstractJavaEntity
 		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
 		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
 		
-		this.attributeOverrideContainer.update();
-		this.associationOverrideContainer.update();
+		this.attributeOverrideContainer.update(monitor);
+		this.associationOverrideContainer.update(monitor);
 		
-		this.generatorContainer.update();
-		this.queryContainer.update();
+		this.generatorContainer.update(monitor);
+		this.queryContainer.update(monitor);
 	}
 	
 
@@ -612,12 +613,12 @@ public abstract class AbstractJavaEntity
 		return (this.defaultPrimaryKeyJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultPrimaryKeyJoinColumn() {
+	protected void updateDefaultPrimaryKeyJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultPrimaryKeyJoinColumn()) {
 			if (this.defaultPrimaryKeyJoinColumn == null) {
 				this.setDefaultPrimaryKeyJoinColumn(this.buildDefaultPrimaryKeyJoinColumn());
 			} else {
-				this.defaultPrimaryKeyJoinColumn.update();
+				this.defaultPrimaryKeyJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultPrimaryKeyJoinColumn(null);

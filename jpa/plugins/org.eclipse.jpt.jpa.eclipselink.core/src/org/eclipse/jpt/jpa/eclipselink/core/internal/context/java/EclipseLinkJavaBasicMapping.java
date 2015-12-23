@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -66,13 +67,13 @@ public class EclipseLinkJavaBasicMapping
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.mutable.update();
-		this.converterContainer.update();
-		this.generatorContainer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.mutable.update(monitor);
+		this.converterContainer.update(monitor);
+		this.generatorContainer.update(monitor);
 		if (this.generatedValue != null) {
-			this.generatedValue.update();
+			this.generatedValue.update(monitor);
 		}
 	}
 

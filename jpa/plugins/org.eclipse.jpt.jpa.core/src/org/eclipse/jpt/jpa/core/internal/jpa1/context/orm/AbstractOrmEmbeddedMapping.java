@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -78,9 +79,9 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.associationOverrideContainer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.associationOverrideContainer.update(monitor);
 	}
 
 

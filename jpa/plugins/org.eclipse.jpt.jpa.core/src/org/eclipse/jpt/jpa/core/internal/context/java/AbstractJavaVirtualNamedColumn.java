@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -25,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <li>column
  * <li>join column
  * </ul>
- * <strong>NB:</strong> all state is sync'ed/updated in {@link #update()}
+ * <strong>NB:</strong> all state is sync'ed/updated in {@link #update(IProgressMonitor)}
  * because <em>all</em> of it is derived from the context model (i.e. none of it
  * is derived from the resource model).
  */
@@ -51,8 +52,8 @@ public abstract class AbstractJavaVirtualNamedColumn<PA extends NamedColumn.Pare
 	// ********** synchronize/update **********
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
 		this.setSpecifiedName(this.buildSpecifiedName());
 		this.setDefaultName(this.buildDefaultName());

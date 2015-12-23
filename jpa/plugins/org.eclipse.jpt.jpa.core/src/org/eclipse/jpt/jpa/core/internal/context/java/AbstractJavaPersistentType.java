@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -94,11 +95,11 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setDefaultAccess(this.buildDefaultAccess());
-		this.mapping.update();
-		this.updateAttributes();
+		this.mapping.update(monitor);
+		this.updateAttributes(monitor);
 		this.updateStructureChildren();
 	}
 	
@@ -490,12 +491,12 @@ public abstract class AbstractJavaPersistentType
 	 * the list of resource attributes is determined by the access type
 	 * which can be controlled in a number of different places....
 	 */
-	protected void updateAttributes() {
+	protected void updateAttributes(IProgressMonitor monitor) {
 		if (this.getAccess() == AccessType.FIELD) {
-			this.syncFieldAccessAttributes();
+			this.syncFieldAccessAttributes(monitor);
 		}
 		else if (this.getAccess() == AccessType.PROPERTY) {
-			this.syncPropertyAccessAttributes();
+			this.syncPropertyAccessAttributes(monitor);
 		}
 	}
 
@@ -504,11 +505,11 @@ public abstract class AbstractJavaPersistentType
 	 * 1. all non-transient, non-static fields + annotated fields
 	 * 2. all annotated methods(getters/setters)
 	 */
-	private void syncFieldAccessAttributes() {
+	private void syncFieldAccessAttributes(IProgressMonitor monitor) {
 		HashSet<JavaSpecifiedPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 
-		this.syncFieldAttributes(contextAttributes, JavaResourceField.IS_RELEVANT_FOR_FIELD_ACCESS);
-		this.syncAnnotatedPropertyAttributes(contextAttributes);
+		this.syncFieldAttributes(contextAttributes, JavaResourceField.IS_RELEVANT_FOR_FIELD_ACCESS, monitor);
+		this.syncAnnotatedPropertyAttributes(contextAttributes, monitor);
 	}
 
 	/**
@@ -517,10 +518,10 @@ public abstract class AbstractJavaPersistentType
 	 * 2. all annotated fields
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
-	private void syncPropertyAccessAttributes() {
+	private void syncPropertyAccessAttributes(IProgressMonitor monitor) {
 		HashSet<JavaSpecifiedPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 
-		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
+		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED, monitor);
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
@@ -532,7 +533,7 @@ public abstract class AbstractJavaPersistentType
 					JavaSpecifiedPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(getterMethod, setterMethod)) {
 						match = true;
-						contextAttribute.update();
+						contextAttribute.update(monitor);
 						stream.remove();
 						break;
 					}
@@ -544,10 +545,10 @@ public abstract class AbstractJavaPersistentType
 			resourceMethods.remove(getterMethod);
 			resourceMethods.remove(setterMethod);
 		}
-		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
+		this.syncRemainingResourceMethods(contextAttributes, resourceMethods, monitor);
 	}
 
-	private void syncAnnotatedPropertyAttributes(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes) {
+	private void syncAnnotatedPropertyAttributes(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes, IProgressMonitor monitor) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getResourcePropertyGetters()) {
@@ -558,7 +559,7 @@ public abstract class AbstractJavaPersistentType
 					JavaSpecifiedPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(getterMethod, setterMethod)) {
 						match = true;
-						contextAttribute.update();
+						contextAttribute.update(monitor);
 						stream.remove();
 						break;
 					}
@@ -570,17 +571,17 @@ public abstract class AbstractJavaPersistentType
 			resourceMethods.remove(getterMethod);
 			resourceMethods.remove(setterMethod);
 		}
-		this.syncRemainingResourceMethods(contextAttributes, resourceMethods);
+		this.syncRemainingResourceMethods(contextAttributes, resourceMethods, monitor);
 	}
 
-	private void syncFieldAttributes(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes, Predicate<? super JavaResourceField> filter) {
+	private void syncFieldAttributes(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes, Predicate<? super JavaResourceField> filter, IProgressMonitor monitor) {
 		for (JavaResourceField resourceField : this.getResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<JavaSpecifiedPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
 				JavaSpecifiedPersistentAttribute contextAttribute = stream.next();
 				if (contextAttribute.isFor(resourceField)) {
 					match = true;
-					contextAttribute.update();
+					contextAttribute.update(monitor);
 					stream.remove();
 					break;
 				}
@@ -594,7 +595,7 @@ public abstract class AbstractJavaPersistentType
 		}
 	}
 
-	private void syncRemainingResourceMethods(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
+	private void syncRemainingResourceMethods(HashSet<JavaSpecifiedPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods, IProgressMonitor monitor) {
 		//iterate through remaining resource methods and search for those that are annotated.
 		//all getter methods will already be used.
 		for (JavaResourceMethod resourceMethod : resourceMethods) {
@@ -605,7 +606,7 @@ public abstract class AbstractJavaPersistentType
 					JavaSpecifiedPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(null, resourceMethod)) {
 						match = true;
-						contextAttribute.update();
+						contextAttribute.update(monitor);
 						stream.remove();
 						break;
 					}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -217,8 +218,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 	
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		
 		this.setDefaultName(this.buildDefaultName());
 		
@@ -228,17 +229,17 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		
 		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
 		
-		this.table.update();
+		this.table.update(monitor);
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
 		
-		this.updateVirtualSecondaryTables();
-		this.updateModels(this.getSecondaryTables());
+		this.updateVirtualSecondaryTables(monitor);
+		this.updateModels(this.getSecondaryTables(), monitor);
 		
-		this.updateDefaultPrimaryKeyJoinColumns();
-		this.updateModels(this.getPrimaryKeyJoinColumns());
+		this.updateDefaultPrimaryKeyJoinColumns(monitor);
+		this.updateModels(this.getPrimaryKeyJoinColumns(), monitor);
 		
-		this.discriminatorColumn.update();
+		this.discriminatorColumn.update(monitor);
 		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 		
@@ -246,11 +247,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
 		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
 		
-		this.attributeOverrideContainer.update();
-		this.associationOverrideContainer.update();
+		this.attributeOverrideContainer.update(monitor);
+		this.associationOverrideContainer.update(monitor);
 		
-		this.generatorContainer.update();
-		this.queryContainer.update();
+		this.generatorContainer.update(monitor);
+		this.queryContainer.update(monitor);
 	}
 	
 
@@ -590,8 +591,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * secondary tables.
 	 * @see #getJavaSecondaryTablesForVirtuals()
 	 */
-	protected void updateVirtualSecondaryTables() {
-		this.virtualSecondaryTableContainer.update();
+	protected void updateVirtualSecondaryTables(IProgressMonitor monitor) {
+		this.virtualSecondaryTableContainer.update(monitor);
 	}
 
 	protected ListIterable<JavaSpecifiedSecondaryTable> getJavaSecondaryTablesForVirtuals() {
@@ -863,7 +864,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * pk join columns.
 	 * Otherwise, there is a single, spec-defined, default pk join column.
 	 */
-	protected void updateDefaultPrimaryKeyJoinColumns() {
+	protected void updateDefaultPrimaryKeyJoinColumns(IProgressMonitor monitor) {
 		if (this.getSpecifiedPrimaryKeyJoinColumnsSize() > 0) {
 			// specified/java/default => specified
 			this.clearDefaultPrimaryKeyJoinColumns();
@@ -891,7 +892,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				} else {
 					if (this.javaPrimaryKeyJoinColumnsWillBeDefaults()) {
 						// java => java ("normal" update)
-						this.updateVirtualPrimaryKeyJoinColumns();
+						this.updateVirtualPrimaryKeyJoinColumns(monitor);
 					} else {
 						// java => default
 						this.clearVirtualPrimaryKeyJoinColumns();
@@ -902,8 +903,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 	}
 
-	protected void updateVirtualPrimaryKeyJoinColumns() {
-		ContextContainerTools.update(this.virtualPrimaryKeyJoinColumnContainerAdapter);
+	protected void updateVirtualPrimaryKeyJoinColumns(IProgressMonitor monitor) {
+		ContextContainerTools.update(this.virtualPrimaryKeyJoinColumnContainerAdapter, monitor);
 	}
 
 	/**

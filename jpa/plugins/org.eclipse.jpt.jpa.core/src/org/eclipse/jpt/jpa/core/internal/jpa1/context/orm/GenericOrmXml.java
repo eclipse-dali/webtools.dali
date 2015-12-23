@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.JptResourceType;
@@ -101,20 +102,20 @@ public class GenericOrmXml
 	}
 
 	protected void syncEntityMappings() {
-		this.syncEntityMappings(true);
+		this.syncEntityMappings(true, null);
 	}
 
 	/**
-	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#update()
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#update(IProgressMonitor)
 	 */
 	@Override
-	public void update() {
-		super.update();
-		this.updateEntityMappings();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateEntityMappings(monitor);
 	}
 
-	protected void updateEntityMappings() {
-		this.syncEntityMappings(false);
+	protected void updateEntityMappings(IProgressMonitor monitor) {
+		this.syncEntityMappings(false, monitor);
 	}
 
 	/**
@@ -127,7 +128,7 @@ public class GenericOrmXml
 	 * <li>an <em>update</em> will occur whenever the JPA file is added or removed: 
 	 *     when resource contents replaced from history EMF unloads the resource.
 	 */
-	protected void syncEntityMappings(boolean sync) {
+	protected void syncEntityMappings(boolean sync, IProgressMonitor monitor) {
 		XmlEntityMappings oldXmlEntityMappings = (this.root == null) ? null : this.root.getXmlEntityMappings();
 		XmlEntityMappings newXmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
 		JptResourceType newResourceType = this.xmlResource.getResourceType();
@@ -155,7 +156,7 @@ public class GenericOrmXml
 					this.root.synchronizeWithResourceModel();
 				}
 				else {
-					this.root.update();
+					this.root.update(monitor);
 				}
 			}
 		}

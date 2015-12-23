@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -63,11 +64,11 @@ public class EclipseLinkJavaEmbeddableImpl
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.converterContainer.update();
-		this.changeTracking.update();
-		this.customizer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.converterContainer.update(monitor);
+		this.changeTracking.update(monitor);
+		this.customizer.update(monitor);
 	}
 
 

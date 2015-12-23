@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -113,10 +114,10 @@ public class VirtualOrmPersistentAttribute
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.updateOriginalJavaAttribute();
-		this.updateLocalJavaAttributes();
+		this.updateLocalJavaAttributes(monitor);
 		this.setMapping(this.buildMapping());
 	}
 
@@ -194,10 +195,10 @@ public class VirtualOrmPersistentAttribute
 		}
 	}
 
-	protected void updateLocalJavaAttributes() {
-		this.annotatedJavaAttribute.update();
+	protected void updateLocalJavaAttributes(IProgressMonitor monitor) {
+		this.annotatedJavaAttribute.update(monitor);
 		if (this.unannotatedJavaAttribute != null) {
-			this.unannotatedJavaAttribute.update();
+			this.unannotatedJavaAttribute.update(monitor);
 		}
 	}
 

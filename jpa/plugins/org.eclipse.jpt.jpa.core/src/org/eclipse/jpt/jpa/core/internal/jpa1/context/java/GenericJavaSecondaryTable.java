@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
@@ -63,10 +64,10 @@ public class GenericJavaSecondaryTable
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getSpecifiedPrimaryKeyJoinColumns());
-		this.updateDefaultPrimaryKeyJoinColumn();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getSpecifiedPrimaryKeyJoinColumns(), monitor);
+		this.updateDefaultPrimaryKeyJoinColumn(monitor);
 	}
 
 
@@ -229,12 +230,12 @@ public class GenericJavaSecondaryTable
 		return (this.defaultPrimaryKeyJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultPrimaryKeyJoinColumn() {
+	protected void updateDefaultPrimaryKeyJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultPrimaryKeyJoinColumn()) {
 			if (this.defaultPrimaryKeyJoinColumn == null) {
 				this.setDefaultPrimaryKeyJoinColumn(this.buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumnAnnotation(this.tableAnnotation)));
 			} else {
-				this.defaultPrimaryKeyJoinColumn.update();
+				this.defaultPrimaryKeyJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultPrimaryKeyJoinColumn(null);

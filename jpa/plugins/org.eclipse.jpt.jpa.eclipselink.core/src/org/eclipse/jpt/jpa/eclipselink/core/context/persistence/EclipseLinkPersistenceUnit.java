@@ -138,8 +138,8 @@ public class EclipseLinkPersistenceUnit
 	// ********** synchronize/update **********
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setConverters(this.buildConverters());
 
 		EclipseLinkOrmPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
@@ -330,12 +330,12 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
-	protected void updateImpliedMappingFileRef() {
-		super.updateImpliedMappingFileRef();
+	protected void updateImpliedMappingFileRef(IProgressMonitor monitor) {
+		super.updateImpliedMappingFileRef(monitor);
 
 		if (this.usesImpliedEclipseLinkMappingFile()) {
 			this.setImpliedEclipseLinkMappingFileRef(this.potentialImpliedEclipseLinkMappingFileRef);
-			this.impliedEclipseLinkMappingFileRef.update();
+			this.impliedEclipseLinkMappingFileRef.update(monitor);
 		} else {
 			this.setImpliedEclipseLinkMappingFileRef(null);
 		}

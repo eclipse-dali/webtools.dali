@@ -1,15 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2013  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -54,9 +55,9 @@ public abstract class AbstractOrmIdTypeMapping<X extends XmlIdTypeMapping>
 	}
 	
 	@Override
-	public void update() {
-		super.update();
-		this.idClassReference.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.idClassReference.update(monitor);
 		setSuperTypeMapping_(findSuperTypeMapping());
 	}
 	

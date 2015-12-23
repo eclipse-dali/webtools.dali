@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
@@ -48,9 +49,9 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateJoinTable();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateJoinTable(monitor);
 	}
 
 
@@ -66,12 +67,12 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy<P extends OrmJoin
 		this.firePropertyChanged(JOIN_TABLE_PROPERTY, old, joinTable);
 	}
 
-	protected void updateJoinTable() {
+	protected void updateJoinTable(IProgressMonitor monitor) {
 		if (this.buildsJoinTable()) {
 			if (this.joinTable == null) {
 				this.setJoinTable(this.buildJoinTable());
 			} else {
-				this.joinTable.update();
+				this.joinTable.update(monitor);
 			}
 		} else {
 			if (this.joinTable != null) {

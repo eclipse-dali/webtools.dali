@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jpt.common.core.internal.utility.TypeTools;
@@ -103,10 +104,10 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.updateJpaContainerDefinition();
-		this.updateMapping();
+		this.updateMapping(monitor);
 	}
 
 	public void addRootStructureNodesTo(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
@@ -410,7 +411,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 * A default mapping may depend on another resource, and the specified mapping
 	 * may depend on the default mapping, so we must analyze both here.
 	 */
-	protected void updateMapping() {
+	protected void updateMapping(IProgressMonitor monitor) {
 		JavaAttributeMappingDefinition newDefinition = null;
 		
 		JavaAttributeMappingDefinition defaultDefinition = this.getDefaultMappingDefinition();
@@ -437,7 +438,7 @@ public abstract class AbstractJavaPersistentAttribute
 			this.setMapping(this.buildMapping(newDefinition));
 		}
 		else {
-			this.mapping.update();
+			this.mapping.update(monitor);
 		}
 	}
 

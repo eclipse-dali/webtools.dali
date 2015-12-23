@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
@@ -78,14 +79,14 @@ public class ContextContainerTools {
 	 * </ul>
 	 */
 	public static <C extends JpaContextModel, R> void synchronizeWithResourceModel(Adapter<C, R> adapter) {
-		sync(adapter, true);  // true = sync
+		sync(adapter, true, null);  // true = sync
 	}
 
 	/**
 	 * @see #synchronizeWithResourceModel(Adapter)
 	 */
-	public static <C extends JpaContextModel, R> void update(Adapter<C, R> adapter) {
-		sync(adapter, false);  // false = update
+	public static <C extends JpaContextModel, R> void update(Adapter<C, R> adapter, IProgressMonitor monitor) {
+		sync(adapter, false, monitor);  // false = update
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class ContextContainerTools {
 	 * context nodes are either <em>synchronized</em> (<code>true</code>) or
 	 * <em>updated</em> (<code>false</code>).
 	 */
-	protected static <C extends JpaContextModel, R> void sync(Adapter<C, R> adapter, boolean sync) {
+	protected static <C extends JpaContextModel, R> void sync(Adapter<C, R> adapter, boolean sync, IProgressMonitor monitor) {
 		HashSet<C> contextElements = CollectionTools.hashSet(adapter.getContextElements());
 		ArrayList<C> contextElementsToSync = new ArrayList<C>(contextElements.size());
 		int resourceIndex = 0;
@@ -136,7 +137,7 @@ public class ContextContainerTools {
 			if (sync) {
 				contextElement.synchronizeWithResourceModel();
 			} else {
-				contextElement.update();
+				contextElement.update(monitor);
 			}
 		}
 	}

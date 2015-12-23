@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -66,9 +67,9 @@ public class GenericJarFile
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getJavaManagedTypes());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getJavaManagedTypes(), monitor);
 	}
 
 	public JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot() {

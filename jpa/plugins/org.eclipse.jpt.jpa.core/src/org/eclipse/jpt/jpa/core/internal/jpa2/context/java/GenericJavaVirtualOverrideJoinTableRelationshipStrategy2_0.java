@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
@@ -41,9 +42,9 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateJoinTable();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateJoinTable(monitor);
 	}
 
 
@@ -59,7 +60,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 		this.firePropertyChanged(JOIN_TABLE_PROPERTY, old, joinTable);
 	}
 
-	protected void updateJoinTable() {
+	protected void updateJoinTable(IProgressMonitor monitor) {
 		JoinTable overriddenJoinTable = this.getOverriddenJoinTable();
 		if (overriddenJoinTable == null) {
 			if (this.joinTable != null) {
@@ -67,7 +68,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 			}
 		} else {
 			if ((this.joinTable != null) && (this.joinTable.getOverriddenTable() == overriddenJoinTable)) {
-				this.joinTable.update();
+				this.joinTable.update(monitor);
 			} else {
 				this.setJoinTable(this.buildJoinTable(overriddenJoinTable));
 			}

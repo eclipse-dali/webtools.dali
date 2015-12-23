@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java;
 
 import java.util.ArrayList;
 import java.util.Vector;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -64,9 +65,9 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getParameters());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getParameters(), monitor);
 	}
 
 

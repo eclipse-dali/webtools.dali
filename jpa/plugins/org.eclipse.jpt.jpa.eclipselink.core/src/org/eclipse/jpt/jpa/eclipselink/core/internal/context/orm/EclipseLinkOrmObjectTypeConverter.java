@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
@@ -72,11 +73,11 @@ public class EclipseLinkOrmObjectTypeConverter
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setFullyQualifiedDataType(this.buildFullyQualifiedDataType());
 		this.setFullyQualifiedObjectType(this.buildFullyQualifiedObjectType());
-		this.updateModels(this.getConversionValues());
+		this.updateModels(this.getConversionValues(), monitor);
 	}
 
 

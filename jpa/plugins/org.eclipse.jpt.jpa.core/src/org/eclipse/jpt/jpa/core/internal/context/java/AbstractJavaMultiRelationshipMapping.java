@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -159,10 +160,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 
-		this.orderable.update();
+		this.orderable.update(monitor);
 
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
@@ -170,12 +171,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.setValueType(this.buildValueType());
 		this.setKeyType(this.buildKeyType());
 
-		this.mapKeyColumn.update();
-		this.mapKeyConverter.update();
-		this.updateModels(this.getSpecifiedMapKeyJoinColumns());
-		this.updateDefaultMapKeyJoinColumn();
+		this.mapKeyColumn.update(monitor);
+		this.mapKeyConverter.update(monitor);
+		this.updateModels(this.getSpecifiedMapKeyJoinColumns(), monitor);
+		this.updateDefaultMapKeyJoinColumn(monitor);
 
-		this.mapKeyAttributeOverrideContainer.update();
+		this.mapKeyAttributeOverrideContainer.update(monitor);
 	}
 
 
@@ -790,12 +791,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		return (this.defaultMapKeyJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultMapKeyJoinColumn() {
+	protected void updateDefaultMapKeyJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultMapKeyJoinColumn()) {
 			if (this.defaultMapKeyJoinColumn == null) {
 				this.setDefaultMapKeyJoinColumn(this.buildMapKeyJoinColumn(this.buildNullMapKeyJoinColumnAnnotation()));
 			} else {
-				this.defaultMapKeyJoinColumn.update();
+				this.defaultMapKeyJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultMapKeyJoinColumn(null);

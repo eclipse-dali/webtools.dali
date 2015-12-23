@@ -73,9 +73,9 @@ public class GenericContextRoot
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updatePersistenceXml();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updatePersistenceXml(monitor);
 	}
 
 
@@ -97,7 +97,7 @@ public class GenericContextRoot
 	}
 
 	protected void syncPersistenceXml() {
-		this.syncPersistenceXml(true);
+		this.syncPersistenceXml(true, null);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class GenericContextRoot
 	 *     removed
 	 * </ul>
 	 */
-	protected void syncPersistenceXml(boolean sync) {
+	protected void syncPersistenceXml(boolean sync, IProgressMonitor monitor) {
 		JptXmlResource xmlResource = this.resolvePersistenceXmlResource();
 		if (xmlResource == null) {
 			this.setPersistenceXml(null);
@@ -122,7 +122,7 @@ public class GenericContextRoot
 				if (sync) {
 					this.persistenceXml.synchronizeWithResourceModel();
 				} else {
-					this.persistenceXml.update();
+					this.persistenceXml.update(monitor);
 				}
 			}
 		}
@@ -155,8 +155,8 @@ public class GenericContextRoot
 		return this.getJpaFactory().buildPersistenceXml(this, xmlResource);
 	}
 
-	protected void updatePersistenceXml() {
-		this.syncPersistenceXml(false);
+	protected void updatePersistenceXml(IProgressMonitor monitor) {
+		this.syncPersistenceXml(false, monitor);
 	}
 
 

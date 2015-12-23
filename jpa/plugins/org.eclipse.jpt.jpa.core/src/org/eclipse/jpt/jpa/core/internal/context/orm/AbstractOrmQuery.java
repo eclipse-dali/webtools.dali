@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -64,9 +65,9 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getHints());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getHints(), monitor);
 	}
 
 

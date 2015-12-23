@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.internal.utility.TypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -64,12 +65,12 @@ public class GenericJavaIdClassReference
 	}
 	
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		setDefaultIdClassName_(buildDefaultIdClassName());
 		setIdClassName_(buildIdClassName());
 		setFullyQualifiedIdClassName(buildFullyQualifiedIdClassName());
-		updateIdClass();
+		updateIdClass(monitor);
 	}
 
 
@@ -198,7 +199,7 @@ public class GenericJavaIdClassReference
 		this.firePropertyChanged(ID_CLASS_PROPERTY, old, idClass);
 	}
 
-	protected void updateIdClass() {
+	protected void updateIdClass(IProgressMonitor monitor) {
 		JavaResourceType resourceIdClass = this.resolveResourceIdClass();
 		if (resourceIdClass == null) {
 			if (this.idClass != null) {
@@ -209,7 +210,7 @@ public class GenericJavaIdClassReference
 				this.setIdClass(this.buildIdClass(resourceIdClass));
 			} else {
 				if (this.idClass.getJavaResourceType() == resourceIdClass) {
-					this.idClass.update();
+					this.idClass.update(monitor);
 				} else {
 					this.setIdClass(this.buildIdClass(resourceIdClass));
 				}

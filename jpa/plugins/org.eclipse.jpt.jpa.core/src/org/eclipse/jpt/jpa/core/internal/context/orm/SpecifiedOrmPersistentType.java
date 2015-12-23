@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.resource.xml.EFactoryTools;
@@ -124,12 +125,12 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.mapping.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.mapping.update(monitor);
 		this.setDefaultAccess(this.buildDefaultAccess());
-		this.updateModels(this.getSpecifiedAttributes());
-		this.updateDefaultAttributes();
+		this.updateModels(this.getSpecifiedAttributes(), monitor);
+		this.updateDefaultAttributes(monitor);
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 		this.updateStructureChildren();
 	}
@@ -606,13 +607,13 @@ public abstract class SpecifiedOrmPersistentType
 	 * the list of resource attributes is determined by the access type
 	 * which can be controlled in a number of different places....
 	 */
-	protected void updateDefaultAttributes() {
+	protected void updateDefaultAttributes(IProgressMonitor monitor) {
 		AccessType at = this.getDefaultJavaAccess();
 		if (at == AccessType.FIELD) {
-			this.syncFieldAccessDefaultAttributes();
+			this.syncFieldAccessDefaultAttributes(monitor);
 		}
 		else if (at == AccessType.PROPERTY) {
-			this.syncPropertyAccessDefaultAttributes();
+			this.syncPropertyAccessDefaultAttributes(monitor);
 		}
 	}
 
@@ -622,12 +623,12 @@ public abstract class SpecifiedOrmPersistentType
 	 * <li>all annotated methods (getters/setters)
 	 * </ol>
 	 */
-	private void syncFieldAccessDefaultAttributes() {
+	private void syncFieldAccessDefaultAttributes(IProgressMonitor monitor) {
 		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getDefaultAttributes());
 
-		this.syncFieldDefaultAttributes(contextAttributes, this.buildResourceFieldIsRelevant());
+		this.syncFieldDefaultAttributes(contextAttributes, this.buildResourceFieldIsRelevant(), monitor);
 		if ( ! this.mapping.isMetadataComplete()) {
-			this.syncAnnotatedPropertyDefaultAttributes(contextAttributes);
+			this.syncAnnotatedPropertyDefaultAttributes(contextAttributes, monitor);
 		}
 
 		// remove any leftover context attributes
@@ -643,11 +644,11 @@ public abstract class SpecifiedOrmPersistentType
 	 * <li>all annotated getter/setter methods that don't have a matching pair
 	 * </ol>
 	 */
-	private void syncPropertyAccessDefaultAttributes() {
+	private void syncPropertyAccessDefaultAttributes(IProgressMonitor monitor) {
 		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getDefaultAttributes());
 
 		if ( ! this.mapping.isMetadataComplete()) {
-			this.syncFieldDefaultAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
+			this.syncFieldDefaultAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED, monitor);
 		}
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getJavaResourceMethods());
@@ -661,7 +662,7 @@ public abstract class SpecifiedOrmPersistentType
 						OrmPersistentAttribute contextAttribute = stream.next();
 						if (contextAttribute.isFor(getterMethod, setterMethod)) {
 							match = true;
-							contextAttribute.update();
+							contextAttribute.update(monitor);
 							stream.remove();
 							break;
 						}
@@ -674,7 +675,7 @@ public abstract class SpecifiedOrmPersistentType
 			resourceMethods.remove(getterMethod);
 			resourceMethods.remove(setterMethod);
 		}
-		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods);
+		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods, monitor);
 
 		// remove any leftover context attributes
 		for (OrmPersistentAttribute contextAttribute : contextAttributes) {
@@ -691,7 +692,7 @@ public abstract class SpecifiedOrmPersistentType
 		return (setterMethod != null) || getterMethod.isAnnotated();
 	}
 
-	private void syncAnnotatedPropertyDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes) {
+	private void syncAnnotatedPropertyDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes, IProgressMonitor monitor) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getJavaResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getJavaResourcePropertyGetters()) {
@@ -703,7 +704,7 @@ public abstract class SpecifiedOrmPersistentType
 						OrmPersistentAttribute contextAttribute = stream.next();
 						if (contextAttribute.isFor(getterMethod, setterMethod)) {
 							match = true;
-							contextAttribute.update();
+							contextAttribute.update(monitor);
 							stream.remove();
 							break;
 						}
@@ -716,17 +717,17 @@ public abstract class SpecifiedOrmPersistentType
 			resourceMethods.remove(getterMethod);
 			resourceMethods.remove(setterMethod);
 		}
-		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods);
+		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods, monitor);
 	}
 
-	private void syncFieldDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes, Predicate<? super JavaResourceField> filter) {
+	private void syncFieldDefaultAttributes(HashSet<OrmPersistentAttribute> contextAttributes, Predicate<? super JavaResourceField> filter, IProgressMonitor monitor) {
 		for (JavaResourceField resourceField : this.getDefaultJavaResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<OrmPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
 				OrmPersistentAttribute contextAttribute = stream.next();
 				if (contextAttribute.isFor(resourceField)) {
 					match = true;
-					contextAttribute.update();
+					contextAttribute.update(monitor);
 					stream.remove();
 					break;
 				}
@@ -740,7 +741,7 @@ public abstract class SpecifiedOrmPersistentType
 		}
 	}
 
-	private void syncRemainingResourceDefaultMethods(HashSet<OrmPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
+	private void syncRemainingResourceDefaultMethods(HashSet<OrmPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods, IProgressMonitor monitor) {
 		//iterate through remaining resource methods and search for those that are annotated.
 		//all getter methods will already be used.
 		for (JavaResourceMethod resourceMethod : resourceMethods) {
@@ -751,7 +752,7 @@ public abstract class SpecifiedOrmPersistentType
 					OrmPersistentAttribute contextAttribute = stream.next();
 					if (contextAttribute.isFor(null, resourceMethod)) {
 						match = true;
-						contextAttribute.update();
+						contextAttribute.update(monitor);
 						stream.remove();
 						break;
 					}

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.AstNodeType;
@@ -99,13 +100,13 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.setJavaPersistentAttribute(this.buildJavaPersistentAttribute());
-		this.mapping.update();
+		this.mapping.update(monitor);
 		if (this.cachedJavaPersistentAttribute != null) {
-			this.cachedJavaPersistentAttribute.update();
+			this.cachedJavaPersistentAttribute.update(monitor);
 		}
 	}
 

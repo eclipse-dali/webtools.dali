@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
@@ -44,10 +45,10 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 	// ********** synchronize/update **********
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateSpecifiedJoinColumns();
-		this.updateDefaultJoinColumn();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateSpecifiedJoinColumns(monitor);
+		this.updateDefaultJoinColumn(monitor);
 	}
 
 
@@ -80,8 +81,8 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 		return this.specifiedJoinColumnContainer.get(index);
 	}
 
-	protected void updateSpecifiedJoinColumns() {
-		this.specifiedJoinColumnContainer.update();
+	protected void updateSpecifiedJoinColumns(IProgressMonitor monitor) {
+		this.specifiedJoinColumnContainer.update(monitor);
 	}
 
 	protected ListIterable<JoinColumn> getOverriddenJoinColumns() {
@@ -144,12 +145,12 @@ public abstract class AbstractJavaVirtualReferenceTable<P extends JpaContextMode
 		return (this.defaultJoinColumn == null) ? 0 : 1;
 	}
 
-	protected void updateDefaultJoinColumn() {
+	protected void updateDefaultJoinColumn(IProgressMonitor monitor) {
 		if (this.buildsDefaultJoinColumn()) {
 			if (this.defaultJoinColumn == null) {
 				this.setDefaultJoinColumn(this.buildJoinColumn(this.getOverriddenTable().getDefaultJoinColumn()));
 			} else {
-				this.defaultJoinColumn.update();
+				this.defaultJoinColumn.update(monitor);
 			}
 		} else {
 			this.setDefaultJoinColumn(null);

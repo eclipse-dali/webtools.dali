@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
@@ -68,12 +69,12 @@ public class GenericOrmIdClassReference
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setDefaultIdClassName(this.buildDefaultIdClassName());
 		this.setFullyQualifiedIdClassName(this.buildFullyQualifiedIdClassName());
 		// update the id class *after* we have the fully qualified name
-		this.updateIdClass();
+		this.updateIdClass(monitor);
 	}
 
 
@@ -226,7 +227,7 @@ public class GenericOrmIdClassReference
 	/**
 	 * @see #syncIdClass()
 	 */
-	protected void updateIdClass() {
+	protected void updateIdClass(IProgressMonitor monitor) {
 		if (this.fullyQualifiedIdClassName == null) {
 			if (this.idClass != null) {
 				this.setIdClass(null);
@@ -236,7 +237,7 @@ public class GenericOrmIdClassReference
 				this.setIdClass(this.buildIdClass());
 			} else {
 				if (this.idClass.getName().equals(this.fullyQualifiedIdClassName)) {
-					this.idClass.update();
+					this.idClass.update(monitor);
 				} else {
 					this.setIdClass(this.buildIdClass());
 				}

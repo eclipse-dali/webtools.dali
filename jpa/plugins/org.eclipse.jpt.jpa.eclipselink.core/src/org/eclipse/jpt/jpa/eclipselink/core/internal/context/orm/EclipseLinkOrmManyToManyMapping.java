@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2015 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
@@ -57,10 +58,10 @@ public class EclipseLinkOrmManyToManyMapping
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.joinFetch.update();
-		this.converterContainer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.joinFetch.update(monitor);
+		this.converterContainer.update(monitor);
 	}
 
 
