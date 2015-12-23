@@ -936,7 +936,9 @@ public abstract class AbstractJpaProject
 
 	public JavaResourcePackage getJavaResourcePackage(String packageName) {
 		for (JavaResourcePackage jrp : this.getJavaResourcePackages()) {
-			if (jrp.getName().equals(packageName)) {
+			String name = jrp.getName();
+			// name can be null if package name is wrong(?)
+			if ((name != null) && name.equals(packageName)) {
 				return jrp;
 			}
 		}
