@@ -1989,16 +1989,21 @@ public abstract class AbstractJpaProject
 	/**
 	 * Called by the {@link UpdateJobCommand#execute(IProgressMonitor)}.
 	 */
-	// TODO pass the monitor down
 	protected IStatus update(IProgressMonitor monitor) {
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
+
 		this.contextRoot.update(monitor);
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
+
 		this.updateRootStructureNodes(monitor);
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+
 		return Status.OK_STATUS;
 	}
 
