@@ -740,10 +740,8 @@ public class JpaArtifactFactory {
 		
 		if(attributeType == null) {
 			PersistentType jpt = (PersistentType) attribute.getParent();
-			jpt.getJpaProject().getContextRoot().synchronizeWithResourceModel();
 			JavaResourceType jrt = jpt.getJavaResourceType();
 			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			jpt.update();
 			attribute = jpt.getAttributeNamed(attribute.getName());
 			attributeType  = attribute.getTypeName();
 		}
@@ -807,8 +805,6 @@ public class JpaArtifactFactory {
 		}
 		
 		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-		jpt.synchronizeWithResourceModel();
-		jpt.update();
 	}
 		
 	/**
@@ -1120,9 +1116,6 @@ public class JpaArtifactFactory {
 	 * @return the {@link PersistentType} registered in the {@link PersistenceUnit} with the given name.
 	 */
 	public PersistentType getJPT(String name, PersistenceUnit pu) {
-		pu.getJpaProject().getContextRoot().synchronizeWithResourceModel();
-		pu.synchronizeWithResourceModel();
-		pu.update();
 		PersistentType jpt = pu.getPersistentType(name);
 		int cnt = 0;
 		while ((jpt == null) && (cnt < MAX_NUM_OF_ITERATIONS)) {
@@ -1131,7 +1124,6 @@ public class JpaArtifactFactory {
 			} catch (InterruptedException e) {
 				JPADiagramEditorPlugin.logError("Sleep interrupted", e); //$NON-NLS-1$		
 			}
-			pu.synchronizeWithResourceModel();
 			jpt = pu.getPersistentType(name);
 			cnt++;
 		}		

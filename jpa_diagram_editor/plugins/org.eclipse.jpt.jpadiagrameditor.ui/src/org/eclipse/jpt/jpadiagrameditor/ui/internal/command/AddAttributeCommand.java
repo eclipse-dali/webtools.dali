@@ -107,8 +107,6 @@ public class AddAttributeCommand implements Command {
 					actName, cu, type, isCollection, attrTypes, contents);
 
 			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			jpt.synchronizeWithResourceModel();
-			jpt.update();
 
 		} catch (JavaModelException e) {
 			JPADiagramEditorPlugin

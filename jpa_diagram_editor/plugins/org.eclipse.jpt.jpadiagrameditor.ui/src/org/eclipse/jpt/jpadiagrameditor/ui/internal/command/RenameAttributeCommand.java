@@ -68,10 +68,8 @@ public class RenameAttributeCommand implements Command {
 			renameAttribute(jptCompilationUnit, oldName, newName, isMethodAnnotated);
 			
 			
-			jpt.getJpaProject().getContextRoot().synchronizeWithResourceModel();
 			JavaResourceType jrt = jpt.getJavaResourceType();
 			jrt.getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			jpt.update();
 
 		} catch (Exception e) {
 			JPADiagramEditorPlugin.logError("Cannot rename attribute", e); //$NON-NLS-1$

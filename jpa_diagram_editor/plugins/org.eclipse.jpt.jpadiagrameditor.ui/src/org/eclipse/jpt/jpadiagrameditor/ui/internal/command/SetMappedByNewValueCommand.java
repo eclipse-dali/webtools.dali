@@ -99,7 +99,6 @@ public class SetMappedByNewValueCommand implements Command{
 					((OwnableRelationshipMappingAnnotation)a).setMappedBy(mappedBy);
 				}
 			}
-			mappedByrelationShip.synchronizeWithResourceModel();
 		}
 
 	}

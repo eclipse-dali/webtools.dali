@@ -29,7 +29,6 @@ public class AddPersistentAttributeInOrmXMLCommand implements Command {
 			OrmPersistentAttribute ormAttribute = ormPersistentType.getAttributeNamed(jpa.getName());
 			if(ormAttribute == null) {
 				ormPersistentType.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-				ormPersistentType.update();
 				ormAttribute = ormPersistentType.getAttributeNamed(jpa.getName());
 			}
 			if(ormAttribute != null && ormAttribute.isVirtual()){
@@ -42,8 +41,6 @@ public class AddPersistentAttributeInOrmXMLCommand implements Command {
 		}
 		
 		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-		jpt.synchronizeWithResourceModel();
-		jpt.update();
 	}
 
 }

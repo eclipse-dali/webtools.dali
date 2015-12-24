@@ -27,7 +27,5 @@ public class RemovePersistentAttributeFromormXmlCommand implements Command {
 				ormPersistentType.removeAttributeFromXml((OrmSpecifiedPersistentAttribute) ormReadOnlyAttribute);
 		}
 		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-		jpt.synchronizeWithResourceModel();
-		jpt.update();
 	}
 }

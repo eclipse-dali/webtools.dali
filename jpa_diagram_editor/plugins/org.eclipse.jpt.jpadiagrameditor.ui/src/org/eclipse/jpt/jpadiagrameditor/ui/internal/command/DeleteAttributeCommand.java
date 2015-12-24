@@ -72,8 +72,6 @@ public class DeleteAttributeCommand implements Command {
 		JPAEditorUtil.organizeImports(javaType.getCompilationUnit(), ws);
 
 		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-		jpt.synchronizeWithResourceModel();
-		jpt.update();
 		
 		} catch (JavaModelException e) {
 			JPADiagramEditorPlugin

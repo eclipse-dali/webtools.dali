@@ -169,7 +169,6 @@ public class EntityChangeListener extends Thread {
 										mappedByAttr = mappedBy;
 									}
 									mappedByStrategy.setMappedByAttribute(mappedByAttr);
-									jpt.update();
 									attribsToUpdate.remove(jptAtMB);
 								}
 							}

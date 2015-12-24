@@ -206,7 +206,6 @@ public class AddRelationFeature extends AbstractAddFeature {
 			imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 0.0);				
 		}
 		PersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
-		owner.update();
 		if(isDerivedId(owner)){
 			isOptional = false;
 		} else {
