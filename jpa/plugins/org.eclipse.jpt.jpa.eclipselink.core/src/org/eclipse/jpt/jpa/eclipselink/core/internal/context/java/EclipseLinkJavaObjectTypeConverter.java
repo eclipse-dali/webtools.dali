@@ -58,8 +58,8 @@ public class EclipseLinkJavaObjectTypeConverter
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setDataType_(this.converterAnnotation.getDataType());
 		this.setObjectType_(this.converterAnnotation.getObjectType());
 		this.syncConversionValues();

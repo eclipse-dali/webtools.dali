@@ -78,12 +78,12 @@ public abstract class AbstractJavaBasicMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.column.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.column.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
 		this.setSpecifiedOptional_(this.buildSpecifiedOptional());
-		this.syncConverter();
+		this.syncConverter(monitor);
 	}
 
 	@Override
@@ -244,7 +244,7 @@ public abstract class AbstractJavaBasicMapping
 		return this.buildNullConverter();
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
 		if (assoc == null) {
 			if (this.converter.getConverterType() != null) {
@@ -255,7 +255,7 @@ public abstract class AbstractJavaBasicMapping
 			Annotation annotation = assoc.getValue();
 			if ((this.converter.getConverterType() == adapter.getConverterType()) &&
 					(this.converter.getConverterAnnotation() == annotation)) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
 			}

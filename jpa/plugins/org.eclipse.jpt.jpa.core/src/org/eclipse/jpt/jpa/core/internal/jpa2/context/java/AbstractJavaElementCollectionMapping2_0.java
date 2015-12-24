@@ -200,17 +200,17 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedTargetClass_(this.buildSpecifiedTargetClass());
 		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
-		this.orderable.synchronizeWithResourceModel();
-		this.collectionTable.synchronizeWithResourceModel();
+		this.orderable.synchronizeWithResourceModel(monitor);
+		this.collectionTable.synchronizeWithResourceModel(monitor);
 
-		this.valueColumn.synchronizeWithResourceModel();
-		this.syncConverter();
-		this.valueAttributeOverrideContainer.synchronizeWithResourceModel();
-		this.valueAssociationOverrideContainer.synchronizeWithResourceModel();
+		this.valueColumn.synchronizeWithResourceModel(monitor);
+		this.syncConverter(monitor);
+		this.valueAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
+		this.valueAssociationOverrideContainer.synchronizeWithResourceModel(monitor);
 
 		this.setSpecifiedMapKey_(this.buildSpecifiedMapKey());
 		this.setNoMapKey_(this.buildNoMapKey());
@@ -218,9 +218,9 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.setCustomMapKey_(this.buildCustomMapKey());
 		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
 
-		this.mapKeyColumn.synchronizeWithResourceModel();
-		this.syncMapKeyConverter();
-		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
+		this.mapKeyColumn.synchronizeWithResourceModel(monitor);
+		this.syncMapKeyConverter(monitor);
+		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedMapKeyJoinColumns();
 	}
 
@@ -532,7 +532,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return this.buildNullConverter();
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
 		if (assoc == null) {
 			if (this.converter.getConverterType() != null) {
@@ -543,7 +543,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			Annotation annotation = assoc.getValue();
 			if ((this.converter.getConverterType() == adapter.getConverterType()) &&
 					(this.converter.getConverterAnnotation() == annotation)) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
 			}
@@ -985,7 +985,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return this.buildNullConverter();
 	}
 
-	protected void syncMapKeyConverter() {
+	protected void syncMapKeyConverter(IProgressMonitor monitor) {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getMapKeyConverterAnnotation();
 		if (assoc == null) {
 			if (this.mapKeyConverter.getConverterType() != null) {
@@ -996,7 +996,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			Annotation annotation = assoc.getValue();
 			if ((this.mapKeyConverter.getConverterType() == adapter.getConverterType()) &&
 					(this.mapKeyConverter.getConverterAnnotation() == annotation)) {
-				this.mapKeyConverter.synchronizeWithResourceModel();
+				this.mapKeyConverter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setMapKeyConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
 			}

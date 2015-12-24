@@ -42,8 +42,8 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedSequenceName_(this.generatorAnnotation.getSequenceName());
 	}
 

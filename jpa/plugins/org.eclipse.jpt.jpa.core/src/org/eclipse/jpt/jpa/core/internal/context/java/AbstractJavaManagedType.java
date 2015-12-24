@@ -43,8 +43,8 @@ public abstract class AbstractJavaManagedType<P extends JpaContextModel>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName(this.resourceType.getTypeBinding().getQualifiedName());
 	}
 

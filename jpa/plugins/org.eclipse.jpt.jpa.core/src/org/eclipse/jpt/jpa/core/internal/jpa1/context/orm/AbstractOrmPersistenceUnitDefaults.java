@@ -65,8 +65,8 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());
 		this.setSpecifiedSchema_(this.buildSpecifiedSchema());

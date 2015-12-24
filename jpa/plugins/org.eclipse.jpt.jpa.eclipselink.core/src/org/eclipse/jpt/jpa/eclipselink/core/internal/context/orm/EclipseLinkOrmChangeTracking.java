@@ -38,8 +38,8 @@ public class EclipseLinkOrmChangeTracking
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedType_(this.buildSpecifiedType());
 	}
 

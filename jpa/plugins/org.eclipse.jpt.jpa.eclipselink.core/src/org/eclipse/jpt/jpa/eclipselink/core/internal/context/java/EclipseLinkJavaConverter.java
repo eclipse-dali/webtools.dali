@@ -56,8 +56,8 @@ public abstract class EclipseLinkJavaConverter<A extends NamedConverterAnnotatio
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.converterAnnotation.getName());
 	}
 

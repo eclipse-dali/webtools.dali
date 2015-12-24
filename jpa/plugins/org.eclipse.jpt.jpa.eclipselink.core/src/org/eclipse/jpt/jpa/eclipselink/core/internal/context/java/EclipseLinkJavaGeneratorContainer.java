@@ -33,9 +33,9 @@ public class EclipseLinkJavaGeneratorContainer
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncUuidGenerator();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncUuidGenerator(monitor);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class EclipseLinkJavaGeneratorContainer
 				null;
 	}
 
-	protected void syncUuidGenerator() {
+	protected void syncUuidGenerator(IProgressMonitor monitor) {
 		UuidGeneratorAnnotation2_4 annotation = this.getUuidGeneratorAnnotation();
 		if (annotation == null) {
 			if (this.uuidGenerator != null) {
@@ -98,7 +98,7 @@ public class EclipseLinkJavaGeneratorContainer
 			}
 		} else {
 			if ((this.uuidGenerator != null) && (this.uuidGenerator.getGeneratorAnnotation() == annotation)) {
-				this.uuidGenerator.synchronizeWithResourceModel();
+				this.uuidGenerator.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setUuidGenerator(this.buildUuidGenerator(annotation));
 			}

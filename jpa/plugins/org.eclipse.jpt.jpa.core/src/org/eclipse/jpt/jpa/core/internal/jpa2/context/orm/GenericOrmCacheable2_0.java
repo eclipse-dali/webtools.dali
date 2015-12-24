@@ -36,8 +36,8 @@ public class GenericOrmCacheable2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedCacheable_(this.getXmlCacheable().getCacheable());
 	}
 

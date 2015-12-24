@@ -135,7 +135,7 @@ public class ContextContainerTools {
 		// see ItemAspectListValueModelAdapter.itemAspectChanged(EventObject)
 		for (C contextElement : contextElementsToSync) {
 			if (sync) {
-				contextElement.synchronizeWithResourceModel();
+				contextElement.synchronizeWithResourceModel(monitor);
 			} else {
 				contextElement.update(monitor);
 			}

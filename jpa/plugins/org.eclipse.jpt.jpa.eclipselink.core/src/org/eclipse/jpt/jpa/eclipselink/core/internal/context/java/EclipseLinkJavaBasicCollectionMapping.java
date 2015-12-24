@@ -36,9 +36,9 @@ public class EclipseLinkJavaBasicCollectionMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

@@ -35,9 +35,9 @@ public class GenericOrmEntity
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.cacheable.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.cacheable.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

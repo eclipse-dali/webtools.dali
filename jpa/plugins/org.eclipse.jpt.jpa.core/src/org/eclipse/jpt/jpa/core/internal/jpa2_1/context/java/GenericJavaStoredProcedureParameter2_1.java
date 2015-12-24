@@ -49,8 +49,8 @@ public class GenericJavaStoredProcedureParameter2_1
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.parameterAnnotation.getName());
 		this.setSpecifiedMode_(this.buildSpecifiedMode());
 		this.setTypeName_(this.parameterAnnotation.getTypeName());

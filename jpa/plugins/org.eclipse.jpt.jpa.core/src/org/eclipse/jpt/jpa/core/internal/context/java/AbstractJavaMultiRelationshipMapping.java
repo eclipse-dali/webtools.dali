@@ -141,9 +141,9 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.orderable.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.orderable.synchronizeWithResourceModel(monitor);
 
 		this.setSpecifiedMapKey_(this.buildSpecifiedMapKey());
 		this.setNoMapKey_(this.buildNoMapKey());
@@ -152,11 +152,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
 
-		this.mapKeyColumn.synchronizeWithResourceModel();
-		this.syncMapKeyConverter();
+		this.mapKeyColumn.synchronizeWithResourceModel(monitor);
+		this.syncMapKeyConverter(monitor);
 		this.syncSpecifiedMapKeyJoinColumns();
 
-		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
+		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override
@@ -628,7 +628,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		return this.buildNullMapKeyConverter();
 	}
 
-	protected void syncMapKeyConverter() {
+	protected void syncMapKeyConverter(IProgressMonitor monitor) {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getMapKeyConverterAnnotation();
 		if (assoc == null) {
 			if (this.mapKeyConverter.getConverterType() != null) {
@@ -639,7 +639,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			Annotation annotation = assoc.getValue();
 			if ((this.mapKeyConverter.getConverterType() == adapter.getConverterType()) &&
 					(this.mapKeyConverter.getConverterAnnotation() == annotation)) {
-				this.mapKeyConverter.synchronizeWithResourceModel();
+				this.mapKeyConverter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setMapKeyConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
 			}

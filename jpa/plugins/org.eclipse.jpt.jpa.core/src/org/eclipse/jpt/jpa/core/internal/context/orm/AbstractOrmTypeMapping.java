@@ -69,8 +69,8 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		setSpecifiedMetadataComplete_(xmlTypeMapping.getMetadataComplete());
 		setSpecifiedParentClass_(buildSpecifiedParentClass());
 	}

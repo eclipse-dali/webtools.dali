@@ -51,11 +51,11 @@ public abstract class AbstractOrmPersistenceUnitMetadata
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setXmlMappingMetadataComplete_(this.buildXmlMappingMetadataComplete());
 		this.setDescription_(this.buildDescription());
-		this.persistenceUnitDefaults.synchronizeWithResourceModel();
+		this.persistenceUnitDefaults.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

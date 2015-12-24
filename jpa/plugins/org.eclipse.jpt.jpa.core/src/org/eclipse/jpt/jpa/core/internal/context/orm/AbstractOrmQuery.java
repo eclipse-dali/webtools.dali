@@ -58,8 +58,8 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.xmlQuery.getName());
 		this.syncHints();
 	}

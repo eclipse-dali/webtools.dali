@@ -33,8 +33,8 @@ public class GenericJavaConverterType2_1
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedAutoApply_(this.buildSpecifiedAutoApply());
 		this.setAutoApply(this.buildAutoApply());
 	}

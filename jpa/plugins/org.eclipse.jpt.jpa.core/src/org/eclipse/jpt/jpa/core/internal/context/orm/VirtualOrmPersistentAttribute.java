@@ -12,14 +12,13 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -107,9 +106,9 @@ public class VirtualOrmPersistentAttribute
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncLocalJavaAttributes();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncLocalJavaAttributes(monitor);
 		// 'mapping' belongs to one of the "local" Java persistent attributes
 	}
 
@@ -188,10 +187,10 @@ public class VirtualOrmPersistentAttribute
 		return this.javaAccessor.buildUnannotatedJavaAttribute(this.getDeclaringPersistentType());
 	}
 
-	protected void syncLocalJavaAttributes() {
-		this.annotatedJavaAttribute.synchronizeWithResourceModel();
+	protected void syncLocalJavaAttributes(IProgressMonitor monitor) {
+		this.annotatedJavaAttribute.synchronizeWithResourceModel(monitor);
 		if (this.unannotatedJavaAttribute != null) {
-			this.unannotatedJavaAttribute.synchronizeWithResourceModel();
+			this.unannotatedJavaAttribute.synchronizeWithResourceModel(monitor);
 		}
 	}
 
@@ -218,7 +217,7 @@ public class VirtualOrmPersistentAttribute
 	 */
 	public void javaAttributeChanged(JavaSpecifiedPersistentAttribute attribute) {
 		if (this.originalJavaAttribute == attribute) {
-			this.syncLocalJavaAttributes();
+			this.syncLocalJavaAttributes(new NullProgressMonitor());
 		}
 	}
 

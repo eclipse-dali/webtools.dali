@@ -249,8 +249,8 @@ public abstract class AbstractPersistenceUnit
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 
 		this.setName_(this.xmlPersistenceUnit.getName());
 		this.setSpecifiedExcludeUnlistedClasses_(this.xmlPersistenceUnit.getExcludeUnlistedClasses());
@@ -261,12 +261,12 @@ public abstract class AbstractPersistenceUnit
 		this.setNonJtaDataSource_(this.xmlPersistenceUnit.getNonJtaDataSource());
 
 		this.syncSpecifiedMappingFileRefs();
-		this.syncImpliedMappingFileRef();
+		this.syncImpliedMappingFileRef(monitor);
 
 		this.syncJarFileRefs();
 
 		this.syncSpecifiedClassRefs();
-		this.synchronizeModelsWithResourceModel(this.getImpliedClassRefs());
+		this.synchronizeModelsWithResourceModel(this.getImpliedClassRefs(), monitor);
 
 		this.syncProperties();
 
@@ -652,8 +652,8 @@ public abstract class AbstractPersistenceUnit
 		return this.getContextModelFactory().buildVirtualMappingFileRef(this);
 	}
 
-	protected void syncImpliedMappingFileRef() {
-		this.potentialImpliedMappingFileRef.synchronizeWithResourceModel();
+	protected void syncImpliedMappingFileRef(IProgressMonitor monitor) {
+		this.potentialImpliedMappingFileRef.synchronizeWithResourceModel(monitor);
 	}
 
 	protected void updateImpliedMappingFileRef(IProgressMonitor monitor) {

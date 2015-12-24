@@ -57,11 +57,11 @@ public class EclipseLinkOrmOneToManyMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.privateOwned.synchronizeWithResourceModel();
-		this.joinFetch.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.privateOwned.synchronizeWithResourceModel(monitor);
+		this.joinFetch.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

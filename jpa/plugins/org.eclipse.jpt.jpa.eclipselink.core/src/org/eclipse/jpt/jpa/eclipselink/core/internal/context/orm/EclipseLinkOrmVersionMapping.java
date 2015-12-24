@@ -54,10 +54,10 @@ public class EclipseLinkOrmVersionMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.mutable.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.mutable.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

@@ -102,8 +102,8 @@ public class EclipseLinkOrmCachingImpl
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 
 		this.setSpecifiedType_(this.buildSpecifiedType());
 		this.setSpecifiedSize_(this.buildSpecifiedSize());
@@ -115,11 +115,11 @@ public class EclipseLinkOrmCachingImpl
 		this.setSpecifiedCoordinationType_(this.buildSpecifiedCoordinationType());
 
 		this.setExpiry_(this.buildExpiry());
-		this.syncExpiryTimeOfDay();
+		this.syncExpiryTimeOfDay(monitor);
 
 		this.setSpecifiedExistenceType_(this.buildSpecifiedExistenceType());
 
-		this.cacheable.synchronizeWithResourceModel();
+		this.cacheable.synchronizeWithResourceModel(monitor);
 
 		this.setSpecifiedIsolation_(this.buildSpecifiedIsolation());
 	}
@@ -578,7 +578,7 @@ public class EclipseLinkOrmCachingImpl
 		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, timeOfDay);
 	}
 
-	protected void syncExpiryTimeOfDay() {
+	protected void syncExpiryTimeOfDay(IProgressMonitor monitor) {
 		XmlTimeOfDay xmlTimeOfDay = this.getXmlExpiryTimeOfDay();
 		if (xmlTimeOfDay == null) {
 			if (this.expiryTimeOfDay != null) {
@@ -586,7 +586,7 @@ public class EclipseLinkOrmCachingImpl
 			}
 		} else {
 			if ((this.expiryTimeOfDay != null) && (this.expiryTimeOfDay.getXmlTimeOfDay() == xmlTimeOfDay)) {
-				this.expiryTimeOfDay.synchronizeWithResourceModel();
+				this.expiryTimeOfDay.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setExpiryTimeOfDay(this.buildExpiryTimeOfDay(xmlTimeOfDay));
 			}

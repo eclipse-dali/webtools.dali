@@ -41,9 +41,9 @@ public class EclipseLinkOrmGeneratorContainer
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncUuidGenerator();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncUuidGenerator(monitor);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class EclipseLinkOrmGeneratorContainer
 		return new EclipseLinkOrmUuidGeneratorImpl(this, xmlUuidGenerator);
 	}
 
-	protected void syncUuidGenerator() {
+	protected void syncUuidGenerator(IProgressMonitor monitor) {
 		XmlUuidGenerator_2_4 xmlGenerator = this.getXmlUuidGenerator();
 		if (xmlGenerator == null) {
 			if (this.uuidGenerator != null) {
@@ -105,7 +105,7 @@ public class EclipseLinkOrmGeneratorContainer
 			}
 		} else {
 			if ((this.uuidGenerator != null) && (this.uuidGenerator.getXmlGenerator() == xmlGenerator)) {
-				this.uuidGenerator.synchronizeWithResourceModel();
+				this.uuidGenerator.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setUuidGenerator_(this.buildUuidGenerator(xmlGenerator));
 			}

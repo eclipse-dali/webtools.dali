@@ -82,11 +82,11 @@ public class EclipseLinkOrmArrayMapping2_3
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.column.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
-		this.syncConverter();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.column.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
+		this.syncConverter(monitor);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class EclipseLinkOrmArrayMapping2_3
 		return this.nullConverter;
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
 		if (adapter == null) {
 			if (this.converter.getConverterType() != null) {
@@ -183,7 +183,7 @@ public class EclipseLinkOrmArrayMapping2_3
 			}
 		} else {
 			if (this.converter.getConverterType() == adapter.getConverterType()) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}

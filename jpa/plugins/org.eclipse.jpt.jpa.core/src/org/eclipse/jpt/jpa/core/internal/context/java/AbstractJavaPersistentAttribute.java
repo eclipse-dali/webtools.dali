@@ -95,12 +95,12 @@ public abstract class AbstractJavaPersistentAttribute
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		// this is determined directly from the resource model
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
-		this.syncMapping();
+		this.syncMapping(monitor);
 	}
 
 	@Override
@@ -356,8 +356,8 @@ public abstract class AbstractJavaPersistentAttribute
 	/**
 	 * Sync existing mapping
 	 */
-	protected void syncMapping() {
-		this.mapping.synchronizeWithResourceModel();
+	protected void syncMapping(IProgressMonitor monitor) {
+		this.mapping.synchronizeWithResourceModel(monitor);
 	}
 	
 	/**

@@ -56,8 +56,8 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedTableName_(this.buildSpecifiedTableName());
 		this.setSpecifiedUnique_(this.buildSpecifiedUnique());
 		this.setSpecifiedNullable_(this.buildSpecifiedNullable());

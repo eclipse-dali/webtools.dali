@@ -56,11 +56,11 @@ public class GenericJavaIdClassReference
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		setSpecifiedIdClassName_(buildSpecifiedIdClassName());
 		if (this.idClass != null) {
-			this.idClass.synchronizeWithResourceModel();
+			this.idClass.synchronizeWithResourceModel(monitor);
 		}
 	}
 	

@@ -66,8 +66,8 @@ public class EclipseLinkVirtualJavaPersistentType
 
 	// ********** synchronize/update **********
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

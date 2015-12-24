@@ -1913,9 +1913,14 @@ public abstract class AbstractJpaProject
 	/**
 	 * Called by the {@link SynchronizeContextModelJobCommand#execute(IProgressMonitor)}.
 	 */
-	// TODO pass the monitor down
-	protected IStatus synchronizeContextModel(@SuppressWarnings("unused") IProgressMonitor monitor) {
-		this.contextRoot.synchronizeWithResourceModel();
+	protected IStatus synchronizeContextModel(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		this.contextRoot.synchronizeWithResourceModel(monitor);
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
 		return Status.OK_STATUS;
 	}
 

@@ -73,11 +73,11 @@ public class GenericPersistenceXml
 	// ********** synchronize/update **********
 
 	/**
-	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#synchronizeWithResourceModel()
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#synchronizeWithResourceModel(IProgressMonitor)
 	 */
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncPersistence();
 	}
 
@@ -131,7 +131,7 @@ public class GenericPersistenceXml
 			} else {
 				// the context persistence already holds the XML persistence
 				if (sync) {
-					this.root.synchronizeWithResourceModel();
+					this.root.synchronizeWithResourceModel(monitor);
 				}
 				else {
 					this.root.update(monitor);

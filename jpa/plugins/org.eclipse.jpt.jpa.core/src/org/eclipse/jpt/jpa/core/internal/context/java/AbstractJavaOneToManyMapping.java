@@ -36,9 +36,9 @@ public abstract class AbstractJavaOneToManyMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.orphanRemoval.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.orphanRemoval.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

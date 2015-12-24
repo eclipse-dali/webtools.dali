@@ -69,8 +69,8 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncMappingFile();
 	}
 
@@ -137,7 +137,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 			} else {
 				if (this.mappingFile.getResourceMappingFile() == newResourceMappingFile) {
 					if (sync) {
-						this.mappingFile.synchronizeWithResourceModel();
+						this.mappingFile.synchronizeWithResourceModel(monitor);
 					} else {
 						this.mappingFile.update(monitor);
 					}

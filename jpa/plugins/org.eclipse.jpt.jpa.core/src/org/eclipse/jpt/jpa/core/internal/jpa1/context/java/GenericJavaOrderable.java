@@ -83,11 +83,11 @@ public class GenericJavaOrderable
 	// ********** synchronize/update **********
 	
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		syncNoOrdering();
-		syncOrderBy();
-		syncOrderColumn();
+		syncOrderBy(monitor);
+		syncOrderColumn(monitor);
 	}
 
 	@Override
@@ -179,9 +179,9 @@ public class GenericJavaOrderable
 		this.orderBy = buildOrderBy();
 	}
 	
-	protected void syncOrderBy() {
+	protected void syncOrderBy(IProgressMonitor monitor) {
 		setOrderByOrdering_(buildOrderByOrdering());
-		this.orderBy.synchronizeWithResourceModel();
+		this.orderBy.synchronizeWithResourceModel(monitor);
 	}
 	
 	protected void updateOrderBy(IProgressMonitor monitor) {
@@ -273,9 +273,9 @@ public class GenericJavaOrderable
 		this.orderColumn = buildOrderColumn();
 	}
 	
-	protected void syncOrderColumn() {
+	protected void syncOrderColumn(IProgressMonitor monitor) {
 		setOrderColumnOrdering_(buildOrderColumnOrdering());
-		this.orderColumn.synchronizeWithResourceModel();
+		this.orderColumn.synchronizeWithResourceModel(monitor);
 	}
 	
 	protected void updateOrderColumn(IProgressMonitor monitor) {

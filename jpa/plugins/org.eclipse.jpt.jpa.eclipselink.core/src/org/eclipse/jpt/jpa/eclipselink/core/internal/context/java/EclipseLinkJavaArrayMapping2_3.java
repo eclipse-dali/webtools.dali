@@ -79,11 +79,11 @@ public class EclipseLinkJavaArrayMapping2_3
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.column.synchronizeWithResourceModel();
-		this.syncConverter();
-		this.converterContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.column.synchronizeWithResourceModel(monitor);
+		this.syncConverter(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override
@@ -155,7 +155,7 @@ public class EclipseLinkJavaArrayMapping2_3
 		return this.buildNullConverter();
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
 		if (assoc == null) {
 			if (this.converter.getConverterType() != null) {
@@ -166,7 +166,7 @@ public class EclipseLinkJavaArrayMapping2_3
 			Annotation annotation = assoc.getValue();
 			if ((this.converter.getConverterType() == adapter.getConverterType()) &&
 					(this.converter.getConverterAnnotation() == annotation)) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
 			}

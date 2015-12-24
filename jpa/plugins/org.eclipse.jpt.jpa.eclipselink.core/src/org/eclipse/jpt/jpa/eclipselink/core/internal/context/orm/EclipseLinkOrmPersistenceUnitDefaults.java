@@ -77,8 +77,8 @@ public class EclipseLinkOrmPersistenceUnitDefaults
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncTenantDiscriminatorColumns();
 		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
 		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());

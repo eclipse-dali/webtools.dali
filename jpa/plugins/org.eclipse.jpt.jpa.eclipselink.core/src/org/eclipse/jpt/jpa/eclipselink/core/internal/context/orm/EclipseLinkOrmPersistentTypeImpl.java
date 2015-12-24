@@ -80,8 +80,8 @@ public class EclipseLinkOrmPersistentTypeImpl
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
 		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());
 	}

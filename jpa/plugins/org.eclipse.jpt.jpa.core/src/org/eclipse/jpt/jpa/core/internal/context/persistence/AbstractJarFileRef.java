@@ -72,10 +72,10 @@ public abstract class AbstractJarFileRef
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setFileName_(this.xmlJarFileRef.getFileName());
-		this.syncJarFile();
+		this.syncJarFile(monitor);
 	}
 
 	@Override
@@ -178,14 +178,14 @@ public abstract class AbstractJarFileRef
 	 * 
 	 * @see #updateJarFile(IProgressMonitor)
 	 */
-	protected void syncJarFile() {
+	protected void syncJarFile(IProgressMonitor monitor) {
 		if (this.jarFile != null) {
-			this.jarFile.synchronizeWithResourceModel();
+			this.jarFile.synchronizeWithResourceModel(monitor);
 		}
 	}
 
 	/**
-	 * @see #syncJarFile()
+	 * @see #syncJarFile(IProgressMonitor)
 	 */
 	protected void updateJarFile(IProgressMonitor monitor) {
 		JavaResourcePackageFragmentRoot jrpfr = this.resolveJavaResourcePackageFragmentRoot();

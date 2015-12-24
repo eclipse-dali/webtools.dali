@@ -74,8 +74,8 @@ public abstract class AbstractOrmNamedColumn<PA extends NamedColumn.ParentAdapte
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedName_(this.buildSpecifiedName());
 		this.setColumnDefinition_(this.buildColumnDefinition());
 	}

@@ -44,9 +44,9 @@ public abstract class AbstractJavaIdTypeMapping<A extends Annotation>
 	// ***** sync/update *****
 	
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.idClassReference.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.idClassReference.synchronizeWithResourceModel(monitor);
 	}
 	
 	@Override

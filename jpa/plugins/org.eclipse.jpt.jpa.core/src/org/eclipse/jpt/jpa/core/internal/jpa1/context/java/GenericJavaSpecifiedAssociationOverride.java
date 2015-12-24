@@ -44,9 +44,9 @@ public class GenericJavaSpecifiedAssociationOverride
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.relationship.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.relationship.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

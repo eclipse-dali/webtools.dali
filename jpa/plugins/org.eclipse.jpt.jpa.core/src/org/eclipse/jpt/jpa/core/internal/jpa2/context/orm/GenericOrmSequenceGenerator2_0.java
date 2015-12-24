@@ -45,8 +45,8 @@ public class GenericOrmSequenceGenerator2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedCatalog_(this.xmlGenerator.getCatalog());
 		this.setSpecifiedSchema_(this.xmlGenerator.getSchema());
 	}

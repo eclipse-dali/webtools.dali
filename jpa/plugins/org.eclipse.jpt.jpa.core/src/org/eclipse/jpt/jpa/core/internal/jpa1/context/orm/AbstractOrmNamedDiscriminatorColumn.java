@@ -45,8 +45,8 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<PA extends NamedDiscri
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedDiscriminatorType_(this.buildSpecifiedDiscriminatorType());
 		this.setSpecifiedLength_(this.buildSpecifiedLength());
 	}

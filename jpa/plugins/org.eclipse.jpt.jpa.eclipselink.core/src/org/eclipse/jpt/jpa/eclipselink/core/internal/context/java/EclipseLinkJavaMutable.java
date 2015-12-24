@@ -39,8 +39,8 @@ public class EclipseLinkJavaMutable
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedMutable_(this.buildSpecifiedMutable());
 	}
 

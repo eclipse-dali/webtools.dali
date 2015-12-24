@@ -54,8 +54,8 @@ public abstract class GenericOrmReferenceTable<P extends JpaContextModel, PA ext
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedJoinColumns();
 	}
 

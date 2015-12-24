@@ -40,10 +40,10 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy<P extends JavaJo
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		if (this.joinTable != null) {
-			this.joinTable.synchronizeWithResourceModel();
+			this.joinTable.synchronizeWithResourceModel(monitor);
 		}
 	}
 

@@ -63,11 +63,11 @@ public class EclipseLinkOrmEmbeddableImpl
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
-		this.changeTracking.synchronizeWithResourceModel();
-		this.customizer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
+		this.changeTracking.synchronizeWithResourceModel(monitor);
+		this.customizer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

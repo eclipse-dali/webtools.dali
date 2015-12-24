@@ -92,8 +92,8 @@ public class EclipseLinkJavaMultitenancyImpl2_3
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 
 		MultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.setSpecifiedType_(EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue()));

@@ -78,12 +78,12 @@ public class GenericOrmOrderable
 	// ********** synchronize/update **********
 	
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		
 		synchNoOrdering();
-		synchOrderBy();
-		synchOrderColumn();
+		syncOrderBy(monitor);
+		syncOrderColumn(monitor);
 	}
 	
 	@Override
@@ -172,9 +172,9 @@ public class GenericOrmOrderable
 		this.orderBy = buildOrderBy();
 	}
 	
-	protected void synchOrderBy() {
+	protected void syncOrderBy(IProgressMonitor monitor) {
 		setOrderByOrdering_(buildOrderByOrdering());
-		this.orderBy.synchronizeWithResourceModel();
+		this.orderBy.synchronizeWithResourceModel(monitor);
 	}
 	
 	protected void updateOrderBy(IProgressMonitor monitor) {
@@ -247,10 +247,10 @@ public class GenericOrmOrderable
 		this.orderColumn = buildOrderColumn();
 	}
 	
-	protected void synchOrderColumn() {
+	protected void syncOrderColumn(IProgressMonitor monitor) {
 		setOrderColumnOrdering_(buildOrderColumnOrdering());
 		if (this.orderColumn != null) {
-			this.orderColumn.synchronizeWithResourceModel();
+			this.orderColumn.synchronizeWithResourceModel(monitor);
 		}
 	}
 	

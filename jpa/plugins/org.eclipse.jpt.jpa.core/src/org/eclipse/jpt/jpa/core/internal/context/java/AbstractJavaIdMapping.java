@@ -83,12 +83,12 @@ public abstract class AbstractJavaIdMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.column.synchronizeWithResourceModel();
-		this.generatorContainer.synchronizeWithResourceModel();
-		this.syncGeneratedValue();
-		this.syncConverter();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.column.synchronizeWithResourceModel(monitor);
+		this.generatorContainer.synchronizeWithResourceModel(monitor);
+		this.syncGeneratedValue(monitor);
+		this.syncConverter(monitor);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public abstract class AbstractJavaIdMapping
 		return this.getJpaFactory().buildJavaGeneratedValue(this, generatedValueAnnotation);
 	}
 
-	protected void syncGeneratedValue() {
+	protected void syncGeneratedValue(IProgressMonitor monitor) {
 		GeneratedValueAnnotation annotation = this.getGeneratedValueAnnotation();
 		if (annotation == null) {
 			if (this.generatedValue != null) {
@@ -192,7 +192,7 @@ public abstract class AbstractJavaIdMapping
 		}
 		else {
 			if ((this.generatedValue != null) && (this.generatedValue.getGeneratedValueAnnotation() == annotation)) {
-				this.generatedValue.synchronizeWithResourceModel();
+				this.generatedValue.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setGeneratedValue(this.buildGeneratedValue(annotation));
 			}
@@ -257,7 +257,7 @@ public abstract class AbstractJavaIdMapping
 		return this.buildNullConverter();
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
 		if (assoc == null) {
 			if (this.converter.getConverterType() != null) {
@@ -268,7 +268,7 @@ public abstract class AbstractJavaIdMapping
 			Annotation annotation = assoc.getValue();
 			if ((this.converter.getConverterType() == adapter.getConverterType()) &&
 					(this.converter.getConverterAnnotation() == annotation)) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
 			}

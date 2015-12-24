@@ -89,9 +89,9 @@ public class EclipseLinkEntityMappingsImpl
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedTenantDiscriminatorColumns();
 		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
 		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());

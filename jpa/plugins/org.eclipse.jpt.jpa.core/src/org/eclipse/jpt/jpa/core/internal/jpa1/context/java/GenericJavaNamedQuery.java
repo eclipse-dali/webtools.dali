@@ -50,8 +50,8 @@ public class GenericJavaNamedQuery
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setQuery_(this.queryAnnotation.getQuery());
 		this.setSpecifiedLockMode_(this.buildSpecifiedLockMode());
 	}

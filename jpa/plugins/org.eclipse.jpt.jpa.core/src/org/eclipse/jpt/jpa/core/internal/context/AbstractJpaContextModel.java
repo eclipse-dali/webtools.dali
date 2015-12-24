@@ -50,16 +50,18 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 
 	// ********** synchronize/update **********
 
-	public void synchronizeWithResourceModel() {
-		// NOP
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 	}
 
 	/**
 	 * convenience method
 	 */
-	protected void synchronizeModelsWithResourceModel(Iterable<? extends JpaContextModel> models) {
+	protected void synchronizeModelsWithResourceModel(Iterable<? extends JpaContextModel> models, IProgressMonitor monitor) {
 		for (JpaContextModel model : models) {
-			model.synchronizeWithResourceModel();
+			model.synchronizeWithResourceModel(monitor);
 		}
 	}
 
@@ -505,7 +507,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 			// see ItemAspectListValueModelAdapter.itemAspectChanged(EventObject)
 			for (C contextElement : contextElementsToSync) {
 				if (sync) {
-					contextElement.synchronizeWithResourceModel();
+					contextElement.synchronizeWithResourceModel(monitor);
 				} else {
 					contextElement.update(monitor);
 				}

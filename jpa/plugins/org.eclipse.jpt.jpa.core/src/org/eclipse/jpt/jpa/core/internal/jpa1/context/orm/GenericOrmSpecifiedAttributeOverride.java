@@ -45,9 +45,9 @@ public class GenericOrmSpecifiedAttributeOverride
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.column.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.column.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

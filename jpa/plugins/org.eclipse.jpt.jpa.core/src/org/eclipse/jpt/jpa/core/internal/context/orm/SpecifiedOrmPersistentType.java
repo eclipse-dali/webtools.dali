@@ -116,12 +116,12 @@ public abstract class SpecifiedOrmPersistentType
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.mapping.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.mapping.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncSpecifiedAttributes();
-		this.synchronizeModelsWithResourceModel(this.getDefaultAttributes());
+		this.synchronizeModelsWithResourceModel(this.getDefaultAttributes(), monitor);
 	}
 
 	@Override

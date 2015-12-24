@@ -96,9 +96,9 @@ public abstract class AbstractJavaOverrideContainer<
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.synchronizeModelsWithResourceModel(this.getSpecifiedOverrides());
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.synchronizeModelsWithResourceModel(this.getSpecifiedOverrides(), monitor);
 		// the virtual overrides do not need a sync
 	}
 

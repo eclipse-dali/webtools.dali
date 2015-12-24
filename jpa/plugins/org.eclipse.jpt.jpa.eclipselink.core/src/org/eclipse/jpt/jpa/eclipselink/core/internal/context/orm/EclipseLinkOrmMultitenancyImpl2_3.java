@@ -94,8 +94,8 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedMultitenant_(isMultitenantElementSpecified());
 		this.setSpecifiedType_(this.buildSpecifiedType());
 		this.setSpecifiedIncludeCriteria_(this.buildSpecifiedIncludeCriteria());

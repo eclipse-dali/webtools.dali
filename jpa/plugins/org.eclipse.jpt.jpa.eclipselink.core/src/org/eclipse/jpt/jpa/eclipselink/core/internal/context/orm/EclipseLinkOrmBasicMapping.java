@@ -62,12 +62,12 @@ public class EclipseLinkOrmBasicMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.mutable.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
-		this.generatorContainer.synchronizeWithResourceModel();
-		this.syncGeneratedValue();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.mutable.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
+		this.generatorContainer.synchronizeWithResourceModel(monitor);
+		this.syncGeneratedValue(monitor);
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class EclipseLinkOrmBasicMapping
 		return this.getContextModelFactory().buildOrmGeneratedValue(this, xmlGeneratedValue);
 	}
 
-	protected void syncGeneratedValue() {
+	protected void syncGeneratedValue(IProgressMonitor monitor) {
 		XmlGeneratedValue xmlGeneratedValue = this.xmlAttributeMapping.getGeneratedValue();
 		if (xmlGeneratedValue == null) {
 			if (this.generatedValue != null) {
@@ -188,7 +188,7 @@ public class EclipseLinkOrmBasicMapping
 			}
 		} else {
 			if ((this.generatedValue != null) && (this.generatedValue.getXmlGeneratedValue() == xmlGeneratedValue)) {
-				this.generatedValue.synchronizeWithResourceModel();
+				this.generatedValue.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setGeneratedValue(this.buildGeneratedValue(xmlGeneratedValue));
 			}

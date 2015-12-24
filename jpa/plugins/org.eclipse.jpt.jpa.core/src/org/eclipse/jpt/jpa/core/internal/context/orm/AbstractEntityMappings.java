@@ -156,8 +156,8 @@ public abstract class AbstractEntityMappings
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 
 		this.setDescription_(this.xmlEntityMappings.getDescription());
 		this.setPackage_(this.xmlEntityMappings.getPackage());
@@ -166,14 +166,14 @@ public abstract class AbstractEntityMappings
 		this.setSpecifiedCatalog_(this.xmlEntityMappings.getCatalog());
 		this.setSpecifiedSchema_(this.xmlEntityMappings.getSchema());
 
-		this.persistenceUnitMetadata.synchronizeWithResourceModel();
+		this.persistenceUnitMetadata.synchronizeWithResourceModel(monitor);
 
 		this.syncManagedTypes();
 
 		this.syncSequenceGenerators();
 		this.syncTableGenerators();
 
-		this.queryContainer.synchronizeWithResourceModel();
+		this.queryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

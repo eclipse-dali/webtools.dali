@@ -53,8 +53,8 @@ public abstract class GenericJavaReferenceTable<P extends JpaContextModel, PA ex
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedJoinColumns();
 	}
 

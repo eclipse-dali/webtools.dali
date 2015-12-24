@@ -46,8 +46,8 @@ public abstract class EclipseLinkOrmConverter<X extends XmlNamedConverter>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.xmlConverter.getName());
 	}
 

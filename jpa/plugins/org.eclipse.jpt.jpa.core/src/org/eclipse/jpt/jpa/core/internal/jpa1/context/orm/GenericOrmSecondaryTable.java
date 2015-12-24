@@ -62,11 +62,11 @@ public class GenericOrmSecondaryTable
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedPrimaryKeyJoinColumns();
 		if (this.defaultPrimaryKeyJoinColumn != null) {
-			this.defaultPrimaryKeyJoinColumn.synchronizeWithResourceModel();
+			this.defaultPrimaryKeyJoinColumn.synchronizeWithResourceModel(monitor);
 		}
 	}
 

@@ -90,12 +90,12 @@ public abstract class AbstractOrmPersistentAttribute
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
-		this.mapping.synchronizeWithResourceModel();
+		this.mapping.synchronizeWithResourceModel(monitor);
 		if (this.cachedJavaPersistentAttribute != null) {
-			this.cachedJavaPersistentAttribute.synchronizeWithResourceModel();
+			this.cachedJavaPersistentAttribute.synchronizeWithResourceModel(monitor);
 		}
 	}
 

@@ -93,11 +93,11 @@ public class GenericOrmXml
 	// ********** synchronize/update **********
 
 	/**
-	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#synchronizeWithResourceModel()
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#synchronizeWithResourceModel(IProgressMonitor)
 	 */
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncEntityMappings();
 	}
 
@@ -153,7 +153,7 @@ public class GenericOrmXml
 			} else {
 				// the context entity mappings already holds the XML entity mappings
 				if (sync) {
-					this.root.synchronizeWithResourceModel();
+					this.root.synchronizeWithResourceModel(monitor);
 				}
 				else {
 					this.root.update(monitor);

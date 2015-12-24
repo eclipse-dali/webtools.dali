@@ -50,8 +50,8 @@ public class GenericOrmStoredProcedureParameter2_1
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.xmlStoredProcedureParameter.getName());
 		this.setSpecifiedMode_(this.buildSpecifiedMode());
 		this.setTypeName_(this.xmlStoredProcedureParameter.getClassName());

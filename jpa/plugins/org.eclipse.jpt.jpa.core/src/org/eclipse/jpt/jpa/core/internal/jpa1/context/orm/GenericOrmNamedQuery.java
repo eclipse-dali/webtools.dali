@@ -54,8 +54,8 @@ public final class GenericOrmNamedQuery
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setQuery_(this.xmlQuery.getQuery());
 		this.setSpecifiedLockMode_(this.buildSpecifiedLockMode());
 	}

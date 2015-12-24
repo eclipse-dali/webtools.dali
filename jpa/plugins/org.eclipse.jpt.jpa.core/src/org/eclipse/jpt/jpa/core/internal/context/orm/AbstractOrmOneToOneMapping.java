@@ -41,9 +41,9 @@ public abstract class AbstractOrmOneToOneMapping<X extends XmlOneToOne>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.orphanRemoval.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.orphanRemoval.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

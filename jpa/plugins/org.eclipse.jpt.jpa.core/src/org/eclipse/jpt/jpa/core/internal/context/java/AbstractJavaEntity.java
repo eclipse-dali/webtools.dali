@@ -172,19 +172,19 @@ public abstract class AbstractJavaEntity
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedName_(this.mappingAnnotation.getName());
-		this.table.synchronizeWithResourceModel();
+		this.table.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedSecondaryTables();
 		this.syncSpecifiedPrimaryKeyJoinColumns();
 		this.setSpecifiedInheritanceStrategy_(this.buildSpecifiedInheritanceStrategy());
 		this.setSpecifiedDiscriminatorValue_(this.getDiscriminatorValueAnnotation().getValue());
-		this.discriminatorColumn.synchronizeWithResourceModel();
-		this.attributeOverrideContainer.synchronizeWithResourceModel();
-		this.associationOverrideContainer.synchronizeWithResourceModel();
-		this.generatorContainer.synchronizeWithResourceModel();
-		this.queryContainer.synchronizeWithResourceModel();
+		this.discriminatorColumn.synchronizeWithResourceModel(monitor);
+		this.attributeOverrideContainer.synchronizeWithResourceModel(monitor);
+		this.associationOverrideContainer.synchronizeWithResourceModel(monitor);
+		this.generatorContainer.synchronizeWithResourceModel(monitor);
+		this.queryContainer.synchronizeWithResourceModel(monitor);
 	}
 	
 	@Override

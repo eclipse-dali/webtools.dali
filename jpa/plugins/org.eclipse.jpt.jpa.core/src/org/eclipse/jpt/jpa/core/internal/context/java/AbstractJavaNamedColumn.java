@@ -77,8 +77,8 @@ public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapt
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.synchronizeWithResourceModel(getColumnAnnotation());
 	}
 

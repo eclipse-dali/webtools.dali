@@ -51,8 +51,8 @@ public class GenericJavaNamedNativeQuery
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setQuery_(this.queryAnnotation.getQuery());
 		this.setResultClass_(this.queryAnnotation.getResultClass());
 		this.setResultSetMapping_(this.queryAnnotation.getResultSetMapping());

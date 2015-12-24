@@ -58,12 +58,12 @@ public class GenericOrmOneToOneRelationship
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.mappedByStrategy.synchronizeWithResourceModel();
-		this.primaryKeyJoinColumnStrategy.synchronizeWithResourceModel();
-		this.joinTableStrategy.synchronizeWithResourceModel();
-		this.joinColumnStrategy.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.mappedByStrategy.synchronizeWithResourceModel(monitor);
+		this.primaryKeyJoinColumnStrategy.synchronizeWithResourceModel(monitor);
+		this.joinTableStrategy.synchronizeWithResourceModel(monitor);
+		this.joinColumnStrategy.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

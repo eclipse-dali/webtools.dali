@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.Collection;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -42,8 +43,8 @@ public class GenericJavaPersistentType2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 	}
 

@@ -85,8 +85,8 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.xmlAttributeMapping.getName());
 		this.setSpecifiedAttributeType_(this.buildSpecifiedAttributeType());
 	}

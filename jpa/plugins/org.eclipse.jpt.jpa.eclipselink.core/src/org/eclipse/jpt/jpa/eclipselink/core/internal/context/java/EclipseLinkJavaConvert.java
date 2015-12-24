@@ -49,8 +49,8 @@ public class EclipseLinkJavaConvert
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedConverterName_(this.convertAnnotation.getValue());
 	}
 

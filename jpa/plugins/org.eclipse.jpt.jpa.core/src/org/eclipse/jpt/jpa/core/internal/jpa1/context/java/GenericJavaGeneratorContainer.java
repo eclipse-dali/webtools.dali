@@ -42,10 +42,10 @@ public class GenericJavaGeneratorContainer
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncSequenceGenerator();
-		this.syncTableGenerator();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncSequenceGenerator(monitor);
+		this.syncTableGenerator(monitor);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class GenericJavaGeneratorContainer
 				null;
 	}
 
-	protected void syncSequenceGenerator() {
+	protected void syncSequenceGenerator(IProgressMonitor monitor) {
 		SequenceGeneratorAnnotation annotation = this.getSequenceGeneratorAnnotation();
 		if (annotation == null) {
 			if (this.sequenceGenerator != null) {
@@ -111,7 +111,7 @@ public class GenericJavaGeneratorContainer
 			}
 		} else {
 			if ((this.sequenceGenerator != null) && (this.sequenceGenerator.getGeneratorAnnotation() == annotation)) {
-				this.sequenceGenerator.synchronizeWithResourceModel();
+				this.sequenceGenerator.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setSequenceGenerator(this.buildSequenceGenerator(annotation));
 			}
@@ -168,7 +168,7 @@ public class GenericJavaGeneratorContainer
 				null;
 	}
 
-	protected void syncTableGenerator() {
+	protected void syncTableGenerator(IProgressMonitor monitor) {
 		TableGeneratorAnnotation annotation = this.getTableGeneratorAnnotation();
 		if (annotation == null) {
 			if (this.tableGenerator != null) {
@@ -176,7 +176,7 @@ public class GenericJavaGeneratorContainer
 			}
 		} else {
 			if ((this.tableGenerator != null) && (this.tableGenerator.getGeneratorAnnotation() == annotation)) {
-				this.tableGenerator.synchronizeWithResourceModel();
+				this.tableGenerator.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setTableGenerator(this.buildTableGenerator(annotation));
 			}

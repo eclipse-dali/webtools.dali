@@ -79,8 +79,8 @@ public class GenericJavaTableGenerator
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedTableName_(this.generatorAnnotation.getTable());
 		this.setSpecifiedSchema_(this.generatorAnnotation.getSchema());
 		this.setSpecifiedCatalog_(this.generatorAnnotation.getCatalog());

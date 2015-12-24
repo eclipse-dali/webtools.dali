@@ -72,11 +72,11 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedTargetEntity_(this.xmlAttributeMapping.getTargetEntity());
-		this.relationship.synchronizeWithResourceModel();
-		this.cascade.synchronizeWithResourceModel();
+		this.relationship.synchronizeWithResourceModel(monitor);
+		this.cascade.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
 	}
 

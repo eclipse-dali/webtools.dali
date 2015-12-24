@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
@@ -43,10 +44,10 @@ public class GenericOrmXmlRef
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		// set the file name *before* calling super
 		this.setFileName_(this.xmlMappingFileRef.getFileName());
-		super.synchronizeWithResourceModel();
+		super.synchronizeWithResourceModel(monitor);
 	}
 
 

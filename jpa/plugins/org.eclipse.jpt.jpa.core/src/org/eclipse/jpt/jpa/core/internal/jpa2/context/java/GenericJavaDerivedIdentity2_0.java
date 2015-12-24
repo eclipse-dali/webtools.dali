@@ -43,10 +43,10 @@ public class GenericJavaDerivedIdentity2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.idStrategy.synchronizeWithResourceModel();
-		this.mapsIdStrategy.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.idStrategy.synchronizeWithResourceModel(monitor);
+		this.mapsIdStrategy.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

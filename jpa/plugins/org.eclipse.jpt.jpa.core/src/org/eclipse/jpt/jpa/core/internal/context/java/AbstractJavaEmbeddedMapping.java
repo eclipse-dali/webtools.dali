@@ -68,9 +68,9 @@ public abstract class AbstractJavaEmbeddedMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.associationOverrideContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.associationOverrideContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

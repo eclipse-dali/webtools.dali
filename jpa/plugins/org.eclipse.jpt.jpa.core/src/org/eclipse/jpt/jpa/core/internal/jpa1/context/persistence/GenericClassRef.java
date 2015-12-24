@@ -107,15 +107,15 @@ public class GenericClassRef
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		// virtual class refs are matched by name in the persistence unit
 		// so no need to sync it here (also, 'xmlJavaClassRef' is null...)
 		if (this.isNotVirtual()) {
 			this.setClassName_(this.xmlJavaClassRef.getJavaClass());
 		}
 		if (this.javaManagedType != null) {
-			this.javaManagedType.synchronizeWithResourceModel();
+			this.javaManagedType.synchronizeWithResourceModel(monitor);
 		}
 	}
 

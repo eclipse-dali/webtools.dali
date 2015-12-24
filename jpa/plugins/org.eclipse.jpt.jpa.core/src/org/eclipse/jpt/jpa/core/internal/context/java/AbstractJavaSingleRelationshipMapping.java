@@ -44,10 +44,10 @@ public abstract class AbstractJavaSingleRelationshipMapping<A extends SingleRela
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedOptional_(this.buildSpecifiedOptional());
-		this.derivedIdentity.synchronizeWithResourceModel();
+		this.derivedIdentity.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

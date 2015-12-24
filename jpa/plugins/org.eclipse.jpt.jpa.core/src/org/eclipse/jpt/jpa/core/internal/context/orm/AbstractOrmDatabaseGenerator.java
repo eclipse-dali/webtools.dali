@@ -46,8 +46,8 @@ public abstract class AbstractOrmDatabaseGenerator<X extends XmlGenerator>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedInitialValue_(this.xmlGenerator.getInitialValue());
 		this.setSpecifiedAllocationSize_(this.xmlGenerator.getAllocationSize());
 	}

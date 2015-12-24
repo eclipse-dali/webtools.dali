@@ -54,8 +54,8 @@ public class GenericOrmNamedStoredProcedureQuery2_1
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setProcedureName_(this.xmlQuery.getProcedureName());
 		this.syncParameters();
 		this.syncResultClasses();

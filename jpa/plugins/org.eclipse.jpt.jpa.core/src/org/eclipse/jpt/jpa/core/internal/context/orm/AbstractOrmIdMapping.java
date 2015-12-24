@@ -83,12 +83,12 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.column.synchronizeWithResourceModel();
-		this.generatorContainer.synchronizeWithResourceModel();
-		this.syncGeneratedValue();
-		this.syncConverter();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.column.synchronizeWithResourceModel(monitor);
+		this.generatorContainer.synchronizeWithResourceModel(monitor);
+		this.syncGeneratedValue(monitor);
+		this.syncConverter(monitor);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 		return this.getContextModelFactory().buildOrmGeneratedValue(this, xmlGeneratedValue);
 	}
 
-	protected void syncGeneratedValue() {
+	protected void syncGeneratedValue(IProgressMonitor monitor) {
 		XmlGeneratedValue xmlGeneratedValue = this.xmlAttributeMapping.getGeneratedValue();
 		if (xmlGeneratedValue == null) {
 			if (this.generatedValue != null) {
@@ -183,7 +183,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 			}
 		} else {
 			if ((this.generatedValue != null) && (this.generatedValue.getXmlGeneratedValue() == xmlGeneratedValue)) {
-				this.generatedValue.synchronizeWithResourceModel();
+				this.generatedValue.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setGeneratedValue(this.buildGeneratedValue(xmlGeneratedValue));
 			}
@@ -244,7 +244,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 		return this.nullConverter;
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
 		if (adapter == null) {
 			if (this.converter.getConverterType() != null) {
@@ -252,7 +252,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 			}
 		} else {
 			if (this.converter.getConverterType() == adapter.getConverterType()) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}

@@ -64,9 +64,9 @@ public class GenericPersistence
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncPersistenceUnits();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncPersistenceUnits(monitor);
 	}
 
 	@Override
@@ -153,7 +153,7 @@ public class GenericPersistence
 		}
 	}
 
-	protected void syncPersistenceUnits() {
+	protected void syncPersistenceUnits(IProgressMonitor monitor) {
 		XmlPersistenceUnit xmlPersistenceUnit = this.getXmlPersistenceUnit();
 		if (this.persistenceUnit == null) {
 			if (xmlPersistenceUnit != null) {
@@ -164,7 +164,7 @@ public class GenericPersistence
 				this.removePersistenceUnit_();
 			} else {
 				if (this.persistenceUnit.getXmlPersistenceUnit() == xmlPersistenceUnit) {
-					this.persistenceUnit.synchronizeWithResourceModel();
+					this.persistenceUnit.synchronizeWithResourceModel(monitor);
 				} else {
 					this.removePersistenceUnit_();
 					this.addPersistenceUnit_(this.buildPersistenceUnit(xmlPersistenceUnit));

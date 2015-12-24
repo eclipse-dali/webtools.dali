@@ -67,11 +67,11 @@ public class GenericOrmJoinTable
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedInverseJoinColumns();
 		if (this.defaultInverseJoinColumn != null) {
-			this.defaultInverseJoinColumn.synchronizeWithResourceModel();
+			this.defaultInverseJoinColumn.synchronizeWithResourceModel(monitor);
 		}
 	}
 

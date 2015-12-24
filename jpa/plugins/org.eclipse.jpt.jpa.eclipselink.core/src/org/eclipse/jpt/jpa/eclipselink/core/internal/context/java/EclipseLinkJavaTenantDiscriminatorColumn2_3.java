@@ -50,8 +50,8 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedTableName_(this.buildSpecifiedTableName());
 		this.setSpecifiedContextProperty_(this.buildSpecifiedContextProperty());
 		this.setSpecifiedPrimaryKey_(this.buildSpecifiedPrimaryKey());

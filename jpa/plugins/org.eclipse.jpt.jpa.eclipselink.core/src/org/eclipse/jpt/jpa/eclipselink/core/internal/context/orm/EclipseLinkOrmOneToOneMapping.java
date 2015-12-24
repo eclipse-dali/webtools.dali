@@ -41,10 +41,10 @@ public class EclipseLinkOrmOneToOneMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.privateOwned.synchronizeWithResourceModel();
-		this.joinFetch.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.privateOwned.synchronizeWithResourceModel(monitor);
+		this.joinFetch.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

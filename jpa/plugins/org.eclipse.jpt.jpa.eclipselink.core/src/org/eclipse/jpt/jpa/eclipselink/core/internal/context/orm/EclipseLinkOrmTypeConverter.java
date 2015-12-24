@@ -45,8 +45,8 @@ public class EclipseLinkOrmTypeConverter
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setDataType_(this.xmlConverter.getDataType());
 		this.setObjectType_(this.xmlConverter.getObjectType());
 	}

@@ -66,9 +66,9 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.attributeOverrideContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.attributeOverrideContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

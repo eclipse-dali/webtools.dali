@@ -80,15 +80,15 @@ public class EclipseLinkJavaMappedSuperclassImpl
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.caching.synchronizeWithResourceModel();
-		this.readOnly.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
-		this.changeTracking.synchronizeWithResourceModel();
-		this.customizer.synchronizeWithResourceModel();
-		this.generatorContainer.synchronizeWithResourceModel();
-		this.multitenancy.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.caching.synchronizeWithResourceModel(monitor);
+		this.readOnly.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
+		this.changeTracking.synchronizeWithResourceModel(monitor);
+		this.customizer.synchronizeWithResourceModel(monitor);
+		this.generatorContainer.synchronizeWithResourceModel(monitor);
+		this.multitenancy.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

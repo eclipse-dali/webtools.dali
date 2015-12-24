@@ -38,8 +38,8 @@ public class GenericJavaOrphanRemoval2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedOrphanRemoval_(this.buildSpecifiedOrphanRemoval());
 	}
 

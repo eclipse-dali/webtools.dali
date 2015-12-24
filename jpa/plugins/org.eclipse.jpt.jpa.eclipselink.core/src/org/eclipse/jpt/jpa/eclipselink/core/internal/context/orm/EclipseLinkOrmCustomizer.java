@@ -54,8 +54,8 @@ public class EclipseLinkOrmCustomizer
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedCustomizerClass_(this.buildSpecifiedCustomizerClass());
 	}
 

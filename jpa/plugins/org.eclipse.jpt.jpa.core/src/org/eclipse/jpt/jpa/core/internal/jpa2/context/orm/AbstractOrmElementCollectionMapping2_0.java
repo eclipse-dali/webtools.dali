@@ -201,17 +201,17 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedTargetClass_(this.xmlAttributeMapping.getTargetClass());
 		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
-		this.orderable.synchronizeWithResourceModel();
-		this.collectionTable.synchronizeWithResourceModel();
+		this.orderable.synchronizeWithResourceModel(monitor);
+		this.collectionTable.synchronizeWithResourceModel(monitor);
 
-		this.valueColumn.synchronizeWithResourceModel();
-		this.syncConverter();
-		this.valueAttributeOverrideContainer.synchronizeWithResourceModel();
-		this.valueAssociationOverrideContainer.synchronizeWithResourceModel();
+		this.valueColumn.synchronizeWithResourceModel(monitor);
+		this.syncConverter(monitor);
+		this.valueAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
+		this.valueAssociationOverrideContainer.synchronizeWithResourceModel(monitor);
 
 		this.setSpecifiedMapKey_(this.buildSpecifiedMapKey());
 		this.setNoMapKey_(this.buildNoMapKey());
@@ -219,9 +219,9 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.setCustomMapKey_(this.buildCustomMapKey());
 		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
 
-		this.mapKeyColumn.synchronizeWithResourceModel();
-		this.syncMapKeyConverter();
-		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
+		this.mapKeyColumn.synchronizeWithResourceModel(monitor);
+		this.syncMapKeyConverter(monitor);
+		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedMapKeyJoinColumns();
 	}
 
@@ -536,7 +536,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return this.nullConverter;
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
 		if (adapter == null) {
 			if (this.converter.getConverterType() != null) {
@@ -544,7 +544,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			}
 		} else {
 			if (this.converter.getConverterType() == adapter.getConverterType()) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}
@@ -977,7 +977,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return this.nullConverter;
 	}
 
-	protected void syncMapKeyConverter() {
+	protected void syncMapKeyConverter(IProgressMonitor monitor) {
 		OrmConverter.Adapter adapter = this.getXmlMapKeyConverterAdapter();
 		if (adapter == null) {
 			if (this.mapKeyConverter.getConverterType() != null) {
@@ -985,7 +985,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			}
 		} else {
 			if (this.mapKeyConverter.getConverterType() == adapter.getConverterType()) {
-				this.mapKeyConverter.synchronizeWithResourceModel();
+				this.mapKeyConverter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}

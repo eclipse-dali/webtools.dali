@@ -43,8 +43,8 @@ public class GenericJavaSequenceGenerator2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedCatalog_(this.generatorAnnotation.getCatalog());
 		this.setSpecifiedSchema_(this.generatorAnnotation.getSchema());
 	}

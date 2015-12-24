@@ -92,8 +92,8 @@ public class EclipseLinkJavaCachingImpl
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 
 		CacheAnnotation cacheAnnotation = this.getCacheAnnotation();
 		this.setSpecifiedType_(EclipseLinkCacheType.fromJavaResourceModel(cacheAnnotation.getType()));
@@ -106,13 +106,13 @@ public class EclipseLinkJavaCachingImpl
 		this.setSpecifiedCoordinationType_(EclipseLinkCacheCoordinationType.fromJavaResourceModel(cacheAnnotation.getCoordinationType()));
 
 		this.setExpiry_(cacheAnnotation.getExpiry());
-		this.syncExpiryTimeOfDay(cacheAnnotation.getExpiryTimeOfDay());
+		this.syncExpiryTimeOfDay(cacheAnnotation.getExpiryTimeOfDay(), monitor);
 
 		ExistenceCheckingAnnotation ecAnnotation = this.getExistenceCheckingAnnotation();
 		this.setExistenceChecking_(ecAnnotation != null);
 		this.setSpecifiedExistenceType_(this.buildSpecifiedExistenceType(ecAnnotation));
 
-		this.cacheable.synchronizeWithResourceModel();
+		this.cacheable.synchronizeWithResourceModel(monitor);
 
 		this.setSpecifiedIsolation_(EclipseLinkCacheIsolationType2_2.fromJavaResourceModel(cacheAnnotation.getIsolation()));
 	}
@@ -428,14 +428,14 @@ public class EclipseLinkJavaCachingImpl
 		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, timeOfDay);
 	}
 
-	protected void syncExpiryTimeOfDay(TimeOfDayAnnotation timeOfDayAnnotation) {
+	protected void syncExpiryTimeOfDay(TimeOfDayAnnotation timeOfDayAnnotation, IProgressMonitor monitor) {
 		if (timeOfDayAnnotation == null) {
 			if (this.expiryTimeOfDay != null) {
 				this.setExpiryTimeOfDay(null);
 			}
 		} else {
 			if ((this.expiryTimeOfDay != null) && (this.expiryTimeOfDay.getTimeOfDayAnnotation() == timeOfDayAnnotation)) {
-				this.expiryTimeOfDay.synchronizeWithResourceModel();
+				this.expiryTimeOfDay.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setExpiryTimeOfDay(this.buildExpiryTimeOfDay(timeOfDayAnnotation));
 			}

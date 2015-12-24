@@ -60,8 +60,8 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncCustomConverters();
 		this.syncObjectTypeConverters();
 		this.syncStructConverters();

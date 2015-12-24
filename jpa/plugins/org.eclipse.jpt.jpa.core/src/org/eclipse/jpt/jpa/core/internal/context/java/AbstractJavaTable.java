@@ -82,8 +82,8 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedName_(this.buildSpecifiedName());
 		this.setSpecifiedSchema_(this.buildSpecifiedSchema());
 		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());

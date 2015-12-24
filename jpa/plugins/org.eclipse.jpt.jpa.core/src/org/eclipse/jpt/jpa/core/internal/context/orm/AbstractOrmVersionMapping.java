@@ -70,10 +70,10 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.column.synchronizeWithResourceModel();
-		this.syncConverter();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.column.synchronizeWithResourceModel(monitor);
+		this.syncConverter(monitor);
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 		return this.nullConverter;
 	}
 
-	protected void syncConverter() {
+	protected void syncConverter(IProgressMonitor monitor) {
 		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
 		if (adapter == null) {
 			if (this.converter.getConverterType() != null) {
@@ -156,7 +156,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 			}
 		} else {
 			if (this.converter.getConverterType() == adapter.getConverterType()) {
-				this.converter.synchronizeWithResourceModel();
+				this.converter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}

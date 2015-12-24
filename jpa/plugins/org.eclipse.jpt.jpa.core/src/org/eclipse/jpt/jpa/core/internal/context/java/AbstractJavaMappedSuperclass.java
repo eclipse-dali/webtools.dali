@@ -44,9 +44,9 @@ public abstract class AbstractJavaMappedSuperclass
 	// ***** synchronize/update *****
 	
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.queryContainer.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.queryContainer.synchronizeWithResourceModel(monitor);
 	}
 	
 	@Override

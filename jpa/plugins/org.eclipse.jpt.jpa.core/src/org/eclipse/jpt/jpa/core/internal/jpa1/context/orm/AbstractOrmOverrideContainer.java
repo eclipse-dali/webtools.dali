@@ -74,8 +74,8 @@ public abstract class AbstractOrmOverrideContainer<
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedOverrides();
 		// the virtual overrides do not need a sync
 	}

@@ -58,12 +58,12 @@ public class EclipseLinkJavaBasicMapping
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.mutable.synchronizeWithResourceModel();
-		this.converterContainer.synchronizeWithResourceModel();
-		this.generatorContainer.synchronizeWithResourceModel();
-		this.syncGeneratedValue();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.mutable.synchronizeWithResourceModel(monitor);
+		this.converterContainer.synchronizeWithResourceModel(monitor);
+		this.generatorContainer.synchronizeWithResourceModel(monitor);
+		this.syncGeneratedValue(monitor);
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class EclipseLinkJavaBasicMapping
 		return this.getJpaFactory().buildJavaGeneratedValue(this, generatedValueAnnotation);
 	}
 
-	protected void syncGeneratedValue() {
+	protected void syncGeneratedValue(IProgressMonitor monitor) {
 		GeneratedValueAnnotation annotation = this.getGeneratedValueAnnotation();
 		if (annotation == null) {
 			if (this.generatedValue != null) {
@@ -195,7 +195,7 @@ public class EclipseLinkJavaBasicMapping
 		}
 		else {
 			if ((this.generatedValue != null) && (this.generatedValue.getGeneratedValueAnnotation() == annotation)) {
-				this.generatedValue.synchronizeWithResourceModel();
+				this.generatedValue.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setGeneratedValue(this.buildGeneratedValue(annotation));
 			}

@@ -55,8 +55,8 @@ public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.queryAnnotation.getName());
 		this.syncHints();
 	}

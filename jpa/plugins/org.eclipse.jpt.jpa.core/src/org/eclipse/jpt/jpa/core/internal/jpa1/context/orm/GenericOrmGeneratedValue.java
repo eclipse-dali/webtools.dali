@@ -49,8 +49,8 @@ public class GenericOrmGeneratedValue
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedStrategy_(this.buildSpecifiedStrategy());
 		this.setSpecifiedGenerator_(this.xmlGeneratedValue.getGenerator());
 	}

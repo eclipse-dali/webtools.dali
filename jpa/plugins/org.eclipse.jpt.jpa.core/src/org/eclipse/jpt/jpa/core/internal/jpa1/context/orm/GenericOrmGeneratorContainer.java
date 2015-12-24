@@ -48,10 +48,10 @@ public class GenericOrmGeneratorContainer
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncSequenceGenerator();
-		this.syncTableGenerator();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncSequenceGenerator(monitor);
+		this.syncTableGenerator(monitor);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class GenericOrmGeneratorContainer
 		return this.getContextModelFactory().buildOrmSequenceGenerator(this, xmlSequenceGenerator);
 	}
 
-	protected void syncSequenceGenerator() {
+	protected void syncSequenceGenerator(IProgressMonitor monitor) {
 		XmlSequenceGenerator xmlGenerator = this.getXmlSequenceGenerator();
 		if (xmlGenerator == null) {
 			if (this.sequenceGenerator != null) {
@@ -116,7 +116,7 @@ public class GenericOrmGeneratorContainer
 			}
 		} else {
 			if ((this.sequenceGenerator != null) && (this.sequenceGenerator.getXmlGenerator() == xmlGenerator)) {
-				this.sequenceGenerator.synchronizeWithResourceModel();
+				this.sequenceGenerator.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setSequenceGenerator_(this.buildSequenceGenerator(xmlGenerator));
 			}
@@ -172,7 +172,7 @@ public class GenericOrmGeneratorContainer
 		return this.getContextModelFactory().buildOrmTableGenerator(this, xmlTableGenerator);
 	}
 
-	protected void syncTableGenerator() {
+	protected void syncTableGenerator(IProgressMonitor monitor) {
 		XmlTableGenerator xmlGenerator = this.getXmlTableGenerator();
 		if (xmlGenerator == null) {
 			if (this.tableGenerator != null) {
@@ -180,7 +180,7 @@ public class GenericOrmGeneratorContainer
 			}
 		} else {
 			if ((this.tableGenerator != null) && (this.tableGenerator.getXmlGenerator() == xmlGenerator)) {
-				this.tableGenerator.synchronizeWithResourceModel();
+				this.tableGenerator.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setTableGenerator_(this.buildTableGenerator(xmlGenerator));
 			}

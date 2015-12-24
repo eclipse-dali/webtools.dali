@@ -38,8 +38,8 @@ public class GenericJavaCacheable2_0
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedCacheable_(this.buildSpecifiedCacheable());
 	}
 

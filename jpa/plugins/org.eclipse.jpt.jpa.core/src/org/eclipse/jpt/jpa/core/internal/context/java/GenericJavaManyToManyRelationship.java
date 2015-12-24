@@ -45,10 +45,10 @@ public class GenericJavaManyToManyRelationship
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.mappedByStrategy.synchronizeWithResourceModel();
-		this.joinTableStrategy.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.mappedByStrategy.synchronizeWithResourceModel(monitor);
+		this.joinTableStrategy.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

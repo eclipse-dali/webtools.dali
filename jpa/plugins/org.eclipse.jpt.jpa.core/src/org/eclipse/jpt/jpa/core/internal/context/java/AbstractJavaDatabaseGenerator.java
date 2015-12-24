@@ -44,8 +44,8 @@ public abstract class AbstractJavaDatabaseGenerator<A extends DatabaseGeneratorA
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedInitialValue_(this.generatorAnnotation.getInitialValue());
 		this.setSpecifiedAllocationSize_(this.generatorAnnotation.getAllocationSize());
 	}

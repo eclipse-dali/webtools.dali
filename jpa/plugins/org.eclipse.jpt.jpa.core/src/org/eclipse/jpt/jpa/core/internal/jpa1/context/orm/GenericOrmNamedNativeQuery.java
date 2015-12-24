@@ -52,8 +52,8 @@ public class GenericOrmNamedNativeQuery
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setQuery_(this.xmlQuery.getQuery());
 		this.setResultClass_(this.xmlQuery.getResultClass());
 		this.setResultSetMapping_(this.xmlQuery.getResultSetMapping());

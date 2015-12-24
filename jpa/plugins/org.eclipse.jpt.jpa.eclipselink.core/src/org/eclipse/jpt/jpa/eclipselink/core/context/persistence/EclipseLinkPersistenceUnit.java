@@ -324,9 +324,9 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
-	protected void syncImpliedMappingFileRef() {
-		super.syncImpliedMappingFileRef();
-		this.potentialImpliedEclipseLinkMappingFileRef.synchronizeWithResourceModel();
+	protected void syncImpliedMappingFileRef(IProgressMonitor monitor) {
+		super.syncImpliedMappingFileRef(monitor);
+		this.potentialImpliedEclipseLinkMappingFileRef.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

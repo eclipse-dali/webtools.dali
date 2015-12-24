@@ -44,10 +44,10 @@ public abstract class AbstractOrmSingleRelationshipMapping<X extends AbstractXml
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedOptional_(this.xmlAttributeMapping.getOptional());
-		this.derivedIdentity.synchronizeWithResourceModel();
+		this.derivedIdentity.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override

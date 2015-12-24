@@ -67,11 +67,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedTargetEntity_(this.buildSpecifiedTargetEntity());
-		this.relationship.synchronizeWithResourceModel();
-		this.cascade.synchronizeWithResourceModel();
+		this.relationship.synchronizeWithResourceModel(monitor);
+		this.cascade.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
 	}
 

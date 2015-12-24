@@ -61,11 +61,11 @@ public class GenericOrmIdClassReference
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedIdClassName_(this.buildSpecifiedIdClassName());
 		// sync the id class *after* we have the specified name
-		this.syncIdClass();
+		this.syncIdClass(monitor);
 	}
 
 	@Override
@@ -215,17 +215,18 @@ public class GenericOrmIdClassReference
 	 * <code>sync</code> it. In some circumstances it will be obsolete
 	 * since the name is changed during <em>update</em> (the id class name and
 	 * the entity mapping's package affect the fully qualified name)
+	 * @param monitor TODO
 	 *
-	 * @see #updateIdClass()
+	 * @see #updateIdClass(IProgressMonitor)
 	 */
-	protected void syncIdClass() {
+	protected void syncIdClass(IProgressMonitor monitor) {
 		if (this.idClass != null) {
-			this.idClass.synchronizeWithResourceModel();
+			this.idClass.synchronizeWithResourceModel(monitor);
 		}
 	}
 
 	/**
-	 * @see #syncIdClass()
+	 * @see #syncIdClass(IProgressMonitor)
 	 */
 	protected void updateIdClass(IProgressMonitor monitor) {
 		if (this.fullyQualifiedIdClassName == null) {

@@ -87,7 +87,7 @@ public interface JpaContextModel
 	 * The resource model has changed; synchronize the context model with it.
 	 * This will probably trigger a call to {@link #update(IProgressMonitor)}.
 	 */
-	void synchronizeWithResourceModel();
+	void synchronizeWithResourceModel(IProgressMonitor monitor);
 
 	/**
 	 * Some non-trivial state in the JPA project has changed; update the
@@ -96,7 +96,6 @@ public interface JpaContextModel
 	 * If the dependent state changes also, yet another <em>update</em> will be
 	 * triggered, possibly followed by yet more <em>updates</em>; until the JPA
 	 * project's state quiesces.
-	 * @param monitor TODO
 	 */
 	void update(IProgressMonitor monitor);
 }

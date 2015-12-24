@@ -87,11 +87,11 @@ public abstract class AbstractJavaPersistentType
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
-		this.syncMapping();
-		this.synchronizeModelsWithResourceModel(this.getAttributes());
+		this.syncMapping(monitor);
+		this.synchronizeModelsWithResourceModel(this.getAttributes(), monitor);
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public abstract class AbstractJavaPersistentType
 		return this.buildNullMapping();
 	}
 
-	protected void syncMapping() {
+	protected void syncMapping(IProgressMonitor monitor) {
 		JavaTypeMappingDefinition definition = null;
 		Annotation annotation = null;
 		for (Iterator<JavaTypeMappingDefinition> stream = this.mappingDefinitions(); stream.hasNext(); ) {
@@ -302,7 +302,7 @@ public abstract class AbstractJavaPersistentType
 		}
 		// 'annotation' can still be null when we get here
 		if (this.mapping.getMappingAnnotation() == annotation) {
-			this.mapping.synchronizeWithResourceModel();
+			this.mapping.synchronizeWithResourceModel(monitor);
 		} else {
 			this.setMapping(this.buildMapping(annotation, definition));
 		}

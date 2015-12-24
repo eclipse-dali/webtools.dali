@@ -147,9 +147,9 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.orderable.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.orderable.synchronizeWithResourceModel(monitor);
 
 		this.setSpecifiedMapKey_(this.buildSpecifiedMapKey());
 		this.setNoMapKey_(this.buildNoMapKey());
@@ -158,10 +158,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
 
-		this.mapKeyColumn.synchronizeWithResourceModel();
-		this.syncMapKeyConverter();
+		this.mapKeyColumn.synchronizeWithResourceModel(monitor);
+		this.syncMapKeyConverter(monitor);
 
-		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
+		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
 		this.syncSpecifiedMapKeyJoinColumns();
 	}
 
@@ -627,7 +627,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		return this.nullConverter;
 	}
 
-	protected void syncMapKeyConverter() {
+	protected void syncMapKeyConverter(IProgressMonitor monitor) {
 		OrmConverter.Adapter adapter = this.getXmlMapKeyConverterAdapter();
 		if (adapter == null) {
 			if (this.mapKeyConverter.getConverterType() != null) {
@@ -635,7 +635,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			}
 		} else {
 			if (this.mapKeyConverter.getConverterType() == adapter.getConverterType()) {
-				this.mapKeyConverter.synchronizeWithResourceModel();
+				this.mapKeyConverter.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextModelFactory()));
 			}

@@ -23,7 +23,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
@@ -65,11 +64,11 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setClass_(this.xmlManagedType.getClassName());
 		this.setName(this.buildName());
-		this.syncJavaManagedType();
+		this.syncJavaManagedType(monitor);
 	}
 
 	@Override
@@ -163,17 +162,18 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 	 * <em>sync</em> it. In some circumstances it will be obsolete
 	 * since the name is changed during update (the class name or
 	 * the entity mapping's package affect the name)
+	 * @param monitor TODO
 	 *
-	 * @see #updateJavaManagedType()
+	 * @see #updateJavaManagedType(IProgressMonitor)
 	 */
-	protected void syncJavaManagedType() {
+	protected void syncJavaManagedType(IProgressMonitor monitor) {
 		if (this.javaManagedType != null) {
-			this.javaManagedType.synchronizeWithResourceModel();
+			this.javaManagedType.synchronizeWithResourceModel(monitor);
 		}
 	}
 
 	/**
-	 * @see #syncJavaManagedType()
+	 * @see #syncJavaManagedType(IProgressMonitor)
 	 */
 	protected void updateJavaManagedType(IProgressMonitor monitor) {
 		if (this.getName() == null) {
@@ -201,7 +201,7 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 
 	/**
 	 * Return null it's an enum; don't build a JavaManagedType
-	 * @see #updateJavaManagedType()
+	 * @see #updateJavaManagedType(IProgressMonitor)
 	 */
 	protected JavaResourceType resolveJavaResourceType() {
 		if (this.name == null) {

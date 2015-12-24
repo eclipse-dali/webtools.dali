@@ -46,10 +46,10 @@ public class GenericOrmManyToOneRelationship
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.joinColumnStrategy.synchronizeWithResourceModel();
-		this.joinTableStrategy.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.joinColumnStrategy.synchronizeWithResourceModel(monitor);
+		this.joinTableStrategy.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override
