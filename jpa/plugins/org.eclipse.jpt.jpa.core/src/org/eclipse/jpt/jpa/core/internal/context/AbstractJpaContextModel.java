@@ -300,7 +300,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		/**
 		 * "Context" elements.
 		 */
-		protected final Vector<C> elements = new Vector<C>();
+		protected final Vector<C> elements = new Vector<>();
 
 		/**
 		 * Aspect name used for event notification when the
@@ -360,7 +360,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		 * specified index.
 		 */
 		public Iterable<C> addContextElements(int index, Iterable<R> resourceElements) {
-			ArrayList<C> contextElements = new ArrayList<C>();
+			ArrayList<C> contextElements = new ArrayList<>();
 			for (R resourceElement : resourceElements) {
 				contextElements.add(this.adapter.buildContextElement(resourceElement));
 			}
@@ -468,7 +468,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		protected void sync(boolean sync, IProgressMonitor monitor) {
 			@SuppressWarnings("unchecked")
 			HashSet<C> contextElements = (HashSet<C>) CollectionTools.hashSet(this.elements.toArray());
-			ArrayList<C> contextElementsToSync = new ArrayList<C>(contextElements.size());
+			ArrayList<C> contextElementsToSync = new ArrayList<>(contextElements.size());
 			int resourceIndex = 0;
 
 			for (R resourceElement : this.adapter.getResourceElements()) {
@@ -594,7 +594,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 	}
 
 	protected <C extends JpaContextModel, R> SpecifiedContextCollectionContainer<C, R> buildSpecifiedContextCollectionContainer(String aspectName, Container.Adapter<C, R> adapter) {
-		return new SpecifiedContextCollectionContainer<C, R>(aspectName, adapter);
+		return new SpecifiedContextCollectionContainer<>(aspectName, adapter);
 	}
 
 
@@ -617,7 +617,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 	}
 
 	protected <C extends JpaContextModel, R> VirtualContextCollectionContainer<C, R> buildVirtualContextCollectionContainer(String aspectName, Container.Adapter<C, R> adapter) {
-		return new VirtualContextCollectionContainer<C, R>(aspectName, adapter);
+		return new VirtualContextCollectionContainer<>(aspectName, adapter);
 	}
 
 
@@ -740,7 +740,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 	}
 
 	protected <C extends JpaContextModel, R> SpecifiedContextListContainer<C, R> buildSpecifiedContextListContainer(String aspectName, Container.Adapter<C, R> adapter) {
-		return new SpecifiedContextListContainer<C, R>(aspectName, adapter);
+		return new SpecifiedContextListContainer<>(aspectName, adapter);
 	}
 
 
@@ -758,7 +758,7 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 	}
 
 	protected <C extends JpaContextModel, R> VirtualContextListContainer<C, R> buildVirtualContextListContainer(String aspectName, Container.Adapter<C, R> adapter) {
-		return new VirtualContextListContainer<C, R>(aspectName, adapter);
+		return new VirtualContextListContainer<>(aspectName, adapter);
 	}
 
 
