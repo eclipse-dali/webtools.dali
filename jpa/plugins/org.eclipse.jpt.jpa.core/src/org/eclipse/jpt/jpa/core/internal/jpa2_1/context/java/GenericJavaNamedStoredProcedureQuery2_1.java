@@ -59,7 +59,7 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
 		this.setProcedureName_(this.queryAnnotation.getProcedureName());
-		this.syncParameters();
+		this.syncParameters(monitor);
 		this.syncResultClasses();
 		this.syncResultSetMappings();
 	}
@@ -129,8 +129,8 @@ public class GenericJavaNamedStoredProcedureQuery2_1
 		return this.getJpaFactory2_1().buildJavaStoredProcedureParameter(this, parameterAnnotation);
 	}
 
-	protected void syncParameters() {
-		this.parameterContainer.synchronizeWithResourceModel();
+	protected void syncParameters(IProgressMonitor monitor) {
+		this.parameterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<StoredProcedureParameterAnnotation2_1> getParameterAnnotations() {

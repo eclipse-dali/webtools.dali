@@ -68,7 +68,7 @@ public class EclipseLinkOrmObjectTypeConverter
 		super.synchronizeWithResourceModel(monitor);
 		this.setDataType_(this.xmlConverter.getDataType());
 		this.setObjectType_(this.xmlConverter.getObjectType());
-		this.syncConversionValues();
+		this.syncConversionValues(monitor);
 		this.setDefaultObjectValue_(this.xmlConverter.getDefaultObjectValue());
 	}
 
@@ -223,8 +223,8 @@ public class EclipseLinkOrmObjectTypeConverter
 		return new EclipseLinkOrmConversionValue(this, xmlConversionValue);
 	}
 
-	protected void syncConversionValues() {
-		this.conversionValueContainer.synchronizeWithResourceModel();
+	protected void syncConversionValues(IProgressMonitor monitor) {
+		this.conversionValueContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlConversionValue> getXmlConversionValues() {

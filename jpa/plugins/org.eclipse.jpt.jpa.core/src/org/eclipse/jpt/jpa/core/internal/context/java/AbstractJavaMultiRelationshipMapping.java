@@ -154,7 +154,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 		this.mapKeyColumn.synchronizeWithResourceModel(monitor);
 		this.syncMapKeyConverter(monitor);
-		this.syncSpecifiedMapKeyJoinColumns();
+		this.syncSpecifiedMapKeyJoinColumns(monitor);
 
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
 	}
@@ -739,8 +739,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.specifiedMapKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedMapKeyJoinColumns() {
-		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedMapKeyJoinColumns(IProgressMonitor monitor) {
+		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumnAnnotation2_0> buildSpecifiedMapKeyJoinColumnContainer() {

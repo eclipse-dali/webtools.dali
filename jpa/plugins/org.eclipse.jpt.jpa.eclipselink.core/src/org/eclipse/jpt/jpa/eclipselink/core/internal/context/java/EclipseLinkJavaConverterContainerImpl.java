@@ -56,10 +56,10 @@ public class EclipseLinkJavaConverterContainerImpl
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncCustomConverters();
-		this.syncObjectTypeConverters();
-		this.syncStructConverters();
-		this.syncTypeConverters();
+		this.syncCustomConverters(monitor);
+		this.syncObjectTypeConverters(monitor);
+		this.syncStructConverters(monitor);
+		this.syncTypeConverters(monitor);
 	}
 
 	@Override
@@ -115,8 +115,8 @@ public class EclipseLinkJavaConverterContainerImpl
 		return new EclipseLinkJavaCustomConverter(this, converterAnnotation);
 	}
 
-	protected void syncCustomConverters() {
-		this.customConverterContainer.synchronizeWithResourceModel();
+	protected void syncCustomConverters(IProgressMonitor monitor) {
+		this.customConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<ConverterAnnotation> getCustomConverterAnnotations() {
@@ -193,8 +193,8 @@ public class EclipseLinkJavaConverterContainerImpl
 		return new EclipseLinkJavaObjectTypeConverter(this, converterAnnotation);
 	}
 
-	protected void syncObjectTypeConverters() {
-		this.objectTypeConverterContainer.synchronizeWithResourceModel();
+	protected void syncObjectTypeConverters(IProgressMonitor monitor) {
+		this.objectTypeConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<ObjectTypeConverterAnnotation> getObjectTypeConverterAnnotations() {
@@ -271,8 +271,8 @@ public class EclipseLinkJavaConverterContainerImpl
 		return new EclipseLinkJavaStructConverter(this, converterAnnotation);
 	}
 
-	protected void syncStructConverters() {
-		this.structConverterContainer.synchronizeWithResourceModel();
+	protected void syncStructConverters(IProgressMonitor monitor) {
+		this.structConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<StructConverterAnnotation> getStructConverterAnnotations() {
@@ -350,8 +350,8 @@ public class EclipseLinkJavaConverterContainerImpl
 		return new EclipseLinkJavaTypeConverter(this, converterAnnotation);
 	}
 
-	protected void syncTypeConverters() {
-		this.typeConverterContainer.synchronizeWithResourceModel();
+	protected void syncTypeConverters(IProgressMonitor monitor) {
+		this.typeConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<TypeConverterAnnotation> getTypeConverterAnnotations() {

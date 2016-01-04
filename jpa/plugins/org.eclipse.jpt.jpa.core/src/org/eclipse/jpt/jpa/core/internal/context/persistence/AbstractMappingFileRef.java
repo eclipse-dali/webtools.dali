@@ -71,7 +71,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncMappingFile();
+		this.syncMappingFile(monitor);
 	}
 
 	@Override
@@ -112,8 +112,8 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 
 	protected abstract MF buildMappingFile();
 
-	protected void syncMappingFile() {
-		this.syncMappingFile(true, null);
+	protected void syncMappingFile(IProgressMonitor monitor) {
+		this.syncMappingFile(true, monitor);
 	}
 
 	/**

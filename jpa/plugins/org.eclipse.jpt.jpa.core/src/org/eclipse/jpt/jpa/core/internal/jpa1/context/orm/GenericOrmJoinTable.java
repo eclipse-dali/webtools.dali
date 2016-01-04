@@ -69,7 +69,7 @@ public class GenericOrmJoinTable
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedInverseJoinColumns();
+		this.syncSpecifiedInverseJoinColumns(monitor);
 		if (this.defaultInverseJoinColumn != null) {
 			this.defaultInverseJoinColumn.synchronizeWithResourceModel(monitor);
 		}
@@ -166,8 +166,8 @@ public class GenericOrmJoinTable
 		this.getXmlTable().getInverseJoinColumns().clear();
 	}
 
-	protected void syncSpecifiedInverseJoinColumns() {
-		this.specifiedInverseJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedInverseJoinColumns(IProgressMonitor monitor) {
+		this.specifiedInverseJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlJoinColumn> getXmlInverseJoinColumns() {

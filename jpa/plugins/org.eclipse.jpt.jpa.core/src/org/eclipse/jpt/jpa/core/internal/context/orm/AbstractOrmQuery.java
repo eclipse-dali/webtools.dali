@@ -61,7 +61,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.xmlQuery.getName());
-		this.syncHints();
+		this.syncHints(monitor);
 	}
 
 	@Override
@@ -136,8 +136,8 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		return this.getContextModelFactory().buildOrmQueryHint(this, xmlHint);
 	}
 
-	protected void syncHints() {
-		this.hintContainer.synchronizeWithResourceModel();
+	protected void syncHints(IProgressMonitor monitor) {
+		this.hintContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlQueryHint> getXmlHints() {

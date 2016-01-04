@@ -69,7 +69,7 @@ public class GenericContextRoot
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncPersistenceXml();
+		this.syncPersistenceXml(monitor);
 	}
 
 	@Override
@@ -96,8 +96,8 @@ public class GenericContextRoot
 		return (xmlResource == null) ? null : this.buildPersistenceXml(xmlResource);
 	}
 
-	protected void syncPersistenceXml() {
-		this.syncPersistenceXml(true, null);
+	protected void syncPersistenceXml(IProgressMonitor monitor) {
+		this.syncPersistenceXml(true, monitor);
 	}
 
 	/**

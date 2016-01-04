@@ -449,12 +449,12 @@ public abstract class AbstractJpaContextModel<P extends JpaContextModel>
 		 * appropriate (as opposed to simply rebuilding them in place).
 		 * </ul>
 		 */
-		public void synchronizeWithResourceModel() {
-			this.sync(true, null);  // true = sync
+		public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+			this.sync(true, monitor);  // true = sync
 		}
 
 		/**
-		 * @see #synchronizeWithResourceModel()
+		 * @see #synchronizeWithResourceModel(IProgressMonitor)
 		 */
 		public void update(IProgressMonitor monitor) {
 			this.sync(false, monitor);  // false = update

@@ -54,7 +54,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedJoinColumns();
+		this.syncSpecifiedJoinColumns(monitor);
 	}
 
 	@Override
@@ -147,8 +147,8 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy<P extends OrmJoi
 		this.getXmlJoinColumnContainer().getJoinColumns().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedJoinColumns() {
-		this.specifiedJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedJoinColumns(IProgressMonitor monitor) {
+		this.specifiedJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlJoinColumn> getXmlJoinColumns() {

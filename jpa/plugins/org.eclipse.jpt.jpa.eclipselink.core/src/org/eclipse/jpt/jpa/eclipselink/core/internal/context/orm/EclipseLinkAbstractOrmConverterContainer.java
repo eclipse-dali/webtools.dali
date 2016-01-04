@@ -62,10 +62,10 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncCustomConverters();
-		this.syncObjectTypeConverters();
-		this.syncStructConverters();
-		this.syncTypeConverters();
+		this.syncCustomConverters(monitor);
+		this.syncObjectTypeConverters(monitor);
+		this.syncStructConverters(monitor);
+		this.syncTypeConverters(monitor);
 	}
 
 	@Override
@@ -123,8 +123,8 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return new EclipseLinkOrmCustomConverter(this, xmlConverter);
 	}
 
-	protected void syncCustomConverters() {
-		this.customConverterContainer.synchronizeWithResourceModel();
+	protected void syncCustomConverters(IProgressMonitor monitor) {
+		this.customConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlConverter> getXmlCustomConverters() {
@@ -203,8 +203,8 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return new EclipseLinkOrmObjectTypeConverter(this, xmlConverter);
 	}
 
-	protected void syncObjectTypeConverters() {
-		this.objectTypeConverterContainer.synchronizeWithResourceModel();
+	protected void syncObjectTypeConverters(IProgressMonitor monitor) {
+		this.objectTypeConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlObjectTypeConverter> getXmlObjectTypeConverters() {
@@ -278,8 +278,8 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return new EclipseLinkOrmStructConverter(this, xmlConverter);
 	}
 
-	protected void syncStructConverters() {
-		this.structConverterContainer.synchronizeWithResourceModel();
+	protected void syncStructConverters(IProgressMonitor monitor) {
+		this.structConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlStructConverter> getXmlStructConverters() {
@@ -354,8 +354,8 @@ public abstract class EclipseLinkAbstractOrmConverterContainer
 		return new EclipseLinkOrmTypeConverter(this, xmlConverter);
 	}
 
-	protected void syncTypeConverters() {
-		this.typeConverterContainer.synchronizeWithResourceModel();
+	protected void syncTypeConverters(IProgressMonitor monitor) {
+		this.typeConverterContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlTypeConverter> getXmlTypeConverters() {

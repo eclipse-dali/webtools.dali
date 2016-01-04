@@ -221,7 +221,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.mapKeyColumn.synchronizeWithResourceModel(monitor);
 		this.syncMapKeyConverter(monitor);
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedMapKeyJoinColumns();
+		this.syncSpecifiedMapKeyJoinColumns(monitor);
 	}
 
 	@Override
@@ -1103,8 +1103,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.specifiedMapKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedMapKeyJoinColumns() {
-		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedMapKeyJoinColumns(IProgressMonitor monitor) {
+		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ContextListContainer<JavaSpecifiedJoinColumn, MapKeyJoinColumnAnnotation2_0> buildSpecifiedMapKeyJoinColumnContainer() {

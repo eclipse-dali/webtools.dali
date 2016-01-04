@@ -79,7 +79,7 @@ public abstract class AbstractJavaNamedColumn<PA extends NamedColumn.ParentAdapt
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.synchronizeWithResourceModel(getColumnAnnotation());
+		this.synchronizeWithResourceModel(this.getColumnAnnotation());
 	}
 
 	protected void synchronizeWithResourceModel(A columnAnnotation) {

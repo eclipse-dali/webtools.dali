@@ -56,9 +56,9 @@ public class GenericJavaQueryContainer
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncNamedQueries();
-		this.syncNamedNativeQueries();
-		this.syncNamedStoredProcedureQueries();
+		this.syncNamedQueries(monitor);
+		this.syncNamedNativeQueries(monitor);
+		this.syncNamedStoredProcedureQueries(monitor);
 	}
 
 	@Override
@@ -123,8 +123,8 @@ public class GenericJavaQueryContainer
 		return this.getJpaFactory().buildJavaNamedQuery(this, namedQueryAnnotation);
 	}
 
-	protected void syncNamedQueries() {
-		this.namedQueryContainer.synchronizeWithResourceModel();
+	protected void syncNamedQueries(IProgressMonitor monitor) {
+		this.namedQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<NamedQueryAnnotation> getNamedQueryAnnotations() {
@@ -198,8 +198,8 @@ public class GenericJavaQueryContainer
 		return this.getJpaFactory().buildJavaNamedNativeQuery(this, namedNativeQueryAnnotation);
 	}
 
-	protected void syncNamedNativeQueries() {
-		this.namedNativeQueryContainer.synchronizeWithResourceModel();
+	protected void syncNamedNativeQueries(IProgressMonitor monitor) {
+		this.namedNativeQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<NamedNativeQueryAnnotation> getNamedNativeQueryAnnotations() {
@@ -272,8 +272,8 @@ public class GenericJavaQueryContainer
 		return this.getJpaFactory2_1().buildJavaNamedStoredProcedureQuery(this, namedStoredProcedureQueryAnnotation);
 	}
 
-	protected void syncNamedStoredProcedureQueries() {
-		this.namedStoredProcedureQueryContainer.synchronizeWithResourceModel();
+	protected void syncNamedStoredProcedureQueries(IProgressMonitor monitor) {
+		this.namedStoredProcedureQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<NamedStoredProcedureQueryAnnotation2_1> getNamedStoredProcedureQueryAnnotations() {

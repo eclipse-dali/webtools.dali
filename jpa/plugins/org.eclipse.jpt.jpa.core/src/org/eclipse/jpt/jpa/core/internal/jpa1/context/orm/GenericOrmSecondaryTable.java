@@ -64,7 +64,7 @@ public class GenericOrmSecondaryTable
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedPrimaryKeyJoinColumns();
+		this.syncSpecifiedPrimaryKeyJoinColumns(monitor);
 		if (this.defaultPrimaryKeyJoinColumn != null) {
 			this.defaultPrimaryKeyJoinColumn.synchronizeWithResourceModel(monitor);
 		}
@@ -190,8 +190,8 @@ public class GenericOrmSecondaryTable
 		this.xmlSecondaryTable.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedPrimaryKeyJoinColumns(IProgressMonitor monitor) {
+		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlPrimaryKeyJoinColumn> getXmlPrimaryKeyJoinColumns() {

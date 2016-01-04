@@ -60,7 +60,7 @@ public class GenericJavaSecondaryTable
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedPrimaryKeyJoinColumns();
+		this.syncSpecifiedPrimaryKeyJoinColumns(monitor);
 	}
 
 	@Override
@@ -174,8 +174,8 @@ public class GenericJavaSecondaryTable
 		this.specifiedPrimaryKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedPrimaryKeyJoinColumns(IProgressMonitor monitor) {
+		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations() {

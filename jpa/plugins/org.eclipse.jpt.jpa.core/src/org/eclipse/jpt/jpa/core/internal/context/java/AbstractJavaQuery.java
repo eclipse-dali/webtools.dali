@@ -58,7 +58,7 @@ public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends 
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.queryAnnotation.getName());
-		this.syncHints();
+		this.syncHints(monitor);
 	}
 
 	@Override
@@ -127,8 +127,8 @@ public abstract class AbstractJavaQuery<P extends JavaQueryContainer, A extends 
 		return this.getJpaFactory().buildJavaQueryHint(this, hintAnnotation);
 	}
 
-	protected void syncHints() {
-		this.hintContainer.synchronizeWithResourceModel();
+	protected void syncHints(IProgressMonitor monitor) {
+		this.hintContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<QueryHintAnnotation> getHintAnnotations() {

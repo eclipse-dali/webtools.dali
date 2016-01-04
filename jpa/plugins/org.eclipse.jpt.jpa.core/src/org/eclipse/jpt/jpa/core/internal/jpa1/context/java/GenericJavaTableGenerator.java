@@ -87,7 +87,7 @@ public class GenericJavaTableGenerator
 		this.setSpecifiedPkColumnName_(this.generatorAnnotation.getPkColumnName());
 		this.setSpecifiedValueColumnName_(this.generatorAnnotation.getValueColumnName());
 		this.setSpecifiedPkColumnValue_(this.generatorAnnotation.getPkColumnValue());
-		this.syncUniqueConstraints();
+		this.syncUniqueConstraints(monitor);
 	}
 
 	@Override
@@ -370,12 +370,12 @@ public class GenericJavaTableGenerator
 		this.uniqueConstraintContainer.move(targetIndex, sourceIndex);
 	}
 
-	protected void syncUniqueConstraints() {
-		this.uniqueConstraintContainer.synchronizeWithResourceModel();
+	protected void syncUniqueConstraints(IProgressMonitor monitor) {
+		this.uniqueConstraintContainer.synchronizeWithResourceModel(monitor);
 	}
 
-	protected void updateUniqueConstraints() {
-		this.uniqueConstraintContainer.synchronizeWithResourceModel();
+	protected void updateUniqueConstraints(IProgressMonitor monitor) {
+		this.uniqueConstraintContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected JavaSpecifiedUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {

@@ -87,7 +87,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 		this.setSpecifiedName_(this.buildSpecifiedName());
 		this.setSpecifiedSchema_(this.buildSpecifiedSchema());
 		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());
-		this.syncUniqueConstraints();
+		this.syncUniqueConstraints(monitor);
 	}
 
 	@Override
@@ -290,8 +290,8 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 		this.uniqueConstraintContainer.move(targetIndex, sourceIndex);
 	}
 
-	protected void syncUniqueConstraints() {
-		this.uniqueConstraintContainer.synchronizeWithResourceModel();
+	protected void syncUniqueConstraints(IProgressMonitor monitor) {
+		this.uniqueConstraintContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected JavaSpecifiedUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {

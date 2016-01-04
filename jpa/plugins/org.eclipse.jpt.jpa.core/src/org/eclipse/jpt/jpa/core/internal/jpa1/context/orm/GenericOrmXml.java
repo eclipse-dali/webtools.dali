@@ -98,11 +98,11 @@ public class GenericOrmXml
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncEntityMappings();
+		this.syncEntityMappings(monitor);
 	}
 
-	protected void syncEntityMappings() {
-		this.syncEntityMappings(true, null);
+	protected void syncEntityMappings(IProgressMonitor monitor) {
+		this.syncEntityMappings(true, monitor);
 	}
 
 	/**

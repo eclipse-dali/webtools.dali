@@ -77,13 +77,14 @@ public class ContextContainerTools {
 	 * <li>the Java resource model will re-use existing annotations when
 	 * appropriate (as opposed to simply rebuilding them in place).
 	 * </ul>
+	 * @param monitor TODO
 	 */
-	public static <C extends JpaContextModel, R> void synchronizeWithResourceModel(Adapter<C, R> adapter) {
-		sync(adapter, true, null);  // true = sync
+	public static <C extends JpaContextModel, R> void synchronizeWithResourceModel(Adapter<C, R> adapter, IProgressMonitor monitor) {
+		sync(adapter, true, monitor);  // true = sync
 	}
 
 	/**
-	 * @see #synchronizeWithResourceModel(Adapter)
+	 * @see #synchronizeWithResourceModel(Adapter, IProgressMonitor)
 	 */
 	public static <C extends JpaContextModel, R> void update(Adapter<C, R> adapter, IProgressMonitor monitor) {
 		sync(adapter, false, monitor);  // false = update

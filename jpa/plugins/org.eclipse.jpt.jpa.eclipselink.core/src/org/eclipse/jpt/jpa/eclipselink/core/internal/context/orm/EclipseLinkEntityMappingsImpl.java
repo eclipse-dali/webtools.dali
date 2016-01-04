@@ -92,10 +92,10 @@ public class EclipseLinkEntityMappingsImpl
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
 		this.converterContainer.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedTenantDiscriminatorColumns();
+		this.syncSpecifiedTenantDiscriminatorColumns(monitor);
 		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
 		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());
-		this.syncUuidGenerators();
+		this.syncUuidGenerators(monitor);
 	}
 
 	@Override
@@ -244,8 +244,8 @@ public class EclipseLinkEntityMappingsImpl
 		this.getXmlEntityMappings().getTenantDiscriminatorColumns().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedTenantDiscriminatorColumns() {
-		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedTenantDiscriminatorColumns(IProgressMonitor monitor) {
+		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlTenantDiscriminatorColumn> getXmlTenantDiscriminatorColumns() {
@@ -591,8 +591,8 @@ public class EclipseLinkEntityMappingsImpl
 		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncUuidGenerators() {
-		this.uuidGeneratorContainer.synchronizeWithResourceModel();
+	protected void syncUuidGenerators(IProgressMonitor monitor) {
+		this.uuidGeneratorContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlUuidGenerator_2_4> getXmlUuidGenerators() {

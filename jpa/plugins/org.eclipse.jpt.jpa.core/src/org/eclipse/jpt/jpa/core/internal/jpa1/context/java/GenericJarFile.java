@@ -63,7 +63,7 @@ public class GenericJarFile
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncJavaManagedTypes();
+		this.syncJavaManagedTypes(monitor);
 	}
 
 	@Override
@@ -104,8 +104,8 @@ public class GenericJarFile
 		return this.javaManagedTypeContainer.size();
 	}
 
-	protected void syncJavaManagedTypes() {
-		this.javaManagedTypeContainer.synchronizeWithResourceModel();
+	protected void syncJavaManagedTypes(IProgressMonitor monitor) {
+		this.javaManagedTypeContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected void addJavaManagedType(JavaResourceType jrt) {

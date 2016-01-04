@@ -79,7 +79,7 @@ public class EclipseLinkOrmPersistenceUnitDefaults
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncTenantDiscriminatorColumns();
+		this.syncTenantDiscriminatorColumns(monitor);
 		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
 		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());
 	}
@@ -138,8 +138,8 @@ public class EclipseLinkOrmPersistenceUnitDefaults
 		this.getXmlDefaults().getTenantDiscriminatorColumns().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncTenantDiscriminatorColumns() {
-		this.tenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
+	protected void syncTenantDiscriminatorColumns(IProgressMonitor monitor) {
+		this.tenantDiscriminatorColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlTenantDiscriminatorColumn> getXmlTenantDiscriminatorColumns() {

@@ -62,7 +62,7 @@ public class EclipseLinkJavaObjectTypeConverter
 		super.synchronizeWithResourceModel(monitor);
 		this.setDataType_(this.converterAnnotation.getDataType());
 		this.setObjectType_(this.converterAnnotation.getObjectType());
-		this.syncConversionValues();
+		this.syncConversionValues(monitor);
 		this.setDefaultObjectValue_(this.converterAnnotation.getDefaultObjectValue());
 	}
 
@@ -178,8 +178,8 @@ public class EclipseLinkJavaObjectTypeConverter
 		return new EclipseLinkJavaConversionValue(this, conversionValueAnnotation);
 	}
 	
-	protected void syncConversionValues() {
-		this.conversionValueContainer.synchronizeWithResourceModel();
+	protected void syncConversionValues(IProgressMonitor monitor) {
+		this.conversionValueContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<ConversionValueAnnotation> getConversionValueAnnotations() {

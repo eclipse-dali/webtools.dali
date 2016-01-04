@@ -59,7 +59,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncPrimaryKeyJoinColumns();
+		this.syncPrimaryKeyJoinColumns(monitor);
 	}
 
 	@Override
@@ -110,8 +110,8 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		this.primaryKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
-	protected void syncPrimaryKeyJoinColumns() {
-		this.primaryKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncPrimaryKeyJoinColumns(IProgressMonitor monitor) {
+		this.primaryKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ContextListContainer<JavaSpecifiedPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildPrimaryKeyJoinColumnContainer() {

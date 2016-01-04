@@ -202,9 +202,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		
 		this.table.synchronizeWithResourceModel(monitor);
 		
-		this.syncSpecifiedSecondaryTables();
+		this.syncSpecifiedSecondaryTables(monitor);
 		
-		this.syncSpecifiedPrimaryKeyJoinColumns();
+		this.syncSpecifiedPrimaryKeyJoinColumns(monitor);
 		
 		this.setSpecifiedInheritanceStrategy_(this.buildSpecifiedInheritanceStrategy());
 		this.setSpecifiedDiscriminatorValue_(this.xmlTypeMapping.getDiscriminatorValue());
@@ -535,8 +535,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.xmlTypeMapping.getSecondaryTables().clear();
 	}
 
-	protected void syncSpecifiedSecondaryTables() {
-		this.specifiedSecondaryTableContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedSecondaryTables(IProgressMonitor monitor) {
+		this.specifiedSecondaryTableContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlSecondaryTable> getXmlSecondaryTables() {
@@ -794,8 +794,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return new PrimaryKeyJoinColumnParentAdapter();
 	}
 
-	protected void syncSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedPrimaryKeyJoinColumns(IProgressMonitor monitor) {
+		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlPrimaryKeyJoinColumn> getXmlPrimaryKeyJoinColumns() {

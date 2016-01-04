@@ -99,7 +99,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 		this.setSpecifiedMultitenant_(isMultitenantElementSpecified());
 		this.setSpecifiedType_(this.buildSpecifiedType());
 		this.setSpecifiedIncludeCriteria_(this.buildSpecifiedIncludeCriteria());
-		this.syncSpecifiedTenantDiscriminatorColumns();
+		this.syncSpecifiedTenantDiscriminatorColumns(monitor);
 	}
 
 	@Override
@@ -335,8 +335,8 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 	}
 
 
-	protected void syncSpecifiedTenantDiscriminatorColumns() {
-		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedTenantDiscriminatorColumns(IProgressMonitor monitor) {
+		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlTenantDiscriminatorColumn> getXmlTenantDiscriminatorColumns() {

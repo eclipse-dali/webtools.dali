@@ -60,7 +60,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncPrimaryKeyJoinColumns();
+		this.syncPrimaryKeyJoinColumns(monitor);
 	}
 
 	@Override
@@ -118,8 +118,8 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 
-	protected void syncPrimaryKeyJoinColumns() {
-		this.primaryKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncPrimaryKeyJoinColumns(IProgressMonitor monitor) {
+		this.primaryKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlPrimaryKeyJoinColumn> getXmlPrimaryKeyJoinColumns() {

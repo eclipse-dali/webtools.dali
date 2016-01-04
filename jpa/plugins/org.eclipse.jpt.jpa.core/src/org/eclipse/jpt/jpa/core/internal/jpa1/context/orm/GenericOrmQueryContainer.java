@@ -62,9 +62,9 @@ public class GenericOrmQueryContainer
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncNamedQueries();
-		this.syncNamedNativeQueries();
-		this.syncNamedStoredProcedureQueries();
+		this.syncNamedQueries(monitor);
+		this.syncNamedNativeQueries(monitor);
+		this.syncNamedStoredProcedureQueries(monitor);
 	}
 
 	@Override
@@ -130,8 +130,8 @@ public class GenericOrmQueryContainer
 		return this.getContextModelFactory().buildOrmNamedQuery(this, xmlNamedQuery);
 	}
 
-	protected void syncNamedQueries() {
-		this.namedQueryContainer.synchronizeWithResourceModel();
+	protected void syncNamedQueries(IProgressMonitor monitor) {
+		this.namedQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlNamedQuery> getXmlNamedQueries() {
@@ -203,8 +203,8 @@ public class GenericOrmQueryContainer
 		return this.getContextModelFactory().buildOrmNamedNativeQuery(this, xmlNamedNativeQuery);
 	}
 
-	protected void syncNamedNativeQueries() {
-		this.namedNativeQueryContainer.synchronizeWithResourceModel();
+	protected void syncNamedNativeQueries(IProgressMonitor monitor) {
+		this.namedNativeQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlNamedNativeQuery> getXmlNamedNativeQueries() {
@@ -282,8 +282,8 @@ public class GenericOrmQueryContainer
 				null;
 	}
 
-	protected void syncNamedStoredProcedureQueries() {
-		this.namedStoredProcedureQueryContainer.synchronizeWithResourceModel();
+	protected void syncNamedStoredProcedureQueries(IProgressMonitor monitor) {
+		this.namedStoredProcedureQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlNamedStoredProcedureQuery> getXmlNamedStoredProcedureQueries() {

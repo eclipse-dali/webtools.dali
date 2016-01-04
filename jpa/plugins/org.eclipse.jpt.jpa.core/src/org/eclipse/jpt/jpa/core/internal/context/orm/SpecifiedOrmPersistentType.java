@@ -120,7 +120,7 @@ public abstract class SpecifiedOrmPersistentType
 		super.synchronizeWithResourceModel(monitor);
 		this.mapping.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
-		this.syncSpecifiedAttributes();
+		this.syncSpecifiedAttributes(monitor);
 		this.synchronizeModelsWithResourceModel(this.getDefaultAttributes(), monitor);
 	}
 
@@ -546,8 +546,8 @@ public abstract class SpecifiedOrmPersistentType
 		return this.getContextModelFactory().buildOrmPersistentAttribute(this, xmlMapping);
 	}
 
-	protected void syncSpecifiedAttributes() {
-		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter);
+	protected void syncSpecifiedAttributes(IProgressMonitor monitor) {
+		ContextContainerTools.synchronizeWithResourceModel(this.specifiedAttributeContainerAdapter, monitor);
 	}
 
 	protected void moveSpecifiedAttribute_(int index, OrmSpecifiedPersistentAttribute attribute) {

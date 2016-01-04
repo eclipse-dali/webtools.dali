@@ -222,7 +222,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.mapKeyColumn.synchronizeWithResourceModel(monitor);
 		this.syncMapKeyConverter(monitor);
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedMapKeyJoinColumns();
+		this.syncSpecifiedMapKeyJoinColumns(monitor);
 	}
 
 	@Override
@@ -1096,8 +1096,8 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.getXmlAttributeMapping().getMapKeyJoinColumns().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedMapKeyJoinColumns() {
-		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedMapKeyJoinColumns(IProgressMonitor monitor) {
+		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlJoinColumn> getXmlMapKeyJoinColumns() {

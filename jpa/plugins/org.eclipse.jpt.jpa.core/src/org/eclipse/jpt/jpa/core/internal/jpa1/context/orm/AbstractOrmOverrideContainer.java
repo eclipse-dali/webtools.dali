@@ -76,7 +76,7 @@ public abstract class AbstractOrmOverrideContainer<
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedOverrides();
+		this.syncSpecifiedOverrides(monitor);
 		// the virtual overrides do not need a sync
 	}
 
@@ -247,8 +247,8 @@ public abstract class AbstractOrmOverrideContainer<
 
 	protected abstract S buildSpecifiedOverride(X xmlOverride);
 
-	protected void syncSpecifiedOverrides() {
-		ContextContainerTools.synchronizeWithResourceModel(this.specifiedOverrideContainerAdapter);
+	protected void syncSpecifiedOverrides(IProgressMonitor monitor) {
+		ContextContainerTools.synchronizeWithResourceModel(this.specifiedOverrideContainerAdapter, monitor);
 	}
 
 	protected Iterable<X> getXmlOverrides() {

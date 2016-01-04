@@ -176,8 +176,8 @@ public abstract class AbstractJavaEntity
 		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedName_(this.mappingAnnotation.getName());
 		this.table.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedSecondaryTables();
-		this.syncSpecifiedPrimaryKeyJoinColumns();
+		this.syncSpecifiedSecondaryTables(monitor);
+		this.syncSpecifiedPrimaryKeyJoinColumns(monitor);
 		this.setSpecifiedInheritanceStrategy_(this.buildSpecifiedInheritanceStrategy());
 		this.setSpecifiedDiscriminatorValue_(this.getDiscriminatorValueAnnotation().getValue());
 		this.discriminatorColumn.synchronizeWithResourceModel(monitor);
@@ -429,8 +429,8 @@ public abstract class AbstractJavaEntity
 		return this.getJpaFactory().buildJavaSecondaryTable(this.specifiedSecondaryTableParentAdapter, secondaryTableAnnotation);
 	}
 
-	protected void syncSpecifiedSecondaryTables() {
-		this.specifiedSecondaryTableContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedSecondaryTables(IProgressMonitor monitor) {
+		this.specifiedSecondaryTableContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<SecondaryTableAnnotation> getSecondaryTableAnnotations() {
@@ -546,8 +546,8 @@ public abstract class AbstractJavaEntity
 		this.specifiedPrimaryKeyJoinColumnContainer.move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedPrimaryKeyJoinColumns(IProgressMonitor monitor) {
+		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations() {

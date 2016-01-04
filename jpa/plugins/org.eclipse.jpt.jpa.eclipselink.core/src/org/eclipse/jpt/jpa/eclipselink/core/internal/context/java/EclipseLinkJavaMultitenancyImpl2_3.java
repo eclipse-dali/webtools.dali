@@ -98,7 +98,7 @@ public class EclipseLinkJavaMultitenancyImpl2_3
 		MultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.setSpecifiedType_(EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue()));
 		this.setSpecifiedIncludeCriteria_(multitenantAnnotation.getIncludeCriteria());
-		this.syncSpecifiedTenantDiscriminatorColumns();
+		this.syncSpecifiedTenantDiscriminatorColumns(monitor);
 	}
 
 	@Override
@@ -314,8 +314,8 @@ public class EclipseLinkJavaMultitenancyImpl2_3
 		return new EclipseLinkNullTenantDiscriminatorColumnAnnotation2_3(this.getJavaResourceType());
 	}
 
-	protected void syncSpecifiedTenantDiscriminatorColumns() {
-		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedTenantDiscriminatorColumns(IProgressMonitor monitor) {
+		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ContextListContainer<EclipseLinkJavaSpecifiedTenantDiscriminatorColumn2_3, TenantDiscriminatorColumnAnnotation2_3> buildSpecifiedTenantDiscriminatorColumnContainer() {

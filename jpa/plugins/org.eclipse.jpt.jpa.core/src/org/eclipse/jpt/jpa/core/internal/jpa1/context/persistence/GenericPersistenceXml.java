@@ -78,11 +78,11 @@ public class GenericPersistenceXml
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncPersistence();
+		this.syncPersistence(monitor);
 	}
 
-	protected void syncPersistence() {
-		this.syncPersistence(true, null);
+	protected void syncPersistence(IProgressMonitor monitor) {
+		this.syncPersistence(true, monitor);
 	}
 
 	/**

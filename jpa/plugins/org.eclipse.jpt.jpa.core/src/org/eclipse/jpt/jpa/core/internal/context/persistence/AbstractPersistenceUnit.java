@@ -260,15 +260,15 @@ public abstract class AbstractPersistenceUnit
 		this.setJtaDataSource_(this.xmlPersistenceUnit.getJtaDataSource());
 		this.setNonJtaDataSource_(this.xmlPersistenceUnit.getNonJtaDataSource());
 
-		this.syncSpecifiedMappingFileRefs();
+		this.syncSpecifiedMappingFileRefs(monitor);
 		this.syncImpliedMappingFileRef(monitor);
 
-		this.syncJarFileRefs();
+		this.syncJarFileRefs(monitor);
 
-		this.syncSpecifiedClassRefs();
+		this.syncSpecifiedClassRefs(monitor);
 		this.synchronizeModelsWithResourceModel(this.getImpliedClassRefs(), monitor);
 
-		this.syncProperties();
+		this.syncProperties(monitor);
 
 		this.setSpecifiedSharedCacheMode_(this.buildSpecifiedSharedCacheMode());
 		this.setSpecifiedValidationMode_(this.buildSpecifiedValidationMode());
@@ -605,8 +605,8 @@ public abstract class AbstractPersistenceUnit
 		this.specifiedMappingFileRefContainer.remove(index);
 	}
 
-	protected void syncSpecifiedMappingFileRefs() {
-		this.specifiedMappingFileRefContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedMappingFileRefs(IProgressMonitor monitor) {
+		this.specifiedMappingFileRefContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlMappingFileRef> getXmlMappingFileRefs() {
@@ -735,8 +735,8 @@ public abstract class AbstractPersistenceUnit
 		this.jarFileRefContainer.remove(index);
 	}
 
-	protected void syncJarFileRefs() {
-		this.jarFileRefContainer.synchronizeWithResourceModel();
+	protected void syncJarFileRefs(IProgressMonitor monitor) {
+		this.jarFileRefContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlJarFileRef> getXmlJarFileRefs() {
@@ -847,8 +847,8 @@ public abstract class AbstractPersistenceUnit
 		this.xmlPersistenceUnit.getClasses().removeAll(xmlClassRefs);
 	}
 
-	protected void syncSpecifiedClassRefs() {
-		this.specifiedClassRefContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedClassRefs(IProgressMonitor monitor) {
+		this.specifiedClassRefContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlJavaClassRef> getXmlClassRefs() {
@@ -1186,8 +1186,8 @@ public abstract class AbstractPersistenceUnit
 				new NullGenericSchemaGeneration2_1(this);
 	}
 
-	protected void syncProperties() {
-		this.propertyContainer.synchronizeWithResourceModel();
+	protected void syncProperties(IProgressMonitor monitor) {
+		this.propertyContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlProperty> getXmlProperties() {

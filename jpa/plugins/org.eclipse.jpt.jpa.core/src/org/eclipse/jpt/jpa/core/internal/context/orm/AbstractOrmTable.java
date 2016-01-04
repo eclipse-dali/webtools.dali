@@ -90,7 +90,7 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 		this.setSpecifiedName_(this.buildSpecifiedName());
 		this.setSpecifiedSchema_(this.buildSpecifiedSchema());
 		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());
-		this.syncUniqueConstraints();
+		this.syncUniqueConstraints(monitor);
 	}
 
 	@Override
@@ -320,8 +320,8 @@ public abstract class AbstractOrmTable<P extends JpaContextModel, PA extends Tab
 		return this.getContextModelFactory().buildOrmUniqueConstraint(this, xmlConstraint);
 	}
 
-	protected void syncUniqueConstraints() {
-		this.uniqueConstraintContainer.synchronizeWithResourceModel();
+	protected void syncUniqueConstraints(IProgressMonitor monitor) {
+		this.uniqueConstraintContainer.synchronizeWithResourceModel(monitor);
 	}
 	protected ListIterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
 		X xmlTable = this.getXmlTable();

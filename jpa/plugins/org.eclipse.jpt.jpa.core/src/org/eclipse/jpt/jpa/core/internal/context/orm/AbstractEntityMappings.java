@@ -168,10 +168,10 @@ public abstract class AbstractEntityMappings
 
 		this.persistenceUnitMetadata.synchronizeWithResourceModel(monitor);
 
-		this.syncManagedTypes();
+		this.syncManagedTypes(monitor);
 
-		this.syncSequenceGenerators();
-		this.syncTableGenerators();
+		this.syncSequenceGenerators(monitor);
+		this.syncTableGenerators(monitor);
 
 		this.queryContainer.synchronizeWithResourceModel(monitor);
 	}
@@ -865,8 +865,8 @@ public abstract class AbstractEntityMappings
 		}
 	}
 
-	protected void syncManagedTypes() {
-		ContextContainerTools.synchronizeWithResourceModel(this.managedTypeContainerAdapter);
+	protected void syncManagedTypes(IProgressMonitor monitor) {
+		ContextContainerTools.synchronizeWithResourceModel(this.managedTypeContainerAdapter, monitor);
 	}
 
 	protected Iterable<XmlManagedType> getXmlManagedTypes() {
@@ -976,8 +976,8 @@ public abstract class AbstractEntityMappings
 		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncSequenceGenerators() {
-		this.sequenceGeneratorContainer.synchronizeWithResourceModel();
+	protected void syncSequenceGenerators(IProgressMonitor monitor) {
+		this.sequenceGeneratorContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlSequenceGenerator> getXmlSequenceGenerators() {
@@ -1050,8 +1050,8 @@ public abstract class AbstractEntityMappings
 		this.xmlEntityMappings.getTableGenerators().move(targetIndex, sourceIndex);
 	}
 
-	protected void syncTableGenerators() {
-		this.tableGeneratorContainer.synchronizeWithResourceModel();
+	protected void syncTableGenerators(IProgressMonitor monitor) {
+		this.tableGeneratorContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<XmlTableGenerator> getXmlTableGenerators() {

@@ -59,7 +59,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		setSpecifiedIdAttributeName_(buildSpecifiedIdAttributeName());
+		this.setSpecifiedIdAttributeName_(this.buildSpecifiedIdAttributeName());
 	}
 	
 	@Override

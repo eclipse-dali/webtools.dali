@@ -73,7 +73,7 @@ public class GenericJavaJoinTable
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedInverseJoinColumns();
+		this.syncSpecifiedInverseJoinColumns(monitor);
 	}
 
 	@Override
@@ -163,8 +163,8 @@ public class GenericJavaJoinTable
 		this.specifiedInverseJoinColumnContainer.clear();
 	}
 
-	protected void syncSpecifiedInverseJoinColumns() {
-		this.specifiedInverseJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedInverseJoinColumns(IProgressMonitor monitor) {
+		this.specifiedInverseJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<JoinColumnAnnotation> getInverseJoinColumnAnnotations() {

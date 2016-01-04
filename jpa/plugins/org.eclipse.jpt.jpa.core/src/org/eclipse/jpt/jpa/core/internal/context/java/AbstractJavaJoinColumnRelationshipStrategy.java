@@ -52,7 +52,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		this.syncSpecifiedJoinColumns();
+		this.syncSpecifiedJoinColumns(monitor);
 	}
 
 	@Override
@@ -136,8 +136,8 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy<P extends JavaJ
 		this.specifiedJoinColumnContainer.clear();
 	}
 
-	protected void syncSpecifiedJoinColumns() {
-		this.specifiedJoinColumnContainer.synchronizeWithResourceModel();
+	protected void syncSpecifiedJoinColumns(IProgressMonitor monitor) {
+		this.specifiedJoinColumnContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ContextListContainer<JavaSpecifiedJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer() {
