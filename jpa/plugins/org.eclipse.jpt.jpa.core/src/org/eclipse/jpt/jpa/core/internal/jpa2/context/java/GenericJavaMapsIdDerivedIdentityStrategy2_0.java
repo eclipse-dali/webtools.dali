@@ -65,7 +65,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
-		setDefaultIdAttributeName(buildDefaultIdAttributeName());
+		this.setDefaultIdAttributeName(this.buildDefaultIdAttributeName());
 	}
 	
 	

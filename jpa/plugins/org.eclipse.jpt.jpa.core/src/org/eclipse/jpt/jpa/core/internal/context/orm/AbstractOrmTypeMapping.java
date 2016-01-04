@@ -71,16 +71,16 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	@Override
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
-		setSpecifiedMetadataComplete_(this.xmlTypeMapping.getMetadataComplete());
-		setSpecifiedParentClass_(buildSpecifiedParentClass());
+		this.setSpecifiedMetadataComplete_(this.xmlTypeMapping.getMetadataComplete());
+		this.setSpecifiedParentClass_(this.buildSpecifiedParentClass());
 	}
 	
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
-		setOverrideMetadataComplete(buildOverrideMetadataComplete());
-		setDefaultParentClass(buildDefaultParentClass());
-		setFullyQualifiedParentClass(buildFullyQualifiedParentClass());
+		this.setOverrideMetadataComplete(this.buildOverrideMetadataComplete());
+		this.setDefaultParentClass(this.buildDefaultParentClass());
+		this.setFullyQualifiedParentClass(this.buildFullyQualifiedParentClass());
 	}
 	
 	

@@ -52,7 +52,7 @@ public abstract class AbstractJavaIdTypeMapping<A extends Annotation>
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
-		setSuperTypeMapping_(findSuperTypeMapping());
+		this.setSuperTypeMapping_(this.findSuperTypeMapping());
 		this.idClassReference.update(monitor);
 	}
 	

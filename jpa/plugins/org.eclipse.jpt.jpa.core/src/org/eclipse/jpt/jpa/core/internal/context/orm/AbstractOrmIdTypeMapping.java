@@ -58,7 +58,7 @@ public abstract class AbstractOrmIdTypeMapping<X extends XmlIdTypeMapping>
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.idClassReference.update(monitor);
-		setSuperTypeMapping_(findSuperTypeMapping());
+		this.setSuperTypeMapping_(this.findSuperTypeMapping());
 	}
 	
 	

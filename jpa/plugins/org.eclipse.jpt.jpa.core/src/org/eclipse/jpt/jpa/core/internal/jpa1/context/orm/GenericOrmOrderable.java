@@ -89,8 +89,8 @@ public class GenericOrmOrderable
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
-		updateOrderBy(monitor);
-		updateOrderColumn(monitor);
+		this.updateOrderBy(monitor);
+		this.updateOrderColumn(monitor);
 	}
 	
 	

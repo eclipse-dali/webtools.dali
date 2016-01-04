@@ -67,10 +67,10 @@ public class GenericJavaIdClassReference
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
-		setDefaultIdClassName_(buildDefaultIdClassName());
-		setIdClassName_(buildIdClassName());
-		setFullyQualifiedIdClassName(buildFullyQualifiedIdClassName());
-		updateIdClass(monitor);
+		this.setDefaultIdClassName_(this.buildDefaultIdClassName());
+		this.setIdClassName_(this.buildIdClassName());
+		this.setFullyQualifiedIdClassName(this.buildFullyQualifiedIdClassName());
+		this.updateIdClass(monitor);
 	}
 
 
