@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.core.internal.utility.jdt.JDTModifiedDeclaration.Adapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -297,7 +296,7 @@ public abstract class AbstractJaxbNode
 		}
 
 		/**
-		 * @see #synchronizeWithResourceModel(Adapter)
+		 * @see #synchronizeWithResourceModel()
 		 */
 		public void update() {
 			sync(false);  // false = update

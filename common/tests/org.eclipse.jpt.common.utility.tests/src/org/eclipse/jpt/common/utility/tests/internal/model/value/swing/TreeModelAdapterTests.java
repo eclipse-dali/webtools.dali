@@ -211,16 +211,17 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	/**
-	 * test a problem we had where removing a child from a tree would cause
-	 * the JTree to call #equals(Object) on each node removed (actually, it was
-	 * TreePath, but that was because its own #equals(Object) was called by
-	 * JTree); and since we had already removed the last listener from the
-	 * aspect adapter, the aspect adapter would say its value was null; this
-	 * would cause a NPE until we tweaked TreeModelAdapter to remove its
-	 * listeners from a node only *after* the node had been completely
-	 * removed from the JTree
-	 * @see TreeModelAdapter#removeNode(Object[], int, TreeNodeValueModel)
-	 * @see TreeModelAdapter#addNode(Object[], int, TreeNodeValueModel)
+	 * Test a problem we had where removing a child from a tree would cause
+	 * the {@link JTree} to call {@link Object#equals(Object)} on each node removed
+	 * (actually, it was {@link javax.swing.tree.TreePath}, but that was because
+	 * its own {@link javax.swing.tree.TreePath#equals(Object) equals} method was called by
+	 * {@link JTree}); and since we had already removed the last listener from the
+	 * aspect adapter, the aspect adapter would say its value was <code>null</code>;
+	 * this would cause a NPE until we tweaked {@link TreeModelAdapter} to remove its
+	 * listeners from a node only <em>after</em> the node had been completely
+	 * removed from the {@link JTree}
+	 * @see TreeModelAdapter#removeChildren(TreeNodeValueModel[] path, int[] childIndices, TreeNodeValueModel[] children)
+	 * @see TreeModelAdapter#addChildren(TreeNodeValueModel[] path, int[] childIndices, TreeNodeValueModel[] children)
 	 */
 	public void testLazyInitialization() {
 		TreeModel treeModel = this.buildSpecialTreeModel();
