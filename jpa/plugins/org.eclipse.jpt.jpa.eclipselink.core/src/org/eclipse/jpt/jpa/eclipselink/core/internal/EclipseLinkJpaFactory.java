@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -58,8 +59,8 @@ public class EclipseLinkJpaFactory
 	// ********** Core Model **********
 	
 	@Override
-	public EclipseLinkJpaProject buildJpaProject(JpaProject.Config config) {
-		return new EclipseLinkJpaProjectImpl(config);
+	public EclipseLinkJpaProject buildJpaProject(JpaProject.Config config, IProgressMonitor monitor) {
+		return new EclipseLinkJpaProjectImpl(config, monitor);
 	}
 	
 

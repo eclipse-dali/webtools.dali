@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -172,8 +173,8 @@ public abstract class AbstractJpaFactory
 	
 	// ********** Core Model **********
 	
-	public JpaProject buildJpaProject(JpaProject.Config config) {
-		return new GenericJpaProject(config);
+	public JpaProject buildJpaProject(JpaProject.Config config, IProgressMonitor monitor) {
+		return new GenericJpaProject(config, monitor);
 	}
 	
 	public JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -171,7 +171,7 @@ class InternalJpaProjectManager
 	/**
 	 * All the JPA projects in the workspace.
 	 */
-	private final Vector<JpaProject> jpaProjects = new Vector<JpaProject>();
+	private final Vector<JpaProject> jpaProjects = new Vector<>();
 
 	/**
 	 * Listen for<ul>
@@ -235,7 +235,7 @@ class InternalJpaProjectManager
 	 * validation job. Once the Java source file is saved, the Dali composite
 	 * re-takes the focus and this listener is once again inactive.
 	 */
-	private final HashSet<BooleanReference> javaEventListenerFlags = new HashSet<BooleanReference>();
+	private final HashSet<BooleanReference> javaEventListenerFlags = new HashSet<>();
 
 	/**
 	 * Support for modifying documents shared with the UI.
@@ -292,7 +292,7 @@ class InternalJpaProjectManager
 	}
 
 	/* CU private */ class BuildJpaProjectCommand
-		extends CommandAdapter
+		extends JobCommandAdapter
 	{
 		private final IProject project;
 
@@ -302,14 +302,15 @@ class InternalJpaProjectManager
 		}
 
 		@Override
-		public void execute() {
-			InternalJpaProjectManager.this.buildJpaProject_(this.project);
+		public IStatus execute(IProgressMonitor monitor) {
+			InternalJpaProjectManager.this.buildJpaProject_(this.project, monitor);
+			return Status.OK_STATUS;
 		}
 	}
 
-	/* CU private */ void buildJpaProject_(IProject project) {
+	/* CU private */ void buildJpaProject_(IProject project, IProgressMonitor monitor) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: build JPA project: {0}", project.getName()); //$NON-NLS-1$
-		this.addJpaProject(project);
+		this.addJpaProject(project, monitor);
 	}
 
 
@@ -538,7 +539,7 @@ class InternalJpaProjectManager
 			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "CANCEL: rebuild JPA project: {0}", project.getName()); //$NON-NLS-1$
 			throw new OperationCanceledException();
 		}
-		return this.addJpaProject(project);
+		return this.addJpaProject(project, monitor);
 	}
 
 
@@ -589,7 +590,7 @@ class InternalJpaProjectManager
 	}
 
 	private Iterable<IMessage> buildNoJpaProjectMessages(IProject project) {
-		return new SingleElementIterable<IMessage>(this.buildNoJpaProjectMessage(project));
+		return new SingleElementIterable<>(this.buildNoJpaProjectMessage(project));
 	}
 
 	private IMessage buildNoJpaProjectMessage(IProject project) {
@@ -605,8 +606,8 @@ class InternalJpaProjectManager
 	 * log the exception and do not add anything to the manager.
 	 * Return the newly-created JPA project.
 	 */
-	/* CU private */ JpaProject addJpaProject(IProject project) {
-		JpaProject jpaProject = this.buildJpaProject(project);
+	/* CU private */ JpaProject addJpaProject(IProject project, IProgressMonitor monitor) {
+		JpaProject jpaProject = this.buildJpaProject(project, monitor);
 		// dump a stack trace so we can determine what triggers this
 		if (jpaProject == null) {
 			JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "add JPA project fail: {0}", project); //$NON-NLS-1$
@@ -624,27 +625,27 @@ class InternalJpaProjectManager
 	/**
 	 * Return <code>null</code> if we have any problems....
 	 */
-	private JpaProject buildJpaProject(IProject project) {
-		return this.buildJpaProject(this.buildJpaProjectConfig(project));
+	private JpaProject buildJpaProject(IProject project, IProgressMonitor monitor) {
+		return this.buildJpaProject(this.buildJpaProjectConfig(project), monitor);
 	}
 
 	/**
 	 * Return <code>null</code> if we have any problems....
 	 */
-	private JpaProject buildJpaProject(JpaProject.Config config) {
-		return this.buildJpaProject(config.getJpaPlatform(), config);
+	private JpaProject buildJpaProject(JpaProject.Config config, IProgressMonitor monitor) {
+		return this.buildJpaProject(config.getJpaPlatform(), config, monitor);
 	}
 
 	/**
 	 * Return <code>null</code> if we have any problems....
 	 */
-	private JpaProject buildJpaProject(JpaPlatform jpaPlatform, JpaProject.Config config) {
+	private JpaProject buildJpaProject(JpaPlatform jpaPlatform, JpaProject.Config config, IProgressMonitor monitor) {
 		if (jpaPlatform == null) {
 			JptJpaCorePlugin.instance().logError(new IllegalArgumentException(), "null JPA platform: {0}", config.getProject()); //$NON-NLS-1$
 			return null;
 		}
 		try {
-			return jpaPlatform.getJpaFactory().buildJpaProject(config);
+			return jpaPlatform.getJpaFactory().buildJpaProject(config, monitor);
 		} catch (RuntimeException ex) {
 			JptJpaCorePlugin.instance().logError(ex);
 			return null;
@@ -803,7 +804,7 @@ class InternalJpaProjectManager
 				JptJpaCorePlugin.instance().trace(TRACE_OPTION, "CANCEL: post clean build: {0}", project.getName()); //$NON-NLS-1$
 				throw new OperationCanceledException();
 			}
-			this.addJpaProject(project);
+			this.addJpaProject(project, monitor);
 		}
 	}
 
@@ -822,7 +823,7 @@ class InternalJpaProjectManager
 	}
 
 	/* CU private */ class FacetFileChangeEventHandlerCommand
-		extends CommandAdapter
+		extends JobCommandAdapter
 	{
 		private final IProject project;
 
@@ -832,18 +833,19 @@ class InternalJpaProjectManager
 		}
 
 		@Override
-		public void execute() {
-			InternalJpaProjectManager.this.checkForJpaFacetTransition_(this.project);
+		public IStatus execute(IProgressMonitor monitor) {
+			InternalJpaProjectManager.this.checkForJpaFacetTransition_(this.project, monitor);
+			return Status.OK_STATUS;
 		}
 	}
 
-	/* CU private */ void checkForJpaFacetTransition_(IProject project) {
+	/* CU private */ void checkForJpaFacetTransition_(IProject project, IProgressMonitor monitor) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: project facet file changed: {0}", project.getName()); //$NON-NLS-1$
 		JpaProject jpaProject = this.getJpaProject_(project);
 
 		if (ProjectTools.hasFacet(project, JpaProject.FACET)) {
 			if (jpaProject == null) {  // JPA facet added
-				this.addJpaProject(project);
+				this.addJpaProject(project, monitor);
 			}
 		} else {
 			if (jpaProject != null) {  // JPA facet removed
@@ -1058,10 +1060,6 @@ class InternalJpaProjectManager
 	public void execute(JobCommand command, String jobName, JpaProject jpaProject) {
 		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: client command: {0}", command); //$NON-NLS-1$
 		this.execute(new ClientJobCommandWrapper(command, jpaProject), jobName, jpaProject.getProject());
-	}
-
-	private void execute(Command command, String jobName, ISchedulingRule schedulingRule) {
-		this.execute(new CommandJobCommandAdapter(command), jobName, schedulingRule);
 	}
 
 	private void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {

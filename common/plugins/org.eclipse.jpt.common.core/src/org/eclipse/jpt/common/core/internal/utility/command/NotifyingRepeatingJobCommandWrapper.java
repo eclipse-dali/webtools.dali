@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,8 +67,10 @@ public class NotifyingRepeatingJobCommandWrapper
 	@Override
 	/* private protected */ IStatus executeCommand(IProgressMonitor monitor) {
 		IStatus status = super.executeCommand(monitor);
-		if (this.state.isQuiesced()) {
-			// hmmm - we will notify listeners even when we are "stopped"; that seems OK...
+		if (status.getSeverity() == IStatus.CANCEL) {
+			this.executionCanceled();
+		}
+		else if (this.state.isQuiesced()) {
 			this.executionQuiesced();
 		}
 		return status;
@@ -80,13 +82,31 @@ public class NotifyingRepeatingJobCommandWrapper
 	 */
 	private void executionQuiesced() {
 		for (Listener listener : this.listenerList) {
-			this.notifyListener(listener);
+			this.notifyListenerQuiesced(listener);
 		}
 	}
 
-	private void notifyListener(Listener listener) {
+	private void notifyListenerQuiesced(Listener listener) {
 		try {
 			listener.executionQuiesced(this);
+		} catch (Throwable ex) {
+			this.exceptionHandler.handleException(ex);
+		}
+	}
+
+	/**
+	 * Notify our listeners. All listeners are notified. There is no way to
+	 * cancel the notifications (e.g. via a monitor or exception).
+	 */
+	private void executionCanceled() {
+		for (Listener listener : this.listenerList) {
+			this.notifyListenerCanceled(listener);
+		}
+	}
+
+	private void notifyListenerCanceled(Listener listener) {
+		try {
+			listener.executionCanceled(this);
 		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
 		}

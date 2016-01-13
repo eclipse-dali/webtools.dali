@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -82,7 +82,7 @@ public class RepeatingJobCommandWrapper
 	 * starting with the initial invocation. The list is cleared with each
 	 * initial invocation of the command.
 	 */
-	private final ArrayList<StackTrace> stackTraces = debug() ? new ArrayList<StackTrace>() : null;
+	private final ArrayList<StackTrace> stackTraces = debug() ? new ArrayList<>() : null;
 
 	private static boolean debug() {
 		return JptCommonCorePlugin.instance().isDebugEnabled();
@@ -184,17 +184,21 @@ public class RepeatingJobCommandWrapper
 	 * causing the command to execute again.
 	 */
 	/* CU private */ IStatus execute_(IProgressMonitor monitor) {
+		IStatus status = Status.OK_STATUS;
 		if (this.state.wasStoppedBeforeFirstExecutionCouldStart()) {
-			return Status.OK_STATUS;
+			return status;
 		}
 
+		// if the command is canceled, suppress further executions
+		// (this will include any concurrent, unrelated invocations that might have slipped in);
+		// but keep looping, so we can leave 'state' in a consistent state
+		// (i.e. 'state' assumes we will call 'isRepeat()' until it returns false...)
 		do {
-			IStatus status = this.executeCommand(monitor);
-			if (status.getSeverity() == IStatus.CANCEL) {
-				return status;  // seems reasonable...
+			if (status.getSeverity() != IStatus.CANCEL) {
+				status = this.executeCommand(monitor);
 			}
 		} while (this.state.isRepeat());
-		return Status.OK_STATUS;
+		return status;
 	}
 
 	/**
@@ -206,6 +210,9 @@ public class RepeatingJobCommandWrapper
 		try {
 			return this.command.execute(monitor);
 		} catch (OperationCanceledException ex) {
+			// capture where the cancel occurred;
+			// if we have an infinite loop, the stack trace may give us a hint of what is going on...
+			this.exceptionHandler.handleException(ex);
 			return Status.CANCEL_STATUS;  // seems reasonable...
 		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);

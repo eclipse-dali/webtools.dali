@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -154,12 +154,12 @@ public abstract class AbstractJpaProject
 	 *     orm.xml
 	 *     java
 	 */
-	protected final Hashtable<IFile, JpaFile> jpaFiles = new Hashtable<IFile, JpaFile>();
+	protected final Hashtable<IFile, JpaFile> jpaFiles = new Hashtable<>();
 
 	/**
 	 * The "external" Java resource compilation units (source). Populated upon demand.
 	 */
-	protected final Vector<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits = new Vector<JavaResourceCompilationUnit>();
+	protected final Vector<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits = new Vector<>();
 
 	/**
 	 * The "external" Java resource types (binary). Populated upon demand.
@@ -228,7 +228,7 @@ public abstract class AbstractJpaProject
 
 	// ********** constructor/initialization **********
 
-	protected AbstractJpaProject(JpaProject.Config config) {
+	protected AbstractJpaProject(JpaProject.Config config, IProgressMonitor monitor) {
 		super(null);  // JPA project is the root of the containment tree
 		if ((config.getJpaProjectManager() == null) || (config.getProject() == null) || (config.getJpaPlatform() == null)) {
 			throw new NullPointerException();
@@ -237,7 +237,7 @@ public abstract class AbstractJpaProject
 		this.project = config.getProject();
 		this.projectResourceLocator = this.buildProjectResourceLocator();
 		this.synchronizeContextModelCommand = this.buildSynchronizeContextModelCommand();
-		this.updateCommand = this.buildTempUpdateCommand();  // temporary command
+		this.updateCommand = this.buildTempUpdateCommand(monitor);  // temporary command
 		this.jpaPlatform = config.getJpaPlatform();
 		this.dataSource = this.getJpaFactory().buildJpaDataSource(this, config.getConnectionProfileName());
 		this.userOverrideDefaultCatalog = config.getUserOverrideDefaultCatalog();
@@ -279,7 +279,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected ProjectResourceLocator buildProjectResourceLocator() {
-		return (ProjectResourceLocator) this.project.getAdapter(ProjectResourceLocator.class);
+		return this.project.getAdapter(ProjectResourceLocator.class);
 	}
 
 	protected JavaResourceTypeCache buildExternalJavaResourceTypeCache() {
@@ -1445,7 +1445,7 @@ public abstract class AbstractJpaProject
 	// ********** validation **********
 
 	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
-		ArrayList<IMessage> messages = new ArrayList<IMessage>();
+		ArrayList<IMessage> messages = new ArrayList<>();
 		this.validate(messages, reporter);
 		return messages;
 	}
@@ -1470,7 +1470,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void validateLibraryProvider_(List<IMessage> messages) throws CoreException {
-		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		Map<String, Object> enablementVariables = new HashMap<>();
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.getJpaPlatform().getId());
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.getJpaPlatform().getConfig());
 
@@ -1931,8 +1931,16 @@ public abstract class AbstractJpaProject
 	 * The first update is executed synchronously during construction.
 	 * Once that is complete, we delegate to the JPA project manager.
 	 */
-	protected NotifyingRepeatingJobCommand buildTempUpdateCommand() {
-		return new NotifyingRepeatingJobCommandWrapper(this.buildUpdateJobCommand(), JptJpaCorePlugin.instance().getExceptionHandler());
+	protected NotifyingRepeatingJobCommand buildTempUpdateCommand(IProgressMonitor monitor) {
+		return new NotifyingRepeatingJobCommandWrapper(
+					this.buildUpdateJobCommand(),
+					this.buildTempStartUpdateJobCommandContext(monitor),
+					JptJpaCorePlugin.instance().getExceptionHandler()
+				);
+	}
+
+	protected JobCommandContext buildTempStartUpdateJobCommandContext(IProgressMonitor monitor) {
+		return new TempUpdateJobCommandContext(monitor);
 	}
 
 	protected NotifyingRepeatingJobCommand buildUpdateCommand() {
@@ -2035,6 +2043,9 @@ public abstract class AbstractJpaProject
 		public void executionQuiesced(JobCommand command) {
 			AbstractJpaProject.this.updateQuiesced();
 		}
+		public void executionCanceled(JobCommand command) {
+			AbstractJpaProject.this.updateCanceled();
+		}
 		@Override
 		public String toString() {
 			return ObjectTools.toString(this, AbstractJpaProject.this);
@@ -2049,6 +2060,15 @@ public abstract class AbstractJpaProject
 	 */
  	protected void updateQuiesced() {
 		this.synchronizeMetamodel();
+	}
+
+	/**
+	 * This is the callback used by the update command to notify the JPA
+	 * project that the "update" has been canceled (typically by the user).
+	 * Called by {@link UpdateCommandListener#executionCanceled(JobCommand)}.
+	 */
+ 	protected void updateCanceled() {
+		// NOP
 	}
 
 
@@ -2088,6 +2108,50 @@ public abstract class AbstractJpaProject
 		@Override
 		public String toString() {
 			return ObjectTools.toString(this, this.defaultJobName);
+		}
+	}
+
+
+	// ********** temp update job command context **********
+
+ 	/**
+ 	 * Pass through a progress monitor.
+ 	 * <br>
+ 	 * <strong>NB:</strong> One-time use only.
+	 * 
+	 * @see #buildTempStartUpdateJobCommandContext(IProgressMonitor)
+	 */
+	protected class TempUpdateJobCommandContext
+		implements JobCommandContext
+	{
+		protected IProgressMonitor monitor;
+		protected TempUpdateJobCommandContext(IProgressMonitor monitor) {
+			super();
+			if (monitor == null) {
+				throw new NullPointerException();
+			}
+			this.monitor = monitor;
+		}
+		public void execute(JobCommand command) {
+			IProgressMonitor m = null;
+			synchronized (this)	 {
+				if (this.monitor == null) {
+					throw new NullPointerException();
+				}
+				m = this.monitor;
+				this.monitor = null; // one-time use...
+			}
+			command.execute(m);
+		}
+		public void execute(JobCommand command, String jobName) {
+			this.execute(command);
+		}
+		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
+			this.execute(command);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.monitor);
 		}
 	}
 }

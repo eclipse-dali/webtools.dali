@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject.Config;
@@ -64,11 +65,11 @@ public class EclipseLinkJpaFactory2_0
 	// ********** Core Model **********
 	
 	@Override
-	public EclipseLinkJpaProject buildJpaProject(Config config) {
+	public EclipseLinkJpaProject buildJpaProject(Config config, IProgressMonitor monitor) {
 		if ( ! (config instanceof JpaProject2_0.Config)) {
 			throw new IllegalArgumentException("config must be 2.0-compatible: " + config); //$NON-NLS-1$
 		}
-		return super.buildJpaProject(config);
+		return super.buildJpaProject(config, monitor);
 	}
 	
 	public MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {
