@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.utility;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
@@ -32,53 +33,72 @@ public final class TypeTools {
 	/**
 	 * Climb the specified type's inheritance hierarchy looking for the specified interface.
 	 */
-	public static boolean isSubType(String potentialSubTypeName, String potentialSuperTypeName, IJavaProject javaProject) {
+	public static boolean isSubTypeOf(String typeName, String possibleSuperTypeName, IJavaProject javaProject) {
 		try {
-			return isSubType_(javaProject.findType(potentialSubTypeName), javaProject.findType(potentialSuperTypeName));
+			return isSubTypeOf_(javaProject.findType(typeName), javaProject.findType(possibleSuperTypeName));
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
 
-	public static boolean isSubType(IType potentialSubType, String potentialSuperTypeName) {
+	public static boolean isSubTypeOf(IType type, String possibleSuperTypeName) {
 		try {
-			return isSubType_(potentialSubType, potentialSuperTypeName);
+			return isSubTypeOf_(type, possibleSuperTypeName);
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
 
-	private static boolean isSubType_(IType potentialSubType, String potentialSuperTypeName) throws JavaModelException {
-		return isSubType_(potentialSubType, potentialSubType.getJavaProject().findType(potentialSuperTypeName));
+	private static boolean isSubTypeOf_(IType type, String possibleSuperTypeName) throws JavaModelException {
+		return isSubTypeOf_(type, type.getJavaProject().findType(possibleSuperTypeName));
 	}
 
-	private static boolean isSubType_(IType potentialSubType, IType potentialSuperType) throws JavaModelException {
-		if ((potentialSubType == null) || (potentialSuperType == null)) {
+	private static boolean isSubTypeOf_(IType type, IType possibleSuperType) throws JavaModelException {
+		if (type == null) {
+			return false;
+		}
+		HashSet<String> visitedTypeNames = new HashSet<>();
+		visitedTypeNames.add(type.getFullyQualifiedName());
+		return isSubTypeOf_(type, possibleSuperType, visitedTypeNames);
+	}
+
+	private static boolean isSubTypeOf_(IType type, IType possibleSuperType, HashSet<String> visitedTypeNames) throws JavaModelException {
+		if ((type == null) || (possibleSuperType == null)) {
 			return false;
 		}
 
 		// short cut if types are the same
-		if (potentialSubType.equals(potentialSuperType)) {
+		if (type.equals(possibleSuperType)) {
 			return true;
 		}
 
-		IJavaProject javaProject = potentialSubType.getJavaProject();
+		IJavaProject javaProject = type.getJavaProject();
 		// short cut if potential supertype is java.lang.Object
-		if (javaProject.findType(Object.class.getName()).equals(potentialSuperType)) {
+		if (javaProject.findType(Object.class.getName()).equals(possibleSuperType)) {
 			return true;
 		}
 
-		String potentialSuperTypeName = potentialSuperType.getFullyQualifiedName();
+		String possibleSuperTypeName = possibleSuperType.getFullyQualifiedName();
 
-		for (String superTypeName : getResolvedSuperTypeNames(potentialSubType)) {
-			if (superTypeName.equals(potentialSuperTypeName)) {
+		for (String superTypeName : getResolvedSuperTypeNames(type)) {
+			if (superTypeName == null) {
+				continue;
+			}
+			if (visitedTypeNames.contains(superTypeName)) {
+				// no need to revisit any types;
+				// and(!) stop any inheritance cycles (which is possible in source)
+				continue;
+			}
+			visitedTypeNames.add(superTypeName);
+
+			if (superTypeName.equals(possibleSuperTypeName)) {
 				return true;
 			}
 
 			// recurse into super type
-			if (isSubType_(javaProject.findType(superTypeName), potentialSuperType)) {
+			if (isSubTypeOf_(javaProject.findType(superTypeName), possibleSuperType, visitedTypeNames)) {
 				return true;
 			}
 		}
@@ -97,7 +117,7 @@ public final class TypeTools {
 			// if type is binary, the types are already resolved
 			return nonResolvedSuperTypeNames;
 		}
-		ArrayList<String> resolvedSuperTypeNames = new ArrayList<String>();
+		ArrayList<String> resolvedSuperTypeNames = new ArrayList<>();
 		for (String superTypeName : nonResolvedSuperTypeNames) {
 			resolvedSuperTypeNames.add(resolveType_(type, superTypeName));
 		}
@@ -109,11 +129,10 @@ public final class TypeTools {
 	 * This is necessary because, for whatever reason, { @link IType#getSuperInterfaceNames()} and
 	 * {@link IType#getSuperclassName()} return unqualified names when the type is from Java source.
 	 */
-	@SuppressWarnings("unchecked")
 	private static Iterable<String> getNonResolvedSuperTypeNames(IType type) throws JavaModelException {
-		return IterableTools.concatenate(
-					IterableTools.removeNulls(IterableTools.singletonIterable(type.getSuperclassName())),
-					IterableTools.iterable(type.getSuperInterfaceNames()));
+		String superclassName = type.getSuperclassName();
+		Iterable<String> superInterfaceNames = IterableTools.iterable(type.getSuperInterfaceNames());
+		return (superclassName == null) ? superInterfaceNames : IterableTools.add(superInterfaceNames, superclassName);
 	}
 
 	/**
@@ -140,11 +159,11 @@ public final class TypeTools {
 	}
 
 	public static boolean isSerializable(IType type) {
-		return isSubType(type, SERIALIZABLE_NAME);
+		return isSubTypeOf(type, SERIALIZABLE_NAME);
 	}
 
 	public static boolean isSerializable(String typeName, IJavaProject javaProject) {
-		return isSubType(typeName, SERIALIZABLE_NAME, javaProject);
+		return isSubTypeOf(typeName, SERIALIZABLE_NAME, javaProject);
 	}
 
 	public static final String SERIALIZABLE_NAME = java.io.Serializable.class.getName();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -212,8 +212,8 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 		if (typeName == null) {
 			return false;
 		}
-		return TypeTools.isSubType(typeName, DATE_TYPE_NAME, this.getJavaProject())
-			|| TypeTools.isSubType(typeName, CALENDAR_TYPE_NAME, this.getJavaProject());
+		return TypeTools.isSubTypeOf(typeName, DATE_TYPE_NAME, this.getJavaProject())
+			|| TypeTools.isSubTypeOf(typeName, CALENDAR_TYPE_NAME, this.getJavaProject());
 	}
 
 	public boolean typeIsSerializable() {
@@ -316,7 +316,7 @@ public class EclipseLinkVirtualJavaPersistentAttribute
 				}
 			}
 			for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
-				if (TypeTools.isSubType(typeName, definition.getTypeName(), this.getJavaProject())) {
+				if (TypeTools.isSubTypeOf(typeName, definition.getTypeName(), this.getJavaProject())) {
 					return definition;
 				}
 			}

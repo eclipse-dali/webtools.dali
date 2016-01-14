@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -704,7 +704,7 @@ public class EclipseLinkPersistenceUnit
 							loggerProperty.getValue()
 					)
 			);
-		} else if (!TypeTools.isSubType(
+		} else if (!TypeTools.isSubTypeOf(
 				loggerProperty.getValue(), EclipseLinkLogging.ECLIPSELINK_LOGGER_CLASS_NAME, javaProject)
 		) {
 			messages.add(
@@ -749,7 +749,7 @@ public class EclipseLinkPersistenceUnit
 							handlerProperty.getValue()
 					)
 			);
-		} else if ( ! TypeTools.isSubType(
+		} else if ( ! TypeTools.isSubTypeOf(
 				handlerProperty.getValue(),
 				org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME,
 				javaProject)
@@ -801,7 +801,7 @@ public class EclipseLinkPersistenceUnit
 							profilerProperty.getValue()
 					)
 			);
-		} else if (!TypeTools.isSubType(
+		} else if (!TypeTools.isSubTypeOf(
 				profilerProperty.getValue(), org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME, javaProject)
 		) {
 			messages.add(
@@ -847,7 +847,7 @@ public class EclipseLinkPersistenceUnit
 									property.getValue()
 							)
 					);
-				} else if (!TypeTools.isSubType(
+				} else if (!TypeTools.isSubTypeOf(
 						property.getValue(), org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME, javaProject)
 				) {
 					messages.add(
