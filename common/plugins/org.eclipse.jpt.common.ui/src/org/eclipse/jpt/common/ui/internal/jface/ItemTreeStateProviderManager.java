@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ public class ItemTreeStateProviderManager
 	implements TreeStateProvider,
 				ItemTreeContentProvider.Manager
 {
-	private final HashMap<Object, ItemTreeContentProvider> itemContentProviders = new HashMap<Object, ItemTreeContentProvider>();
+	private final HashMap<Object, ItemTreeContentProvider> itemContentProviders = new HashMap<>();
 
 
 	public ItemTreeStateProviderManager(ItemTreeContentProvider.Factory itemContentProviderFactory, ResourceManager resourceManager) {
@@ -86,8 +86,8 @@ public class ItemTreeStateProviderManager
 	}
 
 	/**
-	 * <strong>NB:</strong> We have a bug if this method ever returns
-	 * <code>null</code> unexpectedly.
+	 * <strong>NB:</strong> We have a bug (probably in our <code>plugin.xml</code>)
+	 * if this method ever returns <code>null</code> unexpectedly.
 	 */
 	private ItemTreeContentProvider getItemContentProvider(Object item) {
 		return this.itemContentProviders.get(item);

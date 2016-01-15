@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <!--
-  Copyright (c) 2007, 2013 Oracle. All rights reserved.
+  Copyright (c) 2007, 2016 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
   and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -985,9 +985,12 @@
 			<triggerPoints>
 				<or>
 					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextModel"/>
-					<adapt type="org.eclipse.core.resources.IProject"> 
-						<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpaFacet"/>
-					</adapt>
+					<and>
+						<instanceof value="org.eclipse.core.resources.IProject"/>
+						<adapt type="org.eclipse.core.resources.IResource"> 
+							<reference definitionId="org.eclipse.jpt.jpa.expression.hasJpaFacet"/>
+						</adapt>
+					</and>
 				</or>
 			</triggerPoints>
 
