@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
-import org.eclipse.jpt.common.utility.internal.model.value.DoubleModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 @SuppressWarnings("nls")
 public class DoubleModifiablePropertyValueModelTests
@@ -23,8 +23,8 @@ public class DoubleModifiablePropertyValueModelTests
 	}
 
 	@Override
-	protected PropertyValueModel<String> buildDoubleModel() {
-		return new DoubleModifiablePropertyValueModel<String>(this.stringModelModel);
+	protected PropertyValueModel<String> buildDoubleModel(ModifiablePropertyValueModel<ModifiablePropertyValueModel<String>> modelModel) {
+		return ValueModelTools.wrapModifiable(modelModel);
 	}
 
 	protected ModifiablePropertyValueModel<String> getDoubleModel() {
@@ -91,7 +91,7 @@ public class DoubleModifiablePropertyValueModelTests
 		this.stringModelEvent = null;
 		this.stringModelModelEvent = null;
 		this.doubleModelEvent = null;
-		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<>("TTT");
 		this.stringModelModel.setValue(stringModel2);
 		assertNull(this.stringModelEvent);
 		this.verifyEvent(this.stringModelModelEvent, this.stringModelModel, this.stringModel, stringModel2);

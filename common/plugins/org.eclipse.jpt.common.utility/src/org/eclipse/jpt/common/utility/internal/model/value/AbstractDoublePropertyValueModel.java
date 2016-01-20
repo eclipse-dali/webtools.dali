@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,22 +48,22 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * 
  * @param <V> the type of the both the <em>inner</em> and <em>outer</em>
  * models' values
- * @param <VMVM> the type of the <em>middle</em> model's value (i.e. the type
+ * @param <VMV> the type of the <em>middle</em> model's value (i.e. the type
  * of the <em>inner</em> model itself)
  */
-public abstract class AbstractDoublePropertyValueModel<V, VMVM extends PropertyValueModel<? extends V>>
-	extends PropertyValueModelWrapper<VMVM>
+public abstract class AbstractDoublePropertyValueModel<V, VMV extends PropertyValueModel<? extends V>>
+	extends PropertyValueModelWrapper<VMV>
 	implements PropertyValueModel<V>
 {
 	/**
 	 * The optionally present <em>inner</em> model; held by the <em>middle</em>
-	 *  model {@link #valueModel}. This may be <code>null</code>.
+	 * model {@link #valueModel}. This may be <code>null</code>.
 	 */
-	protected volatile VMVM valueModelValueModel;
+	protected volatile VMV valueModelValue;
 
 	/**
 	 * A listener that allows us to sync with changes to the
-	 * {@link #valueModelValueModel <em>inner</em> model}.
+	 * {@link #valueModelValue <em>inner</em> model}.
 	 */
 	protected final PropertyChangeListener valueModelValueListener;
 
@@ -77,7 +77,7 @@ public abstract class AbstractDoublePropertyValueModel<V, VMVM extends PropertyV
 	 * Construct a double property value model for the specified
 	 * <em>middle</em> property value model.
 	 */
-	protected AbstractDoublePropertyValueModel(PropertyValueModel<? extends VMVM> valueModel) {
+	protected AbstractDoublePropertyValueModel(PropertyValueModel<? extends VMV> valueModel) {
 		super(valueModel);
 		this.valueModelValueListener = this.buildValueModelValueListener();
 	}
@@ -116,13 +116,22 @@ public abstract class AbstractDoublePropertyValueModel<V, VMVM extends PropertyV
 	 * notify listeners the <em>outer</em> model's value has changed.
 	 */
 	@Override
-	protected void wrappedValueChanged(VMVM newValue) {
-		if (this.hasListeners()) {
-			V old = this.value;
-			this.disengageValueModelValueModel();
-			this.engageValueModelValueModel();
-			this.firePropertyChanged(VALUE, old, this.value);
-		}
+	protected synchronized void wrappedValueChanged(VMV newValueModelValue) {
+		V oldValue = null;
+		V newValue = null;
+    	synchronized (this) {
+			if (this.hasListeners()) { // it's possible listeners were removed before event gets here...
+				oldValue = this.value;
+				this.disengageValueModelValue();
+				this.valueModelValue = newValueModelValue;
+				if (newValueModelValue != null) {
+					newValueModelValue.addPropertyChangeListener(VALUE, this.valueModelValueListener);
+					newValue = newValueModelValue.getValue();
+					this.value = newValue;
+				}
+			}
+    	}
+		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
 
@@ -133,11 +142,15 @@ public abstract class AbstractDoublePropertyValueModel<V, VMVM extends PropertyV
 	 * Cache the new value and
 	 * notify listeners the <em>outer</em> model's value has changed.
 	 */
-    @SuppressWarnings("unchecked")
-	protected void wrappedValueModelValueChanged(PropertyChangeEvent event) {
-		V old = this.value;
-		this.value = (V) event.getNewValue();
-		this.firePropertyChanged(VALUE, old, this.value);
+	@SuppressWarnings("unchecked")
+    protected void wrappedValueModelValueChanged(PropertyChangeEvent event) {
+		V oldValue = null;
+		V newValue = (V) event.getNewValue();
+    	synchronized (this) {
+			oldValue = this.value;
+			this.value = newValue;
+    	}
+		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
 	/**
@@ -146,14 +159,14 @@ public abstract class AbstractDoublePropertyValueModel<V, VMVM extends PropertyV
 	@Override
 	protected void engageModel() {
 		super.engageModel();
-		this.engageValueModelValueModel();
+		this.engageValueModelValue();
 	}
 
-	protected void engageValueModelValueModel() {
-		this.valueModelValueModel = this.valueModel.getValue();
-		if (this.valueModelValueModel != null) {
-			this.valueModelValueModel.addPropertyChangeListener(VALUE, this.valueModelValueListener);
-			this.value = this.valueModelValueModel.getValue();
+	protected void engageValueModelValue() {
+		this.valueModelValue = this.valueModel.getValue();
+		if (this.valueModelValue != null) {
+			this.valueModelValue.addPropertyChangeListener(VALUE, this.valueModelValueListener);
+			this.value = this.valueModelValue.getValue();
 		}
 	}
 
@@ -162,15 +175,15 @@ public abstract class AbstractDoublePropertyValueModel<V, VMVM extends PropertyV
 	 */
 	@Override
 	protected void disengageModel() {
-		this.disengageValueModelValueModel();
+		this.disengageValueModelValue();
 		super.disengageModel();
 	}
 
-	protected void disengageValueModelValueModel() {
-		if (this.valueModelValueModel != null) {
+	protected void disengageValueModelValue() {
+		if (this.valueModelValue != null) {
 			this.value = null;
-			this.valueModelValueModel.removePropertyChangeListener(VALUE, this.valueModelValueListener);
-			this.valueModelValueModel = null;
+			this.valueModelValue.removePropertyChangeListener(VALUE, this.valueModelValueListener);
+			this.valueModelValue = null;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class DoublePropertyValueModelTests
@@ -43,18 +44,18 @@ public class DoublePropertyValueModelTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.stringModel = new SimplePropertyValueModel<String>("foo");
+		this.stringModel = new SimplePropertyValueModel<>("foo");
 		this.stringModelListener = new StringModelListener();
 
-		this.stringModelModel = new SimplePropertyValueModel<ModifiablePropertyValueModel<String>>(this.stringModel);
+		this.stringModelModel = new SimplePropertyValueModel<>(this.stringModel);
 		this.stringModelModelListener = new StringModelModelListener();
 
-		this.doubleModel = this.buildDoubleModel();
+		this.doubleModel = this.buildDoubleModel(this.stringModelModel);
 		this.doubleModelListener = new DoubleModelListener();
 	}
 
-	protected PropertyValueModel<String> buildDoubleModel() {
-		return new DoublePropertyValueModel<String>(this.stringModelModel);
+	protected PropertyValueModel<String> buildDoubleModel(ModifiablePropertyValueModel<ModifiablePropertyValueModel<String>> modelModel) {
+		return ValueModelTools.wrap(modelModel);
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class DoublePropertyValueModelTests
 		this.stringModelModel.setValue(null);
 		assertNull(this.doubleModel.getValue());
 
-		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<>("TTT");
 		this.stringModelModel.setValue(stringModel2);
 		assertEquals("TTT", this.doubleModel.getValue());
 
@@ -103,7 +104,7 @@ public class DoublePropertyValueModelTests
 		assertEquals("foo", this.doubleModel.getValue());
 	}
 
-	public void testLazyListening() {
+	public void testLazyListening1() {
 		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(((AbstractModel) this.stringModelModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.doubleModel.addChangeListener(this.doubleModelListener);
@@ -119,7 +120,7 @@ public class DoublePropertyValueModelTests
 		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		this.doubleModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
-		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<>("TTT");
 		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(((AbstractModel) stringModel2).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.stringModelModel.setValue(stringModel2);
@@ -128,6 +129,87 @@ public class DoublePropertyValueModelTests
 		this.stringModelModel.setValue(this.stringModel);
 		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(((AbstractModel) stringModel2).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+	}
+
+	public void testLazyListening2() {
+		ChangeListener doubleModelListener2 = new ChangeAdapter();
+		PropertyChangeListener doubleModelListener3 = new ChangeAdapter();
+
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.doubleModel.addChangeListener(this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.doubleModel.addChangeListener(doubleModelListener2);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.doubleModel.addPropertyChangeListener(PropertyValueModel.VALUE, doubleModelListener3);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.doubleModel.removeChangeListener(doubleModelListener2);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.doubleModel.removePropertyChangeListener(PropertyValueModel.VALUE, doubleModelListener3);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.doubleModel.removeChangeListener(this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.doubleModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.doubleModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.doubleModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<>("TTT");
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) stringModel2).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.stringModelModel.setValue(stringModel2);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) stringModel2).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.stringModelModel.setValue(this.stringModel);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) stringModel2).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+	}
+
+	public void testLazyListening3() {
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.stringModelModel.setValue(null);
+		this.doubleModel.addChangeListener(this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.stringModelModel.setValue(this.stringModel);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.stringModelModel.setValue(null);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.doubleModel.removeChangeListener(this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+
+
+		this.doubleModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.stringModelModel.setValue(this.stringModel);
+		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.stringModelModel.setValue(null);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+
+		this.doubleModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
+		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.stringModelModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
 	public void testPropertyChange1() {
@@ -142,6 +224,23 @@ public class DoublePropertyValueModelTests
 		this.stringModelModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.stringModelModelListener);
 		this.doubleModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
 		this.verifyPropertyChanges1();
+	}
+
+	public void testToString() {
+		this.stringModel.addChangeListener(this.stringModelListener);
+		this.stringModelModel.addChangeListener(this.stringModelModelListener);
+		this.doubleModel.addChangeListener(this.doubleModelListener);
+		assertFalse(this.doubleModel.toString().indexOf("foo") == -1);
+	}
+
+	public void testConstructor_NPE() {
+		boolean exCaught = false;
+		try {
+			this.doubleModel = this.buildDoubleModel(null);
+		} catch (NullPointerException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 	}
 
 	protected void verifyPropertyChanges1() {
@@ -172,7 +271,7 @@ public class DoublePropertyValueModelTests
 		this.stringModelEvent = null;
 		this.stringModelModelEvent = null;
 		this.doubleModelEvent = null;
-		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<>("TTT");
 		this.stringModelModel.setValue(stringModel2);
 		assertNull(this.stringModelEvent);
 		this.verifyEvent(this.stringModelModelEvent, this.stringModelModel, this.stringModel, stringModel2);

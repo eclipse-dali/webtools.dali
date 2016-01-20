@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,11 +36,11 @@ public class DoubleModifiablePropertyValueModel<V>
 	}
 
 	/**
-	 * Forwad the specified value to the <em>inner</em> model.
+	 * Forward the specified value to the <em>inner</em> model.
 	 */
 	public void setValue(V value) {
-		if (this.valueModelValueModel != null) {
-			this.valueModelValueModel.setValue(value);
+		if (this.valueModelValue != null) {
+			this.valueModelValue.setValue(value);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,10 +20,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * its change notifications. Subclasses must implement the appropriate
  * {@link PropertyValueModel}.
  * <p>
- * Subclasses must implement one of the following methods:<ul>
+ * Subclasses must implement at least one of the following methods:<ul>
  * <li>{@link #wrappedValueChanged(PropertyChangeEvent)}<p>
  *     implement this method to propagate the appropriate change notification
- * <li>{@link #wrappedValueChanged(Object, Object) valueChanged(V, V)}<p>
+ * <li>{@link #wrappedValueChanged(Object, Object) wrappedValueChanged(V, V)}<p>
+ *     implement this method to propagate the appropriate change notification
+ * <li>{@link #wrappedValueChanged(Object) wrappedValueChanged(V)}<p>
  *     implement this method to propagate the appropriate change notification
  * </ul>
  * 
@@ -71,7 +73,7 @@ public abstract class PropertyValueModelWrapper<V>
 	// ********** listen to wrapped value model **********
 
 	/**
-	 * Begin listening to the value holder.
+	 * Begin listening to the value model.
 	 */
 	@Override
 	protected void engageModel() {
@@ -79,7 +81,7 @@ public abstract class PropertyValueModelWrapper<V>
 	}
 
 	/**
-	 * Stop listening to the value holder.
+	 * Stop listening to the value model.
 	 */
 	@Override
 	protected void disengageModel() {
@@ -93,6 +95,7 @@ public abstract class PropertyValueModelWrapper<V>
 	 * The value of the wrapped value model has changed;
 	 * propagate the change notification appropriately.
 	 * @see #wrappedValueChanged(Object, Object)
+	 * @see #wrappedValueChanged(Object)
 	 */
 	@SuppressWarnings("unchecked")
 	protected void wrappedValueChanged(PropertyChangeEvent event) {
@@ -103,6 +106,7 @@ public abstract class PropertyValueModelWrapper<V>
 	 * The value of the wrapped value model has changed;
 	 * propagate the change notification appropriately.
 	 * @see #wrappedValueChanged(PropertyChangeEvent)
+	 * @see #wrappedValueChanged(Object)
 	 */
 	protected void wrappedValueChanged(@SuppressWarnings("unused") V oldValue, V newValue) {
 		this.wrappedValueChanged(newValue);
@@ -111,6 +115,7 @@ public abstract class PropertyValueModelWrapper<V>
 	/**
 	 * The value of the wrapped value model has changed;
 	 * propagate the change notification appropriately.
+	 * @see #wrappedValueChanged(PropertyChangeEvent)
 	 * @see #wrappedValueChanged(Object, Object)
 	 */
 	protected void wrappedValueChanged(@SuppressWarnings("unused") V newValue) {
