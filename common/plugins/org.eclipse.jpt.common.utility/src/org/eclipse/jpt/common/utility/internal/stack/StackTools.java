@@ -250,7 +250,7 @@ public class StackTools {
 	 * first element returned by {@link Stack#pop()}; the first, last.).
 	 */
 	public static <E> ArrayStack<E> arrayStack(Iterator<? extends E> iterator) {
-		ArrayStack<E> result = StackTools.arrayStack();
+		ArrayStack<E> result = arrayStack();
 		pushAll(result, iterator);
 		return result;
 	}
@@ -264,7 +264,7 @@ public class StackTools {
 	 * The specified iterator size is a performance hint.
 	 */
 	public static <E> ArrayStack<E> arrayStack(Iterator<? extends E> iterator, int iteratorSize) {
-		ArrayStack<E> result = StackTools.arrayStack(iteratorSize);
+		ArrayStack<E> result = arrayStack(iteratorSize);
 		pushAll(result, iterator);
 		return result;
 	}
@@ -273,7 +273,7 @@ public class StackTools {
 	 * Return an array-based LIFO stack corresponding to the specified array.
 	 */
 	public static <E> ArrayStack<E> arrayStack(E... array) {
-		ArrayStack<E> result = StackTools.arrayStack(array.length);
+		ArrayStack<E> result = arrayStack(array.length);
 		pushAll(result, array);
 		return result;
 	}
@@ -317,7 +317,7 @@ public class StackTools {
 	 * Return a link-based LIFO stack corresponding to the specified iterator.
 	 */
 	public static <E> LinkedStack<E> linkedStack(Iterator<? extends E> iterator) {
-		LinkedStack<E> result = StackTools.linkedStack();
+		LinkedStack<E> result = linkedStack();
 		pushAll(result, iterator);
 		return result;
 	}
@@ -328,7 +328,7 @@ public class StackTools {
 	 * Specify a cache size of -1 for an unlimited cache.
 	 */
 	public static <E> LinkedStack<E> linkedStack(Iterator<? extends E> iterator, int cacheSize) {
-		LinkedStack<E> result = StackTools.linkedStack(cacheSize);
+		LinkedStack<E> result = linkedStack(cacheSize);
 		pushAll(result, iterator);
 		return result;
 	}
@@ -337,7 +337,7 @@ public class StackTools {
 	 * Return a link-based LIFO stack corresponding to the specified array.
 	 */
 	public static <E> LinkedStack<E> linkedStack(E... array) {
-		LinkedStack<E> result = StackTools.linkedStack();
+		LinkedStack<E> result = linkedStack();
 		pushAll(result, array);
 		return result;
 	}
@@ -348,7 +348,78 @@ public class StackTools {
 	 * Specify a cache size of -1 for an unlimited cache.
 	 */
 	public static <E> LinkedStack<E> linkedStack(E[] array, int cacheSize) {
-		LinkedStack<E> result = StackTools.linkedStack(cacheSize);
+		LinkedStack<E> result = linkedStack(cacheSize);
+		pushAll(result, array);
+		return result;
+	}
+
+
+	// ********** concurrent stack factory methods **********
+
+	/**
+	 * Return an empty concurrent LIFO stack.
+	 */
+	public static <E> ConcurrentStack<E> concurrentStack() {
+		return new ConcurrentStack<>();
+	}
+
+	/**
+	 * Return a concurrent LIFO stack corresponding to the specified iterable.
+	 */
+	public static <E> ConcurrentStack<E> concurrentStack(Iterable<? extends E> iterable) {
+		return concurrentStack(iterable.iterator());
+	}
+
+	/**
+	 * Return a concurrent LIFO stack corresponding to the specified iterator.
+	 */
+	public static <E> ConcurrentStack<E> concurrentStack(Iterator<? extends E> iterator) {
+		ConcurrentStack<E> result = concurrentStack();
+		pushAll(result, iterator);
+		return result;
+	}
+
+	/**
+	 * Return a concurrent LIFO stack corresponding to the specified array.
+	 */
+	@SafeVarargs
+	public static <E> ConcurrentStack<E> concurrentStack(E... array) {
+		ConcurrentStack<E> result = concurrentStack();
+		pushAll(result, array);
+		return result;
+	}
+
+
+	// ********** caching concurrent stack factory methods **********
+
+	/**
+	 * Return an empty caching concurrent LIFO stack.
+	 */
+	public static <E> CachingConcurrentStack<E> cachingConcurrentStack() {
+		return new CachingConcurrentStack<>();
+	}
+
+	/**
+	 * Return a caching concurrent LIFO stack corresponding to the specified iterable.
+	 */
+	public static <E> CachingConcurrentStack<E> cachingConcurrentStack(Iterable<? extends E> iterable) {
+		return cachingConcurrentStack(iterable.iterator());
+	}
+
+	/**
+	 * Return a caching concurrent LIFO stack corresponding to the specified iterator.
+	 */
+	public static <E> CachingConcurrentStack<E> cachingConcurrentStack(Iterator<? extends E> iterator) {
+		CachingConcurrentStack<E> result = cachingConcurrentStack();
+		pushAll(result, iterator);
+		return result;
+	}
+
+	/**
+	 * Return a caching concurrent LIFO stack corresponding to the specified array.
+	 */
+	public static <E> CachingConcurrentStack<E> cachingConcurrentStack(E[] array) {
+		CachingConcurrentStack<E> result = cachingConcurrentStack();
 		pushAll(result, array);
 		return result;
 	}
@@ -371,7 +442,7 @@ public class StackTools {
 	 * first element returned by {@link Stack#pop()}; the first, last.).
 	 */
 	public static <E> FixedCapacityArrayStack<E> fixedCapacityArrayStack(Collection<? extends E> collection) {
-		FixedCapacityArrayStack<E> result = StackTools.fixedCapacityArrayStack(collection.size());
+		FixedCapacityArrayStack<E> result = fixedCapacityArrayStack(collection.size());
 		pushAll(result, collection);
 		return result;
 	}
