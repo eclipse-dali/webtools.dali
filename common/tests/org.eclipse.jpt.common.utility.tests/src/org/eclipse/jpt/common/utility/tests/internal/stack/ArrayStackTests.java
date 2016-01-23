@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,11 +26,11 @@ public class ArrayStackTests
 
 	@Override
 	Stack<String> buildStack() {
-		return new ArrayStack<String>();
+		return new ArrayStack<>();
 	}
 
 	public void testCollectionConstructor() {
-		ArrayList<String> c = new ArrayList<String>();
+		ArrayList<String> c = new ArrayList<>();
 		c.add("first");
 		c.add("second");
 		c.add("third");
@@ -68,7 +68,7 @@ public class ArrayStackTests
 	}
 
 	public void testSerialization_fullArray() throws Exception {
-		Stack<String> stack = new ArrayStack<String>(3);
+		Stack<String> stack = new ArrayStack<>(3);
 		stack.push("first");
 		stack.push("second");
 		stack.push("third");
@@ -83,7 +83,7 @@ public class ArrayStackTests
 	}
 
 	public void testTrimToSize() throws Exception {
-		ArrayStack<String> stack = new ArrayStack<String>(5);
+		ArrayStack<String> stack = new ArrayStack<>(5);
 		stack.push("first");
 		stack.push("second");
 		stack.push("third");
@@ -97,7 +97,7 @@ public class ArrayStackTests
 	}
 
 	public void testTrimToSize_noChange() throws Exception {
-		ArrayStack<String> stack = new ArrayStack<String>(3);
+		ArrayStack<String> stack = new ArrayStack<>(3);
 		stack.push("first");
 		stack.push("second");
 		stack.push("third");

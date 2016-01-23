@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -331,7 +331,7 @@ public class SynchronizedStack<E>
 	 * "Push" all the elements in the specified array.
 	 * Return whether the stack changed as a result.
 	 */
-	public boolean pushAll(E... array) {
+	public boolean pushAll(@SuppressWarnings("unchecked") E... array) {
 		int len = array.length;
 		if (len == 0) {
 			return false;
@@ -410,7 +410,7 @@ public class SynchronizedStack<E>
 	 * "Pop" all the current items from the stack and return them in a list.
 	 */
 	public ArrayList<E> popAll() {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		this.popAllTo(result);
 		return result;
 	}
@@ -468,7 +468,7 @@ public class SynchronizedStack<E>
 		if (index == list.size()) {
 			return this.popAllTo__(list);
 		}
-		ArrayList<E> temp = new ArrayList<E>();
+		ArrayList<E> temp = new ArrayList<>();
 		this.popAllTo__(temp);
 		list.addAll(index, temp);
 		return true;

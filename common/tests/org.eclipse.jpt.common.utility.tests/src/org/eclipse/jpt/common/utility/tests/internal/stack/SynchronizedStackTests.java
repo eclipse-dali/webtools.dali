@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -569,7 +569,7 @@ public class SynchronizedStackTests
 	// ********** additional protocol **********
 
 	public void testPushAllIterable() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -581,7 +581,7 @@ public class SynchronizedStackTests
 	}
 
 	public void testPushAllIterable_empty() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		this.ss.pushAll(list);
 		assertTrue(this.ss.isEmpty());
 	}
@@ -656,7 +656,7 @@ public class SynchronizedStackTests
 		this.ss.push("one");
 		this.ss.push("two");
 		this.ss.push("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertTrue(this.ss.popAllTo(list));
 		assertTrue(this.ss.isEmpty());
 		assertEquals("three", list.get(0));
@@ -665,7 +665,7 @@ public class SynchronizedStackTests
 	}
 
 	public void testPopAllToCollection_empty() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertFalse(this.ss.popAllTo(list));
 		assertTrue(this.ss.isEmpty());
 		assertTrue(list.isEmpty());
@@ -675,7 +675,7 @@ public class SynchronizedStackTests
 		this.ss.push("one");
 		this.ss.push("two");
 		this.ss.push("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("aaa");
 		list.add("bbb");
 		list.add("ccc");
@@ -692,7 +692,7 @@ public class SynchronizedStackTests
 		this.ss.push("one");
 		this.ss.push("two");
 		this.ss.push("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("aaa");
 		list.add("bbb");
 		list.add("ccc");
@@ -706,7 +706,7 @@ public class SynchronizedStackTests
 	}
 
 	public void testPopAllToListInt_empty() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("aaa");
 		list.add("bbb");
 		list.add("ccc");
@@ -760,7 +760,7 @@ public class SynchronizedStackTests
 		this.ss.push("one");
 		this.ss.push("two");
 		this.ss.push("zero");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(this.ss.popAllTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER));
 		assertEquals("one", map.get("o"));
 		assertEquals("two", map.get("t"));
@@ -768,7 +768,7 @@ public class SynchronizedStackTests
 	}
 
 	public void testPopAllToMapTransformer_empty() {
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(this.ss.popAllTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER));
 		assertTrue(map.isEmpty());
 	}
@@ -777,7 +777,7 @@ public class SynchronizedStackTests
 		this.ss.push("one");
 		this.ss.push("two");
 		this.ss.push("zero");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(this.ss.popAllTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER, DequeToolsTests.EMPHASIZER));
 		assertEquals("*one*", map.get("o"));
 		assertEquals("*two*", map.get("t"));
@@ -785,7 +785,7 @@ public class SynchronizedStackTests
 	}
 
 	public void testPopAllToMapTransformerTransformer_empty() {
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(this.ss.popAllTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER, DequeToolsTests.EMPHASIZER));
 		assertTrue(map.isEmpty());
 	}

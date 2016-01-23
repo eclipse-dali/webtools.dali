@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -72,7 +72,7 @@ public class LinkedStackTests
 	}
 
 	public void testNodeCache_max() {
-		Stack<String> stack = new LinkedStack<String>(2);
+		Stack<String> stack = new LinkedStack<>(2);
 		String first = "first";
 		String second = "second";
 		String third = "third";
@@ -110,7 +110,7 @@ public class LinkedStackTests
 	}
 
 	public void testNodeCache_unlimited() {
-		Stack<String> stack = new LinkedStack<String>(-1);
+		Stack<String> stack = new LinkedStack<>(-1);
 		String first = "first";
 		String second = "second";
 		String third = "third";

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,6 +60,7 @@ public class StackTools {
 	 * on the specified stack.
 	 * Return whether the stack changed as a result.
 	 */
+	@SafeVarargs
 	public static <E> boolean pushAll(Stack<? super E> stack, E... array) {
 		int len = array.length;
 		return (len != 0) && pushAll_(stack, array, len);
@@ -84,7 +85,7 @@ public class StackTools {
 	 * list.
 	 */
 	public static <E> ArrayList<E> popAll(Stack<? extends E> stack) {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		popAllTo(stack, result);
 		return result;
 	}
@@ -216,7 +217,7 @@ public class StackTools {
 	 * Return an array-based LIFO stack corresponding with the specified initial capacity.
 	 */
 	public static <E> ArrayStack<E> arrayStack(int initialCapacity) {
-		return new ArrayStack<E>(initialCapacity);
+		return new ArrayStack<>(initialCapacity);
 	}
 
 	/**
@@ -272,6 +273,7 @@ public class StackTools {
 	/**
 	 * Return an array-based LIFO stack corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> ArrayStack<E> arrayStack(E... array) {
 		ArrayStack<E> result = arrayStack(array.length);
 		pushAll(result, array);
@@ -294,7 +296,7 @@ public class StackTools {
 	 * Specify a cache size of -1 for an unlimited cache.
 	 */
 	public static <E> LinkedStack<E> linkedStack(int cacheSize) {
-		return new LinkedStack<E>(cacheSize);
+		return new LinkedStack<>(cacheSize);
 	}
 
 	/**
@@ -336,6 +338,7 @@ public class StackTools {
 	/**
 	 * Return a link-based LIFO stack corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> LinkedStack<E> linkedStack(E... array) {
 		LinkedStack<E> result = linkedStack();
 		pushAll(result, array);
@@ -431,7 +434,7 @@ public class StackTools {
 	 * Return a fixed-capacity stack with the specified capacity.
 	 */
 	public static <E> FixedCapacityArrayStack<E> fixedCapacityArrayStack(int capacity) {
-		return new FixedCapacityArrayStack<E>(capacity);
+		return new FixedCapacityArrayStack<>(capacity);
 	}
 
 	/**
@@ -470,7 +473,7 @@ public class StackTools {
 	 * Return a stack that synchronizes the specified stack.
 	 */
 	public static <E> SynchronizedStack<E> synchronizedStack(Stack<E> stack) {
-		return new SynchronizedStack<E>(stack);
+		return new SynchronizedStack<>(stack);
 	}
 
 	/**
@@ -478,7 +481,7 @@ public class StackTools {
 	 * with specified mutex.
 	 */
 	public static <E> SynchronizedStack<E> synchronizedStack(Stack<E> stack, Object mutex) {
-		return new SynchronizedStack<E>(stack, mutex);
+		return new SynchronizedStack<>(stack, mutex);
 	}
 
 
@@ -488,14 +491,14 @@ public class StackTools {
 	 * Adapt the specified list to the {@link Stack} interface.
 	 */
 	public static <E> ListStack<E> adapt(List<E> list) {
-		return new ListStack<E>(list);
+		return new ListStack<>(list);
 	}
 
 	/**
 	 * Adapt the specified deque to the {@link Stack} interface.
 	 */
 	public static <E> DequeStack<E> adapt(Deque<E> deque) {
-		return new DequeStack<E>(deque);
+		return new DequeStack<>(deque);
 	}
 
 	/**

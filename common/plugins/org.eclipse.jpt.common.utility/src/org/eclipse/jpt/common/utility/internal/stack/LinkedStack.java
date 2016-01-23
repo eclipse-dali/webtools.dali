@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,14 +44,13 @@ public class LinkedStack<E>
 	 */
 	public LinkedStack(int cacheSize) {
 		this(LinkedStack.<E>buildNodeFactory(cacheSize));
-		this.head = null;
 	}
 
 	private static <E> NodeFactory<E> buildNodeFactory(int cacheSize) {
 		if (cacheSize < -1) {
 			throw new IllegalArgumentException("Cache size must be greater than or equal to -1: " + cacheSize); //$NON-NLS-1$
 		}
-		return (cacheSize == 0) ? SimpleNodeFactory.<E>instance() : new CachingNodeFactory<E>(cacheSize);
+		return (cacheSize == 0) ? SimpleNodeFactory.<E>instance() : new CachingNodeFactory<>(cacheSize);
 	}
 
 	private LinkedStack(NodeFactory<E> nodeFactory) {
@@ -94,7 +93,7 @@ public class LinkedStack<E>
 
 	@Override
 	public LinkedStack<E> clone() {
-		LinkedStack<E> clone = new LinkedStack<E>(this.nodeFactory.copy());
+		LinkedStack<E> clone = new LinkedStack<>(this.nodeFactory.copy());
 		E[] elements = this.buildElements();
 		for (int i = elements.length; i-- > 0; ) {
 			clone.push(elements[i]);
@@ -179,7 +178,7 @@ public class LinkedStack<E>
 		}
 
 		Node<E> buildNode(E element, Node<E> next) {
-			return new Node<E>(element, next);
+			return new Node<>(element, next);
 		}
 
 		abstract void release(Node<E> node);
@@ -263,7 +262,7 @@ public class LinkedStack<E>
 
 		@Override
 		NodeFactory<E> copy() {
-			return new CachingNodeFactory<E>(this.maxCacheSize);
+			return new CachingNodeFactory<>(this.maxCacheSize);
 		}
 
 		@Override

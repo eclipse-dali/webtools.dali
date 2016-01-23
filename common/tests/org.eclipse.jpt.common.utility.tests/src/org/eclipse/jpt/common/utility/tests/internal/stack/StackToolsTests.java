@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Oracle. All rights reserved.
+ * Copyright (c) 2015, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,7 +37,7 @@ public class StackToolsTests
 	// ********** push all **********
 
 	public void testPushAllIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -49,14 +49,14 @@ public class StackToolsTests
 	}
 
 	public void testPushAllIterable_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Stack<String> stack = StackTools.arrayStack();
 		assertFalse(StackTools.pushAll(stack, iterable));
 		assertTrue(stack.isEmpty());
 	}
 
 	public void testPushAllIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -68,7 +68,7 @@ public class StackToolsTests
 	}
 
 	public void testPushAllArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -80,7 +80,7 @@ public class StackToolsTests
 	}
 
 	public void testPushAllArray_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Stack<String> stack = StackTools.arrayStack();
 		assertFalse(StackTools.pushAll(stack, iterable.toArray(StringTools.EMPTY_STRING_ARRAY)));
 		assertTrue(stack.isEmpty());
@@ -105,7 +105,7 @@ public class StackToolsTests
 		stack.push("one");
 		stack.push("two");
 		stack.push("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertTrue(StackTools.popAllTo(stack, list));
 		assertEquals("three", list.get(0));
 		assertEquals("two", list.get(1));
@@ -114,13 +114,13 @@ public class StackToolsTests
 
 	public void testPopAllToCollection_empty() {
 		ArrayStack<String> stack = StackTools.arrayStack();
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertFalse(StackTools.popAllTo(stack, list));
 		assertTrue(list.isEmpty());
 	}
 
 	public void testPopAllToListIndex() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -138,7 +138,7 @@ public class StackToolsTests
 	}
 
 	public void testPopAllToListIndex_end() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -156,7 +156,7 @@ public class StackToolsTests
 	}
 
 	public void testPopAllToListIndex_empty() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -210,7 +210,7 @@ public class StackToolsTests
 		stack.push("zero");
 		stack.push("one");
 		stack.push("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(StackTools.popAllTo(stack, map, FIRST_LETTER_TRANSFORMER));
 		assertEquals("one", map.get("o"));
 		assertEquals("two", map.get("t"));
@@ -219,7 +219,7 @@ public class StackToolsTests
 
 	public void testPopAllToMapTransformer_empty() {
 		ArrayStack<String> stack = StackTools.arrayStack();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(StackTools.popAllTo(stack, map, FIRST_LETTER_TRANSFORMER));
 		assertTrue(map.isEmpty());
 	}
@@ -229,7 +229,7 @@ public class StackToolsTests
 		stack.push("zero");
 		stack.push("one");
 		stack.push("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(StackTools.popAllTo(stack, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertEquals("*one*", map.get("o"));
 		assertEquals("*two*", map.get("t"));
@@ -238,7 +238,7 @@ public class StackToolsTests
 
 	public void testPopAllToMapTransformerTransformer_empty() {
 		ArrayStack<String> stack = StackTools.arrayStack();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(StackTools.popAllTo(stack, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertTrue(map.isEmpty());
 	}
@@ -274,7 +274,7 @@ public class StackToolsTests
 	}
 
 	public void testArrayStackIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -285,7 +285,7 @@ public class StackToolsTests
 	}
 
 	public void testArrayStackIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -296,7 +296,7 @@ public class StackToolsTests
 	}
 
 	public void testArrayStackIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -307,7 +307,7 @@ public class StackToolsTests
 	}
 
 	public void testArrayStackIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -318,7 +318,7 @@ public class StackToolsTests
 	}
 
 	public void testArrayStackArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -341,7 +341,7 @@ public class StackToolsTests
 	}
 
 	public void testLinkedStackIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -352,7 +352,7 @@ public class StackToolsTests
 	}
 
 	public void testLinkedStackIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -363,7 +363,7 @@ public class StackToolsTests
 	}
 
 	public void testLinkedStackIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -374,7 +374,7 @@ public class StackToolsTests
 	}
 
 	public void testLinkedStackIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -385,7 +385,7 @@ public class StackToolsTests
 	}
 
 	public void testLinkedStackArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -396,7 +396,7 @@ public class StackToolsTests
 	}
 
 	public void testLinkedStackArrayInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -409,7 +409,7 @@ public class StackToolsTests
 	// ********** fixed-capacity array stack **********
 
 	public void testFixedCapacityArrayStackCollection() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");

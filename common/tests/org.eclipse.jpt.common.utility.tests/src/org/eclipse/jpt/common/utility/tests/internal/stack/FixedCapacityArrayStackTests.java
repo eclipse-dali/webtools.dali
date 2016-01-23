@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Oracle. All rights reserved.
+ * Copyright (c) 2015, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ public class FixedCapacityArrayStackTests
 	}
 
 	public void testCollectionConstructor() {
-		ArrayList<String> c = new ArrayList<String>();
+		ArrayList<String> c = new ArrayList<>();
 		c.add("first");
 		c.add("second");
 		c.add("third");
@@ -131,7 +131,7 @@ public class FixedCapacityArrayStackTests
 	}
 
 	public void testSerialization_fullArray() throws Exception {
-		Stack<String> stack = new FixedCapacityArrayStack<String>(3);
+		Stack<String> stack = new FixedCapacityArrayStack<>(3);
 		stack.push("first");
 		stack.push("second");
 		stack.push("third");
