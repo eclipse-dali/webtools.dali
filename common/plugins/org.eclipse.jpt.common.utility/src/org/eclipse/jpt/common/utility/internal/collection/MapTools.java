@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -210,6 +213,7 @@ public final class MapTools {
 	 * passing the values to the specified key transformer.
 	 * @see Map#putAll(Map)
 	 */
+	@SafeVarargs
 	public static <K, V, E extends V> void addAll(Map<K, V> map, Transformer<? super E, ? extends K> keyTransformer, E... values) {
 		for (E value : values) {
 			add(map, value, keyTransformer);
@@ -244,6 +248,7 @@ public final class MapTools {
 	 * passing the elements to the specified key transformer.
 	 * @see Map#putAll(Map)
 	 */
+	@SafeVarargs
 	public static <K, V, E> void addAll(Map<K, V> map, Transformer<? super E, ? extends K> keyTransformer, Transformer<? super E, ? extends V> valueTransformer, E... elements) {
 		for (E element : elements) {
 			add(map, element, keyTransformer, valueTransformer);
@@ -492,7 +497,7 @@ public final class MapTools {
 	 * will remain in the new map.
 	 */
 	public static <K, V> HashMap<K, V> invert(Map<? extends V, ? extends K> map) {
-		HashMap<K, V> result = new HashMap<K, V>((int) (map.size() / 0.75));
+		HashMap<K, V> result = new HashMap<>((int) (map.size() / 0.75));
 		for (Map.Entry<? extends V, ? extends K> entry : map.entrySet()) {
 			result.put(entry.getValue(), entry.getKey());
 		}
@@ -507,7 +512,7 @@ public final class MapTools {
 	 * values of the specified map.
 	 */
 	public static <K, V> HashMap<K, V> filter(Map<? extends K, ? extends V> map, Predicate<? super V> filter) {
-		HashMap<K, V> result = new HashMap<K, V>((int) (map.size() / 0.75));
+		HashMap<K, V> result = new HashMap<>((int) (map.size() / 0.75));
 		for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
 			V value = entry.getValue();
 			if (filter.evaluate(value)) {
@@ -525,11 +530,57 @@ public final class MapTools {
 	 * values of the specified map.
 	 */
 	public static <K, V1, V2> HashMap<K, V2> transform(Map<? extends K, V1> map, Transformer<? super V1, ? extends V2> transformer) {
-		HashMap<K, V2> result = new HashMap<K, V2>((int) (map.size() / 0.75));
+		HashMap<K, V2> result = new HashMap<>((int) (map.size() / 0.75));
 		for (Map.Entry<? extends K, ? extends V1> entry : map.entrySet()) {
 			result.put(entry.getKey(), transformer.transform(entry.getValue()));
 		}
 		return result;
+	}
+
+
+	// ********** read/write lock wrapper **********
+
+	/**
+	 * Return a wrapper of the specified map that uses an nonfair
+	 * reentrant read/write lock to control access to the map.
+	 * The wrapper provides a simplified
+	 * "map" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <K> the type of keys maintained by the map
+	 * @param <V> the type of values maintained by the map
+	 */
+	public static <K, V> ReadWriteLockMapWrapper<K, V> readWriteLockWrapper(Map<K, V> map) {
+		return readWriteLockWrapper(map, false);
+	}
+
+	/**
+	 * Return a wrapper of the specified map that uses a
+	 * reentrant read/write lock with the specified fairness policy
+	 * to control access to the map.
+	 * The wrapper provides a simplified
+	 * "map" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <K> the type of keys maintained by the map
+	 * @param <V> the type of values maintained by the map
+	 */
+	public static <K, V> ReadWriteLockMapWrapper<K, V> readWriteLockWrapper(Map<K, V> map, boolean fair) {
+		return readWriteLockWrapper(map, new ReentrantReadWriteLock(fair));
+	}
+
+	/**
+	 * Return a wrapper of the specified map that uses the specified
+	 * read/write lock to control access to the map.
+	 * The wrapper provides a simplified
+	 * "map" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <K> the type of keys maintained by the map
+	 * @param <V> the type of values maintained by the map
+	 */
+	public static <K, V> ReadWriteLockMapWrapper<K, V> readWriteLockWrapper(Map<K, V> map, ReadWriteLock lock) {
+		return new ReadWriteLockMapWrapper<>(map, lock);
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,7 @@ public class JptCommonUtilityCollectionTests {
 		suite.addTestSuite(MapToolsTests.class);
 		suite.addTestSuite(NullElementListTests.class);
 		suite.addTestSuite(NullListTests.class);
+		suite.addTestSuite(ReadWriteLockMapWrapperTests.class);
 		suite.addTestSuite(RepeatingElementListTests.class);
 		suite.addTestSuite(SynchronizedBagTests.class);
 		suite.addTestSuite(TightMapTests.class);
