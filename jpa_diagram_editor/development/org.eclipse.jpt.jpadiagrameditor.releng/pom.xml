@@ -9,14 +9,14 @@
 	
 	<properties>
 		<tycho-version>0.15.0</tycho-version>
-		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.3milestones/</eclipse-site>
-		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.9milestones/</emf-site>
+		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.6/</eclipse-site>
+		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/milestones/</emf-site>
 		<emf-transaction>http://download.eclipse.org/modeling/emf/transaction/updates/milestones</emf-transaction>
 		<emf-validation>http://download.eclipse.org/modeling/emf/validation/updates/milestones</emf-validation>
-		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.11.0/</dtp-site>
+		<dtp-site>http://download.eclipse.org/datatools/updates/1.13/1.13.0.201512142037/repository/</dtp-site>
 		<gef-site>http://download.eclipse.org/tools/gef/updates/interim/</gef-site>
-		<wtp-site>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20130404041018/I-3.5.0-20130404041018/repository/</wtp-site>
-		<graphiti-site>http://download.eclipse.org/graphiti/updates/milestones/S-0.10.0M6-201303191346</graphiti-site>
+		<wtp-site>http://build.eclipse.org/webtools/committers/wtp-R3.8.0-I/20160202010110/I-3.8.0-20160202010110/repository/</wtp-site>
+		<graphiti-site>http://download.eclipse.org/graphiti/updates/milestones/</graphiti-site>
 		<swtbot-site>http://download.eclipse.org/technology/swtbot/releases/latest/</swtbot-site>
 	</properties>
 	
@@ -57,7 +57,7 @@
 	
 	<repositories>
 		<repository>
-			<id>Kepler</id>
+			<id>Neon</id>
 			<url>${eclipse-site}</url>
 			<layout>p2</layout>			
 		</repository>	

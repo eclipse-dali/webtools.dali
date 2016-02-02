@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.jpadiagrameditor.tests.feature"
       label="%featureName"
-      version="1.2.101.qualifier"
+      version="1.2.201.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.qualifier">
@@ -21,8 +21,8 @@
 
    <requires>
       <import plugin="org.easymock" version="2.4.0" match="compatible"/>
-      <import feature="org.eclipse.graphiti.feature" version="0.10.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.jpt.jpa.feature" version="3.3.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.graphiti.feature" version="0.12.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.jpt.jpa.feature" version="3.4.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
