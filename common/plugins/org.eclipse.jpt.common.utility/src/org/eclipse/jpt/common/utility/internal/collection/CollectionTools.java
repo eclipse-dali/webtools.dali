@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -772,6 +775,49 @@ public final class CollectionTools {
 			v.addElement(item);
 		}
 		return v;
+	}
+
+
+	// ********** read/write lock wrapper **********
+
+	/**
+	 * Return a wrapper of the specified collection that uses an nonfair
+	 * reentrant read/write lock to control access to the collection.
+	 * The wrapper provides a simplified
+	 * "collection" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <E> the type of elements maintained by the collection
+	 */
+	public static <E> ReadWriteLockCollectionWrapper<E> readWriteLockWrapper(Collection<E> collection) {
+		return readWriteLockWrapper(collection, false);
+	}
+
+	/**
+	 * Return a wrapper of the specified collection that uses a
+	 * reentrant read/write lock with the specified fairness policy
+	 * to control access to the collection.
+	 * The wrapper provides a simplified
+	 * "collection" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <E> the type of elements maintained by the collection
+	 */
+	public static <E> ReadWriteLockCollectionWrapper<E> readWriteLockWrapper(Collection<E> collection, boolean fair) {
+		return readWriteLockWrapper(collection, new ReentrantReadWriteLock(fair));
+	}
+
+	/**
+	 * Return a wrapper of the specified collection that uses the specified
+	 * read/write lock to control access to the collection.
+	 * The wrapper provides a simplified
+	 * "collection" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <E> the type of elements maintained by the collection
+	 */
+	public static <E> ReadWriteLockCollectionWrapper<E> readWriteLockWrapper(Collection<E> collection, ReadWriteLock lock) {
+		return new ReadWriteLockCollectionWrapper<>(collection, lock);
 	}
 
 
