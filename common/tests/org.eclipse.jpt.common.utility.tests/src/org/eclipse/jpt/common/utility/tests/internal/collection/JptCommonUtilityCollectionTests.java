@@ -30,6 +30,7 @@ public class JptCommonUtilityCollectionTests {
 		suite.addTestSuite(NullElementListTests.class);
 		suite.addTestSuite(NullListTests.class);
 		suite.addTestSuite(ReadWriteLockCollectionWrapperTests.class);
+		suite.addTestSuite(ReadWriteLockListWrapperTests.class);
 		suite.addTestSuite(ReadWriteLockMapWrapperTests.class);
 		suite.addTestSuite(RepeatingElementListTests.class);
 		suite.addTestSuite(SynchronizedBagTests.class);

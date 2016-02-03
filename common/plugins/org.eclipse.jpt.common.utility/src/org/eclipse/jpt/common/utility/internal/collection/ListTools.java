@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -824,6 +827,49 @@ public final class ListTools {
 		public String toString() {
 			return this.getClass().getSimpleName();
 		}
+	}
+
+
+	// ********** read/write lock wrapper **********
+
+	/**
+	 * Return a wrapper of the specified list that uses an nonfair
+	 * reentrant read/write lock to control access to the list.
+	 * The wrapper provides a simplified
+	 * "list" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <E> the type of elements maintained by the list
+	 */
+	public static <E> ReadWriteLockListWrapper<E> readWriteLockWrapper(List<E> list) {
+		return readWriteLockWrapper(list, false);
+	}
+
+	/**
+	 * Return a wrapper of the specified list that uses a
+	 * reentrant read/write lock with the specified fairness policy
+	 * to control access to the list.
+	 * The wrapper provides a simplified
+	 * "list" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <E> the type of elements maintained by the list
+	 */
+	public static <E> ReadWriteLockListWrapper<E> readWriteLockWrapper(List<E> list, boolean fair) {
+		return readWriteLockWrapper(list, new ReentrantReadWriteLock(fair));
+	}
+
+	/**
+	 * Return a wrapper of the specified list that uses the specified
+	 * read/write lock to control access to the list.
+	 * The wrapper provides a simplified
+	 * "list" interface (i.e. it does not implement the "view" methods).
+	 * The wrapper uses blocking calls when acquiring the appropriate lock
+	 * (see {@link Lock#lock()}).
+	 * @param <E> the type of elements maintained by the list
+	 */
+	public static <E> ReadWriteLockListWrapper<E> readWriteLockWrapper(List<E> list, ReadWriteLock lock) {
+		return new ReadWriteLockListWrapper<>(list, lock);
 	}
 
 
