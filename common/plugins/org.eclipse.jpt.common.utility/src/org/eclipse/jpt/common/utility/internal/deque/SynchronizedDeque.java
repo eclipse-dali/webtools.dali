@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Oracle. All rights reserved.
+ * Copyright (c) 2015, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -464,7 +464,8 @@ public class SynchronizedDeque<E>
 	 * "Enqueue" all the elements in the specified array to the deque's tail.
 	 * Return whether the deque changed as a result.
 	 */
-	public boolean enqueueTailAll(E... array) {
+	@SafeVarargs
+	public final boolean enqueueTailAll(E... array) {
 		int len = array.length;
 		if (len == 0) {
 			return false;
@@ -491,7 +492,8 @@ public class SynchronizedDeque<E>
 	 * "Enqueue" all the elements in the specified array to the deque's head.
 	 * Return whether the deque changed as a result.
 	 */
-	public boolean enqueueHeadAll(E... array) {
+	@SafeVarargs
+	public final boolean enqueueHeadAll(E... array) {
 		int len = array.length;
 		if (len == 0) {
 			return false;
@@ -622,7 +624,7 @@ public class SynchronizedDeque<E>
 	 * "Drain" all the current items from the deque's head and return them in a list.
 	 */
 	public ArrayList<E> drainHead() {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		this.drainHeadTo(result);
 		return result;
 	}
@@ -631,7 +633,7 @@ public class SynchronizedDeque<E>
 	 * "Drain" all the current items from the deque's tail and return them in a list.
 	 */
 	public ArrayList<E> drainTail() {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		this.drainTailTo(result);
 		return result;
 	}
@@ -721,7 +723,7 @@ public class SynchronizedDeque<E>
 		if (index == list.size()) {
 			return this.drainHeadTo__(list);
 		}
-		ArrayList<E> temp = new ArrayList<E>();
+		ArrayList<E> temp = new ArrayList<>();
 		this.drainHeadTo__(temp);
 		list.addAll(index, temp);
 		return true;
@@ -748,7 +750,7 @@ public class SynchronizedDeque<E>
 		if (index == list.size()) {
 			return this.drainTailTo__(list);
 		}
-		ArrayList<E> temp = new ArrayList<E>();
+		ArrayList<E> temp = new ArrayList<>();
 		this.drainTailTo__(temp);
 		list.addAll(index, temp);
 		return true;

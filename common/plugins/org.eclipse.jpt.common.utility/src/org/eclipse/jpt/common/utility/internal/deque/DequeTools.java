@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -90,6 +90,7 @@ public final class DequeTools {
 	 * on the specified deque's tail.
 	 * Return whether the deque changed as a result.
 	 */
+	@SafeVarargs
 	public static <E> boolean enqueueTailAll(Deque<? super E> deque, E... array) {
 		int len = array.length;
 		return (len != 0) && enqueueTailAll_(deque, array, len);
@@ -111,6 +112,7 @@ public final class DequeTools {
 	 * on the specified deque's head.
 	 * Return whether the deque changed as a result.
 	 */
+	@SafeVarargs
 	public static <E> boolean enqueueHeadAll(Deque<? super E> deque, E... array) {
 		int len = array.length;
 		return (len != 0) && enqueueHeadAll_(deque, array, len);
@@ -135,7 +137,7 @@ public final class DequeTools {
 	 * list.
 	 */
 	public static <E> ArrayList<E> drainHead(Deque<? extends E> deque) {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		drainHeadTo(deque, result);
 		return result;
 	}
@@ -145,7 +147,7 @@ public final class DequeTools {
 	 * list.
 	 */
 	public static <E> ArrayList<E> drainTail(Deque<? extends E> deque) {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		drainTailTo(deque, result);
 		return result;
 	}
@@ -422,7 +424,7 @@ public final class DequeTools {
 	 * Return an empty array-based deque with specified initial capacity.
 	 */
 	public static <E> ArrayDeque<E> arrayDeque(int initialCapacity) {
-		return new ArrayDeque<E>(initialCapacity);
+		return new ArrayDeque<>(initialCapacity);
 	}
 
 	/**
@@ -496,6 +498,7 @@ public final class DequeTools {
 	/**
 	 * Return an array-based deque corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> ArrayDeque<E> arrayDeque(E... array) {
 		ArrayDeque<E> deque = arrayDeque(array.length);
 		enqueueTailAll(deque, array);
@@ -505,6 +508,7 @@ public final class DequeTools {
 	/**
 	 * Return an array-based deque corresponding to the reverse of the specified array.
 	 */
+	@SafeVarargs
 	public static <E> ArrayDeque<E> reverseArrayDeque(E... array) {
 		ArrayDeque<E> deque = arrayDeque(array.length);
 		enqueueHeadAll(deque, array);
@@ -527,7 +531,7 @@ public final class DequeTools {
 	 * Specify a cache size of -1 for an unlimited cache.
 	 */
 	public static <E> LinkedDeque<E> linkedDeque(int cacheSize) {
-		return new LinkedDeque<E>(cacheSize);
+		return new LinkedDeque<>(cacheSize);
 	}
 
 	/**
@@ -601,6 +605,7 @@ public final class DequeTools {
 	/**
 	 * Return a link-based deque corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> LinkedDeque<E> linkedDeque(E... array) {
 		return linkedDeque(array, 0);
 	}
@@ -608,6 +613,7 @@ public final class DequeTools {
 	/**
 	 * Return a link-based deque corresponding to the reverse of the specified array.
 	 */
+	@SafeVarargs
 	public static <E> LinkedDeque<E> reverseLinkedDeque(E... array) {
 		return reverseLinkedDeque(array, 0);
 	}
@@ -641,7 +647,7 @@ public final class DequeTools {
 	 * Return a fixed-capacity array deque with the specified capacity.
 	 */
 	public static <E> FixedCapacityArrayDeque<E> fixedCapacityArrayDeque(int capacity) {
-		return new FixedCapacityArrayDeque<E>(capacity);
+		return new FixedCapacityArrayDeque<>(capacity);
 	}
 
 	/**
@@ -705,7 +711,7 @@ public final class DequeTools {
 	 * and has the specified initial capacity.
 	 */
 	public static <E> PriorityDeque<E> priorityDeque(Comparator<? super E> comparator, int initialCapacity) {
-		return new PriorityDeque<E>(comparator, initialCapacity);
+		return new PriorityDeque<>(comparator, initialCapacity);
 	}
 
 
@@ -725,7 +731,7 @@ public final class DequeTools {
 	 * and has the specified capacity.
 	 */
 	public static <E> FixedCapacityPriorityDeque<E> fixedCapacityPriorityDeque(Comparator<? super E> comparator, int capacity) {
-		return new FixedCapacityPriorityDeque<E>(comparator, capacity);
+		return new FixedCapacityPriorityDeque<>(comparator, capacity);
 	}
 
 
@@ -751,7 +757,7 @@ public final class DequeTools {
 	 * Return a deque that synchronizes the specified deque.
 	 */
 	public static <E> SynchronizedDeque<E> synchronizedDeque(Deque<E> deque) {
-		return new SynchronizedDeque<E>(deque);
+		return new SynchronizedDeque<>(deque);
 	}
 
 	/**
@@ -759,7 +765,7 @@ public final class DequeTools {
 	 * with specified mutex.
 	 */
 	public static <E> SynchronizedDeque<E> synchronizedDeque(Deque<E> deque, Object mutex) {
-		return new SynchronizedDeque<E>(deque, mutex);
+		return new SynchronizedDeque<>(deque, mutex);
 	}
 
 
@@ -769,14 +775,14 @@ public final class DequeTools {
 	 * Adapt the specified list to the {@link Deque} interface.
 	 */
 	public static <E> ListDeque<E> adapt(List<E> list) {
-		return new ListDeque<E>(list);
+		return new ListDeque<>(list);
 	}
 
 	/**
 	 * Return a deque that reverses the specified deque.
 	 */
 	public static <E> Deque<E> reverse(Deque<E> deque) {
-		return new ReverseDeque<E>(deque);
+		return new ReverseDeque<>(deque);
 	}
 
 	/**
