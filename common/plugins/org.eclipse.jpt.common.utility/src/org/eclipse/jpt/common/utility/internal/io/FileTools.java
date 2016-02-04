@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,6 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
@@ -310,7 +309,7 @@ public final class FileTools {
 	 * @see File#isFile()
 	 */
 	public static Iterable<File> getAllFiles(File directory) {
-		ArrayList<File> files = new ArrayList<File>(10000);
+		ArrayList<File> files = new ArrayList<>(10000);
 		addAllFilesTo(directory, files);
 		return files;
 	}
@@ -362,7 +361,7 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterable<File> getAllDirectories(File directory) {
-		ArrayList<File> files = new ArrayList<File>(10000);
+		ArrayList<File> files = new ArrayList<>(10000);
 		addAllDirectoriesTo(directory, files);
 		return files;
 	}
@@ -1001,7 +1000,7 @@ public final class FileTools {
 	 * </code>
 	 */
 	private static File[] pathFiles(File file) {
-		List<File> path = new ArrayList<File>();
+		ArrayList<File> path = new ArrayList<>();
 		for (File f = file; f != null; f = f.getParentFile()) {
 			path.add(f);
 		}
