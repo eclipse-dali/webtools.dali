@@ -37,7 +37,7 @@ public class PreferencesCollectionValueModel<P>
 	implements CollectionValueModel<PreferencePropertyValueModel<P>>
 {
 	/** Cache the current preferences, stored in models and keyed by name. */
-	protected final HashMap<String, PreferencePropertyValueModel<P>> preferenceModels = new HashMap<String, PreferencePropertyValueModel<P>>();
+	protected final HashMap<String, PreferencePropertyValueModel<P>> preferenceModels = new HashMap<>();
 
 	/** A listener that listens to the preferences node for added or removed preferences. */
 	protected final PreferenceChangeListener preferenceChangeListener;
@@ -52,7 +52,7 @@ public class PreferencesCollectionValueModel<P>
 	 * Construct an adapter for the specified preferences node.
 	 */
 	public PreferencesCollectionValueModel(Preferences preferences, Adapter<P> adapter) {
-		this(new StaticPropertyValueModel<Preferences>(preferences), adapter);
+		this(new StaticPropertyValueModel<>(preferences), adapter);
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class PreferencesCollectionValueModel<P>
 	 * At this point we can be sure that the subject is not <code>null</code>.
 	 */
 	protected Iterable<PreferencePropertyValueModel<P>> getPreferenceModels() {
-		return new TransformationIterable<String, PreferencePropertyValueModel<P>>(this.getPreferenceKeys(), new PreferenceKeyTransformer());
+		return new TransformationIterable<>(this.getPreferenceKeys(), new PreferenceKeyTransformer());
 	}
 
 	protected Iterable<String> getPreferenceKeys() {

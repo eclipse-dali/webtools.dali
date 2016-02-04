@@ -89,7 +89,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public static PreferencePropertyValueModel<String> forString(Preferences preferences, String key, String defaultValue) {
-		return new PreferencePropertyValueModel<String>(
+		return new PreferencePropertyValueModel<>(
 				preferences,
 				key,
 				defaultValue,
@@ -102,7 +102,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public static PreferencePropertyValueModel<String> forString(PropertyValueModel<? extends Preferences> preferencesModel, String key, String defaultValue) {
-		return new PreferencePropertyValueModel<String>(
+		return new PreferencePropertyValueModel<>(
 				preferencesModel,
 				key,
 				defaultValue,
@@ -115,7 +115,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public static PreferencePropertyValueModel<Boolean> forBoolean(Preferences preferences, String key, boolean defaultValue) {
-		return new PreferencePropertyValueModel<Boolean>(
+		return new PreferencePropertyValueModel<>(
 				preferences,
 				key,
 				defaultValue ? Boolean.TRUE : Boolean.FALSE,
@@ -128,7 +128,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public static PreferencePropertyValueModel<Boolean> forBoolean(PropertyValueModel<? extends Preferences> preferencesModel, String key, boolean defaultValue) {
-		return new PreferencePropertyValueModel<Boolean>(
+		return new PreferencePropertyValueModel<>(
 				preferencesModel,
 				key,
 				defaultValue ? Boolean.TRUE : Boolean.FALSE,
@@ -141,7 +141,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public static PreferencePropertyValueModel<Integer> forInteger(Preferences preferences, String key, int defaultValue) {
-		return new PreferencePropertyValueModel<Integer>(
+		return new PreferencePropertyValueModel<>(
 				preferences,
 				key,
 				Integer.valueOf(defaultValue),
@@ -154,7 +154,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public static PreferencePropertyValueModel<Integer> forInteger(PropertyValueModel<? extends Preferences> preferencesModel, String key, int defaultValue) {
-		return new PreferencePropertyValueModel<Integer>(
+		return new PreferencePropertyValueModel<>(
 				preferencesModel,
 				key,
 				Integer.valueOf(defaultValue),
@@ -167,7 +167,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public PreferencePropertyValueModel(Preferences preferences, String key, P defaultValue, Transformer<String, P> stringTransformer) {
-		this(new StaticPropertyValueModel<Preferences>(preferences), key, defaultValue, stringTransformer);
+		this(new StaticPropertyValueModel<>(preferences), key, defaultValue, stringTransformer);
 	}
 
 	/**
