@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -175,7 +175,7 @@ public final class EnumerationTools {
 	 * Adapt the specified iterator to the {@link Enumeration} interface.
 	 */
 	public static <E> Enumeration<E> enumeration(Iterator<E> iterator) {
-		return new IteratorEnumeration<E>(iterator);
+		return new IteratorEnumeration<>(iterator);
 	}
 
 	/**
@@ -381,7 +381,7 @@ public final class EnumerationTools {
 	 * Return an iterator corresponding to the specified enumeration.
 	 */
 	public static <E> Iterator<E> iterator(Enumeration<? extends E> enumeration) {
-		return new EnumerationIterator<E>(enumeration);
+		return new EnumerationIterator<>(enumeration);
 	}
 
 
