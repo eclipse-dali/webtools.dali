@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -84,7 +84,7 @@ public final class NameTools {
 	 * strings converted to lower case.
 	 */
 	private static HashSet<String> convertToLowerCase(Collection<String> strings) {
-		HashSet<String> result = new HashSet<String>(strings.size());
+		HashSet<String> result = new HashSet<>(strings.size());
 		for (String string : strings) {
 			result.add(string.toLowerCase());
 		}
