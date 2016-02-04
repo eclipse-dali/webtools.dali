@@ -87,6 +87,7 @@ public final class ListTools {
 	 * to the specified list at the specified index.
 	 * Return whether the list changed as a result.
 	 */
+	@SafeVarargs
 	public static <E> boolean addAll(List<? super E> list, int index, E... array) {
 		return (array.length != 0) && list.addAll(index, Arrays.asList(array));
 	}
@@ -174,7 +175,7 @@ public final class ListTools {
 	 * elements of the specified list.
 	 */
 	public static <E> ArrayList<E> filter(Collection<? extends E> list, Predicate<? super E> predicate) {
-		ArrayList<E> result = new ArrayList<E>(list.size());
+		ArrayList<E> result = new ArrayList<>(list.size());
 		for (E each : list) {
 			if (predicate.evaluate(each)) {
 				result.add(each);
@@ -468,7 +469,7 @@ public final class ListTools {
 		}
 		if (list instanceof RandomAccess) {
 			// move elements, leaving the list in place
-			ArrayList<E> temp = new ArrayList<E>(list.subList(sourceIndex, sourceIndex + length));
+			ArrayList<E> temp = new ArrayList<>(list.subList(sourceIndex, sourceIndex + length));
 			if (targetIndex < sourceIndex) {
 				for (int i = sourceIndex; i-- > targetIndex; ) {
 					list.set(i + length, list.get(i));
@@ -497,7 +498,7 @@ public final class ListTools {
 	 */
 	public static <E> ArrayList<E> removeElementsAtIndex(List<? extends E> list, int index, int length) {
 		List<? extends E> subList = list.subList(index, index + length);
-		ArrayList<E> removed = new ArrayList<E>(subList);
+		ArrayList<E> removed = new ArrayList<>(subList);
 		subList.clear();
 		return removed;
 	}
@@ -513,7 +514,7 @@ public final class ListTools {
 			return false;
 		}
 
-		LinkedHashSet<E> temp = new LinkedHashSet<E>(listSize);		// take advantage of hashed look-up
+		LinkedHashSet<E> temp = new LinkedHashSet<>(listSize);		// take advantage of hashed look-up
 		boolean modified = false;
 		for (E item : list) {
 			if ( ! temp.add(item)) {
@@ -552,7 +553,7 @@ public final class ListTools {
 	 * elements in the specified list.
 	 */
 	public static <I, O> ArrayList<O> transform(Collection<I> list, Transformer<? super I, ? extends O> transformer) {
-		ArrayList<O> result = new ArrayList<O>(list.size());
+		ArrayList<O> result = new ArrayList<>(list.size());
 		for (I each : list) {
 			result.add(transformer.transform(each));
 		}
@@ -690,8 +691,9 @@ public final class ListTools {
 	 * Unlike {@link Arrays#asList(Object[])}, the list
 	 * is modifiable and is not backed by the array.
 	 */
+	@SafeVarargs
 	public static <E> ArrayList<E> arrayList(E... array) {
-		ArrayList<E> list = new ArrayList<E>(array.length);
+		ArrayList<E> list = new ArrayList<>(array.length);
 		for (E e : array) {
 			list.add(e);
 		}
