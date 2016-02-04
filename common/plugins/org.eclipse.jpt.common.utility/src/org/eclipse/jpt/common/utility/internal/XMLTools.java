@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,19 +128,11 @@ public final class XMLTools {
 	 * of the specified file.
 	 */
 	public static Document parse(File file) {
-		InputStream inputStream;
-		try {
-			inputStream = new BufferedInputStream(new FileInputStream(file), 8192);	// 8KB
-		} catch (FileNotFoundException ex) {
-			throw new RuntimeException(ex);
-		}
-		Document document = parse(inputStream);
-		try {
-			inputStream.close();
+		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(file), 8192)) { // 8KB
+			return parse(inputStream);
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
-		return document;
 	}
 
 	private static synchronized DocumentBuilder getDocumentBuilder() {
@@ -188,7 +179,7 @@ public final class XMLTools {
 	public static Iterable<Node> getChildren(Node node) {
 		NodeList children = node.getChildNodes();
 		int len = children.getLength();
-		ArrayList<Node> result = new ArrayList<Node>(len);
+		ArrayList<Node> result = new ArrayList<>(len);
 		for (int i = 0; i < len; i++) {
 			Node child = children.item(i);
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
@@ -205,7 +196,7 @@ public final class XMLTools {
 	public static Iterable<Node> getChildren(Node node, String childName) {
 		NodeList children = node.getChildNodes();
 		int len = children.getLength();
-		ArrayList<Node> result = new ArrayList<Node>(len);
+		ArrayList<Node> result = new ArrayList<>(len);
 		for (int i = 0; i < len; i++) {
 			Node child = children.item(i);
 			if ((child.getNodeType() == Node.ELEMENT_NODE)
@@ -447,15 +438,8 @@ public final class XMLTools {
 	 * Document#print(File file)
 	 */
 	public static void print(Document document, File file) {
-		OutputStream outputStream;
-		try {
-			outputStream = new BufferedOutputStream(new FileOutputStream(file), 8192);	// 8KB
-		} catch (FileNotFoundException ex) {
-			throw new RuntimeException(ex);
-		}
-		print(document, outputStream);
-		try {
-			outputStream.close();
+		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file), 8192)) { // 8KB
+			print(document, outputStream);
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
