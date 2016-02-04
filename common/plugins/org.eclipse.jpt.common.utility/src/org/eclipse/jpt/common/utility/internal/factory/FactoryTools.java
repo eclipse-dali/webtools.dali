@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ public class FactoryTools {
 	 * @see IteratorFactory
 	 */
 	public static <T> Factory<T> adapt(Iterator<? extends T> iterator) {
-		return new IteratorFactory<T>(iterator);
+		return new IteratorFactory<>(iterator);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class FactoryTools {
 	 * @param <T> the type of the object returned by the factory
 	 */
 	public static <T> Factory<T> adapt(Closure<?> closure) {
-		return new ClosureFactory<T>(closure);
+		return new ClosureFactory<>(closure);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class FactoryTools {
 	 * @param <T> the type of the object returned by the factory
 	 */
 	public static <T> Factory<T> adapt(Command command) {
-		return new CommandFactory<T>(command);
+		return new CommandFactory<>(command);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class FactoryTools {
 	 * @param <T> the type of the object returned by the factory
 	 */
 	public static <T> Factory<T> adapt(Transformer<?, ? extends T> transformer) {
-		return new TransformerFactory<T>(transformer);
+		return new TransformerFactory<>(transformer);
 	}
 
 
@@ -103,7 +103,7 @@ public class FactoryTools {
 	 * @see ThreadLocalFactory
 	 */
 	public static <T> ThreadLocalFactory<T> threadLocalFactory(Factory<? extends T> defaultFactory) {
-		return new ThreadLocalFactory<T>(defaultFactory);
+		return new ThreadLocalFactory<>(defaultFactory);
 	}
 
 
@@ -117,7 +117,7 @@ public class FactoryTools {
 	 * @see FactoryWrapper
 	 */
 	public static <T> FactoryWrapper<T> wrap(Factory<? extends T> factory) {
-		return new FactoryWrapper<T>(factory);
+		return new FactoryWrapper<>(factory);
 	}
 
 
@@ -134,7 +134,7 @@ public class FactoryTools {
 	 * @see #downcast(Factory)
 	 */
 	public static <X, T> Factory<T> cast(Factory<X> factory) {
-		return new CastingFactoryWrapper<X, T>(factory);
+		return new CastingFactoryWrapper<>(factory);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class FactoryTools {
 	 * @see #upcast(Factory)
 	 */
 	public static <X, T extends X> Factory<T> downcast(Factory<X> factory) {
-		return new DowncastingFactoryWrapper<X, T>(factory);
+		return new DowncastingFactoryWrapper<>(factory);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class FactoryTools {
 	 * @see #downcast(Factory)
 	 */
 	public static <T, X extends T> Factory<T> upcast(Factory<X> factory) {
-		return new UpcastingFactoryWrapper<T, X>(factory);
+		return new UpcastingFactoryWrapper<>(factory);
 	}
 
 
@@ -217,7 +217,7 @@ public class FactoryTools {
 	 * @see SafeFactoryWrapper
 	 */
 	public static <T> Factory<T> safe(Factory<? extends T> factory, ExceptionHandler exceptionHandler, T exceptionValue) {
-		return new SafeFactoryWrapper<T>(factory, exceptionHandler, exceptionValue);
+		return new SafeFactoryWrapper<>(factory, exceptionHandler, exceptionValue);
 	}
 
 
@@ -229,7 +229,7 @@ public class FactoryTools {
 	 * @see CloneFactory
 	 */
 	public static <T extends Cloneable> Factory<T> cloneFactory(T prototype) {
-		return new CloneFactory<T>(prototype);
+		return new CloneFactory<>(prototype);
 	}
 
 	/**
@@ -262,7 +262,7 @@ public class FactoryTools {
 	 * @see InstantiationFactory
 	 */
 	public static <T> Factory<T> instantiationFactory(Class<? extends T> clazz, Class<?>[] parameterTypes, Object[] arguments) {
-		return new InstantiationFactory<T>(clazz, parameterTypes, arguments);
+		return new InstantiationFactory<>(clazz, parameterTypes, arguments);
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class FactoryTools {
 	 * @see StaticFieldFactory
 	 */
 	public static <T> Factory<T> get(Field field) {
-		return new StaticFieldFactory<T>(field);
+		return new StaticFieldFactory<>(field);
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class FactoryTools {
 	 * @see StaticMethodFactory
 	 */
 	public static <T> Factory<T> execute(Method method, Object[] arguments) {
-		return new StaticMethodFactory<T>(method, arguments);
+		return new StaticMethodFactory<>(method, arguments);
 	}
 
 
@@ -364,7 +364,7 @@ public class FactoryTools {
 	 * @see #nullFactory()
 	 */
 	public static <T> Factory<T> staticFactory(T value) {
-		return new StaticFactory<T>(value);
+		return new StaticFactory<>(value);
 	}
 
 
