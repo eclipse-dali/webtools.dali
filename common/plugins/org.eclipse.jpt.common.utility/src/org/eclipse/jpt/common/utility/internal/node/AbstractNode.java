@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -94,13 +94,13 @@ public abstract class AbstractNode
 	 * Sets of transient aspect names, keyed by class.
 	 * This is built up lazily, as the objects are modified.
 	 */
-	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> transientAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
+	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> transientAspectNameSets = new HashMap<>();
 
 	/**
 	 * Sets of non-validated aspect names, keyed by class.
 	 * This is built up lazily, as the objects are modified.
 	 */
-	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> nonValidatedAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
+	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> nonValidatedAspectNameSets = new HashMap<>();
 
 
 	// ********** constructors **********
@@ -130,8 +130,8 @@ public abstract class AbstractNode
 		this.dirty = true;
 		this.dirtyBranch = true;
 
-		this.problems = new Vector<Problem>();
-		this.branchProblems = new Vector<Problem>();
+		this.problems = new Vector<>();
+		this.branchProblems = new Vector<>();
 
 	// when you override this method, don't forget to include:
 	//	super.initialize();
@@ -219,7 +219,7 @@ public abstract class AbstractNode
 	 * @see #addChildrenTo(java.util.List)
 	 */
 	public final Iterator<Node> children() {
-		List<Node> children = new ArrayList<Node>();
+		List<Node> children = new ArrayList<>();
 		this.addChildrenTo(children);
 		return children.iterator();
 	}
@@ -266,7 +266,7 @@ public abstract class AbstractNode
 	 * to "owned" by another object.
 	 */
 	public Iterator<Node.Reference> branchReferences() {
-		Collection<Node.Reference> branchReferences = new ArrayList<Node.Reference>(1000);		// start big
+		Collection<Node.Reference> branchReferences = new ArrayList<>(1000); // start big
 		this.addBranchReferencesTo(branchReferences);
 		return branchReferences.iterator();
 	}
@@ -296,7 +296,7 @@ public abstract class AbstractNode
 	 * Only really used for testing and debugging.
 	 */
 	public Iterator<Node> allNodes() {
-		Collection<Node> nodes = new ArrayList<Node>(1000);		// start big
+		Collection<Node> nodes = new ArrayList<>(1000); // start big
 		this.addAllNodesTo(nodes);
 		return nodes.iterator();
 	}
@@ -612,7 +612,7 @@ public abstract class AbstractNode
 		synchronized (transientAspectNameSets) {
 			HashSet<String> transientAspectNames = transientAspectNameSets.get(this.getClass());
 			if (transientAspectNames == null) {
-				transientAspectNames = new HashSet<String>();
+				transientAspectNames = new HashSet<>();
 				this.addTransientAspectNamesTo(transientAspectNames);
 				transientAspectNameSets.put(this.getClass(), transientAspectNames);
 			}
@@ -790,7 +790,7 @@ public abstract class AbstractNode
 	 * problems were removed from our "branch" problems.
 	 */
 	private boolean checkBranchProblems() {
-		Vector<Problem> oldBranchProblems = new Vector<Problem>(this.branchProblems);
+		Vector<Problem> oldBranchProblems = new Vector<>(this.branchProblems);
 		int oldSize = this.branchProblems.size();
 
 		this.branchProblems.clear();
@@ -902,7 +902,7 @@ public abstract class AbstractNode
 		synchronized (nonValidatedAspectNameSets) {
 			HashSet<String> nonValidatedAspectNames = nonValidatedAspectNameSets.get(this.getClass());
 			if (nonValidatedAspectNames == null) {
-				nonValidatedAspectNames = new HashSet<String>();
+				nonValidatedAspectNames = new HashSet<>();
 				this.addNonValidatedAspectNamesTo(nonValidatedAspectNames);
 				nonValidatedAspectNameSets.put(this.getClass(), nonValidatedAspectNames);
 			}
