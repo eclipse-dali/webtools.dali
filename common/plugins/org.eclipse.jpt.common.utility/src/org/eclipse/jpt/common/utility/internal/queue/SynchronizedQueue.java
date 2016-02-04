@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -331,7 +331,8 @@ public class SynchronizedQueue<E>
 	 * "Enqueue" all the elements in the specified array.
 	 * Return whether the queue changed as a result.
 	 */
-	public boolean enqueueAll(E... array) {
+	@SafeVarargs
+	public final boolean enqueueAll(E... array) {
 		int len = array.length;
 		if (len == 0) {
 			return false;
@@ -410,7 +411,7 @@ public class SynchronizedQueue<E>
 	 * "Drain" all the current items from the queue and return them in a list.
 	 */
 	public ArrayList<E> drain() {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		this.drainTo(result);
 		return result;
 	}
@@ -468,7 +469,7 @@ public class SynchronizedQueue<E>
 		if (index == list.size()) {
 			return this.drainTo__(list);
 		}
-		ArrayList<E> temp = new ArrayList<E>();
+		ArrayList<E> temp = new ArrayList<>();
 		this.drainTo__(temp);
 		list.addAll(index, temp);
 		return true;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,7 +52,7 @@ public class LinkedQueue<E>
 		if (cacheSize < -1) {
 			throw new IllegalArgumentException("Cache size must be greater than or equal to -1: " + cacheSize); //$NON-NLS-1$
 		}
-		return (cacheSize == 0) ? SimpleNodeFactory.<E>instance() : new CachingNodeFactory<E>(cacheSize);
+		return (cacheSize == 0) ? SimpleNodeFactory.<E>instance() : new CachingNodeFactory<>(cacheSize);
 	}
 
 	private LinkedQueue(NodeFactory<E> nodeFactory) {
@@ -105,7 +105,7 @@ public class LinkedQueue<E>
 
 	@Override
 	public LinkedQueue<E> clone() {
-		LinkedQueue<E> clone = new LinkedQueue<E>(this.nodeFactory.copy());
+		LinkedQueue<E> clone = new LinkedQueue<>(this.nodeFactory.copy());
 		E[] elements = this.buildElements();
 		for (E element : elements) {
 			clone.enqueue(element);
@@ -188,7 +188,7 @@ public class LinkedQueue<E>
 		}
 
 		Node<E> buildNode(E element, Node<E> next) {
-			return new Node<E>(element, next);
+			return new Node<>(element, next);
 		}
 
 		abstract void release(Node<E> node);
@@ -272,7 +272,7 @@ public class LinkedQueue<E>
 
 		@Override
 		NodeFactory<E> copy() {
-			return new CachingNodeFactory<E>(this.maxCacheSize);
+			return new CachingNodeFactory<>(this.maxCacheSize);
 		}
 
 		@Override

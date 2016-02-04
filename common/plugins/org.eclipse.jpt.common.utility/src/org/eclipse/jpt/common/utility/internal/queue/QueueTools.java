@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,6 +63,7 @@ public final class QueueTools {
 	 * on the specified queue.
 	 * Return whether the queue changed as a result.
 	 */
+	@SafeVarargs
 	public static <E> boolean enqueueAll(Queue<? super E> queue, E... array) {
 		int len = array.length;
 		return (len != 0) && enqueueAll_(queue, array, len);
@@ -87,7 +88,7 @@ public final class QueueTools {
 	 * list.
 	 */
 	public static <E> ArrayList<E> drain(Queue<? extends E> queue) {
-		ArrayList<E> result = new ArrayList<E>();
+		ArrayList<E> result = new ArrayList<>();
 		drainTo(queue, result);
 		return result;
 	}
@@ -218,7 +219,7 @@ public final class QueueTools {
 	 * Return an empty array-based FIFO queue with specified initial capacity.
 	 */
 	public static <E> ArrayQueue<E> arrayQueue(int initialCapacity) {
-		return new ArrayQueue<E>(initialCapacity);
+		return new ArrayQueue<>(initialCapacity);
 	}
 
 	/**
@@ -258,6 +259,7 @@ public final class QueueTools {
 	/**
 	 * Return an array-based FIFO queue corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> ArrayQueue<E> arrayQueue(E... array) {
 		ArrayQueue<E> result = QueueTools.arrayQueue(array.length);
 		enqueueAll(result, array);
@@ -280,7 +282,7 @@ public final class QueueTools {
 	 * Specify a cache size of -1 for an unlimited cache.
 	 */
 	public static <E> LinkedQueue<E> linkedQueue(int cacheSize) {
-		return new LinkedQueue<E>(cacheSize);
+		return new LinkedQueue<>(cacheSize);
 	}
 
 	/**
@@ -320,6 +322,7 @@ public final class QueueTools {
 	/**
 	 * Return a link-based FIFO queue corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> LinkedQueue<E> linkedQueue(E... array) {
 		return linkedQueue(array, 0);
 	}
@@ -342,7 +345,7 @@ public final class QueueTools {
 	 * Return a fixed-capacity array queue with the specified capacity.
 	 */
 	public static <E> FixedCapacityArrayQueue<E> fixedCapacityArrayQueue(int capacity) {
-		return new FixedCapacityArrayQueue<E>(capacity);
+		return new FixedCapacityArrayQueue<>(capacity);
 	}
 
 	/**
@@ -374,7 +377,7 @@ public final class QueueTools {
 	 * implementing a LIFO queue.
 	 */
 	public static <E> StackQueue<E> adapt(Stack<E> stack) {
-		return new StackQueue<E>(stack);
+		return new StackQueue<>(stack);
 	}
 
 
@@ -410,7 +413,7 @@ public final class QueueTools {
 	 * and has the specified initial capacity.
 	 */
 	public static <E> PriorityQueue<E> priorityQueue(Comparator<? super E> comparator, int initialCapacity) {
-		return new PriorityQueue<E>(comparator, initialCapacity);
+		return new PriorityQueue<>(comparator, initialCapacity);
 	}
 
 	/**
@@ -460,7 +463,7 @@ public final class QueueTools {
 	 * the supplied array.
 	 */
 	public static <E> PriorityQueue<E> priorityQueue(Comparator<? super E> comparator, E[] initialElements, int size) {
-		return new PriorityQueue<E>(comparator, initialElements, size);
+		return new PriorityQueue<>(comparator, initialElements, size);
 	}
 
 
@@ -486,7 +489,7 @@ public final class QueueTools {
 	 * Return a queue that synchronizes the specified queue.
 	 */
 	public static <E> SynchronizedQueue<E> synchronizedQueue(Queue<E> queue) {
-		return new SynchronizedQueue<E>(queue);
+		return new SynchronizedQueue<>(queue);
 	}
 
 	/**
@@ -494,7 +497,7 @@ public final class QueueTools {
 	 * with specified mutex.
 	 */
 	public static <E> SynchronizedQueue<E> synchronizedQueue(Queue<E> queue, Object mutex) {
-		return new SynchronizedQueue<E>(queue, mutex);
+		return new SynchronizedQueue<>(queue, mutex);
 	}
 
 
@@ -504,14 +507,14 @@ public final class QueueTools {
 	 * Adapt the specified deque to the {@link Queue} interface.
 	 */
 	public static <E> DequeQueue<E> adapt(Deque<E> deque) {
-		return new DequeQueue<E>(deque);
+		return new DequeQueue<>(deque);
 	}
 
 	/**
 	 * Adapt the specified list to the {@link Queue} interface.
 	 */
 	public static <E> ListQueue<E> adapt(List<E> list) {
-		return new ListQueue<E>(list);
+		return new ListQueue<>(list);
 	}
 
 	/**
