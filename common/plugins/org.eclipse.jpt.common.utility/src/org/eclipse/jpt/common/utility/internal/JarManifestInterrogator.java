@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -92,39 +92,13 @@ public class JarManifestInterrogator {
 	 * Build and return the application's manifest.
 	 */
 	private Manifest buildManifest() {
-		JarFile jarFile = this.buildJarFile();
-		if (jarFile == null) {
+		if (this.jarFileName == null) {
 			// if there is no JAR file, use an empty manifest
 			return new Manifest();
 		}
-		try {
-			Manifest result = jarFile.getManifest();
-			if (result == null) {
-				// if there is no manifest in the JAR, use an empty manifest
-				return new Manifest();
-			}
-			return result;
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
-		} finally {
-			try {
-				jarFile.close();
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-	}
-
-	/**
-	 * Build and return the application's JAR file. If the JAR file cannot
-	 * be determined, return <code>null</code>.
-	 */
-	private JarFile buildJarFile() {
-		if (this.jarFileName == null) {
-			return null;
-		}
-		try {
-			return new JarFile(this.jarFileName);
+		try (JarFile jarFile = new JarFile(this.jarFileName)){
+			Manifest m = jarFile.getManifest();
+			return (m != null) ? m : new Manifest();
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
