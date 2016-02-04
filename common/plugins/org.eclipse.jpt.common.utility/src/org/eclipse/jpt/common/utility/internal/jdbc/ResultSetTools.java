@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2014 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -74,7 +74,7 @@ public class ResultSetTools {
 	 * @see ResultSetIterator
 	 */
 	public static <E> ResultSetIterator<E> iterator(ResultSet resultSet, ResultSetRowTransformer<? extends E> rowTransformer) throws SQLException {
-		return new ResultSetIterator<E>(resultSet, rowTransformer);
+		return new ResultSetIterator<>(resultSet, rowTransformer);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ResultSetTools {
 	 * from this method.
 	 */
 	public static <E> ArrayList<E> convertToList(ResultSet resultSet, ResultSetRowTransformer<? extends E> rowTransformer) throws SQLException {
-		ArrayList<E> rows = new ArrayList<E>();
+		ArrayList<E> rows = new ArrayList<>();
 		for (ResultSetIterator<E> stream = iterator(resultSet, rowTransformer); stream.hasNext(); ) {
 			rows.add(stream.next());
 		}
@@ -163,7 +163,7 @@ public class ResultSetTools {
 		@Override
 		public LinkedHashMap<String, Object> transform(ResultSet resultSet) throws SQLException {
 			// use a linked hash map so the column order is preserved
-			LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>(this.columnCount);
+			LinkedHashMap<String, Object> map = new LinkedHashMap<>(this.columnCount);
 			for (int i = 1; i < this.columnCount; i++) {  // NB: start with 1 (ResultSet is 1-based)
 				map.put(this.columnNames[i], resultSet.getObject(i));
 			}
