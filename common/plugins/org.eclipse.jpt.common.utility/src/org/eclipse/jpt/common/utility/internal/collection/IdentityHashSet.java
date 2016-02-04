@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,7 +43,7 @@ public class IdentityHashSet<E>
 	 */
 	public IdentityHashSet() {
 		super();
-		this.map = new IdentityHashMap<E, Object>();
+		this.map = new IdentityHashMap<>();
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class IdentityHashSet<E>
 	 */
 	public IdentityHashSet(int expectedMaxSize) {
 		super();
-		this.map = new IdentityHashMap<E, Object>(expectedMaxSize);
+		this.map = new IdentityHashMap<>(expectedMaxSize);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class IdentityHashSet<E>
 	 */
 	public IdentityHashSet(Collection<? extends E> c) {
 		super();
-		this.map = new IdentityHashMap<E, Object>((int) ((1 + c.size()) * 1.1));
+		this.map = new IdentityHashMap<>((int) ((1 + c.size()) * 1.1));
 		this.addAll(c);
 	}
 
@@ -199,7 +199,7 @@ public class IdentityHashSet<E>
 
 		// read in size and create backing map
 		int size = s.readInt();
-		this.map = new IdentityHashMap<E, Object>(size);
+		this.map = new IdentityHashMap<>(size);
 
 		// read the elements and add to the set
 		for (int i = 0; i < size; i++) {
