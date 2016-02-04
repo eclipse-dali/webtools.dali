@@ -90,6 +90,7 @@ public final class CollectionTools {
 	 * to the specified collection.
 	 * Return whether the collection changed as a result.
 	 */
+	@SafeVarargs
 	public static <E> boolean addAll(Collection<? super E> collection, E... array) {
 		return (array.length != 0) && addAll_(collection, array);
 	}
@@ -97,6 +98,7 @@ public final class CollectionTools {
 	/**
 	 * assume the array is not empty
 	 */
+	@SafeVarargs
 	private static <E> boolean addAll_(Collection<? super E> collection, E... array) {
 		boolean modified = false;
 		for (E element : array) {
@@ -185,12 +187,12 @@ public final class CollectionTools {
 		int remainder = collectionSize % count;
 
 		Iterator<? extends E> stream = collection.iterator();
-		ArrayList<ArrayList<E>> result = new ArrayList<ArrayList<E>>(count);
+		ArrayList<ArrayList<E>> result = new ArrayList<>(count);
 		if (remainder != 0) {
 			// spread the remainder elements across the first partitions
 			partitionSize++;
 			for (int i = remainder; i-- > 0; ) {
-				ArrayList<E> partition = new ArrayList<E>(partitionSize);
+				ArrayList<E> partition = new ArrayList<>(partitionSize);
 				for (int j = partitionSize; j-- > 0;) {
 					partition.add(stream.next());
 				}
@@ -200,7 +202,7 @@ public final class CollectionTools {
 			count = count - remainder;
 		}
 		for (int i = count; i-- > 0; ) {
-			ArrayList<E> partition = new ArrayList<E>(partitionSize);
+			ArrayList<E> partition = new ArrayList<>(partitionSize);
 			for (int j = partitionSize; j-- > 0;) {
 				partition.add(stream.next());
 			}
@@ -394,14 +396,14 @@ public final class CollectionTools {
 	 * Return a new hash bag.
 	 */
 	public static <E> HashBag<E> hashBag() {
-		return new HashBag<E>();
+		return new HashBag<>();
 	}
 
 	/**
 	 * Return a new hash bag with the specified initial capacity.
 	 */
 	public static <E> HashBag<E> hashBag(int initialCapacity) {
-		return new HashBag<E>(initialCapacity);
+		return new HashBag<>(initialCapacity);
 	}
 
 	/**
@@ -409,7 +411,7 @@ public final class CollectionTools {
 	 * and load factor.
 	 */
 	public static <E> HashBag<E> hashBag(int initialCapacity, float loadFactor) {
-		return new HashBag<E>(initialCapacity, loadFactor);
+		return new HashBag<>(initialCapacity, loadFactor);
 	}
 
 	/**
@@ -454,6 +456,7 @@ public final class CollectionTools {
 	/**
 	 * Return a new hash bag corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> HashBag<E> hashBag(E... array) {
 		int len = array.length;
 		HashBag<E> bag = hashBag(len);
@@ -486,7 +489,7 @@ public final class CollectionTools {
 	 * Return a bag that synchronizes the specified bag.
 	 */
 	public static <E> SynchronizedBag<E> synchronizedBag(Bag<E> bag) {
-		return new SynchronizedBag<E>(bag);
+		return new SynchronizedBag<>(bag);
 	}
 
 	/**
@@ -494,7 +497,7 @@ public final class CollectionTools {
 	 * with specified mutex.
 	 */
 	public static <E> SynchronizedBag<E> synchronizedBag(Bag<E> bag, Object mutex) {
-		return new SynchronizedBag<E>(bag, mutex);
+		return new SynchronizedBag<>(bag, mutex);
 	}
 
 	/**
@@ -513,14 +516,14 @@ public final class CollectionTools {
 	 * Return a new identity hash bag.
 	 */
 	public static <E> IdentityHashBag<E> identityHashBag() {
-		return new IdentityHashBag<E>();
+		return new IdentityHashBag<>();
 	}
 
 	/**
 	 * Return a new identity hash bag with the specified initial capacity.
 	 */
 	public static <E> IdentityHashBag<E> identityHashBag(int initialCapacity) {
-		return new IdentityHashBag<E>(initialCapacity);
+		return new IdentityHashBag<>(initialCapacity);
 	}
 
 	/**
@@ -528,7 +531,7 @@ public final class CollectionTools {
 	 * and load factor.
 	 */
 	public static <E> IdentityHashBag<E> identityHashBag(int initialCapacity, float loadFactor) {
-		return new IdentityHashBag<E>(initialCapacity, loadFactor);
+		return new IdentityHashBag<>(initialCapacity, loadFactor);
 	}
 
 	/**
@@ -573,6 +576,7 @@ public final class CollectionTools {
 	/**
 	 * Return a new identity hash bag corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> IdentityHashBag<E> identityHashBag(E... array) {
 		int len = array.length;
 		IdentityHashBag<E> bag = identityHashBag(len);
@@ -625,8 +629,9 @@ public final class CollectionTools {
 	/**
 	 * Return a new hash set corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E> HashSet<E> hashSet(E... array) {
-		HashSet<E> set = new HashSet<E>(array.length);
+		HashSet<E> set = new HashSet<>(array.length);
 		for (int i = array.length; i-- > 0;) {
 			set.add(array[i]);
 		}
@@ -701,7 +706,7 @@ public final class CollectionTools {
 	}
 
 	private static <E> TreeSet<E> treeSet(ArrayList<E> list, Comparator<? super E> comparator) {
-		TreeSet<E> sortedSet = new TreeSet<E>(comparator);
+		TreeSet<E> sortedSet = new TreeSet<>(comparator);
 		sortedSet.addAll(list);
 		return sortedSet;
 	}
@@ -709,6 +714,7 @@ public final class CollectionTools {
 	/**
 	 * Return a new tree (sorted) set corresponding to the specified array.
 	 */
+	@SafeVarargs
 	public static <E extends Comparable<? super E>> TreeSet<E> treeSet(E... array) {
 		return treeSet(array, null);
 	}
@@ -718,7 +724,7 @@ public final class CollectionTools {
 	 * and comparator.
 	 */
 	public static <E> TreeSet<E> treeSet(E[] array, Comparator<? super E> comparator) {
-		TreeSet<E> sortedSet = new TreeSet<E>(comparator);
+		TreeSet<E> sortedSet = new TreeSet<>(comparator);
 		sortedSet.addAll(Arrays.asList(array));
 		return sortedSet;
 	}
@@ -769,8 +775,9 @@ public final class CollectionTools {
 	 * Return a vector corresponding to the specified array.
 	 * This is useful for legacy code that requires a {@link Vector}.
 	 */
+	@SafeVarargs
 	public static <E> Vector<E> vector(E... array) {
-		Vector<E> v = new Vector<E>(array.length);
+		Vector<E> v = new Vector<>(array.length);
 		for (E item : array) {
 			v.addElement(item);
 		}
