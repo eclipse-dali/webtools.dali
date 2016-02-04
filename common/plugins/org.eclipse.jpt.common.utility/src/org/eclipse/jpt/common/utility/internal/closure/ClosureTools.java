@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,7 +35,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> adapt(Command command) {
-		return new CommandClosure<A>(command);
+		return new CommandClosure<>(command);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> adapt(Factory<?> factory) {
-		return new FactoryClosure<A>(factory);
+		return new FactoryClosure<>(factory);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public final class ClosureTools {
 	 *     the transformer
 	 */
 	public static <A> Closure<A> adapt(Transformer<? super A, ?> transformer) {
-		return new TransformerClosure<A>(transformer);
+		return new TransformerClosure<>(transformer);
 	}
 
 
@@ -81,7 +81,7 @@ public final class ClosureTools {
 	 * @see ThreadLocalClosure
 	 */
 	public static <A> ThreadLocalClosure<A> threadLocalClosure(Closure<? super A> defaultClosure) {
-		return new ThreadLocalClosure<A>(defaultClosure);
+		return new ThreadLocalClosure<>(defaultClosure);
 	}
 
 
@@ -108,7 +108,7 @@ public final class ClosureTools {
 	 * @see #nullCheck(Closure)
 	 */
 	public static <A> Closure<A> nullCheck(Closure<? super A> closure, Command nullCommand) {
-		return new NullCheckClosureWrapper<A>(closure, nullCommand);
+		return new NullCheckClosureWrapper<>(closure, nullCommand);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public final class ClosureTools {
 	 * @see ClosureWrapper
 	 */
 	public static <A> ClosureWrapper<A> wrap(Closure<? super A> closure) {
-		return new ClosureWrapper<A>(closure);
+		return new ClosureWrapper<>(closure);
 	}
 
 
@@ -146,7 +146,7 @@ public final class ClosureTools {
 	 * @see #safe(Closure)
 	 */
 	public static <A> Closure<A> safe(Closure<? super A> closure, ExceptionHandler exceptionHandler) {
-		return new SafeClosureWrapper<A>(closure, exceptionHandler);
+		return new SafeClosureWrapper<>(closure, exceptionHandler);
 	}
 
 
@@ -188,7 +188,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
-		return new MethodClosure<A>(methodName, parameterTypes, arguments);
+		return new MethodClosure<>(methodName, parameterTypes, arguments);
 	}
 
 
@@ -199,6 +199,7 @@ public final class ClosureTools {
 	 * will be passed to each closure, in sequence.
 	 * @param <A> the type of the object passed to the closure
 	 */
+	@SafeVarargs
 	public static <A> Closure<A> composite(Closure<? super A>... closures) {
 		return composite(ArrayTools.iterable(closures));
 	}
@@ -209,7 +210,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> composite(Iterable<Closure<? super A>> closures) {
-		return new CompositeClosure<A>(closures);
+		return new CompositeClosure<>(closures);
 	}
 
 
@@ -232,7 +233,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> conditionalClosure(Predicate<? super A> predicate, Closure<? super A> trueClosure, Closure<? super A> falseClosure) {
-		return new ConditionalClosure<A>(predicate, trueClosure, falseClosure);
+		return new ConditionalClosure<>(predicate, trueClosure, falseClosure);
 	}
 
 
@@ -263,7 +264,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> switchClosure(Iterable<Association<Predicate<? super A>, Closure<? super A>>> closures, Closure<? super A> defaultClosure) {
-		return new SwitchClosure<A>(closures, defaultClosure);
+		return new SwitchClosure<>(closures, defaultClosure);
 	}
 
 
@@ -287,7 +288,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> repeat(Closure<? super A> closure, int count) {
-		return new RepeatingClosure<A>(closure, count);
+		return new RepeatingClosure<>(closure, count);
 	}
 
 	/**
@@ -296,7 +297,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> while_(Predicate<? super A> predicate, Closure<? super A> closure) {
-		return new WhileClosure<A>(predicate, closure);
+		return new WhileClosure<>(predicate, closure);
 	}
 
 	/**
@@ -311,7 +312,7 @@ public final class ClosureTools {
 	 * @param <A> the type of the object passed to the closure
 	 */
 	public static <A> Closure<A> until(Closure<? super A> closure, Predicate<? super A> predicate) {
-		return new UntilClosure<A>(closure, predicate);
+		return new UntilClosure<>(closure, predicate);
 	}
 
 
