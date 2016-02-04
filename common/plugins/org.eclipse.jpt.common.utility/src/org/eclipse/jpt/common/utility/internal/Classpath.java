@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,7 @@ public class Classpath
 	 */
 	public static Classpath javaExtensionClasspath() {
 		File[] dirs = javaExtensionDirectories();
-		List<String> jarFileNames = new ArrayList<String>();
+		List<String> jarFileNames = new ArrayList<>();
 		for (File dir : dirs) {
 			if (dir.isDirectory()) {
 				addJarFileNamesTo(dir, jarFileNames);
@@ -441,7 +441,7 @@ public class Classpath
 	 * </pre>
 	 */
 	private static Entry[] buildEntries(String[] fileNames) {
-		List<Entry> entries = new ArrayList<Entry>();
+		List<Entry> entries = new ArrayList<>();
 		for (String fileName : fileNames) {
 			if ((fileName != null) && (fileName.length() != 0)) {
 				entries.add(new Entry(fileName));
@@ -472,7 +472,7 @@ public class Classpath
 	}
 
 	private static Entry[] consolidateEntries(Classpath[] classpaths) {
-		List<Entry> entries = new ArrayList<Entry>();
+		List<Entry> entries = new ArrayList<>();
 		for (Classpath classpath : classpaths) {
 			CollectionTools.addAll(entries, classpath.getEntries());
 		}
@@ -553,7 +553,7 @@ public class Classpath
 	 * @see #classNames(Predicate)
 	 */
 	public Iterable<String> getClassNames(Predicate<String> filter) {
-		Collection<String> classNames = new HashSet<String>(10000);
+		Collection<String> classNames = new HashSet<>(10000);
 		this.addClassNamesTo(classNames, filter);
 		return classNames;
 	}
@@ -737,23 +737,11 @@ public class Classpath
 		 * Return whether the entry's archive contains the specified entry.
 		 */
 		private boolean archiveContainsEntry(String zipEntryName) {
-			ZipFile zipFile = null;
-			ZipEntry zipEntry = null;
-			try {
-				zipFile = new ZipFile(this.canonicalFile);
-				zipEntry = zipFile.getEntry(zipEntryName);
+			try (ZipFile zipFile = new ZipFile(this.canonicalFile)) {
+				return zipFile.getEntry(zipEntryName) != null;
 			} catch (IOException ex) {
-				// something is wrong, leave the entry null
-			} finally {
-				try {
-					if (zipFile != null) {
-						zipFile.close();
-					}
-				} catch (IOException ex) {
-					zipEntry = null;	// something is wrong, clear out the entry
-				}
+				throw new RuntimeException(ex);
 			}
-			return zipEntry != null;
 		}
 
 		/**
@@ -770,7 +758,7 @@ public class Classpath
 		 * @see #classNames(Predicate)
 		 */
 		public Iterable<String> getClassNames(Predicate<String> filter) {
-			Collection<String> classNames = new ArrayList<String>(2000);
+			Collection<String> classNames = new ArrayList<>(2000);
 			this.addClassNamesTo(classNames, filter);
 			return classNames;
 		}
@@ -835,12 +823,14 @@ public class Classpath
 		 * specified filter to the specified collection.
 		 */
 		private void addClassNamesForArchiveTo(Collection<String> classNames, Predicate<String> filter) {
-			ZipFile zipFile = null;
-			try {
-				zipFile = new ZipFile(this.canonicalFile);
+			try (ZipFile zipFile = new ZipFile(this.canonicalFile)) {
+				this.addClassNamesForArchiveTo(zipFile, classNames, filter);
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
+		}
+
+		private void addClassNamesForArchiveTo(ZipFile zipFile, Collection<String> classNames, Predicate<String> filter) {
 			for (Enumeration<? extends ZipEntry> stream = zipFile.entries(); stream.hasMoreElements(); ) {
 				ZipEntry zipEntry = stream.nextElement();
 				String zipEntryName = zipEntry.getName();
@@ -850,11 +840,6 @@ public class Classpath
 						classNames.add(className);
 					}
 				}
-			}
-			try {
-				zipFile.close();
-			} catch (IOException ex) {
-				return;
 			}
 		}
 
@@ -932,13 +917,15 @@ public class Classpath
 		 */
 		private Iterator<String> classNamesForArchive(Predicate<String> filter) {
 			// we can't simply wrap iterators here because we need to close the archive file...
-			ZipFile zipFile = null;
-			try {
-				zipFile = new ZipFile(this.canonicalFile);
+			try (ZipFile zipFile = new ZipFile(this.canonicalFile)) {
+				return this.classNamesForArchive(zipFile, filter);
 			} catch (IOException ex) {
-				return IteratorTools.emptyIterator();
+				throw new RuntimeException(ex);
 			}
-			Collection<String> classNames = new HashSet<String>(zipFile.size());
+		}
+
+		private Iterator<String> classNamesForArchive(ZipFile zipFile, Predicate<String> filter) {
+			Collection<String> classNames = new HashSet<>(zipFile.size());
 			for (Enumeration<? extends ZipEntry> stream = zipFile.entries(); stream.hasMoreElements(); ) {
 				ZipEntry zipEntry = stream.nextElement();
 				String zipEntryName = zipEntry.getName();
@@ -948,11 +935,6 @@ public class Classpath
 						classNames.add(className);
 					}
 				}
-			}
-			try {
-				zipFile.close();
-			} catch (IOException ex) {
-				return IteratorTools.emptyIterator();
 			}
 			return classNames.iterator();
 		}
