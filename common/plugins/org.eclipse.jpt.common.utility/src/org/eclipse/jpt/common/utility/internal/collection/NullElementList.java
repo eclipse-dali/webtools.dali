@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,17 +33,17 @@ public class NullElementList<E>
 
 	@Override
 	protected Iterator<E> iterator(int iteratorSize) {
-		return new NullElementIterator<E>(iteratorSize);
+		return new NullElementIterator<>(iteratorSize);
 	}
 
 	@Override
 	protected ListIterator<E> listIterator_(int iteratorSize) {
-		return new NullElementListIterator<E>(iteratorSize);
+		return new NullElementListIterator<>(iteratorSize);
 	}
 
 	@Override
 	protected List<E> subList(int subListSize) {
-		return new NullElementList<E>(subListSize);
+		return new NullElementList<>(subListSize);
 	}
 
 	@Override
