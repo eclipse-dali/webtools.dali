@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,17 +36,17 @@ public class RepeatingElementList<E>
 
 	@Override
 	protected Iterator<E> iterator(int iteratorSize) {
-		return new RepeatingElementIterator<E>(this.element, iteratorSize);
+		return new RepeatingElementIterator<>(this.element, iteratorSize);
 	}
 
 	@Override
 	protected ListIterator<E> listIterator_(int iteratorSize) {
-		return new RepeatingElementListIterator<E>(this.element, iteratorSize);
+		return new RepeatingElementListIterator<>(this.element, iteratorSize);
 	}
 
 	@Override
 	protected List<E> subList(int subListSize) {
-		return new RepeatingElementList<E>(this.element, subListSize);
+		return new RepeatingElementList<>(this.element, subListSize);
 	}
 
 	@Override
