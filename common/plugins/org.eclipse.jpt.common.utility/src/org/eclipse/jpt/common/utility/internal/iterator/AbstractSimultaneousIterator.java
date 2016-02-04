@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,7 +67,7 @@ public abstract class AbstractSimultaneousIterator<E, I extends Iterator<? exten
 	}
 
 	ArrayList<E> buildList() {
-		return (this.iteratorsSize < 0) ? new ArrayList<E>() : new ArrayList<E>(this.iteratorsSize);
+		return (this.iteratorsSize < 0) ? new ArrayList<>() : new ArrayList<>(this.iteratorsSize);
 	}
 
 	public void remove() {

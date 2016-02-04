@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,8 +51,8 @@ public class GraphIterator<E>
 	implements Iterator<E>
 {
 	// use a LinkedList since we will be pulling off the front and adding to the end
-	private final LinkedList<Iterator<? extends E>> iterators = new LinkedList<Iterator<? extends E>>();
-	private final HashSet<E> visitedNeighbors = new HashSet<E>();
+	private final LinkedList<Iterator<? extends E>> iterators = new LinkedList<>();
+	private final HashSet<E> visitedNeighbors = new HashSet<>();
 	private final Transformer<? super E, ? extends Iterator<? extends E>> transformer;
 
 	private Iterator<? extends E> currentIterator;
