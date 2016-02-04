@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -122,7 +122,7 @@ public class ChangeSupport {
 	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, String aspectName, L listener) {
 		ListenerList<L> aspectListenerList = this.getListenerList(listenerClass, aspectName);
 		if (aspectListenerList == null) {
-			this.aspectListenerListPairs = ArrayTools.add(this.aspectListenerListPairs, new SimpleAspectListenerListPair<L>(listenerClass, aspectName, listener));
+			this.aspectListenerListPairs = ArrayTools.add(this.aspectListenerListPairs, new SimpleAspectListenerListPair<>(listenerClass, aspectName, listener));
 		} else {
 			aspectListenerList.add(listener);
 		}
@@ -135,7 +135,7 @@ public class ChangeSupport {
 	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, L listener) {
 		ListenerList<L> listenerList = this.getListenerList(listenerClass);
 		if (listenerList == null) {
-			this.aspectListenerListPairs = ArrayTools.add(this.aspectListenerListPairs, new NullAspectListenerListPair<L>(listenerClass, listener));
+			this.aspectListenerListPairs = ArrayTools.add(this.aspectListenerListPairs, new NullAspectListenerListPair<>(listenerClass, listener));
 		} else {
 			listenerList.add(listener);
 		}
@@ -1157,7 +1157,7 @@ public class ChangeSupport {
 			E item = items.next();
 			if (collection.add(item)) {
 				if (addedItems == null) {
-					addedItems = new ArrayList<E>();
+					addedItems = new ArrayList<>();
 				}
 				addedItems.add(item);
 			}
@@ -1386,11 +1386,11 @@ public class ChangeSupport {
 	 */
 	protected <E> boolean synchronizeCollection_(Collection<E> newCollection, Collection<E> collection, String collectionName) {
 		boolean changed = false;
-		Collection<E> removeItems = new HashBag<E>(collection);
+		Collection<E> removeItems = new HashBag<>(collection);
 		removeItems.removeAll(newCollection);
 		changed |= this.removeItemsFromCollection(removeItems, collection, collectionName);
 
-		Collection<E> addItems = new HashBag<E>(newCollection);
+		Collection<E> addItems = new HashBag<>(newCollection);
 		addItems.removeAll(collection);
 		changed |= this.addItemsToCollection(addItems, collection, collectionName);
 
@@ -2342,7 +2342,7 @@ public class ChangeSupport {
 	 */
 	protected <E> List<E> removeRangeFromList_(int beginIndex, int endIndex, List<E> list, String listName) {
 		List<E> subList = list.subList(beginIndex, endIndex);
-		List<E> removedItems = new ArrayList<E>(subList);
+		List<E> removedItems = new ArrayList<>(subList);
 		subList.clear();
 		this.fireItemsRemoved(listName, beginIndex, removedItems);
 		return removedItems;
@@ -2537,7 +2537,7 @@ public class ChangeSupport {
 	 */
 	protected <E> List<E> setItemsInList_(int index, List<? extends E> items, List<E> list, String listName) {
 		List<E> subList = list.subList(index, index + items.size());
-		List<E> oldItems = new ArrayList<E>(subList);
+		List<E> oldItems = new ArrayList<>(subList);
 		for (int i = 0; i < items.size(); i++) {
 			E newItem = items.get(i);
 			E oldItem = subList.set(i, newItem);
