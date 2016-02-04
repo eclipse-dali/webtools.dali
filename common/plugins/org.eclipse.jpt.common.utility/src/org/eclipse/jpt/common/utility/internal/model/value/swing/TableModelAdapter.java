@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -109,7 +109,7 @@ public class TableModelAdapter<E>
 		this.listHolder = listHolder;
 		this.columnAdapter = columnAdapter;
 		this.listChangeListener = this.buildListChangeListener();
-		this.rows = new ArrayList<ModifiablePropertyValueModel<Object>[]>();
+		this.rows = new ArrayList<>();
 		this.cellListener = this.buildCellListener();
 	}
 
@@ -274,7 +274,7 @@ public class TableModelAdapter<E>
 	 * Set the underlying collection model.
 	 */
 	public void setModel(CollectionValueModel<E> collectionHolder) {
-		this.setModel(new CollectionListValueModelAdapter<E>(collectionHolder));
+		this.setModel(new CollectionListValueModelAdapter<>(collectionHolder));
 	}
 
 
@@ -366,7 +366,7 @@ public class TableModelAdapter<E>
 	 * convert the items to rows
 	 */
 	void addRows(int index, int size, Iterable<Object> items) {
-		List<ModifiablePropertyValueModel<Object>[]> newRows = new ArrayList<ModifiablePropertyValueModel<Object>[]>(size);
+		List<ModifiablePropertyValueModel<Object>[]> newRows = new ArrayList<>(size);
 		for (Object item : items) {
 			ModifiablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(item);
 			this.engageRow(row);
@@ -397,7 +397,7 @@ public class TableModelAdapter<E>
 	}
 
 	void moveRows(int targetIndex, int sourceIndex, int length) {
-		ArrayList<ModifiablePropertyValueModel<Object>[]> temp = new ArrayList<ModifiablePropertyValueModel<Object>[]>(length);
+		ArrayList<ModifiablePropertyValueModel<Object>[]> temp = new ArrayList<>(length);
 		for (int i = 0; i < length; i++) {
 			temp.add(this.rows.remove(sourceIndex));
 		}

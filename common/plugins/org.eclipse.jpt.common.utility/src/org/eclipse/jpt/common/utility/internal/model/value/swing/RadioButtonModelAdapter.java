@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,8 +65,8 @@ public class RadioButtonModelAdapter
 	 * value to the button value.
 	 */
 	public static ModifiablePropertyValueModel<Boolean> buildBooleanHolder(ModifiablePropertyValueModel<Object> valueHolder, Object buttonValue) {
-		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringModifiablePropertyValueModel<Object>(valueHolder, PredicateTools.true_(), new SetRadioButtonPredicate(buttonValue));
-		return new TransformationModifiablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
+		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringModifiablePropertyValueModel<>(valueHolder, PredicateTools.true_(), new SetRadioButtonPredicate(buttonValue));
+		return new TransformationModifiablePropertyValueModel<>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
 	}
 
 

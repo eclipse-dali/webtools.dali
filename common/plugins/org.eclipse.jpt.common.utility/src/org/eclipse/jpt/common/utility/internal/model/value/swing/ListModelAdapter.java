@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,11 +34,11 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  * on the bound collection. This is required - the list (or collection)
  * itself can be null, but the value model that holds it cannot.
  */
-public class ListModelAdapter
-	extends AbstractListModel
+public class ListModelAdapter<E>
+	extends AbstractListModel<E>
 {
 	/** A value model on the underlying model list. */
-	protected ListValueModel<?> listHolder;
+	protected ListValueModel<E> listModel;
 
 	/**
 	 * Cache the size of the list for "dramatic" changes.
@@ -66,17 +66,17 @@ public class ListModelAdapter
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	public ListModelAdapter(ListValueModel<?> listHolder) {
+	public ListModelAdapter(ListValueModel<E> listModel) {
 		this();
-		this.setModel(listHolder);
+		this.setModel(listModel);
 	}
 
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	public ListModelAdapter(CollectionValueModel<?> collectionHolder) {
+	public ListModelAdapter(CollectionValueModel<E> collectionModel) {
 		this();
-		this.setModel(collectionHolder);
+		this.setModel(collectionModel);
 	}
 
 
@@ -117,11 +117,11 @@ public class ListModelAdapter
 	// ********** ListModel implementation **********
 
 	public int getSize() {
-		return this.listHolder.size();
+		return this.listModel.size();
 	}
 
-	public Object getElementAt(int index) {
-		return this.listHolder.get(index);
+	public E getElementAt(int index) {
+		return this.listModel.get(index);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class ListModelAdapter
 	public void addListDataListener(ListDataListener l) {
 		if (this.hasNoListDataListeners()) {
 			this.engageModel();
-			this.listSize = this.listHolder.size();
+			this.listSize = this.listModel.size();
 		}
 		super.addListDataListener(l);
 	}
@@ -154,22 +154,22 @@ public class ListModelAdapter
 	/**
 	 * Return the underlying list model.
 	 */
-	public ListValueModel<?> model() {
-		return this.listHolder;
+	public ListValueModel<E> model() {
+		return this.listModel;
 	}
 	
 	/**
 	 * Set the underlying list model.
 	 */
-	public void setModel(ListValueModel<?> listHolder) {
-		if (listHolder == null) {
+	public void setModel(ListValueModel<E> listModel) {
+		if (listModel == null) {
 			throw new NullPointerException();
 		}
 		boolean hasListeners = this.hasListDataListeners();
 		if (hasListeners) {
 			this.disengageModel();
 		}
-		this.listHolder = listHolder;
+		this.listModel = listModel;
 		if (hasListeners) {
 			this.engageModel();
 			this.listChanged();
@@ -179,9 +179,8 @@ public class ListModelAdapter
 	/**
 	 * Set the underlying collection model.
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void setModel(CollectionValueModel<?> collectionHolder) {
-		this.setModel(new CollectionListValueModelAdapter(collectionHolder));
+	public void setModel(CollectionValueModel<E> collectionModel) {
+		this.setModel(new CollectionListValueModelAdapter<>(collectionModel));
 	}
 
 
@@ -205,11 +204,11 @@ public class ListModelAdapter
 	// ********** behavior **********
 
 	protected void engageModel() {
-		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 	protected void disengageModel() {
-		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 
@@ -277,7 +276,7 @@ public class ListModelAdapter
 		if (this.listSize != 0) {
 			this.fireIntervalRemoved(this, 0, this.listSize - 1);
 		}
-		this.listSize = this.listHolder.size();
+		this.listSize = this.listModel.size();
 		if (this.listSize != 0) {
 			this.fireIntervalAdded(this, 0, this.listSize - 1);
 		}
@@ -288,7 +287,7 @@ public class ListModelAdapter
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.listHolder);
+		return ObjectTools.toString(this, this.listModel);
 	}
 
 }

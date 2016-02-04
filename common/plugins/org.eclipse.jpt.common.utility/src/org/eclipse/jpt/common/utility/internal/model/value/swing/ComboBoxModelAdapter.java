@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,11 +39,11 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
  * selection holder, which is a PropertyValueModel that provides access
  * to the selection (typically a PropertyAspectAdapter).
  */
-public class ComboBoxModelAdapter
-	extends ListModelAdapter
-	implements ComboBoxModel
+public class ComboBoxModelAdapter<E>
+	extends ListModelAdapter<E>
+	implements ComboBoxModel<E>
 {
-	protected final ModifiablePropertyValueModel<Object> selectionHolder;
+	protected final ModifiablePropertyValueModel<Object> selectionModel;
 	protected final PropertyChangeListener selectionListener;
 
 	private static final long serialVersionUID = 1L;
@@ -54,24 +54,24 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the list holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(ListValueModel<?> listHolder, ModifiablePropertyValueModel<Object> selectionHolder) {
-		super(listHolder);
-		if (selectionHolder == null) {
+	public ComboBoxModelAdapter(ListValueModel<E> listModel, ModifiablePropertyValueModel<Object> selectionModel) {
+		super(listModel);
+		if (selectionModel == null) {
 			throw new NullPointerException();
 		}
-		this.selectionHolder = selectionHolder;
+		this.selectionModel = selectionModel;
 		this.selectionListener = this.buildSelectionListener();
 	}
 
 	/**
 	 * Constructor - the collection holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(CollectionValueModel<?> collectionHolder, ModifiablePropertyValueModel<Object> selectionHolder) {
-		super(collectionHolder);
-		if (selectionHolder == null) {
+	public ComboBoxModelAdapter(CollectionValueModel<E> collectionModel, ModifiablePropertyValueModel<Object> selectionModel) {
+		super(collectionModel);
+		if (selectionModel == null) {
 			throw new NullPointerException();
 		}
-		this.selectionHolder = selectionHolder;
+		this.selectionModel = selectionModel;
 		this.selectionListener = this.buildSelectionListener();
 	}
 
@@ -99,11 +99,11 @@ public class ComboBoxModelAdapter
 	// ********** ComboBoxModel implementation **********
 
 	public Object getSelectedItem() {
-		return this.selectionHolder.getValue();
+		return this.selectionModel.getValue();
 	}
 
 	public void setSelectedItem(Object selectedItem) {
-		this.selectionHolder.setValue(selectedItem);
+		this.selectionModel.setValue(selectedItem);
 	}
 
 
@@ -115,7 +115,7 @@ public class ComboBoxModelAdapter
 	@Override
 	protected void engageModel() {
 		super.engageModel();
-		this.selectionHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectionListener);
+		this.selectionModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectionListener);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class ComboBoxModelAdapter
 	 */
 	@Override
 	protected void disengageModel() {
-		this.selectionHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.selectionListener);
+		this.selectionModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.selectionListener);
 		super.disengageModel();
 	}
 
@@ -137,7 +137,7 @@ public class ComboBoxModelAdapter
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.selectionHolder + ":" + this.listHolder); //$NON-NLS-1$
+		return ObjectTools.toString(this, this.selectionModel + ":" + this.listModel); //$NON-NLS-1$
 	}
 
 }

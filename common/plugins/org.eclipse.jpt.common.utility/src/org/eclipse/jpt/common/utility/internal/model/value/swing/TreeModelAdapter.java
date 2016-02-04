@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -127,15 +127,15 @@ public class TreeModelAdapter<T>
 		this.nodeStateListener = this.buildNodeStateListener();
 		this.nodeValueListener = this.buildNodeValueListener();
 		this.childrenListener = this.buildChildrenListener();
-		this.childrenLists = new IdentityHashMap<TreeNodeValueModel<T>, List<TreeNodeValueModel<T>>>();
-		this.parents = new IdentityHashMap<ListValueModel<TreeNodeValueModel<T>>, TreeNodeValueModel<T>>();
+		this.childrenLists = new IdentityHashMap<>();
+		this.parents = new IdentityHashMap<>();
 	}
 
 	/**
 	 * Construct a tree model for the specified root.
 	 */
 	public TreeModelAdapter(TreeNodeValueModel<T> root) {
-		this(new StaticPropertyValueModel<TreeNodeValueModel<T>>(root));
+		this(new StaticPropertyValueModel<>(root));
 	}
 
 
@@ -404,7 +404,7 @@ public class TreeModelAdapter<T>
 	private void addNodeToInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel<TreeNodeValueModel<T>> childrenModel) {
 		List<TreeNodeValueModel<T>> siblings = this.childrenLists.get(parent);
 		if (siblings == null) {
-			siblings = new ArrayList<TreeNodeValueModel<T>>();
+			siblings = new ArrayList<>();
 			this.childrenLists.put(parent, siblings);
 		}
 		siblings.add(index, node);
@@ -464,7 +464,7 @@ public class TreeModelAdapter<T>
 
 	void moveChildren(TreeNodeValueModel<T> parent, int targetIndex, int sourceIndex, int length) {
 		List<TreeNodeValueModel<T>> childrenList = this.childrenLists.get(parent);
-		ArrayList<TreeNodeValueModel<T>> temp = new ArrayList<TreeNodeValueModel<T>>(length);
+		ArrayList<TreeNodeValueModel<T>> temp = new ArrayList<>(length);
 		for (int i = 0; i < length; i++) {
 			temp.add(childrenList.remove(sourceIndex));
 		}

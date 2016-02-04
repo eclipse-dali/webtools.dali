@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,11 +25,11 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
  * provides convenience methods to access and set the
  * selected *objects*, as opposed to the selected *indexes*.
  */
-public class ObjectListSelectionModel
+public class ObjectListSelectionModel<E>
 	extends DefaultListSelectionModel
 {
 	/** The list model referenced by the list selection model. */
-	private final ListModel listModel;
+	private final ListModel<E> listModel;
 
 	/** A listener that allows us to clear the selection when the list model has changed. */
 	private final ListDataListener listDataListener;
@@ -42,7 +42,7 @@ public class ObjectListSelectionModel
 	/**
 	 * Construct a list selection model for the specified list model.
 	 */
-	public ObjectListSelectionModel(ListModel listModel) {
+	public ObjectListSelectionModel(ListModel<E> listModel) {
 		super();
 		this.listModel = listModel;
 		this.listDataListener = this.buildListDataListener();
@@ -114,7 +114,7 @@ public class ObjectListSelectionModel
 	/**
 	 * Return the list model referenced by the list selection model.
 	 */
-	public ListModel getListModel() {
+	public ListModel<E> getListModel() {
 		return this.listModel;
 	}
 
@@ -295,7 +295,7 @@ public class ObjectListSelectionModel
 	 */
 	public void removeSelectedValues(Iterator<?> objects) {
 		this.setValueIsAdjusting(true);
-		ListModel lm = this.getListModel();
+		ListModel<E> lm = this.getListModel();
 		int lmSize = lm.getSize();
 		while (objects.hasNext()) {
 			int index = this.indexOf(objects.next(), lm, lmSize);
@@ -394,7 +394,7 @@ public class ObjectListSelectionModel
 	 * without wrapping the actions in "adjusting" events.
 	 */
 	private void addSelectedValuesInternal(Iterator<?> objects) {
-		ListModel lm = this.getListModel();
+		ListModel<E> lm = this.getListModel();
 		int listModelSize = lm.getSize();
 		while (objects.hasNext()) {
 			int index = this.indexOf(objects.next(), lm, listModelSize);
@@ -407,7 +407,7 @@ public class ObjectListSelectionModel
 	 * Return -1 if the object is not in the list model.
 	 */
 	private int indexOf(Object object) {
-		ListModel lm = this.getListModel();
+		ListModel<E> lm = this.getListModel();
 		return this.indexOf(object, lm, lm.getSize());
 	}
 
@@ -418,7 +418,7 @@ public class ObjectListSelectionModel
 	// we're just jerking around with performance optimizations here
 	// (in memory of Phil...);
 	// call this method inside loops that do not modify the listModel
-	private int indexOf(Object object, ListModel lm, int listModelSize) {
+	private int indexOf(Object object, ListModel<E> lm, int listModelSize) {
 		for (int i = listModelSize; i-- > 0; ) {
 			if (lm.getElementAt(i).equals(object)) {
 				return i;
