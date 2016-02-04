@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,7 +47,7 @@ public class AsynchronousRepeatingCommandWrapper
 	 * starting with the initial invocation. The list is cleared with each
 	 * initial invocation of the command.
 	 */
-	private final ArrayList<StackTrace> stackTraces = DEBUG ? new ArrayList<StackTrace>() : null;
+	private final ArrayList<StackTrace> stackTraces = DEBUG ? new ArrayList<>() : null;
 	// see AsynchronousRepeatingCommandWrapperTests.testDEBUG()
 	private static final boolean DEBUG = false;
 

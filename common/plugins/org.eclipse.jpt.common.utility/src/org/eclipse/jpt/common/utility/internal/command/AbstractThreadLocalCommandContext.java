@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ public abstract class AbstractThreadLocalCommandContext<E extends CommandContext
 	}
 
 	protected ThreadLocal<E> buildThreadLocal() {
-		return new ThreadLocal<E>();
+		return new ThreadLocal<>();
 	}
 
 	public void execute(Command command) {
