@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.internal.queue;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.queue.Queue;
 
@@ -54,13 +55,13 @@ public class ConcurrentQueue<E>
 		final Node<E> newNode = new Node<>(element);
 		while (true) {
 			Node<E> tail = this.tailRef.get();
-			Node<E> next = tail.nextRef.get();
+			Node<E> next = tail.next;
 			if (tail == this.tailRef.get()) {
 				// 'tail' and 'next' are consistent
 				if (next == null) {
 					// 'tail' is last node (i.e. the queue is quiescent),
 					// so try to insert new node
-					if (tail.nextRef.compareAndSet(null, newNode)) {
+					if (Node.NEXT_UPDATER.compareAndSet(tail, null, newNode)) {
 						// euqueue succeeded, now try to advance the queue's tail...
 						this.tailRef.compareAndSet(tail, newNode);
 						return; // ...but failure is OK (because another thread advanced it)
@@ -83,7 +84,7 @@ public class ConcurrentQueue<E>
 		while (true) {
 			Node<E> head = this.headRef.get();
 			Node<E> tail = this.tailRef.get();
-			Node<E> next = head.nextRef.get();
+			Node<E> next = head.next;
 			if (head == this.headRef.get()) {
 				// 'head', 'tail'(?), and 'next' are consistent
 				if (head == tail) {
@@ -114,7 +115,7 @@ public class ConcurrentQueue<E>
 		while (true) {
 			Node<E> head = this.headRef.get();
 			Node<E> tail = this.tailRef.get();
-			Node<E> next = head.nextRef.get();
+			Node<E> next = head.next;
 			if (head == this.headRef.get()) {
 				// 'head', 'tail'(?), and 'next' are consistent
 				return (head == tail) ? ((next != null) ? next.element : null) : next.element;
@@ -131,10 +132,10 @@ public class ConcurrentQueue<E>
 	public String toString() {
 		ArrayList<E> nodes = new ArrayList<>();
 		Node<E> head = this.headRef.get();
-		Node<E> node = head.nextRef.get();
+		Node<E> node = head.next;
 		while (node != null) {
 			nodes.add(node.element);
-			node = node.nextRef.get();
+			node = node.next;
 		}
 		return nodes.toString();
 	}
@@ -144,12 +145,15 @@ public class ConcurrentQueue<E>
 
 	private static final class Node<E> {
 		final E element;
-		final AtomicReference<Node<E>> nextRef;
+		volatile Node<E> next;
+
+		@SuppressWarnings({ "rawtypes", "nls" })
+		static final AtomicReferenceFieldUpdater<Node, Node> NEXT_UPDATER = AtomicReferenceFieldUpdater.newUpdater(Node.class, Node.class, "next");
 
 		Node(E element) {
 			super();
 			this.element = element;
-			this.nextRef = new AtomicReference<>(null);
+			this.next = null;
 		}
 
 		@Override
