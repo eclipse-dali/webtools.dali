@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.comparator.ComparatorTools;
 import org.eclipse.jpt.common.utility.internal.queue.ArrayQueue;
+import org.eclipse.jpt.common.utility.internal.queue.ConcurrentQueue;
 import org.eclipse.jpt.common.utility.internal.queue.LinkedQueue;
 import org.eclipse.jpt.common.utility.internal.queue.ListQueue;
 import org.eclipse.jpt.common.utility.internal.queue.PriorityQueue;
@@ -393,6 +394,46 @@ public class QueueToolsTests
 		iterable.add("two");
 		iterable.add("three");
 		Queue<String> queue = QueueTools.linkedQueue(iterable.toArray(StringTools.EMPTY_STRING_ARRAY));
+		assertEquals("one", queue.dequeue());
+		assertEquals("two", queue.dequeue());
+		assertEquals("three", queue.dequeue());
+	}
+
+	// ********** concurrent queue **********
+
+	public void testConcurrentQueue() {
+		ConcurrentQueue<String> queue = QueueTools.concurrentQueue();
+		assertTrue(queue.isEmpty());
+	}
+
+	public void testConcurrentQueueIterable() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Queue<String> queue = QueueTools.concurrentQueue(iterable);
+		assertEquals("one", queue.dequeue());
+		assertEquals("two", queue.dequeue());
+		assertEquals("three", queue.dequeue());
+	}
+
+	public void testConcurrentQueueIterator() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Queue<String> queue = QueueTools.concurrentQueue(iterable.iterator());
+		assertEquals("one", queue.dequeue());
+		assertEquals("two", queue.dequeue());
+		assertEquals("three", queue.dequeue());
+	}
+
+	public void testConcurrentQueueArray() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Queue<String> queue = QueueTools.concurrentQueue(iterable.toArray(StringTools.EMPTY_STRING_ARRAY));
 		assertEquals("one", queue.dequeue());
 		assertEquals("two", queue.dequeue());
 		assertEquals("three", queue.dequeue());

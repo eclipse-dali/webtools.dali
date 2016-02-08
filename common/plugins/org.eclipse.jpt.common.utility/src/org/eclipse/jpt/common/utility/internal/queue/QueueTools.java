@@ -339,7 +339,43 @@ public final class QueueTools {
 	}
 
 
-	// ********** fixed size queue factory methods **********
+	// ********** concurrent queue factory methods **********
+
+	/**
+	 * Return an empty concurrent FIFO queue.
+	 */
+	public static <E> ConcurrentQueue<E> concurrentQueue() {
+		return new ConcurrentQueue<>();
+	}
+
+	/**
+	 * Return a concurrent FIFO queue corresponding to the specified iterable.
+	 */
+	public static <E> ConcurrentQueue<E> concurrentQueue(Iterable<? extends E> iterable) {
+		return concurrentQueue(iterable.iterator());
+	}
+
+	/**
+	 * Return a concurrent FIFO queue corresponding to the specified iterator.
+	 */
+	public static <E> ConcurrentQueue<E> concurrentQueue(Iterator<? extends E> iterator) {
+		ConcurrentQueue<E> result = concurrentQueue();
+		enqueueAll(result, iterator);
+		return result;
+	}
+
+	/**
+	 * Return a concurrent FIFO queue corresponding to the specified array.
+	 */
+	@SafeVarargs
+	public static <E> ConcurrentQueue<E> concurrentQueue(E... array) {
+		ConcurrentQueue<E> result = concurrentQueue();
+		enqueueAll(result, array);
+		return result;
+	}
+
+
+	// ********** fixed capacity queue factory methods **********
 
 	/**
 	 * Return a fixed-capacity array queue with the specified capacity.
