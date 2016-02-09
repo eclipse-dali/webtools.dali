@@ -19,6 +19,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.queue.ArrayQueue;
 import org.eclipse.jpt.common.utility.internal.queue.QueueTools;
 import org.eclipse.jpt.common.utility.internal.stack.ArrayStack;
+import org.eclipse.jpt.common.utility.internal.stack.CachingConcurrentStack;
+import org.eclipse.jpt.common.utility.internal.stack.ConcurrentStack;
 import org.eclipse.jpt.common.utility.internal.stack.LinkedStack;
 import org.eclipse.jpt.common.utility.internal.stack.StackTools;
 import org.eclipse.jpt.common.utility.internal.stack.SynchronizedStack;
@@ -401,6 +403,86 @@ public class StackToolsTests
 		iterable.add("two");
 		iterable.add("three");
 		Stack<String> stack = StackTools.linkedStack(iterable.toArray(StringTools.EMPTY_STRING_ARRAY), 2);
+		assertEquals("three", stack.pop());
+		assertEquals("two", stack.pop());
+		assertEquals("one", stack.pop());
+	}
+
+	// ********** concurrent stack **********
+
+	public void testConcurrentStack() {
+		ConcurrentStack<String> d = StackTools.concurrentStack();
+		assertTrue(d.isEmpty());
+	}
+
+	public void testConcurrentStackIterable() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Stack<String> stack = StackTools.concurrentStack(iterable);
+		assertEquals("three", stack.pop());
+		assertEquals("two", stack.pop());
+		assertEquals("one", stack.pop());
+	}
+
+	public void testConcurrentStackIterator() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Stack<String> stack = StackTools.concurrentStack(iterable.iterator());
+		assertEquals("three", stack.pop());
+		assertEquals("two", stack.pop());
+		assertEquals("one", stack.pop());
+	}
+
+	public void testConcurrentStackArray() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Stack<String> stack = StackTools.concurrentStack(iterable.toArray(StringTools.EMPTY_STRING_ARRAY));
+		assertEquals("three", stack.pop());
+		assertEquals("two", stack.pop());
+		assertEquals("one", stack.pop());
+	}
+
+	// ********** caching concurrent stack **********
+
+	public void testCachingConcurrentStack() {
+		CachingConcurrentStack<String> d = StackTools.cachingConcurrentStack();
+		assertTrue(d.isEmpty());
+	}
+
+	public void testCachingConcurrentStackIterable() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Stack<String> stack = StackTools.cachingConcurrentStack(iterable);
+		assertEquals("three", stack.pop());
+		assertEquals("two", stack.pop());
+		assertEquals("one", stack.pop());
+	}
+
+	public void testCachingConcurrentStackIterator() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Stack<String> stack = StackTools.cachingConcurrentStack(iterable.iterator());
+		assertEquals("three", stack.pop());
+		assertEquals("two", stack.pop());
+		assertEquals("one", stack.pop());
+	}
+
+	public void testCachingConcurrentStackArray() {
+		ArrayList<String> iterable = new ArrayList<>();
+		iterable.add("one");
+		iterable.add("two");
+		iterable.add("three");
+		Stack<String> stack = StackTools.cachingConcurrentStack(iterable.toArray(StringTools.EMPTY_STRING_ARRAY));
 		assertEquals("three", stack.pop());
 		assertEquals("two", stack.pop());
 		assertEquals("one", stack.pop());

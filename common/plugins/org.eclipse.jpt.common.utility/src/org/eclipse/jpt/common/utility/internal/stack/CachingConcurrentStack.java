@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.stack.Stack;
 
 /**
  * Linked LIFO implementation of the {@link Stack} interface
- * that provides non-blocking, lock-free concurrent access.
+ * that provides lock-free concurrent access.
  * The stack's internal nodes are cached and re-used.
  * <p>
  * Unlike most of the other stack implementations, this stack

@@ -46,6 +46,11 @@ public class SynchronizedStackTests
 	}
 
 	@Override
+	Stack<Integer> buildConcurrentStack() {
+		return StackTools.synchronizedStack();
+	}
+
+	@Override
 	public void testClone() {
 		// synchronized stack is not cloneable
 	}
