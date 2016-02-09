@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.queue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.queue.ConcurrentQueue;
@@ -101,7 +101,7 @@ public class ConcurrentQueueTests
 		private final int start;
 		private final int stop;
 		private final SynchronizedBoolean startFlag;
-		final List<InterruptedException> exceptions = new ArrayList<>();
+		final List<InterruptedException> exceptions = new Vector<>();
 
 		public EnqueueRunnable(Queue<Integer> queue, int start, int count, SynchronizedBoolean startFlag) {
 			super();
@@ -136,9 +136,9 @@ public class ConcurrentQueueTests
 		private final Queue<Integer> queue;
 		private final int count;
 		final Integer[] elements;
-		int elementsCount;
+		private int elementsCount;
 		private final SynchronizedBoolean startFlag;
-		final List<InterruptedException> exceptions = new ArrayList<>();
+		final List<InterruptedException> exceptions = new Vector<>();
 	
 		public DequeueRunnable(Queue<Integer> queue, int count, SynchronizedBoolean startFlag) {
 			super();

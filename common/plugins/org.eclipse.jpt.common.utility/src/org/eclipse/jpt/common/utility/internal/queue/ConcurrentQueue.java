@@ -145,7 +145,7 @@ public class ConcurrentQueue<E>
 
 	private static final class Node<E> {
 		final E element;
-		volatile Node<E> next;
+		volatile Node<E> next; // set reflectively by NEXT_UPDATER
 
 		@SuppressWarnings({ "rawtypes", "nls" })
 		static final AtomicReferenceFieldUpdater<Node, Node> NEXT_UPDATER = AtomicReferenceFieldUpdater.newUpdater(Node.class, Node.class, "next");
@@ -153,7 +153,6 @@ public class ConcurrentQueue<E>
 		Node(E element) {
 			super();
 			this.element = element;
-			this.next = null;
 		}
 
 		@Override
