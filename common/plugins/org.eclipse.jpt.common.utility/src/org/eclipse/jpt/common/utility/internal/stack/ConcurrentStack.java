@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.stack;
 
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.stack.Stack;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.common.utility.stack.Stack;
  * Unlike most of the other stack implementations, this stack
  * does not accept <code>null</code> elements and returns <code>null</code>
  * when the stack is empty (rather than throwing a
- * {@link EmptyStackException}).
+ * {@link java.util.EmptyStackException}).
  * 
  * @param <E> the type of elements maintained by the stack
  * @see StackTools
@@ -98,7 +97,7 @@ public class ConcurrentStack<E>
 
 	private static final class Node<E> {
 		final E element;
-		Node<E> next = null;
+		volatile Node<E> next = null;
 
 		Node(E element) {
 			super();
