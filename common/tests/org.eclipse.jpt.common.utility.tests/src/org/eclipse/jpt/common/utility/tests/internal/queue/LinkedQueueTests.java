@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -73,7 +73,7 @@ public class LinkedQueueTests
 	}
 
 	public void testNodeCache_max() {
-		Queue<String> queue = new LinkedQueue<String>(2);
+		Queue<String> queue = new LinkedQueue<>(2);
 		String first = "first";
 		String second = "second";
 		String third = "third";
@@ -111,7 +111,7 @@ public class LinkedQueueTests
 	}
 
 	public void testNodeCache_unlimited() {
-		Queue<String> queue = new LinkedQueue<String>(-1);
+		Queue<String> queue = new LinkedQueue<>(-1);
 		String first = "first";
 		String second = "second";
 		String third = "third";

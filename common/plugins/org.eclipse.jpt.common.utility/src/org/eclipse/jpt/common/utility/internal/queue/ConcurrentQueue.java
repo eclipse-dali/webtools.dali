@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.utility.queue.Queue;
 
 /**
  * Linked FIFO implementation of the {@link Queue} interface
- * that provides non-blocking, lock-free concurrent access
- * (using Michael-Scott algorithms).
+ * that provides lock-free concurrent access
+ * (using Michael-Scott algorithm).
  * <p>
  * Unlike most of the other queue implementations, this queue
  * does not accept <code>null</code> elements and returns <code>null</code>

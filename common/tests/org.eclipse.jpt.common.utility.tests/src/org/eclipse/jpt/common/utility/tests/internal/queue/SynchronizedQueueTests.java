@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,6 +42,11 @@ public class SynchronizedQueueTests
 
 	@Override
 	Queue<String> buildQueue() {
+		return QueueTools.synchronizedQueue();
+	}
+
+	@Override
+	Queue<Integer> buildConcurrentQueue() {
 		return QueueTools.synchronizedQueue();
 	}
 
@@ -570,7 +575,7 @@ public class SynchronizedQueueTests
 	// ********** additional protocol **********
 
 	public void testEnqueueAllIterable() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -582,7 +587,7 @@ public class SynchronizedQueueTests
 	}
 
 	public void testEnqueueAllIterable_empty() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		this.sq.enqueueAll(list);
 		assertTrue(this.sq.isEmpty());
 	}
@@ -657,7 +662,7 @@ public class SynchronizedQueueTests
 		this.sq.enqueue("one");
 		this.sq.enqueue("two");
 		this.sq.enqueue("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertTrue(this.sq.drainTo(list));
 		assertTrue(this.sq.isEmpty());
 		assertEquals("one", list.get(0));
@@ -666,7 +671,7 @@ public class SynchronizedQueueTests
 	}
 
 	public void testDrainToCollection_empty() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertFalse(this.sq.drainTo(list));
 		assertTrue(this.sq.isEmpty());
 		assertTrue(list.isEmpty());
@@ -676,7 +681,7 @@ public class SynchronizedQueueTests
 		this.sq.enqueue("one");
 		this.sq.enqueue("two");
 		this.sq.enqueue("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("aaa");
 		list.add("bbb");
 		list.add("ccc");
@@ -693,7 +698,7 @@ public class SynchronizedQueueTests
 		this.sq.enqueue("one");
 		this.sq.enqueue("two");
 		this.sq.enqueue("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("aaa");
 		list.add("bbb");
 		list.add("ccc");
@@ -707,7 +712,7 @@ public class SynchronizedQueueTests
 	}
 
 	public void testDrainToListInt_empty() throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("aaa");
 		list.add("bbb");
 		list.add("ccc");
@@ -761,7 +766,7 @@ public class SynchronizedQueueTests
 		this.sq.enqueue("one");
 		this.sq.enqueue("two");
 		this.sq.enqueue("zero");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(this.sq.drainTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER));
 		assertEquals("one", map.get("o"));
 		assertEquals("two", map.get("t"));
@@ -769,7 +774,7 @@ public class SynchronizedQueueTests
 	}
 
 	public void testDrainToMapTransformer_empty() {
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(this.sq.drainTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER));
 		assertTrue(map.isEmpty());
 	}
@@ -778,7 +783,7 @@ public class SynchronizedQueueTests
 		this.sq.enqueue("one");
 		this.sq.enqueue("two");
 		this.sq.enqueue("zero");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(this.sq.drainTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER, DequeToolsTests.EMPHASIZER));
 		assertEquals("*one*", map.get("o"));
 		assertEquals("*two*", map.get("t"));
@@ -786,7 +791,7 @@ public class SynchronizedQueueTests
 	}
 
 	public void testDrainToMapTransformerTransformer_empty() {
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(this.sq.drainTo(map, DequeToolsTests.FIRST_LETTER_TRANSFORMER, DequeToolsTests.EMPHASIZER));
 		assertTrue(map.isEmpty());
 	}

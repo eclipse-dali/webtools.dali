@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,7 +63,7 @@ public class ArrayQueueTests
 	}
 
 	public void testCollectionConstructor() {
-		ArrayList<String> c = new ArrayList<String>();
+		ArrayList<String> c = new ArrayList<>();
 		c.add("first");
 		c.add("second");
 		c.add("third");
@@ -216,7 +216,7 @@ public class ArrayQueueTests
 	}
 
 	public void testSerialization_empty() throws Exception {
-		Queue<String> original = new ArrayQueue<String>(3);
+		Queue<String> original = new ArrayQueue<>(3);
 		Queue<String> clone = TestTools.serialize(original);
 		assertNotSame(original, clone);
 		assertTrue(original.isEmpty());
@@ -229,7 +229,7 @@ public class ArrayQueueTests
 	}
 
 	public void testSerialization_fullArray() throws Exception {
-		Queue<String> queue = new ArrayQueue<String>(3);
+		Queue<String> queue = new ArrayQueue<>(3);
 		queue.enqueue("first");
 		queue.enqueue("second");
 		queue.enqueue("third");
@@ -238,7 +238,7 @@ public class ArrayQueueTests
 	}
 
 	public void testSerialization_wrappedArray() throws Exception {
-		Queue<String> queue = new ArrayQueue<String>(3);
+		Queue<String> queue = new ArrayQueue<>(3);
 		queue.enqueue("first");
 		queue.enqueue("second");
 		queue.enqueue("third");

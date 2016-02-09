@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Oracle. All rights reserved.
+ * Copyright (c) 2015, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,7 +41,7 @@ public class QueueToolsTests
 	// ********** enqueue all **********
 
 	public void testEnqueueAllIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -53,14 +53,14 @@ public class QueueToolsTests
 	}
 
 	public void testEnqueueAllIterable_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Queue<String> queue = QueueTools.arrayQueue();
 		assertFalse(QueueTools.enqueueAll(queue, iterable));
 		assertTrue(queue.isEmpty());
 	}
 
 	public void testEnqueueAllIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -72,7 +72,7 @@ public class QueueToolsTests
 	}
 
 	public void testEnqueueAllArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -84,7 +84,7 @@ public class QueueToolsTests
 	}
 
 	public void testEnqueueAllArray_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Queue<String> queue = QueueTools.arrayQueue();
 		assertFalse(QueueTools.enqueueAll(queue, iterable.toArray(StringTools.EMPTY_STRING_ARRAY)));
 		assertTrue(queue.isEmpty());
@@ -109,7 +109,7 @@ public class QueueToolsTests
 		queue.enqueue("one");
 		queue.enqueue("two");
 		queue.enqueue("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertTrue(QueueTools.drainTo(queue, list));
 		assertEquals("one", list.get(0));
 		assertEquals("two", list.get(1));
@@ -118,13 +118,13 @@ public class QueueToolsTests
 
 	public void testDrainToCollection_empty() {
 		ArrayQueue<String> queue = QueueTools.arrayQueue();
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertFalse(QueueTools.drainTo(queue, list));
 		assertTrue(list.isEmpty());
 	}
 
 	public void testDrainToListIndex() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -142,7 +142,7 @@ public class QueueToolsTests
 	}
 
 	public void testDrainToListIndex_end() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -160,7 +160,7 @@ public class QueueToolsTests
 	}
 
 	public void testDrainToListIndex_empty() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -214,7 +214,7 @@ public class QueueToolsTests
 		queue.enqueue("zero");
 		queue.enqueue("one");
 		queue.enqueue("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(QueueTools.drainTo(queue, map, FIRST_LETTER_TRANSFORMER));
 		assertEquals("one", map.get("o"));
 		assertEquals("two", map.get("t"));
@@ -223,7 +223,7 @@ public class QueueToolsTests
 
 	public void testDrainToMapTransformer_empty() {
 		ArrayQueue<String> queue = QueueTools.arrayQueue();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(QueueTools.drainTo(queue, map, FIRST_LETTER_TRANSFORMER));
 		assertTrue(map.isEmpty());
 	}
@@ -233,7 +233,7 @@ public class QueueToolsTests
 		queue.enqueue("zero");
 		queue.enqueue("one");
 		queue.enqueue("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(QueueTools.drainTo(queue, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertEquals("*one*", map.get("o"));
 		assertEquals("*two*", map.get("t"));
@@ -242,7 +242,7 @@ public class QueueToolsTests
 
 	public void testDrainToMapTransformerTransformer_empty() {
 		ArrayQueue<String> queue = QueueTools.arrayQueue();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(QueueTools.drainTo(queue, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertTrue(map.isEmpty());
 	}
@@ -278,7 +278,7 @@ public class QueueToolsTests
 	}
 
 	public void testArrayQueueIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -289,7 +289,7 @@ public class QueueToolsTests
 	}
 
 	public void testArrayQueueIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -300,7 +300,7 @@ public class QueueToolsTests
 	}
 
 	public void testArrayQueueIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -311,7 +311,7 @@ public class QueueToolsTests
 	}
 
 	public void testArrayQueueIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -322,7 +322,7 @@ public class QueueToolsTests
 	}
 
 	public void testArrayQueueArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -345,7 +345,7 @@ public class QueueToolsTests
 	}
 
 	public void testLinkedQueueIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -356,7 +356,7 @@ public class QueueToolsTests
 	}
 
 	public void testLinkedQueueIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -367,7 +367,7 @@ public class QueueToolsTests
 	}
 
 	public void testLinkedQueueIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -378,7 +378,7 @@ public class QueueToolsTests
 	}
 
 	public void testLinkedQueueIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -389,7 +389,7 @@ public class QueueToolsTests
 	}
 
 	public void testLinkedQueueArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -442,7 +442,7 @@ public class QueueToolsTests
 	// ********** fixed-capacity array queue **********
 
 	public void testFixedCapacityArrayQueueCollection() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -515,7 +515,7 @@ public class QueueToolsTests
 	}
 
 	public void testAdaptList() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
