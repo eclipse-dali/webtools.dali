@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Oracle. All rights reserved.
+ * Copyright (c) 2015, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,7 +41,7 @@ public class DequeToolsTests
 	// ********** enqueue all **********
 
 	public void testEnqueueTailAllIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -53,14 +53,14 @@ public class DequeToolsTests
 	}
 
 	public void testEnqueueTailAllIterable_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Deque<String> deque = DequeTools.arrayDeque();
 		assertFalse(DequeTools.enqueueTailAll(deque, iterable));
 		assertTrue(deque.isEmpty());
 	}
 
 	public void testEnqueueHeadAllIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -72,14 +72,14 @@ public class DequeToolsTests
 	}
 
 	public void testEnqueueHeadAllIterable_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Deque<String> deque = DequeTools.arrayDeque();
 		assertFalse(DequeTools.enqueueHeadAll(deque, iterable));
 		assertTrue(deque.isEmpty());
 	}
 
 	public void testEnqueueTailAllIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -91,7 +91,7 @@ public class DequeToolsTests
 	}
 
 	public void testEnqueueHeadAllIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -103,7 +103,7 @@ public class DequeToolsTests
 	}
 
 	public void testEnqueueTailAllArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -115,14 +115,14 @@ public class DequeToolsTests
 	}
 
 	public void testEnqueueTailAllArray_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Deque<String> deque = DequeTools.arrayDeque();
 		assertFalse(DequeTools.enqueueTailAll(deque, iterable.toArray(StringTools.EMPTY_STRING_ARRAY)));
 		assertTrue(deque.isEmpty());
 	}
 
 	public void testEnqueueHeadAllArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -134,7 +134,7 @@ public class DequeToolsTests
 	}
 
 	public void testEnqueueHeadAllArray_empty() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		Deque<String> deque = DequeTools.arrayDeque();
 		assertFalse(DequeTools.enqueueHeadAll(deque, iterable.toArray(StringTools.EMPTY_STRING_ARRAY)));
 		assertTrue(deque.isEmpty());
@@ -170,7 +170,7 @@ public class DequeToolsTests
 		d.enqueueTail("one");
 		d.enqueueTail("two");
 		d.enqueueTail("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertTrue(DequeTools.drainHeadTo(d, list));
 		assertEquals("one", list.get(0));
 		assertEquals("two", list.get(1));
@@ -179,7 +179,7 @@ public class DequeToolsTests
 
 	public void testDrainHeadToCollection_empty() {
 		ArrayDeque<String> d = DequeTools.arrayDeque();
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertFalse(DequeTools.drainHeadTo(d, list));
 		assertTrue(list.isEmpty());
 	}
@@ -189,7 +189,7 @@ public class DequeToolsTests
 		d.enqueueTail("one");
 		d.enqueueTail("two");
 		d.enqueueTail("three");
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertTrue(DequeTools.drainTailTo(d, list));
 		assertEquals("one", list.get(2));
 		assertEquals("two", list.get(1));
@@ -198,13 +198,13 @@ public class DequeToolsTests
 
 	public void testDrainTailToCollection_empty() {
 		ArrayDeque<String> d = DequeTools.arrayDeque();
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		assertFalse(DequeTools.drainTailTo(d, list));
 		assertTrue(list.isEmpty());
 	}
 
 	public void testDrainHeadToListIndex() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -222,7 +222,7 @@ public class DequeToolsTests
 	}
 
 	public void testDrainHeadToListIndex_end() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -240,7 +240,7 @@ public class DequeToolsTests
 	}
 
 	public void testDrainHeadToListIndex_empty() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -252,7 +252,7 @@ public class DequeToolsTests
 	}
 
 	public void testDrainTailToListIndex() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -270,7 +270,7 @@ public class DequeToolsTests
 	}
 
 	public void testDrainTailToListIndex_end() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -288,7 +288,7 @@ public class DequeToolsTests
 	}
 
 	public void testDrainTailToListIndex_empty() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("one");
 		list.add("two");
 		list.add("three");
@@ -418,7 +418,7 @@ public class DequeToolsTests
 		d.enqueueTail("zero");
 		d.enqueueTail("one");
 		d.enqueueTail("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(DequeTools.drainHeadTo(d, map, FIRST_LETTER_TRANSFORMER));
 		assertEquals("one", map.get("o"));
 		assertEquals("two", map.get("t"));
@@ -427,7 +427,7 @@ public class DequeToolsTests
 
 	public void testDrainHeadToMapTransformer_empty() {
 		ArrayDeque<String> d = DequeTools.arrayDeque();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(DequeTools.drainHeadTo(d, map, FIRST_LETTER_TRANSFORMER));
 		assertTrue(map.isEmpty());
 	}
@@ -437,7 +437,7 @@ public class DequeToolsTests
 		d.enqueueTail("zero");
 		d.enqueueTail("one");
 		d.enqueueTail("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(DequeTools.drainTailTo(d, map, FIRST_LETTER_TRANSFORMER));
 		assertEquals("one", map.get("o"));
 		assertEquals("two", map.get("t"));
@@ -446,7 +446,7 @@ public class DequeToolsTests
 
 	public void testDrainTailToMapTransformer_empty() {
 		ArrayDeque<String> d = DequeTools.arrayDeque();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(DequeTools.drainTailTo(d, map, FIRST_LETTER_TRANSFORMER));
 		assertTrue(map.isEmpty());
 	}
@@ -456,7 +456,7 @@ public class DequeToolsTests
 		d.enqueueTail("zero");
 		d.enqueueTail("one");
 		d.enqueueTail("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(DequeTools.drainHeadTo(d, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertEquals("*one*", map.get("o"));
 		assertEquals("*two*", map.get("t"));
@@ -465,7 +465,7 @@ public class DequeToolsTests
 
 	public void testDrainHeadToMapTransformerTransformer_empty() {
 		ArrayDeque<String> d = DequeTools.arrayDeque();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(DequeTools.drainHeadTo(d, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertTrue(map.isEmpty());
 	}
@@ -475,7 +475,7 @@ public class DequeToolsTests
 		d.enqueueTail("zero");
 		d.enqueueTail("one");
 		d.enqueueTail("two");
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertTrue(DequeTools.drainTailTo(d, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertEquals("*one*", map.get("o"));
 		assertEquals("*two*", map.get("t"));
@@ -484,7 +484,7 @@ public class DequeToolsTests
 
 	public void testDrainTailToMapTransformerTransformer_empty() {
 		ArrayDeque<String> d = DequeTools.arrayDeque();
-		Map<String, String>map = new HashMap<String, String>();
+		Map<String, String>map = new HashMap<>();
 		assertFalse(DequeTools.drainTailTo(d, map, FIRST_LETTER_TRANSFORMER, EMPHASIZER));
 		assertTrue(map.isEmpty());
 	}
@@ -520,7 +520,7 @@ public class DequeToolsTests
 	}
 
 	public void testArrayDequeIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -531,7 +531,7 @@ public class DequeToolsTests
 	}
 
 	public void testArrayDequeIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -542,7 +542,7 @@ public class DequeToolsTests
 	}
 
 	public void testReverseArrayDequeIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -553,7 +553,7 @@ public class DequeToolsTests
 	}
 
 	public void testReverseArrayDequeIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -564,7 +564,7 @@ public class DequeToolsTests
 	}
 
 	public void testArrayDequeIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -575,7 +575,7 @@ public class DequeToolsTests
 	}
 
 	public void testArrayDequeIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -586,7 +586,7 @@ public class DequeToolsTests
 	}
 
 	public void testReverseArrayDequeIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -597,7 +597,7 @@ public class DequeToolsTests
 	}
 
 	public void testReverseArrayDequeIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -608,7 +608,7 @@ public class DequeToolsTests
 	}
 
 	public void testArrayDequeArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -619,7 +619,7 @@ public class DequeToolsTests
 	}
 
 	public void testReverseArrayDequeArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -636,13 +636,8 @@ public class DequeToolsTests
 		assertTrue(d.isEmpty());
 	}
 
-	public void testLinkedDequeInt() {
-		LinkedDeque<String> d = DequeTools.linkedDeque(20);
-		assertTrue(d.isEmpty());
-	}
-
 	public void testLinkedDequeIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -652,19 +647,8 @@ public class DequeToolsTests
 		assertEquals("three", deque.dequeueHead());
 	}
 
-	public void testLinkedDequeIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
-		iterable.add("one");
-		iterable.add("two");
-		iterable.add("three");
-		Deque<String> deque = DequeTools.linkedDeque(iterable, 5);
-		assertEquals("one", deque.dequeueHead());
-		assertEquals("two", deque.dequeueHead());
-		assertEquals("three", deque.dequeueHead());
-	}
-
 	public void testReverseLinkedDequeIterable() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -674,19 +658,8 @@ public class DequeToolsTests
 		assertEquals("three", deque.dequeueTail());
 	}
 
-	public void testReverseLinkedDequeIterableInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
-		iterable.add("one");
-		iterable.add("two");
-		iterable.add("three");
-		Deque<String> deque = DequeTools.reverseLinkedDeque(iterable, 77);
-		assertEquals("one", deque.dequeueTail());
-		assertEquals("two", deque.dequeueTail());
-		assertEquals("three", deque.dequeueTail());
-	}
-
 	public void testLinkedDequeIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -696,19 +669,8 @@ public class DequeToolsTests
 		assertEquals("three", deque.dequeueHead());
 	}
 
-	public void testLinkedDequeIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
-		iterable.add("one");
-		iterable.add("two");
-		iterable.add("three");
-		Deque<String> deque = DequeTools.linkedDeque(iterable.iterator(), 5);
-		assertEquals("one", deque.dequeueHead());
-		assertEquals("two", deque.dequeueHead());
-		assertEquals("three", deque.dequeueHead());
-	}
-
 	public void testReverseLinkedDequeIterator() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -718,19 +680,8 @@ public class DequeToolsTests
 		assertEquals("three", deque.dequeueTail());
 	}
 
-	public void testReverseLinkedDequeIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<String>();
-		iterable.add("one");
-		iterable.add("two");
-		iterable.add("three");
-		Deque<String> deque = DequeTools.reverseLinkedDeque(iterable.iterator(), 42);
-		assertEquals("one", deque.dequeueTail());
-		assertEquals("two", deque.dequeueTail());
-		assertEquals("three", deque.dequeueTail());
-	}
-
 	public void testLinkedDequeArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -741,7 +692,7 @@ public class DequeToolsTests
 	}
 
 	public void testReverseLinkedDequeArray() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -754,7 +705,7 @@ public class DequeToolsTests
 	// ********** fixed-capacity array deque **********
 
 	public void testFixedCapacityArrayDequeCollection() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
@@ -765,7 +716,7 @@ public class DequeToolsTests
 	}
 
 	public void testReverseFixedCapacityArrayDequeCollection() {
-		ArrayList<String> iterable = new ArrayList<String>();
+		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");

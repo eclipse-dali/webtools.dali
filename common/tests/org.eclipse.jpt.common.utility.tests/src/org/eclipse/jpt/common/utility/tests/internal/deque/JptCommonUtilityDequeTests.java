@@ -21,6 +21,7 @@ public class JptCommonUtilityDequeTests {
 		TestSuite suite = new TestSuite(JptCommonUtilityDequeTests.class.getPackage().getName());
 
 		suite.addTestSuite(ArrayDequeTests.class);
+		suite.addTestSuite(CachingLinkedDequeTests.class);
 		suite.addTestSuite(DequeToolsTests.class);
 		suite.addTestSuite(EmptyDequeTests.class);
 		suite.addTestSuite(FixedCapacityArrayDequeTests.class);

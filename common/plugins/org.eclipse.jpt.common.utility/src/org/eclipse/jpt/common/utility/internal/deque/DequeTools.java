@@ -519,85 +519,40 @@ public final class DequeTools {
 	// ********** linked deque factory methods **********
 
 	/**
-	 * Return an empty link-based deque with no node cache.
+	 * Return an empty link-based deque.
 	 */
 	public static <E> LinkedDeque<E> linkedDeque() {
-		return linkedDeque(0);
-	}
-
-	/**
-	 * Return an empty link-based deque
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedDeque<E> linkedDeque(int cacheSize) {
-		return new LinkedDeque<>(cacheSize);
+		return new LinkedDeque<>();
 	}
 
 	/**
 	 * Return a link-based deque corresponding to the specified iterable.
 	 */
 	public static <E> LinkedDeque<E> linkedDeque(Iterable<? extends E> iterable) {
-		return linkedDeque(iterable, 0);
+		return linkedDeque(iterable.iterator());
 	}
 
 	/**
 	 * Return a link-based deque corresponding to the reverse of the specified iterable.
 	 */
 	public static <E> LinkedDeque<E> reverseLinkedDeque(Iterable<? extends E> iterable) {
-		return reverseLinkedDeque(iterable, 0);
-	}
-
-	/**
-	 * Return a link-based deque corresponding to the specified iterable
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedDeque<E> linkedDeque(Iterable<? extends E> iterable, int cacheSize) {
-		return linkedDeque(iterable.iterator(), cacheSize);
-	}
-
-	/**
-	 * Return a link-based deque corresponding to the reverse of the specified iterable
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedDeque<E> reverseLinkedDeque(Iterable<? extends E> iterable, int cacheSize) {
-		return reverseLinkedDeque(iterable.iterator(), cacheSize);
+		return reverseLinkedDeque(iterable.iterator());
 	}
 
 	/**
 	 * Return a link-based deque corresponding to the specified iterator.
 	 */
 	public static <E> LinkedDeque<E> linkedDeque(Iterator<? extends E> iterator) {
-		return linkedDeque(iterator, 0);
+		LinkedDeque<E> deque = linkedDeque();
+		enqueueTailAll(deque, iterator);
+		return deque;
 	}
 
 	/**
 	 * Return a link-based deque corresponding to the reverse of the specified iterator.
 	 */
 	public static <E> LinkedDeque<E> reverseLinkedDeque(Iterator<? extends E> iterator) {
-		return reverseLinkedDeque(iterator, 0);
-	}
-
-	/**
-	 * Return a link-based deque corresponding to the specified iterator
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedDeque<E> linkedDeque(Iterator<? extends E> iterator, int cacheSize) {
-		LinkedDeque<E> deque = linkedDeque(cacheSize);
-		enqueueTailAll(deque, iterator);
-		return deque;
-	}
-
-	/**
-	 * Return a link-based deque corresponding to the reverse of the specified iterator
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedDeque<E> reverseLinkedDeque(Iterator<? extends E> iterator, int cacheSize) {
-		LinkedDeque<E> deque = linkedDeque(cacheSize);
+		LinkedDeque<E> deque = linkedDeque();
 		enqueueHeadAll(deque, iterator);
 		return deque;
 	}
@@ -607,7 +562,9 @@ public final class DequeTools {
 	 */
 	@SafeVarargs
 	public static <E> LinkedDeque<E> linkedDeque(E... array) {
-		return linkedDeque(array, 0);
+		LinkedDeque<E> deque = linkedDeque();
+		enqueueTailAll(deque, array);
+		return deque;
 	}
 
 	/**
@@ -615,27 +572,7 @@ public final class DequeTools {
 	 */
 	@SafeVarargs
 	public static <E> LinkedDeque<E> reverseLinkedDeque(E... array) {
-		return reverseLinkedDeque(array, 0);
-	}
-
-	/**
-	 * Return a link-based deque corresponding to the specified array
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedDeque<E> linkedDeque(E[] array, int cacheSize) {
-		LinkedDeque<E> deque = linkedDeque(cacheSize);
-		enqueueTailAll(deque, array);
-		return deque;
-	}
-
-	/**
-	 * Return a link-based deque corresponding to the reverse of the specified array
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedDeque<E> reverseLinkedDeque(E[] array, int cacheSize) {
-		LinkedDeque<E> deque = linkedDeque(cacheSize);
+		LinkedDeque<E> deque = linkedDeque();
 		enqueueHeadAll(deque, array);
 		return deque;
 	}
