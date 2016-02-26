@@ -26,4 +26,9 @@ public interface StructuredStateProvider
 	extends IStructuredContentProvider, ExtendedLabelProvider
 {
 	// combine interfaces
+
+	default void dispose() {
+		// re-implement default here because of conflict between
+		// IBaseLabelProvider and IContentProvider
+	}
 }
