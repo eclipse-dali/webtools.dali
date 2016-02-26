@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.queue;
+package org.eclipse.jpt.common.utility.tests.internal.queue;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -18,11 +18,11 @@ import org.eclipse.jpt.common.utility.queue.Queue;
 /**
  * Linked FIFO implementation of the {@link Queue} interface.
  * @param <E> the type of elements maintained by the queue
- * @see QueueTools
  */
-public class LinkedQueue<E>
+public class CachingLinkedQueue<E>
 	implements Queue<E>, Cloneable, Serializable
 {
+	private final NodeFactory<E> nodeFactory;
 	private transient Node<E> head; // next element to dequeue
 	private transient Node<E> tail; // last element
 
@@ -32,10 +32,31 @@ public class LinkedQueue<E>
 	// ********** constructors **********
 
 	/**
-	 * Construct an empty linked queue.
+	 * Construct an empty queue with no node cache.
 	 */
-	public LinkedQueue() {
+	public CachingLinkedQueue() {
+		this(0);
+	}
+
+	/**
+	 * Construct an empty queue with a node cache with the specified size.
+	 * Specify a cache size of -1 for an unlimited cache.
+	 */
+	public CachingLinkedQueue(int cacheSize) {
+		this(CachingLinkedQueue.<E>buildNodeFactory(cacheSize));
+		this.head = null;
+	}
+
+	private static <E> NodeFactory<E> buildNodeFactory(int cacheSize) {
+		if (cacheSize < -1) {
+			throw new IllegalArgumentException("Cache size must be greater than or equal to -1: " + cacheSize); //$NON-NLS-1$
+		}
+		return (cacheSize == 0) ? SimpleNodeFactory.<E>instance() : new CachingNodeFactory<>(cacheSize);
+	}
+
+	private CachingLinkedQueue(NodeFactory<E> nodeFactory) {
 		super();
+		this.nodeFactory = nodeFactory;
 		this.head = null;
 		this.tail = null;
 	}
@@ -44,7 +65,7 @@ public class LinkedQueue<E>
 	// ********** Queue implementation **********
 
 	public void enqueue(E element) {
-		Node<E> newNode = new Node<>(element, null);
+		Node<E> newNode = this.nodeFactory.buildNode(element, null);
 		if (this.tail == null) {
 			this.head = newNode; // first node
 		} else {
@@ -62,7 +83,9 @@ public class LinkedQueue<E>
 		if (this.head == null) {
 			this.tail = null; // last node
 		}
-		return node.element;
+		E element = node.element;
+		this.nodeFactory.release(node);
+		return element;
 	}
 
 	public E peek() {
@@ -80,8 +103,8 @@ public class LinkedQueue<E>
 	// ********** standard methods **********
 
 	@Override
-	public LinkedQueue<E> clone() {
-		LinkedQueue<E> clone = new LinkedQueue<>();
+	public CachingLinkedQueue<E> clone() {
+		CachingLinkedQueue<E> clone = new CachingLinkedQueue<>(this.nodeFactory.copy());
 		E[] elements = this.buildElements();
 		for (E element : elements) {
 			clone.enqueue(element);
@@ -140,7 +163,7 @@ public class LinkedQueue<E>
 	}
 
 
-	// ********** Node **********
+	// ********** Node classes **********
 
 	private static final class Node<E> {
 		E element;
@@ -155,6 +178,105 @@ public class LinkedQueue<E>
 		@Override
 		public String toString() {
 			return ObjectTools.toString(this, this.element);
+		}
+	}
+
+	private abstract static class NodeFactory<E> {
+		NodeFactory() {
+			super();
+		}
+
+		Node<E> buildNode(E element, Node<E> next) {
+			return new Node<>(element, next);
+		}
+
+		abstract void release(Node<E> node);
+
+		abstract NodeFactory<E> copy();
+	}
+
+	private static class SimpleNodeFactory<E>
+		extends NodeFactory<E>
+		implements Serializable
+	{
+		@SuppressWarnings("rawtypes")
+		public static final NodeFactory INSTANCE = new SimpleNodeFactory();
+		@SuppressWarnings("unchecked")
+		public static <E> NodeFactory<E> instance() {
+			return INSTANCE;
+		}
+
+		private SimpleNodeFactory() {
+			super();
+		}
+
+		@Override
+		void release(Node<E> node) {
+			// NOP
+		}
+
+		@Override
+		NodeFactory<E> copy() {
+			return this;
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
+	}
+
+	private static final class CachingNodeFactory<E>
+		extends NodeFactory<E>
+		implements Serializable
+	{
+		private final int maxCacheSize;
+		private transient int cacheSize = 0;
+		private transient Node<E> cacheHead;
+		private static final long serialVersionUID = 1L;
+
+		CachingNodeFactory(int maxCacheSize) {
+			super();
+			this.maxCacheSize = maxCacheSize;
+		}
+
+		@Override
+		Node<E> buildNode(E element, Node<E> next) {
+			if (this.cacheHead == null) {
+				return super.buildNode(element, next);
+			}
+			Node<E> node = this.cacheHead;
+			this.cacheHead = node.next;
+			this.cacheSize--;
+			node.element = element;
+			node.next = next;
+			return node;
+		}
+
+		@Override
+		void release(Node<E> node) {
+			if ((this.maxCacheSize == -1) || (this.cacheSize < this.maxCacheSize)) {
+				node.element = null; // allow GC to work
+				node.next = this.cacheHead;
+				this.cacheHead = node;
+				this.cacheSize++;
+			}
+		}
+
+		@Override
+		NodeFactory<E> copy() {
+			return new CachingNodeFactory<>(this.maxCacheSize);
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.cacheSize);
 		}
 	}
 }

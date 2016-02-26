@@ -339,11 +339,6 @@ public class QueueToolsTests
 		assertTrue(queue.isEmpty());
 	}
 
-	public void testLinkedQueueInt() {
-		LinkedQueue<String> queue = QueueTools.linkedQueue(20);
-		assertTrue(queue.isEmpty());
-	}
-
 	public void testLinkedQueueIterable() {
 		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
@@ -355,34 +350,12 @@ public class QueueToolsTests
 		assertEquals("three", queue.dequeue());
 	}
 
-	public void testLinkedQueueIterableInt() {
-		ArrayList<String> iterable = new ArrayList<>();
-		iterable.add("one");
-		iterable.add("two");
-		iterable.add("three");
-		Queue<String> queue = QueueTools.linkedQueue(iterable, 5);
-		assertEquals("one", queue.dequeue());
-		assertEquals("two", queue.dequeue());
-		assertEquals("three", queue.dequeue());
-	}
-
 	public void testLinkedQueueIterator() {
 		ArrayList<String> iterable = new ArrayList<>();
 		iterable.add("one");
 		iterable.add("two");
 		iterable.add("three");
 		Queue<String> queue = QueueTools.linkedQueue(iterable.iterator());
-		assertEquals("one", queue.dequeue());
-		assertEquals("two", queue.dequeue());
-		assertEquals("three", queue.dequeue());
-	}
-
-	public void testLinkedQueueIteratorInt() {
-		ArrayList<String> iterable = new ArrayList<>();
-		iterable.add("one");
-		iterable.add("two");
-		iterable.add("three");
-		Queue<String> queue = QueueTools.linkedQueue(iterable.iterator(), 5);
 		assertEquals("one", queue.dequeue());
 		assertEquals("two", queue.dequeue());
 		assertEquals("three", queue.dequeue());

@@ -21,6 +21,7 @@ public class JptCommonUtilityQueueTests {
 		TestSuite suite = new TestSuite(JptCommonUtilityQueueTests.class.getPackage().getName());
 
 		suite.addTestSuite(ArrayQueueTests.class);
+		suite.addTestSuite(CachingLinkedQueueTests.class);
 		suite.addTestSuite(ConcurrentQueueTests.class);
 		suite.addTestSuite(DequeQueueTests.class);
 		suite.addTestSuite(EmptyQueueTests.class);

@@ -270,51 +270,24 @@ public final class QueueTools {
 	// ********** linked queue factory methods **********
 
 	/**
-	 * Return an empty link-based FIFO queue with no node cache.
+	 * Return an empty link-based FIFO queue.
 	 */
 	public static <E> LinkedQueue<E> linkedQueue() {
-		return linkedQueue(0);
-	}
-
-	/**
-	 * Return an empty link-based FIFO queue
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedQueue<E> linkedQueue(int cacheSize) {
-		return new LinkedQueue<>(cacheSize);
+		return new LinkedQueue<>();
 	}
 
 	/**
 	 * Return a link-based FIFO queue corresponding to the specified iterable.
 	 */
 	public static <E> LinkedQueue<E> linkedQueue(Iterable<? extends E> iterable) {
-		return linkedQueue(iterable, 0);
-	}
-
-	/**
-	 * Return a link-based FIFO queue corresponding to the specified iterable
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedQueue<E> linkedQueue(Iterable<? extends E> iterable, int cacheSize) {
-		return linkedQueue(iterable.iterator(), cacheSize);
+		return linkedQueue(iterable.iterator());
 	}
 
 	/**
 	 * Return a link-based FIFO queue corresponding to the specified iterator.
 	 */
 	public static <E> LinkedQueue<E> linkedQueue(Iterator<? extends E> iterator) {
-		return linkedQueue(iterator, 0);
-	}
-
-	/**
-	 * Return a link-based FIFO queue corresponding to the specified iterator
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedQueue<E> linkedQueue(Iterator<? extends E> iterator, int cacheSize) {
-		LinkedQueue<E> result = QueueTools.linkedQueue(cacheSize);
+		LinkedQueue<E> result = linkedQueue();
 		enqueueAll(result, iterator);
 		return result;
 	}
@@ -324,16 +297,7 @@ public final class QueueTools {
 	 */
 	@SafeVarargs
 	public static <E> LinkedQueue<E> linkedQueue(E... array) {
-		return linkedQueue(array, 0);
-	}
-
-	/**
-	 * Return a link-based FIFO queue corresponding to the specified array
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedQueue<E> linkedQueue(E[] array, int cacheSize) {
-		LinkedQueue<E> result = QueueTools.linkedQueue(cacheSize);
+		LinkedQueue<E> result = linkedQueue();
 		enqueueAll(result, array);
 		return result;
 	}
