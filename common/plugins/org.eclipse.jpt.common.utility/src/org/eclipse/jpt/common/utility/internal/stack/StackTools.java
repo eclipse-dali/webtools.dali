@@ -284,19 +284,10 @@ public class StackTools {
 	// ********** linked stack factory methods **********
 
 	/**
-	 * Return an empty link-based LIFO stack with no node cache.
+	 * Return an empty link-based LIFO stack.
 	 */
 	public static <E> LinkedStack<E> linkedStack() {
-		return linkedStack(0);
-	}
-
-	/**
-	 * Return an empty link-based LIFO stack
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedStack<E> linkedStack(int cacheSize) {
-		return new LinkedStack<>(cacheSize);
+		return new LinkedStack<>();
 	}
 
 	/**
@@ -304,15 +295,6 @@ public class StackTools {
 	 */
 	public static <E> LinkedStack<E> linkedStack(Iterable<? extends E> iterable) {
 		return linkedStack(iterable.iterator());
-	}
-
-	/**
-	 * Return a link-based LIFO stack corresponding to the specified iterable
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedStack<E> linkedStack(Iterable<? extends E> iterable, int cacheSize) {
-		return linkedStack(iterable.iterator(), cacheSize);
 	}
 
 	/**
@@ -325,33 +307,11 @@ public class StackTools {
 	}
 
 	/**
-	 * Return a link-based LIFO stack corresponding to the specified iterator
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedStack<E> linkedStack(Iterator<? extends E> iterator, int cacheSize) {
-		LinkedStack<E> result = linkedStack(cacheSize);
-		pushAll(result, iterator);
-		return result;
-	}
-
-	/**
 	 * Return a link-based LIFO stack corresponding to the specified array.
 	 */
 	@SafeVarargs
 	public static <E> LinkedStack<E> linkedStack(E... array) {
 		LinkedStack<E> result = linkedStack();
-		pushAll(result, array);
-		return result;
-	}
-
-	/**
-	 * Return a link-based LIFO stack corresponding to the specified array
-	 * with the specified node cache size.
-	 * Specify a cache size of -1 for an unlimited cache.
-	 */
-	public static <E> LinkedStack<E> linkedStack(E[] array, int cacheSize) {
-		LinkedStack<E> result = linkedStack(cacheSize);
 		pushAll(result, array);
 		return result;
 	}
@@ -388,41 +348,6 @@ public class StackTools {
 	@SafeVarargs
 	public static <E> ConcurrentStack<E> concurrentStack(E... array) {
 		ConcurrentStack<E> result = concurrentStack();
-		pushAll(result, array);
-		return result;
-	}
-
-
-	// ********** caching concurrent stack factory methods **********
-
-	/**
-	 * Return an empty caching concurrent LIFO stack.
-	 */
-	public static <E> CachingConcurrentStack<E> cachingConcurrentStack() {
-		return new CachingConcurrentStack<>();
-	}
-
-	/**
-	 * Return a caching concurrent LIFO stack corresponding to the specified iterable.
-	 */
-	public static <E> CachingConcurrentStack<E> cachingConcurrentStack(Iterable<? extends E> iterable) {
-		return cachingConcurrentStack(iterable.iterator());
-	}
-
-	/**
-	 * Return a caching concurrent LIFO stack corresponding to the specified iterator.
-	 */
-	public static <E> CachingConcurrentStack<E> cachingConcurrentStack(Iterator<? extends E> iterator) {
-		CachingConcurrentStack<E> result = cachingConcurrentStack();
-		pushAll(result, iterator);
-		return result;
-	}
-
-	/**
-	 * Return a caching concurrent LIFO stack corresponding to the specified array.
-	 */
-	public static <E> CachingConcurrentStack<E> cachingConcurrentStack(E[] array) {
-		CachingConcurrentStack<E> result = cachingConcurrentStack();
 		pushAll(result, array);
 		return result;
 	}

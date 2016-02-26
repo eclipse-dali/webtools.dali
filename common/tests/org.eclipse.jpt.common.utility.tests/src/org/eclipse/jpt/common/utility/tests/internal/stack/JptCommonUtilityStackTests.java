@@ -22,6 +22,7 @@ public class JptCommonUtilityStackTests {
 
 		suite.addTestSuite(ArrayStackTests.class);
 		suite.addTestSuite(CachingConcurrentStackTests.class);
+		suite.addTestSuite(CachingLinkedStackTests.class);
 		suite.addTestSuite(ConcurrentStackTests.class);
 		suite.addTestSuite(DequeStackTests.class);
 		suite.addTestSuite(EmptyStackTests.class);

@@ -7,12 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.stack;
+package org.eclipse.jpt.common.utility.tests.internal.stack;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.concurrent.atomic.AtomicStampedReference;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.stack.StackTools;
 import org.eclipse.jpt.common.utility.stack.Stack;
 
 /**
@@ -24,6 +25,12 @@ import org.eclipse.jpt.common.utility.stack.Stack;
  * does not accept <code>null</code> elements and returns <code>null</code>
  * when the stack is empty (rather than throwing a
  * {@link EmptyStackException}).
+ * 
+ *******************************************************************************
+ * NB: This class is a nice demonstration of the poor performance of an object
+ * cache for concurrency support!
+ * @see StackTests#testConcurrentAccess()
+ *******************************************************************************
  * 
  * @param <E> the type of elements maintained by the stack
  * @see StackTools

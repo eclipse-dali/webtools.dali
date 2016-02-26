@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.tests.internal.stack;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.stack.StackTools;
 import org.eclipse.jpt.common.utility.stack.Stack;
 
 @SuppressWarnings("nls")
@@ -23,12 +22,12 @@ public class CachingConcurrentStackTests
 
 	@Override
 	Stack<String> buildStack() {
-		return StackTools.cachingConcurrentStack();
+		return new CachingConcurrentStack<>();
 	}
 
 	@Override
 	Stack<Integer> buildConcurrentStack() {
-		return StackTools.cachingConcurrentStack();
+		return new CachingConcurrentStack<>();
 	}
 
 	public void testCache() {

@@ -179,13 +179,33 @@ public abstract class StackTests
 	}
 
 	public void testConcurrentAccess() throws InterruptedException {
-		Stack<Integer> stack = this.buildConcurrentStack();
-		if (stack == null) {
-			return;
-		}
+		this.verifyConcurrentAccess(10, 100000, 30);
+	}
 
-		int threadCount = 10;
-		int elementsPerThread = 100000;
+	// spit out some timing information
+//	public void testConcurrentAccess_() throws InterruptedException {
+//		Stack<Integer> stack = this.buildConcurrentStack();
+//		if (stack == null) {
+//			return;
+//		}
+//		for (int i = 0; i < 3; i++) {
+//			long begin = System.currentTimeMillis();
+//			this.verifyConcurrentAccess(stack, 10, 100000, 30);
+//			long end = System.currentTimeMillis();
+//			double elapsed = 1.0 * (end - begin) / 1000;
+//			System.out.println(this.getClass().getSimpleName() + "." + this.getName() + ": " + elapsed);
+//			Thread.sleep(1000);
+//		}
+//	}
+
+	public void verifyConcurrentAccess(int threadCount, int elementsPerThread, int sleepCount) throws InterruptedException {
+		Stack<Integer> stack = this.buildConcurrentStack();
+		if (stack != null) {
+			this.verifyConcurrentAccess(stack, threadCount, elementsPerThread, sleepCount);
+		}
+	}
+
+	public void verifyConcurrentAccess(Stack<Integer> stack, int threadCount, int elementsPerThread, int sleepCount) throws InterruptedException {
 		SynchronizedBoolean startFlag = new SynchronizedBoolean(false);
 
 		PushRunnable[] pushRunnables = new PushRunnable[threadCount];
@@ -201,7 +221,7 @@ public abstract class StackTests
 		PopRunnable[] popRunnables = new PopRunnable[threadCount];
 		Thread[] popThreads = new Thread[threadCount];
 		for (int i = 0; i < threadCount; i++) {
-			PopRunnable popRunnable = new PopRunnable(stack, elementsPerThread, startFlag);
+			PopRunnable popRunnable = new PopRunnable(stack, elementsPerThread, sleepCount, startFlag);
 			popRunnables[i] = popRunnable;
 			Thread popThread = new Thread(popRunnable, "Pop-" + i);
 			popThreads[i] = popThread;
@@ -284,15 +304,17 @@ public abstract class StackTests
 	{
 		private final Stack<Integer> stack;
 		private final int count;
+		private final int sleepCount;
 		final Integer[] elements;
 		private int elementsCount;
 		private final SynchronizedBoolean startFlag;
 		final List<InterruptedException> exceptions = new Vector<>();
 	
-		public PopRunnable(Stack<Integer> stack, int count, SynchronizedBoolean startFlag) {
+		public PopRunnable(Stack<Integer> stack, int count, int sleepCount, SynchronizedBoolean startFlag) {
 			super();
 			this.stack = stack;
 			this.count = count;
+			this.sleepCount = sleepCount;
 			this.elements = new Integer[count];
 			this.elementsCount = 0;
 			this.startFlag = startFlag;
@@ -323,7 +345,7 @@ public abstract class StackTests
 						break;
 					}
 				}
-				if ((i % 20) == 0) {
+				if ((this.sleepCount != 0) && ((i % this.sleepCount) == 0)) {
 					Thread.sleep(0);
 				}
 				if (i == Integer.MAX_VALUE) {
