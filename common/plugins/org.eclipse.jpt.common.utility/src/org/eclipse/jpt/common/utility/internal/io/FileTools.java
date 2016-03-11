@@ -125,12 +125,15 @@ public final class FileTools {
 	 * <em>USE WITH CARE.</em>
 	 */
 	public static void deleteDirectoryContents(File directory) {
-		for (File file : directory.listFiles()) {
-			if (file.isDirectory()) {
-				deleteDirectory(file);	// recurse
-			} else {
-				if ( ! file.delete()) {
-					throw new RuntimeException("unable to delete file: " + file.getAbsolutePath()); //$NON-NLS-1$
+		File[] files = directory.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					deleteDirectory(file);	// recurse
+				} else {
+					if ( ! file.delete()) {
+						throw new RuntimeException("unable to delete file: " + file.getAbsolutePath()); //$NON-NLS-1$
+					}
 				}
 			}
 		}
@@ -215,7 +218,7 @@ public final class FileTools {
 	 * @see File#isFile()
 	 */
 	public static Iterable<File> getFiles(File directory) {
-		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), IS_NORMAL_FILE);
+		return filterFiles(directory, IS_NORMAL_FILE);
 	}
 
 	/**
@@ -260,7 +263,12 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterable<File> getDirectories(File directory) {
-		return IterableTools.filter(IterableTools.iterable(directory.listFiles()), IS_DIRECTORY);
+		return filterFiles(directory, IS_DIRECTORY);
+	}
+	
+	private static Iterable<File> filterFiles(File directory, Predicate<File> predicate) {
+		File[] files = directory.listFiles();
+		return (files != null) ? IterableTools.filter(IterableTools.iterable(files), predicate) : IterableTools.emptyIterable();
 	}
 	
 	/**
@@ -310,22 +318,8 @@ public final class FileTools {
 	 */
 	public static Iterable<File> getAllFiles(File directory) {
 		ArrayList<File> files = new ArrayList<>(10000);
-		addAllFilesTo(directory, files);
+		addAllFilteredFilesTo(directory, IS_NORMAL_FILE, files);
 		return files;
-	}
-
-	/**
-	 * <strong>NB:</strong> Looping offers much better performance than a true
-	 * recursion when dealing with large directory trees.
-	 */
-	private static void addAllFilesTo(File directory, ArrayList<File> files) {
-		for (File file : directory.listFiles()) {
-			if (file.isFile()) {
-				files.add(file);
-			} else if (file.isDirectory()) {
-				addAllFilesTo(file, files); // recurse
-			}
-		}
 	}
 
 	/**
@@ -361,20 +355,25 @@ public final class FileTools {
 	 * @see File#isDirectory()
 	 */
 	public static Iterable<File> getAllDirectories(File directory) {
-		ArrayList<File> files = new ArrayList<>(10000);
-		addAllDirectoriesTo(directory, files);
-		return files;
+		ArrayList<File> directories = new ArrayList<>(10000);
+		addAllFilteredFilesTo(directory, IS_DIRECTORY, directories);
+		return directories;
 	}
 	
 	/**
 	 * <strong>NB:</strong> Looping offers much better performance than a true
 	 * recursion when dealing with large directory trees.
 	 */
-	private static void addAllDirectoriesTo(File directory, ArrayList<File> directories) {
-		for (File file : directory.listFiles()) {
-			if (file.isDirectory()) {
-				directories.add(file);
-				addAllDirectoriesTo(file, directories); // recurse
+	private static void addAllFilteredFilesTo(File directory, Predicate<File> predicate, ArrayList<File> filteredFiles) {
+		File[] files = directory.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (predicate.evaluate(file)) {
+					filteredFiles.add(file);
+				}
+				if (file.isDirectory()) {
+					addAllFilteredFilesTo(file, predicate, filteredFiles); // recurse
+				}
 			}
 		}
 	}

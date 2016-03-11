@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,7 +53,7 @@ public abstract class CriterionPredicate<V, C>
 
 	@Override
 	public boolean equals(Object o) {
-		if (o.getClass() != this.getClass()) {
+		if ((o == null) || (o.getClass() != this.getClass())) {
 			return false;
 		}
 		CriterionPredicate<?, ?> other = (CriterionPredicate<?, ?>) o;

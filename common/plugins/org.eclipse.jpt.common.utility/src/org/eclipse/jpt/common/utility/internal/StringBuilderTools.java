@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -3153,7 +3153,7 @@ public final class StringBuilderTools {
 	 */
 	public static void append(StringBuilder sb, Object[] array) {
 		if (array == null) {
-			sb.append(array);
+			sb.append("null"); //$NON-NLS-1$
 		} else {
 			append_(sb, array);
 		}

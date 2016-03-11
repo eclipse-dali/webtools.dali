@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,9 +31,9 @@ public class IndentingPrintWriter
 	extends PrintWriter
 {
 	private final String indent;
-	private volatile int indentLevel;
+	private int indentLevel;
     private final String lineSeparator;
-	private volatile boolean needsIndent = true;
+	private boolean needsIndent = true;
 
 
 	public static String DEFAULT_INDENT = "\t"; //$NON-NLS-1$
