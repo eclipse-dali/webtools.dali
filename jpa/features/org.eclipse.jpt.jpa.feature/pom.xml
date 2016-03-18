@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.jpa.feature</artifactId>
-  <version>3.4.2-SNAPSHOT</version>
+  <version>3.4.100-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>
