@@ -1318,6 +1318,9 @@ public class JPAEditorUtil {
     }
     
 	static public boolean checkJPAFacetVersion(JpaProject jpaProject, String version) {
+		if(jpaProject == null && version == JPAEditorUtil.JPA_PROJECT_FACET_10){
+			return true;
+		}
 		return checkJPAFacetVersion(jpaProject.getProject(), version);
 	}	
 	
