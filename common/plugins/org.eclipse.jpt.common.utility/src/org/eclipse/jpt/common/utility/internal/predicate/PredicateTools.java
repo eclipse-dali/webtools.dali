@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.predicate;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -83,7 +84,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isEqual(V criterion) {
-		return new Equals<V>(criterion);
+		return new Equals<>(criterion);
 	}
 
 	/**
@@ -95,7 +96,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isNotEqual(V criterion) {
-		return new NOT<V>(isEqual(criterion));
+		return new NOT<>(isEqual(criterion));
 	}
 
 	/**
@@ -107,7 +108,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isIdentical(V criterion) {
-		return new IsIdentical<V>(criterion);
+		return new IsIdentical<>(criterion);
 	}
 
 	/**
@@ -119,7 +120,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isNotIdentical(V criterion) {
-		return new NOT<V>(isIdentical(criterion));
+		return new NOT<>(isIdentical(criterion));
 	}
 
 
@@ -148,7 +149,7 @@ public final class PredicateTools {
 	 */
 	@SafeVarargs
 	public static <V> CompoundPredicate<V> and(Predicate<? super V>... predicates) {
-		return new AND<V>(predicates);
+		return new AND<>(predicates);
 	}
 
 
@@ -177,7 +178,7 @@ public final class PredicateTools {
 	 */
 	@SafeVarargs
 	public static <V> CompoundPredicate<V> or(Predicate<? super V>... predicates) {
-		return new OR<V>(predicates);
+		return new OR<>(predicates);
 	}
 
 
@@ -188,7 +189,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> CompoundPredicate<V> xor(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
-		return new XOR<V>(predicate1, predicate2);
+		return new XOR<>(predicate1, predicate2);
 	}
 
 
@@ -269,7 +270,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> not(Predicate<? super V> predicate) {
-		return new NOT<V>(predicate);
+		return new NOT<>(predicate);
 	}
 
 
@@ -298,7 +299,7 @@ public final class PredicateTools {
 	 * @see #nullCheck(Predicate)
 	 */
 	public static <V> Predicate<V> nullCheck(Predicate<? super V> predicate, boolean nullValue) {
-		return new NullCheckPredicateWrapper<V>(predicate, nullValue);
+		return new NullCheckPredicateWrapper<>(predicate, nullValue);
 	}
 
 	/**
@@ -307,7 +308,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> PredicateWrapper<V> wrap(Predicate<? super V> predicate) {
-		return new PredicateWrapper<V>(predicate);
+		return new PredicateWrapper<>(predicate);
 	}
 
 	/**
@@ -320,7 +321,7 @@ public final class PredicateTools {
 	 *   evaluated by the wrapped predicate
 	 */
 	public static <I, O> Predicate<I> wrap(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {
-		return new TransformationPredicate<I, O>(predicate, transformer);
+		return new TransformationPredicate<>(predicate, transformer);
 	}
 
 
@@ -332,7 +333,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> instanceOf(Class<? extends V> clazz) {
-		return new InstanceOf<V>(clazz);
+		return new InstanceOf<>(clazz);
 	}
 
 
@@ -369,7 +370,18 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> adapt_(Transformer<V, Boolean> transformer) {
-		return new TransformerPredicate<V>(transformer);
+		return new TransformerPredicate<>(transformer);
+	}
+
+
+	// ********** collection **********
+
+	/**
+	 * Return a predicate that returns whether a collection is empty.
+	 * @param <E> the type of elements in the collection
+	 */
+	public static <E> Predicate<Collection<E>> collectionIsEmptyPredicate() {
+		return CollectionIsEmptyPredicate.instance();
 	}
 
 
@@ -381,7 +393,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isIn(Set<? super V> set) {
-		return new SetPredicate<V>(set);
+		return new SetPredicate<>(set);
 	}
 
 	/**
@@ -390,7 +402,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isNotIn(Set<? super V> set) {
-		return new ExclusionSetPredicate<V>(set);
+		return new ExclusionSetPredicate<>(set);
 	}
 
 
@@ -423,7 +435,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> UniquePredicate<V> uniquePredicate(Set<V> set) {
-		return new UniquePredicate<V>(set);
+		return new UniquePredicate<>(set);
 	}
 
 
@@ -439,7 +451,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> get(String fieldName) {
-		return new FieldPredicate<V>(fieldName);
+		return new FieldPredicate<>(fieldName);
 	}
 
 	/**
@@ -478,7 +490,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
-		return new MethodPredicate<V>(methodName, parameterTypes, arguments);
+		return new MethodPredicate<>(methodName, parameterTypes, arguments);
 	}
 
 
