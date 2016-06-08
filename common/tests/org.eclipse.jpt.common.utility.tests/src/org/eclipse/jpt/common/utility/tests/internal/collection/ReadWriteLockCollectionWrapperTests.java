@@ -144,35 +144,59 @@ public class ReadWriteLockCollectionWrapperTests
 	}
 
 	public void testAdd() throws Exception {
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
-		assertEquals(this.collection.add("foo"), this.wrapper.add("foo"));
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
-		assertEquals(this.collection.add("bar"), this.wrapper.add("bar"));
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
+		assertFalse(this.collection.contains("foo"));
+		assertFalse(this.wrapper.contains("foo"));
+		assertFalse(this.collection.contains("bar"));
+		assertFalse(this.wrapper.contains("bar"));
+
+		assertTrue(this.wrapper.add("foo"));
+		assertTrue(this.collection.contains("foo"));
+		assertTrue(this.wrapper.contains("foo"));
+		assertFalse(this.collection.contains("bar"));
+		assertFalse(this.wrapper.contains("bar"));
+
+		assertTrue(this.wrapper.add("bar"));
+		assertTrue(this.collection.contains("foo"));
+		assertTrue(this.wrapper.contains("foo"));
+		assertTrue(this.collection.contains("bar"));
+		assertTrue(this.wrapper.contains("bar"));
 	}
 
 	public void testRemove() throws Exception {
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
-		assertEquals(this.collection.add("foo"), this.wrapper.add("foo"));
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
-		assertEquals(this.collection.add("bar"), this.wrapper.add("bar"));
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
+		assertFalse(this.collection.contains("foo"));
+		assertFalse(this.wrapper.contains("foo"));
+		assertFalse(this.collection.contains("bar"));
+		assertFalse(this.wrapper.contains("bar"));
 
-		assertEquals(this.collection.remove("foo"), this.wrapper.remove("foo"));
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
-		assertEquals(this.collection.remove("bar"), this.wrapper.remove("bar"));
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
-		assertEquals(this.collection.remove("bar"), this.wrapper.remove("bar"));
-		assertEquals(this.collection.contains("foo"), this.wrapper.contains("foo"));
-		assertEquals(this.collection.contains("bar"), this.wrapper.contains("bar"));
+		this.wrapper.add("foo");
+		assertTrue(this.collection.contains("foo"));
+		assertTrue(this.wrapper.contains("foo"));
+		assertFalse(this.collection.contains("bar"));
+		assertFalse(this.wrapper.contains("bar"));
+
+		this.wrapper.add("bar");
+		assertTrue(this.collection.contains("foo"));
+		assertTrue(this.wrapper.contains("foo"));
+		assertTrue(this.collection.contains("bar"));
+		assertTrue(this.wrapper.contains("bar"));
+
+		assertTrue(this.collection.remove("foo"));
+		assertFalse(this.collection.contains("foo"));
+		assertFalse(this.wrapper.contains("foo"));
+		assertTrue(this.collection.contains("bar"));
+		assertTrue(this.wrapper.contains("bar"));
+
+		assertTrue(this.collection.remove("bar"));
+		assertFalse(this.collection.contains("foo"));
+		assertFalse(this.wrapper.contains("foo"));
+		assertFalse(this.collection.contains("bar"));
+		assertFalse(this.wrapper.contains("bar"));
+
+		assertFalse(this.collection.remove("bar"));
+		assertFalse(this.collection.contains("foo"));
+		assertFalse(this.wrapper.contains("foo"));
+		assertFalse(this.collection.contains("bar"));
+		assertFalse(this.wrapper.contains("bar"));
 	}
 
 	public void testAddAll() throws Exception {
