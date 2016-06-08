@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.RunnableFuture;
 import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.command.Command;
@@ -20,7 +24,9 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -37,7 +43,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 */
 	public static <I, O> Transformer<I, O> adapt(Closure<? super I> closure) {
-		return new ClosureTransformer<I, O>(closure);
+		return new ClosureTransformer<>(closure);
 	}
 
 	/**
@@ -48,7 +54,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 */
 	public static <I, O> Transformer<I, O> adapt(Command command) {
-		return new CommandTransformer<I, O>(command);
+		return new CommandTransformer<>(command);
 	}
 
 	/**
@@ -59,7 +65,34 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 */
 	public static <I, O> Transformer<I, O> adapt(Factory<? extends O> factory) {
-		return new FactoryTransformer<I, O>(factory);
+		return new FactoryTransformer<>(factory);
+	}
+
+	/**
+	 * Adapt the specified {@link Transformer} and appropriate input
+	 * to the {@link RunnableFuture} interface.
+	 * Once it has {@link Runnable#run run},
+	 * the returned future will return the transformer's output,
+	 * as determined by the specified input.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * (and future)
+	 */
+	public static <I, O> FutureTask<O> runnableFuture(InterruptibleTransformer<? super I, ? extends O> transformer, I input) {
+		return new FutureTask<>(callable(transformer, input));
+	}
+
+	/**
+	 * Adapt the specified {@link Transformer} and appropriate input
+	 * to the {@link Callable} interface.
+	 * The returned callable will return the transformer's output,
+	 * as determined by the specified input.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * (and callable)
+	 */
+	public static <I, O> TransformerCallable<I, O> callable(InterruptibleTransformer<? super I, ? extends O> transformer, I input) {
+		return new TransformerCallable<>(transformer, input);
 	}
 
 
@@ -248,7 +281,7 @@ public final class TransformerTools {
 	 * @see #adapt(Predicate, Boolean)
 	 */
 	public static <I> Transformer<I, Boolean> adapt_(Predicate<? super I> predicate) {
-		return new PredicateTransformer<I>(predicate);
+		return new PredicateTransformer<>(predicate);
 	}
 
 
@@ -341,6 +374,45 @@ public final class TransformerTools {
 	}
 
 
+	// ********** collection **********
+
+	/**
+	 * Return a transformer that transforms a collection into its first element.
+	 * If the collection is empty, the transformer returns <code>null</code>.
+	 * @param <E> the type of elements held by the collection
+	 */
+	public static <E> Transformer<Collection<E>, E> collectionFirstElementTransformer() {
+		return CollectionFirstElementTransformer.instance();
+	}
+
+	/**
+	 * Return a transformer that transforms a collection into its <em>single</em> element.
+	 * If the collection is empty or contains more than one element,
+	 * the transformer returns <code>null</code>.
+	 * @param <E> the type of elements held by the collection
+	 */
+	public static <E> Transformer<Collection<E>, E> collectionSingleElementTransformer() {
+		return CollectionSingleElementTransformer.instance();
+	}
+
+	/**
+	 * Return a transformer that converts a collection into a boolean
+	 * that indicates whether the collection is empty.
+	 * @param <E> the type of elements held by the collection
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<Collection<E>, Boolean> collectionIsEmptyTransformer() {
+		return TransformerTools.COLLECTION_IS_EMPTY_TRANSFORMER;
+	}
+
+	/**
+	 * Transformer that converts a collection into a boolean
+	 * that indicates whether the collection is empty.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static final Transformer COLLECTION_IS_EMPTY_TRANSFORMER = new PredicateTransformer(PredicateTools.collectionIsEmptyPredicate());
+
+
 	// ********** XML **********
 
 	/**
@@ -404,7 +476,33 @@ public final class TransformerTools {
 	 * @see ThreadLocalTransformer
 	 */
 	public static <I, O> ThreadLocalTransformer<I, O> threadLocalTransformer(Transformer<? super I, ? extends O> defaultTransformer) {
-		return new ThreadLocalTransformer<I, O>(defaultTransformer);
+		return new ThreadLocalTransformer<>(defaultTransformer);
+	}
+
+
+	// ********** caching **********
+
+	/**
+	 * Return a transformer that caches the results generated by the specified transformer;
+	 * the assumption being that the transformation is an expensive action.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see CachingTransformer
+	 */
+	public static <I, O> CachingTransformer<I, O> cachingTransformer(Transformer<? super I, ? extends O> transformer) {
+		return new CachingTransformer<>(transformer);
+	}
+
+	/**
+	 * Return a transformer that caches, in a thread-safe fashion,
+	 * the results generated by the specified transformer;
+	 * the assumption being that the transformation is an expensive action.
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * @see CachingInterruptibleTransformer
+	 */
+	public static <I, O> CachingInterruptibleTransformer<I, O> cachingInterruptibleTransformer(Transformer<? super I, ? extends O> transformer) {
+		return new CachingInterruptibleTransformer<>(transformer);
 	}
 
 
@@ -419,7 +517,7 @@ public final class TransformerTools {
 	 * @see IterableTransformerWrapper
 	 */
 	public static <I> Transformer<I, Iterator<? extends I>> toIterator(Transformer<? super I, ? extends Iterable<? extends I>> transformer) {
-		return new IterableTransformerWrapper<I>(transformer);
+		return new IterableTransformerWrapper<>(transformer);
 	}
 
 	/**
@@ -447,7 +545,7 @@ public final class TransformerTools {
 	 * @see #nullCheck(Transformer)
 	 */
 	public static <I, O> Transformer<I, O> nullCheck(Transformer<? super I, ? extends O> transformer, O nullOutput) {
-		return new NullCheckTransformerWrapper<I, O>(transformer, nullOutput);
+		return new NullCheckTransformerWrapper<>(transformer, nullOutput);
 	}
 
 	/**
@@ -459,7 +557,7 @@ public final class TransformerTools {
 	 * @see TransformerWrapper
 	 */
 	public static <I, O> TransformerWrapper<I, O> wrap(Transformer<? super I, ? extends O> transformer) {
-		return new TransformerWrapper<I, O>(transformer);
+		return new TransformerWrapper<>(transformer);
 	}
 
 
@@ -494,7 +592,7 @@ public final class TransformerTools {
 	 * @see #upcast(Transformer)
 	 */
 	public static <I, X, O extends X> Transformer<I, O> downcast(Transformer<? super I, ? extends X> transformer) {
-		return new DowncastingTransformerWrapper<I, X, O>(transformer);
+		return new DowncastingTransformerWrapper<>(transformer);
 	}
 
 	/**
@@ -569,7 +667,7 @@ public final class TransformerTools {
 	 * @see SafeTransformerWrapper
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
-		return new SafeTransformerWrapper<I, O>(transformer, exceptionHandler, exceptionOutput);
+		return new SafeTransformerWrapper<>(transformer, exceptionHandler, exceptionOutput);
 	}
 
 
@@ -597,9 +695,8 @@ public final class TransformerTools {
 	 * @see PassThruTransformer
 	 * @see #passThruTransformer()
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I> Transformer<I, I> passThruTransformer(I nullOutput) {
-		return (Transformer<I, I>) nullCheck(passThruTransformer(), nullOutput);
+		return nullCheck(passThruTransformer(), nullOutput);
 	}
 
 
@@ -639,7 +736,7 @@ public final class TransformerTools {
 	 * @see FieldTransformer
 	 */
 	public static <I, O> Transformer<I, O> get(String fieldName) {
-		return new FieldTransformer<I, O>(fieldName);
+		return new FieldTransformer<>(fieldName);
 	}
 
 	/**
@@ -687,7 +784,7 @@ public final class TransformerTools {
 	 * @see MethodTransformer
 	 */
 	public static <I, O> Transformer<I, O> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
-		return new MethodTransformer<I, O>(methodName, parameterTypes, arguments);
+		return new MethodTransformer<>(methodName, parameterTypes, arguments);
 	}
 
 
@@ -713,7 +810,7 @@ public final class TransformerTools {
 	 * @see TransformerChain
 	 */
 	public static <I, O> Transformer<I, O> chain(Iterable<Transformer<?, ?>> transformers) {
-		return new TransformerChain<I, O>(transformers);
+		return new TransformerChain<>(transformers);
 	}
 
 
@@ -740,7 +837,7 @@ public final class TransformerTools {
 	 * @see ClosureTransformer
 	 */
 	public static <I, O> Transformer<I, O> conditionalTransformer(Predicate<? super I> predicate, Transformer<? super I, ? extends O> trueTransformer, Transformer<? super I, ? extends O> falseTransformer) {
-		return new ConditionalTransformer<I, O>(predicate, trueTransformer, falseTransformer);
+		return new ConditionalTransformer<>(predicate, trueTransformer, falseTransformer);
 	}
 
 
@@ -749,6 +846,7 @@ public final class TransformerTools {
 	/**
 	 * @see #switchTransformer(Iterable)
 	 */
+	@SafeVarargs
 	public static <I, O> Transformer<I, O> switchTransformer(Association<Predicate<? super I>, Transformer<? super I, ? extends O>>... transformers) {
 		return switchTransformer(ArrayTools.iterable(transformers));
 	}
@@ -782,7 +880,7 @@ public final class TransformerTools {
 	 * @see SwitchTransformer
 	 */
 	public static <I, O> Transformer<I, O> switchTransformer(Iterable<Association<Predicate<? super I>, Transformer<? super I, ? extends O>>> transformers, Transformer<? super I, ? extends O> defaultTransformer) {
-		return new SwitchTransformer<I, O>(transformers, defaultTransformer);
+		return new SwitchTransformer<>(transformers, defaultTransformer);
 	}
 
 
@@ -812,7 +910,7 @@ public final class TransformerTools {
 	 * @see MapTransformer
 	 */
 	public static <I, O> Transformer<I, O> mapTransformer(Map<? super I, ? extends O> map) {
-		return new MapTransformer<I, O>(map);
+		return new MapTransformer<>(map);
 	}
 
 
@@ -837,7 +935,7 @@ public final class TransformerTools {
 	 * @see #nullOutputTransformer()
 	 */
 	public static <I, O> Transformer<I, O> staticOutputTransformer(O output) {
-		return new StaticOutputTransformer<I, O>(output);
+		return new StaticOutputTransformer<>(output);
 	}
 
 
