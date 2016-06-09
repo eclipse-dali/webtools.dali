@@ -35,6 +35,10 @@ public class PredicateWrapper<V>
 		return this.predicate.evaluate(variable);
 	}
 
+	public Predicate<? super V> getPredicate() {
+		return this.predicate;
+	}
+
 	public void setPredicate(Predicate<? super V> predicate) {
 		if (predicate == null) {
 			throw new NullPointerException();

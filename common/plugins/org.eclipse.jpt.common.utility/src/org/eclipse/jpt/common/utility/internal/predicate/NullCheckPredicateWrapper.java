@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,6 +37,14 @@ public class NullCheckPredicateWrapper<V>
 
 	public boolean evaluate(V variable) {
 		return (variable == null) ? this.nullValue : this.predicate.evaluate(variable);
+	}
+
+	public Predicate<? super V> getPredicate() {
+		return this.predicate;
+	}
+
+	public boolean getNullValue() {
+		return this.nullValue;
 	}
 
 	@Override
