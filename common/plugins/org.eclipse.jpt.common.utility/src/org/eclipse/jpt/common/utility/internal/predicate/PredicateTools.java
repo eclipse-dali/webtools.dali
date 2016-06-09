@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.IdentityHashSet;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.predicate.CompoundPredicate;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -84,7 +83,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isEqual(V criterion) {
-		return new Equals<>(criterion);
+		return (criterion == null) ? isNull() : new Equals<>(criterion);
 	}
 
 	/**
@@ -96,7 +95,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isNotEqual(V criterion) {
-		return new NOT<>(isEqual(criterion));
+		return (criterion == null) ? isNotNull() : not(isEqual(criterion));
 	}
 
 	/**
@@ -108,7 +107,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isIdentical(V criterion) {
-		return new IsIdentical<>(criterion);
+		return (criterion == null) ? isNull() : new IsIdentical<>(criterion);
 	}
 
 	/**
@@ -120,7 +119,7 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isNotIdentical(V criterion) {
-		return new NOT<>(isIdentical(criterion));
+		return (criterion == null) ? isNotNull() : not(isIdentical(criterion));
 	}
 
 
@@ -130,7 +129,7 @@ public final class PredicateTools {
 	 * Return a predicate that will AND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> CompoundPredicate<V> and(Iterable<Predicate<? super V>> predicates) {
+	public static <V> Predicate<V> and(Iterable<Predicate<? super V>> predicates) {
 		return and(predicates.iterator());
 	}
 
@@ -139,8 +138,8 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	@SuppressWarnings("unchecked")
-	public static <V> CompoundPredicate<V> and(Iterator<Predicate<? super V>> predicates) {
-		return and((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
+	public static <V> Predicate<V> and(Iterator<Predicate<? super V>> predicates) {
+		return predicates.hasNext() ? and((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : true_();
 	}
 
 	/**
@@ -148,8 +147,8 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	@SafeVarargs
-	public static <V> CompoundPredicate<V> and(Predicate<? super V>... predicates) {
-		return new AND<>(predicates);
+	public static <V> Predicate<V> and(Predicate<? super V>... predicates) {
+		return (predicates.length != 0) ? new AND<>(predicates) : true_();
 	}
 
 
@@ -159,7 +158,7 @@ public final class PredicateTools {
 	 * Return a predicate that will OR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> CompoundPredicate<V> or(Iterable<Predicate<? super V>> predicates) {
+	public static <V> Predicate<V> or(Iterable<Predicate<? super V>> predicates) {
 		return or(predicates.iterator());
 	}
 
@@ -168,8 +167,8 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	@SuppressWarnings("unchecked")
-	public static <V> CompoundPredicate<V> or(Iterator<Predicate<? super V>> predicates) {
-		return or((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
+	public static <V> Predicate<V> or(Iterator<Predicate<? super V>> predicates) {
+		return predicates.hasNext() ? or((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : false_();
 	}
 
 	/**
@@ -177,8 +176,8 @@ public final class PredicateTools {
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	@SafeVarargs
-	public static <V> CompoundPredicate<V> or(Predicate<? super V>... predicates) {
-		return new OR<>(predicates);
+	public static <V> Predicate<V> or(Predicate<? super V>... predicates) {
+		return (predicates.length != 0) ? new OR<>(predicates) : false_();
 	}
 
 
@@ -188,7 +187,7 @@ public final class PredicateTools {
 	 * Return a predicate that will XOR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> CompoundPredicate<V> xor(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
+	public static <V> Predicate<V> xor(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
 		return new XOR<>(predicate1, predicate2);
 	}
 
@@ -209,7 +208,7 @@ public final class PredicateTools {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> nand(Iterator<Predicate<? super V>> predicates) {
-		return nand((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
+		return predicates.hasNext() ? nand((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : false_();
 	}
 
 	/**
@@ -218,7 +217,7 @@ public final class PredicateTools {
 	 */
 	@SafeVarargs
 	public static <V> Predicate<V> nand(Predicate<? super V>... predicates) {
-		return not(and(predicates));
+		return (predicates.length != 0) ? not(and(predicates)) : false_();
 	}
 
 
@@ -238,7 +237,7 @@ public final class PredicateTools {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> nor(Iterator<Predicate<? super V>> predicates) {
-		return nor((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY));
+		return predicates.hasNext() ? nor((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : true_();
 	}
 
 	/**
@@ -247,7 +246,7 @@ public final class PredicateTools {
 	 */
 	@SafeVarargs
 	public static <V> Predicate<V> nor(Predicate<? super V>... predicates) {
-		return not(or(predicates));
+		return (predicates.length != 0) ? not(or(predicates)) : true_();
 	}
 
 
@@ -307,7 +306,7 @@ public final class PredicateTools {
 	 * wrapped predicate to be changed as necessary.
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> PredicateWrapper<V> wrap(Predicate<? super V> predicate) {
+	public static <V> Predicate<V> wrap(Predicate<? super V> predicate) {
 		return new PredicateWrapper<>(predicate);
 	}
 
@@ -377,11 +376,46 @@ public final class PredicateTools {
 	// ********** collection **********
 
 	/**
+	 * Return a predicate that returns whether a collection is <em>not</em> empty.
+	 * @param <E> the type of elements in the collection
+	 */
+	public static <E> Predicate<Collection<E>> collectionIsNotEmptyPredicate() {
+		return not(collectionIsEmptyPredicate());
+	}
+
+	/**
 	 * Return a predicate that returns whether a collection is empty.
 	 * @param <E> the type of elements in the collection
 	 */
 	public static <E> Predicate<Collection<E>> collectionIsEmptyPredicate() {
 		return CollectionIsEmptyPredicate.instance();
+	}
+
+	/**
+	 * Return a predicate that returns whether a collection contains exactly one element.
+	 * @param <E> the type of elements in the collection
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Predicate<Collection<E>> collectionContainsSingleElementPredicate() {
+		return COLLECTION_CONTAINS_SINGLE_ELEMENT_PREDICATE;
+	}
+
+	/**
+	 * A predicate that returns whether a collection contains exactly one element.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Predicate COLLECTION_CONTAINS_SINGLE_ELEMENT_PREDICATE = collectionSizeEqualsPredicate_(1);
+
+	/**
+	 * Return a predicate that returns whether a collection's is the specified size.
+	 * @param <E> the type of elements in the collection
+	 */
+	public static <E> Predicate<Collection<E>> collectionSizeEqualsPredicate(int size) {
+		return (size == 0) ? collectionIsEmptyPredicate(): (size == 1) ? collectionContainsSingleElementPredicate() : collectionSizeEqualsPredicate_(size);
+	}
+
+	private static <E> Predicate<Collection<E>> collectionSizeEqualsPredicate_(int size) {
+		return new CollectionSizeEqualsPredicate<>(size);
 	}
 
 
@@ -450,7 +484,7 @@ public final class PredicateTools {
 	 * "duck typing".
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> get(String fieldName) {
+	public static <V> FieldPredicate<V> get(String fieldName) {
 		return new FieldPredicate<>(fieldName);
 	}
 
@@ -463,7 +497,7 @@ public final class PredicateTools {
 	 * "duck typing".
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> execute(String methodName) {
+	public static <V> MethodPredicate<V> execute(String methodName) {
 		return execute(methodName, ClassTools.EMPTY_ARRAY, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
@@ -476,7 +510,7 @@ public final class PredicateTools {
 	 * "duck typing".
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> execute(String methodName, Class<?> parameterType, Object argument) {
+	public static <V> MethodPredicate<V> execute(String methodName, Class<?> parameterType, Object argument) {
 		return execute(methodName, new Class<?>[] { parameterType }, new Object[] { argument });
 	}
 
@@ -489,7 +523,7 @@ public final class PredicateTools {
 	 * "duck typing".
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
+	public static <V> MethodPredicate<V> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
 		return new MethodPredicate<>(methodName, parameterTypes, arguments);
 	}
 

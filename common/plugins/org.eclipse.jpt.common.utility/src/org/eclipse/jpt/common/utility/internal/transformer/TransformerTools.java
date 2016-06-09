@@ -397,6 +397,23 @@ public final class TransformerTools {
 
 	/**
 	 * Return a transformer that converts a collection into a boolean
+	 * that indicates whether the collection is <em>not</em> empty.
+	 * @param <E> the type of elements held by the collection
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<Collection<E>, Boolean> collectionIsNotEmptyTransformer() {
+		return TransformerTools.COLLECTION_IS_NOT_EMPTY_TRANSFORMER;
+	}
+
+	/**
+	 * Transformer that converts a collection into a boolean
+	 * that indicates whether the collection is <em>not</em> empty.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer COLLECTION_IS_NOT_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsNotEmptyPredicate());
+
+	/**
+	 * Return a transformer that converts a collection into a boolean
 	 * that indicates whether the collection is empty.
 	 * @param <E> the type of elements held by the collection
 	 */
@@ -409,8 +426,38 @@ public final class TransformerTools {
 	 * Transformer that converts a collection into a boolean
 	 * that indicates whether the collection is empty.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static final Transformer COLLECTION_IS_EMPTY_TRANSFORMER = new PredicateTransformer(PredicateTools.collectionIsEmptyPredicate());
+	@SuppressWarnings("rawtypes")
+	public static final Transformer COLLECTION_IS_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsEmptyPredicate());
+
+	/**
+	 * Return a transformer that converts a collection into a boolean
+	 * that indicates whether the collection contains exactly one element.
+	 * @param <E> the type of elements held by the collection
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> Transformer<Collection<E>, Boolean> collectionContainsSingleElementTransformer() {
+		return TransformerTools.COLLECTION_CONTAINS_SINGLE_ELEMENT_TRANSFORMER;
+	}
+
+	/**
+	 * Transformer that converts a collection into a boolean
+	 * that indicates whether the collection contains exactly one element.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Transformer COLLECTION_CONTAINS_SINGLE_ELEMENT_TRANSFORMER = adapt_(PredicateTools.collectionContainsSingleElementPredicate());
+
+	/**
+	 * Return a transformer that converts a collection into a boolean
+	 * that indicates whether the collection's size equals the specified size.
+	 * @param <E> the type of elements held by the collection
+	 */
+	public static <E> Transformer<Collection<E>, Boolean> collectionSizeEqualsTransformer(int size) {
+		return (size == 0) ? collectionIsEmptyTransformer(): (size == 1) ? collectionContainsSingleElementTransformer() : collectionSizeEqualsTransformer_(size);
+	}
+
+	private static <E> Transformer<Collection<E>, Boolean> collectionSizeEqualsTransformer_(int size) {
+		return adapt_(PredicateTools.<E>collectionSizeEqualsPredicate(size));
+	}
 
 
 	// ********** XML **********
@@ -489,7 +536,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see CachingTransformer
 	 */
-	public static <I, O> CachingTransformer<I, O> cachingTransformer(Transformer<? super I, ? extends O> transformer) {
+	public static <I, O> Transformer<I, O> cachingTransformer(Transformer<? super I, ? extends O> transformer) {
 		return new CachingTransformer<>(transformer);
 	}
 
@@ -501,7 +548,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see CachingInterruptibleTransformer
 	 */
-	public static <I, O> CachingInterruptibleTransformer<I, O> cachingInterruptibleTransformer(Transformer<? super I, ? extends O> transformer) {
+	public static <I, O> InterruptibleTransformer<I, O> cachingInterruptibleTransformer(Transformer<? super I, ? extends O> transformer) {
 		return new CachingInterruptibleTransformer<>(transformer);
 	}
 

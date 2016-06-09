@@ -19,6 +19,7 @@ public class JptCommonUtilityPredicateTests {
 
 		suite.addTestSuite(ANDTests.class);
 		suite.addTestSuite(CollectionIsEmptyPredicateTests.class);
+		suite.addTestSuite(CollectionSizeEqualsPredicateTests.class);
 		suite.addTestSuite(EqualsTests.class);
 		suite.addTestSuite(FieldPredicateTests.class);
 		suite.addTestSuite(IsIdenticalTests.class);
