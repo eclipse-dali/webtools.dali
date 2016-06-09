@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,10 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value.swing;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class JptUtilityModelValueSwingTests {
+public class JptCommonUtilityModelValueSwingTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JptUtilityModelValueSwingTests.class.getPackage().getName());
+		TestSuite suite = new TestSuite(JptCommonUtilityModelValueSwingTests.class.getPackage().getName());
 
 		suite.addTestSuite(CheckBoxModelAdapterTests.class);
 		suite.addTestSuite(ComboBoxModelAdapterTests.class);
@@ -34,7 +34,7 @@ public class JptUtilityModelValueSwingTests {
 		return suite;
 	}
 
-	private JptUtilityModelValueSwingTests() {
+	private JptCommonUtilityModelValueSwingTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

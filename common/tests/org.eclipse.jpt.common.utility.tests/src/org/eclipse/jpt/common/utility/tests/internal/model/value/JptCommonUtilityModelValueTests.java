@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,16 +11,16 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.common.utility.tests.internal.model.value.prefs.JptUtilityModelValuePrefsTests;
-import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.JptUtilityModelValueSwingTests;
+import org.eclipse.jpt.common.utility.tests.internal.model.value.prefs.JptCommonUtilityModelValuePrefsTests;
+import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.JptCommonUtilityModelValueSwingTests;
 
-public class JptUtilityModelValueTests {
+public class JptCommonUtilityModelValueTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JptUtilityModelValueTests.class.getPackage().getName());
+		TestSuite suite = new TestSuite(JptCommonUtilityModelValueTests.class.getPackage().getName());
 
-		suite.addTest(JptUtilityModelValuePrefsTests.suite());
-		suite.addTest(JptUtilityModelValueSwingTests.suite());
+		suite.addTest(JptCommonUtilityModelValuePrefsTests.suite());
+		suite.addTest(JptCommonUtilityModelValueSwingTests.suite());
 
 		suite.addTestSuite(BufferedModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(CachingTransformationPropertyValueModelTests.class);
@@ -71,7 +71,7 @@ public class JptUtilityModelValueTests {
 		return suite;
 	}
 
-	private JptUtilityModelValueTests() {
+	private JptCommonUtilityModelValueTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}
