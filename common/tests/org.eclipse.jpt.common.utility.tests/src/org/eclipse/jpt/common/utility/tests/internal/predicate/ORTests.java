@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,10 +30,9 @@ public class ORTests
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.orPredicate = PredicateTools.or(this.buildMin(1), this.buildMax(10));
+		this.orPredicate = (CompoundPredicate<Number>) PredicateTools.or(this.buildMin(1), this.buildMax(10));
 	}
 
 	private Predicate<Number> buildMin(double min) {
@@ -96,8 +95,7 @@ public class ORTests
 	}
 
 	public void testEvaluate3() {
-		@SuppressWarnings("unchecked")
-		CompoundPredicate<Number> orPredicate2 = PredicateTools.or(this.orPredicate, this.buildIsEven());
+		CompoundPredicate<Number> orPredicate2 = (CompoundPredicate<Number>) PredicateTools.or(this.orPredicate, this.buildIsEven());
 		assertFalse(orPredicate2.evaluate(new Integer(7)));
 		assertFalse(orPredicate2.evaluate(new Integer(3)));
 		assertFalse(orPredicate2.evaluate(new Integer(9)));
@@ -115,7 +113,6 @@ public class ORTests
 	}
 
 	public void testComposite() {
-		@SuppressWarnings("unchecked")
 		Predicate<Number> orPredicate2 = PredicateTools.or(this.buildMin(1), this.buildMax(10), this.buildIsEven());
 		assertFalse(orPredicate2.evaluate(new Integer(7)));
 		assertFalse(orPredicate2.evaluate(new Integer(3)));
@@ -134,8 +131,7 @@ public class ORTests
 	}
 
 	public void testEquals() {
-		@SuppressWarnings("unchecked")
-		CompoundPredicate<Number> orPredicate2 = PredicateTools.or(this.buildMin(1), this.buildMax(10));
+		CompoundPredicate<Number> orPredicate2 = (CompoundPredicate<Number>) PredicateTools.or(this.buildMin(1), this.buildMax(10));
 		assertEquals(this.orPredicate, orPredicate2);
 		assertEquals(this.orPredicate.hashCode(), orPredicate2.hashCode());
 		assertFalse(this.orPredicate.equals(IsNotNull.instance()));

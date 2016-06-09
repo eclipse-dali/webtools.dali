@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,10 +30,9 @@ public class ANDTests
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.andPredicate = PredicateTools.and(this.buildMin(1), this.buildMax(10));
+		this.andPredicate = (CompoundPredicate<Number>) PredicateTools.and(this.buildMin(1), this.buildMax(10));
 	}
 
 	private Predicate<Number> buildMin(double min) {
@@ -96,7 +95,6 @@ public class ANDTests
 	}
 
 	public void testEvaluate3() {
-		@SuppressWarnings("unchecked")
 		Predicate<Number> andPredicate2 = PredicateTools.and(this.andPredicate, this.buildIsEven());
 		assertFalse(andPredicate2.evaluate(new Integer(7)));
 		assertTrue(andPredicate2.evaluate(new Integer(2)));
@@ -108,7 +106,6 @@ public class ANDTests
 	}
 
 	public void testComposite() {
-		@SuppressWarnings("unchecked")
 		Predicate<Number> andPredicate2 = PredicateTools.and(this.buildMin(1), this.buildMax(10), this.buildIsEven());
 		assertFalse(andPredicate2.evaluate(new Integer(7)));
 		assertTrue(andPredicate2.evaluate(new Integer(2)));
@@ -120,7 +117,6 @@ public class ANDTests
 	}
 
 	public void testEquals() {
-		@SuppressWarnings("unchecked")
 		Predicate<Number> andPredicate2 = PredicateTools.and(this.buildMin(1), this.buildMax(10));
 		assertEquals(this.andPredicate, andPredicate2);
 		assertEquals(this.andPredicate.hashCode(), andPredicate2.hashCode());

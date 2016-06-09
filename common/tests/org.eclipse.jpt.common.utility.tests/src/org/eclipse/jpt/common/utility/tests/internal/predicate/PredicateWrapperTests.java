@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ public class PredicateWrapperTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.wrappedPredicate = PredicateTools.isEqual(Integer.valueOf(42));
-		this.predicateWrapper = PredicateTools.wrap(this.wrappedPredicate);
+		this.predicateWrapper = (PredicateWrapper<Integer>) PredicateTools.wrap(this.wrappedPredicate);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class PredicateWrapperTests
 	}
 
 	public void testEquals() {
-		PredicateWrapper<Integer> predicateWrapper2 = PredicateTools.wrap(this.wrappedPredicate);
+		PredicateWrapper<Integer> predicateWrapper2 = (PredicateWrapper<Integer>) PredicateTools.wrap(this.wrappedPredicate);
 		assertEquals(this.predicateWrapper, predicateWrapper2);
 		assertEquals(this.predicateWrapper.hashCode(), predicateWrapper2.hashCode());
 		assertFalse(this.predicateWrapper.equals(IsNotNull.instance()));

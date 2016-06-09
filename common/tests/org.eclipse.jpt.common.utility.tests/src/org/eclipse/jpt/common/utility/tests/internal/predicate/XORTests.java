@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ public class XORTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.xorPredicate = PredicateTools.xor(this.buildMin(1), this.buildMax(10));
+		this.xorPredicate = (CompoundPredicate<Number>) PredicateTools.xor(this.buildMin(1), this.buildMax(10));
 	}
 
 	private Predicate<Number> buildMin(double min) {
@@ -95,7 +95,7 @@ public class XORTests
 	}
 
 	public void testPredicateing3() {
-		CompoundPredicate<Number> xorPredicate2 = PredicateTools.xor(this.xorPredicate, this.buildIsEven());
+		CompoundPredicate<Number> xorPredicate2 = (CompoundPredicate<Number>) PredicateTools.xor(this.xorPredicate, this.buildIsEven());
 		assertFalse(xorPredicate2.evaluate(new Integer(7)));
 		assertFalse(xorPredicate2.evaluate(new Integer(3)));
 		assertFalse(xorPredicate2.evaluate(new Integer(9)));
@@ -113,7 +113,7 @@ public class XORTests
 	}
 
 	public void testEquals() {
-		CompoundPredicate<Number> xorPredicate2 = PredicateTools.xor(this.buildMin(1), this.buildMax(10));
+		CompoundPredicate<Number> xorPredicate2 = (CompoundPredicate<Number>) PredicateTools.xor(this.buildMin(1), this.buildMax(10));
 		assertEquals(this.xorPredicate, xorPredicate2);
 		assertEquals(this.xorPredicate.hashCode(), xorPredicate2.hashCode());
 		assertFalse(this.xorPredicate.equals(IsNotNull.instance()));
