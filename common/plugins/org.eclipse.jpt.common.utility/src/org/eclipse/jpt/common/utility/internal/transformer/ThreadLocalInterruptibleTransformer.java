@@ -52,6 +52,10 @@ public class ThreadLocalInterruptibleTransformer<I, O>
 		this.threadLocal.set(transformer);
 	}
 
+	public InterruptibleTransformer<? super I, ? extends O> getDefaultInterruptibleTransformer() {
+		return this.defaultInterruptibleTransformer;
+	}
+
 	/**
 	 * Return the string representation of the current thread's transformer.
 	 */

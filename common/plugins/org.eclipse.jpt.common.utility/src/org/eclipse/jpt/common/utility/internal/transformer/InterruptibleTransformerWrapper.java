@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,14 +22,18 @@ public class InterruptibleTransformerWrapper<I, O>
 
 	public InterruptibleTransformerWrapper(InterruptibleTransformer<? super I, ? extends O> transformer) {
 		super();
-		this.setInterruptibleTransformer(transformer);
+		this.setTransformer(transformer);
 	}
 
 	public O transform(I input) throws InterruptedException {
 		return this.transformer.transform(input);
 	}
 
-	public void setInterruptibleTransformer(InterruptibleTransformer<? super I, ? extends O> transformer) {
+	public InterruptibleTransformer<? super I, ? extends O> getTransformer() {
+		return this.transformer;
+	}
+
+	public void setTransformer(InterruptibleTransformer<? super I, ? extends O> transformer) {
 		if (transformer == null) {
 			throw new NullPointerException();
 		}

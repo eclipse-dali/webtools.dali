@@ -71,6 +71,14 @@ public class CachingInterruptibleTransformer<I, O>
 		throw new IllegalStateException("Not unchecked", t); //$NON-NLS-1$
 	}
 
+	public InterruptibleTransformer<? super I, ? extends O> getTransformer() {
+		return this.transformer;
+	}
+
+	public ConcurrentHashMap<I, FutureTask<O>> getCache() {
+		return this.cache;
+	}
+
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this, this.transformer);

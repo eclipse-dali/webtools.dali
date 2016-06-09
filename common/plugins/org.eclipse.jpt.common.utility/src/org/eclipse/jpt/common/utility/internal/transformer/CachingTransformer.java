@@ -45,6 +45,14 @@ public class CachingTransformer<I, O>
 		return output;
 	}
 
+	public Transformer<? super I, ? extends O> getTransformer() {
+		return this.transformer;
+	}
+
+	public HashMap<I, O> getCache() {
+		return this.cache;
+	}
+
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this, this.transformer);

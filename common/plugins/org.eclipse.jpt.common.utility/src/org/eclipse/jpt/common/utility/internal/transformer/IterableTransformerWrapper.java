@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,6 +38,10 @@ public class IterableTransformerWrapper<I>
 
 	public Iterator<? extends I> transform(I input) {
 		return this.transformer.transform(input).iterator();
+	}
+
+	public Transformer<? super I, ? extends Iterable<? extends I>> getTransformer() {
+		return this.transformer;
 	}
 
 	@Override

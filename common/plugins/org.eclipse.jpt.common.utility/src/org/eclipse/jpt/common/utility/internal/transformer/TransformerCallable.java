@@ -41,6 +41,14 @@ public class TransformerCallable<I, O>
 		return this.transformer.transform(this.input);
 	}
 
+	public InterruptibleTransformer<? super I, ? extends O> getTransformer() {
+		return this.transformer;
+	}
+
+	public I getInput() {
+		return this.input;
+	}
+
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this, this.transformer);

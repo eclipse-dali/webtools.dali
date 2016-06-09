@@ -59,6 +59,10 @@ public class ThreadLocalTransformer<I, O>
 		this.threadLocal.set(transformer);
 	}
 
+	public Transformer<? super I, ? extends O> getDefaultTransformer() {
+		return this.defaultTransformer;
+	}
+
 	/**
 	 * Return the string representation of the current thread's transformer.
 	 */
