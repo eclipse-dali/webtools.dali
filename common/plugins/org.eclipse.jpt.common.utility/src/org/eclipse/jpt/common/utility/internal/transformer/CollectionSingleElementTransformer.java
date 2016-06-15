@@ -21,13 +21,13 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <E> the type of elements held by the collection
  */
 public final class CollectionSingleElementTransformer<E>
-	implements Transformer<Collection<E>, E>, Serializable
+	implements Transformer<Collection<? extends E>, E>, Serializable
 {
 	@SuppressWarnings("rawtypes")
 	public static final Transformer INSTANCE = new CollectionSingleElementTransformer();
 
 	@SuppressWarnings("unchecked")
-	public static <E> Transformer<Collection<E>, E> instance() {
+	public static <E> Transformer<Collection<? extends E>, E> instance() {
 		return INSTANCE;
 	}
 
@@ -36,7 +36,7 @@ public final class CollectionSingleElementTransformer<E>
 		super();
 	}
 
-	public E transform(Collection<E> collection) {
+	public E transform(Collection<? extends E> collection) {
 		return (collection.size() == 1) ? collection.iterator().next() : null;
 	}
 

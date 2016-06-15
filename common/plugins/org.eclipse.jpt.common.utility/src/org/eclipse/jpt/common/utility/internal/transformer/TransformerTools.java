@@ -381,7 +381,7 @@ public final class TransformerTools {
 	 * If the collection is empty, the transformer returns <code>null</code>.
 	 * @param <E> the type of elements held by the collection
 	 */
-	public static <E> Transformer<Collection<E>, E> collectionFirstElementTransformer() {
+	public static <E> Transformer<Collection<? extends E>, E> collectionFirstElementTransformer() {
 		return CollectionFirstElementTransformer.instance();
 	}
 
@@ -391,7 +391,7 @@ public final class TransformerTools {
 	 * the transformer returns <code>null</code>.
 	 * @param <E> the type of elements held by the collection
 	 */
-	public static <E> Transformer<Collection<E>, E> collectionSingleElementTransformer() {
+	public static <E> Transformer<Collection<? extends E>, E> collectionSingleElementTransformer() {
 		return CollectionSingleElementTransformer.instance();
 	}
 
