@@ -15,17 +15,13 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Singleton predicate that evaluates whether a collection is empty.
- * 
- * @param <E> the type of elements held by the collection
  */
-public final class CollectionIsEmptyPredicate<E>
-	implements Predicate<Collection<E>>, Serializable
+public final class CollectionIsEmptyPredicate
+	implements Predicate<Collection<?>>, Serializable
 {
-	@SuppressWarnings("rawtypes")
-	public static final Predicate INSTANCE = new CollectionIsEmptyPredicate();
+	public static final Predicate<Collection<?>> INSTANCE = new CollectionIsEmptyPredicate();
 
-	@SuppressWarnings("unchecked")
-	public static <E> Predicate<Collection<E>> instance() {
+	public static Predicate<Collection<?>> instance() {
 		return INSTANCE;
 	}
 
@@ -37,7 +33,7 @@ public final class CollectionIsEmptyPredicate<E>
 	/**
 	 * Return whether the collection is empty.
 	 */
-	public boolean evaluate(Collection<E> collection) {
+	public boolean evaluate(Collection<?> collection) {
 		return collection.isEmpty();
 	}
 
