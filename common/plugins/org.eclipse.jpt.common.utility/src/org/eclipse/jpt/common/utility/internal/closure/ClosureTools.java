@@ -268,6 +268,36 @@ public final class ClosureTools {
 	}
 
 
+	// ********** boolean **********
+
+	/**
+	 * Return a closure that adapts the specified <code>boolean</code> "closure".
+	 * If the closure's argument is <code>null</code>, the closure will throw a
+	 * {@link NullPointerException}.
+	 */
+	public static Closure<Boolean> booleanClosure(BooleanClosure.Adapter adapter) {
+		return new BooleanClosure(adapter);
+	}
+
+	/**
+	 * Return a closure that adapts the specified <code>boolean</code> "closure".
+	 * If the closure's argument is <code>null</code>, the <code>boolean</code> "closure"
+	 * will be passed an argument of <code>false</code>.
+	 */
+	public static Closure<Boolean> nullableBooleanClosure(BooleanClosure.Adapter adapter) {
+		return nullableBooleanClosure(adapter, false);
+	}
+
+	/**
+	 * Return a closure that adapts the specified <code>boolean</code> "closure".
+	 * If the closure's argument is <code>null</code>, the <code>boolean</code> "closure"
+	 * will be passed the specified null argument value.
+	 */
+	public static Closure<Boolean> nullableBooleanClosure(BooleanClosure.Adapter adapter, boolean nullArgumentValue) {
+		return new NullableBooleanClosure(adapter, nullArgumentValue);
+	}
+
+
 	// ********** disabled **********
 
 	/**
