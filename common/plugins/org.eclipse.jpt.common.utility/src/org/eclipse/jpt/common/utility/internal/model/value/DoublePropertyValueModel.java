@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * @param <V> the type of the both the <em>inner</em> and <em>outer</em>
  * models' values
  */
-public class DoublePropertyValueModel<V>
+public final class DoublePropertyValueModel<V>
 	extends AbstractDoublePropertyValueModel<V, PropertyValueModel<? extends V>>
 {
 	/**

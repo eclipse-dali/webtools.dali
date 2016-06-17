@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * @param <V> the type of the both the <em>inner</em> and <em>outer</em>
  * models' values
  */
-public class DoubleModifiablePropertyValueModel<V>
+public final class DoubleModifiablePropertyValueModel<V>
 	extends AbstractDoublePropertyValueModel<V, ModifiablePropertyValueModel<V>>
 	implements ModifiablePropertyValueModel<V>
 {
@@ -39,8 +39,9 @@ public class DoubleModifiablePropertyValueModel<V>
 	 * Forward the specified value to the <em>inner</em> model.
 	 */
 	public void setValue(V value) {
-		if (this.valueModelValue != null) {
-			this.valueModelValue.setValue(value);
+		if (this.valueModelValue == null) {
+			throw new IllegalStateException();
 		}
+		this.valueModelValue.setValue(value);
 	}
 }
