@@ -377,45 +377,39 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that returns whether a collection is <em>not</em> empty.
-	 * @param <E> the type of elements in the collection
 	 */
-	public static <E> Predicate<Collection<E>> collectionIsNotEmptyPredicate() {
+	public static Predicate<Collection<?>> collectionIsNotEmptyPredicate() {
 		return not(collectionIsEmptyPredicate());
 	}
 
 	/**
 	 * Return a predicate that returns whether a collection is empty.
-	 * @param <E> the type of elements in the collection
 	 */
-	public static <E> Predicate<Collection<E>> collectionIsEmptyPredicate() {
+	public static Predicate<Collection<?>> collectionIsEmptyPredicate() {
 		return CollectionIsEmptyPredicate.instance();
 	}
 
 	/**
 	 * Return a predicate that returns whether a collection contains exactly one element.
-	 * @param <E> the type of elements in the collection
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E> Predicate<Collection<E>> collectionContainsSingleElementPredicate() {
+	public static Predicate<Collection<?>> collectionContainsSingleElementPredicate() {
 		return COLLECTION_CONTAINS_SINGLE_ELEMENT_PREDICATE;
 	}
 
 	/**
 	 * A predicate that returns whether a collection contains exactly one element.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static final Predicate COLLECTION_CONTAINS_SINGLE_ELEMENT_PREDICATE = collectionSizeEqualsPredicate_(1);
+	public static final Predicate<Collection<?>> COLLECTION_CONTAINS_SINGLE_ELEMENT_PREDICATE = collectionSizeEqualsPredicate_(1);
 
 	/**
 	 * Return a predicate that returns whether a collection's is the specified size.
-	 * @param <E> the type of elements in the collection
 	 */
-	public static <E> Predicate<Collection<E>> collectionSizeEqualsPredicate(int size) {
+	public static Predicate<Collection<?>> collectionSizeEqualsPredicate(int size) {
 		return (size == 0) ? collectionIsEmptyPredicate(): (size == 1) ? collectionContainsSingleElementPredicate() : collectionSizeEqualsPredicate_(size);
 	}
 
-	private static <E> Predicate<Collection<E>> collectionSizeEqualsPredicate_(int size) {
-		return new CollectionSizeEqualsPredicate<>(size);
+	private static Predicate<Collection<?>> collectionSizeEqualsPredicate_(int size) {
+		return new CollectionSizeEqualsPredicate(size);
 	}
 
 

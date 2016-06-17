@@ -26,7 +26,7 @@ public class CollectionIsEmptyPredicateTests
 
 	public void testEvaluate() {
 		Collection<String> list = new ArrayList<>();
-		Predicate<Collection<String>> predicate = PredicateTools.collectionIsEmptyPredicate();
+		Predicate<Collection<?>> predicate = PredicateTools.collectionIsEmptyPredicate();
 		assertTrue(predicate.evaluate(list));
 		list.add("foo");
 		assertFalse(predicate.evaluate(list));
@@ -35,12 +35,12 @@ public class CollectionIsEmptyPredicateTests
 	}
 
 	public void testToString() {
-		Predicate<Collection<String>> predicate = PredicateTools.collectionIsEmptyPredicate();
+		Predicate<Collection<?>> predicate = PredicateTools.collectionIsEmptyPredicate();
 		assertEquals("CollectionIsEmptyPredicate", predicate.toString());
 	}
 
 	public void testSerialization() throws Exception {
-		Predicate<Collection<String>> predicate = PredicateTools.collectionIsEmptyPredicate();
+		Predicate<Collection<?>> predicate = PredicateTools.collectionIsEmptyPredicate();
 		assertSame(predicate, TestTools.serialize(predicate));
 	}
 }

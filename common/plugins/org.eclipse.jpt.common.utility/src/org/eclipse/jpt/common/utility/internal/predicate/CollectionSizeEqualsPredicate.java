@@ -17,11 +17,9 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
 /**
  * A predicate that will evaluate whether a collection's
  * size is equal to a specified size.
- * 
- * @param <E> the type of elements held by the collection
  */
-public class CollectionSizeEqualsPredicate<E>
-	implements Predicate<Collection<E>>, Serializable
+public class CollectionSizeEqualsPredicate
+	implements Predicate<Collection<?>>, Serializable
 {
 	private final int size;
 	private static final long serialVersionUID = 1L;
@@ -35,7 +33,7 @@ public class CollectionSizeEqualsPredicate<E>
 		this.size = size;
 	}
 
-	public boolean evaluate(Collection<E> collection) {
+	public boolean evaluate(Collection<?> collection) {
 		return collection.size() == this.size;
 	}
 
@@ -51,7 +49,7 @@ public class CollectionSizeEqualsPredicate<E>
 		if ((o == null) || (o.getClass() != this.getClass())) {
 			return false;
 		}
-		CollectionSizeEqualsPredicate<?> other = (CollectionSizeEqualsPredicate<?>) o;
+		CollectionSizeEqualsPredicate other = (CollectionSizeEqualsPredicate) o;
 		return this.size == other.size;
 	}
 

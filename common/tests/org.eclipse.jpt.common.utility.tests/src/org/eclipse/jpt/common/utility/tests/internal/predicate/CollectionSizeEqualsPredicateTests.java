@@ -27,7 +27,7 @@ public class CollectionSizeEqualsPredicateTests
 
 	public void testEvaluate() {
 		Collection<String> list = new ArrayList<>();
-		Predicate<Collection<String>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
+		Predicate<Collection<?>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
 		assertFalse(predicate.evaluate(list));
 		list.add("foo");
 		assertFalse(predicate.evaluate(list));
@@ -44,14 +44,14 @@ public class CollectionSizeEqualsPredicateTests
 	}
 
 	public void testGetSize() throws Exception {
-		CollectionSizeEqualsPredicate<Collection<String>> predicate = (CollectionSizeEqualsPredicate<Collection<String>>) PredicateTools.<Collection<String>>collectionSizeEqualsPredicate(2);
+		CollectionSizeEqualsPredicate predicate = (CollectionSizeEqualsPredicate) PredicateTools.collectionSizeEqualsPredicate(2);
 		assertEquals(2, predicate.getSize());
 	}
 
 	public void testEquals() throws Exception {
-		Predicate<Collection<String>> predicate1 = PredicateTools.collectionSizeEqualsPredicate(2);
+		Predicate<Collection<?>> predicate1 = PredicateTools.collectionSizeEqualsPredicate(2);
 		assertFalse(predicate1.equals(null));
-		Predicate<Collection<String>> predicate2 = PredicateTools.collectionSizeEqualsPredicate(2);
+		Predicate<Collection<?>> predicate2 = PredicateTools.collectionSizeEqualsPredicate(2);
 		assertTrue(predicate1.equals(predicate2));
 		predicate2 = PredicateTools.collectionSizeEqualsPredicate(3);
 		assertFalse(predicate1.equals(predicate2));
@@ -60,17 +60,17 @@ public class CollectionSizeEqualsPredicateTests
 	}
 
 	public void testHashCode() throws Exception {
-		Predicate<Collection<String>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
+		Predicate<Collection<?>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
 		assertEquals(2, predicate.hashCode());
 	}
 
 	public void testToString() {
-		Predicate<Collection<String>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
+		Predicate<Collection<?>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
 		assertTrue(predicate.toString().indexOf("(2)") != -1);
 	}
 
 	public void testSerialization() throws Exception {
-		Predicate<Collection<String>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
+		Predicate<Collection<?>> predicate = PredicateTools.collectionSizeEqualsPredicate(2);
 		assertEquals(predicate, TestTools.serialize(predicate));
 	}
 }
