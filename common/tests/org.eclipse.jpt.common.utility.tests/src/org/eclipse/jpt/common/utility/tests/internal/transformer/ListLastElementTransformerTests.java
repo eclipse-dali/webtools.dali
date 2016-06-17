@@ -10,28 +10,28 @@
 package org.eclipse.jpt.common.utility.tests.internal.transformer;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class CollectionFirstElementTransformerTests
+public class ListLastElementTransformerTests
 	extends TestCase
 {
-	public CollectionFirstElementTransformerTests(String name) {
+	public ListLastElementTransformerTests(String name) {
 		super(name);
 	}
 
 	public void testEvaluate() {
-		Collection<String> list = new ArrayList<>();
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
+		List<String> list = new ArrayList<>();
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer();
 		assertNull(transformer.transform(list));
 		list.add("foo");
 		assertEquals("foo", transformer.transform(list));
 		list.add("bar");
-		assertEquals("foo", transformer.transform(list));
+		assertEquals("bar", transformer.transform(list));
 		list.remove("foo");
 		assertEquals("bar", transformer.transform(list));
 		list.remove("bar");
@@ -39,12 +39,12 @@ public class CollectionFirstElementTransformerTests
 	}
 
 	public void testToString() {
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
-		assertEquals("CollectionFirstElementTransformer", transformer.toString());
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer();
+		assertEquals("ListLastElementTransformer", transformer.toString());
 	}
 
 	public void testSerialization() throws Exception {
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer();
 		assertSame(transformer, TestTools.serialize(transformer));
 	}
 }

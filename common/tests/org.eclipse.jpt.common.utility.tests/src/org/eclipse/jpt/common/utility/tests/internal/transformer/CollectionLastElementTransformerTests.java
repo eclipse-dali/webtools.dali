@@ -17,21 +17,21 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class CollectionFirstElementTransformerTests
+public class CollectionLastElementTransformerTests
 	extends TestCase
 {
-	public CollectionFirstElementTransformerTests(String name) {
+	public CollectionLastElementTransformerTests(String name) {
 		super(name);
 	}
 
 	public void testEvaluate() {
 		Collection<String> list = new ArrayList<>();
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
+		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionLastElementTransformer();
 		assertNull(transformer.transform(list));
 		list.add("foo");
 		assertEquals("foo", transformer.transform(list));
 		list.add("bar");
-		assertEquals("foo", transformer.transform(list));
+		assertEquals("bar", transformer.transform(list));
 		list.remove("foo");
 		assertEquals("bar", transformer.transform(list));
 		list.remove("bar");
@@ -39,12 +39,12 @@ public class CollectionFirstElementTransformerTests
 	}
 
 	public void testToString() {
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
-		assertEquals("CollectionFirstElementTransformer", transformer.toString());
+		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionLastElementTransformer();
+		assertEquals("CollectionLastElementTransformer", transformer.toString());
 	}
 
 	public void testSerialization() throws Exception {
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
+		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionLastElementTransformer();
 		assertSame(transformer, TestTools.serialize(transformer));
 	}
 }

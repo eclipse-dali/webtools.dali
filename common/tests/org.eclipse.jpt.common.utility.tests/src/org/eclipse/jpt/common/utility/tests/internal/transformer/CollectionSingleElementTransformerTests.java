@@ -26,7 +26,7 @@ public class CollectionSingleElementTransformerTests
 
 	public void testEvaluate() {
 		Collection<String> list = new ArrayList<>();
-		Transformer<Collection<String>, String> transformer = TransformerTools.collectionSingleElementTransformer();
+		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionSingleElementTransformer();
 		assertNull(transformer.transform(list));
 		list.add("foo");
 		assertEquals("foo", transformer.transform(list));
@@ -39,12 +39,12 @@ public class CollectionSingleElementTransformerTests
 	}
 
 	public void testToString() {
-		Transformer<Collection<String>, String> transformer = TransformerTools.collectionSingleElementTransformer();
+		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionSingleElementTransformer();
 		assertEquals("CollectionSingleElementTransformer", transformer.toString());
 	}
 
 	public void testSerialization() throws Exception {
-		Transformer<Collection<String>, String> transformer = TransformerTools.collectionSingleElementTransformer();
+		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionSingleElementTransformer();
 		assertSame(transformer, TestTools.serialize(transformer));
 	}
 }

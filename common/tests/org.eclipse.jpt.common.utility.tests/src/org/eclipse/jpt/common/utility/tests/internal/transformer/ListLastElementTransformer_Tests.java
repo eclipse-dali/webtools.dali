@@ -10,41 +10,54 @@
 package org.eclipse.jpt.common.utility.tests.internal.transformer;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class CollectionFirstElementTransformerTests
+public class ListLastElementTransformer_Tests
 	extends TestCase
 {
-	public CollectionFirstElementTransformerTests(String name) {
+	public ListLastElementTransformer_Tests(String name) {
 		super(name);
 	}
 
 	public void testEvaluate() {
-		Collection<String> list = new ArrayList<>();
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
-		assertNull(transformer.transform(list));
+		List<String> list = new ArrayList<>();
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer_();
+		boolean exCaught = false;
+		try {
+			String bogus = transformer.transform(list);
+			fail("bogus output: " + bogus);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 		list.add("foo");
 		assertEquals("foo", transformer.transform(list));
 		list.add("bar");
-		assertEquals("foo", transformer.transform(list));
+		assertEquals("bar", transformer.transform(list));
 		list.remove("foo");
 		assertEquals("bar", transformer.transform(list));
 		list.remove("bar");
-		assertNull(transformer.transform(list));
+		exCaught = false;
+		try {
+			String bogus = transformer.transform(list);
+			fail("bogus output: " + bogus);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
 	}
 
 	public void testToString() {
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
-		assertEquals("CollectionFirstElementTransformer", transformer.toString());
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer_();
+		assertEquals("ListLastElementTransformer_", transformer.toString());
 	}
 
 	public void testSerialization() throws Exception {
-		Transformer<Collection<? extends String>, String> transformer = TransformerTools.collectionFirstElementTransformer();
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer_();
 		assertSame(transformer, TestTools.serialize(transformer));
 	}
 }

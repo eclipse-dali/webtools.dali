@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.internal.transformer;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -386,6 +387,35 @@ public final class TransformerTools {
 	}
 
 	/**
+	 * Return a transformer that transforms a collection into its first element.
+	 * If the collection is empty, the transformer throws a
+	 * {@link java.util.NoSuchElementException}.
+	 * @param <E> the type of elements held by the collection
+	 */
+	public static <E> Transformer<Collection<? extends E>, E> collectionFirstElementTransformer_() {
+		return CollectionFirstElementTransformer_.instance();
+	}
+
+	/**
+	 * Return a transformer that transforms a collection into its last element.
+	 * If the collection is empty, the transformer returns <code>null</code>.
+	 * @param <E> the type of elements held by the collection
+	 */
+	public static <E> Transformer<Collection<? extends E>, E> collectionLastElementTransformer() {
+		return CollectionLastElementTransformer.instance();
+	}
+
+	/**
+	 * Return a transformer that transforms a collection into its last element.
+	 * If the collection is empty, the transformer throws a
+	 * {@link java.util.NoSuchElementException}.
+	 * @param <E> the type of elements held by the collection
+	 */
+	public static <E> Transformer<Collection<? extends E>, E> collectionLastElementTransformer_() {
+		return CollectionLastElementTransformer_.instance();
+	}
+
+	/**
 	 * Return a transformer that transforms a collection into its <em>single</em> element.
 	 * If the collection is empty or contains more than one element,
 	 * the transformer returns <code>null</code>.
@@ -398,10 +428,8 @@ public final class TransformerTools {
 	/**
 	 * Return a transformer that converts a collection into a boolean
 	 * that indicates whether the collection is <em>not</em> empty.
-	 * @param <E> the type of elements held by the collection
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E> Transformer<Collection<E>, Boolean> collectionIsNotEmptyTransformer() {
+	public static Transformer<Collection<?>, Boolean> collectionIsNotEmptyTransformer() {
 		return TransformerTools.COLLECTION_IS_NOT_EMPTY_TRANSFORMER;
 	}
 
@@ -409,16 +437,13 @@ public final class TransformerTools {
 	 * Transformer that converts a collection into a boolean
 	 * that indicates whether the collection is <em>not</em> empty.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static final Transformer COLLECTION_IS_NOT_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsNotEmptyPredicate());
+	public static final Transformer<Collection<?>, Boolean> COLLECTION_IS_NOT_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsNotEmptyPredicate());
 
 	/**
 	 * Return a transformer that converts a collection into a boolean
 	 * that indicates whether the collection is empty.
-	 * @param <E> the type of elements held by the collection
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E> Transformer<Collection<E>, Boolean> collectionIsEmptyTransformer() {
+	public static Transformer<Collection<?>, Boolean> collectionIsEmptyTransformer() {
 		return TransformerTools.COLLECTION_IS_EMPTY_TRANSFORMER;
 	}
 
@@ -426,16 +451,13 @@ public final class TransformerTools {
 	 * Transformer that converts a collection into a boolean
 	 * that indicates whether the collection is empty.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static final Transformer COLLECTION_IS_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsEmptyPredicate());
+	public static final Transformer<Collection<?>, Boolean> COLLECTION_IS_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsEmptyPredicate());
 
 	/**
 	 * Return a transformer that converts a collection into a boolean
 	 * that indicates whether the collection contains exactly one element.
-	 * @param <E> the type of elements held by the collection
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E> Transformer<Collection<E>, Boolean> collectionContainsSingleElementTransformer() {
+	public static Transformer<Collection<?>, Boolean> collectionContainsSingleElementTransformer() {
 		return TransformerTools.COLLECTION_CONTAINS_SINGLE_ELEMENT_TRANSFORMER;
 	}
 
@@ -443,20 +465,39 @@ public final class TransformerTools {
 	 * Transformer that converts a collection into a boolean
 	 * that indicates whether the collection contains exactly one element.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static final Transformer COLLECTION_CONTAINS_SINGLE_ELEMENT_TRANSFORMER = adapt_(PredicateTools.collectionContainsSingleElementPredicate());
+	public static final Transformer<Collection<?>, Boolean> COLLECTION_CONTAINS_SINGLE_ELEMENT_TRANSFORMER = adapt_(PredicateTools.collectionContainsSingleElementPredicate());
 
 	/**
 	 * Return a transformer that converts a collection into a boolean
 	 * that indicates whether the collection's size equals the specified size.
-	 * @param <E> the type of elements held by the collection
 	 */
-	public static <E> Transformer<Collection<E>, Boolean> collectionSizeEqualsTransformer(int size) {
+	public static Transformer<Collection<?>, Boolean> collectionSizeEqualsTransformer(int size) {
 		return (size == 0) ? collectionIsEmptyTransformer(): (size == 1) ? collectionContainsSingleElementTransformer() : collectionSizeEqualsTransformer_(size);
 	}
 
-	private static <E> Transformer<Collection<E>, Boolean> collectionSizeEqualsTransformer_(int size) {
-		return adapt_(PredicateTools.<E>collectionSizeEqualsPredicate(size));
+	private static Transformer<Collection<?>, Boolean> collectionSizeEqualsTransformer_(int size) {
+		return adapt_(PredicateTools.collectionSizeEqualsPredicate(size));
+	}
+
+
+	// ********** list **********
+
+	/**
+	 * Return a transformer that transforms a list into its last element.
+	 * If the list is empty, the transformer returns <code>null</code>.
+	 * @param <E> the type of elements held by the list
+	 */
+	public static <E> Transformer<List<? extends E>, E> listLastElementTransformer() {
+		return ListLastElementTransformer.instance();
+	}
+
+	/**
+	 * Return a transformer that transforms a list into its last element.
+	 * If the list is empty, the transformer throws an {@link IndexOutOfBoundsException}.
+	 * @param <E> the type of elements held by the list
+	 */
+	public static <E> Transformer<List<? extends E>, E> listLastElementTransformer_() {
+		return ListLastElementTransformer_.instance();
 	}
 
 

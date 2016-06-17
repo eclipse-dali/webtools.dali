@@ -21,7 +21,12 @@ public class JptCommonUtilityTransformerTests {
 		TestSuite suite = new TestSuite(JptCommonUtilityTransformerTests.class.getPackage().getName());
 
 		suite.addTestSuite(CollectionFirstElementTransformerTests.class);
+		suite.addTestSuite(CollectionFirstElementTransformer_Tests.class);
+		suite.addTestSuite(CollectionLastElementTransformerTests.class);
+		suite.addTestSuite(CollectionLastElementTransformer_Tests.class);
 		suite.addTestSuite(CollectionSingleElementTransformerTests.class);
+		suite.addTestSuite(ListLastElementTransformerTests.class);
+		suite.addTestSuite(ListLastElementTransformer_Tests.class);
 		suite.addTestSuite(XMLStringDecoderTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
