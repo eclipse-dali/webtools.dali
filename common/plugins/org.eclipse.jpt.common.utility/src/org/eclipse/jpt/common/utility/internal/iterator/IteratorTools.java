@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -452,7 +452,7 @@ public final class IteratorTools {
 	 * Return the specified iterator's last element.
 	 * @exception java.util.NoSuchElementException iterator is empty.
 	 */
-	public static <E> E first(Iterator<E> iterator) {
+	public static <E> E first(Iterator<? extends E> iterator) {
 		return iterator.next();
 	}
 
@@ -460,7 +460,7 @@ public final class IteratorTools {
 	 * Return the specified iterator's last element.
 	 * @exception java.util.NoSuchElementException iterator is empty.
 	 */
-	public static <E> E last(Iterator<E> iterator) {
+	public static <E> E last(Iterator<? extends E> iterator) {
 		E last;
 		do {
 			last = iterator.next();
