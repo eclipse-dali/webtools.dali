@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,12 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -29,11 +30,11 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -63,10 +64,10 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		return dialog.wasConfirmed() ? this.addJoinColumn(dialog.getSubject()) : null;
 	}
 
-	protected abstract ListValueModel<? extends PrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
+	protected abstract ListValueModel<? extends PrimaryKeyJoinColumn> buildDefaultJoinColumnsListModel();
 
 	private ModifiableCollectionValueModel<SpecifiedPrimaryKeyJoinColumn> buildSelectedJoinColumnsModel() {
-		return new SimpleCollectionValueModel<SpecifiedPrimaryKeyJoinColumn>();
+		return new SimpleCollectionValueModel<>();
 	}
 
 	String buildJoinColumnLabel(PrimaryKeyJoinColumn joinColumn) {
@@ -152,20 +153,20 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
-		return new OverrideDefaultPrimaryKeyJoinColumnHolder();
-	}
-
-	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
-		List<ListValueModel<? extends PrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<? extends PrimaryKeyJoinColumn>>();
-		list.add(buildSpecifiedJoinColumnsListHolder());
-		list.add(buildDefaultJoinColumnsListHolder());
-		return CompositeListValueModel.forModels(list);
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultPrimaryKeyJoinColumnModel() {
+		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedJoinColumnsListModel(), new OverrideDefaultPrimaryKeyJoinColumnModelSetValueClosure());
 	}
 
 	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
-			buildPrimaryKeyJoinColumnsListHolder(),
+		List<ListValueModel<? extends PrimaryKeyJoinColumn>> list = new ArrayList<>();
+		list.add(buildSpecifiedJoinColumnsListModel());
+		list.add(buildDefaultJoinColumnsListModel());
+		return CompositeListValueModel.forModels(list);
+	}
+
+	private ListValueModel<PrimaryKeyJoinColumn> buildUIPrimaryKeyJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<>(
+			buildPrimaryKeyJoinColumnsListModel(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY,
 			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
@@ -173,16 +174,16 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		);
 	}
 
-	ListValueModel<SpecifiedPrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+	ListValueModel<SpecifiedPrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListModel() {
 		return new ListAspectAdapter<Entity, SpecifiedPrimaryKeyJoinColumn>(getSubjectHolder(), Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<SpecifiedPrimaryKeyJoinColumn> getListIterable() {
-				return new SuperListIterableWrapper<SpecifiedPrimaryKeyJoinColumn>(subject.getSpecifiedPrimaryKeyJoinColumns());
+				return new SuperListIterableWrapper<>(this.subject.getSpecifiedPrimaryKeyJoinColumns());
 			}
 
 			@Override
 			protected int size_() {
-				return subject.getSpecifiedPrimaryKeyJoinColumnsSize();
+				return this.subject.getSpecifiedPrimaryKeyJoinColumnsSize();
 			}
 		};
 	}
@@ -223,7 +224,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		addCheckBox(
 			container,
 			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_OVERRIDE_DEFAULT_PRIMARY_KEY_JOIN_COLUMNS,
-			buildOverrideDefaultJoinColumnHolder(),
+			buildOverrideDefaultPrimaryKeyJoinColumnModel(),
 			null
 		);
 		// Primary Key Join Columns list pane
@@ -231,10 +232,10 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 			this,
 			container,
 			buildJoinColumnsAdapter(),
-			buildPrimaryKeyJoinColumnsListModel(),
+			buildUIPrimaryKeyJoinColumnsListModel(),
 			this.selectedPkJoinColumnsModel,
 			buildJoinColumnsListLabelProvider(),
-			buildOverrideDefaultJoinColumnHolder(),
+			buildOverrideDefaultPrimaryKeyJoinColumnModel(),
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
 	}
@@ -257,20 +258,11 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity>
 		}
 	}
 	
-	private class OverrideDefaultPrimaryKeyJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	                                              implements ModifiablePropertyValueModel<Boolean> {
-
-		public OverrideDefaultPrimaryKeyJoinColumnHolder() {
-			super(buildSpecifiedJoinColumnsListHolder());
-		}
-
-		@Override
-		protected Boolean buildValue() {
-			return listModel.size() > 0;
-		}
-
-		public void setValue(Boolean value) {
-			updatePrimaryKeyJoinColumns(value.booleanValue());
+	class OverrideDefaultPrimaryKeyJoinColumnModelSetValueClosure
+		implements BooleanClosure.Adapter
+	{
+		public void execute(boolean value) {
+			updatePrimaryKeyJoinColumns(value);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 
@@ -26,8 +25,5 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 public interface JaxbProjectModel
 	extends PropertyValueModel<JaxbProject>
 {
-	/**
-	 * Return the project corresponding to the JPA project model.
-	 */
-	IProject getProject();
+	// simply an interface we can use in an adapter definition
 }

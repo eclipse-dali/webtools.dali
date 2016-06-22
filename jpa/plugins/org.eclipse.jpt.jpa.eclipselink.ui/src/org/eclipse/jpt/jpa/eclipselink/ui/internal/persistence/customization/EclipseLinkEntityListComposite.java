@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -64,23 +64,15 @@ public class EclipseLinkEntityListComposite
 	protected void initialize() {
 		super.initialize();
 		this.selectedEntitiesModel = this.buildSelectedEntitiesModel();
-		this.selectedEntityModel = this.buildSelectedEntityModel(this.selectedEntitiesModel);
+		this.selectedEntityModel = this.buildSelectedEntityModel();
 	}
 
 	private ModifiableCollectionValueModel<EclipseLinkCustomizationEntity> buildSelectedEntitiesModel() {
-		return new SimpleCollectionValueModel<EclipseLinkCustomizationEntity>();
+		return new SimpleCollectionValueModel<>();
 	}
 
-	private PropertyValueModel<EclipseLinkCustomizationEntity> buildSelectedEntityModel(CollectionValueModel<EclipseLinkCustomizationEntity> selectedEntitiesModel) {
-		return new CollectionPropertyValueModelAdapter<EclipseLinkCustomizationEntity, EclipseLinkCustomizationEntity>(selectedEntitiesModel) {
-			@Override
-			protected EclipseLinkCustomizationEntity buildValue() {
-				if (this.collectionModel.size() == 1) {
-					return this.collectionModel.iterator().next();
-				}
-				return null;
-			}
-		};
+	private PropertyValueModel<EclipseLinkCustomizationEntity> buildSelectedEntityModel() {
+		return CollectionValueModelTools.singleElementPropertyValueModel(this.selectedEntitiesModel);
 	}
 
 	@Override

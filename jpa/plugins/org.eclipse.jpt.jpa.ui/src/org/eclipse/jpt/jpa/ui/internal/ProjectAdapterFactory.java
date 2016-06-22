@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
 import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
@@ -21,9 +22,9 @@ import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
 /**
  * Factory to build Dali JPA adapters for an {@link IProject}:<ul>
  * <li>{@link org.eclipse.jpt.jpa.ui.JpaProjectModel JpaProjectModel} -
- *     This adapter will only return a JPA project if it is immediately
+ *     This adapter will return a JPA project only if it is immediately
  *     available; but it will also notify listeners if the JPA project is
- *     ever created.
+ *     ever created.<br>
  *     This adapter should be used by any process that can temporarily ignore
  *     any uncreated JPA projects but should be notified if the JPA project
  *     <em>is</em> ever created (e.g. UI views).
@@ -41,26 +42,23 @@ public class ProjectAdapterFactory
 		return ADAPTER_LIST;
 	}
 
-	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof IProject) {
 			return this.getAdapter((IProject) adaptableObject, adapterType);
 		}
 		return null;
 	}
 
-	private Object getAdapter(IProject project, Class<?> adapterType) {
+	@SuppressWarnings("unchecked")
+	private <T> T getAdapter(IProject project, Class<T> adapterType) {
 		if (adapterType == JpaProjectModel.class) {
-			return this.getJpaProjectModel(project);
+			return (T) this.getJpaProjectModel(project);
 		}
 		return null;
 	}
 
 	private JpaProjectModel getJpaProjectModel(IProject project) {
-		return new JpaProjectModelAdapter(this.getJpaProjectsModel(project.getWorkspace()), project);
-	}
-
-	private JpaProjectsModel getJpaProjectsModel(IWorkspace workspace) {
-		return (JpaProjectsModel) workspace.getAdapter(JpaProjectsModel.class);
+		return new LocalJpaProjectModel(project);
 	}
 
 
@@ -73,7 +71,7 @@ public class ProjectAdapterFactory
 	 * manager. This is useful for UI code that does not want to wait to
 	 * retrieve a JPA project but wants to be notified when it is available.
 	 * <p>
-	 * Subclass {@link ElementPropertyValueModelAdapter} so we can
+	 * Subclass {@link PluggablePropertyValueModel} so we can
 	 * implement {@link org.eclipse.jpt.jpa.ui.JpaProjectModel}.
 	 * <p>
 	 * <strong>NB:</strong> This model operates outside of all the other
@@ -81,16 +79,24 @@ public class ProjectAdapterFactory
 	 * since it will be kept synchronized with the JPA manager's collection of
 	 * JPA projects in the end.
 	 */
-	/* CU private */ static class JpaProjectModelAdapter
-		extends ElementPropertyValueModelAdapter<JpaProject>
+	/* CU private */ static class LocalJpaProjectModel
+		extends PluggablePropertyValueModel<JpaProject>
 		implements JpaProjectModel
 	{
-		JpaProjectModelAdapter(CollectionValueModel<JpaProject> jpaProjectsModel, IProject project) {
-			super(jpaProjectsModel, new JpaProject.ProjectEquals(project));
-		}
-
-		public IProject getProject() {
-			return ((JpaProject.ProjectEquals) this.predicate).getCriterion();
+		/**
+		 * Get all the JPA projects, then filter down to those corresponding
+		 * to the specified project, then get the single JPA project remaining.
+		 * (At least we hope there is only a single JPA project remaining.)
+		 */
+		LocalJpaProjectModel(IProject project) {
+			super(new CollectionPluggablePropertyValueModelAdapter.Factory<>(
+							CollectionValueModelTools.filter(
+								project.getWorkspace().getAdapter(JpaProjectsModel.class),
+								new JpaProject.ProjectEquals(project)
+							),
+							TransformerTools.collectionSingleElementTransformer()
+						)
+					);
 		}
 	}
 }

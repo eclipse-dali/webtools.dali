@@ -56,7 +56,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -296,12 +296,7 @@ public class JaxbSchemasPropertiesPage
 	}
 	
 	private PropertyValueModel<Boolean> buildEditEnabledModel() {
-		return new CollectionPropertyValueModelAdapter<Boolean, Schema>(this.schemasSelectionModel) {
-			@Override
-			protected Boolean buildValue() {
-				return Boolean.valueOf(this.collectionModel.size() == 1);
-			}
-		};
+		return CollectionValueModelTools.containsSingleElementPropertyValueModel(this.schemasSelectionModel);
 	}
 	
 	private void editSelectedSchema() {
@@ -325,12 +320,7 @@ public class JaxbSchemasPropertiesPage
 	}
 	
 	private PropertyValueModel<Boolean> buildRemoveEnabledModel() {
-		return new CollectionPropertyValueModelAdapter<Boolean, Schema>(this.schemasSelectionModel) {
-			@Override
-			protected Boolean buildValue() {
-				return Boolean.valueOf(this.collectionModel.size() >= 1);
-			}
-		};
+		return CollectionValueModelTools.isNotEmptyPropertyValueModel(this.schemasSelectionModel);
 	}
 	
 	private void removeSelectedSchemas() {

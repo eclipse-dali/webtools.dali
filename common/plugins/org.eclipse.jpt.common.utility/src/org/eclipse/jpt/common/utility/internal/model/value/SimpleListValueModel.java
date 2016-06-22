@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,11 +65,11 @@ public class SimpleListValueModel<E>
 	// ********** ListValueModel implementation **********
 
 	public Iterator<E> iterator() {
-		return new LocalIterator<E>(this.list.iterator());
+		return new LocalIterator<>(this.list.iterator());
 	}
 
 	public ListIterator<E> listIterator() {
-		return new LocalListIterator<E>(this.list.listIterator());
+		return new LocalListIterator<>(this.list.listIterator());
 	}
 
 	public int size() {
@@ -186,7 +186,7 @@ public class SimpleListValueModel<E>
 	}
 
 	public ListIterator<E> listIterator(int index) {
-		return new LocalListIterator<E>(this.list.listIterator(index));
+		return new LocalListIterator<>(this.list.listIterator(index));
 	}
 
 	public List<E> subList(int fromIndex, int toIndex) {

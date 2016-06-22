@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,22 +10,23 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-
-import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
-public class CompositeBooleanPropertyValueModelTests extends TestCase {
+public class CompositeAndBooleanPropertyValueModelTests
+	extends TestCase
+{
 	private SimplePropertyValueModel<Boolean> pvm1;
 	private ModifiablePropertyValueModel<Boolean> pvm2;
 	private ModifiablePropertyValueModel<Boolean> pvm3;
@@ -36,29 +37,29 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 	PropertyChangeEvent event;
 
 
-	public CompositeBooleanPropertyValueModelTests(String name) {
+	public CompositeAndBooleanPropertyValueModelTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.pvm1 = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.pvm2 = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.pvm3 = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.pvm4 = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.collection = new ArrayList<ModifiablePropertyValueModel<Boolean>>();
+		this.pvm1 = new SimplePropertyValueModel<>(Boolean.TRUE);
+		this.pvm2 = new SimplePropertyValueModel<>(Boolean.TRUE);
+		this.pvm3 = new SimplePropertyValueModel<>(Boolean.TRUE);
+		this.pvm4 = new SimplePropertyValueModel<>(Boolean.TRUE);
+		this.collection = new ArrayList<>();
 		this.collection.add(this.pvm1);
 		this.collection.add(this.pvm2);
 		this.collection.add(this.pvm3);
 		this.collection.add(this.pvm4);
-		this.cvm = new SimpleCollectionValueModel<ModifiablePropertyValueModel<Boolean>>(this.collection);
+		this.cvm = new SimpleCollectionValueModel<>(this.collection);
 		
 		this.compositePVM = this.buildCompositePVM(this.cvm);
 	}
 
 	private PropertyValueModel<Boolean> buildCompositePVM(CollectionValueModel<ModifiablePropertyValueModel<Boolean>> pvms) {
-		return CompositeBooleanPropertyValueModel.and(pvms);
+		return CollectionValueModelTools.and(pvms);
 	}
 
 	@Override
@@ -67,7 +68,23 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
+	public void testGetValue1() {
+		assertNull(this.compositePVM.getValue());
+		ChangeListener listener = this.buildListener();
+		this.compositePVM.addChangeListener(listener);
+		assertTrue(this.compositePVM.getValue().booleanValue());
+	}
+
+	public void testGetValue2() {
+		this.compositePVM = CollectionValueModelTools.and(this.pvm1, this.pvm2, this.pvm3, this.pvm4);
+		assertNull(this.compositePVM.getValue());
+		ChangeListener listener = this.buildListener();
+		this.compositePVM.addChangeListener(listener);
+		assertTrue(this.compositePVM.getValue().booleanValue());
+	}
+
+	public void testGetValue3() {
+		this.compositePVM = CollectionValueModelTools.and(Arrays.asList(this.pvm1, this.pvm2, this.pvm3, this.pvm4));
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addChangeListener(listener);
@@ -136,7 +153,7 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 
 	private void verifyCollectionChange() {
 		this.event = null;
-		ModifiablePropertyValueModel<Boolean> pvm = new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
+		ModifiablePropertyValueModel<Boolean> pvm = new SimplePropertyValueModel<>(Boolean.FALSE);
 		this.cvm.add(pvm);
 		this.verifyEvent(true, false);
 
@@ -145,15 +162,23 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 		this.verifyEvent(false, true);
 
 		this.event = null;
-		this.cvm.clear();
-		this.verifyEvent(Boolean.TRUE, null);
+		this.cvm.add(pvm);
+		this.verifyEvent(true, false);
 
-		Collection<ModifiablePropertyValueModel<Boolean>> c2 = new ArrayList<ModifiablePropertyValueModel<Boolean>>();
+		this.event = null;
+		this.cvm.clear();
+		this.verifyEvent(false, true);
+
+		this.event = null;
+		this.cvm.add(pvm);
+		this.verifyEvent(true, false);
+
+		Collection<ModifiablePropertyValueModel<Boolean>> c2 = new ArrayList<>();
 		c2.add(this.pvm1);
 		c2.add(this.pvm2);
 		this.event = null;
 		this.cvm.setValues(c2);
-		this.verifyEvent(null, Boolean.TRUE);
+		this.verifyEvent(false, true);
 	}
 
 	public void testLazyListening1() {
@@ -182,7 +207,7 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 		return new ChangeAdapter() {
 			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
-				CompositeBooleanPropertyValueModelTests.this.event = e;
+				CompositeAndBooleanPropertyValueModelTests.this.event = e;
 			}
 		};
 	}
@@ -192,6 +217,7 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 	}
 
 	private void verifyEvent(Boolean oldValue, Boolean newValue) {
+		assertNotNull(this.event);
 		assertEquals(this.compositePVM, this.event.getSource());
 		assertEquals(PropertyValueModel.VALUE, this.event.getPropertyName());
 		assertEquals(oldValue, this.event.getOldValue());

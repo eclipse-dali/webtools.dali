@@ -9,41 +9,41 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.ListPluggablePropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class CollectionPropertyValueModelAdapterTests
+public class ListPropertyValueModelAdapterTests
 	extends TestCase
 {
 	private PropertyValueModel<Boolean> adapter;
-	private SimpleCollectionValueModel<String> collectionModel;
+	private SimpleListValueModel<String> listModel;
 	PropertyChangeEvent event;
 
-	public CollectionPropertyValueModelAdapterTests(String name) {
+	public ListPropertyValueModelAdapterTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.collectionModel = new SimpleCollectionValueModel<>();
-		this.adapter = CollectionValueModelTools.propertyValueModel(this.collectionModel, new LocalTransformer("666"));
+		this.listModel = new SimpleListValueModel<>();
+		this.adapter = ListValueModelTools.propertyValueModel(this.listModel, new LocalTransformer(2, "666"));
 		this.event = null;
 	}
 
@@ -58,64 +58,87 @@ public class CollectionPropertyValueModelAdapterTests
 		return (value != null) && value.booleanValue();
 	}
 
-	private Collection<String> wrappedCollection() {
-		return CollectionTools.hashBag(this.collectionModel.iterator());
+	private boolean listModelContains(int index, String value) {
+		return (this.listModel.size() > index) && ObjectTools.equals(this.listModel.get(index), value);
 	}
 
 	public void testValue() {
+		assertNull(this.adapter.getValue());
 		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		});
 		assertFalse(this.booleanValue());
-		assertFalse(this.wrappedCollection().contains("666"));
+		assertFalse(this.listModelContains(2, "666"));
 
-		this.collectionModel.add("111");
+		this.listModel.add("111");
 		assertFalse(this.booleanValue());
 
-		this.collectionModel.add("222");
+		this.listModel.add("222");
 		assertFalse(this.booleanValue());
 
-		this.collectionModel.add("666");
+		this.listModel.add("666");
 		assertTrue(this.booleanValue());
-		assertTrue(this.wrappedCollection().contains("666"));
+		assertTrue(this.listModelContains(2, "666"));
 
-		this.collectionModel.remove("666");
+		this.listModel.remove("666");
 		assertFalse(this.booleanValue());
-		assertFalse(this.wrappedCollection().contains("666"));
+		assertFalse(this.listModelContains(2, "666"));
 
-		this.collectionModel.add("666");
+		this.listModel.add("666");
 		assertTrue(this.booleanValue());
-		assertTrue(this.wrappedCollection().contains("666"));
+		assertTrue(this.listModelContains(2, "666"));
 
-		this.collectionModel.clear();
+		this.listModel.clear();
 		assertFalse(this.booleanValue());
-		assertFalse(this.wrappedCollection().contains("666"));
+		assertFalse(this.listModelContains(2, "666"));
+
+		this.listModel.add("111");
+		this.listModel.add("222");
+		this.listModel.add("666");
+		assertTrue(this.booleanValue());
+		assertTrue(this.listModelContains(2, "666"));
+
+		this.listModel.set(2, "333");
+		assertFalse(this.booleanValue());
+		assertFalse(this.listModelContains(2, "666"));
+
+		this.listModel.set(2, "666");
+		assertTrue(this.booleanValue());
+		assertTrue(this.listModelContains(2, "666"));
+
+		this.listModel.move(0, 2);
+		assertFalse(this.booleanValue());
+		assertTrue(this.listModelContains(0, "666"));
+
+		this.listModel.setListValues(Arrays.asList("111", "222", "666"));
+		assertTrue(this.booleanValue());
+		assertTrue(this.listModelContains(2, "666"));
 	}
 
 	public void testEventFiring() {
 		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				CollectionPropertyValueModelAdapterTests.this.event = e;
+				ListPropertyValueModelAdapterTests.this.event = e;
 			}
 		});
 		assertNull(this.event);
 
-		this.collectionModel.add("111");
+		this.listModel.add("111");
 		assertNull(this.event);
 
-		this.collectionModel.add("222");
+		this.listModel.add("222");
 		assertNull(this.event);
 
-		this.collectionModel.add("666");
+		this.listModel.add("666");
 		this.verifyEvent(false, true);
 
-		this.collectionModel.remove("666");
+		this.listModel.remove("666");
 		this.verifyEvent(true, false);
 
-		this.collectionModel.add("666");
+		this.listModel.add("666");
 		this.verifyEvent(false, true);
 
-		this.collectionModel.clear();
+		this.listModel.clear();
 		this.verifyEvent(true, false);
 	}
 
@@ -131,22 +154,24 @@ public class CollectionPropertyValueModelAdapterTests
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		};
 		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
-		this.collectionModel.add("666");
+		this.listModel.add("111");
+		this.listModel.add("222");
+		this.listModel.add("666");
 		assertTrue(this.booleanValue());
-		assertTrue(this.wrappedCollection().contains("666"));
+		assertTrue(this.listModelContains(2, "666"));
 
 		this.adapter.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertFalse(this.booleanValue());
-		assertTrue(this.wrappedCollection().contains("666"));
+		assertTrue(this.listModelContains(2, "666"));
 
 		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertTrue(this.booleanValue());
-		assertTrue(this.wrappedCollection().contains("666"));
+		assertTrue(this.listModelContains(2, "666"));
 	}
 
 	public void testHasListeners() {
 		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertFalse(((AbstractModel) this.collectionModel).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
+		assertFalse(((AbstractModel) this.listModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		ChangeListener listener = new ChangeAdapter() {
 			@Override
@@ -154,19 +179,19 @@ public class CollectionPropertyValueModelAdapterTests
 		};
 		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertTrue(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(((AbstractModel) this.collectionModel).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
+		assertTrue(((AbstractModel) this.listModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		this.adapter.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertFalse(((AbstractModel) this.collectionModel).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
+		assertFalse(((AbstractModel) this.listModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		this.adapter.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(((AbstractModel) this.collectionModel).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
+		assertTrue(((AbstractModel) this.listModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		this.adapter.removeChangeListener(listener);
 		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertFalse(((AbstractModel) this.collectionModel).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
+		assertFalse(((AbstractModel) this.listModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 	public void testToString1() {
@@ -174,12 +199,14 @@ public class CollectionPropertyValueModelAdapterTests
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		});
 		assertTrue(this.adapter.toString().endsWith("(false)"));
-		this.collectionModel.add("666");
+		this.listModel.add("111");
+		this.listModel.add("222");
+		this.listModel.add("666");
 		assertTrue(this.adapter.toString().endsWith("(true)"));
 	}
 
 	public void testToString3() {
-		CollectionPluggablePropertyValueModelAdapter.Factory<String, Boolean> f = new CollectionPluggablePropertyValueModelAdapter.Factory<>(this.collectionModel, new LocalTransformer("666"));
+		ListPluggablePropertyValueModelAdapter.Factory<String, Boolean> f = new ListPluggablePropertyValueModelAdapter.Factory<>(this.listModel, new LocalTransformer(2, "666"));
 		assertTrue(f.toString().indexOf("Factory") != -1);
 	}
 
@@ -198,7 +225,7 @@ public class CollectionPropertyValueModelAdapterTests
 		Object object;
 		boolean exCaught = false;
 		try {
-			object = CollectionValueModelTools.propertyValueModel(null, new LocalTransformer("666"));
+			object = ListValueModelTools.propertyValueModel(null, new LocalTransformer(2, "666"));
 			fail("bogus: " + object);
 		} catch (NullPointerException ex) {
 			exCaught = true;
@@ -210,7 +237,7 @@ public class CollectionPropertyValueModelAdapterTests
 		Object object;
 		boolean exCaught = false;
 		try {
-			object = CollectionValueModelTools.propertyValueModel(null, new LocalTransformer("666"));
+			object = ListValueModelTools.propertyValueModel(null, new LocalTransformer(2, "666"));
 			fail("bogus: " + object);
 		} catch (NullPointerException ex) {
 			exCaught = true;
@@ -222,7 +249,7 @@ public class CollectionPropertyValueModelAdapterTests
 		Object object;
 		boolean exCaught = false;
 		try {
-			object = CollectionValueModelTools.propertyValueModel(this.collectionModel, null);
+			object = ListValueModelTools.propertyValueModel(this.listModel, null);
 			fail("bogus: " + object);
 		} catch (NullPointerException ex) {
 			exCaught = true;
@@ -234,7 +261,7 @@ public class CollectionPropertyValueModelAdapterTests
 		Object object;
 		boolean exCaught = false;
 		try {
-			object = CollectionValueModelTools.propertyValueModel(this.collectionModel, null);
+			object = ListValueModelTools.propertyValueModel(this.listModel, null);
 			fail("bogus: " + object);
 		} catch (NullPointerException ex) {
 			exCaught = true;
@@ -258,21 +285,27 @@ public class CollectionPropertyValueModelAdapterTests
 	// ********** member class **********
 
 	/**
-	 * Transform the collection to <code>true</code> if it contains the specified item,
-	 * otherwise transform it to <code>false</code>.
+	 * Transform the list to <code>true</code> if it contains the specified item
+	 * at the specified index, otherwise transform it to <code>false</code>.
 	 */
 	static class LocalTransformer
-		implements Transformer<Collection<String>, Boolean>
+		implements Transformer<List<String>, Boolean>
 	{
+		private final int index;
 		private final String item;
 
-		LocalTransformer(String item) {
+		LocalTransformer(int index, String item) {
 			super();
+			this.index = index;
 			this.item = item;
 		}
 
-		public Boolean transform(Collection<String> collection) {
-			return Boolean.valueOf(collection.contains(this.item));
+		public Boolean transform(List<String> list) {
+			return Boolean.valueOf(this.transform_(list));
+		}
+
+		public boolean transform_(List<String> list) {
+			return (list.size() > this.index) && ObjectTools.equals(this.item, list.get(this.index));
 		}
 
 		@Override

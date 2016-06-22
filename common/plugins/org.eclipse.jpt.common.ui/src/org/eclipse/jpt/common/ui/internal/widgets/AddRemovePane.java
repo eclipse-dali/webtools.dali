@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -753,25 +753,15 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 		}
 
 		protected PropertyValueModel<Boolean> buildSingleSelectedItemEnabledModel(CollectionValueModel<E> selectedItemsModel) {
-			return new CollectionPropertyValueModelAdapter<Boolean, Object>(selectedItemsModel) {
-				@Override
-				protected Boolean buildValue() {
-					return Boolean.valueOf(this.collectionModel.size() == 1);
-				}
-			};
+			return CollectionValueModelTools.containsSingleElementPropertyValueModel(selectedItemsModel);
 		}
 
 		public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<E> selectedItemsModel) {
-			return this.buildMultipleSelectedItemsEnabledModel(selectedItemsModel);
+			return this.buildOneOrMoreSelectedItemsEnabledModel(selectedItemsModel);
 		}
 
-		protected PropertyValueModel<Boolean> buildMultipleSelectedItemsEnabledModel(CollectionValueModel<E> selectedItemsModel) {
-			return new CollectionPropertyValueModelAdapter<Boolean, E>(selectedItemsModel) {
-				@Override
-				protected Boolean buildValue() {
-					return Boolean.valueOf(this.collectionModel.size() >= 1);
-				}
-			};
+		protected PropertyValueModel<Boolean> buildOneOrMoreSelectedItemsEnabledModel(CollectionValueModel<E> selectedItemsModel) {
+			return CollectionValueModelTools.isNotEmptyPropertyValueModel(selectedItemsModel);
 		}
 
 		/*

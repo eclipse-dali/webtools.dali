@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.structure;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.JptCommonUiImages;
@@ -16,11 +18,13 @@ import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.model.value.CompositePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
@@ -109,7 +113,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<ImageDescriptor> buildPersistenceUnitImageDescriptorModel(@SuppressWarnings("unused") PersistenceUnit persistenceUnit) {
-		return new StaticPropertyValueModel<ImageDescriptor>(JptJpaUiImages.PERSISTENCE_UNIT);
+		return new StaticPropertyValueModel<>(JptJpaUiImages.PERSISTENCE_UNIT);
 	}
 
 	protected static PropertyValueModel<String> buildPersistenceUnitTextModel(PersistenceUnit persistenceUnit) {
@@ -163,7 +167,7 @@ public class PersistenceStructureItemLabelProviderFactory
 
 
 	protected PropertyValueModel<ImageDescriptor> buildMappingFileRefImageDescriptorModel(MappingFileRef mappingFileRef) {
-		return new StaticPropertyValueModel<ImageDescriptor>(JptCommonUiImages.gray(JptJpaUiImages.MAPPING_FILE_REF, mappingFileRef.isDefault()));
+		return new StaticPropertyValueModel<>(JptCommonUiImages.gray(JptJpaUiImages.MAPPING_FILE_REF, mappingFileRef.isDefault()));
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefTextModel(MappingFileRef mappingFileRef) {
@@ -202,7 +206,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildClassRefImageDescriptorModel(@SuppressWarnings("unused") ClassRef classRef) {
-		return new StaticPropertyValueModel<ImageDescriptor>(JptJpaUiImages.CLASS_REF);
+		return new StaticPropertyValueModel<>(JptJpaUiImages.CLASS_REF);
 	}
 
 	protected PropertyValueModel<String> buildClassRefTextModel(ClassRef classRef) {
@@ -242,7 +246,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildJarFileRefImageDescriptorModel(@SuppressWarnings("unused") JarFileRef jarFileRef) {
-		return new StaticPropertyValueModel<ImageDescriptor>(JptJpaUiImages.JAR_FILE_REF);
+		return new StaticPropertyValueModel<>(JptJpaUiImages.JAR_FILE_REF);
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefTextModel(JarFileRef jarFileRef) {
@@ -276,77 +280,53 @@ public class PersistenceStructureItemLabelProviderFactory
 
 	// ********** component description model **********
 
-	@SuppressWarnings("unchecked")
 	public static PropertyValueModel<String> buildQuotedComponentDescriptionModel(JpaContextModel node, PropertyValueModel<String> nodeTextModel) {
 		return buildComponentDescriptionModel(node, true, nodeTextModel);
 	}
 
+	@SafeVarargs
 	public static PropertyValueModel<String> buildNonQuotedComponentDescriptionModel(JpaContextModel node, PropertyValueModel<String>... nodeTextModels) {
 		return buildComponentDescriptionModel(node, false, nodeTextModels);
 	}
 
+	@SafeVarargs
 	protected static PropertyValueModel<String> buildComponentDescriptionModel(JpaContextModel node, boolean quote, PropertyValueModel<String>... nodeTextModels) {
 		IResource nodeResource = node.getResource();
 		String nodePath = (nodeResource == null) ? null : nodeResource.getFullPath().makeRelative().toString();
-		return new ComponentDescriptionModel(
-					nodeTextModels,
-					new PersistenceUnitTextModel(node.getPersistenceUnit()),
-					nodePath,
-					quote
-				);
+		TransformerAdapter<Collection<String>, String> transformer = new ComponentDescriptionTransformer(nodePath, quote);
+
+		ArrayList<PropertyValueModel<String>> models = new ArrayList<>();
+		models.add(buildPersistenceUnitTextModel(node.getPersistenceUnit()));
+		CollectionTools.addAll(models, nodeTextModels);
+
+		return ListValueModelTools.compositePropertyValueModel(models, transformer);
 	}
 
-	public static class ComponentDescriptionModel
-		extends CompositePropertyValueModel<String, Object>
+
+	public static class ComponentDescriptionTransformer
+		extends TransformerAdapter<Collection<String>, String>
 	{
-		protected final PropertyValueModel<String>[] nodeTextModels;
-		protected final PropertyValueModel<String> persistenceUnitNameModel;
 		protected final String path;
 		protected final boolean quote;
 
-		@SuppressWarnings("unchecked")
-		ComponentDescriptionModel(
-				PropertyValueModel<String> nodeTextModel,
-				PropertyValueModel<String> persistenceUnitNameModel,
-				String path,
-				boolean quote
-		) {
-			this(
-				new PropertyValueModel[] {nodeTextModel},
-				persistenceUnitNameModel,
-				path,
-				quote
-			);
-		}
-
-		ComponentDescriptionModel(
-				PropertyValueModel<String>[] nodeTextModels,
-				PropertyValueModel<String> persistenceUnitNameModel,
-				String path,
-				boolean quote
-		) {
-			super(ArrayTools.add(nodeTextModels, persistenceUnitNameModel));
-			if (nodeTextModels.length < 1) {
-				throw new IllegalArgumentException();
-			}
-			this.nodeTextModels = nodeTextModels;
-			this.persistenceUnitNameModel = persistenceUnitNameModel;
+		ComponentDescriptionTransformer(String path, boolean quote) {
+			super();
 			this.path = path;
 			this.quote = quote;
 		}
 
 		@Override
-		protected String buildValue() {
+		public String transform(Collection<String> models) {
 			StringBuilder sb = new StringBuilder();
-			sb.append(this.persistenceUnitNameModel.getValue());
+			sb.append(IterableTools.first(models)); // persistence unit
 			sb.append('/');
 			if (this.quote) {
 				sb.append('\"');
 			}
-			sb.append(this.nodeTextModels[0].getValue());
-			for (int i = 1; i < this.nodeTextModels.length; i++) {
+			sb.append(IterableTools.get(models, 1)); // nodes
+			for (int i = 2; i < models.size(); i++) {
 				sb.append('/');
-				sb.append(this.nodeTextModels[i].getValue());
+				sb.append(IterableTools.get(models, i));
 			}
 			if (this.quote) {
 				sb.append('\"');

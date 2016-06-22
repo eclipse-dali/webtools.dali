@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.ValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
@@ -24,7 +24,7 @@ public class DoubleModifiablePropertyValueModelTests
 
 	@Override
 	protected PropertyValueModel<String> buildDoubleModel(ModifiablePropertyValueModel<ModifiablePropertyValueModel<String>> modelModel) {
-		return ValueModelTools.wrapModifiable(modelModel);
+		return PropertyValueModelTools.wrapModifiable(modelModel);
 	}
 
 	protected ModifiablePropertyValueModel<String> getDoubleModel() {
@@ -44,7 +44,13 @@ public class DoubleModifiablePropertyValueModelTests
 
 		this.stringModelModel.setValue(null);
 		assertNull(this.doubleModel.getValue());
-		this.getDoubleModel().setValue("TTT");  // NOP?
+		boolean exCaught = false;
+		try {
+			this.getDoubleModel().setValue("TTT"); // unsupported?
+		} catch (IllegalStateException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 		assertEquals("bar", this.stringModel.getValue());
 		assertNull(this.doubleModel.getValue());
 	}

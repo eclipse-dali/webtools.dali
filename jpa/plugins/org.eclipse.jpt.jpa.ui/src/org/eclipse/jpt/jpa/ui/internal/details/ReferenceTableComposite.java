@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,10 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
@@ -26,25 +27,22 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.TableCombo;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class ReferenceTableComposite<T extends ReferenceTable>
 	extends Pane<T>
 {
-	protected Button overrideDefaultJoinColumnsCheckBox;
-
 	protected JoinColumnsComposite<T> joinColumnsComposite;
 
 	protected ReferenceTableComposite(
@@ -86,11 +84,11 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 		return new JoinColumnsProvider();
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
-		return new OverrideDefaultJoinColumnHolder();
+	protected ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnModel() {
+		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedJoinColumnsListModel(), new OverrideDefaultJoinColumnModelSetValueClosure());
 	}
 		
-	ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
+	ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListModel() {
 		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
@@ -272,7 +270,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	void updateJoinColumns() {
+	void updateJoinColumns(boolean selected) {
 		if (this.isPopulating()) {
 			return;
 		}
@@ -282,7 +280,6 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 			return;
 		}
 		
-		boolean selected = this.overrideDefaultJoinColumnsCheckBox.getSelection();
 		this.setPopulating(true);
 
 		try {
@@ -341,20 +338,11 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 	}
 	
 	
-	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	    implements ModifiablePropertyValueModel<Boolean> {
-	
-		public OverrideDefaultJoinColumnHolder() {
-			super(buildSpecifiedJoinColumnsListHolder());
-		}
-	
-		@Override
-		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listModel.size() > 0);
-		}
-	
-		public void setValue(Boolean value) {
-			updateJoinColumns();
+	class OverrideDefaultJoinColumnModelSetValueClosure
+		implements BooleanClosure.Adapter
+	{
+		public void execute(boolean value) {
+			updateJoinColumns(value);
 		}
 	}
 

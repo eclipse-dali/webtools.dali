@@ -10,63 +10,64 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import java.util.Iterator;
+import java.util.List;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.exception.RuntimeExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class CompositePropertyValueModelTests
+public class ListCompositePropertyValueModelTests
 	extends TestCase
 {
-	private SimplePropertyValueModel<Integer> pvm1;
-	private ModifiablePropertyValueModel<Integer> pvm2;
-	private ModifiablePropertyValueModel<Integer> pvm3;
-	private ModifiablePropertyValueModel<Integer> pvm4;
-	private Collection<PropertyValueModel<Integer>> collection;
-	private SimpleCollectionValueModel<PropertyValueModel<Integer>> cvm;
-	private PropertyValueModel<Integer> compositePVM;
+	private SimplePropertyValueModel<String> pvm1;
+	private ModifiablePropertyValueModel<String> pvm2;
+	private ModifiablePropertyValueModel<String> pvm3;
+	private ModifiablePropertyValueModel<String> pvm4;
+	private List<PropertyValueModel<String>> collection;
+	private SimpleListValueModel<PropertyValueModel<String>> lvm;
+	private PropertyValueModel<String> compositePVM;
 	PropertyChangeEvent event;
 
 
-	public CompositePropertyValueModelTests(String name) {
+	public ListCompositePropertyValueModelTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.pvm1 = new SimplePropertyValueModel<>(Integer.valueOf(1));
-		this.pvm2 = new SimplePropertyValueModel<>(Integer.valueOf(2));
-		this.pvm3 = new SimplePropertyValueModel<>(Integer.valueOf(3));
-		this.pvm4 = new SimplePropertyValueModel<>(Integer.valueOf(4));
+		this.pvm1 = new SimplePropertyValueModel<>("111");
+		this.pvm2 = new SimplePropertyValueModel<>("222");
+		this.pvm3 = new SimplePropertyValueModel<>("333");
+		this.pvm4 = new SimplePropertyValueModel<>("444");
 		this.collection = new ArrayList<>();
 		this.collection.add(this.pvm1);
 		this.collection.add(this.pvm2);
 		this.collection.add(this.pvm3);
 		this.collection.add(this.pvm4);
-		this.cvm = new LocalSimpleCollectionValueModel<>(this.collection);
+		this.lvm = new LocalSimpleListValueModel<>(this.collection);
 		
-		this.compositePVM = this.buildCompositePVM(this.cvm);
+		this.compositePVM = this.buildCompositePVM(this.lvm);
 	}
 
-	public static class LocalSimpleCollectionValueModel<E>
-		extends SimpleCollectionValueModel<E>
+	public static class LocalSimpleListValueModel<E>
+		extends SimpleListValueModel<E>
 	{
-		public LocalSimpleCollectionValueModel(Collection<E> collection) {
-			super(collection);
+		public LocalSimpleListValueModel(List<E> list) {
+			super(list);
 		}
 		@Override
 		protected ChangeSupport buildChangeSupport() {
@@ -74,22 +75,24 @@ public class CompositePropertyValueModelTests
 		}
 	}
 
-	private PropertyValueModel<Integer> buildCompositePVM(CollectionValueModel<PropertyValueModel<Integer>> pvms) {
-		return CollectionValueModelTools.compositePropertyValueModel(pvms, new LocalTransformer());
+	private PropertyValueModel<String> buildCompositePVM(ListValueModel<PropertyValueModel<String>> pvms) {
+		return ListValueModelTools.compositePropertyValueModel(pvms, new LocalTransformer());
 	}
 
 	public static class LocalTransformer
-		extends TransformerAdapter<Collection<Integer>, Integer>
+		extends TransformerAdapter<List<String>, String>
 	{
 		@Override
-		public Integer transform(Collection<Integer> integers) {
-			int sum = 0;
-			for (Integer integer : integers) {
-				if (integer != null) {
-					sum += integer.intValue();
+		public String transform(List<String> strings) {
+			StringBuilder sb = new StringBuilder();
+			for (Iterator<String> stream = strings.iterator(); stream.hasNext(); ) {
+				String string = stream.next();
+				sb.append(string);
+				if (stream.hasNext()) {
+					sb.append("-");
 				}
 			}
-			return Integer.valueOf(sum);
+			return sb.toString();
 		}
 	}
 
@@ -103,32 +106,32 @@ public class CompositePropertyValueModelTests
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addChangeListener(listener);
-		assertEquals(10, this.compositePVM.getValue().intValue());
+		assertEquals("111-222-333-444", this.compositePVM.getValue());
 	}
 
 	public void testGetValue2() {
-		ArrayList<PropertyValueModel<Integer>> list = new ArrayList<>();
-		CollectionTools.addAll(list, this.cvm);
-		this.compositePVM = CollectionValueModelTools.compositePropertyValueModel(list, new LocalTransformer());
+		ArrayList<PropertyValueModel<String>> list = new ArrayList<>();
+		ListTools.addAll(list, 0, this.lvm);
+		this.compositePVM = ListValueModelTools.compositePropertyValueModel(list, new LocalTransformer());
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addChangeListener(listener);
-		assertEquals(10, this.compositePVM.getValue().intValue());
+		assertEquals("111-222-333-444", this.compositePVM.getValue());
 	}
 
 	public void testGetValue3() {
-		this.compositePVM = CollectionValueModelTools.compositePropertyValueModel(new LocalTransformer(), this.pvm1, this.pvm2, this.pvm3, this.pvm4);
+		this.compositePVM = ListValueModelTools.compositePropertyValueModel(new LocalTransformer(), this.pvm1, this.pvm2, this.pvm3, this.pvm4);
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addChangeListener(listener);
-		assertEquals(10, this.compositePVM.getValue().intValue());
+		assertEquals("111-222-333-444", this.compositePVM.getValue());
 	}
 
 	public void testValueAndListeners1() {
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addChangeListener(listener);
-		assertEquals(10, this.compositePVM.getValue().intValue());
+		assertEquals("111-222-333-444", this.compositePVM.getValue());
 		this.compositePVM.removeChangeListener(listener);
 		assertNull(this.compositePVM.getValue());
 	}	
@@ -137,7 +140,7 @@ public class CompositePropertyValueModelTests
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
-		assertEquals(10, this.compositePVM.getValue().intValue());
+		assertEquals("111-222-333-444", this.compositePVM.getValue());
 		this.compositePVM.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertNull(this.compositePVM.getValue());
 	}
@@ -154,44 +157,62 @@ public class CompositePropertyValueModelTests
 
 	private void verifyPropertyChange() {
 		this.event = null;
-		this.pvm1.setValue(Integer.valueOf(5));
-		this.verifyEvent(10, 14);
+		this.pvm1.setValue("555");
+		this.verifyEvent("111-222-333-444", "555-222-333-444");
 
 		this.event = null;
-		this.pvm4.setValue(Integer.valueOf(0));
-		this.verifyEvent(14, 10);
+		this.pvm4.setValue("000");
+		this.verifyEvent("555-222-333-444", "555-222-333-000");
 	}
 
-	public void testCollectionChange1() {
+	public void testListChange1() {
 		this.compositePVM.addChangeListener(this.buildListener());
-		this.verifyCollectionChange();
+		this.verifyListChange();
 	}
 
-	public void testCollectionChange2() {
+	public void testListChange2() {
 		this.compositePVM.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildListener());
-		this.verifyCollectionChange();
+		this.verifyListChange();
 	}
 
-	private void verifyCollectionChange() {
+	private void verifyListChange() {
 		this.event = null;
-		ModifiablePropertyValueModel<Integer> pvm = new SimplePropertyValueModel<>(Integer.valueOf(77));
-		this.cvm.add(pvm);
-		this.verifyEvent(10, 87);
+		ModifiablePropertyValueModel<String> pvm7 = new SimplePropertyValueModel<>("777");
+		this.lvm.add(pvm7);
+		this.verifyEvent("111-222-333-444", "111-222-333-444-777");
 
 		this.event = null;
-		this.cvm.remove(pvm);
-		this.verifyEvent(87, 10);
+		this.lvm.remove(pvm7);
+		this.verifyEvent("111-222-333-444-777", "111-222-333-444");
 
 		this.event = null;
-		this.cvm.clear();
-		this.verifyEvent(10, 0);
+		ModifiablePropertyValueModel<String> pvmX = new SimplePropertyValueModel<>("XXX");
+		this.lvm.add(2, pvmX);
+		this.verifyEvent("111-222-333-444", "111-222-XXX-333-444");
 
-		Collection<PropertyValueModel<Integer>> c2 = new ArrayList<>();
+		this.event = null;
+		this.lvm.move(3, 2);
+		this.verifyEvent("111-222-XXX-333-444", "111-222-333-XXX-444");
+
+		this.event = null;
+		ModifiablePropertyValueModel<String> pvmZ = new SimplePropertyValueModel<>("ZZZ");
+		this.lvm.set(3, pvmZ);
+		this.verifyEvent("111-222-333-XXX-444", "111-222-333-ZZZ-444");
+
+		this.event = null;
+		this.lvm.remove(3);
+		this.verifyEvent("111-222-333-ZZZ-444", "111-222-333-444");
+
+		this.event = null;
+		this.lvm.clear();
+		this.verifyEvent("111-222-333-444", "");
+
+		List<PropertyValueModel<String>> c2 = new ArrayList<>();
 		c2.add(this.pvm1);
 		c2.add(this.pvm2);
 		this.event = null;
-		this.cvm.setValues(c2);
-		this.verifyEvent(0, 3);
+		this.lvm.setListValues(c2);
+		this.verifyEvent("", "111-222");
 	}
 
 	public void testLazyListening1() {
@@ -230,7 +251,7 @@ public class CompositePropertyValueModelTests
 	public void testCtor_NPE2() {
 		boolean exCaught = false;
 		try {
-			this.compositePVM = CollectionValueModelTools.compositePropertyValueModel((CollectionValueModel<PropertyValueModel<Integer>>) this.cvm, (TransformerAdapter<Collection<Integer>, Integer>) null);
+			this.compositePVM = ListValueModelTools.compositePropertyValueModel((ListValueModel<PropertyValueModel<String>>) this.lvm, (TransformerAdapter<List<String>, String>) null);
 			fail("bogus: " + this.compositePVM);
 		} catch (NullPointerException ex) {
 			exCaught = true;
@@ -243,8 +264,8 @@ public class CompositePropertyValueModelTests
 		this.compositePVM.addChangeListener(listener);
 		boolean exCaught = false;
 		try {
-			this.cvm.add(null);
-			fail("bogus: " + this.cvm);
+			this.lvm.add(null);
+			fail("bogus: " + this.lvm);
 		} catch (NullPointerException ex) {
 			exCaught = true;
 		}
@@ -256,8 +277,8 @@ public class CompositePropertyValueModelTests
 		this.compositePVM.addChangeListener(listener);
 		boolean exCaught = false;
 		try {
-			this.cvm.add(this.pvm1);
-			fail("bogus: " + this.cvm);
+			this.lvm.add(this.pvm1);
+			fail("bogus: " + this.lvm);
 		} catch (IllegalStateException ex) {
 			exCaught = true;
 		}
@@ -268,16 +289,16 @@ public class CompositePropertyValueModelTests
 		return new ChangeAdapter() {
 			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
-				CompositePropertyValueModelTests.this.event = e;
+				ListCompositePropertyValueModelTests.this.event = e;
 			}
 		};
 	}
 
-	private void verifyEvent(int oldValue, int newValue) {
+	private void verifyEvent(String oldValue, String newValue) {
 		assertNotNull(this.event);
 		assertEquals(this.compositePVM, this.event.getSource());
 		assertEquals(PropertyValueModel.VALUE, this.event.getPropertyName());
-		assertEquals(Integer.valueOf(oldValue), this.event.getOldValue());
-		assertEquals(Integer.valueOf(newValue), this.event.getNewValue());
+		assertEquals(oldValue, this.event.getOldValue());
+		assertEquals(newValue, this.event.getNewValue());
 	}
 }

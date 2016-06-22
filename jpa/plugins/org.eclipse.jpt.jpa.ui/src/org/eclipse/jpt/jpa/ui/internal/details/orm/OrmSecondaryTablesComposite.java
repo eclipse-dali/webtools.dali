@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,18 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
@@ -74,22 +75,21 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildDefineInXmlModel() {
-		return new DefineInXmlModel();
+		return ListValueModelTools.isEmptyModifiablePropertyValueModel(this.buildVirtualSecondaryTablesModel(), new DefineInXmlSetValueClosure());
 	}
 
-	private ListValueModel<SecondaryTable> buildSecondaryTablesListHolder() {
-		List<ListValueModel<? extends SecondaryTable>> list = new ArrayList<ListValueModel<? extends SecondaryTable>>();
-		list.add(buildSpecifiedSecondaryTablesListHolder());
-		list.add(buildVirtualSecondaryTablesListHolder());
+	private ListValueModel<SecondaryTable> buildSecondaryTablesModel() {
+		List<ListValueModel<? extends SecondaryTable>> list = new ArrayList<>();
+		list.add(buildSpecifiedSecondaryTablesModel());
+		list.add(buildVirtualSecondaryTablesModel());
 		return CompositeListValueModel.forModels(list);
 	}
 
 	private ListValueModel<SecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<SecondaryTable>(buildSecondaryTablesListHolder(),
-			Table.SPECIFIED_NAME_PROPERTY);
+		return new ItemPropertyListValueModelAdapter<>(buildSecondaryTablesModel(), Table.SPECIFIED_NAME_PROPERTY);
 	}
 
-	private ListValueModel<OrmSpecifiedSecondaryTable> buildSpecifiedSecondaryTablesListHolder() {
+	private ListValueModel<OrmSpecifiedSecondaryTable> buildSpecifiedSecondaryTablesModel() {
 		return new ListAspectAdapter<OrmEntity, OrmSpecifiedSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
 			protected ListIterable<OrmSpecifiedSecondaryTable> getListIterable() {
@@ -103,7 +103,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		};
 	}
 
-	ListValueModel<OrmVirtualSecondaryTable> buildVirtualSecondaryTablesListHolder() {
+	ListValueModel<OrmVirtualSecondaryTable> buildVirtualSecondaryTablesModel() {
 		return new ListAspectAdapter<OrmEntity, OrmVirtualSecondaryTable>(getSubjectHolder(), OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST) {
 			@Override
 			protected ListIterable<OrmVirtualSecondaryTable> getListIterable() {
@@ -118,6 +118,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void initializeLayout(Composite container) {
 		ModifiableCollectionValueModel<SpecifiedSecondaryTable> selectedSecondaryTablesModel =
 			buildSelectedSecondaryTablesModel();
@@ -163,23 +164,11 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			getSubject().getMappingFileRoot().getSchema());
 	}
 
-	private class DefineInXmlModel extends ListPropertyValueModelAdapter<Boolean>
-		implements ModifiablePropertyValueModel<Boolean> {
-
-		public DefineInXmlModel() {
-			super(buildVirtualSecondaryTablesListHolder());
-		}
-
-		@Override
-		protected Boolean buildValue() {
-			if (getSubject() == null) {
-				return Boolean.FALSE;
-			}
-			return Boolean.valueOf(getSubject().secondaryTablesAreDefinedInXml());
-		}
-
-		public void setValue(Boolean value) {
-			getSubject().setSecondaryTablesAreDefinedInXml(value.booleanValue());
+	class DefineInXmlSetValueClosure
+		implements BooleanClosure.Adapter
+	{
+		public void execute(boolean value) {
+			getSubject().setSecondaryTablesAreDefinedInXml(value);
 		}
 	}
 }

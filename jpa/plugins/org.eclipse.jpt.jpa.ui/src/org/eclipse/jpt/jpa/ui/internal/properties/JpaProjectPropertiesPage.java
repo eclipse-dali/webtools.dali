@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,12 +41,14 @@ import org.eclipse.jpt.common.utility.internal.model.value.AspectCollectionValue
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CompositePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggableModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
@@ -194,11 +196,11 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA project model
 	private PropertyValueModel<JpaProject> buildJpaProjectModel() {
-		return new DoublePropertyValueModel<JpaProject>(this.buildJpaProjectModelModel());
+		return new DoublePropertyValueModel<>(this.buildJpaProjectModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaProject>> buildJpaProjectModelModel() {
-		return new TransformationPropertyValueModel<IProject, PropertyValueModel<JpaProject>>(this.projectModel, JPA_PROJECT_MODEL_TRANSFORMER);
+		return new TransformationPropertyValueModel<>(this.projectModel, JPA_PROJECT_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<IProject, PropertyValueModel<JpaProject>> JPA_PROJECT_MODEL_TRANSFORMER = new JpaProjectModelTransformer();
@@ -208,18 +210,18 @@ public class JpaProjectPropertiesPage
 	{
 		@Override
 		protected PropertyValueModel<JpaProject> transform_(IProject project) {
-			return (JpaProjectModel) project.getAdapter(JpaProjectModel.class);
+			return project.getAdapter(JpaProjectModel.class);
 		}
 	}
 
 	// ***** JPA project is not null model
 	private PropertyValueModel<Boolean> buildJpaProjectIsNotNullFlagModel() {
-		return new PredicatePropertyValueModel<JpaProject>(this.jpaProjectModel, PredicateTools.isNotNull());
+		return new PredicatePropertyValueModel<>(this.jpaProjectModel, PredicateTools.isNotNull());
 	}
 
 	// ***** JPA platform config model
 	private BufferedModifiablePropertyValueModel<JpaPlatform.Config> buildJpaPlatformConfigModel() {
-		return new BufferedModifiablePropertyValueModel<JpaPlatform.Config>(new JpaPlatformConfigModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new JpaPlatformConfigModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private PropertyChangeListener buildJpaPlatformConfigListener(){
@@ -245,7 +247,7 @@ public class JpaProjectPropertiesPage
 
 	// ***** connection models
 	private BufferedModifiablePropertyValueModel<String> buildConnectionModel() {
-		return new BufferedModifiablePropertyValueModel<String>(new ConnectionModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new ConnectionModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private PropertyValueModel<ConnectionProfile> buildConnectionProfileModel() {
@@ -258,15 +260,19 @@ public class JpaProjectPropertiesPage
 
 	// ***** catalog models
 	private BufferedModifiablePropertyValueModel<Boolean> buildUserOverrideDefaultCatalogFlagModel() {
-		return new BufferedModifiablePropertyValueModel<Boolean>(new UserOverrideDefaultCatalogFlagModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultCatalogFlagModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private BufferedModifiablePropertyValueModel<String> buildUserOverrideDefaultCatalogModel() {
-		return new BufferedModifiablePropertyValueModel<String>(new UserOverrideDefaultCatalogModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultCatalogModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultCatalogModel() {
-		return new DefaultModel(
+		return PropertyValueModelTools.modifiablePropertyValueModel(this.buildDefaultCatalogModelAdapterFactory());
+	}
+
+	private PluggableModifiablePropertyValueModel.Adapter.Factory<String> buildDefaultCatalogModelAdapterFactory() {
+		return new DefaultDatabaseComponentModelAdapter.Factory(
 					this.userOverrideDefaultCatalogFlagModel,
 					this.userOverrideDefaultCatalogModel,
 					this.buildDatabaseDefaultCatalogModel()
@@ -281,7 +287,7 @@ public class JpaProjectPropertiesPage
 	 * Add the default catalog if it is not on the list from the database
 	 */
 	private ListValueModel<String> buildCatalogChoicesModel() {
-		return new SortedListValueModelAdapter<String>(this.buildUnsortedCatalogChoicesModel(), STRING_COMPARATOR);
+		return new SortedListValueModelAdapter<>(this.buildUnsortedCatalogChoicesModel(), STRING_COMPARATOR);
 	}
 
 	/**
@@ -289,9 +295,9 @@ public class JpaProjectPropertiesPage
 	 */
 	@SuppressWarnings("unchecked")
 	private CollectionValueModel<String> buildUnsortedCatalogChoicesModel() {
-		return new SetCollectionValueModel<String>(
+		return new SetCollectionValueModel<>(
 					CompositeCollectionValueModel.forModels(
-							new PropertyCollectionValueModelAdapter<String>(this.defaultCatalogModel),
+							new PropertyCollectionValueModelAdapter<>(this.defaultCatalogModel),
 							this.buildDatabaseCatalogChoicesModel()
 					)
 			);
@@ -303,15 +309,19 @@ public class JpaProjectPropertiesPage
 
 	// ***** schema models
 	private BufferedModifiablePropertyValueModel<Boolean> buildUserOverrideDefaultSchemaFlagModel() {
-		return new BufferedModifiablePropertyValueModel<Boolean>(new UserOverrideDefaultSchemaFlagModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultSchemaFlagModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private BufferedModifiablePropertyValueModel<String> buildUserOverrideDefaultSchemaModel() {
-		return new BufferedModifiablePropertyValueModel<String>(new UserOverrideDefaultSchemaModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultSchemaModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultSchemaModel() {
-		return new DefaultModel(
+		return PropertyValueModelTools.modifiablePropertyValueModel(this.buildDefaultSchemaModelAdapterFactory());
+	}
+
+	private PluggableModifiablePropertyValueModel.Adapter.Factory<String> buildDefaultSchemaModelAdapterFactory() {
+		return new DefaultDatabaseComponentModelAdapter.Factory(
 					this.userOverrideDefaultSchemaFlagModel,
 					this.userOverrideDefaultSchemaModel,
 					this.buildDatabaseDefaultSchemaModel()
@@ -326,14 +336,14 @@ public class JpaProjectPropertiesPage
 	 * Add the default catalog if it is not on the list from the database
 	 */
 	private ListValueModel<String> buildSchemaChoicesModel() {
-		return new SortedListValueModelAdapter<String>(this.buildUnsortedSchemaChoicesModel(), STRING_COMPARATOR);
+		return new SortedListValueModelAdapter<>(this.buildUnsortedSchemaChoicesModel(), STRING_COMPARATOR);
 	}
 
 	@SuppressWarnings("unchecked")
 	private CollectionValueModel<String> buildUnsortedSchemaChoicesModel() {
-		return new SetCollectionValueModel<String>(
+		return new SetCollectionValueModel<>(
 				CompositeCollectionValueModel.forModels(
-						new PropertyCollectionValueModelAdapter<String>(this.defaultSchemaModel),
+						new PropertyCollectionValueModelAdapter<>(this.defaultSchemaModel),
 						this.buildDatabaseSchemaChoicesModel()
 				)
 			);
@@ -345,32 +355,32 @@ public class JpaProjectPropertiesPage
 
 	// ***** discover/list annotated classes models
 	private BufferedModifiablePropertyValueModel<Boolean> buildDiscoverAnnotatedClassesModel() {
-		return new BufferedModifiablePropertyValueModel<Boolean>(new DiscoverAnnotatedClassesModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new DiscoverAnnotatedClassesModel(this.jpaProjectModel), this.trigger);
 	}
 
 	/**
 	 * The opposite of the "discover annotated classes" flag.
 	 */
 	private ModifiablePropertyValueModel<Boolean> buildListAnnotatedClassesModel() {
-		return new TransformationModifiablePropertyValueModel<Boolean, Boolean>(this.discoverAnnotatedClassesModel, TransformerTools.notBooleanTransformer(), TransformerTools.notBooleanTransformer());
+		return new TransformationModifiablePropertyValueModel<>(this.discoverAnnotatedClassesModel, TransformerTools.notBooleanTransformer(), TransformerTools.notBooleanTransformer());
 	}
 
 	// ***** JPA 2.0 project flag
 	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
-		return new PredicatePropertyValueModel<JpaProject>(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0);
+		return new PredicatePropertyValueModel<>(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0);
 	}
 
 	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = PredicateTools.nullCheck(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
 
 	// ***** metamodel models
 	private BufferedModifiablePropertyValueModel<String> buildMetamodelSourceFolderModel() {
-		return new BufferedModifiablePropertyValueModel<String>(new MetamodelSourceFolderModel(this.jpaProjectModel), this.trigger);
+		return new BufferedModifiablePropertyValueModel<>(new MetamodelSourceFolderModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private ListValueModel<String> buildJavaSourceFolderChoicesModel() {
 		// by default, ExtendedListValueModelWrapper puts a null at the top of the list
-		return new ExtendedListValueModelWrapper<String>(
-					new SortedListValueModelAdapter<String>(
+		return new ExtendedListValueModelWrapper<>(
+					new SortedListValueModelAdapter<>(
 						new JavaSourceFolderChoicesModel(this.jpaProjectModel),
 						STRING_COMPARATOR
 					)
@@ -418,7 +428,7 @@ public class JpaProjectPropertiesPage
 
 	@Override
 	protected LibraryInstallDelegate createLibraryInstallDelegate(IFacetedProject project, IProjectFacetVersion fv) {
-		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		Map<String, Object> enablementVariables = new HashMap<>();
 
 		//TODO Ask Paul about these empty enablement variables - trying to reproduce Helios functionality
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, ""); //$NON-NLS-1$
@@ -486,7 +496,7 @@ public class JpaProjectPropertiesPage
 		lid.setEnablementContextVariable(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformID);
 		lid.setEnablementContextVariable(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, jpaPlatformConfig);
 
-		ArrayList<JpaLibraryProviderInstallOperationConfig> jpaConfigs = new ArrayList<JpaLibraryProviderInstallOperationConfig>();
+		ArrayList<JpaLibraryProviderInstallOperationConfig> jpaConfigs = new ArrayList<>();
 		// add the currently selected one first
 		JpaLibraryProviderInstallOperationConfig currentJpaConfig = null;
 		LibraryProviderOperationConfig config = lid.getLibraryProviderOperationConfig();
@@ -574,8 +584,8 @@ public class JpaProjectPropertiesPage
 	 * would be no JPA project!
 	 */
 	private ListValueModel<JpaPlatform.Config> buildJpaPlatformConfigChoicesModel() {
-		return new SortedListValueModelAdapter<JpaPlatform.Config>(
-				new SetCollectionValueModel<JpaPlatform.Config>(
+		return new SortedListValueModelAdapter<>(
+				new SetCollectionValueModel<>(
 					CompositeCollectionValueModel.forModels(
 						this.buildJpaPlatformConfigChoicesModels()
 					)
@@ -587,7 +597,7 @@ public class JpaProjectPropertiesPage
 	@SuppressWarnings("unchecked")
 	private CollectionValueModel<JpaPlatform.Config>[] buildJpaPlatformConfigChoicesModels() {
 		return new CollectionValueModel[] {
-				new PropertyCollectionValueModelAdapter<JpaPlatform.Config>(this.jpaPlatformConfigModel),
+				new PropertyCollectionValueModelAdapter<>(this.jpaPlatformConfigModel),
 				this.buildEnabledJpaPlatformConfigsModel()
 			};
 	}
@@ -597,7 +607,7 @@ public class JpaProjectPropertiesPage
 	 * JPA facet version.
 	 */
 	private CollectionValueModel<JpaPlatform.Config> buildEnabledJpaPlatformConfigsModel() {
-		return new StaticCollectionValueModel<JpaPlatform.Config>(
+		return new StaticCollectionValueModel<>(
 				IterableTools.filter(
 					getJpaPlatformConfigs(),
 					new JpaPlatformConfigIsEnabled()
@@ -871,7 +881,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private JpaProject.Reference getJpaProjectReference() {
-		return ((JpaProject.Reference) this.getProject().getAdapter(JpaProject.Reference.class));
+		return this.getProject().getAdapter(JpaProject.Reference.class);
 	}
 
 	@Override
@@ -972,7 +982,7 @@ public class JpaProjectPropertiesPage
         JpaPlatform.Config jpaPlatformConfig = this.jpaPlatformConfigModel.getValue();
         String jpaPlatformID = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId(); //$NON-NLS-1$
 
-        Map<String, Object> enablementVariables = new HashMap<String, Object>();
+        Map<String, Object> enablementVariables = new HashMap<>();
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformID);
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.jpaProjectModel.getValue().getJpaPlatform().getConfig());
 
@@ -1088,8 +1098,8 @@ public class JpaProjectPropertiesPage
 	 */
 	// by default, ExtendedListValueModelWrapper puts a null at the top of the list
 	private static final ListValueModel<String> CONNECTION_CHOICES_MODEL =
-			new ExtendedListValueModelWrapper<String>(
-					new SortedListValueModelAdapter<String>(
+			new ExtendedListValueModelWrapper<>(
+					new SortedListValueModelAdapter<>(
 							new ConnectionChoicesModel(),
 							STRING_COMPARATOR
 					)
@@ -1710,63 +1720,158 @@ public class JpaProjectPropertiesPage
 	 * is the JPA project's user override default, otherwise the default is
 	 * determined by the database.
 	 */
-	static class DefaultModel
-		extends CompositePropertyValueModel<String, Object>
-		implements ModifiablePropertyValueModel<String>
+	static class DefaultDatabaseComponentModelAdapter
+		implements PluggableModifiablePropertyValueModel.Adapter<String>
 	{
-		private final PropertyValueModel<Boolean> userOverrideDefaultFlagModel;
-		private final ModifiablePropertyValueModel<String> userOverrideDefaultModel;
-		private final PropertyValueModel<String> databaseDefaultModel;
+		private final Factory factory;
 
-		@SuppressWarnings("unchecked")
-		DefaultModel(
-				PropertyValueModel<Boolean> userOverrideDefaultFlagModel,
-				ModifiablePropertyValueModel<String> userOverrideDefaultModel,
-				PropertyValueModel<String> databaseDefaultModel
-		) {
-			super(userOverrideDefaultFlagModel, userOverrideDefaultModel, databaseDefaultModel);
-			this.userOverrideDefaultFlagModel = userOverrideDefaultFlagModel;
-			this.userOverrideDefaultModel = userOverrideDefaultModel;
-			this.databaseDefaultModel = databaseDefaultModel;
+		private final PropertyChangeListener userOverrideDefaultFlagListener = new UserOverrideDefaultFlagListener();
+		/* CU private */ volatile boolean userOverrideDefaultFlag = false;
+
+		private final PropertyChangeListener userOverrideDefaultListener = new UserOverrideDefaultListener();
+		/* CU private */ volatile String userOverrideDefault = null;
+
+		private final PropertyChangeListener databaseDefaultListener = new DatabaseDefaultListener();
+		/* CU private */ volatile String databaseDefault = null;
+
+		private final PluggablePropertyValueModel.Adapter.Listener<String> listener;
+		private volatile String value = null;
+
+
+		public DefaultDatabaseComponentModelAdapter(Factory factory, PluggablePropertyValueModel.Adapter.Listener<String> listener) {
+			super();
+			if (factory == null) {
+				throw new NullPointerException();
+			}
+			this.factory = factory;
+			if (listener == null) {
+				throw new NullPointerException();
+			}
+			this.listener = listener;
+		}
+
+		public String getValue() {
+			return this.value;
 		}
 
 		/**
-		 * If the checkbox has been unchecked, we need to clear out the JPA
-		 * project's user override.
+		 * This will be called when the user makes a selection from the
+		 * drop-down; which is possible only when the checkbox is checked
+		 * (and the drop-down is enabled).
 		 */
-		@Override
-		protected void componentChanged(PropertyChangeEvent event) {
-			super.componentChanged(event);
-			if (event.getSource() == this.userOverrideDefaultFlagModel) {
-				if ( ! this.userOverrideDefaultFlagIsSet()) {
-					this.userOverrideDefaultModel.setValue(null);
-				}
-			}
+		public void setValue(String value) {
+			this.factory.userOverrideDefaultModel.setValue(value);
+		}
+
+		public void engageModel() {
+			this.factory.userOverrideDefaultFlagModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
+			this.factory.userOverrideDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
+			this.factory.databaseDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
+			this.value = this.buildValue();
+		}
+
+		public void disengageModel() {
+			this.value = null;
+			this.factory.databaseDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
+			this.factory.userOverrideDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
+			this.factory.userOverrideDefaultFlagModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
+		}
+
+		/* CU private */ void update() {
+			this.listener.valueChanged(this.value = this.buildValue());
 		}
 
 		/**
 		 * If the checkbox is checked, return the user override from the JPA project;
 		 * otherwise return the default from the database
 		 */
+		private String buildValue() {
+			return this.userOverrideDefaultFlag ? this.userOverrideDefault : this.databaseDefault;
+		}
+
 		@Override
-		protected String buildValue() {
-			return this.userOverrideDefaultFlagIsSet() ?
-					this.userOverrideDefaultModel.getValue() :
-					this.databaseDefaultModel.getValue();
+		public String toString() {
+			return ObjectTools.toString(this, this.value);
 		}
 
-		/**
-		 * This will be called when the user makes a selection from the
-		 * drop-down; which is only possible when the checkbox is checked
-		 * (and the drop-down is enabled).
-		 */
-		public void setValue(String value) {
-			this.userOverrideDefaultModel.setValue(value);
-			this.propertyChanged();
+
+		// ********** user override default flag listener **********
+		
+		/* CU private */ class UserOverrideDefaultFlagListener
+			extends PropertyChangeAdapter
+		{
+			@Override
+			public void propertyChanged(PropertyChangeEvent event) {
+				DefaultDatabaseComponentModelAdapter.this.userOverrideDefaultFlagChanged(event);
+			}
 		}
 
-		private boolean userOverrideDefaultFlagIsSet() {
-			return flagIsSet(this.userOverrideDefaultFlagModel);
+		/* CU private */ void userOverrideDefaultFlagChanged(PropertyChangeEvent event) {
+			Boolean newValue = (Boolean) event.getNewValue();
+			this.userOverrideDefaultFlag = (newValue != null) && newValue.booleanValue();
+			this.update();
+
+			// If the checkbox has been unchecked, we need to clear out the JPA project's user override.
+			if ( ! this.userOverrideDefaultFlag) {
+				this.factory.userOverrideDefaultModel.setValue(null);
+			}
+		}
+
+
+		// ********** user override default listener **********
+
+		/* CU private */ class UserOverrideDefaultListener
+			extends PropertyChangeAdapter
+		{
+			@Override
+			public void propertyChanged(PropertyChangeEvent event) {
+				DefaultDatabaseComponentModelAdapter.this.userOverrideDefault = (String) event.getNewValue();
+				DefaultDatabaseComponentModelAdapter.this.update();
+			}
+		}
+
+
+		// ********** database default listener **********
+
+		/* CU private */ class DatabaseDefaultListener
+			extends PropertyChangeAdapter
+		{
+			@Override
+			public void propertyChanged(PropertyChangeEvent event) {
+				DefaultDatabaseComponentModelAdapter.this.databaseDefault = (String) event.getNewValue();
+				DefaultDatabaseComponentModelAdapter.this.update();
+			}
+		}
+
+
+		// ********** Factory **********
+
+		public static class Factory
+			implements PluggableModifiablePropertyValueModel.Adapter.Factory<String>
+		{
+			/* CU private */ final PropertyValueModel<Boolean> userOverrideDefaultFlagModel;
+			/* CU private */ final ModifiablePropertyValueModel<String> userOverrideDefaultModel;
+			/* CU private */ final PropertyValueModel<String> databaseDefaultModel;
+
+			public Factory(
+					PropertyValueModel<Boolean> userOverrideDefaultFlagModel,
+					ModifiablePropertyValueModel<String> userOverrideDefaultModel,
+					PropertyValueModel<String> databaseDefaultModel
+			) {
+				super();
+				this.userOverrideDefaultFlagModel = userOverrideDefaultFlagModel;
+				this.userOverrideDefaultModel = userOverrideDefaultModel;
+				this.databaseDefaultModel = databaseDefaultModel;
+			}
+
+			public DefaultDatabaseComponentModelAdapter buildAdapter(PluggablePropertyValueModel.Adapter.Listener<String> listener) {
+				return new DefaultDatabaseComponentModelAdapter(this, listener);
+			}
+
+			@Override
+			public String toString() {
+				return ObjectTools.toString(this);
+			}
 		}
 	}
 }

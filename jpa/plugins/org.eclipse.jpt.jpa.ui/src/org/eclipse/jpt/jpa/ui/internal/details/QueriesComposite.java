@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -99,23 +99,15 @@ public class QueriesComposite
 	protected void initialize() {
 		super.initialize();
 		this.selectedQueriesModel = this.buildSelectedQueriesModel();
-		this.selectedQueryModel = this.buildSelectedQueryModel(this.selectedQueriesModel);
+		this.selectedQueryModel = this.buildSelectedQueryModel();
 	}
 
 	private ModifiableCollectionValueModel<Query> buildSelectedQueriesModel() {
-		return new SimpleCollectionValueModel<Query>();
+		return new SimpleCollectionValueModel<>();
 	}
 
-	private PropertyValueModel<Query> buildSelectedQueryModel(CollectionValueModel<Query> selectedQueriesModel) {
-		return new CollectionPropertyValueModelAdapter<Query, Query>(selectedQueriesModel) {
-			@Override
-			protected Query buildValue() {
-				if (this.collectionModel.size() == 1) {
-					return this.collectionModel.iterator().next();
-				}
-				return null;
-			}
-		};
+	private PropertyValueModel<Query> buildSelectedQueryModel() {
+		return CollectionValueModelTools.singleElementPropertyValueModel(this.selectedQueriesModel);
 	}
 
 	protected PropertyValueModel<Query> getSelectedQueryModel() {

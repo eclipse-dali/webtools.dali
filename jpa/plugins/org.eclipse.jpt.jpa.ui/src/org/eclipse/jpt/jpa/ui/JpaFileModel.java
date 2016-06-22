@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 
@@ -27,8 +26,5 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 public interface JpaFileModel
 	extends PropertyValueModel<JpaFile>
 {
-	/**
-	 * Return the file corresponding to the JPA file model.
-	 */
-	IFile getFile();
+	// simply an interface we can use in an adapter definition
 }

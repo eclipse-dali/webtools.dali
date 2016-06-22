@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
+import java.util.Collection;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -25,13 +26,14 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -118,16 +120,16 @@ public class PersistenceUnitClassesComposite
 
 			@Override
 			public PropertyValueModel<Boolean> buildOptionalButtonEnabledModel(CollectionValueModel<ClassRef> selectedItemsModel) {
-				return new CollectionPropertyValueModelAdapter<Boolean, ClassRef>(selectedItemsModel) {
-					@Override
-					protected Boolean buildValue() {
-						if (this.collectionModel.size() == 1) {
-							ClassRef classRef = this.collectionModel.iterator().next();
-							return Boolean.valueOf(findType(classRef) != null);				
+				return CollectionValueModelTools.propertyValueModel(selectedItemsModel, new TransformerAdapter<Collection<ClassRef>, Boolean>() {
+						@Override
+						public Boolean transform(Collection<ClassRef> collection) {
+							return Boolean.valueOf(this.transform_(collection));
 						}
-						return Boolean.FALSE;
-					}
-				};
+						private boolean transform_(Collection<ClassRef> collection) {
+							return (collection.size() == 1) &&
+									(findType(collection.iterator().next()) != null);
+						}
+					});
 			}
 
 			@Override

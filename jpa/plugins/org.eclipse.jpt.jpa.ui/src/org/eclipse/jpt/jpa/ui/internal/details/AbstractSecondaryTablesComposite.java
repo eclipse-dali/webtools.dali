@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import java.util.Collection;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -80,19 +82,11 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	}
 
 	protected ModifiableCollectionValueModel<SpecifiedSecondaryTable> buildSelectedSecondaryTablesModel() {
-		return new SimpleCollectionValueModel<SpecifiedSecondaryTable>();
+		return new SimpleCollectionValueModel<>();
 	}
 
 	protected PropertyValueModel<SpecifiedSecondaryTable> buildSelectedSecondaryTableModel(CollectionValueModel<SpecifiedSecondaryTable> selectedSecondaryTablesModel) {
-		return new CollectionPropertyValueModelAdapter<SpecifiedSecondaryTable, SpecifiedSecondaryTable>(selectedSecondaryTablesModel) {
-			@Override
-			protected SpecifiedSecondaryTable buildValue() {
-				if (this.collectionModel.size() == 1) {
-					return this.collectionModel.iterator().next();
-				}
-				return null;
-			}
-		};
+		return CollectionValueModelTools.singleElementPropertyValueModel(selectedSecondaryTablesModel);
 	}
 
 	protected ILabelProvider buildSecondaryTableLabelProvider() {
@@ -155,16 +149,16 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 
 			@Override
 			public PropertyValueModel<Boolean> buildOptionalButtonEnabledModel(CollectionValueModel<SpecifiedSecondaryTable> selectedItemsModel) {
-				return new CollectionPropertyValueModelAdapter<Boolean, SpecifiedSecondaryTable>(selectedItemsModel) {
+				return CollectionValueModelTools.propertyValueModel(selectedItemsModel, new TransformerAdapter<Collection<SpecifiedSecondaryTable>, Boolean>() {
 					@Override
-					protected Boolean buildValue() {
-						if (this.collectionModel.size() == 1) {
-							SpecifiedSecondaryTable secondaryTable = this.collectionModel.iterator().next();
-							return Boolean.valueOf(!secondaryTable.isVirtual());				
-						}
-						return Boolean.FALSE;
+					public Boolean transform(Collection<SpecifiedSecondaryTable> collection) {
+						return Boolean.valueOf(this.transform_(collection));
 					}
-				};
+					private boolean transform_(Collection<SpecifiedSecondaryTable> collection) {
+						return (collection.size() == 1) &&
+								! collection.iterator().next().isVirtual();
+					}
+				});
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
@@ -48,22 +46,14 @@ public class FilteringCollectionValueModel<E>
 	extends CollectionValueModelWrapper<E>
 	implements CollectionValueModel<E>
 {
-	/** This filters the items in the nested collection. */
-	private Predicate<E> filter;
+	/** This filters the items in the wrapped collection. */
+	private volatile Predicate<E> filter;
 
 	/** Cache the items that were accepted by the filter */
-	private final ArrayList<E> filteredItems = new ArrayList<E>();
+	private final HashBag<E> filteredItems = new HashBag<>();
 
 
 	// ********** constructors **********
-
-	/**
-	 * Construct a collection value model with the specified wrapped
-	 * collection value model and a filter that simply accepts every object.
-	 */
-	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel) {
-		this(collectionModel, PredicateTools.<E>true_());
-	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
@@ -75,22 +65,6 @@ public class FilteringCollectionValueModel<E>
 			throw new NullPointerException();
 		}
 		this.filter = filter;
-	}
-
-	/**
-	 * Construct a collection value model with the specified wrapped
-	 * list value model and a filter that simply accepts every object.
-	 */
-	public FilteringCollectionValueModel(ListValueModel<? extends E> listModel) {
-		this(new ListCollectionValueModelAdapter<E>(listModel));
-	}
-
-	/**
-	 * Construct a collection value model with the specified wrapped
-	 * list value model and filter.
-	 */
-	public FilteringCollectionValueModel(ListValueModel<? extends E> listModel, Predicate<E> filter) {
-		this(new ListCollectionValueModelAdapter<E>(listModel), filter);
 	}
 
 
@@ -148,6 +122,13 @@ public class FilteringCollectionValueModel<E>
 
 
 	// ********** miscellaneous **********
+
+	/**
+	 * Return the current filter.
+	 */
+	public Predicate<E> getFilter() {
+		return this.filter;
+	}
 
 	/**
 	 * Change the filter and rebuild the collection.

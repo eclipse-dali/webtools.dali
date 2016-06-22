@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,7 +48,7 @@ public class JpaNavigatorItemContentProviderFactory
 	/**
 	 * Delegate factories, keyed by JPA platform.
 	 */
-	private HashMap<JpaPlatform, ItemTreeContentProvider.Factory> delegates = new HashMap<JpaPlatform, ItemTreeContentProvider.Factory>();
+	private HashMap<JpaPlatform, ItemTreeContentProvider.Factory> delegates = new HashMap<>();
 
 
 	public JpaNavigatorItemContentProviderFactory() {
@@ -94,15 +94,15 @@ public class JpaNavigatorItemContentProviderFactory
 	// ********** project **********
 
 	protected CollectionValueModel<JpaContextRoot> buildProjectChildrenModel(IProject project) {
-		return new PropertyCollectionValueModelAdapter<JpaContextRoot>(this.buildProjectJpaContextRootModel(project));
+		return new PropertyCollectionValueModelAdapter<>(this.buildProjectJpaContextRootModel(project));
 	}
 
 	protected PropertyValueModel<JpaContextRoot> buildProjectJpaContextRootModel(IProject project) {
-		return new TransformationPropertyValueModel<JpaProject, JpaContextRoot>(this.buildProjectJpaProjectModel(project), TransformerTools.nullCheck(JpaProject.CONTEXT_ROOT_TRANSFORMER));
+		return new TransformationPropertyValueModel<>(this.buildProjectJpaProjectModel(project), TransformerTools.nullCheck(JpaProject.CONTEXT_ROOT_TRANSFORMER));
 	}
 
 	protected PropertyValueModel<JpaProject> buildProjectJpaProjectModel(IProject project) {
-		return (JpaProjectModel) project.getAdapter(JpaProjectModel.class);
+		return project.getAdapter(JpaProjectModel.class);
 	}
 
 
@@ -125,7 +125,7 @@ public class JpaNavigatorItemContentProviderFactory
 	}
 
 	protected ItemTreeContentProvider.Factory buildDelegate(JpaPlatform jpaPlatform) {
-		JpaPlatformUi platformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
+		JpaPlatformUi platformUI = jpaPlatform.getAdapter(JpaPlatformUi.class);
 		return (platformUI != null) ?
 				platformUI.getNavigatorFactoryProvider().getItemContentProviderFactory() :
 				NullItemTreeContentProviderFactory.instance();

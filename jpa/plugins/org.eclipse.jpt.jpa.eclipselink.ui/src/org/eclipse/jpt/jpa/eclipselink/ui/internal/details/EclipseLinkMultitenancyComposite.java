@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,10 @@ import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
+import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
@@ -119,7 +120,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		addCheckBox(
 			tenantDiscriminatorColumnGroupPane,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_OVERRIDE_DEFAULT_TENANT_DISCRIMINATOR_COLUMNS,
-			buildOverrideDefaultTenantDiscriminatorColumnHolder(),
+			buildOverrideDefaultTenantDiscriminatorColumnModel(),
 			null
 		);
 
@@ -296,16 +297,16 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 	private static final Predicate<EclipseLinkMultitenancy2_3> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =
 			PredicateTools.nullCheck(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
 
-	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
-		return new OverrideDefaultTenantDiscriminatorColumnHolder();
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnModel() {
+		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedTenantDiscriminatorColumnsListModel(), new OverrideDefaultTenantDiscriminatorColumnModelSetValueClosure());
 	}
 
-	ListValueModel<EclipseLinkTenantDiscriminatorColumn2_3> buildSpecifiedTenantDiscriminatorColumnsListHolder() {
+	ListValueModel<EclipseLinkTenantDiscriminatorColumn2_3> buildSpecifiedTenantDiscriminatorColumnsListModel() {
 		return new ListAspectAdapter<EclipseLinkMultitenancy2_3, EclipseLinkTenantDiscriminatorColumn2_3>(
 				getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getListIterable() {
-				return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(this.subject.getSpecifiedTenantDiscriminatorColumns());
+				return new SuperListIterableWrapper<>(this.subject.getSpecifiedTenantDiscriminatorColumns());
 			}
 			@Override
 			protected int size_() {
@@ -314,47 +315,38 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		};
 	}
 
-	private class OverrideDefaultTenantDiscriminatorColumnHolder 
-		extends ListPropertyValueModelAdapter<Boolean>
-		implements ModifiablePropertyValueModel<Boolean> 
+
+	class OverrideDefaultTenantDiscriminatorColumnModelSetValueClosure
+		implements BooleanClosure.Adapter
 	{
-		public OverrideDefaultTenantDiscriminatorColumnHolder() {
-			super(buildSpecifiedTenantDiscriminatorColumnsListHolder());
+		public void execute(boolean value) {
+			updateTenantDiscriminatorColumns(value);
+		}
+	}
+
+	void updateTenantDiscriminatorColumns(boolean selected) {
+		if (isPopulating()) {
+			return;
 		}
 
-		@Override
-		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listModel.size() > 0);
-		}
+		setPopulating(true);
 
-		public void setValue(Boolean value) {
-			updateTenantDiscriminatorColumns(value.booleanValue());
-		}
+		try {
+			EclipseLinkMultitenancy2_3 subject = getSubject();
 
-		private void updateTenantDiscriminatorColumns(boolean selected) {
-			if (isPopulating()) {
-				return;
+			if (selected) {
+				EclipseLinkSpecifiedTenantDiscriminatorColumn2_3 newTenantDiscriminatorColumn = subject.addSpecifiedTenantDiscriminatorColumn();
+				newTenantDiscriminatorColumn.setSpecifiedName(EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_NAME);
 			}
-
-			setPopulating(true);
-
-			try {
-				EclipseLinkMultitenancy2_3 subject = getSubject();
-
-				if (selected) {
-					EclipseLinkSpecifiedTenantDiscriminatorColumn2_3 newTenantDiscriminatorColumn = subject.addSpecifiedTenantDiscriminatorColumn();
-					newTenantDiscriminatorColumn.setSpecifiedName(EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_NAME);
-				}
-				// Remove all the specified tenant discriminator columns
-				else {
-					for (int index = subject.getSpecifiedTenantDiscriminatorColumnsSize(); --index >= 0; ) {
-						subject.removeSpecifiedTenantDiscriminatorColumn(index);
-					}
+			// Remove all the specified tenant discriminator columns
+			else {
+				for (int index = subject.getSpecifiedTenantDiscriminatorColumnsSize(); --index >= 0; ) {
+					subject.removeSpecifiedTenantDiscriminatorColumn(index);
 				}
 			}
-			finally {
-				setPopulating(false);
-			}
+		}
+		finally {
+			setPopulating(false);
 		}
 	}
 

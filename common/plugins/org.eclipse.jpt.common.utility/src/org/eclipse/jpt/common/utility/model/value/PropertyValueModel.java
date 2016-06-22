@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.model.value;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.Model;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Interface used to abstract property accessing and
@@ -31,4 +33,18 @@ public interface PropertyValueModel<V>
 	 */
 	V getValue();
 		String VALUE = "value"; //$NON-NLS-1$
+
+	@SuppressWarnings("rawtypes")
+	Transformer VALUE_TRANSFORMER = new ValueTransformer();
+	class ValueTransformer<V>
+		implements Transformer<PropertyValueModel<V>, V>
+	{
+		public V transform(PropertyValueModel<V> pvm) {
+			return pvm.getValue();
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+	}
 }

@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.ValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -55,7 +55,7 @@ public class DoublePropertyValueModelTests
 	}
 
 	protected PropertyValueModel<String> buildDoubleModel(ModifiablePropertyValueModel<ModifiablePropertyValueModel<String>> modelModel) {
-		return ValueModelTools.wrap(modelModel);
+		return PropertyValueModelTools.wrap(modelModel);
 	}
 
 	@Override

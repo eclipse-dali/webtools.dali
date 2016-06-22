@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -71,23 +71,15 @@ public class EclipseLinkTenantDiscriminatorColumnsComposite<T extends JpaModel>
 	protected void initialize() {
 		super.initialize();
 		this.selectedTenantDiscriminatorColumnsModel = this.buildSelectedTenantDiscriminatorColumnsModel();
-		this.selectedTenantDiscriminatorColumnModel = this.buildSelectedTenantDiscriminatorColumnModel(this.selectedTenantDiscriminatorColumnsModel);
+		this.selectedTenantDiscriminatorColumnModel = this.buildSelectedTenantDiscriminatorColumnModel();
 	}
 
 	private ModifiableCollectionValueModel<EclipseLinkTenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnsModel() {
-		return new SimpleCollectionValueModel<EclipseLinkTenantDiscriminatorColumn2_3>();
+		return new SimpleCollectionValueModel<>();
 	}
 
-	private PropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnModel(CollectionValueModel<EclipseLinkTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel) {
-		return new CollectionPropertyValueModelAdapter<EclipseLinkTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumn2_3>(selectedTenantDiscriminatorColumnsModel) {
-			@Override
-			protected EclipseLinkTenantDiscriminatorColumn2_3 buildValue() {
-				if (this.collectionModel.size() == 1) {
-					return this.collectionModel.iterator().next();
-				}
-				return null;
-			}
-		};
+	private PropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnModel() {
+		return CollectionValueModelTools.singleElementPropertyValueModel(this.selectedTenantDiscriminatorColumnsModel);
 	}
 
 	@Override

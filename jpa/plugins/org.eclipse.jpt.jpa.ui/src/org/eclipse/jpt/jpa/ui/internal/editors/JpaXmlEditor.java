@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.FormWidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -59,7 +59,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -88,7 +87,7 @@ public class JpaXmlEditor
 	 * <p>
 	 * @see #setInput(IEditorInput)
 	 */
-	private final ModifiablePropertyValueModel<IFileEditorInput> editorInputModel = new SimplePropertyValueModel<IFileEditorInput>();
+	private final ModifiablePropertyValueModel<IFileEditorInput> editorInputModel = new SimplePropertyValueModel<>();
 
 	/**
 	 * The root structure node model is built from the editorInputModel. We assume
@@ -224,7 +223,7 @@ public class JpaXmlEditor
 		}
 
 		JpaPlatform jpaPlatform = rootStructureNode.getJpaPlatform();
-		JpaPlatformUi jpaPlatformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
+		JpaPlatformUi jpaPlatformUI = jpaPlatform.getAdapter(JpaPlatformUi.class);
 		if (jpaPlatformUI == null) {
 			return;
 		}
@@ -272,9 +271,10 @@ public class JpaXmlEditor
 	 * Delegate to the {@link #structuredTextEditor} if necessary.
 	 */
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapterClass) {
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapterClass) {
 		Object adapter = super.getAdapter(adapterClass);
-		return (adapter != null) ? adapter : this.structuredTextEditor.getAdapter(adapterClass);
+		return (T) ((adapter != null) ? adapter : this.structuredTextEditor.getAdapter(adapterClass));
 	}
 
 	@Override
@@ -296,11 +296,11 @@ public class JpaXmlEditor
 	// ********** JPA file **********
 
 	private PropertyValueModel<JpaFile> buildJpaFileModel() {
-		return new DoublePropertyValueModel<JpaFile>(this.buildJpaFileModelModel());
+		return new DoublePropertyValueModel<>(this.buildJpaFileModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {
-		return new TransformationPropertyValueModel<IFileEditorInput, PropertyValueModel<JpaFile>>(this.editorInputModel, JPA_FILE_MODEL_TRANSFORMER);
+		return new TransformationPropertyValueModel<>(this.editorInputModel, JPA_FILE_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<IFileEditorInput, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
@@ -310,7 +310,7 @@ public class JpaXmlEditor
 	{
 		@Override
 		protected PropertyValueModel<JpaFile> transform_(IFileEditorInput fileEditorInput) {
-			return (JpaFileModel) fileEditorInput.getFile().getAdapter(JpaFileModel.class);
+			return fileEditorInput.getFile().getAdapter(JpaFileModel.class);
 		}
 	}
 
@@ -344,26 +344,14 @@ public class JpaXmlEditor
 			}
 		}
 		if (rootStructureNode != null) {
-			this.pageRootStructureNodeModel = new SimplePropertyValueModel<JpaStructureNode>(rootStructureNode);
+			this.pageRootStructureNodeModel = new SimplePropertyValueModel<>(rootStructureNode);
 			this.addSpecificPages(this.pageRootStructureNodeModel);
 		}
 	}
 
 	//*should* be only 1 root structure node for the jpa file (this is true for persistence.xml and orm.xml files)
 	private PropertyValueModel<JpaStructureNode> buildRootStructureNodeModel() {
-		return new RootStructureNodeModel(this.buildRootStructureNodesCollectionModel());
-	}
-
-	/* CU private */ static class RootStructureNodeModel
-		extends CollectionPropertyValueModelAdapter<JpaStructureNode, JpaStructureNode>
-	{
-		RootStructureNodeModel(CollectionValueModel<? extends JpaStructureNode> collectionModel) {
-			super(collectionModel);
-		}
-		@Override
-		protected JpaStructureNode buildValue() {
-			return this.collectionModel.size() > 0 ? this.collectionModel.iterator().next() : null;
-		}
+		return CollectionValueModelTools.firstElementPropertyValueModel(this.buildRootStructureNodesCollectionModel());
 	}
 
 	private CollectionValueModel<JpaStructureNode> buildRootStructureNodesCollectionModel() {

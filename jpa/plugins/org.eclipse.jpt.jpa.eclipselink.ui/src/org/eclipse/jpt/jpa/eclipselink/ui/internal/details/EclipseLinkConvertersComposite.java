@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -90,23 +90,15 @@ public class EclipseLinkConvertersComposite
 	protected void initialize() {
 		super.initialize();
 		this.selectedConvertersModel = this.buildSelectedConvertersModel();
-		this.selectedConverterModel = this.buildSelectedConverterModel(this.selectedConvertersModel);
+		this.selectedConverterModel = this.buildSelectedConverterModel();
 	}
 
 	private ModifiableCollectionValueModel<EclipseLinkConverter> buildSelectedConvertersModel() {
-		return new SimpleCollectionValueModel<EclipseLinkConverter>();
+		return new SimpleCollectionValueModel<>();
 	}
 
-	protected PropertyValueModel<EclipseLinkConverter> buildSelectedConverterModel(ModifiableCollectionValueModel<EclipseLinkConverter> selectedConvertersModel) {
-		return new CollectionPropertyValueModelAdapter<EclipseLinkConverter, EclipseLinkConverter>(selectedConvertersModel) {
-			@Override
-			protected EclipseLinkConverter buildValue() {
-				if (this.collectionModel.size() == 1) {
-					return this.collectionModel.iterator().next();
-				}
-				return null;
-			}
-		};
+	protected PropertyValueModel<EclipseLinkConverter> buildSelectedConverterModel() {
+		return CollectionValueModelTools.singleElementPropertyValueModel(this.selectedConvertersModel);
 	}
 
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -58,23 +58,15 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 	protected void initialize() {
 		super.initialize();
 		this.selectedEntitiesModel = this.buildSelectedEntitiesModel();
-		this.selectedEntityModel = this.buildSelectedEntityModel(this.selectedEntitiesModel);
+		this.selectedEntityModel = this.buildSelectedEntityModel();
 	}
 
 	private ModifiableCollectionValueModel<EclipseLinkCachingEntity> buildSelectedEntitiesModel() {
-		return new SimpleCollectionValueModel<EclipseLinkCachingEntity>();
+		return new SimpleCollectionValueModel<>();
 	}
 
-	private PropertyValueModel<EclipseLinkCachingEntity> buildSelectedEntityModel(CollectionValueModel<EclipseLinkCachingEntity> selectedEntitiesModel) {
-		return new CollectionPropertyValueModelAdapter<EclipseLinkCachingEntity, EclipseLinkCachingEntity>(selectedEntitiesModel) {
-			@Override
-			protected EclipseLinkCachingEntity buildValue() {
-				if (this.collectionModel.size() == 1) {
-					return this.collectionModel.iterator().next();
-				}
-				return null;
-			}
-		};
+	private PropertyValueModel<EclipseLinkCachingEntity> buildSelectedEntityModel() {
+		return CollectionValueModelTools.singleElementPropertyValueModel(this.selectedEntitiesModel);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
-import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.NullCheckPropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -334,11 +334,10 @@ public abstract class Pane<T extends Model> {
 	 * pane is <em>enabled</em> <em>and</em> the pane's model indicates the
 	 * pane should be <em>enabled</em>.
 	 */
-	@SuppressWarnings("unchecked")
 	private static PropertyValueModel<Boolean> andEnabledModel(Pane<?> pane, PropertyValueModel<Boolean> enabledModel) {
 		enabledModel = buildNonNullModel(enabledModel);
 		// NB: we fetch private state from the pane
-		return (pane == null) ? enabledModel : CompositeBooleanPropertyValueModel.and(pane.enabledModel, enabledModel);
+		return (pane == null) ? enabledModel : CollectionValueModelTools.and(pane.enabledModel, enabledModel);
 	}
 
 	/**
@@ -351,7 +350,7 @@ public abstract class Pane<T extends Model> {
 	 * (which is typical with aspect adapters etc.).
 	 */
 	private static PropertyValueModel<Boolean> buildNonNullModel(PropertyValueModel<Boolean> booleanModel) {
-		return new NullCheckPropertyValueModelWrapper<Boolean>(booleanModel, Boolean.FALSE);
+		return new NullCheckPropertyValueModelWrapper<>(booleanModel, Boolean.FALSE);
 	}
 
 

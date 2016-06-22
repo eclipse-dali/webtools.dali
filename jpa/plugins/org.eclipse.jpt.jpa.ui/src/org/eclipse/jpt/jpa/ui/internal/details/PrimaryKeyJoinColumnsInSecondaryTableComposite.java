@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,33 +10,40 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
+import org.eclipse.jpt.common.utility.internal.closure.ClosureTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -97,7 +104,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		};
 	}
 
-	private ListValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnListHolder() {
+	private ListValueModel<PrimaryKeyJoinColumn> buildDefaultPrimaryKeyJoinColumnListModel() {
 		return new PropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
 			buildDefaultJoinColumnHolder()
 		);
@@ -154,8 +161,13 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
-		return new OverrideDefaultJoinColumnHolder();
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultPrimaryKeyJoinColumnModel() {
+		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = ListValueModelTools.pluggablePropertyValueModelAdapterFactory(
+				this.buildSpecifiedPrimaryKeyJoinColumnsListModel(),
+				new OverrideDefaultPrimaryKeyJoinColumnModelTransformer()
+			);
+		Closure<Boolean> closure = ClosureTools.booleanClosure(new OverrideDefaultPrimaryKeyJoinColumnModelSetValueClosure());
+		return PropertyValueModelTools.pluggableModifiablePropertyValueModel(factory, closure);
 	}
 
 	private AddRemovePane.Adapter<SpecifiedPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnAdapter() {
@@ -197,16 +209,16 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		return new SimpleCollectionValueModel<SpecifiedPrimaryKeyJoinColumn>();
 	}
 
-	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
-		List<ListValueModel<PrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<PrimaryKeyJoinColumn>>();
-		list.add(buildSpecifiedJoinColumnsListHolder());
-		list.add(buildDefaultJoinColumnListHolder());
+	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
+		List<ListValueModel<PrimaryKeyJoinColumn>> list = new ArrayList<>();
+		list.add(buildSpecifiedPrimaryKeyJoinColumnsListModel());
+		list.add(buildDefaultPrimaryKeyJoinColumnListModel());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
-			buildPrimaryKeyJoinColumnsListHolder(),
+	private ListValueModel<PrimaryKeyJoinColumn> buildUIPrimaryKeyJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<>(
+			buildPrimaryKeyJoinColumnsListModel(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY,
 			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
@@ -214,7 +226,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		);
 	}
 
-	ListValueModel<PrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+	ListValueModel<PrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnsListModel() {
 		return new ListAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<PrimaryKeyJoinColumn> getListIterable() {
@@ -261,7 +273,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		Button overrideDefaultCheckBox = addCheckBox(
 			container,
 			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_OVERRIDE_DEFAULT_PRIMARY_KEY_JOIN_COLUMNS,
-			buildOverrideDefaultJoinColumnHolder(),
+			buildOverrideDefaultPrimaryKeyJoinColumnModel(),
 			null,
 			buildControlBooleanHolder()
 		);
@@ -274,10 +286,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 			this,
 			container,
 			buildPrimaryKeyJoinColumnAdapter(),
-			buildPrimaryKeyJoinColumnsListModel(),
+			buildUIPrimaryKeyJoinColumnsListModel(),
 			this.selectedPkJoinColumnsModel,
 			buildJoinColumnsListLabelProvider(),
-			buildOverrideDefaultJoinColumnHolder(),
+			buildOverrideDefaultPrimaryKeyJoinColumnModel(),
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
 	}
@@ -304,25 +316,25 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		}
 	}
 
-	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	                                              implements ModifiablePropertyValueModel<Boolean> {
-
-		public OverrideDefaultJoinColumnHolder() {
-			super(buildSpecifiedJoinColumnsListHolder());
-		}
-
+	class OverrideDefaultPrimaryKeyJoinColumnModelTransformer
+		extends TransformerAdapter<Collection<?>, Boolean>
+	{
 		@Override
-		protected Boolean buildValue() {
-			return Boolean.valueOf(this.buildValue_());
+		public Boolean transform(Collection<?> specifiedPKJoinColumns) {
+			return Boolean.valueOf(this.transform_(specifiedPKJoinColumns));
 		}
 
-		protected boolean buildValue_() {
+		protected boolean transform_(Collection<?> specifiedPKJoinColumns) {
 			SecondaryTable table = getSubject();
-			return (table != null) && ! table.isVirtual() && listModel.size() > 0;
+			return (table != null) && ! table.isVirtual() && specifiedPKJoinColumns.size() > 0;
 		}
-
-		public void setValue(Boolean value) {
-			updatePrimaryKeyJoinColumns(value.booleanValue());
+	}
+		
+	class OverrideDefaultPrimaryKeyJoinColumnModelSetValueClosure
+		implements BooleanClosure.Adapter
+	{
+		public void execute(boolean value) {
+			updatePrimaryKeyJoinColumns(value);
 		}
 	}
 }

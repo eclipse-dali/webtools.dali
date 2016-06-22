@@ -9,13 +9,39 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**
  * Value Model utility methods.
  */
-public final class ValueModelTools {
+public final class PropertyValueModelTools {
+
+	/**
+	 * Construct a property value model adapter for the specified adapter factory.
+	 * @see PluggablePropertyValueModel
+	 */
+	public static <V> PropertyValueModel<V> propertyValueModel(PluggablePropertyValueModel.Adapter.Factory<V> adapterFactory) {
+		return new PluggablePropertyValueModel<>(adapterFactory);
+	}
+
+	/**
+	 * Construct a modifiable property value model adapter for the specified adapter factory.
+	 * @see PluggableModifiablePropertyValueModel
+	 */
+	public static <V> ModifiablePropertyValueModel<V> modifiablePropertyValueModel(PluggableModifiablePropertyValueModel.Adapter.Factory<V> adapterFactory) {
+		return new PluggableModifiablePropertyValueModel<>(adapterFactory);
+	}
+
+	/**
+	 * Construct a <em>modifiable</em> property value model adapter for the specified
+	 * property value model adapter adapter factory and closure.
+	 * The specified closure is invoked when the model's value is set.
+	 */
+	public static <V> ModifiablePropertyValueModel<V> pluggableModifiablePropertyValueModel(AbstractPluggablePropertyValueModel.Adapter.Factory<V, ? extends AbstractPluggablePropertyValueModel.Adapter<V>> factory, Closure<V> setValueClosure) {
+		return new PluggableModifiablePropertyValueModel<>(new PluggableModifiablePropertyValueModelAdapter.Factory<>(factory, setValueClosure));
+	}
 
 
 	// ********** double PVMs **********
@@ -44,7 +70,7 @@ public final class ValueModelTools {
 	/**
 	 * Suppress default constructor, ensuring non-instantiability.
 	 */
-	private ValueModelTools() {
+	private PropertyValueModelTools() {
 		super();
 		throw new UnsupportedOperationException();
 	}

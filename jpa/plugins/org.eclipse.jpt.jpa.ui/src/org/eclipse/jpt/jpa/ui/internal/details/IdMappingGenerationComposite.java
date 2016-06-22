@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -499,7 +499,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	protected CollectionValueModel<String> buildGeneratorNamesModel() {
-		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), StringTools.IS_NOT_BLANK);
+		return ListValueModelTools.filter(this.buildGeneratorNamesModel_(), StringTools.IS_NOT_BLANK);
 	}
 
 	protected ListValueModel<String> buildGeneratorNamesModel_() {

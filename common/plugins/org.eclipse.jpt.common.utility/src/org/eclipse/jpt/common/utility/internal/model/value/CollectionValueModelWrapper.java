@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,17 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
  * another collection value model, "lazily" listen to it, and propagate
  * its change notifications. Subclasses must implement the appropriate
  * {@link CollectionValueModel}.
+ * <p>
+ * Subclasses must implement the following methods:<ul>
+ * <li>{@link #itemsAdded(CollectionAddEvent)}<p>
+ *     implement this method to handle added items
+ * <li>{@link #itemsRemoved(CollectionRemoveEvent)}<p>
+ *     implement this method to handle removed items
+ * <li>{@link #collectionCleared(CollectionClearEvent)}<p>
+ *     implement this method to handle cleared collection
+ * <li>{@link #collectionChanged(CollectionChangeEvent)}<p>
+ *     implement this method to handle changed collection
+ * </ul>
  * 
  * @param <E> the type of elements held by the model
  */

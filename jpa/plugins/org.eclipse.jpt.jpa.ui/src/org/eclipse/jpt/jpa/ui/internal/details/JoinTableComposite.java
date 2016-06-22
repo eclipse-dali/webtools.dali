@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,10 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
@@ -23,23 +24,20 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 public class JoinTableComposite
 	extends ReferenceTableComposite<JoinTable>
 {
-	private Button overrideDefaultInverseJoinColumnsCheckBox;
-
 	private JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite;
 
 
@@ -85,10 +83,10 @@ public class JoinTableComposite
 		joinColumnGroupPane.setLayoutData(gridData);
 
 		// Override Default Join Columns check box
-		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
+		addCheckBox(
 			joinColumnGroupPane,
 			JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_OVERRIDE_DEFAULT_JOIN_COLUMNS,
-			buildOverrideDefaultJoinColumnHolder(),
+			buildOverrideDefaultJoinColumnModel(),
 			null
 		);
 
@@ -109,10 +107,10 @@ public class JoinTableComposite
 		inverseJoinColumnGroupPane.setLayoutData(gridData);
 
 		// Override Default Inverse Join Columns check box
-		this.overrideDefaultInverseJoinColumnsCheckBox = addCheckBox(
+		addCheckBox(
 			inverseJoinColumnGroupPane,
 			JptJpaUiDetailsMessages.JOIN_TABLE_COMPOSITE_OVERRIDE_DEFAULT_INVERSE_JOIN_COLUMNS,
-			buildOverrideDefaultInverseJoinColumnHolder(),
+			buildOverrideDefaultInverseJoinColumnModel(),
 			null
 		);
 
@@ -154,11 +152,11 @@ public class JoinTableComposite
 		return new InverseJoinColumnsProvider();
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultInverseJoinColumnHolder() {
-		return new OverrideDefaultInverseJoinColumnHolder();
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultInverseJoinColumnModel() {
+		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedInverseJoinColumnsListModel(), new OverrideDefaultInverseJoinColumnModelSetValueClosure());
 	}
 	
-	ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
+	ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsListModel() {
 		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
@@ -189,7 +187,7 @@ public class JoinTableComposite
 		}
 	}
 
-	void updateInverseJoinColumns() {
+	void updateInverseJoinColumns(boolean selected) {
 		if (this.isPopulating()) {
 			return;
 		}
@@ -199,7 +197,6 @@ public class JoinTableComposite
 			return;
 		}
 		
-		boolean selected = this.overrideDefaultInverseJoinColumnsCheckBox.getSelection();
 		this.setPopulating(true);
 
 		try {
@@ -255,20 +252,11 @@ public class JoinTableComposite
 		}
 	}
 	
-	private class OverrideDefaultInverseJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	    implements ModifiablePropertyValueModel<Boolean> {
-	
-		public OverrideDefaultInverseJoinColumnHolder() {
-			super(buildSpecifiedInverseJoinColumnsListHolder());
-		}
-	
-		@Override
-		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listModel.size() > 0);
-		}
-	
-		public void setValue(Boolean value) {
-			updateInverseJoinColumns();
+	class OverrideDefaultInverseJoinColumnModelSetValueClosure
+		implements BooleanClosure.Adapter
+	{
+		public void execute(boolean value) {
+			updateInverseJoinColumns(value);
 		}
 	}
 

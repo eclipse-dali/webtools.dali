@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jaxb.ui.internal;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.ui.JaxbProjectModel;
 import org.eclipse.jpt.jaxb.ui.JaxbProjectsModel;
@@ -41,56 +42,61 @@ public class ProjectAdapterFactory
 		return ADAPTER_LIST;
 	}
 
-	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof IProject) {
 			return this.getAdapter((IProject) adaptableObject, adapterType);
 		}
 		return null;
 	}
 
-	private Object getAdapter(IProject project, Class<?> adapterType) {
+	@SuppressWarnings("unchecked")
+	private <T> T getAdapter(IProject project, Class<T> adapterType) {
 		if (adapterType == JaxbProjectModel.class) {
-			return this.getJaxbProjectModel(project);
+			return (T) this.getJaxbProjectModel(project);
 		}
 		return null;
 	}
 
 	private JaxbProjectModel getJaxbProjectModel(IProject project) {
-		return new JaxbProjectModelAdapter(this.getJaxbProjectsModel(project.getWorkspace()), project);
-	}
-
-	private JaxbProjectsModel getJaxbProjectsModel(IWorkspace workspace) {
-		return (JaxbProjectsModel) workspace.getAdapter(JaxbProjectsModel.class);
+		return new LocalJaxbProjectModel(project);
 	}
 
 
-	// ********** JPA project model **********
+	// ********** JAXB project model **********
 
 	/**
-	 * Implement a property value model for the JPA project corresponding to a
+	 * Implement a property value model for the JAXB project corresponding to a
 	 * {@link IProject project}. The model will fire change events when the
-	 * corresponding JPA project is added or removed from the JPA project
+	 * corresponding JAXB project is added or removed from the JAXB project
 	 * manager. This is useful for UI code that does not want to wait to
-	 * retrieve a JPA project but wants to be notified when it is available.
+	 * retrieve a JAXB project but wants to be notified when it is available.
 	 * <p>
-	 * Subclass {@link ElementPropertyValueModelAdapter} so we can
+	 * Subclass {@link PluggablePropertyValueModel} so we can
 	 * implement {@link org.eclipse.jpt.jaxb.ui.JaxbProjectModel}.
 	 * <p>
 	 * <strong>NB:</strong> This model operates outside of all the other
-	 * activity synchronized by the JPA project manager; but that should be OK
-	 * since it will be kept synchronized with the JPA manager's collection of
-	 * JPA projects in the end.
+	 * activity synchronized by the JAXB project manager; but that should be OK
+	 * since it will be kept synchronized with the JAXB manager's collection of
+	 * JAXB projects in the end.
 	 */
-	/* CU private */ static class JaxbProjectModelAdapter
-		extends ElementPropertyValueModelAdapter<JaxbProject>
+	/* CU private */ static class LocalJaxbProjectModel
+		extends PluggablePropertyValueModel<JaxbProject>
 		implements JaxbProjectModel
 	{
-		JaxbProjectModelAdapter(CollectionValueModel<JaxbProject> jpaProjectsModel, IProject project) {
-			super(jpaProjectsModel, new JaxbProject.ProjectEquals(project));
-		}
-
-		public IProject getProject() {
-			return ((JaxbProject.ProjectEquals) this.predicate).getCriterion();
+		/**
+		 * Get all the JAXB projects, then filter down to those corresponding
+		 * to the specified project, then get the single JAXB project remaining.
+		 * (At least we hope there is only a single JAXB project remaining.)
+		 */
+		LocalJaxbProjectModel(IProject project) {
+			super(new CollectionPluggablePropertyValueModelAdapter.Factory<>(
+							CollectionValueModelTools.filter(
+									project.getWorkspace().getAdapter(JaxbProjectsModel.class),
+									new JaxbProject.ProjectEquals(project)
+							),
+							TransformerTools.collectionSingleElementTransformer()
+						)
+					);
 		}
 	}
 }
