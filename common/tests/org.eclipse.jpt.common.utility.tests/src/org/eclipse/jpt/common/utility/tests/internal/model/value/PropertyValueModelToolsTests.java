@@ -35,44 +35,81 @@ public class PropertyValueModelToolsTests
 		super(name);
 	}
 
+	public void testValueEquals() {
+		String string = "foo";
+		ModifiablePropertyValueModel<String> stringModel = new SimplePropertyValueModel<>("");
+		PropertyValueModel<Boolean> booleanModel = PropertyValueModelTools.valueEquals(stringModel, string);
+		LocalListener listener = new LocalListener();
+		booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+
+		listener.event = null;
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals("", stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue("foo");
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals("foo", stringModel.getValue());
+		assertEquals(Boolean.TRUE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue("bar");
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals("bar", stringModel.getValue());
+		assertEquals(Boolean.FALSE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue(null);
+		assertNull(booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event.getNewValue());
+
+		listener.event = null;
+		booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertNull(booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event);
+	}
+
 	public void testModifiablePropertyValueModel() {
 		ModifiablePropertyValueModel<String> doubleStringModel = new SimplePropertyValueModel<>("foofoo");
 		PluggableModifiablePropertyValueModel.Adapter.Factory<String> factory = new HalfStringModelAdapter.Factory(doubleStringModel);
 		ModifiablePropertyValueModel<String> halfStringModel = PropertyValueModelTools.modifiablePropertyValueModel(factory);
-		HalfStringListener halfStringListener = new HalfStringListener();
-		halfStringModel.addPropertyChangeListener(PropertyValueModel.VALUE, halfStringListener);
+		LocalListener listener = new LocalListener();
+		halfStringModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
 
-		halfStringListener.event = null;
+		listener.event = null;
 		assertEquals("foofoo", doubleStringModel.getValue());
 		assertEquals("foo", halfStringModel.getValue());
-		assertNull(halfStringListener.event);
+		assertNull(listener.event);
 
-		halfStringListener.event = null;
+		listener.event = null;
 		halfStringModel.setValue("bar");
 		assertEquals("bar", halfStringModel.getValue());
 		assertEquals("barbar", doubleStringModel.getValue());
-		assertEquals("bar", halfStringListener.event.getNewValue());
+		assertEquals("bar", listener.event.getNewValue());
 
-		halfStringListener.event = null;
+		listener.event = null;
 		halfStringModel.setValue("bar");
 		assertEquals("bar", halfStringModel.getValue());
 		assertEquals("barbar", doubleStringModel.getValue());
-		assertNull(halfStringListener.event);
+		assertNull(listener.event);
 
-		halfStringListener.event = null;
+		listener.event = null;
 		doubleStringModel.setValue("xxxxxx");
 		assertEquals("xxx", halfStringModel.getValue());
 		assertEquals("xxxxxx", doubleStringModel.getValue());
-		assertEquals("xxx", halfStringListener.event.getNewValue());
+		assertEquals("xxx", listener.event.getNewValue());
 
-		halfStringListener.event = null;
-		halfStringModel.removePropertyChangeListener(PropertyValueModel.VALUE, halfStringListener);
+		listener.event = null;
+		halfStringModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertNull(halfStringModel.getValue());
 		assertEquals("xxxxxx", doubleStringModel.getValue());
-		assertNull(halfStringListener.event);
+		assertNull(listener.event);
 	}
 
-	public static class HalfStringListener
+	public static class LocalListener
 		implements PropertyChangeListener
 	{
 		public PropertyChangeEvent event;

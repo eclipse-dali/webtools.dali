@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ public class PredicateTests
 	}
 
 	public void testPredicateAdapter() {
-		Predicate<String> filter = new PredicateAdapter<String>();
+		Predicate<String> filter = new PredicateAdapter<>();
 		assertFalse(filter.evaluate(""));
 		assertFalse(filter.evaluate(null));
 		assertFalse(filter.evaluate("foo"));
@@ -34,7 +34,7 @@ public class PredicateTests
 	}
 
 	public void testPredicateAdapter_toString() {
-		Predicate<String> filter = new PredicateAdapter<String>();
+		Predicate<String> filter = new PredicateAdapter<>();
 		assertNotNull(filter.toString());
 	}
 
@@ -73,7 +73,7 @@ public class PredicateTests
 	}
 
 	public void testNotNullPredicate() {
-		Predicate<String> filter = PredicateTools.isNotNull();
+		Predicate<Object> filter = PredicateTools.isNotNull();
 		assertTrue(filter.evaluate(""));
 		assertFalse(filter.evaluate(null));
 		assertTrue(filter.evaluate("foo"));
@@ -81,12 +81,12 @@ public class PredicateTests
 	}
 
 	public void testNotNullPredicate_toString() {
-		Predicate<String> filter = PredicateTools.isNotNull();
+		Predicate<Object> filter = PredicateTools.isNotNull();
 		assertNotNull(filter.toString());
 	}
 
 	public void testNullPredicate() {
-		Predicate<String> filter = PredicateTools.isNull();
+		Predicate<Object> filter = PredicateTools.isNull();
 		assertFalse(filter.evaluate(""));
 		assertTrue(filter.evaluate(null));
 		assertFalse(filter.evaluate("foo"));
@@ -94,7 +94,7 @@ public class PredicateTests
 	}
 
 	public void testNullPredicate_toString() {
-		Predicate<String> filter = PredicateTools.isNull();
+		Predicate<Object> filter = PredicateTools.isNull();
 		assertNotNull(filter.toString());
 	}
 

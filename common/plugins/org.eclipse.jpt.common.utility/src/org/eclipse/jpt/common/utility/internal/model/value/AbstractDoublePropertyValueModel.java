@@ -116,7 +116,7 @@ public abstract class AbstractDoublePropertyValueModel<V, VMV extends PropertyVa
 	 * notify listeners the <em>outer</em> model's value has changed.
 	 */
 	@Override
-	protected synchronized void wrappedValueChanged(VMV newValueModelValue) {
+	protected void wrappedValueChanged(VMV newValueModelValue) {
 		V oldValue = null;
 		V newValue = null;
     	synchronized (this) {

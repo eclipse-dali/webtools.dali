@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,16 +16,16 @@ import org.eclipse.jpt.common.utility.predicate.Predicate;
  * Singleton predicate that evaluates whether an object is
  * <em>not</em> <code>null</code>.
  * 
- * @param <V> the type of objects to be evaluated by the predicate
+ * @see Equals
+ * @see IsIdentical
+ * @see IsNull
  */
-public final class IsNotNull<V>
-	implements Predicate<V>, Serializable
+public final class IsNotNull
+	implements Predicate<Object>, Serializable
 {
-	@SuppressWarnings("rawtypes")
-	public static final Predicate INSTANCE = new IsNotNull();
+	public static final Predicate<Object> INSTANCE = new IsNotNull();
 
-	@SuppressWarnings("unchecked")
-	public static <V> Predicate<V> instance() {
+	public static Predicate<Object> instance() {
 		return INSTANCE;
 	}
 
@@ -37,7 +37,7 @@ public final class IsNotNull<V>
 	/**
 	 * Return whether the variable is <em>not</em> <code>null</code>.
 	 */
-	public boolean evaluate(V variable) {
+	public boolean evaluate(Object variable) {
 		return variable != null;
 	}
 

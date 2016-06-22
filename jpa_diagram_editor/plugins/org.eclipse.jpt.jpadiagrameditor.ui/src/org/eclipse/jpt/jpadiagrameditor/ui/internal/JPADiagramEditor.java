@@ -18,7 +18,6 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -49,7 +48,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
@@ -384,7 +383,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 	}
 
 	private PropertyValueModel<JpaFile> buildJpaFileModel() {
-		return new DoublePropertyValueModel<JpaFile>(this.buildJpaFileModelModel());
+		return PropertyValueModelTools.doubleWrap(this.buildJpaFileModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {

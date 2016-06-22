@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
@@ -296,7 +296,7 @@ public class JpaXmlEditor
 	// ********** JPA file **********
 
 	private PropertyValueModel<JpaFile> buildJpaFileModel() {
-		return new DoublePropertyValueModel<>(this.buildJpaFileModelModel());
+		return PropertyValueModelTools.doubleWrap(this.buildJpaFileModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {

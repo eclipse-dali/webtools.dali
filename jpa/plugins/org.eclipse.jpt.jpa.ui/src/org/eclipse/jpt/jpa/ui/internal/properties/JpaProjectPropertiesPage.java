@@ -41,13 +41,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.AspectCollectionValue
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggableModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -196,7 +195,7 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA project model
 	private PropertyValueModel<JpaProject> buildJpaProjectModel() {
-		return new DoublePropertyValueModel<>(this.buildJpaProjectModelModel());
+		return PropertyValueModelTools.doubleWrap(this.buildJpaProjectModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaProject>> buildJpaProjectModelModel() {

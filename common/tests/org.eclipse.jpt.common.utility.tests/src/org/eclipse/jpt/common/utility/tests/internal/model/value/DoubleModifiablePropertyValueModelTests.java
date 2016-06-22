@@ -24,7 +24,7 @@ public class DoubleModifiablePropertyValueModelTests
 
 	@Override
 	protected PropertyValueModel<String> buildDoubleModel(ModifiablePropertyValueModel<ModifiablePropertyValueModel<String>> modelModel) {
-		return PropertyValueModelTools.wrapModifiable(modelModel);
+		return PropertyValueModelTools.doubleWrapModifiable(modelModel);
 	}
 
 	protected ModifiablePropertyValueModel<String> getDoubleModel() {

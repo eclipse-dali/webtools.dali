@@ -278,7 +278,6 @@ public final class CollectionValueModelTools {
 		return propertyValueModel(collectionModel, TransformerTools.adapt(predicate));
 	}
 
-
 	/**
 	 * Construct a property value model adapted to the specified
 	 * collection value model and transformer.
@@ -325,7 +324,7 @@ public final class CollectionValueModelTools {
 	/**
 	 * Construct a collection value model with the specified wrapped collection value model and filter.
 	 */
-	public static <E> CollectionValueModel<E> filter(CollectionValueModel<? extends E> collectionModel, Predicate<E> filter) {
+	public static <E> CollectionValueModel<E> filter(CollectionValueModel<? extends E> collectionModel, Predicate<? super E> filter) {
 		return new FilteringCollectionValueModel<>(collectionModel, filter);
 	}
 

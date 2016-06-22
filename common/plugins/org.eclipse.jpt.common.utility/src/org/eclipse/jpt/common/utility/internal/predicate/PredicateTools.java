@@ -47,18 +47,16 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will evaluate whether an object is
 	 * <em>not</em> <code>null</code>.
-	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> isNotNull() {
+	public static Predicate<Object> isNotNull() {
 		return IsNotNull.instance();
 	}
 
 	/**
 	 * Return a predicate that will evaluate whether an object is
 	 * <code>null</code>.
-	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> isNull() {
+	public static Predicate<Object> isNull() {
 		return IsNull.instance();
 	}
 
@@ -80,10 +78,9 @@ public final class PredicateTools {
 	 * criterion. If the criterion is <code>null</code>, the predicate
 	 * will evaluate to <code>true</code> if the variable is also
 	 * <code>null</code>.
-	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> isEqual(V criterion) {
-		return (criterion == null) ? isNull() : new Equals<>(criterion);
+	public static Predicate<Object> isEqual(Object criterion) {
+		return (criterion == null) ? isNull() : new Equals(criterion);
 	}
 
 	/**
@@ -92,9 +89,8 @@ public final class PredicateTools {
 	 * criterion. If the criterion is <code>null</code>, the predicate
 	 * will evaluate to <code>true</code> if the variable is not
 	 * <code>null</code>.
-	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> isNotEqual(V criterion) {
+	public static Predicate<Object> isNotEqual(Object criterion) {
 		return (criterion == null) ? isNotNull() : not(isEqual(criterion));
 	}
 
@@ -104,10 +100,9 @@ public final class PredicateTools {
 	 * criterion. If the criterion is <code>null</code>, the predicate
 	 * will evaluate to <code>true</code> if the variable is also
 	 * <code>null</code>.
-	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> isIdentical(V criterion) {
-		return (criterion == null) ? isNull() : new IsIdentical<>(criterion);
+	public static Predicate<Object> isIdentical(Object criterion) {
+		return (criterion == null) ? isNull() : new IsIdentical(criterion);
 	}
 
 	/**
@@ -116,9 +111,8 @@ public final class PredicateTools {
 	 * criterion. If the criterion is <code>null</code>, the predicate
 	 * will evaluate to <code>true</code> if the variable is not
 	 * <code>null</code>.
-	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> isNotIdentical(V criterion) {
+	public static Predicate<Object> isNotIdentical(Object criterion) {
 		return (criterion == null) ? isNotNull() : not(isIdentical(criterion));
 	}
 

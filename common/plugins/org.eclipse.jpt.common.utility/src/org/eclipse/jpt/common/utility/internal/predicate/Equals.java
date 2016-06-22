@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,13 +18,12 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * will evaluate to <code>true</code> if the variable is also
  * <code>null</code>.
  * 
- * @param <V> the type of objects to be evaluated by the predicate
  * @see IsIdentical
  * @see IsNotNull
  * @see IsNull
  */
-public class Equals<V>
-	extends CriterionPredicate<V, V>
+public class Equals
+	extends CriterionPredicate<Object, Object>
 {
 	/**
 	 * Construct a predicate that will evaluate to <code>true</code> if the
@@ -39,11 +38,11 @@ public class Equals<V>
 	 * variable is {@link Object#equals(Object) equal to} the
 	 * specified criterion.
 	 */
-	public Equals(V criterion) {
+	public Equals(Object criterion) {
 		super(criterion);
 	}
 
-	public boolean evaluate(V variable) {
+	public boolean evaluate(Object variable) {
 		return ObjectTools.equals(variable, this.criterion);
 	}
 }

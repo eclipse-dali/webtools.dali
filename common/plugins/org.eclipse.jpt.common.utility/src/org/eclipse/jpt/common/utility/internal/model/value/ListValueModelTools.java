@@ -205,7 +205,7 @@ public final class ListValueModelTools {
 	/**
 	 * Construct a collection value model with the specified wrapped list value model and filter.
 	 */
-	public static <E> CollectionValueModel<E> filter(ListValueModel<? extends E> listModel, Predicate<E> filter) {
+	public static <E> CollectionValueModel<E> filter(ListValueModel<? extends E> listModel, Predicate<? super E> filter) {
 		return CollectionValueModelTools.filter(new ListCollectionValueModelAdapter<E>(listModel), filter);
 	}
 

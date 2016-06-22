@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.HashSet;
 import org.eclipse.jpt.common.ui.internal.PartAdapter2;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.DoubleModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
@@ -138,7 +138,7 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<JpaFile> buildJpaFileModel() {
-		return new DoublePropertyValueModel<JpaFile>(this.buildEditorManagerJpaFileModel());
+		return PropertyValueModelTools.doubleWrap(this.buildEditorManagerJpaFileModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildEditorManagerJpaFileModel() {
@@ -164,7 +164,7 @@ class JpaPageSelectionManager
 	}
 
 	private ModifiablePropertyValueModel<JpaStructureNode> buildJpaSelectionModel() {
-		return new DoubleModifiablePropertyValueModel<JpaStructureNode>(this.buildEditorManagerJpaSelectionModel());
+		return PropertyValueModelTools.doubleWrapModifiable(this.buildEditorManagerJpaSelectionModel());
 	}
 
 	private PropertyValueModel<ModifiablePropertyValueModel<JpaStructureNode>> buildEditorManagerJpaSelectionModel() {

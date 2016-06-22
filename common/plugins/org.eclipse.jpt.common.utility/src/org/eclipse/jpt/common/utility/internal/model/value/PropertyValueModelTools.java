@@ -10,13 +10,19 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Value Model utility methods.
+ * {@link PropertyValueModel Property value model} utility methods.
  */
 public final class PropertyValueModelTools {
+
+
+	// ********** pluggable PVMs **********
 
 	/**
 	 * Construct a property value model adapter for the specified adapter factory.
@@ -44,6 +50,40 @@ public final class PropertyValueModelTools {
 	}
 
 
+	// ********** Boolean adapters **********
+
+	/**
+	 * Construct a property value model adapter for the specified
+	 * property value model that returns whether the property's value
+	 * equals the specified value.
+	 */
+	public static PropertyValueModel<Boolean> valueEquals(PropertyValueModel<?> propertyModel, Object value) {
+		return propertyValueModel(pluggablePropertyValueModelAdapterFactory(propertyModel, TransformerTools.adapt(PredicateTools.isEqual(value))));
+	}
+
+
+	// ********** PVM wrappers **********
+
+	/**
+	 * Construct a property value model that wraps the specified
+	 * property value model and transforms its value with the specified
+	 * transformer.
+	 * @see PluggablePropertyValueModel
+	 */
+	public static <V1, V2> PropertyValueModel<V2> wrap(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, V2> transformer) {
+		return propertyValueModel(pluggablePropertyValueModelAdapterFactory(propertyModel, transformer));
+	}
+
+	/**
+	 * Construct a pluggable property value model adapter factory for the specified
+	 * property value model and transformer.
+	 * @see PluggablePropertyValueModel
+	 */
+	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> pluggablePropertyValueModelAdapterFactory(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, V2> transformer) {
+		return new PropertyPluggablePropertyValueModelAdapter.Factory<>(propertyModel, transformer);
+	}
+
+
 	// ********** double PVMs **********
 
 	/**
@@ -51,8 +91,8 @@ public final class PropertyValueModelTools {
 	 * <em>middle</em> property value model.
 	 * @see AbstractDoublePropertyValueModel
 	 */
-	public static <V> PropertyValueModel<V> wrap(PropertyValueModel<? extends PropertyValueModel<? extends V>> valueModel) {
-		return new DoublePropertyValueModel<>(valueModel);
+	public static <V> PropertyValueModel<V> doubleWrap(PropertyValueModel<? extends PropertyValueModel<? extends V>> propertyModel) {
+		return new DoublePropertyValueModel<>(propertyModel);
 	}
 
 	/**
@@ -60,8 +100,8 @@ public final class PropertyValueModelTools {
 	 * <em>middle</em> property value model.
 	 * @see AbstractDoublePropertyValueModel
 	 */
-	public static <V> ModifiablePropertyValueModel<V> wrapModifiable(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> valueModel) {
-		return new DoubleModifiablePropertyValueModel<>(valueModel);
+	public static <V> ModifiablePropertyValueModel<V> doubleWrapModifiable(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> propertyModel) {
+		return new DoubleModifiablePropertyValueModel<>(propertyModel);
 	}
 
 

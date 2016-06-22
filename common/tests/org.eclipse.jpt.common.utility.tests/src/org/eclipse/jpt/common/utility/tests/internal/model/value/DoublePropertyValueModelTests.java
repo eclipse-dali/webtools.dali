@@ -55,7 +55,7 @@ public class DoublePropertyValueModelTests
 	}
 
 	protected PropertyValueModel<String> buildDoubleModel(ModifiablePropertyValueModel<ModifiablePropertyValueModel<String>> modelModel) {
-		return PropertyValueModelTools.wrap(modelModel);
+		return PropertyValueModelTools.doubleWrap(modelModel);
 	}
 
 	@Override

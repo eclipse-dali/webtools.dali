@@ -20,8 +20,8 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public class PredicateWrapperTests
 	extends TestCase
 {
-	private Predicate<Integer> wrappedPredicate;
-	private PredicateWrapper<Integer> predicateWrapper;
+	private Predicate<Object> wrappedPredicate;
+	private PredicateWrapper<Object> predicateWrapper;
 
 
 	public PredicateWrapperTests(String name) {
@@ -32,7 +32,7 @@ public class PredicateWrapperTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.wrappedPredicate = PredicateTools.isEqual(Integer.valueOf(42));
-		this.predicateWrapper = (PredicateWrapper<Integer>) PredicateTools.wrap(this.wrappedPredicate);
+		this.predicateWrapper = (PredicateWrapper<Object>) PredicateTools.wrap(this.wrappedPredicate);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class PredicateWrapperTests
 	}
 
 	public void testEquals() {
-		PredicateWrapper<Integer> predicateWrapper2 = (PredicateWrapper<Integer>) PredicateTools.wrap(this.wrappedPredicate);
+		PredicateWrapper<Object> predicateWrapper2 = (PredicateWrapper<Object>) PredicateTools.wrap(this.wrappedPredicate);
 		assertEquals(this.predicateWrapper, predicateWrapper2);
 		assertEquals(this.predicateWrapper.hashCode(), predicateWrapper2.hashCode());
 		assertFalse(this.predicateWrapper.equals(IsNotNull.instance()));

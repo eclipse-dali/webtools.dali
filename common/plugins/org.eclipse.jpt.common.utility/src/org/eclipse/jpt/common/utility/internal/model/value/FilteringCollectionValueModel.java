@@ -47,7 +47,7 @@ public class FilteringCollectionValueModel<E>
 	implements CollectionValueModel<E>
 {
 	/** This filters the items in the wrapped collection. */
-	private volatile Predicate<E> filter;
+	private volatile Predicate<? super E> filter;
 
 	/** Cache the items that were accepted by the filter */
 	private final HashBag<E> filteredItems = new HashBag<>();
@@ -59,7 +59,7 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and filter.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel, Predicate<E> filter) {
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel, Predicate<? super E> filter) {
 		super(collectionModel);
 		if (filter == null) {
 			throw new NullPointerException();
@@ -126,7 +126,7 @@ public class FilteringCollectionValueModel<E>
 	/**
 	 * Return the current filter.
 	 */
-	public Predicate<E> getFilter() {
+	public Predicate<? super E> getFilter() {
 		return this.filter;
 	}
 

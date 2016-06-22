@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public class EqualsTests
 	extends TestCase
 {
-	private Predicate<Integer> equalPredicate;
+	private Predicate<Object> equalPredicate;
 
 
 	public EqualsTests(String name) {
@@ -48,7 +48,7 @@ public class EqualsTests
 	}
 
 	public void testEquals() {
-		Predicate<Integer> equalPredicate2 = PredicateTools.isEqual(new Integer(42));
+		Predicate<Object> equalPredicate2 = PredicateTools.isEqual(new Integer(42));
 		assertEquals(this.equalPredicate, equalPredicate2);
 		assertEquals(this.equalPredicate.hashCode(), equalPredicate2.hashCode());
 		assertFalse(this.equalPredicate.equals(IsNotNull.instance()));

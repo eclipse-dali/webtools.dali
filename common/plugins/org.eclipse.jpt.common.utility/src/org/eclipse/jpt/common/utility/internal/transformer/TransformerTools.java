@@ -213,12 +213,17 @@ public final class TransformerTools {
 	 * <li>If the object is <em>not</em> <code>null</code>,
 	 * the transformer will return {@link Boolean#TRUE}.
 	 * </ul>
-	 * @param <I> input: the type of the object passed to the transformer
-	 * @see IsNotNullTransformer
+	 * @see #isNullTransformer
 	 */
-	public static <I> Transformer<I, Boolean> isNotNullTransformer() {
-		return IsNotNullTransformer.<I>instance();
+	public static Transformer<Object, Boolean> isNotNullTransformer() {
+		return IS_NOT_NULL_TRANSFORMER;
 	}
+
+	/**
+	 * @see #isNotNullTransformer()
+	 * @see #IS_NULL_TRANSFORMER
+	 */
+	public static final Transformer<Object, Boolean> IS_NOT_NULL_TRANSFORMER = adapt(PredicateTools.isNotNull());
 
 	/**
 	 * Return a transformer that will transform an object to a
@@ -228,12 +233,17 @@ public final class TransformerTools {
 	 * <li>If the object is <em>not</em> <code>null</code>,
 	 * the transformer will return {@link Boolean#FALSE}.
 	 * </ul>
-	 * @param <I> input: the type of the object passed to the transformer
-	 * @see IsNullTransformer
+	 * @see #isNotNullTransformer
 	 */
-	public static <I> Transformer<I, Boolean> isNullTransformer() {
-		return IsNullTransformer.<I>instance();
+	public static Transformer<Object, Boolean> isNullTransformer() {
+		return IS_NULL_TRANSFORMER;
 	}
+
+	/**
+	 * @see #isNullTransformer()
+	 * @see #IS_NOT_NULL_TRANSFORMER
+	 */
+	public static final Transformer<Object, Boolean> IS_NULL_TRANSFORMER = adapt(PredicateTools.isNull());
 
 	/**
 	 * Return a transformer that adapts the specified {@link Predicate
