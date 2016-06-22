@@ -97,7 +97,7 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 	}
 
 
-	// ********** PropertyValueModelAdapter.Adapter **********
+	// ********** PluggablePropertyValueModel.Adapter **********
 
 	public V getValue() {
 		return this.value;

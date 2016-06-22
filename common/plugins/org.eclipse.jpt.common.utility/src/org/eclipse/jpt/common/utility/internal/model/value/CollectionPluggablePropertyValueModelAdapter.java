@@ -74,7 +74,7 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 	}
 
 
-	// ********** PropertyValueModelAdapter.Adapter **********
+	// ********** PluggablePropertyValueModel.Adapter **********
 
 	public V getValue() {
 		return this.value;
@@ -122,9 +122,7 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 	// ********** misc **********
 
 	private void update() {
-		V newValue = this.buildValue();
-		this.value = newValue;
-		this.listener.valueChanged(newValue);
+		this.listener.valueChanged(this.value = this.buildValue());
 	}
 
 	private V buildValue() {
