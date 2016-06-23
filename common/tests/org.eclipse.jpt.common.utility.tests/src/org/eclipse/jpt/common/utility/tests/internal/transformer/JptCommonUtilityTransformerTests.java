@@ -25,8 +25,10 @@ public class JptCommonUtilityTransformerTests {
 		suite.addTestSuite(CollectionLastElementTransformerTests.class);
 		suite.addTestSuite(CollectionLastElementTransformer_Tests.class);
 		suite.addTestSuite(CollectionSingleElementTransformerTests.class);
+		suite.addTestSuite(FilteringTransformerTests.class);
 		suite.addTestSuite(ListLastElementTransformerTests.class);
 		suite.addTestSuite(ListLastElementTransformer_Tests.class);
+		suite.addTestSuite(NullCheckTransformerTests.class);
 		suite.addTestSuite(XMLStringDecoderTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 

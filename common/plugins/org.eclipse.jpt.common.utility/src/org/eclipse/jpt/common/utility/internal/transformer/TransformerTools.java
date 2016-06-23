@@ -185,7 +185,7 @@ public final class TransformerTools {
 	 * @see #notBooleanTransformer()
 	 */
 	public static Transformer<Boolean, Boolean> notBooleanTransformer(Boolean nullBoolean) {
-		return nullCheck(notBooleanTransformer(), nullBoolean);
+		return (nullBoolean == null) ? notBooleanTransformer() : nullCheck(notBooleanTransformer(), nullBoolean);
 	}
 
 	/**
@@ -256,9 +256,9 @@ public final class TransformerTools {
 	 *   forwarded to the wrapped predicate)
 	 * @see PredicateTransformer
 	 * @see #adapt(Predicate, Boolean)
-	 * @see #adapt_(Predicate)
+	 * @see #adapt(Predicate)
 	 */
-	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate) {
+	public static <I> Transformer<I, Boolean> adapt_(Predicate<? super I> predicate) {
 		return adapt(predicate, null);
 	}
 
@@ -272,11 +272,11 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer (and
 	 *   forwarded to the wrapped predicate)
 	 * @see PredicateTransformer
-	 * @see #adapt(Predicate)
 	 * @see #adapt_(Predicate)
+	 * @see #adapt(Predicate)
 	 */
 	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate, Boolean nullBoolean) {
-		return nullCheck(adapt_(predicate), nullBoolean);
+		return nullCheck(adapt(predicate), nullBoolean);
 	}
 
 	/**
@@ -288,10 +288,10 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer (and
 	 *   forwarded to the wrapped predicate)
 	 * @see PredicateTransformer
-	 * @see #adapt(Predicate)
+	 * @see #adapt_(Predicate)
 	 * @see #adapt(Predicate, Boolean)
 	 */
-	public static <I> Transformer<I, Boolean> adapt_(Predicate<? super I> predicate) {
+	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate) {
 		return new PredicateTransformer<>(predicate);
 	}
 
@@ -447,7 +447,7 @@ public final class TransformerTools {
 	 * Transformer that converts a collection into a boolean
 	 * that indicates whether the collection is <em>not</em> empty.
 	 */
-	public static final Transformer<Collection<?>, Boolean> COLLECTION_IS_NOT_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsNotEmptyPredicate());
+	public static final Transformer<Collection<?>, Boolean> COLLECTION_IS_NOT_EMPTY_TRANSFORMER = adapt(PredicateTools.collectionIsNotEmptyPredicate());
 
 	/**
 	 * Return a transformer that converts a collection into a boolean
@@ -461,7 +461,7 @@ public final class TransformerTools {
 	 * Transformer that converts a collection into a boolean
 	 * that indicates whether the collection is empty.
 	 */
-	public static final Transformer<Collection<?>, Boolean> COLLECTION_IS_EMPTY_TRANSFORMER = adapt_(PredicateTools.collectionIsEmptyPredicate());
+	public static final Transformer<Collection<?>, Boolean> COLLECTION_IS_EMPTY_TRANSFORMER = adapt(PredicateTools.collectionIsEmptyPredicate());
 
 	/**
 	 * Return a transformer that converts a collection into a boolean
@@ -475,7 +475,7 @@ public final class TransformerTools {
 	 * Transformer that converts a collection into a boolean
 	 * that indicates whether the collection contains exactly one element.
 	 */
-	public static final Transformer<Collection<?>, Boolean> COLLECTION_CONTAINS_SINGLE_ELEMENT_TRANSFORMER = adapt_(PredicateTools.collectionContainsSingleElementPredicate());
+	public static final Transformer<Collection<?>, Boolean> COLLECTION_CONTAINS_SINGLE_ELEMENT_TRANSFORMER = adapt(PredicateTools.collectionContainsSingleElementPredicate());
 
 	/**
 	 * Return a transformer that converts a collection into a boolean
@@ -486,7 +486,7 @@ public final class TransformerTools {
 	}
 
 	private static Transformer<Collection<?>, Boolean> collectionSizeEqualsTransformer_(int size) {
-		return adapt_(PredicateTools.collectionSizeEqualsPredicate(size));
+		return adapt(PredicateTools.collectionSizeEqualsPredicate(size));
 	}
 
 
@@ -619,6 +619,21 @@ public final class TransformerTools {
 	}
 
 	/**
+	 * Return a tranformer that checks for <code>null</code> input.
+	 * If the input is <code>null</code>, the transformer will return
+	 * the configured output value;
+	 * otherwise, it will simply return the input.
+	 * @param <I> input: the type of the object passed to and
+	 *   returned by the transformer
+	 * @see NullCheckTransformer
+	 * @see #nullCheck(Transformer)
+	 * @see #nullCheck(Transformer, Object)
+	 */
+	public static <I> Transformer<I, I> nullCheck(I nullOutput) {
+		return new NullCheckTransformer<>(nullOutput);
+	}
+
+	/**
 	 * Return a transformer that wraps the specified transformer and checks
 	 * for <code>null</code> input before forwarding the input to the specified
 	 * transformer. If the input is <code>null</code>, the transformer will
@@ -627,6 +642,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see NullCheckTransformerWrapper
 	 * @see #nullCheck(Transformer, Object)
+	 * @see #nullCheck(Object)
 	 */
 	public static <I, O> Transformer<I, O> nullCheck(Transformer<? super I, ? extends O> transformer) {
 		return nullCheck(transformer, null);
@@ -641,6 +657,7 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * @see NullCheckTransformerWrapper
 	 * @see #nullCheck(Transformer)
+	 * @see #nullCheck(Object)
 	 */
 	public static <I, O> Transformer<I, O> nullCheck(Transformer<? super I, ? extends O> transformer, O nullOutput) {
 		return new NullCheckTransformerWrapper<>(transformer, nullOutput);
@@ -795,6 +812,35 @@ public final class TransformerTools {
 	 */
 	public static <I> Transformer<I, I> passThruTransformer(I nullOutput) {
 		return nullCheck(passThruTransformer(), nullOutput);
+	}
+
+
+	// ********** filtering **********
+
+	/**
+	 * Return a tranformer that "filters" its input.
+	 * If the input is a member of the set defined by the specified filter,
+	 * the transformer simply returns the input;
+	 * otherwise, the transformer will return <code>null</code>.
+	 * 
+	 * @param <I> input: the type of the object passed to and
+	 * returned by the transformer
+	 */
+	public static <I> Transformer<I, I> filteringTransformer(Predicate<? super I> filter) {
+		return filteringTransformer(filter, null);
+	}
+
+	/**
+	 * Return a tranformer that "filters" its input.
+	 * If the input is a member of the set defined by the specified filter,
+	 * the transformer simply returns the input;
+	 * otherwise, the transformer will return the default output.
+	 * 
+	 * @param <I> input: the type of the object passed to and
+	 * returned by the transformer
+	 */
+	public static <I> Transformer<I, I> filteringTransformer(Predicate<? super I> filter, I defaultOutput) {
+		return new FilteringTransformer<>(filter, defaultOutput);
 	}
 
 
