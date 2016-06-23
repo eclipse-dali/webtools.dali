@@ -20,6 +20,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * {@link java.util.NoSuchElementException}.
  * 
  * @param <E> the type of elements held by the collection
+ * 
+ * @see CollectionLastElementTransformer
  */
 public final class CollectionLastElementTransformer_<E>
 	implements Transformer<Collection<? extends E>, E>, Serializable

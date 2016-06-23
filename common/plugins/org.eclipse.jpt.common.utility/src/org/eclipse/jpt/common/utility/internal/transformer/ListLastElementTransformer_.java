@@ -18,6 +18,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * If the list is empty, the transformer throws an {@link IndexOutOfBoundsException}.
  * 
  * @param <E> the type of elements held by the list
+ * 
+ * @see ListLastElementTransformer
  */
 public final class ListLastElementTransformer_<E>
 	implements Transformer<List<? extends E>, E>, Serializable

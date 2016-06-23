@@ -19,6 +19,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * If the collection is empty, the transformer returns <code>null</code>.
  * 
  * @param <E> the type of elements held by the collection
+ * 
+ * @see CollectionLastElementTransformer_
  */
 public final class CollectionLastElementTransformer<E>
 	implements Transformer<Collection<? extends E>, E>, Serializable

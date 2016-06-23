@@ -19,6 +19,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * {@link java.util.NoSuchElementException}.
  * 
  * @param <E> the type of elements held by the collection
+ * 
+ * @see CollectionFirstElementTransformer
  */
 public final class CollectionFirstElementTransformer_<E>
 	implements Transformer<Collection<? extends E>, E>, Serializable

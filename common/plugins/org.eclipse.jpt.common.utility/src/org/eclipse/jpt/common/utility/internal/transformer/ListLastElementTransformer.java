@@ -18,6 +18,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * If the list is empty, the transformer returns <code>null</code>.
  * 
  * @param <E> the type of elements held by the list
+ * 
+ * @see ListLastElementTransformer_
  */
 public final class ListLastElementTransformer<E>
 	implements Transformer<List<? extends E>, E>, Serializable
