@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class CheckBoxModelAdapterTests extends TestCase {
-	private ModifiablePropertyValueModel<Boolean> booleanHolder;
+	private ModifiablePropertyValueModel<Boolean> booleanModel;
 	private ButtonModel buttonModelAdapter;
 	boolean eventFired;
 
@@ -35,13 +35,21 @@ public class CheckBoxModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.booleanHolder = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.buttonModelAdapter = new CheckBoxModelAdapter(this.booleanHolder) {
-			@Override
-			protected PropertyChangeListener buildBooleanChangeListener() {
-				return this.buildBooleanChangeListener_();
-			}
-		};
+		this.booleanModel = new SimplePropertyValueModel<>(Boolean.TRUE);
+		this.buttonModelAdapter = new TestCheckBoxModelAdapter(this.booleanModel);
+	}
+
+	public static class TestCheckBoxModelAdapter
+		extends CheckBoxModelAdapter
+	{
+		private static final long serialVersionUID = 1L;
+		public TestCheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanModel) {
+			super(booleanModel);
+		}
+		@Override
+		protected PropertyChangeListener buildBooleanChangeListener() {
+			return this.buildBooleanChangeListener_();
+		}
 	}
 
 	@Override
@@ -60,7 +68,7 @@ public class CheckBoxModelAdapterTests extends TestCase {
 		});
 		this.buttonModelAdapter.setSelected(false);
 		assertTrue(this.eventFired);
-		assertEquals(Boolean.FALSE, this.booleanHolder.getValue());
+		assertEquals(Boolean.FALSE, this.booleanModel.getValue());
 	}
 
 	public void testSetValue() throws Exception {
@@ -72,7 +80,7 @@ public class CheckBoxModelAdapterTests extends TestCase {
 			}
 		});
 		assertTrue(this.buttonModelAdapter.isSelected());
-		this.booleanHolder.setValue(Boolean.FALSE);
+		this.booleanModel.setValue(Boolean.FALSE);
 		assertTrue(this.eventFired);
 		assertFalse(this.buttonModelAdapter.isSelected());
 	}
@@ -86,18 +94,18 @@ public class CheckBoxModelAdapterTests extends TestCase {
 			}
 		});
 		assertTrue(this.buttonModelAdapter.isSelected());
-		this.booleanHolder.setValue(null);
+		this.booleanModel.setValue(null);
 		assertTrue(this.eventFired);
 		assertFalse(this.buttonModelAdapter.isSelected());
 
 		this.eventFired = false;
-		this.booleanHolder.setValue(Boolean.FALSE);
+		this.booleanModel.setValue(Boolean.FALSE);
 		assertFalse(this.eventFired);
 		assertFalse(this.buttonModelAdapter.isSelected());
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel<Boolean> localBooleanHolder = (SimplePropertyValueModel<Boolean>) this.booleanHolder;
+		SimplePropertyValueModel<Boolean> localBooleanHolder = (SimplePropertyValueModel<Boolean>) this.booleanModel;
 		assertFalse(localBooleanHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.buttonModelAdapter);
 

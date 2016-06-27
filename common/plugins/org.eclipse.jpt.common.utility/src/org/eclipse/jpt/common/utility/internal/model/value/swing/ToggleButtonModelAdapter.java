@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,14 +17,15 @@ import javax.swing.event.ChangeListener;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
- * This javax.swing.ButtonModel can be used to keep a listener
- * (e.g. a JCheckBox or a JRadioButton) in synch with a PropertyValueModel
- * on a boolean.
+ * This {@link javax.swing.ButtonModel} can be used to keep a listener
+ * (e.g. a {@link javax.swing.JCheckBox} or a {@link javax.swing.JRadioButton})
+ * in sync with a boolean model.
  */
 public class ToggleButtonModelAdapter
 	extends ToggleButtonModel
@@ -36,7 +37,7 @@ public class ToggleButtonModelAdapter
 	protected final boolean defaultValue;
 
 	/** A value model on the underlying model boolean. */
-	protected final ModifiablePropertyValueModel<Boolean> booleanHolder;
+	protected final ModifiablePropertyValueModel<Boolean> booleanModel;
 
 	/**
 	 * A listener that allows us to synchronize with
@@ -50,26 +51,26 @@ public class ToggleButtonModelAdapter
 	// ********** constructors **********
 
 	/**
-	 * Constructor - the boolean holder is required.
+	 * Constructor - the model is required.
+	 * The default value will be <code>false</code>.
 	 */
-	public ToggleButtonModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
+	public ToggleButtonModelAdapter(ModifiablePropertyValueModel<Boolean> booleanModel) {
+		this(booleanModel, false);
+	}
+
+	/**
+	 * Constructor - the model is required.
+	 */
+	public ToggleButtonModelAdapter(ModifiablePropertyValueModel<Boolean> booleanModel, boolean defaultValue) {
 		super();
-		if (booleanHolder == null) {
+		if (booleanModel == null) {
 			throw new NullPointerException();
 		}
-		this.booleanHolder = booleanHolder;
+		this.booleanModel = booleanModel;
 		this.booleanChangeListener = this.buildBooleanChangeListener();
 		// postpone listening to the underlying model
 		// until we have listeners ourselves...
 		this.defaultValue = defaultValue;
-	}
-
-	/**
-	 * Constructor - the boolean holder is required.
-	 * The default value will be false.
-	 */
-	public ToggleButtonModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder) {
-		this(booleanHolder, false);
 	}
 
 
@@ -80,30 +81,58 @@ public class ToggleButtonModelAdapter
 	}
 
 	protected PropertyChangeListener buildBooleanChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				ToggleButtonModelAdapter.this.booleanChanged(event);
-			}
-		    @Override
-			public String toString() {
-				return "boolean listener"; //$NON-NLS-1$
-			}
-		};
+		return new BooleanChangeListener();
+	}
+
+	protected class BooleanChangeListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			ToggleButtonModelAdapter.this.booleanChanged(event);
+		}
+	}
+
+	/**
+	 * The underlying model has changed - synchronize accordingly.
+	 */
+	protected void booleanChanged(PropertyChangeEvent event) {
+		this.setSelected((Boolean) event.getNewValue());
 	}
 
 
-	// ********** ButtonModel implementation **********
+	// ********** selection **********
+
+	/**
+	 * Synchronize with the specified value.
+	 * If it is <code>null</code>, use the default value
+	 * (which is typically <code>false</code>).
+	 */
+	protected void setSelected(Boolean value) {
+		if (value == null) {
+			this.setSelected(this.getDefaultValue());
+		} else {
+			this.setSelected(value.booleanValue());
+		}
+	}
 
 	/**
 	 * Extend to update the underlying model if necessary.
 	 */
     @Override
 	public void setSelected(boolean b) {
-		if (this.isSelected() != b) {	// stop the recursion!
-			super.setSelected(b);//put the super call first, otherwise the following gets called twice
-			this.booleanHolder.setValue(Boolean.valueOf(b));
+		if (this.isSelected() != b) { // stop the recursion!
+			super.setSelected(b); // put the super call first, otherwise the following gets called twice
+			this.booleanModel.setValue(Boolean.valueOf(b));
 		}
 	}
+
+	protected boolean getDefaultValue() {
+		return this.defaultValue;
+	}
+
+
+	// ********** listeners **********
 
 	/**
 	 * Extend to start listening to the underlying model if necessary.
@@ -171,9 +200,6 @@ public class ToggleButtonModelAdapter
 		}
 	}
 
-
-	// ********** queries **********
-
 	/**
 	 * Return whether we have no listeners at all.
 	 */
@@ -181,47 +207,20 @@ public class ToggleButtonModelAdapter
 		return this.listenerList.getListenerCount() == 0;
 	}
 
-	protected boolean getDefaultValue() {
-		return this.defaultValue;
-	}
-
-
-	// ********** behavior **********
-
-	/**
-	 * Synchronize with the specified value.
-	 * If it is null, use the default value (which is typically false).
-	 */
-	protected void setSelected(Boolean value) {
-		if (value == null) {
-			this.setSelected(this.getDefaultValue());
-		} else {
-			this.setSelected(value.booleanValue());
-		}
-	}
-
-	/**
-	 * The underlying model has changed - synchronize accordingly.
-	 */
-	protected void booleanChanged(PropertyChangeEvent event) {
-		this.setSelected((Boolean) event.getNewValue());
-	}
-
 	protected void engageModel() {
-		this.booleanHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
-		this.setSelected(this.booleanHolder.getValue());
+		this.booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.setSelected(this.booleanModel.getValue());
 	}
 
 	protected void disengageModel() {
-		this.booleanHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
 	}
 
 
-	// ********** standard methods **********
+	// ********** misc **********
 
     @Override
 	public String toString() {
-		return ObjectTools.toString(this, this.booleanHolder);
+		return ObjectTools.toString(this, this.booleanModel);
 	}
-
 }

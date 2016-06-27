@@ -44,7 +44,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionVa
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggableModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
@@ -215,7 +214,7 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA project is not null model
 	private PropertyValueModel<Boolean> buildJpaProjectIsNotNullFlagModel() {
-		return new PredicatePropertyValueModel<>(this.jpaProjectModel, PredicateTools.isNotNull());
+		return PropertyValueModelTools.valueIsNotNull(this.jpaProjectModel);
 	}
 
 	// ***** JPA platform config model
@@ -366,7 +365,7 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA 2.0 project flag
 	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
-		return new PredicatePropertyValueModel<>(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0);
+		return PropertyValueModelTools.valueIsInSet(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0);
 	}
 
 	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = PredicateTools.nullCheck(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));

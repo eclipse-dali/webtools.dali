@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,8 @@ import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
-import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
@@ -35,9 +35,9 @@ import org.eclipse.ui.part.PageBook;
 public class PersistentTypeDetailsPageManager
 	extends AbstractJpaDetailsPageManager<PersistentType>
 {
-	private final HashMap<String, JpaComposite> mappingComposites = new HashMap<String, JpaComposite>();
+	private final HashMap<String, JpaComposite> mappingComposites = new HashMap<>();
 	private PageBook mappingPageBook;
-	private PropertyValueModel<TypeMapping> mappingHolder;
+	private PropertyValueModel<TypeMapping> mappingModel;
 
 
 	public PersistentTypeDetailsPageManager(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
@@ -50,6 +50,7 @@ public class PersistentTypeDetailsPageManager
 	}
 	
 	@Override
+	@SuppressWarnings("unused")
 	protected void initializeLayout(Composite container) {
 		new PersistentTypeMapAsComposite(this, container);
 		this.mappingPageBook = this.buildMappingPageBook(container);
@@ -66,8 +67,8 @@ public class PersistentTypeDetailsPageManager
 		gridData.grabExcessVerticalSpace   = true;
 		book.setLayoutData(gridData);
 		
-		this.mappingHolder = this.buildMappingHolder();
-		SWTBindingTools.bind(this.mappingHolder, this.buildPaneTransformer(), book);
+		this.mappingModel = this.buildMappingModel();
+		SWTBindingTools.bind(this.mappingModel, this.buildPaneTransformer(), book);
 
 		return book;
 	}
@@ -79,7 +80,7 @@ public class PersistentTypeDetailsPageManager
 	class KeyEquals
 		extends CriterionPredicate<TypeMapping, String>
 	{
-		private KeyEquals(String key) {
+		KeyEquals(String key) {
 			super(key);
 		}
 		public boolean evaluate(TypeMapping mapping) {
@@ -97,13 +98,10 @@ public class PersistentTypeDetailsPageManager
 	}
 
 	protected PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
-		return new FilteringPropertyValueModel<TypeMapping>(
-			this.mappingHolder,
-			buildMappingFilter(key)
-		);
+		return PropertyValueModelTools.filter(this.mappingModel, buildMappingFilter(key));
 	}
 
-	private PropertyAspectAdapter<PersistentType, TypeMapping> buildMappingHolder() {
+	private PropertyAspectAdapter<PersistentType, TypeMapping> buildMappingModel() {
 		return new PropertyAspectAdapter<PersistentType, TypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
 			@Override
 			protected TypeMapping buildValue_() {
@@ -141,7 +139,7 @@ public class PersistentTypeDetailsPageManager
 			);
 	}
 
-	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = new StaticPropertyValueModel<Boolean>(Boolean.TRUE);
+	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = new StaticPropertyValueModel<>(Boolean.TRUE);
 
 	protected PropertyValueModel<Boolean> getMappingCompositeEnabledModel() {
 		return TRUE_ENABLED_MODEL;		

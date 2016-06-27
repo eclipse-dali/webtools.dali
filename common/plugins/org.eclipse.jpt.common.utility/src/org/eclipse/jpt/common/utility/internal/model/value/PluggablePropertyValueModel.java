@@ -17,7 +17,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
  * 
  * @param <V> the type of the model's derived value
  */
-public class PluggablePropertyValueModel<V>
+public final class PluggablePropertyValueModel<V>
 	extends AbstractPluggablePropertyValueModel<V, PluggablePropertyValueModel.Adapter<V>>
 {
 	public PluggablePropertyValueModel(Adapter.Factory<V> adapterFactory) {

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.ui.internal;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.AbstractPluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
@@ -79,8 +80,8 @@ public class ProjectAdapterFactory
 	 * since it will be kept synchronized with the JAXB manager's collection of
 	 * JAXB projects in the end.
 	 */
-	/* CU private */ static class LocalJaxbProjectModel
-		extends PluggablePropertyValueModel<JaxbProject>
+	/* CU private */ static final class LocalJaxbProjectModel
+		extends AbstractPluggablePropertyValueModel<JaxbProject, PluggablePropertyValueModel.Adapter<JaxbProject>>
 		implements JaxbProjectModel
 	{
 		/**

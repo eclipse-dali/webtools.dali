@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,8 +23,10 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class RadioButtonModelAdapterTests extends TestCase {
-	private ModifiablePropertyValueModel<Object> valueHolder;
+public class RadioButtonModelAdapterTests
+	extends TestCase
+{
+	private ModifiablePropertyValueModel<Object> valueModel;
 
 	private ButtonModel redButtonModelAdapter;
 	private ChangeListener redListener;
@@ -51,10 +53,10 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel<Object>(null);
+		this.valueModel = new SimplePropertyValueModel<>(null);
 //		buttonGroup = new ButtonGroup();
 
-		this.redButtonModelAdapter = this.buildButtonModel(this.valueHolder, RED);
+		this.redButtonModelAdapter = this.buildButtonModel(this.valueModel, RED);
 //		this.redButtonModelAdapter.setGroup(buttonGroup);
 		this.redListener = new TestChangeListener() {
 			@Override
@@ -63,7 +65,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 			}
 		};
 
-		this.greenButtonModelAdapter = this.buildButtonModel(this.valueHolder, GREEN);
+		this.greenButtonModelAdapter = this.buildButtonModel(this.valueModel, GREEN);
 //		this.greenButtonModelAdapter.setGroup(buttonGroup);
 		this.greenListener = new TestChangeListener() {
 			@Override
@@ -72,7 +74,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 			}
 		};
 
-		this.blueButtonModelAdapter = this.buildButtonModel(this.valueHolder, BLUE);
+		this.blueButtonModelAdapter = this.buildButtonModel(this.valueModel, BLUE);
 //		this.blueButtonModelAdapter.setGroup(buttonGroup);
 		this.blueListener = new TestChangeListener() {
 			@Override
@@ -85,12 +87,21 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	}
 
 	private ButtonModel buildButtonModel(ModifiablePropertyValueModel<Object> pvm, Object buttonValue) {
-		return new RadioButtonModelAdapter(pvm, buttonValue) {
-			@Override
-			protected PropertyChangeListener buildBooleanChangeListener() {
-				return this.buildBooleanChangeListener_();
-			}
-		};
+		return new TestRadioButtonModelAdapter(pvm, buttonValue);
+	}
+
+	// build synchronous listener
+	public static class TestRadioButtonModelAdapter
+		extends RadioButtonModelAdapter
+	{
+		public TestRadioButtonModelAdapter(ModifiablePropertyValueModel<Object> pvm, Object buttonValue) {
+			super(pvm, buttonValue);
+		}
+		private static final long serialVersionUID = 1L;
+		@Override
+		protected PropertyChangeListener buildBooleanChangeListener() {
+			return this.buildBooleanChangeListener_();
+		}
 	}
 
 	private void listenToModelAdapters() {
@@ -118,21 +129,21 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		assertFalse(this.redEventFired);
 		assertTrue(this.greenEventFired);
 		assertFalse(this.blueEventFired);
-		assertEquals(GREEN, this.valueHolder.getValue());
+		assertEquals(GREEN, this.valueModel.getValue());
 
 		this.clearFlags();
 		this.blueButtonModelAdapter.setSelected(true);
 		assertFalse(this.redEventFired);
 		assertTrue(this.greenEventFired);
 		assertTrue(this.blueEventFired);
-		assertEquals(BLUE, this.valueHolder.getValue());
+		assertEquals(BLUE, this.valueModel.getValue());
 
 		this.clearFlags();
 		this.redButtonModelAdapter.setSelected(true);
 		assertTrue(this.redEventFired);
 		assertFalse(this.greenEventFired);
 		assertTrue(this.blueEventFired);
-		assertEquals(RED, this.valueHolder.getValue());
+		assertEquals(RED, this.valueModel.getValue());
 	}
 
 	public void testSetValue() throws Exception {
@@ -141,7 +152,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		this.greenButtonModelAdapter.setSelected(true);
 
 		this.clearFlags();
-		this.valueHolder.setValue(BLUE);
+		this.valueModel.setValue(BLUE);
 		assertFalse(this.redEventFired);
 		assertTrue(this.greenEventFired);
 		assertTrue(this.blueEventFired);
@@ -150,7 +161,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		assertTrue(this.blueButtonModelAdapter.isSelected());
 
 		this.clearFlags();
-		this.valueHolder.setValue(RED);
+		this.valueModel.setValue(RED);
 		assertTrue(this.redEventFired);
 		assertFalse(this.greenEventFired);
 		assertTrue(this.blueEventFired);
@@ -162,13 +173,13 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	public void testDefaultValue() throws Exception {
 		this.listenToModelAdapters();
 
-		this.valueHolder.setValue(GREEN);
+		this.valueModel.setValue(GREEN);
 		assertFalse(this.redButtonModelAdapter.isSelected());
 		assertTrue(this.greenButtonModelAdapter.isSelected());
 		assertFalse(this.blueButtonModelAdapter.isSelected());
 
 		this.clearFlags();
-		this.valueHolder.setValue(null);
+		this.valueModel.setValue(null);
 		assertFalse(this.redEventFired);
 		assertTrue(this.greenEventFired);
 		assertFalse(this.blueEventFired);
@@ -177,7 +188,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		assertFalse(this.blueButtonModelAdapter.isSelected());
 
 		this.clearFlags();
-		this.valueHolder.setValue(BLUE);
+		this.valueModel.setValue(BLUE);
 		assertFalse(this.redEventFired);
 		assertFalse(this.greenEventFired);
 		assertTrue(this.blueEventFired);
@@ -187,7 +198,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel<Object> localValueHolder = (SimplePropertyValueModel<Object>) this.valueHolder;
+		SimplePropertyValueModel<Object> localValueHolder = (SimplePropertyValueModel<Object>) this.valueModel;
 		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.redButtonModelAdapter);
 		this.verifyHasNoListeners(this.greenButtonModelAdapter);

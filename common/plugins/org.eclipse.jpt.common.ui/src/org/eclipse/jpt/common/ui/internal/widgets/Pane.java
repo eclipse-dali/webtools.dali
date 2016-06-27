@@ -28,11 +28,9 @@ import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.NullCheckPropertyValueModelWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -218,7 +216,7 @@ public abstract class Pane<T extends Model> {
 		WidgetFactory widgetFactory,
 		ResourceManager resourceManager
 	) {
-		this(subjectModel, buildIsNotNullModel(subjectModel), parentComposite, widgetFactory, resourceManager);
+		this(subjectModel, PropertyValueModelTools.valueIsNotNull(subjectModel), parentComposite, widgetFactory, resourceManager);
 	}
 
 	/**
@@ -307,22 +305,12 @@ public abstract class Pane<T extends Model> {
 	}
 
 	/**
-	 * Return a {@link Boolean} value model that will return
-	 * {@link Boolean#TRUE} if the value of the specified value model is
-	 * <em>not</em> <code>null</code>;
-	 * {@link Boolean#FALSE} if the value <em>is</em> <code>null</code>.
-	 */
-	protected static PropertyValueModel<Boolean> buildIsNotNullModel(PropertyValueModel<?> valueModel) {
-		return new PredicatePropertyValueModel<Object>(valueModel, PredicateTools.isNotNull());
-	}
-
-	/**
 	 * Convenience method for sub-classes.
 	 * Wrap the pane's {@link #subjectModel} in a {@link #buildIsNotNullModel(PropertyValueModel)};
 	 * i.e. a model that returns whether the subject is <code>null</code>.
 	 */
 	protected PropertyValueModel<Boolean> buildSubjectIsNotNullModel() {
-		return buildIsNotNullModel(this.subjectModel);
+		return PropertyValueModelTools.valueIsNotNull(this.subjectModel);
 	}
 
 	/**
@@ -350,7 +338,7 @@ public abstract class Pane<T extends Model> {
 	 * (which is typical with aspect adapters etc.).
 	 */
 	private static PropertyValueModel<Boolean> buildNonNullModel(PropertyValueModel<Boolean> booleanModel) {
-		return new NullCheckPropertyValueModelWrapper<>(booleanModel, Boolean.FALSE);
+		return PropertyValueModelTools.nullCheck(booleanModel, Boolean.FALSE);
 	}
 
 

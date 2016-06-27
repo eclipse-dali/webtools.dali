@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,9 @@ package org.eclipse.jpt.common.utility.internal.model.value.swing;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
- * This javax.swing.ButtonModel can be used to keep a listener
- * (e.g. a JCheckBox) in synch with a PropertyValueModel that
- * holds a boolean.
- * 
+ * This {@link javax.swing.ButtonModel} can be used to keep a listener
+ * (e.g. a {@link javax.swing.JCheckBox}) in sync with a boolean model.
+ * <p>
  * Maybe not the richest class in our toolbox, but it was the
  * victim of refactoring....  ~bjv
  */
@@ -29,16 +28,16 @@ public class CheckBoxModelAdapter
 	/**
 	 * Constructor - the boolean holder is required.
 	 */
-	public CheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
-		super(booleanHolder, defaultValue);
+	public CheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanModel, boolean defaultValue) {
+		super(booleanModel, defaultValue);
 	}
 
 	/**
 	 * Constructor - the boolean holder is required.
 	 * The default value will be false.
 	 */
-	public CheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder) {
-		super(booleanHolder);
+	public CheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanModel) {
+		super(booleanModel);
 	}
 
 }

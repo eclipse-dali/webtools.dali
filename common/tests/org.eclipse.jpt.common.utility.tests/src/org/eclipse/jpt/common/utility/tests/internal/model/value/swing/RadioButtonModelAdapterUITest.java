@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,9 +41,9 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 @SuppressWarnings("nls")
 public class RadioButtonModelAdapterUITest {
 
-	private TestModel testModel;
-	private ModifiablePropertyValueModel<TestModel> testModelHolder;
-	private ModifiablePropertyValueModel<Object> colorHolder;
+	private ColoredThing coloredThing;
+	private ModifiablePropertyValueModel<ColoredThing> coloredThingModel;
+	private ModifiablePropertyValueModel<String> colorModel;
 	private ButtonModel redButtonModel;
 	private ButtonModel greenButtonModel;
 	private ButtonModel blueButtonModel;
@@ -57,30 +57,30 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	private void exec() throws Exception {
-		this.testModel = new TestModel();
-		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
-		this.colorHolder = this.buildColorHolder(this.testModelHolder);
-		this.redButtonModel = this.buildRadioButtonModelAdapter(this.colorHolder, TestModel.RED);
-		this.greenButtonModel = this.buildRadioButtonModelAdapter(this.colorHolder, TestModel.GREEN);
-		this.blueButtonModel = this.buildRadioButtonModelAdapter(this.colorHolder, TestModel.BLUE);
+		this.coloredThing = new ColoredThing();
+		this.coloredThingModel = new SimplePropertyValueModel<>(this.coloredThing);
+		this.colorModel = this.buildColorModel(this.coloredThingModel);
+		this.redButtonModel = this.buildRadioButtonModelAdapter(this.colorModel, ColoredThing.RED);
+		this.greenButtonModel = this.buildRadioButtonModelAdapter(this.colorModel, ColoredThing.GREEN);
+		this.blueButtonModel = this.buildRadioButtonModelAdapter(this.colorModel, ColoredThing.BLUE);
 		this.openWindow();
 	}
 
-	private ModifiablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, Object>(subjectHolder, TestModel.COLOR_PROPERTY) {
+	private ModifiablePropertyValueModel<String> buildColorModel(PropertyValueModel<ColoredThing> ctm) {
+		return new PropertyAspectAdapter<ColoredThing, String>(ctm, ColoredThing.COLOR_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
+			protected String buildValue_() {
 				return this.subject.getColor();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				this.subject.setColor((String) value);
+			protected void setValue_(String value) {
+				this.subject.setColor(value);
 			}
 		};
 	}
 
-	private ButtonModel buildRadioButtonModelAdapter(ModifiablePropertyValueModel<Object> colorPVM, String color) {
-		return new RadioButtonModelAdapter(colorPVM, color);
+	private ButtonModel buildRadioButtonModelAdapter(ModifiablePropertyValueModel<String> colorPVM, String color) {
+		return new RadioButtonModelAdapter<>(colorPVM, color);
 	}
 
 	private void openWindow() {
@@ -154,6 +154,7 @@ public class RadioButtonModelAdapterUITest {
 
 	private Action buildResetColorAction() {
 		Action action = new AbstractAction("reset color") {
+			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent event) {
 				RadioButtonModelAdapterUITest.this.resetColor();
 			}
@@ -163,7 +164,7 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	void resetColor() {
-		this.testModel.setColor(TestModel.DEFAULT_COLOR);
+		this.coloredThing.setColor(ColoredThing.DEFAULT_COLOR);
 	}
 
 	private JButton buildClearModelButton() {
@@ -172,6 +173,7 @@ public class RadioButtonModelAdapterUITest {
 
 	private Action buildClearModelAction() {
 		Action action = new AbstractAction("clear model") {
+			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent event) {
 				RadioButtonModelAdapterUITest.this.clearModel();
 			}
@@ -181,7 +183,7 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	void clearModel() {
-		this.testModelHolder.setValue(null);
+		this.coloredThingModel.setValue(null);
 	}
 
 	private JButton buildRestoreModelButton() {
@@ -190,6 +192,7 @@ public class RadioButtonModelAdapterUITest {
 
 	private Action buildRestoreModelAction() {
 		Action action = new AbstractAction("restore model") {
+			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent event) {
 				RadioButtonModelAdapterUITest.this.restoreModel();
 			}
@@ -199,7 +202,7 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	void restoreModel() {
-		this.testModelHolder.setValue(this.testModel);
+		this.coloredThingModel.setValue(this.coloredThing);
 	}
 
 	private JButton buildPrintModelButton() {
@@ -208,6 +211,7 @@ public class RadioButtonModelAdapterUITest {
 
 	private Action buildPrintModelAction() {
 		Action action = new AbstractAction("print model") {
+			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent event) {
 				RadioButtonModelAdapterUITest.this.printModel();
 			}
@@ -217,11 +221,13 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	void printModel() {
-		System.out.println(this.testModel);
+		System.out.println(this.coloredThing);
 	}
 
 
-	private static class TestModel extends AbstractModel {
+	private static class ColoredThing
+		extends AbstractModel
+	{
 		private String color;
 			public static final String COLOR_PROPERTY = "color";
 			public static final String RED = "red";
@@ -234,10 +240,10 @@ public class RadioButtonModelAdapterUITest {
 				BLUE
 			};
 	
-		public TestModel() {
+		public ColoredThing() {
 			this(DEFAULT_COLOR);
 		}
-		public TestModel(String color) {
+		public ColoredThing(String color) {
 			this.color = color;
 		}
 		public String getColor() {

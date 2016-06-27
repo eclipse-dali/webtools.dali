@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
@@ -291,7 +291,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 	}
 
 	private PropertyValueModel<Boolean> buildIncludeCriteriaCheckBoxIsVisibleModel() {
-		return new PredicatePropertyValueModel<EclipseLinkMultitenancy2_3>(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
 	}
 
 	private static final Predicate<EclipseLinkMultitenancy2_3> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =

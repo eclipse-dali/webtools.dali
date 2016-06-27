@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
  * 
  * @param <V> the type of the model's derived value
  */
-public class PluggableModifiablePropertyValueModel<V>
+public final class PluggableModifiablePropertyValueModel<V>
 	extends AbstractPluggablePropertyValueModel<V, PluggableModifiablePropertyValueModel.Adapter<V>>
 	implements ModifiablePropertyValueModel<V>
 {

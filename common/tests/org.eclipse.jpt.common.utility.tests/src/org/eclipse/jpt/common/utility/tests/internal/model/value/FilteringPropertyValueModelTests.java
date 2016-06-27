@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -21,14 +20,17 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class FilteringPropertyValueModelTests extends TestCase {
-	private ModifiablePropertyValueModel<String> objectHolder;
-	PropertyChangeEvent event;
+public class FilteringPropertyValueModelTests
+	extends TestCase
+{
+	private ModifiablePropertyValueModel<String> innerModel;
+	PropertyChangeEvent innerModelEvent;
 
-	private ModifiablePropertyValueModel<String> filteredObjectHolder;
-	PropertyChangeEvent filteredEvent;
+	private ModifiablePropertyValueModel<String> filteredModel;
+	PropertyChangeEvent filteredModelEvent;
 
 	public FilteringPropertyValueModelTests(String name) {
 		super(name);
@@ -37,8 +39,9 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.objectHolder = new SimplePropertyValueModel<String>("foo");
-		this.filteredObjectHolder = new FilteringModifiablePropertyValueModel<String>(this.objectHolder, this.buildGetFilter(), this.buildSetFilter());
+		this.innerModel = new SimplePropertyValueModel<>("foo");
+		this.filteredModel = PropertyValueModelTools.filterModifiable(this.innerModel, this.buildGetFilter(), this.buildSetFilter());
+//		this.filteredModel = new FilteringModifiablePropertyValueModel<>(this.innerModel, this.buildGetFilter(), this.buildSetFilter());
 	}
 
 	private Predicate<String> buildGetFilter() {
@@ -65,115 +68,165 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertEquals("foo", this.objectHolder.getValue());
-		assertNull(this.filteredObjectHolder.getValue());
+		assertEquals("foo", this.innerModel.getValue());
+		assertNull(this.filteredModel.getValue());
 
-		this.objectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertNotNull(this.filteredObjectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		ChangeListener innerListener = this.buildInnerListener();
+		this.innerModel.addChangeListener(innerListener);
+		ChangeListener filteredListener = this.buildFilteredListener();
+		this.filteredModel.addChangeListener(filteredListener);
 
-		this.objectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.getValue());
-		assertNotNull(this.filteredObjectHolder.getValue());
-		assertEquals("baz", this.filteredObjectHolder.getValue());
+		assertEquals("foo", this.innerModel.getValue());
+		assertNull(this.filteredModel.getValue());
 
-		this.objectHolder.setValue(null);
-		assertNull(this.objectHolder.getValue());
-		assertNull(this.filteredObjectHolder.getValue());
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("bar");
+		assertEquals("bar", this.innerModel.getValue());
+		assertEquals("bar", this.innerModelEvent.getNewValue());
+		assertNotNull(this.filteredModel.getValue());
+		assertEquals("bar", this.filteredModel.getValue());
+		assertEquals("bar", this.filteredModelEvent.getNewValue());
 
-		this.objectHolder.setValue("foo");
-		assertEquals("foo", this.objectHolder.getValue());
-		assertNull(this.filteredObjectHolder.getValue());
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("baz");
+		assertEquals("baz", this.innerModel.getValue());
+		assertEquals("baz", this.innerModelEvent.getNewValue());
+		assertNotNull(this.filteredModel.getValue());
+		assertEquals("baz", this.filteredModel.getValue());
+		assertEquals("baz", this.filteredModelEvent.getNewValue());
+
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue(null);
+		assertNull(this.innerModel.getValue());
+		assertNull(this.innerModelEvent.getNewValue());
+		assertNull(this.filteredModel.getValue());
+		assertNull(this.filteredModelEvent.getNewValue());
+
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("foo");
+		assertEquals("foo", this.innerModel.getValue());
+		assertEquals("foo", this.innerModelEvent.getNewValue());
+		assertNull(this.filteredModel.getValue());
+		assertNull(this.filteredModelEvent);
 	}
 
 	public void testSetValue() {
-		this.filteredObjectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		assertEquals("foo", this.innerModel.getValue());
+		assertNull(this.filteredModel.getValue());
 
-		this.filteredObjectHolder.setValue("foo");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		ChangeListener innerListener = this.buildInnerListener();
+		this.innerModel.addChangeListener(innerListener);
+		ChangeListener filteredListener = this.buildFilteredListener();
+		this.filteredModel.addChangeListener(filteredListener);
 
-		this.filteredObjectHolder.setValue(null);
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.filteredModel.setValue("bar");
+		assertEquals("bar", this.innerModel.getValue());
+		assertEquals("bar", this.innerModelEvent.getNewValue());
+		assertEquals("bar", this.filteredModel.getValue());
+		assertEquals("bar", this.filteredModelEvent.getNewValue());
 
-		this.filteredObjectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.getValue());
-		assertEquals("baz", this.filteredObjectHolder.getValue());
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.filteredModel.setValue("foo");
+		assertNull(this.innerModel.getValue());
+		assertNull(this.innerModelEvent.getNewValue());
+		assertNull(this.filteredModel.getValue());
+		assertNull(this.filteredModelEvent.getNewValue());
+
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.filteredModel.setValue(null);
+		assertNull(this.innerModel.getValue());
+		assertNull(this.innerModelEvent);
+		assertNull(this.filteredModel.getValue());
+		assertNull(this.filteredModelEvent);
+
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.filteredModel.setValue("baz");
+		assertEquals("baz", this.innerModel.getValue());
+		assertEquals("baz", this.innerModelEvent.getNewValue());
+		assertEquals("baz", this.filteredModel.getValue());
+		assertEquals("baz", this.filteredModelEvent.getNewValue());
 	}
 
 	public void testLazyListening() {
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.innerModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 		ChangeListener listener = this.buildFilteredListener();
-		this.filteredObjectHolder.addChangeListener(listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		this.filteredObjectHolder.removeChangeListener(listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.filteredModel.addChangeListener(listener);
+		assertTrue(((AbstractModel) this.innerModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.filteredModel.removeChangeListener(listener);
+		assertTrue(((AbstractModel) this.innerModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		this.filteredObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		this.filteredObjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.filteredModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertTrue(((AbstractModel) this.innerModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.filteredModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertTrue(((AbstractModel) this.innerModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
 	public void testPropertyChange1() {
-		this.objectHolder.addChangeListener(this.buildListener());
-		this.filteredObjectHolder.addChangeListener(this.buildFilteredListener());
+		this.innerModel.addChangeListener(this.buildInnerListener());
+		this.filteredModel.addChangeListener(this.buildFilteredListener());
 		this.verifyPropertyChanges();
 	}
 
 	public void testPropertyChange2() {
-		this.objectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildListener());
-		this.filteredObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildFilteredListener());
+		this.innerModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildInnerListener());
+		this.filteredModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildFilteredListener());
 		this.verifyPropertyChanges();
 	}
 
 	private void verifyPropertyChanges() {
-		this.event = null;
-		this.filteredEvent = null;
-		this.objectHolder.setValue("bar");
-		this.verifyEvent(this.event, this.objectHolder, "foo", "bar");
-		this.verifyEvent(this.filteredEvent, this.filteredObjectHolder, null, "bar");
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("bar");
+		this.verifyEvent(this.innerModelEvent, this.innerModel, "foo", "bar");
+		this.verifyEvent(this.filteredModelEvent, this.filteredModel, null, "bar");
 
-		this.event = null;
-		this.filteredEvent = null;
-		this.objectHolder.setValue("baz");
-		this.verifyEvent(this.event, this.objectHolder, "bar", "baz");
-		this.verifyEvent(this.filteredEvent, this.filteredObjectHolder, "bar", "baz");
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("baz");
+		this.verifyEvent(this.innerModelEvent, this.innerModel, "bar", "baz");
+		this.verifyEvent(this.filteredModelEvent, this.filteredModel, "bar", "baz");
 
-		this.event = null;
-		this.filteredEvent = null;
-		this.objectHolder.setValue("foo");
-		this.verifyEvent(this.event, this.objectHolder, "baz", "foo");
-		this.verifyEvent(this.filteredEvent, this.filteredObjectHolder, "baz", null);
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("foo");
+		this.verifyEvent(this.innerModelEvent, this.innerModel, "baz", "foo");
+		this.verifyEvent(this.filteredModelEvent, this.filteredModel, "baz", null);
 
-		this.event = null;
-		this.filteredEvent = null;
-		this.objectHolder.setValue("fop");
-		this.verifyEvent(this.event, this.objectHolder, "foo", "fop");
-		assertNull(this.filteredEvent);
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("fop");
+		this.verifyEvent(this.innerModelEvent, this.innerModel, "foo", "fop");
+		assertNull(this.filteredModelEvent);
 
-		this.event = null;
-		this.filteredEvent = null;
-		this.objectHolder.setValue(null);
-		this.verifyEvent(this.event, this.objectHolder, "fop", null);
-		assertNull(this.filteredEvent);
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue(null);
+		this.verifyEvent(this.innerModelEvent, this.innerModel, "fop", null);
+		assertNull(this.filteredModelEvent);
 
-		this.event = null;
-		this.filteredEvent = null;
-		this.objectHolder.setValue("bar");
-		this.verifyEvent(this.event, this.objectHolder, null, "bar");
-		this.verifyEvent(this.filteredEvent, this.filteredObjectHolder, null, "bar");
+		this.innerModelEvent = null;
+		this.filteredModelEvent = null;
+		this.innerModel.setValue("bar");
+		this.verifyEvent(this.innerModelEvent, this.innerModel, null, "bar");
+		this.verifyEvent(this.filteredModelEvent, this.filteredModel, null, "bar");
 	}
 
-	private ChangeListener buildListener() {
+	private ChangeListener buildInnerListener() {
 		return new ChangeAdapter() {
 			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
-				FilteringPropertyValueModelTests.this.event = e;
+				FilteringPropertyValueModelTests.this.innerModelEvent = e;
 			}
 		};
 	}
@@ -182,7 +235,7 @@ public class FilteringPropertyValueModelTests extends TestCase {
 		return new ChangeAdapter() {
 			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
-				FilteringPropertyValueModelTests.this.filteredEvent = e;
+				FilteringPropertyValueModelTests.this.filteredModelEvent = e;
 			}
 		};
 	}

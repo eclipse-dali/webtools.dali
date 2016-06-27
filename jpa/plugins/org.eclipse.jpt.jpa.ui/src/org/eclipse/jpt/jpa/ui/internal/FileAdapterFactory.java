@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.AbstractPluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
@@ -78,8 +79,8 @@ public class FileAdapterFactory
 	 * 
 	 * @see JpaProjectModel
 	 */
-	/* CU private */ static class LocalJpaFileModel
-		extends PluggablePropertyValueModel<JpaFile>
+	/* CU private */ static final class LocalJpaFileModel
+		extends AbstractPluggablePropertyValueModel<JpaFile, PluggablePropertyValueModel.Adapter<JpaFile>>
 		implements JpaFileModel
 	{
 		/**

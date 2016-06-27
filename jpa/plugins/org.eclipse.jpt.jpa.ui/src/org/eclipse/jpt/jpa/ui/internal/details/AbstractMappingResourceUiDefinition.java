@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,9 +22,6 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.EmbeddableUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.EntityUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.MappedSuperclassUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -55,13 +52,8 @@ public abstract class AbstractMappingResourceUiDefinition
 	// ********** type mappings **********
 
 	public JpaComposite buildTypeMappingComposite(String mappingKey, PropertyValueModel<TypeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		MappingUiDefinition definition = this.getTypeMappingUiDefinition(mappingModel.getValue());
+		MappingUiDefinition definition = this.getTypeMappingUiDefinition(mappingKey);
 		return definition.buildMappingComposite(this.factory, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	protected MappingUiDefinition getTypeMappingUiDefinition(TypeMapping typeMapping) {
-		String mappingKey = (typeMapping == null) ? null : typeMapping.getKey();
-		return this.getTypeMappingUiDefinition(mappingKey);
 	}
 
 	public MappingUiDefinition getTypeMappingUiDefinition(String mappingKey) {
@@ -87,7 +79,7 @@ public abstract class AbstractMappingResourceUiDefinition
 	}
 
 	protected ArrayList<MappingUiDefinition> buildTypeMappingUiDefinitions() {
-		ArrayList<MappingUiDefinition> definitions = new ArrayList<MappingUiDefinition>();
+		ArrayList<MappingUiDefinition> definitions = new ArrayList<>();
 		this.addTypeMappingUiDefinitionsTo(definitions);
 		return definitions;
 	}
@@ -102,13 +94,8 @@ public abstract class AbstractMappingResourceUiDefinition
 	// ********** attribute mappings **********
 
 	public JpaComposite buildAttributeMappingComposite(String mappingKey, PropertyValueModel<AttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parentComposite, WidgetFactory widgetFactory, ResourceManager resourceManager) {
-		MappingUiDefinition definition = this.getAttributeMappingUiDefinition(mappingModel.getValue());
+		MappingUiDefinition definition = this.getAttributeMappingUiDefinition(mappingKey);
 		return definition.buildMappingComposite(this.factory, mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
-	}
-
-	protected MappingUiDefinition getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {
-		String mappingKey = (attributeMapping == null) ? null : attributeMapping.getKey();
-		return this.getAttributeMappingUiDefinition(mappingKey);
 	}
 
 	public synchronized Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions() {
@@ -119,7 +106,7 @@ public abstract class AbstractMappingResourceUiDefinition
 	}
 
 	protected ArrayList<MappingUiDefinition> buildSpecifiedAttributeMappingUiDefinitions() {
-		ArrayList<MappingUiDefinition> definitions = new ArrayList<MappingUiDefinition>();
+		ArrayList<MappingUiDefinition> definitions = new ArrayList<>();
 		this.addSpecifiedAttributeMappingUiDefinitionsTo(definitions);
 		return definitions;
 	}

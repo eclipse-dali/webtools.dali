@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
@@ -33,6 +34,78 @@ public class PropertyValueModelToolsTests
 
 	public PropertyValueModelToolsTests(String name) {
 		super(name);
+	}
+
+	public void testValueIsNull() {
+		ModifiablePropertyValueModel<String> stringModel = new SimplePropertyValueModel<>("");
+		PropertyValueModel<Boolean> booleanModel = PropertyValueModelTools.valueIsNull(stringModel);
+		LocalListener listener = new LocalListener();
+		booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+
+		listener.event = null;
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals("", stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue("foo");
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals("foo", stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue(null);
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertEquals(Boolean.TRUE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue("bar");
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals("bar", stringModel.getValue());
+		assertEquals(Boolean.FALSE, listener.event.getNewValue());
+
+		listener.event = null;
+		booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertNull(booleanModel.getValue());
+		assertEquals("bar", stringModel.getValue());
+		assertNull(listener.event);
+	}
+
+	public void testValueIsNotNull() {
+		ModifiablePropertyValueModel<String> stringModel = new SimplePropertyValueModel<>("");
+		PropertyValueModel<Boolean> booleanModel = PropertyValueModelTools.valueIsNotNull(stringModel);
+		LocalListener listener = new LocalListener();
+		booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+
+		listener.event = null;
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals("", stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue("foo");
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals("foo", stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue(null);
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertEquals(Boolean.FALSE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue("bar");
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals("bar", stringModel.getValue());
+		assertEquals(Boolean.TRUE, listener.event.getNewValue());
+
+		listener.event = null;
+		booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertNull(booleanModel.getValue());
+		assertEquals("bar", stringModel.getValue());
+		assertNull(listener.event);
 	}
 
 	public void testValueEquals() {
@@ -61,9 +134,124 @@ public class PropertyValueModelToolsTests
 
 		listener.event = null;
 		stringModel.setValue(null);
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertNull(booleanModel.getValue());
 		assertNull(stringModel.getValue());
-		assertNull(listener.event.getNewValue());
+		assertNull(listener.event);
+	}
+
+	public void testValueNotEquals() {
+		String string = "foo";
+		ModifiablePropertyValueModel<String> stringModel = new SimplePropertyValueModel<>("");
+		PropertyValueModel<Boolean> booleanModel = PropertyValueModelTools.valueNotEquals(stringModel, string);
+		LocalListener listener = new LocalListener();
+		booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+
+		listener.event = null;
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals("", stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue("foo");
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals("foo", stringModel.getValue());
+		assertEquals(Boolean.FALSE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue("bar");
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals("bar", stringModel.getValue());
+		assertEquals(Boolean.TRUE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue(null);
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertNull(booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event);
+	}
+
+	public void testValueIsIdentical() {
+		Object object0 = new Object();
+		Object object1 = new Object();
+		Object object2 = new Object();
+		ModifiablePropertyValueModel<Object> stringModel = new SimplePropertyValueModel<>(object0);
+		PropertyValueModel<Boolean> booleanModel = PropertyValueModelTools.valueIsIdentical(stringModel, object1);
+		LocalListener listener = new LocalListener();
+		booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+
+		listener.event = null;
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals(object0, stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue(object1);
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals(object1, stringModel.getValue());
+		assertEquals(Boolean.TRUE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue(object2);
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals(object2, stringModel.getValue());
+		assertEquals(Boolean.FALSE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue(null);
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertNull(booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event);
+	}
+
+	public void testValueIsNotIdentical() {
+		Object object0 = new Object();
+		Object object1 = new Object();
+		Object object2 = new Object();
+		ModifiablePropertyValueModel<Object> stringModel = new SimplePropertyValueModel<>(object0);
+		PropertyValueModel<Boolean> booleanModel = PropertyValueModelTools.valueIsNotIdentical(stringModel, object1);
+		LocalListener listener = new LocalListener();
+		booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+
+		listener.event = null;
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals(object0, stringModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		stringModel.setValue(object1);
+		assertEquals(Boolean.FALSE, booleanModel.getValue());
+		assertEquals(object1, stringModel.getValue());
+		assertEquals(Boolean.FALSE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue(object2);
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertEquals(object2, stringModel.getValue());
+		assertEquals(Boolean.TRUE, listener.event.getNewValue());
+
+		listener.event = null;
+		stringModel.setValue(null);
+		assertEquals(Boolean.TRUE, booleanModel.getValue());
+		assertNull(stringModel.getValue());
+		assertNull(listener.event);
 
 		listener.event = null;
 		booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
@@ -81,6 +269,7 @@ public class PropertyValueModelToolsTests
 
 		listener.event = null;
 		assertEquals("foofoo", doubleStringModel.getValue());
+		
 		assertEquals("foo", halfStringModel.getValue());
 		assertNull(listener.event);
 
@@ -193,6 +382,50 @@ public class PropertyValueModelToolsTests
 			exCaught = true;
 		}
 		assertTrue(exCaught);
+	}
+
+	public void testTransformModifiablePropertyValueModel() {
+		ModifiablePropertyValueModel<String> innerModel = new SimplePropertyValueModel<>("1");
+		Transformer<String, Integer> getTransformer = new StringToIntegerTransformer();
+		Transformer<Integer, String> setTransformer = new IntegerToStringTransformer();
+		ModifiablePropertyValueModel<Integer> outerModel = PropertyValueModelTools.transform(innerModel, getTransformer, setTransformer);
+		LocalListener listener = new LocalListener();
+		outerModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+
+		listener.event = null;
+		assertEquals("1", innerModel.getValue());
+		assertEquals(Integer.valueOf(1), outerModel.getValue());
+		assertNull(listener.event);
+
+		listener.event = null;
+		innerModel.setValue("42");
+		assertEquals("42", innerModel.getValue());
+		assertEquals(Integer.valueOf(42), outerModel.getValue());
+		assertEquals(Integer.valueOf(42), listener.event.getNewValue());
+
+		listener.event = null;
+		outerModel.setValue(Integer.valueOf(666));
+		assertEquals("666", innerModel.getValue());
+		assertEquals(Integer.valueOf(666), outerModel.getValue());
+		assertEquals(Integer.valueOf(666), listener.event.getNewValue());
+	}
+
+	public static class StringToIntegerTransformer
+		extends TransformerAdapter<String, Integer>
+	{
+		@Override
+		public Integer transform(String input) {
+			return Integer.valueOf(input);
+		}
+	}
+
+	public static class IntegerToStringTransformer
+		extends TransformerAdapter<Integer, String>
+	{
+		@Override
+		public String transform(Integer input) {
+			return input.toString();
+		}
 	}
 
 	public void testConstructor() {

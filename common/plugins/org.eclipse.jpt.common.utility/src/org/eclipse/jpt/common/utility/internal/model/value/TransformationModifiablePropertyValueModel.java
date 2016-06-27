@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,10 +34,10 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * </ul>
  * As an alternative to building two {@link Transformer}s,
  * a subclass of <code>TransformationWritablePropertyValueModel</code> can
- * override {@link #transform_(Object)} and {@link #reverseTransform_(Object)};
+ * override {@link #transform_(Object)} and {@link #transformSetValue_(Object)};
  * or, if something other than <code>null</code> should be returned when the
  * wrapped value is <code>null</code> or the new value is <code>null</code>,
- * override {@link #transform(Object)} and {@link #reverseTransform(Object)}.
+ * override {@link #transform(Object)} and {@link #transformSetValue(Object)}.
  * 
  * @param <V1> the type of the <em>wrapped</em> model's value
  * @param <V2> the type of the model's <em>transformed</em> value
@@ -47,7 +47,7 @@ public class TransformationModifiablePropertyValueModel<V1, V2>
 	extends TransformationPropertyValueModel<V1, V2>
 	implements ModifiablePropertyValueModel<V2>
 {
-	protected final Transformer<V2, V1> reverseTransformer;
+	protected final Transformer<V2, V1> setValueTransformer;
 
 
 	// ********** constructors/initialization **********
@@ -56,25 +56,25 @@ public class TransformationModifiablePropertyValueModel<V1, V2>
 	 * Construct a writable property value model with the specified nested
 	 * writable property value model and the default transformers.
 	 * Use this constructor if you want to override the
-	 * {@link #transform_(Object)} and {@link #reverseTransform_(Object)}
-	 * (or {@link #transform(Object)} and {@link #reverseTransform(Object)})
+	 * {@link #transform_(Object)} and {@link #transformSetValue_(Object)}
+	 * (or {@link #transform(Object)} and {@link #transformSetValue(Object)})
 	 * methods instead of building {@link Transformer}s.
 	 */
 	public TransformationModifiablePropertyValueModel(ModifiablePropertyValueModel<V1> valueModel) {
 		super(valueModel);
-		this.reverseTransformer = this.buildReverseTransformer();
+		this.setValueTransformer = this.buildReverseTransformer();
 	}
 
 	/**
 	 * Construct a writable property value model with the specified nested
 	 * writable property value model and transformers.
 	 */
-	public TransformationModifiablePropertyValueModel(ModifiablePropertyValueModel<V1> valueModel, Transformer<V1, V2> transformer, Transformer<V2, V1> reverseTransformer) {
+	public TransformationModifiablePropertyValueModel(ModifiablePropertyValueModel<V1> valueModel, Transformer<V1, V2> transformer, Transformer<V2, V1> setValueTransformer) {
 		super(valueModel, transformer);
-		if (reverseTransformer == null) {
+		if (setValueTransformer == null) {
 			throw new NullPointerException();
 		}
-		this.reverseTransformer = reverseTransformer;
+		this.setValueTransformer = setValueTransformer;
 	}
 
 	protected Transformer<V2, V1> buildReverseTransformer() {
@@ -94,7 +94,7 @@ public class TransformationModifiablePropertyValueModel<V1, V2>
 	 */
 	public void setValue(V2 value) {
 		this.value = value;
-		this.getValueModel().setValue(this.reverseTransform(value));
+		this.getValueModel().setValue(this.transformSetValue(value));
 	}
 
 
@@ -104,15 +104,15 @@ public class TransformationModifiablePropertyValueModel<V1, V2>
 	 * "Reverse-transform" the specified value and return the result.
 	 * This is called by {@link #setValue(Object)}.
 	 */
-	protected V1 reverseTransform(V2 v) {
-		return this.reverseTransformer.transform(v);
+	protected V1 transformSetValue(V2 v) {
+		return this.setValueTransformer.transform(v);
 	}
 
 	/**
 	 * "Reverse-transform" the specified, non-<code>null</code>,
 	 * value and return the result.
 	 */
-	protected V1 reverseTransform_(@SuppressWarnings("unused") V2 v) {
+	protected V1 transformSetValue_(@SuppressWarnings("unused") V2 v) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
@@ -135,14 +135,14 @@ public class TransformationModifiablePropertyValueModel<V1, V2>
 	 * The default reverse transformer will return <code>null</code>
 	 * if the new value is <code>null</code>.
 	 * If the new value is not <code>null</code>, it is reverse-transformed
-	 * by a subclass implementation of {@link #reverseTransform_(Object)}.
+	 * by a subclass implementation of {@link #transformSetValue_(Object)}.
 	 */
 	protected class DefaultReverseTransformer
 		extends AbstractTransformer<V2, V1>
 	{
 		@Override
 		public V1 transform_(V2 v) {
-			return TransformationModifiablePropertyValueModel.this.reverseTransform_(v);
+			return TransformationModifiablePropertyValueModel.this.transformSetValue_(v);
 		}
 	}
 }
