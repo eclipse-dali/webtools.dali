@@ -52,7 +52,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public final class CompositePropertyValueModelAdapter<E, V>
 	implements PluggablePropertyValueModel.Adapter<V>, CollectionChangeListener
 {
-	private final Factory<E, V> factory;
+	/** The wrapped model */
+	private final CollectionValueModel<? extends PropertyValueModel<? extends E>> collectionModel;
+
+	/** Transformer that converts the wrapped model's value to this model's value. */
+	private final Transformer<? super Collection<E>, V> transformer;
 
 	/**
 	 * The <em>real</em> adapter, passed to us as a listener.
@@ -90,7 +94,8 @@ public final class CompositePropertyValueModelAdapter<E, V>
 		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.factory = factory;
+		this.collectionModel = factory.collectionModel;
+		this.transformer = factory.transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -108,18 +113,18 @@ public final class CompositePropertyValueModelAdapter<E, V>
 	}
 
 	public void engageModel() {
-		this.factory.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
-		this.addComponentPVMs(this.factory.collectionModel);
+		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
+		this.addComponentPVMs(this.collectionModel);
 		this.value = this.buildValue();
 	}
 
 	public void disengageModel() {
 		this.value = null;
-		this.removeComponentPVMs(this.factory.collectionModel);
+		this.removeComponentPVMs(this.collectionModel);
 		if ( ! this.values.isEmpty()) {
 			throw new IllegalStateException("extraneous values: " + this.values); //$NON-NLS-1$
 		}
-		this.factory.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this);
+		this.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this);
 	}
 
 
@@ -197,7 +202,7 @@ public final class CompositePropertyValueModelAdapter<E, V>
 	}
 
 	private V buildValue() {
-		return this.factory.transformer.transform(this.unmodifiableValues);
+		return this.transformer.transform(this.unmodifiableValues);
 	}
 
 	@Override

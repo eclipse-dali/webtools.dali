@@ -1721,7 +1721,9 @@ public class JpaProjectPropertiesPage
 	static class DefaultDatabaseComponentModelAdapter
 		implements PluggableModifiablePropertyValueModel.Adapter<String>
 	{
-		private final Factory factory;
+		private final PropertyValueModel<Boolean> userOverrideDefaultFlagModel;
+		private final ModifiablePropertyValueModel<String> userOverrideDefaultModel;
+		private final PropertyValueModel<String> databaseDefaultModel;
 
 		private final PropertyChangeListener userOverrideDefaultFlagListener = new UserOverrideDefaultFlagListener();
 		/* CU private */ volatile boolean userOverrideDefaultFlag = false;
@@ -1741,7 +1743,9 @@ public class JpaProjectPropertiesPage
 			if (factory == null) {
 				throw new NullPointerException();
 			}
-			this.factory = factory;
+			this.userOverrideDefaultFlagModel = factory.userOverrideDefaultFlagModel;
+			this.userOverrideDefaultModel = factory.userOverrideDefaultModel;
+			this.databaseDefaultModel = factory.databaseDefaultModel;
 			if (listener == null) {
 				throw new NullPointerException();
 			}
@@ -1758,21 +1762,21 @@ public class JpaProjectPropertiesPage
 		 * (and the drop-down is enabled).
 		 */
 		public void setValue(String value) {
-			this.factory.userOverrideDefaultModel.setValue(value);
+			this.userOverrideDefaultModel.setValue(value);
 		}
 
 		public void engageModel() {
-			this.factory.userOverrideDefaultFlagModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
-			this.factory.userOverrideDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
-			this.factory.databaseDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
+			this.userOverrideDefaultFlagModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
+			this.userOverrideDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
+			this.databaseDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
 			this.value = this.buildValue();
 		}
 
 		public void disengageModel() {
 			this.value = null;
-			this.factory.databaseDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
-			this.factory.userOverrideDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
-			this.factory.userOverrideDefaultFlagModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
+			this.databaseDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
+			this.userOverrideDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
+			this.userOverrideDefaultFlagModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
 		}
 
 		/* CU private */ void update() {
@@ -1811,7 +1815,7 @@ public class JpaProjectPropertiesPage
 
 			// If the checkbox has been unchecked, we need to clear out the JPA project's user override.
 			if ( ! this.userOverrideDefaultFlag) {
-				this.factory.userOverrideDefaultModel.setValue(null);
+				this.userOverrideDefaultModel.setValue(null);
 			}
 		}
 

@@ -46,7 +46,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public final class ListPluggablePropertyValueModelAdapter<E, V>
 	implements PluggablePropertyValueModel.Adapter<V>, ListChangeListener
 {
-	private final Factory<E, V> factory;
+	/** The wrapped model */
+	private final ListValueModel<? extends E> listModel;
+
+	/** Transformer that converts the wrapped model's value to this model's value. */
+	private final Transformer<? super List<E>, V> transformer;
 
 	/** The <em>real</em> adapter. */
 	private final AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener;
@@ -68,7 +72,8 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.factory = factory;
+		this.listModel = factory.listModel;
+		this.transformer = factory.transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -85,15 +90,15 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 	}
 
 	public void engageModel() {
-		this.factory.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
-		ListTools.addAll(this.list, 0, this.factory.listModel);
+		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
+		ListTools.addAll(this.list, 0, this.listModel);
 		this.value = this.buildValue();
 	}
 
 	public void disengageModel() {
 		this.value = null;
 		this.list.clear();
-		this.factory.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this);
+		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this);
 	}
 
 
@@ -146,7 +151,7 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 	}
 
 	private V buildValue() {
-		return this.factory.transformer.transform(this.unmodifiableList);
+		return this.transformer.transform(this.unmodifiableList);
 	}
 
 	@Override

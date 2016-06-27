@@ -36,7 +36,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2, M extends PropertyValueModel<? extends V1>, A extends AbstractPluggablePropertyValueModel.Adapter<V2>, F extends AbstractPropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, M, A>>
 	implements AbstractPluggablePropertyValueModel.Adapter<V2>, PropertyChangeListener
 {
-	protected final F factory;
+	/** The wrapped model */
+	protected final M propertyModel;
+
+	/** Transformer that converts the wrapped model's value to this model's value. */
+	private final Transformer<? super V1, ? extends V2> transformer;
 
 	/** The <em>real</em> adapter. */
 	private final AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener;
@@ -55,7 +59,8 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.factory = factory;
+		this.propertyModel = factory.propertyModel;
+		this.transformer = factory.transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -70,15 +75,15 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 	}
 
 	public void engageModel() {
-		this.factory.propertyModel.addPropertyChangeListener(PropertyValueModel.VALUE, this);
-		this.propertyModelValue = this.factory.propertyModel.getValue();
+		this.propertyModel.addPropertyChangeListener(PropertyValueModel.VALUE, this);
+		this.propertyModelValue = this.propertyModel.getValue();
 		this.value = this.buildValue();
 	}
 
 	public void disengageModel() {
 		this.value = null;
 		this.propertyModelValue = null;
-		this.factory.propertyModel.removePropertyChangeListener(PropertyValueModel.VALUE, this);
+		this.propertyModel.removePropertyChangeListener(PropertyValueModel.VALUE, this);
 	}
 
 
@@ -98,7 +103,7 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 	}
 
 	private V2 buildValue() {
-		return this.factory.transformer.transform(this.propertyModelValue);
+		return this.transformer.transform(this.propertyModelValue);
 	}
 
 	@Override
@@ -112,7 +117,7 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 	public abstract static class Factory<V1, V2, M extends PropertyValueModel<? extends V1>, A extends AbstractPluggablePropertyValueModel.Adapter<V2>>
 		implements AbstractPluggablePropertyValueModel.Adapter.Factory<V2, A>
 	{
-		public final M propertyModel;
+		/* CU private */ final M propertyModel;
 		/* CU private */ final Transformer<? super V1, ? extends V2> transformer;
 
 		public Factory(M propertyModel, Transformer<? super V1, ? extends V2> transformer) {

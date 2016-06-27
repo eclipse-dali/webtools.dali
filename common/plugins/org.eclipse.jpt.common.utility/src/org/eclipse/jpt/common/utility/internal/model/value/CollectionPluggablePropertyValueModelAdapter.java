@@ -42,7 +42,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 	implements PluggablePropertyValueModel.Adapter<V>, CollectionChangeListener
 {
-	private final Factory<E, V> factory;
+	/** The wrapped model */
+	private final CollectionValueModel<? extends E> collectionModel;
+
+	/** Transformer that converts the wrapped model's value to this model's value. */
+	private final Transformer<? super Collection<E>, V> transformer;
 
 	/** The <em>real</em> adapter. */
 	private final AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener;
@@ -64,7 +68,8 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.factory = factory;
+		this.collectionModel = factory.collectionModel;
+		this.transformer = factory.transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -81,15 +86,15 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 	}
 
 	public void engageModel() {
-		this.factory.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
-		CollectionTools.addAll(this.collection, this.factory.collectionModel);
+		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
+		CollectionTools.addAll(this.collection, this.collectionModel);
 		this.value = this.buildValue();
 	}
 
 	public void disengageModel() {
 		this.value = null;
 		this.collection.clear();
-		this.factory.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this);
+		this.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this);
 	}
 
 
@@ -126,7 +131,7 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 	}
 
 	private V buildValue() {
-		return this.factory.transformer.transform(this.unmodifiableCollection);
+		return this.transformer.transform(this.unmodifiableCollection);
 	}
 
 	@Override

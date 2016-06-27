@@ -55,7 +55,11 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public final class ListCompositePropertyValueModelAdapter<E, V>
 	implements PluggablePropertyValueModel.Adapter<V>, ListChangeListener
 {
-	private final Factory<E, V> factory;
+	/** The wrapped model */
+	private final ListValueModel<? extends PropertyValueModel<? extends E>> listModel;
+
+	/** Transformer that converts the wrapped model's value to this model's value. */
+	private final Transformer<? super List<E>, V> transformer;
 
 	/**
 	 * The <em>real</em> adapter, passed to us as a listener.
@@ -87,7 +91,8 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 		if (factory == null) {
 			throw new NullPointerException();
 		}
-		this.factory = factory;
+		this.listModel = factory.listModel;
+		this.transformer = factory.transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -104,18 +109,18 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 	}
 
 	public void engageModel() {
-		this.factory.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
-		this.addComponentPVMs(0, this.factory.listModel);
+		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
+		this.addComponentPVMs(0, this.listModel);
 		this.value = this.buildValue();
 	}
 
 	public void disengageModel() {
 		this.value = null;
-		this.removeComponentPVMs(0, this.factory.listModel.size(), this.factory.listModel);
+		this.removeComponentPVMs(0, this.listModel.size(), this.listModel);
 		if ( ! this.values.isEmpty()) {
 			throw new IllegalStateException("extraneous values: " + this.values); //$NON-NLS-1$
 		}
-		this.factory.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this);
+		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this);
 	}
 
 
@@ -181,8 +186,8 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 
 	private void removeCachedPVMs() {
 		@SuppressWarnings("unchecked")
-		Transformer<SimpleAssociation<PropertyValueModel<? extends E>, E>, PropertyValueModel<? extends E>> transformer = Association.KEY_TRANSFORMER;
-		this.removeComponentPVMs(this.values, ListTools.transform(this.values, transformer));
+		Transformer<SimpleAssociation<PropertyValueModel<? extends E>, E>, PropertyValueModel<? extends E>> t = Association.KEY_TRANSFORMER;
+		this.removeComponentPVMs(this.values, ListTools.transform(this.values, t));
 	}
 
 	private void removeComponentPVMs(int index, int length, Iterable<? extends PropertyValueModel<? extends E>> expectedPVMs) {
@@ -211,8 +216,8 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 
 	private V buildValue() {
 		@SuppressWarnings("unchecked")
-		Transformer<SimpleAssociation<PropertyValueModel<? extends E>, E>, E> transformer = Association.VALUE_TRANSFORMER;
-		return this.factory.transformer.transform(ListTools.transform(this.values, transformer));
+		Transformer<SimpleAssociation<PropertyValueModel<? extends E>, E>, E> t = Association.VALUE_TRANSFORMER;
+		return this.transformer.transform(ListTools.transform(this.values, t));
 	}
 
 	@Override

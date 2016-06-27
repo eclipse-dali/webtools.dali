@@ -31,15 +31,16 @@ public class PropertyPluggableModifiablePropertyValueModelAdapter<V1, V2>
 	extends AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2, ModifiablePropertyValueModel<V1>, PluggableModifiablePropertyValueModel.Adapter<V2>, PropertyPluggableModifiablePropertyValueModelAdapter.Factory<V1, V2>>
 	implements PluggableModifiablePropertyValueModel.Adapter<V2>
 {
+	private final Transformer<? super V2, ? extends V1> setTransformer;
 
 	public PropertyPluggableModifiablePropertyValueModelAdapter(Factory<V1, V2> factory, AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 		super(factory, listener);
+		this.setTransformer = factory.setTransformer;
 	}
 
 	public void setValue(V2 value) {
-		this.factory.propertyModel.setValue(this.factory.setTransformer.transform(value));
+		this.propertyModel.setValue(this.setTransformer.transform(value));
 	}
-
 
 
 	// ********** PluggableModifiablePropertyValueModel.Adapter.Factory **********
