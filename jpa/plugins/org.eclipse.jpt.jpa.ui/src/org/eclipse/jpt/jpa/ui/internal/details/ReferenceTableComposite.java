@@ -15,18 +15,17 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
-import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
@@ -61,8 +60,22 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 	}
 
 
-	protected PropertyValueModel<Boolean> buildJoinColumnsEnabledModel() {
-		return new JoinColumnsEnabledModel();
+	protected PropertyValueModel<Boolean> buildJoinColumnsPaneEnabledModel() {
+		return CollectionValueModelTools.and(this.buildTableIsNotVirtualModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
+	}
+
+	protected PropertyValueModel<Boolean> buildTableIsNotVirtualModel() {
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildTableIsNotVirtualPredicate());
+	}
+
+	protected Predicate<T> buildTableIsNotVirtualPredicate() {
+		return PredicateTools.nullCheck(PredicateTools.not(this.buildTableIsVirtualPredicate()));
+	}
+
+	protected abstract Predicate<T> buildTableIsVirtualPredicate();
+
+	protected PropertyValueModel<Boolean> buildSpecifiedJoinColumnsIsNotEmptyModel() {
+		return ListValueModelTools.isNotEmptyPropertyValueModel(this.buildSpecifiedJoinColumnsModel());
 	}
 
 	SpecifiedJoinColumn addJoinColumn(T referenceTable) {
@@ -85,16 +98,15 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnModel() {
-		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedJoinColumnsListModel(), new OverrideDefaultJoinColumnModelSetValueClosure());
+		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedJoinColumnsModel(), new OverrideDefaultJoinColumnModelSetValueClosure());
 	}
-		
-	ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListModel() {
-		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
+
+	protected ListValueModel<JoinColumn> buildSpecifiedJoinColumnsModel() {
+		return new ListAspectAdapter<T, JoinColumn>(this.getSubjectHolder(), ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
-				return new SuperListIterableWrapper<JoinColumn>(this.subject.getSpecifiedJoinColumns());
+				return IterableTools.upCast(this.subject.getSpecifiedJoinColumns());
 			}
-
 			@Override
 			protected int size_() {
 				return this.subject.getSpecifiedJoinColumnsSize();
@@ -325,7 +337,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 		}
 
 		public ListIterable<JoinColumn> getSpecifiedJoinColumns(T subject) {
-			return new SuperListIterableWrapper<JoinColumn>(subject.getSpecifiedJoinColumns());
+			return IterableTools.upCast(subject.getSpecifiedJoinColumns());
 		}
 
 		public int getSpecifiedJoinColumnsSize(T subject) {
@@ -345,61 +357,4 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 			updateJoinColumns(value);
 		}
 	}
-
-	
-	/* CU private */ class JoinColumnsEnabledModel 
-		extends TransformationPropertyValueModel<T, Boolean> 
-	{
-		private StateChangeListener stateChangeListener;
-		
-		
-		JoinColumnsEnabledModel() {
-			super(
-				new ValueListAdapter<T>(
-					new ReadOnlyModifiablePropertyValueModelWrapper<T>(getSubjectHolder()), 
-					ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST
-				)
-			);
-			this.stateChangeListener = buildStateChangeListener();
-		}
-		
-		
-		private StateChangeListener buildStateChangeListener() {
-			return new StateChangeListener() {
-				public void stateChanged(StateChangeEvent event) {
-					JoinColumnsEnabledModel.this.valueStateChanged();
-				}
-			};
-		}
-		
-		void valueStateChanged() {
-			Object old = this.value;
-			this.firePropertyChanged(VALUE, old, this.value = this.transform(this.valueModel.getValue()));
-		}
-		
-		@Override
-		protected Boolean transform(T v) {
-			return (v == null) ? Boolean.FALSE : super.transform(v);
-		}
-		
-		@Override
-		protected Boolean transform_(T v) {
-			boolean virtual = ReferenceTableComposite.this.tableIsVirtual(v);
-			return Boolean.valueOf(! virtual && v.getSpecifiedJoinColumnsSize() > 0);
-		}
-		
-		@Override
-		protected void engageModel() {
-			super.engageModel();
-			this.valueModel.addStateChangeListener(this.stateChangeListener);
-		}
-		
-		@Override
-		protected void disengageModel() {
-			this.valueModel.removeStateChangeListener(this.stateChangeListener);
-			super.disengageModel();
-		}
-	}
-	
-	protected abstract boolean tableIsVirtual(T referenceTable);
 }

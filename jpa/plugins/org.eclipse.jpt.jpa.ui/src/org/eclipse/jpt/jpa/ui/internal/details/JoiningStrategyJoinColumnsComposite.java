@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -64,12 +64,13 @@ public class JoiningStrategyJoinColumnsComposite
 
 	@Override
 	protected Composite addComposite(Composite container) {
-		this.joinColumnsComposite = new JoinColumnsComposite<JoinColumnRelationshipStrategy>(this, container, buildJoinColumnsProvider(), new JoinColumnPaneEnablerHolder());
+		this.joinColumnsComposite = new JoinColumnsComposite<>(this, container, buildJoinColumnsProvider(), new JoinColumnPaneEnablerHolder(this.getSubjectHolder()));
 		return this.joinColumnsComposite.getControl();
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {		
+	protected void initializeLayout(Composite container) {
+		// NOP
 	}
 	
 	private JoinColumnsEditor<JoinColumnRelationshipStrategy> buildJoinColumnsProvider() {
@@ -104,7 +105,7 @@ public class JoiningStrategyJoinColumnsComposite
 			}
 
 			public ListIterable<JoinColumn> getSpecifiedJoinColumns(JoinColumnRelationshipStrategy subject) {
-				return new SuperListIterableWrapper<JoinColumn>(subject.getSpecifiedJoinColumns());
+				return new SuperListIterableWrapper<>(subject.getSpecifiedJoinColumns());
 			}
 
 			public int getSpecifiedJoinColumnsSize(JoinColumnRelationshipStrategy subject) {
@@ -149,15 +150,15 @@ public class JoiningStrategyJoinColumnsComposite
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 	
-	/* CU private */ class JoinColumnPaneEnablerHolder 
+	/* CU private */ static class JoinColumnPaneEnablerHolder 
 		extends TransformationPropertyValueModel<JoinColumnRelationshipStrategy, Boolean>
 	{
 		private StateChangeListener stateChangeListener;
 		
-		JoinColumnPaneEnablerHolder() {
+		JoinColumnPaneEnablerHolder(PropertyValueModel<? extends JoinColumnRelationshipStrategy> model) {
 			super(
-				new ValueListAdapter<JoinColumnRelationshipStrategy>(
-					new ReadOnlyModifiablePropertyValueModelWrapper<JoinColumnRelationshipStrategy>(getSubjectHolder()), 
+				new ValueListAdapter<>(
+					new ReadOnlyModifiablePropertyValueModelWrapper<JoinColumnRelationshipStrategy>(model), 
 					JoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST
 				)
 			);
@@ -180,14 +181,14 @@ public class JoiningStrategyJoinColumnsComposite
 		}
 		
 		@Override
-		protected Boolean transform(JoinColumnRelationshipStrategy v) {
-			return (v == null) ? Boolean.FALSE : super.transform(v);
+		protected Boolean transform(JoinColumnRelationshipStrategy strategy) {
+			return (strategy == null) ? Boolean.FALSE : super.transform(strategy);
 		}
 		
 		@Override
-		protected Boolean transform_(JoinColumnRelationshipStrategy v) {
-			boolean virtual = v.getRelationship().isVirtual();
-			return Boolean.valueOf(! virtual && v.getSpecifiedJoinColumnsSize() > 0);
+		protected Boolean transform_(JoinColumnRelationshipStrategy strategy) {
+			boolean virtual = strategy.getRelationship().isVirtual();
+			return Boolean.valueOf(! virtual && strategy.getSpecifiedJoinColumnsSize() > 0);
 		}
 		
 		@Override

@@ -11,19 +11,17 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
-import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
@@ -50,8 +48,19 @@ public class JoinTableComposite
 	}
 
 	@Override
-	protected boolean tableIsVirtual(JoinTable joinTable) {
-		return joinTable.getParent().getRelationship().isVirtual();
+	protected Predicate<JoinTable> buildTableIsVirtualPredicate() {
+		return TABLE_IS_VIRTUAL_PREDICATE;
+	}
+
+	public static final PredicateAdapter<JoinTable> TABLE_IS_VIRTUAL_PREDICATE = new TableIsVirtualPredicate();
+
+	public static class TableIsVirtualPredicate
+		extends PredicateAdapter<JoinTable>
+	{
+		@Override
+		public boolean evaluate(JoinTable table) {
+			return table.getParent().getRelationship().isVirtual();
+		}
 	}
 
 	@Override
@@ -90,11 +99,11 @@ public class JoinTableComposite
 			null
 		);
 
-		this.joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		this.joinColumnsComposite = new JoinColumnsComposite<>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor(),
-			buildJoinColumnsEnabledModel()
+			buildJoinColumnsPaneEnabledModel()
 		);
 
 		// Inverse Join Columns group pane
@@ -114,12 +123,20 @@ public class JoinTableComposite
 			null
 		);
 
-		this.inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		this.inverseJoinColumnsComposite = new JoinColumnsComposite<>(
 			this,
 			inverseJoinColumnGroupPane,
 			buildInverseJoinColumnsEditor(),
-			new InverseJoinColumnPaneEnablerHolder()
+			this.buildInverseJoinColumnsPaneEnabledModel()
 		);
+	}
+
+	protected PropertyValueModel<Boolean> buildInverseJoinColumnsPaneEnabledModel() {
+		return CollectionValueModelTools.and(this.buildTableIsNotVirtualModel(), this.buildSpecifiedInverseJoinColumnsIsNotEmptyModel());
+	}
+
+	protected PropertyValueModel<Boolean> buildSpecifiedInverseJoinColumnsIsNotEmptyModel() {
+		return ListValueModelTools.isNotEmptyPropertyValueModel(this.buildSpecifiedInverseJoinColumnsModel());
 	}
 
 	SpecifiedJoinColumn addInverseJoinColumn(JoinTable joinTable) {
@@ -153,14 +170,14 @@ public class JoinTableComposite
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultInverseJoinColumnModel() {
-		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedInverseJoinColumnsListModel(), new OverrideDefaultInverseJoinColumnModelSetValueClosure());
+		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedInverseJoinColumnsModel(), new OverrideDefaultInverseJoinColumnModelSetValueClosure());
 	}
 	
-	ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsListModel() {
-		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
+	protected ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsModel() {
+		return new ListAspectAdapter<JoinTable, JoinColumn>(this.getSubjectHolder(), JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
-				return new SuperListIterableWrapper<JoinColumn>(this.subject.getSpecifiedInverseJoinColumns());
+				return IterableTools.upCast(this.subject.getSpecifiedInverseJoinColumns());
 			}
 
 			@Override
@@ -240,7 +257,7 @@ public class JoinTableComposite
 		}
 
 		public ListIterable<JoinColumn> getSpecifiedJoinColumns(JoinTable subject) {
-			return new SuperListIterableWrapper<JoinColumn>(subject.getSpecifiedInverseJoinColumns());
+			return new SuperListIterableWrapper<>(subject.getSpecifiedInverseJoinColumns());
 		}
 
 		public int getSpecifiedJoinColumnsSize(JoinTable subject) {
@@ -257,59 +274,6 @@ public class JoinTableComposite
 	{
 		public void execute(boolean value) {
 			updateInverseJoinColumns(value);
-		}
-	}
-
-	
-	private class InverseJoinColumnPaneEnablerHolder 
-		extends TransformationPropertyValueModel<JoinTable, Boolean>
-	{
-		private StateChangeListener stateListener;
-		
-		
-		public InverseJoinColumnPaneEnablerHolder() {
-			super(
-				new ValueListAdapter<JoinTable>(
-					new ReadOnlyModifiablePropertyValueModelWrapper<JoinTable>(getSubjectHolder()), 
-					JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST));
-			this.stateListener = new StateListener();
-		}
-
-		class StateListener
-			extends StateChangeAdapter
-		{
-			@Override
-			public void stateChanged(StateChangeEvent event) {
-				wrappedValueStateChanged();
-			}
-		}
-		
-		void wrappedValueStateChanged() {
-			Object old = this.value;
-			this.firePropertyChanged(VALUE, old, this.value = this.transform(this.valueModel.getValue()));
-		}
-		
-		@Override
-		protected Boolean transform(JoinTable table) {
-			return (table == null) ? Boolean.FALSE : super.transform(table);
-		}
-		
-		@Override
-		protected Boolean transform_(JoinTable table) {
-			boolean virtual = JoinTableComposite.this.tableIsVirtual(table);
-			return Boolean.valueOf(! virtual && table.getSpecifiedInverseJoinColumnsSize() > 0);
-		}
-		
-		@Override
-		protected void engageModel() {
-			super.engageModel();
-			this.valueModel.addStateChangeListener(this.stateListener);
-		}
-		
-		@Override
-		protected void disengageModel() {
-			this.valueModel.removeStateChangeListener(this.stateListener);
-			super.disengageModel();
 		}
 	}
 }

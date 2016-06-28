@@ -28,8 +28,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 public class ValueListAdapter<V extends Model>
 	extends ValueAspectAdapter<V>
 {
-	/** The names of the value's lists that we listen to. */
-	protected final String[] listNames;
+	protected final String listName;
 
 	/** Listener that listens to the value. */
 	protected final ListChangeListener valueListListener;
@@ -40,12 +39,12 @@ public class ValueListAdapter<V extends Model>
 	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListAdapter(ModifiablePropertyValueModel<V> valueHolder, String... listNames) {
+	public ValueListAdapter(ModifiablePropertyValueModel<V> valueHolder, String listName) {
 		super(valueHolder);
-		if (listNames == null) {
+		if (listName == null) {
 			throw new NullPointerException();
 		}
-		this.listNames = listNames;
+		this.listName = listName;
 		this.valueListListener = this.buildValueListListener();
 	}
 
@@ -74,7 +73,7 @@ public class ValueListAdapter<V extends Model>
 			}
 			@Override
 			public String toString() {
-				return "value list listener: " + Arrays.asList(ValueListAdapter.this.listNames); //$NON-NLS-1$
+				return "value list listener: " + Arrays.asList(ValueListAdapter.this.listName); //$NON-NLS-1$
 			}
 		};
 	}
@@ -84,16 +83,12 @@ public class ValueListAdapter<V extends Model>
 
 	@Override
 	protected void engageValue_() {
-		for (String listName : this.listNames) {
-			this.value.addListChangeListener(listName, this.valueListListener);
-		}
+		this.value.addListChangeListener(this.listName, this.valueListListener);
 	}
 
 	@Override
 	protected void disengageValue_() {
-		for (String listName : this.listNames) {
-			this.value.removeListChangeListener(listName, this.valueListListener);
-		}
+		this.value.removeListChangeListener(this.listName, this.valueListListener);
 	}
 
 

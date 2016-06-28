@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
@@ -71,16 +73,27 @@ public class CollectionTableComposite2_0
 			null
 		);
 
-		this.joinColumnsComposite = new JoinColumnsComposite<ReferenceTable>(
+		this.joinColumnsComposite = new JoinColumnsComposite<>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor(),
-			buildJoinColumnsEnabledModel()
+			buildJoinColumnsPaneEnabledModel()
 		);
 	}
-	
+
 	@Override
-	protected boolean tableIsVirtual(ReferenceTable collectionTable) {
-		return collectionTable.getPersistentAttribute().isVirtual();
+	protected Predicate<ReferenceTable> buildTableIsVirtualPredicate() {
+		return TABLE_IS_VIRTUAL_PREDICATE;
+	}
+
+	public static final PredicateAdapter<ReferenceTable> TABLE_IS_VIRTUAL_PREDICATE = new TableIsVirtualPredicate();
+
+	public static class TableIsVirtualPredicate
+		extends PredicateAdapter<ReferenceTable>
+	{
+		@Override
+		public boolean evaluate(ReferenceTable table) {
+			return table.getPersistentAttribute().isVirtual();
+		}
 	}
 }
