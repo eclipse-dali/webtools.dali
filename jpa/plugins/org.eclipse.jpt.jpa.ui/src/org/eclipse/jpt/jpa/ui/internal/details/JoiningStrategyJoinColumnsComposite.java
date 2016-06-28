@@ -10,19 +10,23 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.swt.widgets.Composite;
 
@@ -64,7 +68,12 @@ public class JoiningStrategyJoinColumnsComposite
 
 	@Override
 	protected Composite addComposite(Composite container) {
-		this.joinColumnsComposite = new JoinColumnsComposite<>(this, container, buildJoinColumnsProvider(), new JoinColumnPaneEnablerHolder(this.getSubjectHolder()));
+		this.joinColumnsComposite = new JoinColumnsComposite<>(
+				this,
+				container,
+				this.buildJoinColumnsProvider(),
+				this.buildJoinColumnsPaneEnabledModel()
+			);
 		return this.joinColumnsComposite.getControl();
 	}
 
@@ -149,58 +158,48 @@ public class JoiningStrategyJoinColumnsComposite
 	void updateJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
-	
-	/* CU private */ static class JoinColumnPaneEnablerHolder 
-		extends TransformationPropertyValueModel<JoinColumnRelationshipStrategy, Boolean>
+
+	protected PropertyValueModel<Boolean> buildJoinColumnsPaneEnabledModel() {
+		return CollectionValueModelTools.and(this.buildStrategyIsNotVirtualModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
+	}
+
+	protected PropertyValueModel<Boolean> buildStrategyIsNotVirtualModel() {
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildStrategyIsNotVirtualPredicate());
+	}
+
+	protected Predicate<JoinColumnRelationshipStrategy> buildStrategyIsNotVirtualPredicate() {
+		return PredicateTools.nullCheck(PredicateTools.not(this.buildStrategyIsVirtualPredicate()));
+	}
+
+	protected Predicate<JoinColumnRelationshipStrategy> buildStrategyIsVirtualPredicate() {
+		return STRATEGY_IS_VIRTUAL_PREDICATE;
+	}
+
+	public static final PredicateAdapter<JoinColumnRelationshipStrategy> STRATEGY_IS_VIRTUAL_PREDICATE = new StrategyIsVirtualPredicate();
+
+	public static class StrategyIsVirtualPredicate
+		extends PredicateAdapter<JoinColumnRelationshipStrategy>
 	{
-		private StateChangeListener stateChangeListener;
-		
-		JoinColumnPaneEnablerHolder(PropertyValueModel<? extends JoinColumnRelationshipStrategy> model) {
-			super(
-				new ValueListAdapter<>(
-					new ReadOnlyModifiablePropertyValueModelWrapper<JoinColumnRelationshipStrategy>(model), 
-					JoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST
-				)
-			);
-			this.stateChangeListener = this.buildStateChangeListener();
-		}
-		
-		
-		private StateChangeListener buildStateChangeListener() {
-			return new StateChangeListener() {
-				public void stateChanged(StateChangeEvent event) {
-					JoinColumnPaneEnablerHolder.this.valueStateChanged();
-				}
-			};
-		}
-		
-		void valueStateChanged() {
-			Object old = this.value;
-			this.value = this.transform(this.valueModel.getValue());
-			this.firePropertyChanged(VALUE, old, this.value);
-		}
-		
 		@Override
-		protected Boolean transform(JoinColumnRelationshipStrategy strategy) {
-			return (strategy == null) ? Boolean.FALSE : super.transform(strategy);
+		public boolean evaluate(JoinColumnRelationshipStrategy strategy) {
+			return strategy.getRelationship().isVirtual();
 		}
-		
-		@Override
-		protected Boolean transform_(JoinColumnRelationshipStrategy strategy) {
-			boolean virtual = strategy.getRelationship().isVirtual();
-			return Boolean.valueOf(! virtual && strategy.getSpecifiedJoinColumnsSize() > 0);
-		}
-		
-		@Override
-		protected void engageModel() {
-			super.engageModel();
-			this.valueModel.addStateChangeListener(this.stateChangeListener);
-		}
-		
-		@Override
-		protected void disengageModel() {
-			this.valueModel.removeStateChangeListener(this.stateChangeListener);
-			super.disengageModel();
-		}
+	}
+
+	protected PropertyValueModel<Boolean> buildSpecifiedJoinColumnsIsNotEmptyModel() {
+		return ListValueModelTools.isNotEmptyPropertyValueModel(this.buildSpecifiedJoinColumnsModel());
+	}
+
+	protected ListValueModel<JoinColumn> buildSpecifiedJoinColumnsModel() {
+		return new ListAspectAdapter<JoinColumnRelationshipStrategy, JoinColumn>(this.getSubjectHolder(), JoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
+			@Override
+			protected ListIterable<JoinColumn> getListIterable() {
+				return IterableTools.upCast(this.subject.getSpecifiedJoinColumns());
+			}
+			@Override
+			protected int size_() {
+				return this.subject.getSpecifiedJoinColumnsSize();
+			}
+		};
 	}
 }
