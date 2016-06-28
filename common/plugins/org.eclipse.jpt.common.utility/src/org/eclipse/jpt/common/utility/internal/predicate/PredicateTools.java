@@ -120,8 +120,17 @@ public final class PredicateTools {
 	// ********** AND **********
 
 	/**
-	 * Return a predicate that will AND the results of the specified predicates.
+	 * Return a predicate that will AND the results of the specified predicates;
+	 * i.e. it will evaluate to <code>true</code> if <em>all</em>
+	 * the specified predicates evaluate to <code>true</code>.
+	 * <p>
+	 * <strong>NB:</strong> If the specified list of predicates is empty,
+	 * the predicate will always evaluate to <code>true</code>.
+	 * If the list is not empty, this predicate will
+	 * exhibit "short-circuit" behavior; i.e. if any one of the predicates evaluates
+	 * to <code>false</code>, no following predicates will be evaluated.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see AND
 	 */
 	public static <V> Predicate<V> and(Iterable<Predicate<? super V>> predicates) {
 		return and(predicates.iterator());
@@ -130,27 +139,48 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will AND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #and(Iterable)
+	 * @see AND
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> and(Iterator<Predicate<? super V>> predicates) {
-		return predicates.hasNext() ? and((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : true_();
+		return predicates.hasNext() ? and_(IteratorTools.toArray(predicates, EMPTY_ARRAY)) : true_();
 	}
 
 	/**
 	 * Return a predicate that will AND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #and(Iterable)
+	 * @see AND
 	 */
 	@SafeVarargs
 	public static <V> Predicate<V> and(Predicate<? super V>... predicates) {
-		return (predicates.length != 0) ? new AND<>(predicates) : true_();
+		return (predicates.length == 0) ? true_() : and_(predicates);
+	}
+
+	/**
+	 * Assume array is not empty
+	 */
+	@SuppressWarnings("unchecked")
+	private static <V> Predicate<V> and_(Predicate<? super V>[] predicates) {
+		return (predicates.length == 1) ? (Predicate<V>) predicates[0] : new AND<>(predicates);
 	}
 
 
 	// ********** OR **********
 
 	/**
-	 * Return a predicate that will OR the results of the specified predicates.
+	 * Return a predicate that will OR the results of the specified predicates;
+	 * i.e. it will evaluate to <code>true</code> if <em>any</em> of
+	 * the specified predicates evaluates to <code>true</code>.
+	 * <p>
+	 * <strong>NB:</strong> If the specified list of predicates is empty,
+	 * the predicate will always evaluate to <code>false</code>.
+	 * If the list is not empty, this predicate will
+	 * exhibit "short-circuit" behavior; i.e. if any one of the predicates evaluates
+	 * to <code>true</code>, no following predicates will be evaluated.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see OR
 	 */
 	public static <V> Predicate<V> or(Iterable<Predicate<? super V>> predicates) {
 		return or(predicates.iterator());
@@ -159,27 +189,44 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will OR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #or(Iterable)
+	 * @see OR
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> or(Iterator<Predicate<? super V>> predicates) {
-		return predicates.hasNext() ? or((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : false_();
+		return predicates.hasNext() ? or_(IteratorTools.toArray(predicates, EMPTY_ARRAY)) : false_();
 	}
 
 	/**
 	 * Return a predicate that will OR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #or(Iterable)
+	 * @see OR
 	 */
 	@SafeVarargs
 	public static <V> Predicate<V> or(Predicate<? super V>... predicates) {
-		return (predicates.length != 0) ? new OR<>(predicates) : false_();
+		return (predicates.length == 0) ? false_() : or_(predicates);
+	}
+
+	/**
+	 * Assume array is not empty
+	 */
+	@SuppressWarnings("unchecked")
+	private static <V> Predicate<V> or_(Predicate<? super V>[] predicates) {
+		return (predicates.length == 1) ? (Predicate<V>) predicates[0] : new OR<>(predicates);
 	}
 
 
 	// ********** XOR **********
 
 	/**
-	 * Return a predicate that will XOR the results of the specified predicates.
+	 * Return a predicate that will XOR the results of the specified predicates;
+	 * i.e. it will evaluate to <code>true</code> if either of
+	 * its wrapped predicates evaluates to <code>true</code>, but <em>not</em> both.
+	 * <p>
+	 * <strong>NB:</strong> Both predicates will <em>always</em> be evaluated.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see XOR
 	 */
 	public static <V> Predicate<V> xor(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
 		return new XOR<>(predicate1, predicate2);
@@ -191,6 +238,8 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will NAND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #and(Iterable)
+	 * @see #not(Predicate)
 	 */
 	public static <V> Predicate<V> nand(Iterable<Predicate<? super V>> predicates) {
 		return nand(predicates.iterator());
@@ -199,19 +248,23 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will NAND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #and(Iterator)
+	 * @see #not(Predicate)
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> nand(Iterator<Predicate<? super V>> predicates) {
-		return predicates.hasNext() ? nand((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : false_();
+		return predicates.hasNext() ? nand(IteratorTools.toArray(predicates, EMPTY_ARRAY)) : false_();
 	}
 
 	/**
 	 * Return a predicate that will NAND the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #and(Predicate[])
+	 * @see #not(Predicate)
 	 */
 	@SafeVarargs
 	public static <V> Predicate<V> nand(Predicate<? super V>... predicates) {
-		return (predicates.length != 0) ? not(and(predicates)) : false_();
+		return (predicates.length == 0) ? false_() : not(and_(predicates));
 	}
 
 
@@ -220,6 +273,8 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will NOR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #or(Iterable)
+	 * @see #not(Predicate)
 	 */
 	public static <V> Predicate<V> nor(Iterable<Predicate<? super V>> predicates) {
 		return nor(predicates.iterator());
@@ -228,19 +283,23 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will NOR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #or(Iterator)
+	 * @see #not(Predicate)
 	 */
 	@SuppressWarnings("unchecked")
 	public static <V> Predicate<V> nor(Iterator<Predicate<? super V>> predicates) {
-		return predicates.hasNext() ? nor((Predicate<? super V>[]) IteratorTools.toArray(predicates, EMPTY_ARRAY)) : true_();
+		return predicates.hasNext() ? nor(IteratorTools.toArray(predicates, EMPTY_ARRAY)) : true_();
 	}
 
 	/**
 	 * Return a predicate that will NOR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #or(Predicate[])
+	 * @see #not(Predicate)
 	 */
 	@SafeVarargs
 	public static <V> Predicate<V> nor(Predicate<? super V>... predicates) {
-		return (predicates.length != 0) ? not(or(predicates)) : true_();
+		return (predicates.length != 0) ? not(or_(predicates)) : true_();
 	}
 
 
@@ -249,6 +308,8 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will XNOR the results of the specified predicates.
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * @see #xor(Predicate, Predicate)
+	 * @see #not(Predicate)
 	 */
 	public static <V> Predicate<V> xnor(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
 		return not(xor(predicate1, predicate2));
@@ -274,6 +335,9 @@ public final class PredicateTools {
 	 * for a <code>null</code> variable before forwarding the variable to the
 	 * specified predicate. If the variable is <code>null</code>, the predicate
 	 * will return <code>false</code>.
+	 * <p>
+	 * <strong>NB:</strong> The variable's value will be checked for <code>null</code>
+	 * <em>before</em> it is passed to the specified predicate.
 	 * @param <V> the type of the object passed to the predicate
 	 * @see NullCheckPredicateWrapper
 	 * @see #nullCheck(Predicate, boolean)
@@ -287,6 +351,9 @@ public final class PredicateTools {
 	 * for a <code>null</code> variable before forwarding the variable to the
 	 * specified predicate. If the variable is <code>null</code>, the predicate
 	 * will return the specified value.
+	 * <p>
+	 * <strong>NB:</strong> The variable's value will be checked for <code>null</code>
+	 * <em>before</em> it is passed to the specified predicate.
 	 * @param <V> the type of the object passed to the predicate
 	 * @see NullCheckPredicateWrapper
 	 * @see #nullCheck(Predicate)
@@ -305,15 +372,15 @@ public final class PredicateTools {
 	}
 
 	/**
-	 * Return a predicate that wraps the specified predicate, using the
-	 * specified transformer to transform a variable before evaluating it
-	 * with the wrapped predicate.
-	 * @param <I> the type of objects to be evaluated by the predicate (i.e.
-	 *   passed to its transformer before being forwarded to the wrapped predicate)
-	 * @param <O> the type of objects output by the transformer and to be
-	 *   evaluated by the wrapped predicate
+	 * Return a predicate that wraps the specified predicate and uses the
+	 * specified transformer to transform the variable before passing the
+	 * output of the transformer to the specified predicate.
+	 * @param <I> the type of objects to be evaluated by the predicate and
+	 *   passed to the specified transformer
+	 * @param <O> the type of objects output by the specified transformer and to be
+	 *   evaluated by the specified predicate
 	 */
-	public static <I, O> Predicate<I> wrap(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {
+	public static <I, O> Predicate<I> transformVariable(Predicate<? super O> predicate, Transformer<? super I, O> transformer) {
 		return new TransformationPredicate<>(predicate, transformer);
 	}
 
@@ -367,7 +434,7 @@ public final class PredicateTools {
 	}
 
 
-	// ********** collection **********
+	// ********** collection meta data **********
 
 	/**
 	 * Return a predicate that returns whether a collection is <em>not</em> empty.
