@@ -11,17 +11,13 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
-import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTenantDiscriminatorColumn2_3;
@@ -61,10 +57,10 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 	}
 
 	protected EclipseLinkTenantDiscriminatorColumnsComposite<EntityMappings>  buildTenantDiscriminatorColumnsComposite(Composite container) {
-		return new EclipseLinkTenantDiscriminatorColumnsComposite<EntityMappings>(
+		return new EclipseLinkTenantDiscriminatorColumnsComposite<>(
 				this,
 				this.getSubjectHolder(),
-				new TenantDiscriminatorColumnPaneEnablerHolder(),
+				this.buildSpecifiedTenantDiscriminatorColumnsPaneEnabledModel(),
 				container,
 				this.buildTenantDiscriminatorColumnsEditor()
 			);
@@ -84,7 +80,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 
 		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(EntityMappings subject) {
-			return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(((EclipseLinkEntityMappings) subject).getDefaultTenantDiscriminatorColumns());
+			return IterableTools.upCast(((EclipseLinkEntityMappings) subject).getDefaultTenantDiscriminatorColumns());
 		}
 
 		public int getDefaultTenantDiscriminatorColumnsSize(EntityMappings subject) {
@@ -96,7 +92,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 
 		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(EntityMappings subject) {
-			return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(((EclipseLinkEntityMappings) subject).getSpecifiedTenantDiscriminatorColumns());
+			return IterableTools.upCast(((EclipseLinkEntityMappings) subject).getSpecifiedTenantDiscriminatorColumns());
 		}
 
 		public int getSpecifiedTenantDiscriminatorColumnsSize(EntityMappings subject) {
@@ -125,7 +121,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 				getSubjectHolder(), EclipseLinkEntityMappings.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getListIterable() {
-				return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(((EclipseLinkEntityMappings) this.subject).getSpecifiedTenantDiscriminatorColumns());
+				return IterableTools.upCast(((EclipseLinkEntityMappings) this.subject).getSpecifiedTenantDiscriminatorColumns());
 			}
 
 			@Override
@@ -169,55 +165,25 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 	}
 
-	/* CU private */ class TenantDiscriminatorColumnPaneEnablerHolder 
-		extends TransformationPropertyValueModel<EntityMappings, Boolean>
-	{
-		private StateChangeListener stateChangeListener;
+	protected PropertyValueModel<Boolean> buildSpecifiedTenantDiscriminatorColumnsPaneEnabledModel() {
+		return this.buildSpecifiedTenantDiscriminatorColumnsIsNotEmptyModel();
+	}
 
-		TenantDiscriminatorColumnPaneEnablerHolder() {
-			super(
-				new ValueListAdapter<EntityMappings>(
-					new ReadOnlyModifiablePropertyValueModelWrapper<EntityMappings>(getSubjectHolder()), 
-					EclipseLinkEntityMappings.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST
-				)
-			);
-			this.stateChangeListener = this.buildStateChangeListener();
-		}
+	protected PropertyValueModel<Boolean> buildSpecifiedTenantDiscriminatorColumnsIsNotEmptyModel() {
+		return ListValueModelTools.isNotEmptyPropertyValueModel(this.buildSpecifiedTenantDiscriminatorColumnsModel());
+	}
 
-		private StateChangeListener buildStateChangeListener() {
-			return new StateChangeListener() {
-				public void stateChanged(StateChangeEvent event) {
-					TenantDiscriminatorColumnPaneEnablerHolder.this.valueStateChanged();
-				}
-			};
-		}
-
-		void valueStateChanged() {
-			Object old = this.value;
-			this.value = this.transform(this.valueModel.getValue());
-			firePropertyChanged(VALUE, old, this.value);
-		}
-
-		@Override
-		protected Boolean transform(EntityMappings v) {
-			return (v == null) ? Boolean.FALSE : super.transform(v);
-		}
-
-		@Override
-		protected Boolean transform_(EntityMappings v) {
-			return Boolean.valueOf(((EclipseLinkEntityMappings) v).getSpecifiedTenantDiscriminatorColumnsSize() > 0);
-		}
-
-		@Override
-		protected void engageModel() {
-			super.engageModel();
-			this.valueModel.addStateChangeListener(this.stateChangeListener);
-		}
-
-		@Override
-		protected void disengageModel() {
-			this.valueModel.removeStateChangeListener(this.stateChangeListener);
-			super.disengageModel();
-		}
+	@SuppressWarnings("unchecked")
+	protected ListValueModel<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3> buildSpecifiedTenantDiscriminatorColumnsModel() {
+		return new ListAspectAdapter<EclipseLinkEntityMappings, EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3>((PropertyValueModel<EclipseLinkEntityMappings>) this.getSubjectHolder(), EclipseLinkEntityMappings.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST) {
+			@Override
+			protected ListIterable<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3> getListIterable() {
+				return IterableTools.upCast(this.subject.getSpecifiedTenantDiscriminatorColumns());
+			}
+			@Override
+			protected int size_() {
+				return this.subject.getSpecifiedTenantDiscriminatorColumnsSize();
+			}
+		};
 	}
 }
