@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.prefs.JptCommonUtilityModelValuePrefsTests;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.JptCommonUtilityModelValueSwingTests;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class JptCommonUtilityModelValueTests {
 
@@ -55,7 +55,6 @@ public class JptCommonUtilityModelValueTests {
 		suite.addTestSuite(PropertyCollectionValueModelAdapterTests.class);
 		suite.addTestSuite(PropertyListValueModelAdapterTests.class);
 		suite.addTestSuite(PropertyValueModelToolsTests.class);
-		suite.addTestSuite(ReadOnlyModifiablePropertyValueModelWrapperTests.class);
 		suite.addTestSuite(SetCollectionValueModelTests.class);
 		suite.addTestSuite(SimpleCollectionValueModelTests.class);
 		suite.addTestSuite(SimpleListValueModelTests.class);
@@ -69,10 +68,6 @@ public class JptCommonUtilityModelValueTests {
 		suite.addTestSuite(TransformationListValueModelTests.TransformerTests.class);
 		suite.addTestSuite(TransformationModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(TransformationPropertyValueModelTests.class);
-		suite.addTestSuite(ValueCollectionAdapterTests.class);
-		suite.addTestSuite(ValueListAdapterTests.class);
-		suite.addTestSuite(ValuePropertyAdapterTests.class);
-		suite.addTestSuite(ValueStateAdapterTests.class);
 
 		return suite;
 	}
