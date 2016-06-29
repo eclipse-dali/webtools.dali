@@ -32,7 +32,7 @@ public class PropertyPluggablePropertyValueModelAdapter<V1, V2>
 	implements PluggablePropertyValueModel.Adapter<V2>
 {
 
-	public PropertyPluggablePropertyValueModelAdapter(Factory<V1, V2> factory, AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+	public PropertyPluggablePropertyValueModelAdapter(Factory<V1, V2> factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 		super(factory, listener);
 	}
 
@@ -49,7 +49,7 @@ public class PropertyPluggablePropertyValueModelAdapter<V1, V2>
 		}
 
 		@Override
-		public PluggablePropertyValueModel.Adapter<V2> buildAdapter(AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+		public PluggablePropertyValueModel.Adapter<V2> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 			return new PropertyPluggablePropertyValueModelAdapter<>(this, listener);
 		}
 	}

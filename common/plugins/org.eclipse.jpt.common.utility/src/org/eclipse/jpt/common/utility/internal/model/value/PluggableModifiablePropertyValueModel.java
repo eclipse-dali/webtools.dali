@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
  * @param <V> the type of the model's derived value
  */
 public final class PluggableModifiablePropertyValueModel<V>
-	extends AbstractPluggablePropertyValueModel<V, PluggableModifiablePropertyValueModel.Adapter<V>>
+	extends BasePluggablePropertyValueModel<V, PluggableModifiablePropertyValueModel.Adapter<V>>
 	implements ModifiablePropertyValueModel<V>
 {
 	public PluggableModifiablePropertyValueModel(Adapter.Factory<V> adapterFactory) {
@@ -43,7 +43,7 @@ public final class PluggableModifiablePropertyValueModel<V>
 	// ********** Adapter interfaces **********
 
 	public interface Adapter<AV>
-		extends AbstractPluggablePropertyValueModel.Adapter<AV>
+		extends BasePluggablePropertyValueModel.Adapter<AV>
 	{
 		/**
 		 * Set the adapted model's value,
@@ -52,7 +52,7 @@ public final class PluggableModifiablePropertyValueModel<V>
 		void setValue(AV value);
 
 		interface Factory<AFV>
-			extends AbstractPluggablePropertyValueModel.Adapter.Factory<AFV, Adapter<AFV>>
+			extends BasePluggablePropertyValueModel.Adapter.Factory<AFV, Adapter<AFV>>
 		{
 			// NOP
 		}

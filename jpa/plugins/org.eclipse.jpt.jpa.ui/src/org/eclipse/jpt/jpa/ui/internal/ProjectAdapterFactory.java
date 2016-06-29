@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.AbstractPluggablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.BasePluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
@@ -81,7 +81,7 @@ public class ProjectAdapterFactory
 	 * JPA projects in the end.
 	 */
 	/* CU private */ static final class LocalJpaProjectModel
-		extends AbstractPluggablePropertyValueModel<JpaProject, PluggablePropertyValueModel.Adapter<JpaProject>>
+		extends BasePluggablePropertyValueModel<JpaProject, PluggablePropertyValueModel.Adapter<JpaProject>>
 		implements JpaProjectModel
 	{
 		/**

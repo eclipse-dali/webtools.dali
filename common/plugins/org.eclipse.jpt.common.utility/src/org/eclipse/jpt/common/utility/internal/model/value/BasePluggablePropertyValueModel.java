@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * 
  * @param <V> the type of the model's derived value
  */
-public abstract class AbstractPluggablePropertyValueModel<V, A extends AbstractPluggablePropertyValueModel.Adapter<V>>
+public abstract class BasePluggablePropertyValueModel<V, A extends BasePluggablePropertyValueModel.Adapter<V>>
 	extends AbstractModel
 	implements PropertyValueModel<V>
 {
@@ -47,7 +47,7 @@ public abstract class AbstractPluggablePropertyValueModel<V, A extends AbstractP
 
 	// ********** constructor/initialization **********
 
-	protected AbstractPluggablePropertyValueModel(Adapter.Factory<V, A> adapterFactory) {
+	protected BasePluggablePropertyValueModel(Adapter.Factory<V, A> adapterFactory) {
 		super();
 		if (adapterFactory == null) {
 			throw new NullPointerException();
@@ -180,7 +180,7 @@ public abstract class AbstractPluggablePropertyValueModel<V, A extends AbstractP
 		implements Adapter.Listener<V>
 	{
 		public void valueChanged(V newValue) {
-			AbstractPluggablePropertyValueModel.this.valueChanged(newValue);
+			BasePluggablePropertyValueModel.this.valueChanged(newValue);
 		}
 		@Override
 		public String toString() {

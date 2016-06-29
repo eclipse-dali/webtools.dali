@@ -64,7 +64,7 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 	/**
 	 * The <em>real</em> adapter, passed to us as a listener.
 	 */
-	private final AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener;
+	private final BasePluggablePropertyValueModel.Adapter.Listener<V> listener;
 
 	/**
 	 * Listen to every property value model in the list value model.
@@ -86,7 +86,7 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 
 	// ********** constructor **********
 
-	public ListCompositePropertyValueModelAdapter(Factory<E, V> factory, AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public ListCompositePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 		super();
 		if (factory == null) {
 			throw new NullPointerException();
@@ -277,7 +277,7 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 			this.transformer = transformer;
 		}
 
-		public Adapter<V> buildAdapter(AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener) {
+		public Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 			return new ListCompositePropertyValueModelAdapter<>(this, listener);
 		}
 

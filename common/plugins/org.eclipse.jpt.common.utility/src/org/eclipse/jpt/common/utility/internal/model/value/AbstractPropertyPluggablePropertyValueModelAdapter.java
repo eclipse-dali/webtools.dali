@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * property value model} and a {@link Transformer transformer} that can
  * transform the property to another value.
  * <p>
- * This is an adapter that can be used by a {@link AbstractPluggablePropertyValueModel}.
+ * This is an adapter that can be used by a {@link BasePluggablePropertyValueModel}.
  * 
  * @param <V1> the type of the <em>wrapped</em> model's value
  * @param <V2> the type of the model's <em>derived</em> value
@@ -31,10 +31,10 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <A> the type of the adapter itself
  * @param <F> the type of the adapter factory
  * 
- * @see AbstractPluggablePropertyValueModel
+ * @see BasePluggablePropertyValueModel
  */
-public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2, M extends PropertyValueModel<? extends V1>, A extends AbstractPluggablePropertyValueModel.Adapter<V2>, F extends AbstractPropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, M, A>>
-	implements AbstractPluggablePropertyValueModel.Adapter<V2>, PropertyChangeListener
+public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2, M extends PropertyValueModel<? extends V1>, A extends BasePluggablePropertyValueModel.Adapter<V2>, F extends AbstractPropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, M, A>>
+	implements BasePluggablePropertyValueModel.Adapter<V2>, PropertyChangeListener
 {
 	/** The wrapped model */
 	protected final M propertyModel;
@@ -43,7 +43,7 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 	private final Transformer<? super V1, ? extends V2> transformer;
 
 	/** The <em>real</em> adapter. */
-	private final AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener;
+	private final BasePluggablePropertyValueModel.Adapter.Listener<V2> listener;
 
 	/** Cached copy of model's value. */
 	private volatile V1 propertyModelValue;
@@ -54,7 +54,7 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 
 	// ********** constructors **********
 
-	public AbstractPropertyPluggablePropertyValueModelAdapter(F factory, AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+	public AbstractPropertyPluggablePropertyValueModelAdapter(F factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 		super();
 		if (factory == null) {
 			throw new NullPointerException();
@@ -114,8 +114,8 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 
 	// ********** AbstractPluggablePropertyValueModel.Adapter.Factory **********
 
-	public abstract static class Factory<V1, V2, M extends PropertyValueModel<? extends V1>, A extends AbstractPluggablePropertyValueModel.Adapter<V2>>
-		implements AbstractPluggablePropertyValueModel.Adapter.Factory<V2, A>
+	public abstract static class Factory<V1, V2, M extends PropertyValueModel<? extends V1>, A extends BasePluggablePropertyValueModel.Adapter<V2>>
+		implements BasePluggablePropertyValueModel.Adapter.Factory<V2, A>
 	{
 		/* CU private */ final M propertyModel;
 		/* CU private */ final Transformer<? super V1, ? extends V2> transformer;
@@ -132,7 +132,7 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 			this.transformer = transformer;
 		}
 
-		public abstract A buildAdapter(AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener);
+		public abstract A buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener);
 
 		@Override
 		public String toString() {

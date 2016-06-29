@@ -33,7 +33,7 @@ public class PropertyPluggableModifiablePropertyValueModelAdapter<V1, V2>
 {
 	private final Transformer<? super V2, ? extends V1> setTransformer;
 
-	public PropertyPluggableModifiablePropertyValueModelAdapter(Factory<V1, V2> factory, AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+	public PropertyPluggableModifiablePropertyValueModelAdapter(Factory<V1, V2> factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 		super(factory, listener);
 		this.setTransformer = factory.setTransformer;
 	}
@@ -57,7 +57,7 @@ public class PropertyPluggableModifiablePropertyValueModelAdapter<V1, V2>
 		}
 
 		@Override
-		public PluggableModifiablePropertyValueModel.Adapter<V2> buildAdapter(AbstractPluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+		public PluggableModifiablePropertyValueModel.Adapter<V2> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 			return new PropertyPluggableModifiablePropertyValueModelAdapter<>(this, listener);
 		}
 	}

@@ -53,7 +53,7 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 	private final Transformer<? super List<E>, V> transformer;
 
 	/** The <em>real</em> adapter. */
-	private final AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener;
+	private final BasePluggablePropertyValueModel.Adapter.Listener<V> listener;
 
 	/** Cached copy of model's elements. */
 	private final ArrayList<E> list;
@@ -67,7 +67,7 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 
 	// ********** constructors **********
 
-	public ListPluggablePropertyValueModelAdapter(Factory<E, V> factory, AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public ListPluggablePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 		super();
 		if (factory == null) {
 			throw new NullPointerException();
@@ -180,7 +180,7 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 			this.transformer = transformer;
 		}
 
-		public Adapter<V> buildAdapter(AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener) {
+		public Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 			return new ListPluggablePropertyValueModelAdapter<>(this, listener);
 		}
 

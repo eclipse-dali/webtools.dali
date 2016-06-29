@@ -26,13 +26,13 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 	implements PluggableModifiablePropertyValueModel.Adapter<V>
 {
 	/** Read the adapted model with this. */
-	private final AbstractPluggablePropertyValueModel.Adapter<V> adapter;
+	private final BasePluggablePropertyValueModel.Adapter<V> adapter;
 
 	/** Write the adapted model with this. */
 	private final Closure<V> closure;
 
 
-	public PluggableModifiablePropertyValueModelAdapter(AbstractPluggablePropertyValueModel.Adapter<V> adapter, Closure<V> closure) {
+	public PluggableModifiablePropertyValueModelAdapter(BasePluggablePropertyValueModel.Adapter<V> adapter, Closure<V> closure) {
 		super();
 		if (adapter == null) {
 			throw new NullPointerException();
@@ -66,10 +66,10 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 	public static class Factory<V>
 		implements PluggableModifiablePropertyValueModel.Adapter.Factory<V>
 	{
-		/* CU private */ final AbstractPluggablePropertyValueModel.Adapter.Factory<V, ? extends AbstractPluggablePropertyValueModel.Adapter<V>> factory;
+		/* CU private */ final BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory;
 		/* CU private */ final Closure<V> closure;
 
-		public Factory(AbstractPluggablePropertyValueModel.Adapter.Factory<V, ? extends AbstractPluggablePropertyValueModel.Adapter<V>> factory, Closure<V> closure) {
+		public Factory(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<V> closure) {
 			super();
 			if (factory == null) {
 				throw new NullPointerException();
@@ -81,7 +81,7 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 			this.closure = closure;
 		}
 
-		public PluggableModifiablePropertyValueModel.Adapter<V> buildAdapter(AbstractPluggablePropertyValueModel.Adapter.Listener<V> listener) {
+		public PluggableModifiablePropertyValueModel.Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 			return new PluggableModifiablePropertyValueModelAdapter<>(this.factory.buildAdapter(listener), this.closure);
 		}
 

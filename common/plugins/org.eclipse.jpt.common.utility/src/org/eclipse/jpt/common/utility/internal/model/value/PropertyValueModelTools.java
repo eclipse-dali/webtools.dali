@@ -244,7 +244,7 @@ public final class PropertyValueModelTools {
 	 * property value model adapter adapter factory and closure.
 	 * The specified closure is invoked when the model's value is set.
 	 */
-	public static <V> ModifiablePropertyValueModel<V> pluggableModifiablePropertyValueModel(AbstractPluggablePropertyValueModel.Adapter.Factory<V, ? extends AbstractPluggablePropertyValueModel.Adapter<V>> factory, Closure<V> setValueClosure) {
+	public static <V> ModifiablePropertyValueModel<V> pluggableModifiablePropertyValueModel(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<V> setValueClosure) {
 		return new PluggableModifiablePropertyValueModel<>(new PluggableModifiablePropertyValueModelAdapter.Factory<>(factory, setValueClosure));
 	}
 

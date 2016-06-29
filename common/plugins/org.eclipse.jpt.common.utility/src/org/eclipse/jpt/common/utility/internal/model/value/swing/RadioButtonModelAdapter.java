@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.model.value.AbstractPluggablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.BasePluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -115,7 +115,7 @@ public class RadioButtonModelAdapter<V>
 	 * </ul>
 	 */
 	public static final class LocalPropertyValueModel<V>
-		extends AbstractPluggablePropertyValueModel<Boolean, PluggablePropertyValueModel.Adapter<Boolean>>
+		extends BasePluggablePropertyValueModel<Boolean, PluggablePropertyValueModel.Adapter<Boolean>>
 		implements ModifiablePropertyValueModel<Boolean>
 	{
 		private final ModifiablePropertyValueModel<V> sharedValueModel;
