@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @see PluggablePropertyValueModel
  */
 public class PropertyPluggablePropertyValueModelAdapter<V1, V2>
-	extends AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2, PropertyValueModel<? extends V1>, PluggablePropertyValueModel.Adapter<V2>, PropertyPluggablePropertyValueModelAdapter.Factory<V1, V2>>
+	extends BasePropertyPluggablePropertyValueModelAdapter<V1, V2, PropertyValueModel<? extends V1>, PluggablePropertyValueModel.Adapter<V2>, PropertyPluggablePropertyValueModelAdapter.Factory<V1, V2>>
 	implements PluggablePropertyValueModel.Adapter<V2>
 {
 
@@ -41,7 +41,7 @@ public class PropertyPluggablePropertyValueModelAdapter<V1, V2>
 	// ********** PluggablePropertyValueModel.Adapter.Factory **********
 
 	public static class Factory<V1, V2>
-		extends AbstractPropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, PropertyValueModel<? extends V1>, PluggablePropertyValueModel.Adapter<V2>>
+		extends BasePropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, PropertyValueModel<? extends V1>, PluggablePropertyValueModel.Adapter<V2>>
 		implements PluggablePropertyValueModel.Adapter.Factory<V2>
 	{
 		public Factory(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer) {

@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @see BasePluggablePropertyValueModel
  */
-public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2, M extends PropertyValueModel<? extends V1>, A extends BasePluggablePropertyValueModel.Adapter<V2>, F extends AbstractPropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, M, A>>
+public abstract class BasePropertyPluggablePropertyValueModelAdapter<V1, V2, M extends PropertyValueModel<? extends V1>, A extends BasePluggablePropertyValueModel.Adapter<V2>, F extends BasePropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, M, A>>
 	implements BasePluggablePropertyValueModel.Adapter<V2>, PropertyChangeListener
 {
 	/** The wrapped model */
@@ -54,7 +54,7 @@ public abstract class AbstractPropertyPluggablePropertyValueModelAdapter<V1, V2,
 
 	// ********** constructors **********
 
-	public AbstractPropertyPluggablePropertyValueModelAdapter(F factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+	public BasePropertyPluggablePropertyValueModelAdapter(F factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 		super();
 		if (factory == null) {
 			throw new NullPointerException();
