@@ -68,7 +68,7 @@ public abstract class BasePropertyPluggablePropertyValueModelAdapter<V1, V2, M e
 	}
 
 
-	// ********** AbstractPluggablePropertyValueModel.Adapter **********
+	// ********** BasePluggablePropertyValueModel.Adapter **********
 
 	public V2 getValue() {
 		return this.value;
@@ -112,7 +112,7 @@ public abstract class BasePropertyPluggablePropertyValueModelAdapter<V1, V2, M e
 	}
 
 
-	// ********** AbstractPluggablePropertyValueModel.Adapter.Factory **********
+	// ********** BasePluggablePropertyValueModel.Adapter.Factory **********
 
 	public abstract static class Factory<V1, V2, M extends PropertyValueModel<? extends V1>, A extends BasePluggablePropertyValueModel.Adapter<V2>>
 		implements BasePluggablePropertyValueModel.Adapter.Factory<V2, A>
