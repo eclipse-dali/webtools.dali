@@ -70,7 +70,7 @@ class JpaTextEditorManager
 	 */
 	private final ISelectionChangedListener textEditorSelectionListener = new TextEditorSelectionListener();
 
-	private final ModifiablePropertyValueModel<IFile> fileModel = new SimplePropertyValueModel<IFile>();
+	private final ModifiablePropertyValueModel<IFile> fileModel = new SimplePropertyValueModel<>();
 
 	/**
 	 * We use the JPA file to calculate the JPA selection.
@@ -89,7 +89,7 @@ class JpaTextEditorManager
 	 * We update the JPA selection model whenever the text editor's selection
 	 * changes.
 	 */
-	private final ModifiablePropertyValueModel<JpaStructureNode> jpaSelectionModel = new SimplePropertyValueModel<JpaStructureNode>();
+	private final ModifiablePropertyValueModel<JpaStructureNode> jpaSelectionModel = new SimplePropertyValueModel<>();
 
 	/**
 	 * Listen for other views to change the JPA selection.
@@ -141,7 +141,7 @@ class JpaTextEditorManager
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {
-		return new TransformationPropertyValueModel<IFile, PropertyValueModel<JpaFile>>(this.fileModel, JPA_FILE_MODEL_TRANSFORMER);
+		return new TransformationPropertyValueModel<>(this.fileModel, JPA_FILE_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<IFile, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
@@ -151,7 +151,7 @@ class JpaTextEditorManager
 	{
 		@Override
 		protected PropertyValueModel<JpaFile> transform_(IFile file) {
-			return (JpaFileModel) file.getAdapter(JpaFileModel.class);
+			return file.getAdapter(JpaFileModel.class);
 		}
 	}
 

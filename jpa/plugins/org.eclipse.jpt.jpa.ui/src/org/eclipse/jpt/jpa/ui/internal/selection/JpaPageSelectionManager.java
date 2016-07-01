@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import org.eclipse.jpt.common.ui.internal.PartAdapter2;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.model.value.DoubleModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -68,12 +67,12 @@ class JpaPageSelectionManager
 	 * Lazily populated as managers are requested by
 	 * {@link #viewManagers view managers}.
 	 */
-	private final HashMap<IEditorPart, JpaEditorManager> editorManagers = new HashMap<IEditorPart, JpaEditorManager>();
+	private final HashMap<IEditorPart, JpaEditorManager> editorManagers = new HashMap<>();
 
 	/**
 	 * Model that holds the editor manager corresponding to the active editor.
 	 */
-	private final SimplePropertyValueModel<JpaEditorManager> editorManagerModel = new SimplePropertyValueModel<JpaEditorManager>();
+	private final SimplePropertyValueModel<JpaEditorManager> editorManagerModel = new SimplePropertyValueModel<>();
 
 	/**
 	 * The page's current JPA file. This wraps the current editor manager's
@@ -96,7 +95,6 @@ class JpaPageSelectionManager
 	 * selection model}. This is necessary because there might be JPA views
 	 * interested in the <em>current editor's</em> JPA selection but
 	 * <em>not</em> the <em>page's</em> JPA selection. [398218.10.5]
-	 * @see DoubleModifiablePropertyValueModel
 	 */
 	private final PropertyChangeListener jpaSelectionListener = new PropertyChangeAdapter();
 
@@ -111,7 +109,7 @@ class JpaPageSelectionManager
 	 * It should be empty only immediately after construction
 	 * and immediately before disposal.
 	 */
-	private final HashSet<JpaViewManager> viewManagers = new HashSet<JpaViewManager>();
+	private final HashSet<JpaViewManager> viewManagers = new HashSet<>();
 
 	private volatile boolean disposed = false;
 
@@ -142,7 +140,7 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildEditorManagerJpaFileModel() {
-		return new TransformationPropertyValueModel<JpaEditorManager, PropertyValueModel<JpaFile>>(this.editorManagerModel, JPA_FILE_MODEL_TRANSFORMER);
+		return new TransformationPropertyValueModel<>(this.editorManagerModel, JPA_FILE_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<JpaEditorManager, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
@@ -168,7 +166,7 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<ModifiablePropertyValueModel<JpaStructureNode>> buildEditorManagerJpaSelectionModel() {
-		return new TransformationPropertyValueModel<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>>(this.editorManagerModel, JPA_SELECTION_MODEL_TRANSFORMER);
+		return new TransformationPropertyValueModel<>(this.editorManagerModel, JPA_SELECTION_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>> JPA_SELECTION_MODEL_TRANSFORMER = new JpaSelectionModelTransformer();
@@ -228,7 +226,7 @@ class JpaPageSelectionManager
 	 * to the editor's content....
 	 */
 	private JpaEditorManager buildEditorManager(IEditorPart editor) {
-		return (JpaEditorManager) editor.getAdapter(JpaEditorManager.class);
+		return editor.getAdapter(JpaEditorManager.class);
 	}
 
 

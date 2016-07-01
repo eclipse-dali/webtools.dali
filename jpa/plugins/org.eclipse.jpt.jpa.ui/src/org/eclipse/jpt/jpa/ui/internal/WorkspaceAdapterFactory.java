@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,26 +40,23 @@ public class WorkspaceAdapterFactory
 		return ADAPTER_LIST;
 	}
 
-	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof IWorkspace) {
 			return this.getAdapter((IWorkspace) adaptableObject, adapterType);
 		}
 		return null;
 	}
 
-	private Object getAdapter(IWorkspace workspace, Class<?> adapterType) {
+	@SuppressWarnings("unchecked")
+	private <T> T getAdapter(IWorkspace workspace, Class<T> adapterType) {
 		if (adapterType == JpaProjectsModel.class) {
-			return this.getJpaProjectsModel(workspace);
+			return (T) this.getJpaProjectsModel(workspace);
 		}
 		return null;
 	}
 
 	private JpaProjectsModel getJpaProjectsModel(IWorkspace workspace) {
-		return new JpaProjectsModelAdapter(this.getJpaProjectManager(workspace));
-	}
-
-	private JpaProjectManager getJpaProjectManager(IWorkspace workspace) {
-		return (JpaProjectManager) workspace.getAdapter(JpaProjectManager.class);
+		return new JpaProjectsModelAdapter(workspace.getAdapter(JpaProjectManager.class));
 	}
 
 

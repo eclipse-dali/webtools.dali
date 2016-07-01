@@ -29,10 +29,10 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 	private final BasePluggablePropertyValueModel.Adapter<V> adapter;
 
 	/** Write the adapted model with this. */
-	private final Closure<V> closure;
+	private final Closure<? super V> closure;
 
 
-	public PluggableModifiablePropertyValueModelAdapter(BasePluggablePropertyValueModel.Adapter<V> adapter, Closure<V> closure) {
+	public PluggableModifiablePropertyValueModelAdapter(BasePluggablePropertyValueModel.Adapter<V> adapter, Closure<? super V> closure) {
 		super();
 		if (adapter == null) {
 			throw new NullPointerException();
@@ -67,9 +67,9 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 		implements PluggableModifiablePropertyValueModel.Adapter.Factory<V>
 	{
 		/* CU private */ final BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory;
-		/* CU private */ final Closure<V> closure;
+		/* CU private */ final Closure<? super V> closure;
 
-		public Factory(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<V> closure) {
+		public Factory(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<? super V> closure) {
 			super();
 			if (factory == null) {
 				throw new NullPointerException();

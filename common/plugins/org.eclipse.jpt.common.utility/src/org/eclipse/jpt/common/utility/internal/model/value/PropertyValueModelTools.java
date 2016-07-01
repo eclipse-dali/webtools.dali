@@ -172,6 +172,16 @@ public final class PropertyValueModelTools {
 	}
 
 	/**
+	 * Construct a modifiable property value model that wraps the specified
+	 * property value model and transforms its value with the specified
+	 * transformer. The specified closure is invoked when the model's value is set.
+	 * @see PluggablePropertyValueModel
+	 */
+	public static <V1, V2> ModifiablePropertyValueModel<V2> transform(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer, Closure<? super V2> setValueClosure) {
+		return pluggableModifiablePropertyValueModel(pluggablePropertyValueModelAdapterFactory(propertyModel, transformer), setValueClosure);
+	}
+
+	/**
 	 * Construct a pluggable property value model adapter factory for the specified
 	 * property value model and transformer.
 	 * @see PluggablePropertyValueModel
@@ -203,21 +213,33 @@ public final class PropertyValueModelTools {
 	// ********** double PVMs **********
 
 	/**
-	 * Construct a double property value model for the specified
-	 * <em>middle</em> property value model.
-	 * @see AbstractDoublePropertyValueModel
+	 * Construct a double property value model for the specified <em>outer</em> property value model.
 	 */
-	public static <V> PropertyValueModel<V> doubleWrap(PropertyValueModel<? extends PropertyValueModel<? extends V>> propertyModel) {
-		return new DoublePropertyValueModel<>(propertyModel);
+	public static <V> PropertyValueModel<V> doubleWrap(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
+		return propertyValueModel(doublePropertyValueModelAdapterFactory(outerModel));
 	}
 
 	/**
-	 * Construct a modifiable double property value model for the specified
-	 * <em>middle</em> property value model.
-	 * @see AbstractDoublePropertyValueModel
+	 * Construct a double property value model adapter factory for the specified <em>outer</em> property value model.
 	 */
-	public static <V> ModifiablePropertyValueModel<V> doubleWrapModifiable(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> propertyModel) {
-		return new DoubleModifiablePropertyValueModel<>(propertyModel);
+	public static <V> PluggablePropertyValueModel.Adapter.Factory<V> doublePropertyValueModelAdapterFactory(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
+		return new DoublePropertyValueModelAdapter.Factory<>(outerModel);
+	}
+
+	/**
+	 * Construct a modifiable double property value model
+	 * for the specified <em>outer</em> property value model.
+	 */
+	public static <V> ModifiablePropertyValueModel<V> doubleWrapModifiable(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
+		return modifiablePropertyValueModel(doubleModifiablePropertyValueModelAdapterFactory(outerModel));
+	}
+
+	/**
+	 * Construct a modifiable double property value model adapter factory
+	 * for the specified <em>outer</em> property value model.
+	 */
+	public static <V> PluggableModifiablePropertyValueModel.Adapter.Factory<V> doubleModifiablePropertyValueModelAdapterFactory(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
+		return new DoubleModifiablePropertyValueModelAdapter.Factory<>(outerModel);
 	}
 
 
@@ -244,8 +266,42 @@ public final class PropertyValueModelTools {
 	 * property value model adapter adapter factory and closure.
 	 * The specified closure is invoked when the model's value is set.
 	 */
-	public static <V> ModifiablePropertyValueModel<V> pluggableModifiablePropertyValueModel(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<V> setValueClosure) {
+	public static <V> ModifiablePropertyValueModel<V> pluggableModifiablePropertyValueModel(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<? super V> setValueClosure) {
 		return new PluggableModifiablePropertyValueModel<>(new PluggableModifiablePropertyValueModelAdapter.Factory<>(factory, setValueClosure));
+	}
+
+
+	// ********** value transformers **********
+
+	/**
+	 * Return a transformer that converts a property value model to its value
+	 * but first checks whether the property value model passed to it is <code>null</code>.
+	 * If the property value model is <code>null</code>, the transformer returns
+	 * <code>null</code>.
+	 * @see PropertyValueModel#VALUE_TRANSFORMER
+	 */
+	public static <V, PVM extends PropertyValueModel<? extends V>> Transformer<PVM, V> nullCheckValueTransformer() {
+		return nullCheckValueTransformer(null);
+	}
+
+	/**
+	 * Return a transformer that converts a property value model to its value
+	 * but first checks whether the property value model passed to it is <code>null</code>.
+	 * If the property value model is <code>null</code>, the transformer returns
+	 * the specified null value.
+	 * @see PropertyValueModel#VALUE_TRANSFORMER
+	 */
+	public static <V, PVM extends PropertyValueModel<? extends V>> Transformer<PVM, V> nullCheckValueTransformer(V nullValue) {
+		return TransformerTools.nullCheck(valueTransformer(), nullValue);
+	}
+
+	/**
+	 * Return a transformer that converts a property value model to its value.
+	 * @see PropertyValueModel#VALUE_TRANSFORMER
+	 */
+	@SuppressWarnings("unchecked")
+	public static <V, PVM extends PropertyValueModel<? extends V>> Transformer<PVM, V> valueTransformer() {
+		return PropertyValueModel.VALUE_TRANSFORMER;
 	}
 
 
