@@ -306,7 +306,7 @@ public abstract class Pane<T extends Model> {
 
 	/**
 	 * Convenience method for sub-classes.
-	 * Wrap the pane's {@link #subjectModel} in a {@link #buildIsNotNullModel(PropertyValueModel)};
+	 * Wrap the pane's {@link #subjectModel} in a {@link PropertyValueModelTools#valueIsNotNull(PropertyValueModel)};
 	 * i.e. a model that returns whether the subject is <code>null</code>.
 	 */
 	protected PropertyValueModel<Boolean> buildSubjectIsNotNullModel() {

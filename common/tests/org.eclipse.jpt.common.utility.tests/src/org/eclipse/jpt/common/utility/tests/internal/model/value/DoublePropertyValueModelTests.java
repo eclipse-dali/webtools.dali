@@ -62,9 +62,6 @@ public class DoublePropertyValueModelTests
 	}
 
 	protected SimplePropertyValueModel<String> getValueModel(String key) {
-		if (key == null) {
-			return null;
-		}
 		SimplePropertyValueModel<String> valueModel = this.valueModels.get(key);
 		if (valueModel == null) {
 			valueModel = new SimplePropertyValueModel<>(key + key);
