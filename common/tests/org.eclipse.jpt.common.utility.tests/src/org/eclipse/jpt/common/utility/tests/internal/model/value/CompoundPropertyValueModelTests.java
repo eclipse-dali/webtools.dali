@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class DoublePropertyValueModelTests
+public class CompoundPropertyValueModelTests
 	extends TestCase
 {
 	protected SimplePropertyValueModel<String> keyModel;
@@ -33,7 +33,7 @@ public class DoublePropertyValueModelTests
 	protected ChangeListener testModelListener;
 	protected PropertyChangeEvent testModelEvent;
 
-	public DoublePropertyValueModelTests(String name) {
+	public CompoundPropertyValueModelTests(String name) {
 		super(name);
 	}
 
@@ -57,7 +57,7 @@ public class DoublePropertyValueModelTests
 	{
 		@Override
 		public SimplePropertyValueModel<String> transform(String key) {
-			return DoublePropertyValueModelTests.this.getValueModel(key);
+			return CompoundPropertyValueModelTests.this.getValueModel(key);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class DoublePropertyValueModelTests
 	}
 
 	protected PropertyValueModel<String> buildTestModel(PropertyValueModel<SimplePropertyValueModel<String>> modelModel) {
-		return PropertyValueModelTools.doubleWrap(modelModel);
+		return PropertyValueModelTools.compound(modelModel);
 	}
 
 	@Override
@@ -196,7 +196,7 @@ public class DoublePropertyValueModelTests
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			DoublePropertyValueModelTests.this.testModelEvent = event;
+			CompoundPropertyValueModelTests.this.testModelEvent = event;
 		}
 	}
 }

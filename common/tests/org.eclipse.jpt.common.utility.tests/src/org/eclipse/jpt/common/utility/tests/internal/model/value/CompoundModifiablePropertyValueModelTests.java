@@ -16,16 +16,16 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 @SuppressWarnings("nls")
-public class DoubleModifiablePropertyValueModelTests
-	extends DoublePropertyValueModelTests
+public class CompoundModifiablePropertyValueModelTests
+	extends CompoundPropertyValueModelTests
 {
-	public DoubleModifiablePropertyValueModelTests(String name) {
+	public CompoundModifiablePropertyValueModelTests(String name) {
 		super(name);
 	}
 
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTestModel(PropertyValueModel<SimplePropertyValueModel<String>> modelModel) {
-		return PropertyValueModelTools.doubleWrapModifiable(modelModel);
+		return PropertyValueModelTools.compoundModifiable(modelModel);
 	}
 
 	public class SetClosure
@@ -33,8 +33,8 @@ public class DoubleModifiablePropertyValueModelTests
 	{
 		@Override
 		public void execute(String argument) {
-			String key = DoubleModifiablePropertyValueModelTests.this.keyModel.getValue();
-			DoubleModifiablePropertyValueModelTests.this.getValueModel(key).setValue(argument);
+			String key = CompoundModifiablePropertyValueModelTests.this.keyModel.getValue();
+			CompoundModifiablePropertyValueModelTests.this.getValueModel(key).setValue(argument);
 		}
 	}
 

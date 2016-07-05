@@ -44,7 +44,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * 
  * @see BasePluggablePropertyValueModel
  */
-public abstract class BaseDoublePropertyValueModelAdapter<V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>, A extends BasePluggablePropertyValueModel.Adapter<V>, F extends BaseDoublePropertyValueModelAdapter.Factory<V, IM, OM, A>>
+public abstract class BaseCompoundPropertyValueModelAdapter<V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>, A extends BasePluggablePropertyValueModel.Adapter<V>, F extends BaseCompoundPropertyValueModelAdapter.Factory<V, IM, OM, A>>
 	implements BasePluggablePropertyValueModel.Adapter<V>
 {
 	/** The <em>outer</em> model; whose value is cached as {@link #innerModel}. */
@@ -66,7 +66,7 @@ public abstract class BaseDoublePropertyValueModelAdapter<V, IM extends Property
 	private final BasePluggablePropertyValueModel.Adapter.Listener<V> listener;
 
 
-	public BaseDoublePropertyValueModelAdapter(OM outerModel, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public BaseCompoundPropertyValueModelAdapter(OM outerModel, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 		super();
 		if (outerModel == null) {
 			throw new NullPointerException();
@@ -89,7 +89,7 @@ public abstract class BaseDoublePropertyValueModelAdapter<V, IM extends Property
 		public void propertyChanged(PropertyChangeEvent event) {
 			@SuppressWarnings("unchecked")
 			IM newInnerModel = (IM) event.getNewValue();
-			BaseDoublePropertyValueModelAdapter.this.outerValueChanged(newInnerModel);
+			BaseCompoundPropertyValueModelAdapter.this.outerValueChanged(newInnerModel);
 		}
 	}
 
@@ -100,7 +100,7 @@ public abstract class BaseDoublePropertyValueModelAdapter<V, IM extends Property
 		public void propertyChanged(PropertyChangeEvent event) {
 			@SuppressWarnings("unchecked")
 			V newValue = (V) event.getNewValue();
-			BaseDoublePropertyValueModelAdapter.this.innerValueChanged(newValue);
+			BaseCompoundPropertyValueModelAdapter.this.innerValueChanged(newValue);
 		}
 	}
 

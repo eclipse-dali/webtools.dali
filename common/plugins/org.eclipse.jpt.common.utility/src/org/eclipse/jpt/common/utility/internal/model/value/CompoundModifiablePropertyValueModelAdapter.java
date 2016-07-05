@@ -24,12 +24,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * @param <IM> the type of the <em>inner</em> model (and the <em>outer</em> model's value)
  * @param <OM> the type of the <em>outer</em> model
  */
-public final class DoubleModifiablePropertyValueModelAdapter<V, IM extends ModifiablePropertyValueModel<V>, OM extends PropertyValueModel<IM>>
-	extends BaseDoublePropertyValueModelAdapter<V, IM, OM, PluggableModifiablePropertyValueModel.Adapter<V>, DoubleModifiablePropertyValueModelAdapter.Factory<V, IM, OM>>
+public final class CompoundModifiablePropertyValueModelAdapter<V, IM extends ModifiablePropertyValueModel<V>, OM extends PropertyValueModel<IM>>
+	extends BaseCompoundPropertyValueModelAdapter<V, IM, OM, PluggableModifiablePropertyValueModel.Adapter<V>, CompoundModifiablePropertyValueModelAdapter.Factory<V, IM, OM>>
 	implements PluggableModifiablePropertyValueModel.Adapter<V>
 {
 
-	public DoubleModifiablePropertyValueModelAdapter(OM outerModel, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public CompoundModifiablePropertyValueModelAdapter(OM outerModel, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 		super(outerModel, listener);
 	}
 
@@ -49,7 +49,7 @@ public final class DoubleModifiablePropertyValueModelAdapter<V, IM extends Modif
 	// ********** Factory **********
 
 	public static class Factory<V, IM extends ModifiablePropertyValueModel<V>, OM extends PropertyValueModel<IM>>
-		extends BaseDoublePropertyValueModelAdapter.Factory<V,IM, OM, PluggableModifiablePropertyValueModel.Adapter<V>>
+		extends BaseCompoundPropertyValueModelAdapter.Factory<V,IM, OM, PluggableModifiablePropertyValueModel.Adapter<V>>
 		implements PluggableModifiablePropertyValueModel.Adapter.Factory<V>
 	{
 		public Factory(OM outerModel) {
@@ -58,7 +58,7 @@ public final class DoubleModifiablePropertyValueModelAdapter<V, IM extends Modif
 
 		@Override
 		public PluggableModifiablePropertyValueModel.Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
-			return new DoubleModifiablePropertyValueModelAdapter<>(this.outerModel, listener);
+			return new CompoundModifiablePropertyValueModelAdapter<>(this.outerModel, listener);
 		}
 	}
 }

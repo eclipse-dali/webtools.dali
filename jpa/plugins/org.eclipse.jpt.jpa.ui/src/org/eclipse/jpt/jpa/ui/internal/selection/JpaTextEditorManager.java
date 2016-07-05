@@ -137,7 +137,7 @@ class JpaTextEditorManager
 	}
 
 	private PropertyValueModel<JpaFile> buildJpaFileModel() {
-		return PropertyValueModelTools.doubleWrap(this.buildJpaFileModelModel());
+		return PropertyValueModelTools.compound(this.buildJpaFileModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {

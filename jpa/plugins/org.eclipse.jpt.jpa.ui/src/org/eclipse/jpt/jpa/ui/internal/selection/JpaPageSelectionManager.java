@@ -136,7 +136,7 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<JpaFile> buildJpaFileModel() {
-		return PropertyValueModelTools.doubleWrap(this.buildEditorManagerJpaFileModel());
+		return PropertyValueModelTools.compound(this.buildEditorManagerJpaFileModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildEditorManagerJpaFileModel() {
@@ -162,7 +162,7 @@ class JpaPageSelectionManager
 	}
 
 	private ModifiablePropertyValueModel<JpaStructureNode> buildJpaSelectionModel() {
-		return PropertyValueModelTools.doubleWrapModifiable(this.buildEditorManagerJpaSelectionModel());
+		return PropertyValueModelTools.compoundModifiable(this.buildEditorManagerJpaSelectionModel());
 	}
 
 	private PropertyValueModel<ModifiablePropertyValueModel<JpaStructureNode>> buildEditorManagerJpaSelectionModel() {

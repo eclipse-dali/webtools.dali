@@ -383,7 +383,7 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 	}
 
 	private PropertyValueModel<JpaFile> buildJpaFileModel() {
-		return PropertyValueModelTools.doubleWrap(this.buildJpaFileModelModel());
+		return PropertyValueModelTools.compound(this.buildJpaFileModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {

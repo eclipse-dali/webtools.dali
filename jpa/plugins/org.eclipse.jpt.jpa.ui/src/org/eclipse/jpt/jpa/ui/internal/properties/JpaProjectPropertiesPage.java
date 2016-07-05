@@ -194,7 +194,7 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA project model
 	private PropertyValueModel<JpaProject> buildJpaProjectModel() {
-		return PropertyValueModelTools.doubleWrap(this.buildJpaProjectModelModel());
+		return PropertyValueModelTools.compound(this.buildJpaProjectModelModel());
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaProject>> buildJpaProjectModelModel() {

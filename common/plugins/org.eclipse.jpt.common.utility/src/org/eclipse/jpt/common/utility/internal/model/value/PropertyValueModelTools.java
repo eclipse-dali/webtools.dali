@@ -319,36 +319,36 @@ public final class PropertyValueModelTools {
 	}
 
 
-	// ********** double PVMs **********
+	// ********** compound PVMs **********
 
 	/**
-	 * Construct a double property value model for the specified <em>outer</em> property value model.
+	 * Construct a compound property value model for the specified <em>outer</em> property value model.
 	 */
-	public static <V> PropertyValueModel<V> doubleWrap(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
-		return propertyValueModel(doublePropertyValueModelAdapterFactory(outerModel));
+	public static <V> PropertyValueModel<V> compound(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
+		return propertyValueModel(compoundPropertyValueModelAdapterFactory(outerModel));
 	}
 
 	/**
-	 * Construct a double property value model adapter factory for the specified <em>outer</em> property value model.
+	 * Construct a compound property value model adapter factory for the specified <em>outer</em> property value model.
 	 */
-	public static <V> PluggablePropertyValueModel.Adapter.Factory<V> doublePropertyValueModelAdapterFactory(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
-		return new DoublePropertyValueModelAdapter.Factory<>(outerModel);
+	public static <V> PluggablePropertyValueModel.Adapter.Factory<V> compoundPropertyValueModelAdapterFactory(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
+		return new CompoundPropertyValueModelAdapter.Factory<>(outerModel);
 	}
 
 	/**
-	 * Construct a modifiable double property value model
+	 * Construct a modifiable compound property value model
 	 * for the specified <em>outer</em> property value model.
 	 */
-	public static <V> ModifiablePropertyValueModel<V> doubleWrapModifiable(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
-		return modifiablePropertyValueModel(doubleModifiablePropertyValueModelAdapterFactory(outerModel));
+	public static <V> ModifiablePropertyValueModel<V> compoundModifiable(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
+		return modifiablePropertyValueModel(compoundModifiablePropertyValueModelAdapterFactory(outerModel));
 	}
 
 	/**
-	 * Construct a modifiable double property value model adapter factory
+	 * Construct a modifiable compound property value model adapter factory
 	 * for the specified <em>outer</em> property value model.
 	 */
-	public static <V> PluggableModifiablePropertyValueModel.Adapter.Factory<V> doubleModifiablePropertyValueModelAdapterFactory(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
-		return new DoubleModifiablePropertyValueModelAdapter.Factory<>(outerModel);
+	public static <V> PluggableModifiablePropertyValueModel.Adapter.Factory<V> compoundModifiablePropertyValueModelAdapterFactory(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
+		return new CompoundModifiablePropertyValueModelAdapter.Factory<>(outerModel);
 	}
 
 

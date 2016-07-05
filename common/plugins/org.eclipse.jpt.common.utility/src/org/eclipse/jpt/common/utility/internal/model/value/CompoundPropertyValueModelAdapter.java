@@ -26,12 +26,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * 
  * @see BasePluggablePropertyValueModel
  */
-public final class DoublePropertyValueModelAdapter<V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<IM>>
-	extends BaseDoublePropertyValueModelAdapter<V, IM, OM, PluggablePropertyValueModel.Adapter<V>, DoublePropertyValueModelAdapter.Factory<V, IM, OM>>
+public final class CompoundPropertyValueModelAdapter<V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<IM>>
+	extends BaseCompoundPropertyValueModelAdapter<V, IM, OM, PluggablePropertyValueModel.Adapter<V>, CompoundPropertyValueModelAdapter.Factory<V, IM, OM>>
 	implements PluggablePropertyValueModel.Adapter<V>
 {
 
-	public DoublePropertyValueModelAdapter(OM outerModel, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public CompoundPropertyValueModelAdapter(OM outerModel, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 		super(outerModel, listener);
 	}
 
@@ -39,7 +39,7 @@ public final class DoublePropertyValueModelAdapter<V, IM extends PropertyValueMo
 	// ********** Factory **********
 
 	public static class Factory<V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<IM>>
-		extends BaseDoublePropertyValueModelAdapter.Factory<V, IM, OM, PluggablePropertyValueModel.Adapter<V>>
+		extends BaseCompoundPropertyValueModelAdapter.Factory<V, IM, OM, PluggablePropertyValueModel.Adapter<V>>
 		implements PluggablePropertyValueModel.Adapter.Factory<V>
 	{
 		public Factory(OM outerModel) {
@@ -48,7 +48,7 @@ public final class DoublePropertyValueModelAdapter<V, IM extends PropertyValueMo
 
 		@Override
 		public PluggablePropertyValueModel.Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
-			return new DoublePropertyValueModelAdapter<>(this.outerModel, listener);
+			return new CompoundPropertyValueModelAdapter<>(this.outerModel, listener);
 		}
 	}
 }
