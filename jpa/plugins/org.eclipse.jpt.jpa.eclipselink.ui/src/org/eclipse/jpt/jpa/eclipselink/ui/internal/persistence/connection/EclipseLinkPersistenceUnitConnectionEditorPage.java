@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,23 +11,23 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Collection;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkBatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -75,37 +75,37 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 
 		//cache statements
-		ModifiablePropertyValueModel<Boolean> cacheStatementsHolder = buildCacheStatementsHolder();
+		ModifiablePropertyValueModel<Boolean> cacheStatementsModel = buildCacheStatementsModel();
 		this.addTriStateCheckBox(
 				client,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_CACHE_STATEMENTS_LABEL,
-			cacheStatementsHolder,
+			cacheStatementsModel,
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 		IntegerCombo<?> combo = addCacheStatementsSizeCombo(client);
 
-		this.bindEnabledState(cacheStatementsHolder, combo.getControl());
+		this.bindEnabledState(cacheStatementsModel, combo.getControl());
 
 
 		TriStateCheckBox nativeSqlCheckBox = this.addTriStateCheckBoxWithDefault(
 			client,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL,
-			this.buildNativeSqlHolder(),
-			this.buildNativeSqlStringHolder(),
+			this.buildNativeSqlModel(),
+			this.buildNativeSqlStringModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		nativeSqlCheckBox.getCheckBox().setLayoutData(gridData);
 
-		EclipseLinkConnectionPropertiesComposite<EclipseLinkConnection> connectionPropertiesComposite = new EclipseLinkConnectionPropertiesComposite<EclipseLinkConnection>(this, client);
+		EclipseLinkConnectionPropertiesComposite<EclipseLinkConnection> connectionPropertiesComposite = new EclipseLinkConnectionPropertiesComposite<>(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		connectionPropertiesComposite.getControl().setLayoutData(gridData);
 	}
 
 	private EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType> addTransactionTypeCombo(Composite container) {
-		 return new EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType>(this, this.buildPersistenceUnitHolder(), container) {
+		 return new EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType>(this, this.buildPersistenceUnitModel(), container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -159,7 +159,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		};
 	}
 
-	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
+	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
@@ -168,11 +168,11 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		};
 	}
 
-	private void clearJTAProperties() {
+	void clearJTAProperties() {
 		getSubject().getPersistenceUnit().setJtaDataSource(null);
 	}
 
-	private void clearResourceLocalProperties() {
+	void clearResourceLocalProperties() {
 		EclipseLinkConnection connection = this.getSubject();
 		connection.getPersistenceUnit().setNonJtaDataSource(null);
 		connection.setDriver(null);
@@ -240,7 +240,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildNativeSqlHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNativeSqlModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.NATIVE_SQL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -255,20 +255,16 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		};
 	}
 
-	private PropertyValueModel<String> buildNativeSqlStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNativeSqlHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildNativeSqlStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultNativeSqlModel(), NATIVE_SQL_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultNativeSqlHolder() {
+	private static final Transformer<Boolean, String> NATIVE_SQL_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultNativeSqlModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkConnection.NATIVE_SQL_PROPERTY)
@@ -284,7 +280,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 
-	private ModifiablePropertyValueModel<Boolean> buildCacheStatementsHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildCacheStatementsModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -311,36 +307,39 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private IntegerCombo<EclipseLinkConnection> addCacheStatementsSizeCombo(Composite container) {
-		return new IntegerCombo<EclipseLinkConnection>(this, container) {
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
-			}
+		return new CacheStatementsSizeCombo(this, container);
+	}
 
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultCacheStatementsSize();
-					}
-				};
-			}
+	static class CacheStatementsSizeCombo
+		extends IntegerCombo<EclipseLinkConnection>
+	{
+		CacheStatementsSizeCombo(Pane<? extends EclipseLinkConnection> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
 
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getCacheStatementsSize();
-					}
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
+		}
 
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setCacheStatementsSize(value);
-					}
-				};
-			}
-		};
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_CACHE_STATEMENTS_SIZE_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getCacheStatementsSize();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setCacheStatementsSize(value);
+				}
+			};
+		}
 	}
 }

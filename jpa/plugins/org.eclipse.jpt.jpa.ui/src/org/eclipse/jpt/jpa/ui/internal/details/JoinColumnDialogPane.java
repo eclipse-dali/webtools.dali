@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 public class JoinColumnDialogPane<T extends JoinColumnStateObject>
@@ -31,7 +31,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		super(subjectModel, parentComposite, resourceManager);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildInsertableModel() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -45,20 +45,16 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		};
 	}
 
-	private PropertyValueModel<String> buildInsertableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultInsertableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE;
-			}
-		};
+	private PropertyValueModel<String> buildInsertableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultInsertableModel(), INSERTABLE_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
+	private static final Transformer<Boolean, String> INSERTABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultInsertableModel() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.INSERTABLE_PROPERTY)
@@ -73,7 +69,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNullableModel() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.NULLABLE_PROPERTY)
@@ -90,22 +86,16 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		};
 	}
 
-	private PropertyValueModel<String> buildNullableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
-
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE;
-			}
-		};
+	private PropertyValueModel<String> buildNullableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultNullableModel(), NULLABLE_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
+	private static final Transformer<Boolean, String> NULLABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultNullableModel() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.NULLABLE_PROPERTY)
@@ -120,7 +110,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUniqueModel() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UNIQUE_PROPERTY)
@@ -137,20 +127,16 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		};
 	}
 
-	private PropertyValueModel<String> buildUniqueStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUniqueHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE;
-			}
-		};
+	private PropertyValueModel<String> buildUniqueStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultUniqueModel(), UNIQUE_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
+	private static final Transformer<Boolean, String> UNIQUE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultUniqueModel() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UNIQUE_PROPERTY)
@@ -165,7 +151,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -179,20 +165,16 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		};
 	}
 
-	private PropertyValueModel<String> buildUpdatableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE;
-			}
-		};
+	private PropertyValueModel<String> buildUpdatableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultUpdatableModel(), UPDATABLE_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
+	private static final Transformer<Boolean, String> UPDATABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultUpdatableModel() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UPDATABLE_PROPERTY)
@@ -216,8 +198,8 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE,
-			buildInsertableHolder(),
-			buildInsertableStringHolder(),
+			buildInsertableModel(),
+			buildInsertableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
@@ -225,8 +207,8 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE,
-			buildUpdatableHolder(),
-			buildUpdatableStringHolder(),
+			buildUpdatableModel(),
+			buildUpdatableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
 
@@ -234,8 +216,8 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE,
-			buildUniqueHolder(),
-			buildUniqueStringHolder(),
+			buildUniqueModel(),
+			buildUniqueStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
 		);
 
@@ -243,8 +225,8 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
-			buildNullableHolder(),
-			buildNullableStringHolder(),
+			buildNullableModel(),
+			buildNullableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
 		);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -93,7 +94,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		Button button = addRadioButton(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_NO_EXPIRY,
-			buildNoExpiryHolder(),
+			buildNoExpiryModel(),
 			null
 		);
 		GridData gridData = new GridData();
@@ -105,7 +106,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		addRadioButton(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_TIME_TO_LIVE_EXPIRY,
-			buildExpiryHolder(),
+			buildExpiryModel(),
 			null
 		);
 
@@ -131,7 +132,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		addRadioButton(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_EXPIRY_COMPOSITE_DAILY_EXPIRY,
-			buildTimeOfDayExpiryBooleanHolder(),
+			buildTimeOfDayExpiryBooleanModel(),
 			null
 		);
 
@@ -145,12 +146,12 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		gridData.horizontalIndent = 10;
 		expireAtLabel.setLayoutData(gridData);
 		
-		PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder = buildTimeOfDayExpiryHolder();
+		PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryModel = buildTimeOfDayExpiryModel();
 		DateTime dataTime = addDateTime(
 			container, 
-			buildTimeOfDayExpiryHourHolder(timeOfDayExpiryHolder), 
-			buildTimeOfDayExpiryMinuteHolder(timeOfDayExpiryHolder),
-			buildTimeOfDayExpirySecondHolder(timeOfDayExpiryHolder),
+			buildTimeOfDayExpiryHourModel(timeOfDayExpiryModel), 
+			buildTimeOfDayExpiryMinuteModel(timeOfDayExpiryModel),
+			buildTimeOfDayExpirySecondModel(timeOfDayExpiryModel),
 			null,
 			todEnabled
 		);
@@ -160,7 +161,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		dataTime.setLayoutData(gridData);
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildNoExpiryHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNoExpiryModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 					getSubjectHolder(), 
 					EclipseLinkCaching.EXPIRY_PROPERTY, 
@@ -180,7 +181,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildExpiryHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildExpiryModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 					getSubjectHolder(), 
 					EclipseLinkCaching.EXPIRY_PROPERTY) {
@@ -198,7 +199,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildTimeOfDayExpiryBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildTimeOfDayExpiryBooleanModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 					getSubjectHolder(), 
 					EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
@@ -217,51 +218,53 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 	}
 	
 	private IntegerCombo<EclipseLinkCaching> addTimeToLiveExpiryCombo(Composite container) {
-		return new IntegerCombo<EclipseLinkCaching>(this, container) {
-		
-			@Override
-			protected Combo addIntegerCombo(Composite container) {
-				return this.addEditableCombo(
-						container,
-						buildDefaultListHolder(),
-						buildSelectedItemStringHolder(),
-						TransformerTools.<String>objectToStringTransformer(),
-						EclipseLinkExpiryComposite.this.getTtlEnabled()
-					);
-			}		
-		
-			@Override
-			protected String getHelpId() {
-				return null;
-			}
-
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return Integer.valueOf(0);
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getExpiry();
-					}
-
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setExpiry(value);
-					}
-				};
-			}
-		};
+		return new TimeToLiveExpiryCombo(this, container);
 	}
-	
+
+	class TimeToLiveExpiryCombo
+		extends IntegerCombo<EclipseLinkCaching>
+	{
+		TimeToLiveExpiryCombo(Pane<? extends EclipseLinkCaching> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected Combo addIntegerCombo(Composite container) {
+			return this.addEditableCombo(
+					container,
+					buildDefaultListModel(),
+					buildSelectedItemStringModel(),
+					TransformerTools.<String>objectToStringTransformer(),
+					EclipseLinkExpiryComposite.this.getTtlEnabled()
+				);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return null;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), TransformerTools.staticOutputTransformer(Integer.valueOf(0)));
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getExpiry();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setExpiry(value);
+				}
+			};
+		}
+	}
+
 	private PropertyValueModel<Boolean> buildTimeToLiveExpiryEnabler() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_PROPERTY) {
 			@Override
@@ -280,7 +283,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkTimeOfDay> buildTimeOfDayExpiryHolder() {
+	private PropertyValueModel<EclipseLinkTimeOfDay> buildTimeOfDayExpiryModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkTimeOfDay>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
 			@Override
 			protected EclipseLinkTimeOfDay buildValue_() {
@@ -289,7 +292,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpiryHourHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpiryHourModel(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
 		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
 					EclipseLinkTimeOfDay.HOUR_PROPERTY) {
@@ -305,7 +308,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteModel(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
 		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
 					EclipseLinkTimeOfDay.MINUTE_PROPERTY) {
@@ -321,7 +324,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpirySecondHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpirySecondModel(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
 		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
 					EclipseLinkTimeOfDay.SECOND_PROPERTY) {

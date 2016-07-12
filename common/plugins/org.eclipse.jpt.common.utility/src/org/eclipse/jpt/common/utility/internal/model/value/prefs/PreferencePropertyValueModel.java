@@ -15,7 +15,7 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -167,7 +167,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public PreferencePropertyValueModel(Preferences preferences, String key, P defaultValue, Transformer<String, P> stringTransformer) {
-		this(new StaticPropertyValueModel<>(preferences), key, defaultValue, stringTransformer);
+		this(PropertyValueModelTools.staticPropertyValueModel(preferences), key, defaultValue, stringTransformer);
 	}
 
 	/**

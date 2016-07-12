@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
+ * <em>Specified</em> or <em>virtual</em>
  * <ul>
  * <li>column
  * <li>join column
@@ -21,6 +22,11 @@ import org.eclipse.jpt.jpa.db.Table;
  * <li>discriminator column
  * <li>order column
  * </ul>
+ * A <em>specified</em> column has a 
+ * textual representation in its underlying resource;
+ * while a <em>virtual</em> column is derived from another,
+ * overridden context model.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,7 +34,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface NamedColumn
-	extends JpaContextModel
+	extends JpaContextModel, SpecifiedOrVirtual
 {
 	// ********** name **********
 
@@ -76,15 +82,6 @@ public interface NamedColumn
 	 * Return whether the column is found on the datasource.
 	 */
 	boolean isResolved();
-
-
-	// ********** misc **********
-
-	/**
-	 * Return whether the column has a textual representation
-	 * in its underlying resource.
-	 */
-	boolean isVirtual();
 
 
 	// ********** parent adapter **********

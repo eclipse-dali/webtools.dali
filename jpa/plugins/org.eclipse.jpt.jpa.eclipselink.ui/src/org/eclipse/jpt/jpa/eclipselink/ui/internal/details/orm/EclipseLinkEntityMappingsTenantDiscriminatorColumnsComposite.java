@@ -80,7 +80,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 
 		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(EntityMappings subject) {
-			return IterableTools.upCast(((EclipseLinkEntityMappings) subject).getDefaultTenantDiscriminatorColumns());
+			return IterableTools.upcast(((EclipseLinkEntityMappings) subject).getDefaultTenantDiscriminatorColumns());
 		}
 
 		public int getDefaultTenantDiscriminatorColumnsSize(EntityMappings subject) {
@@ -92,7 +92,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 
 		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(EntityMappings subject) {
-			return IterableTools.upCast(((EclipseLinkEntityMappings) subject).getSpecifiedTenantDiscriminatorColumns());
+			return IterableTools.upcast(((EclipseLinkEntityMappings) subject).getSpecifiedTenantDiscriminatorColumns());
 		}
 
 		public int getSpecifiedTenantDiscriminatorColumnsSize(EntityMappings subject) {
@@ -121,7 +121,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 				getSubjectHolder(), EclipseLinkEntityMappings.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getListIterable() {
-				return IterableTools.upCast(((EclipseLinkEntityMappings) this.subject).getSpecifiedTenantDiscriminatorColumns());
+				return IterableTools.upcast(((EclipseLinkEntityMappings) this.subject).getSpecifiedTenantDiscriminatorColumns());
 			}
 
 			@Override
@@ -178,7 +178,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		return new ListAspectAdapter<EclipseLinkEntityMappings, EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3>((PropertyValueModel<EclipseLinkEntityMappings>) this.getSubjectHolder(), EclipseLinkEntityMappings.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkOrmSpecifiedTenantDiscriminatorColumn2_3> getListIterable() {
-				return IterableTools.upCast(this.subject.getSpecifiedTenantDiscriminatorColumns());
+				return IterableTools.upcast(this.subject.getSpecifiedTenantDiscriminatorColumns());
 			}
 			@Override
 			protected int size_() {

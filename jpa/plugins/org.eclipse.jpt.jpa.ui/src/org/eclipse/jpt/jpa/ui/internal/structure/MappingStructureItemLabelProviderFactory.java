@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -66,7 +66,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<ImageDescriptor> buildPersistentTypeImageDescriptorModel(PersistentType persistentType) {
-		return new TransformationPropertyValueModel<TypeMapping, ImageDescriptor>(buildPersistentTypeMappingModel(persistentType), TYPE_MAPPING_IMAGE_DESCRIPTOR_TRANSFORMER);
+		return PropertyValueModelTools.transform(buildPersistentTypeMappingModel(persistentType), TYPE_MAPPING_IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 	
 	protected static PropertyValueModel<TypeMapping> buildPersistentTypeMappingModel(PersistentType persistentType) {
@@ -105,7 +105,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 		}
 
 		private JpaPlatformUi getJpaPlatformUi(TypeMapping typeMapping) {
-			return (JpaPlatformUi) typeMapping.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+			return typeMapping.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		}
 	}
 
@@ -125,7 +125,6 @@ public abstract class MappingStructureItemLabelProviderFactory
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected static PropertyValueModel<String> buildPersistentTypeDescriptionModel(PersistentType persistentType) {
 		return PersistenceStructureItemLabelProviderFactory.buildNonQuotedComponentDescriptionModel(
 					persistentType,
@@ -150,7 +149,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<ImageDescriptor> buildPersistentAttributeImageDescriptorModel(PersistentAttribute persistentAttribute) {
-		return new TransformationPropertyValueModel<AttributeMapping, ImageDescriptor>(buildPersistentAttributeMappingModel(persistentAttribute), ATTRIBUTE_MAPPING_IMAGE_DESCRIPTOR_TRANSFORMER);
+		return PropertyValueModelTools.transform(buildPersistentAttributeMappingModel(persistentAttribute), ATTRIBUTE_MAPPING_IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 
 	protected static PropertyValueModel<AttributeMapping> buildPersistentAttributeMappingModel(PersistentAttribute persistentAttribute) {
@@ -189,7 +188,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 		}
 
 		private JpaPlatformUi getJpaPlatformUi(AttributeMapping attributeMapping) {
-			return (JpaPlatformUi) attributeMapping.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+			return attributeMapping.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		}
 	}
 
@@ -209,7 +208,6 @@ public abstract class MappingStructureItemLabelProviderFactory
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected static PropertyValueModel<String> buildPersistentAttributeDescriptionModel(PersistentAttribute persistentAttribute) {
 		return PersistenceStructureItemLabelProviderFactory.buildNonQuotedComponentDescriptionModel(
 					persistentAttribute,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.persistence;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
@@ -108,8 +110,26 @@ public interface PersistenceUnit2_0
 	// ********** properties **********
 
 	Connection2_0 getConnection();
+		Transformer<PersistenceUnit, Connection2_0> CONNECTION_TRANSFORMER = new ConnectionTransformer();
+	class ConnectionTransformer
+		extends TransformerAdapter<PersistenceUnit, Connection2_0>
+	{
+		@Override
+		public Connection2_0 transform(PersistenceUnit persistenceUnit) {
+			return ((PersistenceUnit2_0) persistenceUnit).getConnection();
+		}
+	}
 
 	Options2_0 getOptions();
+		Transformer<PersistenceUnit, Options2_0> OPTIONS_TRANSFORMER = new OptionsTransformer();
+	class OptionsTransformer
+		extends TransformerAdapter<PersistenceUnit, Options2_0>
+	{
+		@Override
+		public Options2_0 transform(PersistenceUnit persistenceUnit) {
+			return ((PersistenceUnit2_0) persistenceUnit).getOptions();
+		}
+	}
 
 	// ********** ORM persistence unit defaults **********
 

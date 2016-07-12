@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -141,7 +141,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		
 		
 		public JavaClassImageDescriptorModel(JavaClass subject) {
-			super(new StaticPropertyValueModel<JavaClass>(subject));
+			super(PropertyValueModelTools.staticPropertyValueModel(subject));
 			this.isXmlRegistryModel = buildIsXmlRegistryModel();
 			this.mappingModel = buildMappingModel();
 			this.isXmlTransientModel = buildIsXmlTransientModel();
@@ -244,7 +244,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		
 		
 		public JavaEnumImageDescriptorModel(JavaEnum subject) {
-			super(new StaticPropertyValueModel<JavaEnum>(subject));
+			super(PropertyValueModelTools.staticPropertyValueModel(subject));
 			this.mappingModel = buildMappingModel();
 			this.isXmlTransientModel = buildIsXmlTransientModel();
 			this.propertyChangeListener = buildPropertyChangeListener();
@@ -308,11 +308,11 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	// ********** java type **********
 
 	public PropertyValueModel<String> buildJavaTypeTextModel(JavaType item) {
-		return new StaticPropertyValueModel<String>(item.getTypeName().getTypeQualifiedName());
+		return PropertyValueModelTools.staticPropertyValueModel(item.getTypeName().getTypeQualifiedName());
 	}
 
 	public PropertyValueModel<String> buildJavaTypeDescriptionModel(JavaType item) {
-		return new StaticPropertyValueModel<String>(this.buildJavaTypeDescription(item));
+		return PropertyValueModelTools.staticPropertyValueModel(this.buildJavaTypeDescription(item));
 	}
 
 	protected String buildJavaTypeDescription(JavaType item) {
@@ -359,7 +359,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	};
 
 	public PropertyValueModel<String> buildJavaPersistentAttributeTextModel(JavaPersistentAttribute item) {
-		return new StaticPropertyValueModel<String>(this.buildJavaPersistentAttributeText(item));
+		return PropertyValueModelTools.staticPropertyValueModel(this.buildJavaPersistentAttributeText(item));
 	}
 
 	protected String buildJavaPersistentAttributeText(JavaPersistentAttribute item) {
@@ -373,7 +373,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	}
 
 	public PropertyValueModel<String> buildJavaPersistentAttributeDescriptionModel(JavaPersistentAttribute item) {
-		return new StaticPropertyValueModel<String>(this.buildJavaPersistentAttributeDescription(item));
+		return PropertyValueModelTools.staticPropertyValueModel(this.buildJavaPersistentAttributeDescription(item));
 	}
 
 	protected String buildJavaPersistentAttributeDescription(JavaPersistentAttribute item) {

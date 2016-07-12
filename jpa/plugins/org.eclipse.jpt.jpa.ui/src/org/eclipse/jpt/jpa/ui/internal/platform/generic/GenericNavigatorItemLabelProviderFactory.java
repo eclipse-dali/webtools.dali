@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
@@ -119,7 +119,7 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildConverterTypeImageDescriptorModel(@SuppressWarnings("unused") ManagedType item) {
-		return new StaticPropertyValueModel<ImageDescriptor>(JptJpaUiImages.CONVERTER);
+		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.CONVERTER);
 	}
 
 	protected PropertyValueModel<String> buildConverterTypeTextModel(ManagedType managedType) {
@@ -138,7 +138,6 @@ public class GenericNavigatorItemLabelProviderFactory
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected PropertyValueModel<String> buildConverterTypeDescriptionModel(ManagedType managedType) {
 		return PersistenceStructureItemLabelProviderFactory.buildNonQuotedComponentDescriptionModel(
 					managedType,

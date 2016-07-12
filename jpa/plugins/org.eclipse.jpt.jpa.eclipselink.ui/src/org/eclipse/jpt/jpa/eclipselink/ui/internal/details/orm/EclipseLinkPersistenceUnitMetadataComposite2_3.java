@@ -15,8 +15,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -65,7 +63,7 @@ import org.eclipse.swt.widgets.Group;
  * |              ------------------------------------------------------------ |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see PersistenceUnitMetadata
+ * @see OrmPersistenceUnitMetadata
  * @see OrmPersistenceUnitDefaults
  * @see EntityMappingsDetailsPageManager - The parent container
  * @see CatalogCombo
@@ -87,13 +85,14 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 		super(parentPane, subjectHolder, parent);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
 		// XML mapping metadata complete check box
 		Button metadataCompleteCheckBox = addCheckBox(
 			container,
 			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_XML_MAPPING_METADATA_COMPLETE_CHECK_BOX,
-			buildXmlMappingMetadataCompleteHolder(),
+			buildXmlMappingMetadataCompleteModel(),
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
 		GridData gridData = new GridData();
@@ -104,7 +103,7 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 		Button cascadePersistCheckBox = addCheckBox(
 			container,
 			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_CASCADE_PERSIST_CHECK_BOX,
-			buildCascadePersistHolder(),
+			buildCascadePersistModel(),
 			JpaHelpContextIds.ENTITY_ORM_CASCADE
 		);
 		gridData = new GridData();
@@ -121,13 +120,13 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 
 		// Access type widgets
 		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
-		new AccessTypeComboViewer(this, this.getPersistenceUnitDefaultsHolder(), container);
+		new AccessTypeComboViewer(this, this.getPersistenceUnitDefaultsModel(), container);
 
 		// Delimited Identifiers check-box
 		Button diCheckBox = this.addCheckBox(
 			container,
 			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_DELIMITED_IDENTIFIERS_CHECK_BOX,
-			this.buildDelimitedIdentifiersHolder(),
+			this.buildDelimitedIdentifiersModel(),
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);
 		gridData = new GridData();
@@ -148,8 +147,8 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 
 		this.tenantDiscriminatorColumnsComposite = new EclipseLinkTenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults>(
 				this,
-				this.getPersistenceUnitDefaultsHolder(),
-				this.buildPaneEnablerHolder(),
+				this.getPersistenceUnitDefaultsModel(),
+				this.buildPaneEnabledModel(),
 				tenantDiscriminatorColumnGroupPane,
 				this.buildTenantDiscriminatorColumnsEditor()
 			);
@@ -159,16 +158,10 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), IS_COMPATIBLE_WITH_JPA_2_0);
 	}
 
-	protected static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 =
-			PredicateTools.nullCheck(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
+	protected static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = new JpaModel.JpaVersionIsCompatibleWith<>(JpaProject2_0.FACET_VERSION_STRING);
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
-		return new TransformationPropertyValueModel<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder()) {
-			@Override
-			protected Boolean transform(OrmPersistenceUnitDefaults value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
+	private PropertyValueModel<Boolean> buildPaneEnabledModel() {
+		return PropertyValueModelTools.valueIsNotNull(this.getPersistenceUnitDefaultsModel());
 	}
 
 	protected TenantDiscriminatorColumnsEditor<OrmPersistenceUnitDefaults> buildTenantDiscriminatorColumnsEditor() {
@@ -195,6 +188,7 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 			return ""; //$NON-NLS-1$
 		}
 
+		@SuppressWarnings("unused")
 		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(OrmPersistenceUnitDefaults subject) {
 			return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(((EclipseLinkPersistenceUnitDefaults) subject).getTenantDiscriminatorColumns());
 		}

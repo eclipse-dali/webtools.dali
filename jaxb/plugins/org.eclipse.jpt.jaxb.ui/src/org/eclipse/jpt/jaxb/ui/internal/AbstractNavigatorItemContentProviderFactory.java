@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -108,7 +108,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 		return new CollectionAspectAdapter<JaxbContextRoot, JaxbContextNode>(JaxbContextRoot.JAVA_TYPES_COLLECTION, jaxbPackage.getContextRoot()) {
 			@Override
 			protected Iterable<JaxbContextNode> getIterable() {
-				return IterableTools.<JaxbContextNode>upCast(this.subject.getJavaTypes(jaxbPackage));
+				return IterableTools.<JaxbContextNode>upcast(this.subject.getJavaTypes(jaxbPackage));
 			}
 		};
 	}

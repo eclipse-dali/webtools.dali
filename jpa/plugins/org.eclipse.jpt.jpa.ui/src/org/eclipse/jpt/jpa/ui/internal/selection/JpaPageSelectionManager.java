@@ -15,8 +15,7 @@ import org.eclipse.jpt.common.ui.internal.PartAdapter2;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -140,16 +139,16 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildEditorManagerJpaFileModel() {
-		return new TransformationPropertyValueModel<>(this.editorManagerModel, JPA_FILE_MODEL_TRANSFORMER);
+		return PropertyValueModelTools.transform(this.editorManagerModel, JPA_FILE_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<JpaEditorManager, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
 
 	/* CU private */ static class JpaFileModelTransformer
-		extends AbstractTransformer<JpaEditorManager, PropertyValueModel<JpaFile>>
+		extends TransformerAdapter<JpaEditorManager, PropertyValueModel<JpaFile>>
 	{
 		@Override
-		public PropertyValueModel<JpaFile> transform_(JpaEditorManager editorManager) {
+		public PropertyValueModel<JpaFile> transform(JpaEditorManager editorManager) {
 			return editorManager.getJpaFileModel();
 		}
 	}
@@ -166,16 +165,16 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<ModifiablePropertyValueModel<JpaStructureNode>> buildEditorManagerJpaSelectionModel() {
-		return new TransformationPropertyValueModel<>(this.editorManagerModel, JPA_SELECTION_MODEL_TRANSFORMER);
+		return PropertyValueModelTools.transform(this.editorManagerModel, JPA_SELECTION_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>> JPA_SELECTION_MODEL_TRANSFORMER = new JpaSelectionModelTransformer();
 
 	/* CU private */ static class JpaSelectionModelTransformer
-		extends AbstractTransformer<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>>
+		extends TransformerAdapter<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>>
 	{
 		@Override
-		public ModifiablePropertyValueModel<JpaStructureNode> transform_(JpaEditorManager editorManager) {
+		public ModifiablePropertyValueModel<JpaStructureNode> transform(JpaEditorManager editorManager) {
 			return editorManager.getJpaSelectionModel();
 		}
 	}

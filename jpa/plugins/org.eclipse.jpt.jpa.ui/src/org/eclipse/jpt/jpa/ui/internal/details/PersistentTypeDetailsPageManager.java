@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -97,8 +96,8 @@ public class PersistentTypeDetailsPageManager
 		}
 	}
 
-	protected PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
-		return PropertyValueModelTools.filter(this.mappingModel, buildMappingFilter(key));
+	protected PropertyValueModel<TypeMapping> buildMappingModel(String key) {
+		return PropertyValueModelTools.filter_(this.mappingModel, buildMappingFilter(key));
 	}
 
 	private PropertyAspectAdapter<PersistentType, TypeMapping> buildMappingModel() {
@@ -131,7 +130,7 @@ public class PersistentTypeDetailsPageManager
 		return (ui == null) ? null : ui.buildTypeMappingComposite(
 				this.getSubject().getResourceType(), 
 				key, 
-				this.buildMappingHolder(key), 
+				this.buildMappingModel(key), 
 				this.getMappingCompositeEnabledModel(), 
 				pageBook, 
 				this.getWidgetFactory(),
@@ -139,7 +138,7 @@ public class PersistentTypeDetailsPageManager
 			);
 	}
 
-	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = new StaticPropertyValueModel<>(Boolean.TRUE);
+	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = PropertyValueModelTools.staticPropertyValueModel(Boolean.TRUE);
 
 	protected PropertyValueModel<Boolean> getMappingCompositeEnabledModel() {
 		return TRUE_ENABLED_MODEL;		

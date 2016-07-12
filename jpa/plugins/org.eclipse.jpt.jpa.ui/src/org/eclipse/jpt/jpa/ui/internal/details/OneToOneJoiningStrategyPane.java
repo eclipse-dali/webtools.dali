@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -72,11 +72,12 @@ public class OneToOneJoiningStrategyPane
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void initializeLayout(Composite container) {		
 		addRadioButton(
 			container,
 			JptJpaUiDetailsMessages.JOINING_MAPPED_BY_LABEL,
-			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyHolder(getSubjectHolder()),
+			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyModel(getSubjectHolder()),
 			null);
 
 		new MappedByJoiningStrategyPane(this, container);
@@ -84,7 +85,7 @@ public class OneToOneJoiningStrategyPane
 		addRadioButton(
 			container,
 			JptJpaUiDetailsMessages.JOINING_PRIMARY_KEY_JOIN_COLUMN_JOINING_LABEL,
-			PrimaryKeyJoinColumnJoiningStrategyPane.buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder()),
+			PrimaryKeyJoinColumnJoiningStrategyPane.buildUsesPrimaryKeyJoinColumnJoiningStrategyModel(getSubjectHolder()),
 			null);
 
 		new PrimaryKeyJoinColumnJoiningStrategyPane(this, container);
@@ -92,7 +93,7 @@ public class OneToOneJoiningStrategyPane
 		addRadioButton(
 			container,
 			JptJpaUiDetailsMessages.JOINING_JOIN_COLUMN_JOINING_LABEL,
-			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder()),
+			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyModel(getSubjectHolder()),
 			null);
 
 		JoinColumnJoiningStrategyPane.

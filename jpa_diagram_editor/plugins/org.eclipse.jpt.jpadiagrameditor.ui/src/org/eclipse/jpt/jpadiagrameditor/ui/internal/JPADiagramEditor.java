@@ -50,8 +50,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -387,17 +386,17 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {
-		return new TransformationPropertyValueModel<IFile, PropertyValueModel<JpaFile>>(this.fileModel, JPA_FILE_MODEL_TRANSFORMER);
+		return PropertyValueModelTools.transform(this.fileModel, JPA_FILE_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<IFile, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
 
 	/* CU private */ static class JpaFileModelTransformer
-		extends AbstractTransformer<IFile, PropertyValueModel<JpaFile>>
+		extends TransformerAdapter<IFile, PropertyValueModel<JpaFile>>
 	{
 		@Override
-		protected PropertyValueModel<JpaFile> transform_(IFile file) {
-			return (JpaFileModel) file.getAdapter(JpaFileModel.class);
+		public PropertyValueModel<JpaFile> transform(IFile file) {
+			return file.getAdapter(JpaFileModel.class);
 		}
 	}
 	

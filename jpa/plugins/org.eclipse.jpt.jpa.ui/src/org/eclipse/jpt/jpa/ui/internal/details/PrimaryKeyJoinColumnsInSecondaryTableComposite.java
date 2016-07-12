@@ -25,12 +25,11 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueMod
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -39,6 +38,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
@@ -83,19 +83,11 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		return (dialog.wasConfirmed()) ? this.addJoinColumn(dialog.getSubject()) : null;
 	}
 
-	private PropertyValueModel<Boolean> buildControlBooleanHolder() {
-		return new TransformationPropertyValueModel<SecondaryTable, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform(SecondaryTable value) {
-				if (value == null) {
-					return Boolean.FALSE;
-				}
-				return Boolean.valueOf(!value.isVirtual());
-			}
-		};
+	private PropertyValueModel<Boolean> buildControlBooleanModel() {
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE, false);
 	}
 
-	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
+	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnModel() {
 		return new PropertyAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
 			@Override
 			protected PrimaryKeyJoinColumn buildValue_() {
@@ -105,9 +97,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private ListValueModel<PrimaryKeyJoinColumn> buildDefaultPrimaryKeyJoinColumnListModel() {
-		return new PropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
-			buildDefaultJoinColumnHolder()
-		);
+		return new PropertyListValueModelAdapter<>(buildDefaultJoinColumnModel());
 	}
 
 	String buildJoinColumnLabel(PrimaryKeyJoinColumn joinColumn) {
@@ -206,7 +196,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private ModifiableCollectionValueModel<SpecifiedPrimaryKeyJoinColumn> buildSelectedPkJoinColumnsModel() {
-		return new SimpleCollectionValueModel<SpecifiedPrimaryKeyJoinColumn>();
+		return new SimpleCollectionValueModel<>();
 	}
 
 	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
@@ -230,12 +220,12 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		return new ListAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<PrimaryKeyJoinColumn> getListIterable() {
-				return new SuperListIterableWrapper<PrimaryKeyJoinColumn>(subject.getSpecifiedPrimaryKeyJoinColumns());
+				return new SuperListIterableWrapper<>(this.subject.getSpecifiedPrimaryKeyJoinColumns());
 			}
 
 			@Override
 			protected int size_() {
-				return subject.getSpecifiedPrimaryKeyJoinColumnsSize();
+				return this.subject.getSpecifiedPrimaryKeyJoinColumnsSize();
 			}
 		};
 	}
@@ -267,6 +257,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Override Default check box
@@ -275,7 +266,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 			JptJpaUiDetailsMessages.PRIMARY_KEY_JOIN_COLUMNS_COMPOSITE_OVERRIDE_DEFAULT_PRIMARY_KEY_JOIN_COLUMNS,
 			buildOverrideDefaultPrimaryKeyJoinColumnModel(),
 			null,
-			buildControlBooleanHolder()
+			buildControlBooleanModel()
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalIndent = 8;
@@ -334,7 +325,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 		implements BooleanClosure.Adapter
 	{
 		public void execute(boolean value) {
-			updatePrimaryKeyJoinColumns(value);
+			PrimaryKeyJoinColumnsInSecondaryTableComposite.this.updatePrimaryKeyJoinColumns(value);
 		}
 	}
 }

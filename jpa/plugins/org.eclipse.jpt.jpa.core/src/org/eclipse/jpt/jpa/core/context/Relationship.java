@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @see SpecifiedAssociationOverride
  */
 public interface Relationship
-	extends JpaContextModel
+	extends JpaContextModel, SpecifiedOrVirtual
 {
 	/**
 	 * Return the relationship's mapping; which for a mapping relationship is
@@ -64,9 +64,4 @@ public interface Relationship
 	 * Return the current strategy, this is never <code>null</code>.
 	 */
 	RelationshipStrategy getStrategy();
-
-	/**
-	 * Return whether the the relationship is virtual.
-	 */
-	boolean isVirtual();
 }

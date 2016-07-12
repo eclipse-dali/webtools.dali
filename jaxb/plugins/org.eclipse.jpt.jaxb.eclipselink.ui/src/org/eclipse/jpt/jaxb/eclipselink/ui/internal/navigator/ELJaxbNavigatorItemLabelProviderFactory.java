@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
@@ -106,7 +106,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildOxmJavaTypeImageDescriptorModel(@SuppressWarnings("unused") OxmJavaType item) {
-		return new StaticPropertyValueModel<ImageDescriptor>(JptJaxbUiImages.JAXB_CLASS);
+		return PropertyValueModelTools.staticPropertyValueModel(JptJaxbUiImages.JAXB_CLASS);
 	}
 
 	protected PropertyValueModel<String> buildOxmJavaTypeTextModel(OxmJavaType item) {
@@ -141,7 +141,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildOxmXmlEnumImageDescriptorModel(@SuppressWarnings("unused") OxmXmlEnum item) {
-		return new StaticPropertyValueModel<ImageDescriptor>(JptJaxbUiImages.JAXB_ENUM);
+		return PropertyValueModelTools.staticPropertyValueModel(JptJaxbUiImages.JAXB_ENUM);
 	}
 	
 	protected PropertyValueModel<String> buildOxmXmlEnumTextModel(OxmXmlEnum item) {

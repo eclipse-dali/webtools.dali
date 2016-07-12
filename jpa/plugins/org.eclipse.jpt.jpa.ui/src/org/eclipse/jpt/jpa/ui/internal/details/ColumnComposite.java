@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,16 +17,18 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.TableColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
@@ -115,7 +117,7 @@ public class ColumnComposite
 		TableColumn.SPECIFIED_TABLE_NAME_PROPERTY
 	});
 
-	ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
+	ModifiablePropertyValueModel<String> buildColumnDefinitionModel() {
 		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -132,7 +134,7 @@ public class ColumnComposite
 		};
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
+	ModifiablePropertyValueModel<Boolean> buildInsertableModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -146,20 +148,16 @@ public class ColumnComposite
 		};
 	}
 	
-	PropertyValueModel<String> buildInsertableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultInsertableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE;
-			}
-		};
+	PropertyValueModel<String> buildInsertableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultInsertableModel(), INSERTABLE_TRANSFORMER);
 	}
-	
-	PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
+
+	private static final Transformer<Boolean, String> INSERTABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE
+		);
+
+	PropertyValueModel<Boolean> buildDefaultInsertableModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
@@ -175,7 +173,7 @@ public class ColumnComposite
 		};
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
+	ModifiablePropertyValueModel<Boolean> buildNullableModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
@@ -192,20 +190,16 @@ public class ColumnComposite
 		};
 	}
 	
-	PropertyValueModel<String> buildNullableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE;
-			}
-		};
+	PropertyValueModel<String> buildNullableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultNullableModel(), NULLABLE_TRANSFORMER);
 	}
-	
-	PropertyValueModel<Boolean> buildDefaultNullableHolder() {
+
+	private static final Transformer<Boolean, String> NULLABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE
+		);
+
+	PropertyValueModel<Boolean> buildDefaultNullableModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
@@ -228,8 +222,8 @@ public class ColumnComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(BaseColumn.DEFAULT_TABLE_NAME_PROPERTY);
-				propertyNames.add(BaseColumn.SPECIFIED_TABLE_NAME_PROPERTY);
+				propertyNames.add(TableColumn.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(TableColumn.SPECIFIED_TABLE_NAME_PROPERTY);
 			}
 			
 			@Override
@@ -273,7 +267,7 @@ public class ColumnComposite
 		};
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
+	ModifiablePropertyValueModel<Boolean> buildUniqueModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
@@ -290,22 +284,16 @@ public class ColumnComposite
 		};
 	}
 	
-	PropertyValueModel<String> buildUniqueStringHolder() {
-		
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUniqueHolder()) {
-			
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE;
-			}
-		};
+	PropertyValueModel<String> buildUniqueStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultUniqueModel(), UNIQUE_TRANSFORMER);
 	}
-	
-	PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
+
+	private static final Transformer<Boolean, String> UNIQUE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE
+		);
+
+	PropertyValueModel<Boolean> buildDefaultUniqueModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
@@ -321,7 +309,7 @@ public class ColumnComposite
 		};
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
+	ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
@@ -339,22 +327,16 @@ public class ColumnComposite
 		};
 	}
 	
-	PropertyValueModel<String> buildUpdatableStringHolder() {
-		
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
-			
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE;
-			}
-		};
+	PropertyValueModel<String> buildUpdatableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultUpdatableModel(), UPDATABLE_TRANSFORMER);
 	}
-	
-	PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
+
+	private static final Transformer<Boolean, String> UPDATABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE
+		);
+
+	PropertyValueModel<Boolean> buildDefaultUpdatableModel() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
@@ -417,8 +399,8 @@ public class ColumnComposite
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE,
-				buildInsertableHolder(),
-				buildInsertableStringHolder(),
+				buildInsertableModel(),
+				buildInsertableStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
@@ -428,8 +410,8 @@ public class ColumnComposite
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE,
-				buildUpdatableHolder(),
-				buildUpdatableStringHolder(),
+				buildUpdatableModel(),
+				buildUpdatableStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
@@ -439,8 +421,8 @@ public class ColumnComposite
 		TriStateCheckBox uniqueCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE,
-				buildUniqueHolder(),
-				buildUniqueStringHolder(),
+				buildUniqueModel(),
+				buildUniqueStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
@@ -450,8 +432,8 @@ public class ColumnComposite
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
-				buildNullableHolder(),
-				buildNullableStringHolder(),
+				buildNullableModel(),
+				buildNullableStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
@@ -468,110 +450,135 @@ public class ColumnComposite
 
 		// Column Definition widgets
 		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_COLUMN_DEFINITION);
-		this.addText(detailsClient, buildColumnDefinitionHolder());
+		this.addText(detailsClient, buildColumnDefinitionModel());
 
 		return detailsClient;
 	}
-	
+
+	@SuppressWarnings("unused")
 	private void addLengthCombo(Composite container) {
-		new IntegerCombo<Column>(this, container) {				
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
-			}
-			
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return Integer.valueOf(this.subject.getDefaultLength());
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getSpecifiedLength();
-					}
-					
-					@Override
-					protected void setValue_(Integer value) {
-						((SpecifiedColumn) this.subject).setSpecifiedLength(value);
-					}
-				};
-			}
-		};
+		new LengthCombo(this, container);
 	}
 
+	static class LengthCombo
+		extends IntegerCombo<Column>
+	{
+		LengthCombo(Pane<? extends Column> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return Integer.valueOf(this.subject.getDefaultLength());
+				}
+			};
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getSpecifiedLength();
+				}
+				
+				@Override
+				protected void setValue_(Integer value) {
+					((SpecifiedColumn) this.subject).setSpecifiedLength(value);
+				}
+			};
+		}
+	}
+
+	@SuppressWarnings("unused")
 	private void addPrecisionCombo(Composite container) {
-		new IntegerCombo<Column>(this, container) {					
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.MAPPING_COLUMN_PRECISION;
-			}
-			
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return Integer.valueOf(this.subject.getDefaultPrecision());
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getSpecifiedPrecision();
-					}
-					
-					@Override
-					protected void setValue_(Integer value) {
-						((SpecifiedColumn) this.subject).setSpecifiedPrecision(value);
-					}
-				};
-			}
-		};
+		new PrecisionCombo(this, container);
 	}
 
+	static class PrecisionCombo extends IntegerCombo<Column> {
+		PrecisionCombo(Pane<? extends Column> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.MAPPING_COLUMN_PRECISION;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return Integer.valueOf(this.subject.getDefaultPrecision());
+				}
+			};
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getSpecifiedPrecision();
+				}
+				
+				@Override
+				protected void setValue_(Integer value) {
+					((SpecifiedColumn) this.subject).setSpecifiedPrecision(value);
+				}
+			};
+		}
+	}
+
+	@SuppressWarnings("unused")
 	private void addScaleCombo(Composite container) {
-		new IntegerCombo<Column>(this, container) {					
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.MAPPING_COLUMN_SCALE;
-			}
-			
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return Integer.valueOf(this.subject.getDefaultScale());
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getSpecifiedScale();
-					}
-					
-					@Override
-					protected void setValue_(Integer value) {
-						((SpecifiedColumn) this.subject).setSpecifiedScale(value);
-					}
-				};
-			}
-		};
+		new ScaleCombo(this, container);
+	}
+
+	static class ScaleCombo
+		extends IntegerCombo<Column>
+	{
+		ScaleCombo(Pane<? extends Column> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.MAPPING_COLUMN_SCALE;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return Integer.valueOf(this.subject.getDefaultScale());
+				}
+			};
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getSpecifiedScale();
+				}
+				
+				@Override
+				protected void setValue_(Integer value) {
+					((SpecifiedColumn) this.subject).setSpecifiedScale(value);
+				}
+			};
+		}
 	}
 }

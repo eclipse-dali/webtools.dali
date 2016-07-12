@@ -36,7 +36,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -47,7 +46,6 @@ import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.ManagedType;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
@@ -56,6 +54,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.VirtualOrmXmlRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
@@ -122,9 +121,9 @@ public class EclipseLinkPersistenceUnit
 	private EclipseLinkOptions eclipseLinkOptions1_0;
 
 	/* global converter definitions, defined elsewhere in model */
-	protected final Vector<EclipseLinkConverter> converters = new Vector<EclipseLinkConverter>();
+	protected final Vector<EclipseLinkConverter> converters = new Vector<>();
 
-	protected final Vector<EclipseLinkTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumns = new Vector<EclipseLinkTenantDiscriminatorColumn2_3>();
+	protected final Vector<EclipseLinkTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumns = new Vector<>();
 
 	protected String defaultGetMethod;
 	protected String defaultSetMethod;
@@ -171,6 +170,15 @@ public class EclipseLinkPersistenceUnit
 	public EclipseLinkGeneralProperties getGeneralProperties() {
 		return this.generalProperties;
 	}
+	public static final Transformer<PersistenceUnit, EclipseLinkGeneralProperties> GENERAL_PROPERTIES_TRANSFORMER = new GeneralPropertiesTransformer();
+	public static class GeneralPropertiesTransformer
+		extends TransformerAdapter<PersistenceUnit, EclipseLinkGeneralProperties>
+	{
+		@Override
+		public EclipseLinkGeneralProperties transform(PersistenceUnit pu) {
+			return ((EclipseLinkPersistenceUnit) pu).getGeneralProperties();
+		}
+	}
 
 	@Override
 	public EclipseLinkConnection2_0 getConnection() {
@@ -186,8 +194,29 @@ public class EclipseLinkPersistenceUnit
 		return this.customization;
 	}
 
+	public static final Transformer<PersistenceUnit, EclipseLinkCustomization> CUSTOMIZATION_TRANSFORMER = new CustomizationTransformer();
+	public static class CustomizationTransformer
+		extends TransformerAdapter<PersistenceUnit, EclipseLinkCustomization>
+	{
+		@Override
+		public EclipseLinkCustomization transform(PersistenceUnit persistenceUnit) {
+			return ((EclipseLinkPersistenceUnit) persistenceUnit).getCustomization();
+		}
+	}
+
 	public EclipseLinkCaching getCaching() {
 		return this.caching;
+	}
+
+	public static final Transformer<PersistenceUnit, EclipseLinkCaching> CACHING_TRANSFORMER = new CachingTransformer();
+
+	public static class CachingTransformer
+		extends TransformerAdapter<PersistenceUnit, EclipseLinkCaching>
+	{
+		@Override
+		public EclipseLinkCaching transform(PersistenceUnit persistenceUnit) {
+			return ((EclipseLinkPersistenceUnit) persistenceUnit).getCaching();
+		}
 	}
 
 	public String getDefaultCacheTypePropertyValue() {
@@ -208,9 +237,27 @@ public class EclipseLinkPersistenceUnit
 	public EclipseLinkLogging getLogging() {
 		return this.logging;
 	}
+	public static final Transformer<PersistenceUnit, EclipseLinkLogging> LOGGING_TRANSFORMER = new EclipseLinkLoggingTransformer();
+	public static class EclipseLinkLoggingTransformer
+		extends TransformerAdapter<PersistenceUnit, EclipseLinkLogging>
+	{
+		@Override
+		public EclipseLinkLogging transform(PersistenceUnit pu) {
+			return ((EclipseLinkPersistenceUnit) pu).getLogging();
+		}
+	}
 
 	public EclipseLinkSchemaGeneration getEclipseLinkSchemaGeneration() {
 		return this.eclipseLinkSchemaGeneration;
+	}
+	public static final Transformer<PersistenceUnit, EclipseLinkSchemaGeneration> ECLIPSELINK_SCHEMA_GENERATION_TRANSFORMER = new EclipseLinkSchemaGenerationTransformer();
+	public static class EclipseLinkSchemaGenerationTransformer
+		extends TransformerAdapter<PersistenceUnit, EclipseLinkSchemaGeneration>
+	{
+		@Override
+		public EclipseLinkSchemaGeneration transform(PersistenceUnit pu) {
+			return ((EclipseLinkPersistenceUnit) pu).getEclipseLinkSchemaGeneration();
+		}
 	}
 
 	public EclipseLinkConnection getEclipseLinkConnection() {
@@ -219,10 +266,29 @@ public class EclipseLinkPersistenceUnit
 				this.eclipseLinkConnection1_0;
 	}
 
+	public static final Transformer<PersistenceUnit, EclipseLinkConnection> ECLIPSELINK_CONNECTION_TRANSFORMER = new EclipseLinkConnectionTransformer();
+	public static class EclipseLinkConnectionTransformer
+		extends TransformerAdapter<PersistenceUnit, EclipseLinkConnection>
+	{
+		@Override
+		public EclipseLinkConnection transform(PersistenceUnit persistenceUnit) {
+			return ((EclipseLinkPersistenceUnit) persistenceUnit).getEclipseLinkConnection();
+		}
+	}
+
 	public EclipseLinkOptions getEclipseLinkOptions() {
 		return this.isPersistenceXml2_0Compatible() ?
 				this.getOptions() :
 				this.eclipseLinkOptions1_0;
+	}
+	public static final Transformer<PersistenceUnit, EclipseLinkOptions> ECLIPSELINK_OPTIONS_TRANSFORMER = new EclipseLinkOptionsTransformer();
+	public static class EclipseLinkOptionsTransformer
+		extends TransformerAdapter<PersistenceUnit, EclipseLinkOptions>
+	{
+		@Override
+		public EclipseLinkOptions transform(PersistenceUnit pu) {
+			return ((EclipseLinkPersistenceUnit) pu).getEclipseLinkOptions();
+		}
 	}
 
 	protected EclipseLinkGeneralProperties buildEclipseLinkGeneralProperties() {
@@ -392,7 +458,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumns(EclipseLinkPersistenceUnitDefaults defaults) {
-		return (defaults == null) ? EmptyListIterable.<EclipseLinkTenantDiscriminatorColumn2_3> instance() : new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(defaults.getTenantDiscriminatorColumns());
+		return (defaults == null) ? EmptyListIterable.<EclipseLinkTenantDiscriminatorColumn2_3> instance() : new SuperListIterableWrapper<>(defaults.getTenantDiscriminatorColumns());
 	}
 
 
@@ -446,7 +512,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<String> getConverterNames() {
-		return new TransformationIterable<EclipseLinkConverter, String>(this.getConverters(), JpaNamedContextModel.NAME_TRANSFORMER);
+		return new TransformationIterable<>(this.getConverters(), JpaNamedContextModel.NAME_TRANSFORMER);
 	}
 
 	protected void setConverters(Iterable<EclipseLinkConverter> converters) {
@@ -608,12 +674,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkOrmPersistentTypes() {
-		return IterableTools.downCast(
-				IterableTools.filter(
-					this.getMappingFilePersistentTypes(),
-					PredicateTools.<PersistentType>instanceOf(EclipseLinkOrmPersistentType.class)
-				)
-			);
+		return IterableTools.filter(this.getMappingFilePersistentTypes(), EclipseLinkOrmPersistentType.class);
 	}
 
 	// ********** validation **********
@@ -864,13 +925,13 @@ public class EclipseLinkPersistenceUnit
 
 
 	protected ArrayList<Property> getLegacyDescriptorCustomizerProperties() {
-		ArrayList<Property> result = new ArrayList<Property>();
+		ArrayList<Property> result = new ArrayList<>();
 		CollectionTools.addAll(result, this.getDescriptorCustomizerProperties());
 		return result;
 	}
 
 	protected ArrayList<Property> getLegacyEntityCachingProperties() {
-		ArrayList<Property> result = new ArrayList<Property>();
+		ArrayList<Property> result = new ArrayList<>();
 		CollectionTools.addAll(result, this.getSharedCacheProperties());
 		CollectionTools.addAll(result, this.getEntityCacheTypeProperties());
 		CollectionTools.addAll(result, this.getEntityCacheSizeProperties());
@@ -1366,7 +1427,7 @@ public class EclipseLinkPersistenceUnit
 	 * but, in EclipseLink we return any "equivalent" nodes also.
 	 */
 	protected <M extends JpaNamedContextModel> HashMap<String, ArrayList<M>> extractEclipseLinkConvertibleJavaModels(Iterable<M> allJavaModels, Iterable<M> mappingFileModels, EquivalencyAdapter<M> adapter) {
-		HashMap<String, ArrayList<M>> convertibleModels = new HashMap<String, ArrayList<M>>();
+		HashMap<String, ArrayList<M>> convertibleModels = new HashMap<>();
 
 		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.arrayList(mappingFileModels));
 		HashMap<String, ArrayList<M>> allJavaModelsByName = this.mapByName(allJavaModels);

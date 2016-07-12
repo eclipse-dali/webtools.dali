@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.DatabaseGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -26,7 +27,6 @@ import org.eclipse.swt.widgets.Composite;
  * @see IdMapping
  * @see Generator
  * @see SequenceGeneratorComposite - A sub-pane
- * @see TalbeGeneratorComposite - A sub-pane
  *
  * @version 2.2
  * @since 1.0
@@ -58,7 +58,6 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 	 * Retrieves the <code>Generator</code> and if it is <code>null</code>, then
 	 * create it.
 	 *
-	 * @param subject The subject used to retrieve the generator
 	 * @return The <code>Generator</code> which should never be <code>null</code>
 	 */
 	protected final T retrieveGenerator() {
@@ -71,8 +70,8 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 		return generator;
 	}
 
-	protected final ModifiablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapter<Generator, String>(getSubjectHolder(), Generator.NAME_PROPERTY) {
+	protected final ModifiablePropertyValueModel<String> buildGeneratorNameModel() {
+		return new PropertyAspectAdapter<Generator, String>(getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -100,73 +99,91 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 		};
 	}
 
+	@SuppressWarnings("unused")
 	protected void addAllocationSizeCombo(Composite container) {
-		new IntegerCombo<DatabaseGenerator>(this, getSubjectHolder(), container) {
-
-			@Override
-			protected String getHelpId() {
-				return null;//JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
-			}
-
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return Integer.valueOf(this.subject.getDefaultAllocationSize());
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getSpecifiedAllocationSize();
-					}
-
-					@Override
-					public void setValue(Integer value) {
-						retrieveGenerator().setSpecifiedAllocationSize(value);
-					}
-				};
-			}
-		};	
+		new AllocationSizeCombo(this, getSubjectHolder(), container);	
 	}
-	
+
+
+	class AllocationSizeCombo
+		extends IntegerCombo<DatabaseGenerator>
+	{
+		AllocationSizeCombo(Pane<?> parentPane, PropertyValueModel<? extends DatabaseGenerator> subjectHolder, Composite parent) {
+			super(parentPane, subjectHolder, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return null;//JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return Integer.valueOf(this.subject.getDefaultAllocationSize());
+				}
+			};
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getSpecifiedAllocationSize();
+				}
+
+				@Override
+				public void setValue(Integer value) {
+					retrieveGenerator().setSpecifiedAllocationSize(value);
+				}
+			};
+		}
+	}
+
+	@SuppressWarnings("unused")
 	protected void addInitialValueCombo(Composite container) {
-		new IntegerCombo<DatabaseGenerator>(this, getSubjectHolder(), container) {
-			@Override
-			protected String getHelpId() {
-				return null;//JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
-			}
+		new InitialValueCombo(this, getSubjectHolder(), container);	
+	}
 
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_INITIAL_VALUE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return Integer.valueOf(this.subject.getDefaultInitialValue());
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getSpecifiedInitialValue();
-					}
+	class InitialValueCombo
+		extends IntegerCombo<DatabaseGenerator>
+	{
+		InitialValueCombo(Pane<?> parentPane, PropertyValueModel<? extends DatabaseGenerator> subjectHolder, Composite parent) {
+			super(parentPane, subjectHolder, parent);
+		}
 
-					@Override
-					public void setValue(Integer value) {
-						retrieveGenerator().setSpecifiedInitialValue(value);
-					}
-				};
-			}
-		};	
+		@Override
+		protected String getHelpId() {
+			return null;//JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_INITIAL_VALUE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return Integer.valueOf(this.subject.getDefaultInitialValue());
+				}
+			};
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getSpecifiedInitialValue();
+				}
+
+				@Override
+				public void setValue(Integer value) {
+					retrieveGenerator().setSpecifiedInitialValue(value);
+				}
+			};
+		}
 	}
 
 	/**

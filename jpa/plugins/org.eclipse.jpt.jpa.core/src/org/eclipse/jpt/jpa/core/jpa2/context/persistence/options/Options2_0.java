@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.persistence.options;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -28,6 +30,16 @@ public interface Options2_0
 	extends PersistenceUnitProperties
 {
 	Integer getDefaultLockTimeout();
+	Transformer<Options2_0, Integer> DEFAULT_LOCK_TIMEOUT_TRANSFORMER = new DefaultLockTimeoutTransformer();
+	class DefaultLockTimeoutTransformer
+		extends TransformerAdapter<Options2_0, Integer>
+	{
+		@Override
+		public Integer transform(Options2_0 options) {
+			return options.getDefaultLockTimeout();
+		}
+	}
+
 	Integer getLockTimeout();
 	void setLockTimeout(Integer newLockTimeout);
 		static final String LOCK_TIMEOUT_PROPERTY = "lockTimeout"; //$NON-NLS-1$
@@ -36,6 +48,16 @@ public interface Options2_0
 		static final Integer DEFAULT_LOCK_TIMEOUT = Integer.valueOf(5);
 
 	Integer getDefaultQueryTimeout();
+	Transformer<Options2_0, Integer> DEFAULT_QUERY_TIMEOUT_TRANSFORMER = new DefaultQueryTimeoutTransformer();
+	class DefaultQueryTimeoutTransformer
+		extends TransformerAdapter<Options2_0, Integer>
+	{
+		@Override
+		public Integer transform(Options2_0 options) {
+			return options.getDefaultQueryTimeout();
+		}
+	}
+
 	Integer getQueryTimeout();
 	void setQueryTimeout(Integer newQueryTimeout);
 		static final String QUERY_TIMEOUT_PROPERTY = "queryTimeout"; //$NON-NLS-1$

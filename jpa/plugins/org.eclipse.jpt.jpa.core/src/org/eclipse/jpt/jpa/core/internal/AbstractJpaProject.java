@@ -881,7 +881,7 @@ public abstract class AbstractJpaProject
 	 * Return the JPA project's resource compilation units.
 	 */
 	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
-		return IterableTools.downCast(IterableTools.transform(this.getJavaSourceJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downcast(IterableTools.transform(this.getJavaSourceJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**
@@ -985,7 +985,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<JavaResourcePackageFragmentRoot> getInternalJavaResourcePackageFragmentRoots() {
-		return IterableTools.downCast(IterableTools.transform(this.getJarJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downcast(IterableTools.transform(this.getJarJpaFiles(), JpaFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**

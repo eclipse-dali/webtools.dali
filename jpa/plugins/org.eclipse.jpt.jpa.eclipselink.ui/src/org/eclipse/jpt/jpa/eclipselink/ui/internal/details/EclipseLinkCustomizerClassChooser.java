@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -78,7 +78,7 @@ public class EclipseLinkCustomizerClassChooser extends ClassChooserComboPane<Ecl
 	}
 
 	@Override
-	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomizer, String>(
 				getSubjectHolder(), 
 				EclipseLinkCustomizer.SPECIFIED_CUSTOMIZER_CLASS_PROPERTY,
@@ -86,8 +86,8 @@ public class EclipseLinkCustomizerClassChooser extends ClassChooserComboPane<Ecl
 
 			@Override
 			protected String buildValue_() {
-				String value = this.subject.getSpecifiedCustomizerClass();
-				return (value == null) ? defaultText(this.subject) : value;
+				String className = this.subject.getSpecifiedCustomizerClass();
+				return (className == null) ? defaultText(this.subject) : className;
 			}
 
 			@Override
@@ -110,8 +110,8 @@ public class EclipseLinkCustomizerClassChooser extends ClassChooserComboPane<Ecl
 	}
 
 	@Override
-	protected ListValueModel<String> buildClassListHolder() {
-		return new PropertyListValueModelAdapter<String>(
+	protected ListValueModel<String> buildClassListModel() {
+		return new PropertyListValueModelAdapter<>(
 			new PropertyAspectAdapter<EclipseLinkCustomizer, String>(
 					getSubjectHolder(), EclipseLinkCustomizer.DEFAULT_CUSTOMIZER_CLASS_PROPERTY) {
 				@Override

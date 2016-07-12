@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,6 @@ class EclipseLinkPersistenceUnitOptionsEditorPage2_4
 
 	@Override
 	protected Control initializeLoggingSection(Section section) {			
-		return new EclipseLinkLoggingComposite2_4(this, this.buildLoggingModel(), section).getControl();
+		return new EclipseLinkLoggingComposite2_4(this, this.buildLogging2_0Model(), section).getControl();
 	}
 }

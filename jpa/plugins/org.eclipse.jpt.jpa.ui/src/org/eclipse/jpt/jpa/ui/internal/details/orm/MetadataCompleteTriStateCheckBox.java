@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -51,13 +51,13 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE,
-			buildSpecifiedMetadataCompleteHolder(),
-			buildMetadataCompleteStringHolder(),
+			buildSpecifiedMetadataCompleteModel(),
+			buildMetadataCompleteStringModel(),
 			null
 		);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildSpecifiedMetadataCompleteHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedMetadataCompleteModel() {
 		return new PropertyAspectAdapter<OrmTypeMapping, Boolean>(
 			getSubjectHolder(),
 			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY)
@@ -74,20 +74,16 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 		};
 	}
 
-	private PropertyValueModel<String> buildMetadataCompleteStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildOverrideMetadataCompleteHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE;
-			}
-		};
+	private PropertyValueModel<String> buildMetadataCompleteStringModel() {
+		return PropertyValueModelTools.transform_(this.buildOverrideMetadataCompleteModel(), METADATA_COMPLETE_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildOverrideMetadataCompleteHolder() {
+	private static final Transformer<Boolean, String> METADATA_COMPLETE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE_WITH_DEFAULT,
+			JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE
+		);
+
+	private PropertyValueModel<Boolean> buildOverrideMetadataCompleteModel() {
 		return new PropertyAspectAdapter<OrmTypeMapping, Boolean>(
 			getSubjectHolder(),
 			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY,

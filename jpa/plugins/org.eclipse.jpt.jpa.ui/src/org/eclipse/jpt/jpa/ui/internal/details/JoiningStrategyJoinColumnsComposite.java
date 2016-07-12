@@ -160,15 +160,15 @@ public class JoiningStrategyJoinColumnsComposite
 	}
 
 	protected PropertyValueModel<Boolean> buildJoinColumnsPaneEnabledModel() {
-		return CollectionValueModelTools.and(this.buildStrategyIsNotVirtualModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
+		return CollectionValueModelTools.and(this.buildStrategyIsSpecifiedModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
 	}
 
-	protected PropertyValueModel<Boolean> buildStrategyIsNotVirtualModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildStrategyIsNotVirtualPredicate());
+	protected PropertyValueModel<Boolean> buildStrategyIsSpecifiedModel() {
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildStrategyIsSpecifiedPredicate(), false);
 	}
 
-	protected Predicate<JoinColumnRelationshipStrategy> buildStrategyIsNotVirtualPredicate() {
-		return PredicateTools.nullCheck(PredicateTools.not(this.buildStrategyIsVirtualPredicate()));
+	protected Predicate<JoinColumnRelationshipStrategy> buildStrategyIsSpecifiedPredicate() {
+		return PredicateTools.not(this.buildStrategyIsVirtualPredicate());
 	}
 
 	protected Predicate<JoinColumnRelationshipStrategy> buildStrategyIsVirtualPredicate() {
@@ -194,7 +194,7 @@ public class JoiningStrategyJoinColumnsComposite
 		return new ListAspectAdapter<JoinColumnRelationshipStrategy, JoinColumn>(this.getSubjectHolder(), JoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
-				return IterableTools.upCast(this.subject.getSpecifiedJoinColumns());
+				return IterableTools.upcast(this.subject.getSpecifiedJoinColumns());
 			}
 			@Override
 			protected int size_() {

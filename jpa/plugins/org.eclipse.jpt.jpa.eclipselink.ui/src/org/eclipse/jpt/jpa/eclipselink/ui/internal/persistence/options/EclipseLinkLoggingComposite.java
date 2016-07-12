@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,13 +16,15 @@ import org.eclipse.jpt.common.ui.internal.widgets.FileChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -44,6 +46,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void initializeLayout(Composite container) {
 		// LoggingLevel:
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_LOGGING_LEVEL_LABEL);
@@ -65,8 +68,8 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		TriStateCheckBox timestampCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL,
-			this.buildTimestampHolder(),
-			this.buildTimestampStringHolder(),
+			this.buildTimestampModel(),
+			this.buildTimestampStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_TIMESTAMP
 		);
 		GridData gridData = new GridData();
@@ -77,8 +80,8 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		TriStateCheckBox threadCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL,
-			this.buildThreadHolder(),
-			this.buildThreadStringHolder(),
+			this.buildThreadModel(),
+			this.buildThreadStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_THREAD
 		);
 		threadCheckBox.getCheckBox().setLayoutData(gridData);
@@ -87,8 +90,8 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		TriStateCheckBox sessionCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL,
-			this.buildSessionHolder(),
-			this.buildSessionStringHolder(),
+			this.buildSessionModel(),
+			this.buildSessionStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_SESSION
 		);
 		sessionCheckBox.getCheckBox().setLayoutData(gridData);
@@ -97,8 +100,8 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		TriStateCheckBox exceptionsCheckBox = this.addTriStateCheckBoxWithDefault(
 			parent,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL,
-			this.buildExceptionsHolder(),
-			this.buildExceptionsStringHolder(),
+			this.buildExceptionsModel(),
+			this.buildExceptionsStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_EXCEPTIONS
 		);
 		exceptionsCheckBox.getCheckBox().setLayoutData(gridData);
@@ -184,9 +187,9 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 					@Override
 					protected String buildValue_() {
 	
-						String name = subject.getLogFileLocation();
+						String name = this.subject.getLogFileLocation();
 						if (name == null) {
-							name = defaultValue(subject);
+							name = defaultValue(this.subject);
 						}
 						return name;
 					}
@@ -194,26 +197,17 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 					@Override
 					protected void setValue_(String value) {
 	
-						if (defaultValue(subject).equals(value)) {
+						if (defaultValue(this.subject).equals(value)) {
 							value = null;
 						}
-						subject.setLogFileLocation(value);
+						this.subject.setLogFileLocation(value);
 					}
 				};
 			}
 	
-			private String defaultValue(EclipseLinkLogging subject) {
+			String defaultValue(EclipseLinkLogging subject) {
 				String defaultValue = subject.getDefaultLogFileLocation();
-	
-				if (defaultValue != null) {
-					return NLS.bind(
-						JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-						defaultValue
-					);
-				}
-				else {
-					return this.getDefaultString();
-				}
+				return (defaultValue != null) ? NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultValue) : this.getDefaultString();
 			}
 	
 			@Override
@@ -236,7 +230,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 
 	//************* timestamp ************
 	
-	private ModifiablePropertyValueModel<Boolean> buildTimestampHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildTimestampModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.TIMESTAMP_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -250,19 +244,16 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		};
 	}
 
-	private PropertyValueModel<String> buildTimestampStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultTimestampHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildTimestampStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultTimestampModel(), TIMESTAMP_TRANSFORMER);
 	}
-	private PropertyValueModel<Boolean> buildDefaultTimestampHolder() {
+
+	private static final Transformer<Boolean, String> TIMESTAMP_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultTimestampModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.TIMESTAMP_PROPERTY)
@@ -280,7 +271,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 
 	//************* thread ************
 	
-	private ModifiablePropertyValueModel<Boolean> buildThreadHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildThreadModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.THREAD_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -294,20 +285,16 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		};
 	}
 
-	private PropertyValueModel<String> buildThreadStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultThreadHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildThreadStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultThreadModel(), THREAD_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultThreadHolder() {
+
+	private static final Transformer<Boolean, String> THREAD_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultThreadModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.THREAD_PROPERTY)
@@ -325,7 +312,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 
 	//************* session ************
 
-	private ModifiablePropertyValueModel<Boolean> buildSessionHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSessionModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.SESSION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -339,20 +326,16 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		};
 	}
 
-	private PropertyValueModel<String> buildSessionStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultSessionHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildSessionStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultSessionModel(), SESSION_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultSessionHolder() {
+
+	private static final Transformer<Boolean, String> SESSION_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultSessionModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.SESSION_PROPERTY)
@@ -370,7 +353,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 
 	//********** exceptions ************
 	
-	private ModifiablePropertyValueModel<Boolean> buildExceptionsHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildExceptionsModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -384,20 +367,16 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		};
 	}
 
-	private PropertyValueModel<String> buildExceptionsStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExceptionsHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildExceptionsStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultExceptionsModel(), EXCEPTIONS_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultExceptionsHolder() {
+
+	private static final Transformer<Boolean, String> EXCEPTIONS_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultExceptionsModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.EXCEPTIONS_PROPERTY)

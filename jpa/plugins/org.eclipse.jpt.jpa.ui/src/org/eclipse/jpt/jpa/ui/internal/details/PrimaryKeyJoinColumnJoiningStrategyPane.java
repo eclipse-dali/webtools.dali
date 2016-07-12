@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,16 +27,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link PrimaryKeyJoinColumnRelationship}
- * @see {@link SpecifiedPrimaryKeyJoinColumnRelationshipStrategy}
- * @see {@link OneToOneJoiningStrategyPane}
- *
  * @version 2.3
  * @since 2.1
  */
 public class PrimaryKeyJoinColumnJoiningStrategyPane 
-	extends AbstractJoiningStrategyPane
-		<PrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>
+	extends AbstractJoiningStrategyPane<PrimaryKeyJoinColumnRelationship>
 {
 	public PrimaryKeyJoinColumnJoiningStrategyPane(
 			Pane<? extends PrimaryKeyJoinColumnRelationship> parentPane, 
@@ -45,11 +40,11 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 	}
 
 	@Override
-	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
-		return buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder());
+	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyModel() {
+		return buildUsesPrimaryKeyJoinColumnJoiningStrategyModel(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<SpecifiedPrimaryKeyJoinColumnRelationshipStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
+	protected PropertyValueModel<SpecifiedPrimaryKeyJoinColumnRelationshipStrategy> buildPrimaryKeyJoinColumnJoiningStrategyModel() {
 		return new PropertyAspectAdapter
 				<PrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>(
 					getSubjectHolder()) {
@@ -65,7 +60,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 		return null;
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
+	public static ModifiablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyModel(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<PrimaryKeyJoinColumnRelationship, Boolean>(
 				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
@@ -43,7 +42,6 @@ public class AssociationOverrideComposite
 	 *
 	 * @param subjectHolder The holder of the subject <code>AssociationOverride</code>
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AssociationOverrideComposite(Pane<?> parentPane, 
 			PropertyValueModel<? extends AssociationOverride> subjectHolder,
@@ -81,14 +79,10 @@ public class AssociationOverrideComposite
 	}
 	
 	private PropertyValueModel<JoinColumnRelationship> buildRelationshipModel() {
-		return new TransformationPropertyValueModel<AssociationOverride, JoinColumnRelationship>(getSubjectHolder()) {
-			@Override
-			protected JoinColumnRelationship transform_(AssociationOverride value) {
-				// with virtual overrides: m:m mappings do not support join columns, so we need to check
-				Relationship relationship = value.getRelationship();
-				return (relationship instanceof JoinColumnRelationship) ?
-					(JoinColumnRelationship) relationship : null;
-			}
-		};
+		// with virtual overrides: m:m mappings do not support join columns, so we need to check
+		return PropertyValueModelTools.filter(
+				PropertyValueModelTools.transform(this.getSubjectHolder(), AssociationOverride.RELATIONSHIP_TRANSFORMER),
+				JoinColumnRelationship.class
+			);
 	}
 }

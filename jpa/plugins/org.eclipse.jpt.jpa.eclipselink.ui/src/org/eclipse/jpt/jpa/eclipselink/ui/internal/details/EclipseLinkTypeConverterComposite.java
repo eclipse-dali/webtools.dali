@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,7 +52,7 @@ public class EclipseLinkTypeConverterComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_NAME_TEXT_LABEL);
-		this.addText(container, buildNameTextHolder());
+		this.addText(container, buildNameTextModel());
 		
 		Hyperlink dataTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_TYPE_CONVERTER_COMPOSITE_DATA_TYPE_LABEL);
 		this.addDataTypeChooser(container, dataTypeHyperlink);
@@ -61,7 +61,7 @@ public class EclipseLinkTypeConverterComposite
 		this.addObjectTypeChooser(container, objectTypeHyperlink);
 	}
 	
-	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
 		return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(
 				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
@@ -85,7 +85,7 @@ public class EclipseLinkTypeConverterComposite
 		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -136,7 +136,7 @@ public class EclipseLinkTypeConverterComposite
 		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {

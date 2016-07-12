@@ -23,8 +23,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelT
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -144,11 +144,11 @@ public class EclipseLinkConvertersComposite
 
 	private AddRemoveListPane<EclipseLinkConverterContainer, EclipseLinkConverter> addListPane(Composite container) {
 
-		return new AddRemoveListPane<EclipseLinkConverterContainer, EclipseLinkConverter>(
+		return new AddRemoveListPane<>(
 			this,
 			container,
 			buildConvertersAdapter(),
-			buildDisplayableConvertersListHolder(),
+			buildDisplayableConvertersListModel(),
 			this.selectedConvertersModel,
 			buildConvertersListLabelProvider(),
 			null
@@ -192,7 +192,7 @@ public class EclipseLinkConvertersComposite
 		};
 	}
 
-	private EclipseLinkConverter addConverter() {
+	EclipseLinkConverter addConverter() {
 		return this.addEclipseLinkConverterFromDialog(this.buildEclipseLinkConverterDialog());
 	}
 
@@ -257,30 +257,30 @@ public class EclipseLinkConvertersComposite
 		}
 	}
 
-	private ListValueModel<EclipseLinkConverter> buildDisplayableConvertersListHolder() {
-		return new ItemPropertyListValueModelAdapter<EclipseLinkConverter>(
-			buildEclipseLinkConvertersHolder(),
+	private ListValueModel<EclipseLinkConverter> buildDisplayableConvertersListModel() {
+		return new ItemPropertyListValueModelAdapter<>(
+			buildEclipseLinkConvertersModel(),
 			JpaNamedContextModel.NAME_PROPERTY
 		);
 	}
 
-	private ListValueModel<EclipseLinkConverter> buildEclipseLinkConvertersHolder() {
-		List<ListValueModel<? extends EclipseLinkConverter>> list = new ArrayList<ListValueModel<? extends EclipseLinkConverter>>();
-		list.add(buildCustomConvertersListHolder());
-		list.add(buildObjectTypeConvertersListHolder());
-		list.add(buildStructConvertersListHolder());
-		list.add(buildTypeConvertersListHolder());
+	private ListValueModel<EclipseLinkConverter> buildEclipseLinkConvertersModel() {
+		List<ListValueModel<? extends EclipseLinkConverter>> list = new ArrayList<>();
+		list.add(buildCustomConvertersListModel());
+		list.add(buildObjectTypeConvertersListModel());
+		list.add(buildStructConvertersListModel());
+		list.add(buildTypeConvertersListModel());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	private ListValueModel<EclipseLinkCustomConverter> buildCustomConvertersListHolder() {
+	private ListValueModel<EclipseLinkCustomConverter> buildCustomConvertersListModel() {
 		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkCustomConverter>(
 			getSubjectHolder(),
 			EclipseLinkConverterContainer.CUSTOM_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkCustomConverter> getListIterable() {
-				return new SuperListIterableWrapper<EclipseLinkCustomConverter>(this.subject.getCustomConverters());
+				return new SuperListIterableWrapper<>(this.subject.getCustomConverters());
 			}
 
 			@Override
@@ -290,14 +290,14 @@ public class EclipseLinkConvertersComposite
 		};
 	}
 
-	private ListValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConvertersListHolder() {
+	private ListValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConvertersListModel() {
 		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkObjectTypeConverter>(
 			getSubjectHolder(),
 			EclipseLinkConverterContainer.OBJECT_TYPE_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkObjectTypeConverter> getListIterable() {
-				return new SuperListIterableWrapper<EclipseLinkObjectTypeConverter>(this.subject.getObjectTypeConverters());
+				return new SuperListIterableWrapper<>(this.subject.getObjectTypeConverters());
 			}
 
 			@Override
@@ -307,14 +307,14 @@ public class EclipseLinkConvertersComposite
 		};
 	}
 
-	private ListValueModel<EclipseLinkStructConverter> buildStructConvertersListHolder() {
+	private ListValueModel<EclipseLinkStructConverter> buildStructConvertersListModel() {
 		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkStructConverter>(
 			getSubjectHolder(),
 			EclipseLinkConverterContainer.STRUCT_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkStructConverter> getListIterable() {
-				return new SuperListIterableWrapper<EclipseLinkStructConverter>(this.subject.getStructConverters());
+				return new SuperListIterableWrapper<>(this.subject.getStructConverters());
 			}
 
 			@Override
@@ -324,14 +324,14 @@ public class EclipseLinkConvertersComposite
 		};
 	}
 
-	private ListValueModel<EclipseLinkTypeConverter> buildTypeConvertersListHolder() {
+	private ListValueModel<EclipseLinkTypeConverter> buildTypeConvertersListModel() {
 		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkTypeConverter>(
 			getSubjectHolder(),
 			EclipseLinkConverterContainer.TYPE_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkTypeConverter> getListIterable() {
-				return new SuperListIterableWrapper<EclipseLinkTypeConverter>(this.subject.getTypeConverters());
+				return new SuperListIterableWrapper<>(this.subject.getTypeConverters());
 			}
 
 			@Override
@@ -342,39 +342,19 @@ public class EclipseLinkConvertersComposite
 	}
 
 	private PropertyValueModel<EclipseLinkCustomConverter> buildSelectedCustomConverterModel() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkCustomConverter>(this.selectedConverterModel) {
-			@Override
-			protected EclipseLinkCustomConverter transform_(EclipseLinkConverter value) {
-				return value.getConverterType() == EclipseLinkCustomConverter.class ? (EclipseLinkCustomConverter) value : null;
-			}
-		};
+		return PropertyValueModelTools.transform(this.selectedConverterModel, EclipseLinkCustomConverter.CONVERTER_TRANSFORMER);
 	}
 
 	private PropertyValueModel<EclipseLinkObjectTypeConverter> buildSelectedObjectTypeConverterModel() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkObjectTypeConverter>(this.selectedConverterModel) {
-			@Override
-			protected EclipseLinkObjectTypeConverter transform_(EclipseLinkConverter value) {
-				return value.getConverterType() == EclipseLinkObjectTypeConverter.class ? (EclipseLinkObjectTypeConverter) value : null;
-			}
-		};
+		return PropertyValueModelTools.transform(this.selectedConverterModel, EclipseLinkObjectTypeConverter.CONVERTER_TRANSFORMER);
 	}
 
 	private PropertyValueModel<EclipseLinkStructConverter> buildSelectedStructConverterModel() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkStructConverter>(this.selectedConverterModel) {
-			@Override
-			protected EclipseLinkStructConverter transform_(EclipseLinkConverter value) {
-				return value.getConverterType() == EclipseLinkStructConverter.class ? (EclipseLinkStructConverter) value : null;
-			}
-		};
+		return PropertyValueModelTools.transform(this.selectedConverterModel, EclipseLinkStructConverter.CONVERTER_TRANSFORMER);
 	}
 
 	private PropertyValueModel<EclipseLinkTypeConverter> buildSelectedTypeConverterModel() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkTypeConverter>(this.selectedConverterModel) {
-			@Override
-			protected EclipseLinkTypeConverter transform_(EclipseLinkConverter value) {
-				return value.getConverterType() == EclipseLinkTypeConverter.class ? (EclipseLinkTypeConverter) value : null;
-			}
-		};
+		return PropertyValueModelTools.transform(this.selectedConverterModel, EclipseLinkTypeConverter.CONVERTER_TRANSFORMER);
 	}
 
 	private ILabelProvider buildConvertersListLabelProvider() {

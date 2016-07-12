@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
@@ -59,22 +57,12 @@ public class PersistenceUnitConnectionEditorPageDefinition2_0
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
 		new PersistenceUnitConnectionEditorPage2_0(buildConnectionModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
 	public static PropertyValueModel<Connection2_0> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Connection2_0>(persistenceUnitModel, CONNECTION_TRANSFORMER);
-	}
-
-	public static final Transformer<PersistenceUnit, Connection2_0> CONNECTION_TRANSFORMER = new ConnectionTransformer();
-
-	public static class ConnectionTransformer
-		extends AbstractTransformer<PersistenceUnit, Connection2_0>
-	{
-		@Override
-		protected Connection2_0 transform_(PersistenceUnit persistenceUnit) {
-			return ((PersistenceUnit2_0) persistenceUnit).getConnection();
-		}
+		return PropertyValueModelTools.transform(persistenceUnitModel, PersistenceUnit2_0.CONNECTION_TRANSFORMER);
 	}
 }

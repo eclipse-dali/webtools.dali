@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -111,78 +112,97 @@ public class PersistenceUnitOptionsEditorPage2_0
 
 	//************ lock timeout **********
 
+	@SuppressWarnings("unused")
 	private void addLockTimeoutCombo(Composite parent) {
-		new IntegerCombo<Options2_0>(this, parent) {
-			@Override
-			protected String getHelpId() {
-				return null;		// TODO
-			}
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultLockTimeout();
-					}
-				};
-			}
+		new LockTimeoutCombo(this, parent);
+	}
 
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.LOCK_TIMEOUT_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getLockTimeout();
-					}
+	public static class LockTimeoutCombo
+		extends IntegerCombo<Options2_0>
+	{
+		public LockTimeoutCombo(Pane<? extends Options2_0> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
 
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setLockTimeout(value);
-					}
-				};
-			}
-		};
+		public LockTimeoutCombo(Pane<?> parentPane, PropertyValueModel<? extends Options2_0> subjectModel, Composite parent) {
+			super(parentPane, subjectModel, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return null;		// TODO
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), Options2_0.DEFAULT_LOCK_TIMEOUT_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.LOCK_TIMEOUT_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getLockTimeout();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setLockTimeout(value);
+				}
+			};
+		}
 	}
 
 
 	//************ query timeout **********
 
+	@SuppressWarnings("unused")
 	private void addQueryTimeoutCombo(Composite parent) {
-		new IntegerCombo<Options2_0>(this, parent) {		
-			@Override
-			protected String getHelpId() {
-				return null;		// TODO
-			}
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultQueryTimeout();
-					}
-				};
-			}
+		new QueryTimeoutCombo(this, parent);
+	}
 
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.QUERY_TIMEOUT_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getQueryTimeout();
-					}
+	public static class QueryTimeoutCombo
+		extends IntegerCombo<Options2_0>
+	{
+		public QueryTimeoutCombo(Pane<? extends Options2_0> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
 
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setQueryTimeout(value);
-					}
-				};
-			}
-		};
+		public QueryTimeoutCombo(Pane<?> parentPane, PropertyValueModel<? extends Options2_0> subjectModel, Composite parent) {
+			super(parentPane, subjectModel, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return null;		// TODO
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), Options2_0.DEFAULT_QUERY_TIMEOUT_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.QUERY_TIMEOUT_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getQueryTimeout();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setQueryTimeout(value);
+				}
+			};
+		}
 	}
 
 	//************ validation configuration **********
 	// ********** ValidationGroupPrePersists **********
 
+	@SuppressWarnings("unused")
 	private void addPrePersistListPane(Composite parent) {
 		new AddRemoveListPane<Options2_0, String>(
 			this,
@@ -217,17 +237,17 @@ public class PersistenceUnitOptionsEditorPage2_0
 		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
-				return subject.getValidationGroupPrePersists();
+				return this.subject.getValidationGroupPrePersists();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.getValidationGroupPrePersistsSize();
+				return this.subject.getValidationGroupPrePersistsSize();
 			}
 		};
 	}
 
-	private String addPrePersistClass() {
+	String addPrePersistClass() {
 
 		IType type = this.chooseType();
 
@@ -243,6 +263,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 
 	// ********** ValidationGroupPreUpdates **********
 
+	@SuppressWarnings("unused")
 	private void addPreUpdateListPane(Composite parent) {
 		new AddRemoveListPane<Options2_0, String>(
 			this,
@@ -277,17 +298,17 @@ public class PersistenceUnitOptionsEditorPage2_0
 		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
-				return subject.getValidationGroupPreUpdates();
+				return this.subject.getValidationGroupPreUpdates();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.getValidationGroupPreUpdatesSize();
+				return this.subject.getValidationGroupPreUpdatesSize();
 			}
 		};
 	}
 
-	private String addPreUpdateClass() {
+	String addPreUpdateClass() {
 
 		IType type = this.chooseType();
 
@@ -303,6 +324,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 
 	// ********** ValidationGroupPreRemoves **********
 
+	@SuppressWarnings("unused")
 	private void addPreRemoveListPane(Composite parent) {
 		new AddRemoveListPane<Options2_0, String>(
 			this,
@@ -337,17 +359,17 @@ public class PersistenceUnitOptionsEditorPage2_0
 		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST) {
 			@Override
 			protected ListIterable<String> getListIterable() {
-				return subject.getValidationGroupPreRemoves();
+				return this.subject.getValidationGroupPreRemoves();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.getValidationGroupPreRemovesSize();
+				return this.subject.getValidationGroupPreRemovesSize();
 			}
 		};
 	}
 
-	private String addPreRemoveClass() {
+	String addPreRemoveClass() {
 		IType type = this.chooseType();
 
 		if (type != null) {
@@ -416,7 +438,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 	}
 
 	private ModifiableCollectionValueModel<String> buildSelectedItemsModel() {
-		return new SimpleCollectionValueModel<String>();
+		return new SimpleCollectionValueModel<>();
 	}
 
 	//********* shared cache mode ***********

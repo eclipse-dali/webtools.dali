@@ -30,6 +30,7 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will always evaluate to <code>true</code>.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> true_() {
@@ -38,6 +39,7 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will always evaluate to <code>false</code>.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> false_() {
@@ -48,7 +50,7 @@ public final class PredicateTools {
 	 * Return a predicate that will evaluate whether an object is
 	 * <em>not</em> <code>null</code>.
 	 */
-	public static Predicate<Object> isNotNull() {
+	public static <V> Predicate<V> isNotNull() {
 		return IsNotNull.instance();
 	}
 
@@ -56,13 +58,14 @@ public final class PredicateTools {
 	 * Return a predicate that will evaluate whether an object is
 	 * <code>null</code>.
 	 */
-	public static Predicate<Object> isNull() {
+	public static <V> Predicate<V> isNull() {
 		return IsNull.instance();
 	}
 
 	/**
 	 * Return a predicate that will throw an exception when it is
 	 * evaluated.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> disabledPredicate() {
@@ -78,9 +81,11 @@ public final class PredicateTools {
 	 * criterion. If the criterion is <code>null</code>, the predicate
 	 * will evaluate to <code>true</code> if the variable is also
 	 * <code>null</code>.
+	 * 
+	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static Predicate<Object> isEqual(Object criterion) {
-		return (criterion == null) ? isNull() : new Equals(criterion);
+	public static <V> Predicate<V> isEqual(Object criterion) {
+		return (criterion == null) ? isNull() : new Equals<>(criterion);
 	}
 
 	/**
@@ -90,7 +95,7 @@ public final class PredicateTools {
 	 * will evaluate to <code>true</code> if the variable is not
 	 * <code>null</code>.
 	 */
-	public static Predicate<Object> isNotEqual(Object criterion) {
+	public static <V> Predicate<V> isNotEqual(Object criterion) {
 		return (criterion == null) ? isNotNull() : not(isEqual(criterion));
 	}
 
@@ -101,8 +106,8 @@ public final class PredicateTools {
 	 * will evaluate to <code>true</code> if the variable is also
 	 * <code>null</code>.
 	 */
-	public static Predicate<Object> isIdentical(Object criterion) {
-		return (criterion == null) ? isNull() : new IsIdentical(criterion);
+	public static <V> Predicate<V> isIdentical(Object criterion) {
+		return (criterion == null) ? isNull() : new IsIdentical<>(criterion);
 	}
 
 	/**
@@ -112,7 +117,7 @@ public final class PredicateTools {
 	 * will evaluate to <code>true</code> if the variable is not
 	 * <code>null</code>.
 	 */
-	public static Predicate<Object> isNotIdentical(Object criterion) {
+	public static <V> Predicate<V> isNotIdentical(Object criterion) {
 		return (criterion == null) ? isNotNull() : not(isIdentical(criterion));
 	}
 
@@ -129,7 +134,9 @@ public final class PredicateTools {
 	 * If the list is not empty, this predicate will
 	 * exhibit "short-circuit" behavior; i.e. if any one of the predicates evaluates
 	 * to <code>false</code>, no following predicates will be evaluated.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see AND
 	 */
 	public static <V> Predicate<V> and(Iterable<Predicate<? super V>> predicates) {
@@ -138,7 +145,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will AND the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #and(Iterable)
 	 * @see AND
 	 */
@@ -149,7 +158,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will AND the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #and(Iterable)
 	 * @see AND
 	 */
@@ -179,7 +190,9 @@ public final class PredicateTools {
 	 * If the list is not empty, this predicate will
 	 * exhibit "short-circuit" behavior; i.e. if any one of the predicates evaluates
 	 * to <code>true</code>, no following predicates will be evaluated.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see OR
 	 */
 	public static <V> Predicate<V> or(Iterable<Predicate<? super V>> predicates) {
@@ -188,7 +201,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will OR the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #or(Iterable)
 	 * @see OR
 	 */
@@ -199,7 +214,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will OR the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #or(Iterable)
 	 * @see OR
 	 */
@@ -225,7 +242,9 @@ public final class PredicateTools {
 	 * its wrapped predicates evaluates to <code>true</code>, but <em>not</em> both.
 	 * <p>
 	 * <strong>NB:</strong> Both predicates will <em>always</em> be evaluated.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see XOR
 	 */
 	public static <V> Predicate<V> xor(Predicate<? super V> predicate1, Predicate<? super V> predicate2) {
@@ -237,7 +256,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will NAND the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #and(Iterable)
 	 * @see #not(Predicate)
 	 */
@@ -247,7 +268,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will NAND the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #and(Iterator)
 	 * @see #not(Predicate)
 	 */
@@ -258,7 +281,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will NAND the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #and(Predicate[])
 	 * @see #not(Predicate)
 	 */
@@ -272,7 +297,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will NOR the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #or(Iterable)
 	 * @see #not(Predicate)
 	 */
@@ -282,7 +309,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will NOR the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #or(Iterator)
 	 * @see #not(Predicate)
 	 */
@@ -293,7 +322,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will NOR the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #or(Predicate[])
 	 * @see #not(Predicate)
 	 */
@@ -307,7 +338,9 @@ public final class PredicateTools {
 
 	/**
 	 * Return a predicate that will XNOR the results of the specified predicates.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
+	 * 
 	 * @see #xor(Predicate, Predicate)
 	 * @see #not(Predicate)
 	 */
@@ -321,6 +354,7 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will return the NOT of the value returned
 	 * by the specified predicate.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> not(Predicate<? super V> predicate) {
@@ -338,7 +372,9 @@ public final class PredicateTools {
 	 * <p>
 	 * <strong>NB:</strong> The variable's value will be checked for <code>null</code>
 	 * <em>before</em> it is passed to the specified predicate.
+	 * 
 	 * @param <V> the type of the object passed to the predicate
+	 * 
 	 * @see NullCheckPredicateWrapper
 	 * @see #nullCheck(Predicate, boolean)
 	 */
@@ -354,7 +390,9 @@ public final class PredicateTools {
 	 * <p>
 	 * <strong>NB:</strong> The variable's value will be checked for <code>null</code>
 	 * <em>before</em> it is passed to the specified predicate.
+	 * 
 	 * @param <V> the type of the object passed to the predicate
+	 * 
 	 * @see NullCheckPredicateWrapper
 	 * @see #nullCheck(Predicate)
 	 */
@@ -365,6 +403,7 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that wraps the specified predicate, allowing the
 	 * wrapped predicate to be changed as necessary.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> wrap(Predicate<? super V> predicate) {
@@ -375,6 +414,7 @@ public final class PredicateTools {
 	 * Return a predicate that wraps the specified predicate and uses the
 	 * specified transformer to transform the variable before passing the
 	 * output of the transformer to the specified predicate.
+	 * 
 	 * @param <I> the type of objects to be evaluated by the predicate and
 	 *   passed to the specified transformer
 	 * @param <O> the type of objects output by the specified transformer and to be
@@ -390,9 +430,10 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will evaluate to <code>true</code> for any object that
 	 * is non-<code>null</code> and an instance of the specified class.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
-	public static <V> Predicate<V> instanceOf(Class<? extends V> clazz) {
+	public static <V> Predicate<V> instanceOf(Class<?> clazz) {
 		return new InstanceOf<>(clazz);
 	}
 
@@ -404,6 +445,7 @@ public final class PredicateTools {
 	 * value to a predicate evaluation result (i.e. <code>true</code> or
 	 * <code>false</code>). If the transformer's output is <code>null</code>,
 	 * the predicate will evaluate to <code>false</code>.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> adapt(Transformer<V, Boolean> transformer) {
@@ -415,6 +457,7 @@ public final class PredicateTools {
 	 * value to a predicate evaluation result (i.e. <code>true</code> or
 	 * <code>false</code>). If the transformer's output is <code>null</code>,
 	 * the predicate will evaluate to the specified null value.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> adapt(Transformer<V, Boolean> transformer, boolean nullValue) {
@@ -427,6 +470,7 @@ public final class PredicateTools {
 	 * <code>false</code>).
 	 * <strong>NB:</strong> If the transformer's output is <code>null</code>,
 	 * the predicate will throw a {@link NullPointerException}.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> adapt_(Transformer<V, Boolean> transformer) {
@@ -479,6 +523,7 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will evaluate to <code>true</code> for any object
 	 * that is contained in the specified set.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isIn(Set<? super V> set) {
@@ -488,6 +533,7 @@ public final class PredicateTools {
 	/**
 	 * Return a predicate that will evaluate to <code>true</code> for any object
 	 * that is <em>not</em> contained in the specified set.
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> Predicate<V> isNotIn(Set<? super V> set) {
@@ -501,6 +547,7 @@ public final class PredicateTools {
 	 * Return a predicate that will evaluate to <code>true</code> for any object that
 	 * has not been previously evaluated by the predicate (as determined by
 	 * object-identity: <code>==</code>).
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> UniquePredicate<V> uniqueIdentityPredicate() {
@@ -511,6 +558,7 @@ public final class PredicateTools {
 	 * Return a predicate that will evaluate to <code>true</code> for any object that
 	 * has not been previously evaluated by the predicate (as determined by
 	 * {@link Object#equals(Object) equality}).
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> UniquePredicate<V> uniquePredicate() {
@@ -521,6 +569,7 @@ public final class PredicateTools {
 	 * Return a predicate that will evaluate to <code>true</code> for any object that
 	 * has not been previously evaluated by the predicate (as determined by
 	 * {@link Object#equals(Object) equality}).
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> UniquePredicate<V> uniquePredicate(Set<V> set) {
@@ -537,6 +586,7 @@ public final class PredicateTools {
 	 * <strong>NB:</strong> The actual field is determined at execution time,
 	 * not construction time. As a result, the transformer can be used to emulate
 	 * "duck typing".
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> FieldPredicate<V> get(String fieldName) {
@@ -550,6 +600,7 @@ public final class PredicateTools {
 	 * <strong>NB:</strong> The actual method is determined at execution time,
 	 * not construction time. As a result, the transformer can be used to emulate
 	 * "duck typing".
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> MethodPredicate<V> execute(String methodName) {
@@ -563,6 +614,7 @@ public final class PredicateTools {
 	 * <strong>NB:</strong> The actual method is determined at execution time,
 	 * not construction time. As a result, the transformer can be used to emulate
 	 * "duck typing".
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> MethodPredicate<V> execute(String methodName, Class<?> parameterType, Object argument) {
@@ -576,6 +628,7 @@ public final class PredicateTools {
 	 * <strong>NB:</strong> The actual method is determined at execution time,
 	 * not construction time. As a result, the transformer can be used to emulate
 	 * "duck typing".
+	 * 
 	 * @param <V> the type of objects to be evaluated by the predicate
 	 */
 	public static <V> MethodPredicate<V> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {

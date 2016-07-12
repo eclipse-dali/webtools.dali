@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,7 @@ import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -40,7 +39,7 @@ public class JaxbNavigatorItemContentProviderFactory
 	/**
 	 * Delegate factories, keyed by JAXB platform.
 	 */
-	private HashMap<JaxbPlatform, ItemTreeContentProvider.Factory> delegates = new HashMap<JaxbPlatform, ItemTreeContentProvider.Factory>();
+	private HashMap<JaxbPlatform, ItemTreeContentProvider.Factory> delegates = new HashMap<>();
 	
 	
 	public JaxbNavigatorItemContentProviderFactory() {
@@ -79,15 +78,15 @@ public class JaxbNavigatorItemContentProviderFactory
 	// ********** project **********
 
 	protected CollectionValueModel<JaxbContextRoot> buildProjectChildrenModel(IProject project) {
-		return new PropertyCollectionValueModelAdapter<JaxbContextRoot>(this.buildProjectJaxbContextRootModel(project));
+		return new PropertyCollectionValueModelAdapter<>(this.buildProjectJaxbContextRootModel(project));
 	}
 
 	protected PropertyValueModel<JaxbContextRoot> buildProjectJaxbContextRootModel(IProject project) {
-		return new TransformationPropertyValueModel<JaxbProject, JaxbContextRoot>(this.buildProjectJaxbProjectModel(project), TransformerTools.nullCheck(JaxbProject.CONTEXT_ROOT_TRANSFORMER));
+		return PropertyValueModelTools.transform(this.buildProjectJaxbProjectModel(project), JaxbProject.CONTEXT_ROOT_TRANSFORMER);
 	}
 
 	protected PropertyValueModel<JaxbProject> buildProjectJaxbProjectModel(IProject project) {
-		return (JaxbProjectModel) project.getAdapter(JaxbProjectModel.class);
+		return project.getAdapter(JaxbProjectModel.class);
 	}
 
 
@@ -110,7 +109,7 @@ public class JaxbNavigatorItemContentProviderFactory
 	}
 
 	private ItemTreeContentProvider.Factory buildDelegate(JaxbPlatform jaxbPlatform) {
-		JaxbPlatformUi platformUI = (JaxbPlatformUi) jaxbPlatform.getAdapter(JaxbPlatformUi.class);
+		JaxbPlatformUi platformUI = jaxbPlatform.getAdapter(JaxbPlatformUi.class);
 		return (platformUI != null) ?
 				platformUI.getNavigatorUi().getTreeItemContentProviderFactory() :
 				NullItemTreeContentProviderFactory.instance();

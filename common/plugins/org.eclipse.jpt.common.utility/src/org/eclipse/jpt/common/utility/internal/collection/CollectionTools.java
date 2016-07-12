@@ -22,6 +22,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -147,6 +148,15 @@ public final class CollectionTools {
 
 
 	// ********** filter **********
+
+	/**
+	 * Return a new collection with the elements of the specified collection
+	 * that are instances of the specified class.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> HashBag<E> filter(Collection<?> collection, Class<E> clazz) {
+		return (HashBag<E>) filter(collection, PredicateTools.instanceOf(clazz));
+	}
 
 	/**
 	 * Return a new collection with the filtered

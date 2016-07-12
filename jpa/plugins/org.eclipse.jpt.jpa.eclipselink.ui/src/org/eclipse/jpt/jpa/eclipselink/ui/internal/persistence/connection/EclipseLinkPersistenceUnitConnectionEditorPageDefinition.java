@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -60,22 +58,12 @@ public class EclipseLinkPersistenceUnitConnectionEditorPageDefinition
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
 		new EclipseLinkPersistenceUnitConnectionEditorPage(buildConnectionModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
 	public static PropertyValueModel<EclipseLinkConnection> buildConnectionModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkConnection>(persistenceUnitModel, CONNECTION_TRANSFORMER);
-	}
-
-	public static final Transformer<PersistenceUnit, EclipseLinkConnection> CONNECTION_TRANSFORMER = new ConnectionTransformer();
-
-	public static class ConnectionTransformer
-		extends AbstractTransformer<PersistenceUnit, EclipseLinkConnection>
-	{
-		@Override
-		protected EclipseLinkConnection transform_(PersistenceUnit persistenceUnit) {
-			return ((EclipseLinkPersistenceUnit) persistenceUnit).getEclipseLinkConnection();
-		}
+		return PropertyValueModelTools.transform(persistenceUnitModel, EclipseLinkPersistenceUnit.ECLIPSELINK_CONNECTION_TRANSFORMER);
 	}
 }

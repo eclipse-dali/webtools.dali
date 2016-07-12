@@ -676,7 +676,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SubIteratorWrapper
 	 */
-	public static <E1, E2 extends E1> Iterator<E2> downCast(Iterator<E1> iterator) {
+	public static <E1, E2 extends E1> Iterator<E2> downcast(Iterator<E1> iterator) {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
@@ -687,7 +687,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SubListIteratorWrapper
 	 */
-	public static <E1, E2 extends E1> ListIterator<E2> downCast(ListIterator<E1> iterator) {
+	public static <E1, E2 extends E1> ListIterator<E2> downcast(ListIterator<E1> iterator) {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
@@ -698,7 +698,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SuperIteratorWrapper
 	 */
-	public static <E> Iterator<E> upCast(Iterator<? extends E> iterator) {
+	public static <E> Iterator<E> upcast(Iterator<? extends E> iterator) {
 		if (isEmpty(iterator)) {
 			return emptyIterator();
 		}
@@ -709,7 +709,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SuperListIteratorWrapper
 	 */
-	public static <E> ListIterator<E> upCast(ListIterator<? extends E> iterator) {
+	public static <E> ListIterator<E> upcast(ListIterator<? extends E> iterator) {
 		if (isEmpty(iterator)) {
 			return emptyListIterator();
 		}
@@ -1013,6 +1013,17 @@ public final class IteratorTools {
 	 */
 	public static <E> ListIterator<E> emptyListIterator() {
 		return EmptyListIterator.instance();
+	}
+
+	/**
+	 * Return an iterator that will filter the specified iterator to return only the
+	 * elements that are instances of the specified class.
+	 * @see PredicateTools#instanceOf(Class)
+	 * @see #filter(Iterator, Predicate)
+	 * @see #downcast(Iterator)
+	 */
+	public static <E> Iterator<E> filter(Iterator<?> iterator, Class<E> clazz) {
+		return cast(filter(iterator, PredicateTools.instanceOf(clazz)));
 	}
 
 	/**

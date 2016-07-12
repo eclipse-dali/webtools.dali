@@ -30,8 +30,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelT
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -47,16 +47,15 @@ import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
-@SuppressWarnings("nls")
 public class PersistenceUnitClassesComposite
 	extends Pane<PersistenceUnit>
 {
@@ -67,6 +66,7 @@ public class PersistenceUnitClassesComposite
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void initializeLayout(Composite container) {
 		// List pane
 		new AddRemoveListPane<PersistenceUnit, ClassRef>(
@@ -171,18 +171,14 @@ public class PersistenceUnitClassesComposite
 	}
 
 	private PropertyValueModel<String> buildExcludeUnlistedClassesStringModel() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeUnlistedClassesModel()) {
-			@Override
-			protected String transform(Boolean v) {
-				if (v != null) {
-					String defaultStringValue = v.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES;
-			}
-		};
+		return PropertyValueModelTools.transform_(this.buildDefaultExcludeUnlistedClassesModel(), EXCLUDE_UNLISTED_CLASSES_TRANSFORMER);
 	}
-	
+
+	private static final Transformer<Boolean, String> EXCLUDE_UNLISTED_CLASSES_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES_WITH_DEFAULT,
+			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES
+		);
+
 	private PropertyValueModel<Boolean> buildDefaultExcludeUnlistedClassesModel() {
 		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
@@ -199,6 +195,7 @@ public class PersistenceUnitClassesComposite
 		};
 	}
 
+	@SuppressWarnings("unused")
 	private ILabelProvider buildClassRefLabelProvider() {
 		return new ResourceManagerLabelProvider<ClassRef>(
 				CLASS_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER,
@@ -239,7 +236,7 @@ public class PersistenceUnitClassesComposite
 		}
 
 		private JpaPlatformUi getJpaPlatformUi(ClassRef classRef) {
-			return (JpaPlatformUi) classRef.getJpaPlatform().getAdapter(JpaPlatformUi.class);
+			return classRef.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		}
 	}
 
@@ -255,7 +252,7 @@ public class PersistenceUnitClassesComposite
 	}
 
 	private ListValueModel<ClassRef> buildItemListModel() {
-		return new ItemPropertyListValueModelAdapter<ClassRef>(
+		return new ItemPropertyListValueModelAdapter<>(
 			buildListModel(),
 			ClassRef.JAVA_MANAGED_TYPE_PROPERTY,
 			ClassRef.CLASS_NAME_PROPERTY
@@ -277,7 +274,7 @@ public class PersistenceUnitClassesComposite
 	}
 
 	private ModifiableCollectionValueModel<ClassRef> buildSelectedItemsModel() {
-		return new SimpleCollectionValueModel<ClassRef>();
+		return new SimpleCollectionValueModel<>();
 	}
 
 	/**

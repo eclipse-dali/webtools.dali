@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,19 +10,19 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -58,8 +58,8 @@ public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends Ec
 		TriStateCheckBox lazyConnectionCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL,
-			this.buildLazyConnectionHolder(),
-			this.buildLazyConnectionStringHolder(),
+			this.buildLazyConnectionModel(),
+			this.buildLazyConnectionStringModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -116,7 +116,7 @@ public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends Ec
 		};
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildLazyConnectionHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildLazyConnectionModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(this.getSubjectHolder(), EclipseLinkConnection.LAZY_CONNECTION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -130,20 +130,16 @@ public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends Ec
 		};
 	}
 
-	private PropertyValueModel<String> buildLazyConnectionStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(this.buildDefaultLazyConnectionHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildLazyConnectionStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultLazyConnectionModel(), LAZY_CONNECTION_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultLazyConnectionHolder() {
+
+	private static final Transformer<Boolean, String> LAZY_CONNECTION_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultLazyConnectionModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
 			this.getSubjectHolder(),
 			EclipseLinkConnection.LAZY_CONNECTION_PROPERTY)

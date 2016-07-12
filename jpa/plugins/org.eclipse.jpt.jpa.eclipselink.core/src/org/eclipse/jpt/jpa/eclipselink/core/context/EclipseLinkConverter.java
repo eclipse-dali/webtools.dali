@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 
 /**
@@ -35,6 +36,28 @@ public interface EclipseLinkConverter
 	 * Return the converter's type.
 	 */
 	Class<? extends EclipseLinkConverter> getConverterType();
+
+	/**
+	 * A transformer that casts an {@link EclipseLinkConverter} to a specified type
+	 * if it is an instance of that type; otherwise, it returns <code>null</code>.
+	 */
+	class ConverterTransformer<C extends EclipseLinkConverter>
+		extends TransformerAdapter<EclipseLinkConverter, C>
+	{
+		private final Class<C> clazz;
+		public ConverterTransformer(Class<C> clazz) {
+			super();
+			if (clazz == null) {
+				throw new NullPointerException();
+			}
+			this.clazz = clazz;
+		}
+		@Override
+		@SuppressWarnings("unchecked")
+		public C transform(EclipseLinkConverter converter) {
+			return (converter.getConverterType() == this.clazz) ? (C) converter : null;
+		}
+	}
 
 	/**
 	 * Return whether the specified converter has the same state as this

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -77,8 +79,17 @@ public class EclipseLinkCustomizationEntity
 		return this.descriptorCustomizer == null;
 	}
 	
-	public boolean entityNameIsValid() {
+	public boolean nameIsValid() {
 		return ! StringTools.isBlank(this.name);
+	}
+	public static final Predicate<EclipseLinkCustomizationEntity> NAME_IS_VALID = new NameIsValid();
+	public static class NameIsValid
+		extends PredicateAdapter<EclipseLinkCustomizationEntity>
+	{
+		@Override
+		public boolean evaluate(EclipseLinkCustomizationEntity entity) {
+			return entity.nameIsValid();
+		}
 	}
 
 	public EclipseLinkCustomization getParent() {

@@ -29,6 +29,8 @@ public final class PropertyValueModelTools {
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
 	 * is <code>null</code>.
+	 * 
+	 * @see #valueIsNotNull(PropertyValueModel)
 	 */
 	public static PropertyValueModel<Boolean> valueIsNull(PropertyValueModel<?> propertyModel) {
 		return valueIsInSet_(propertyModel, PredicateTools.isNull());
@@ -38,6 +40,8 @@ public final class PropertyValueModelTools {
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
 	 * is <em>not</em> <code>null</code>.
+	 * 
+	 * @see #valueIsNull(PropertyValueModel)
 	 */
 	public static PropertyValueModel<Boolean> valueIsNotNull(PropertyValueModel<?> propertyModel) {
 		return valueIsInSet_(propertyModel, PredicateTools.isNotNull());
@@ -47,6 +51,13 @@ public final class PropertyValueModelTools {
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
 	 * equals the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will be <em>true</em> if the specified value is
+	 * also <code>null</code>.
+	 * 
+	 * @see #valueNotEquals(PropertyValueModel, Object)
+	 * @see #valueEquals_(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueEquals(PropertyValueModel<?> propertyModel, Object value) {
 		return valueIsInSet_(propertyModel, PredicateTools.isEqual(value));
@@ -55,7 +66,30 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
+	 * equals the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will also be a <code>null</code>
+	 * {@link Boolean}.
+	 * 
+	 * @see #valueNotEquals_(PropertyValueModel, Object)
+	 * @see #valueEquals(PropertyValueModel, Object)
+	 */
+	public static PropertyValueModel<Boolean> valueEquals_(PropertyValueModel<?> propertyModel, Object value) {
+		return valueIsInSet(propertyModel, PredicateTools.isEqual(value));
+	}
+
+	/**
+	 * Construct a property value model adapter for the specified
+	 * property value model that returns whether the property's value
 	 * does <em>not</em> equal the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will be <em>false</em> if the specified value is
+	 * also <code>null</code>.
+	 * 
+	 * @see #valueNotEquals_(PropertyValueModel, Object)
+	 * @see #valueEquals(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueNotEquals(PropertyValueModel<?> propertyModel, Object value) {
 		return valueIsInSet_(propertyModel, PredicateTools.isNotEqual(value));
@@ -64,7 +98,30 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
+	 * does <em>not</em> equal the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will also be a <code>null</code>
+	 * {@link Boolean}.
+	 * 
+	 * @see #valueNotEquals(PropertyValueModel, Object)
+	 * @see #valueEquals_(PropertyValueModel, Object)
+	 */
+	public static PropertyValueModel<Boolean> valueNotEquals_(PropertyValueModel<?> propertyModel, Object value) {
+		return valueIsInSet_(propertyModel, PredicateTools.isNotEqual(value));
+	}
+
+	/**
+	 * Construct a property value model adapter for the specified
+	 * property value model that returns whether the property's value
 	 * is <em>identical</em> to the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will be <em>true</em> if the specified value is
+	 * also <code>null</code>.
+	 * 
+	 * @see #valueIsIdentical_(PropertyValueModel, Object)
+	 * @see #valueIsNotIdentical(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueIsIdentical(PropertyValueModel<?> propertyModel, Object value) {
 		return valueIsInSet_(propertyModel, PredicateTools.isIdentical(value));
@@ -73,10 +130,49 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
+	 * is <em>identical</em> to the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will also be a <code>null</code>
+	 * {@link Boolean}.
+	 * 
+	 * @see #valueIsIdentical(PropertyValueModel, Object)
+	 * @see #valueIsNotIdentical_(PropertyValueModel, Object)
+	 */
+	public static PropertyValueModel<Boolean> valueIsIdentical_(PropertyValueModel<?> propertyModel, Object value) {
+		return valueIsInSet(propertyModel, PredicateTools.isIdentical(value));
+	}
+
+	/**
+	 * Construct a property value model adapter for the specified
+	 * property value model that returns whether the property's value
 	 * is <em>not identical</em> to the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will be <em>false</em> if the specified value is
+	 * also <code>null</code>.
+	 * 
+	 * @see #valueIsNotIdentical_(PropertyValueModel, Object)
+	 * @see #valueIsIdentical(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueIsNotIdentical(PropertyValueModel<?> propertyModel, Object value) {
 		return valueIsInSet_(propertyModel, PredicateTools.isNotIdentical(value));
+	}
+
+	/**
+	 * Construct a property value model adapter for the specified
+	 * property value model that returns whether the property's value
+	 * is <em>not identical</em> to the specified value.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will also be a <code>null</code>
+	 * {@link Boolean}.
+	 * 
+	 * @see #valueIsNotIdentical(PropertyValueModel, Object)
+	 * @see #valueIsIdentical_(PropertyValueModel, Object)
+	 */
+	public static PropertyValueModel<Boolean> valueIsNotIdentical_(PropertyValueModel<?> propertyModel, Object value) {
+		return valueIsInSet(propertyModel, PredicateTools.isNotIdentical(value));
 	}
 
 	/**
@@ -86,9 +182,11 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
 	 * the returned model's value will also be a <code>null</code>
-	 * {@link Boolean}; and the value will never be passed to the specified
+	 * {@link Boolean}; and the value will <em>never</em> be passed to the specified
 	 * predicate.
+	 * 
 	 * @see #valueIsInSet_(PropertyValueModel, Predicate)
+	 * @see #valueIsInSet(PropertyValueModel, Predicate, boolean)
 	 * @see #valueIsInSet(PropertyValueModel, Predicate, Boolean)
 	 */
 	public static <V> PropertyValueModel<Boolean> valueIsInSet(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate) {
@@ -102,9 +200,28 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
 	 * the returned model's value will be the specified null result;
-	 * and the value will never be passed to the specified predicate.
+	 * and the value will <em>never</em> be passed to the specified predicate.
+	 * 
 	 * @see #valueIsInSet(PropertyValueModel, Predicate)
 	 * @see #valueIsInSet_(PropertyValueModel, Predicate)
+	 * @see #valueIsInSet(PropertyValueModel, Predicate, Boolean)
+	 */
+	public static <V> PropertyValueModel<Boolean> valueIsInSet(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate, boolean nullResult) {
+		return valueIsInSet(propertyModel, predicate, Boolean.valueOf(nullResult));
+	}
+
+	/**
+	 * Construct a property value model adapter for the specified
+	 * property value model that returns whether the property's value
+	 * is in the set defined by the specified predicate.
+	 * <p>
+	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
+	 * the returned model's value will be the specified null result;
+	 * and the value will <em>never</em> be passed to the specified predicate.
+	 * 
+	 * @see #valueIsInSet(PropertyValueModel, Predicate)
+	 * @see #valueIsInSet_(PropertyValueModel, Predicate)
+	 * @see #valueIsInSet(PropertyValueModel, Predicate, boolean)
 	 */
 	public static <V> PropertyValueModel<Boolean> valueIsInSet(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate, Boolean nullResult) {
 		return transform_(propertyModel, TransformerTools.adapt(predicate, nullResult));
@@ -117,7 +234,9 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> The specified predicate must be able to
 	 * handle a <code>null</code> variable.
+	 * 
 	 * @see #valueIsInSet(PropertyValueModel, Predicate)
+	 * @see #valueIsInSet(PropertyValueModel, Predicate, boolean)
 	 * @see #valueIsInSet(PropertyValueModel, Predicate, Boolean)
 	 */
 	public static <V> PropertyValueModel<Boolean> valueIsInSet_(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate) {
@@ -128,11 +247,50 @@ public final class PropertyValueModelTools {
 	// ********** filtering wrappers **********
 
 	/**
+	 * Construct a property value model that filters the specified
+	 * property value model to return the wrapped value only if it is an instance
+	 * of the specified class. If the wrapped value is <em>not</em> an instance
+	 * of the specified class, it will return <code>null</code>.
+	 * <p>
+	 * <strong>NB:</strong> If the wrapped value is <code>null</code>,
+	 * the model returns a <code>null</code> value.
+	 * 
+	 * @see #filter(PropertyValueModel, Class, Object)
+	 * @see PredicateTools#instanceOf(Class)
+	 */
+	public static <V> PropertyValueModel<V> filter(PropertyValueModel<?> propertyModel, Class<V> clazz) {
+		return filter(propertyModel, clazz, null);
+	}
+
+	/**
+	 * Construct a property value model that filters the specified
+	 * property value model to return the wrapped value only if it is an instance
+	 * of the specified class. If the wrapped value is <em>not</em> an instance
+	 * of the specified class, it will return the specified default value.
+	 * <p>
+	 * <strong>NB:</strong> If the wrapped value is <code>null</code>,
+	 * the model returns the specified default value.
+	 * 
+	 * @see #filter(PropertyValueModel, Class)
+	 * @see PredicateTools#instanceOf(Class)
+	 */
+	public static <V> PropertyValueModel<V> filter(PropertyValueModel<?> propertyModel, Class<V> clazz, V defaultValue) {
+		return transform(propertyModel, TransformerTools.cast(TransformerTools.filteringTransformer(PredicateTools.instanceOf(clazz), defaultValue)));
+	}
+
+	/**
 	 * Construct a property value model that wraps the specified
 	 * property value model and filters its value with the specified
 	 * filter. If the wrapped value passes the filter,
 	 * the model simply returns it; otherwise it returns <code>null</code>.
+	 * <p>
+	 * <strong>NB:</strong> The specified filter will <em>never</em> be passed
+	 * a <code>null</code> variable.
+	 * Instead, if the wrapped value is <code>null</code>, the model returns a
+	 * <code>null</code> value.
+	 * 
 	 * @see #filter(PropertyValueModel, Predicate, Object)
+	 * @see #filter_(PropertyValueModel, Predicate)
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> PropertyValueModel<V> filter(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> filter) {
@@ -143,14 +301,56 @@ public final class PropertyValueModelTools {
 	 * Construct a property value model that wraps the specified
 	 * property value model and filters its value with the specified
 	 * filter. If the wrapped value passes the filter,
+	 * the model simply returns it; otherwise it returns <code>null</code>.
+	 * <p>
+	 * <strong>NB:</strong> The specified filter must be able to handle
+	 * a <code>null</code> variable.
+	 * 
+	 * @see #filter(PropertyValueModel, Predicate)
+	 * @see #filter_(PropertyValueModel, Predicate, Object)
+	 * @see PluggablePropertyValueModel
+	 */
+	public static <V> PropertyValueModel<V> filter_(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> filter) {
+		return filter_(propertyModel, filter, null);
+	}
+
+	/**
+	 * Construct a property value model that wraps the specified
+	 * property value model and filters its value with the specified
+	 * filter. If the wrapped value passes the filter,
 	 * the model simply returns it; otherwise it returns the specified
 	 * default value.
+	 * <p>
+	 * <strong>NB:</strong> The specified filter will <em>never</em> be passed
+	 * a <code>null</code> variable.
+	 * Instead, if the wrapped value is <code>null</code>, the model returns the specified
+	 * default value.
+	 * 
+	 * @see #filter(PropertyValueModel, Predicate)
+	 * @see #filter_(PropertyValueModel, Predicate, Object)
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> PropertyValueModel<V> filter(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> filter, V defaultValue) {
-		return transform(propertyModel, TransformerTools.filteringTransformer(filter, defaultValue));
+		return filter_(propertyModel, PredicateTools.nullCheck(filter), defaultValue);
 	}
 
+	/**
+	 * Construct a property value model that wraps the specified
+	 * property value model and filters its value with the specified
+	 * filter. If the wrapped value passes the filter,
+	 * the model simply returns it; otherwise it returns the specified
+	 * default value.
+	 * <p>
+	 * <strong>NB:</strong> The specified filter must be able to handle
+	 * a <code>null</code> variable.
+	 * 
+	 * @see #filter(PropertyValueModel, Predicate, Object)
+	 * @see #filter_(PropertyValueModel, Predicate)
+	 * @see PluggablePropertyValueModel
+	 */
+	public static <V> PropertyValueModel<V> filter_(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> filter, V defaultValue) {
+		return transform(propertyModel, TransformerTools.filteringTransformer(filter, defaultValue));
+	}
 
 	/**
 	 * Construct a modifiable property value model that wraps the specified
@@ -159,6 +359,7 @@ public final class PropertyValueModelTools {
 	 * the model simply returns it; otherwise it returns <code>null</code>.
 	 * If a new value passes the "set" filter, the model passes it to the wrapped
 	 * model; otherwise it sets the wrapped model's value to <code>null</code>.
+	 * 
 	 * @see #filterModifiable(ModifiablePropertyValueModel, Predicate, Object, Predicate, Object)
 	 * @see PluggablePropertyValueModel
 	 */
@@ -175,6 +376,7 @@ public final class PropertyValueModelTools {
 	 * If a new value passes the "set" filter, the model passes it to the wrapped
 	 * model; otherwise it sets the wrapped model's value to the specified
 	 * default "set" value.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> ModifiablePropertyValueModel<V> filterModifiable(ModifiablePropertyValueModel<V> propertyModel, Predicate<? super V> getFilter, V defaultGetValue, Predicate<? super V> setFilter, V defaultSetValue) {
@@ -188,6 +390,7 @@ public final class PropertyValueModelTools {
 	 * Construct a property value model that wraps the specified
 	 * property value model and returns the specified null value
 	 * if the specified model's value is <code>null</code>.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> PropertyValueModel<V> nullCheck(PropertyValueModel<? extends V> propertyModel, V nullValue) {
@@ -202,8 +405,9 @@ public final class PropertyValueModelTools {
 	 * property value model and transforms its value with the specified
 	 * transformer.
 	 * <p>
-	 * <strong>NB:</strong> The specified transformer will never be passed a <code>null</code> input.
+	 * <strong>NB:</strong> The specified transformer will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PropertyValueModel<V2> transform(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer) {
@@ -216,6 +420,7 @@ public final class PropertyValueModelTools {
 	 * transformer.
 	 * <p>
 	 * <strong>NB:</strong> The specified transformer must be able to handle a <code>null</code> input.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PropertyValueModel<V2> transform_(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer) {
@@ -227,8 +432,9 @@ public final class PropertyValueModelTools {
 	 * property value model and transforms its value with the specified
 	 * transformer. The specified closure is invoked when the model's value is set.
 	 * <p>
-	 * <strong>NB:</strong> The specified transformer will never be passed a <code>null</code> input.
+	 * <strong>NB:</strong> The specified transformer will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> ModifiablePropertyValueModel<V2> transform(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer, Closure<? super V2> setValueClosure) {
@@ -241,6 +447,7 @@ public final class PropertyValueModelTools {
 	 * transformer. The specified closure is invoked when the model's value is set.
 	 * <p>
 	 * <strong>NB:</strong> The specified transformer must be able to handle a <code>null</code> input.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> ModifiablePropertyValueModel<V2> transform_(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer, Closure<? super V2> setValueClosure) {
@@ -251,8 +458,9 @@ public final class PropertyValueModelTools {
 	 * Construct a pluggable property value model adapter factory for the specified
 	 * property value model and transformer.
 	 * <p>
-	 * <strong>NB:</strong> The specified transformer will never be passed a <code>null</code> input.
+	 * <strong>NB:</strong> The specified transformer will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> pluggablePropertyValueModelAdapterFactory(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer) {
@@ -264,6 +472,7 @@ public final class PropertyValueModelTools {
 	 * property value model and transformer.
 	 * <p>
 	 * <strong>NB:</strong> The specified transformer must be able to handle a <code>null</code> input.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> pluggablePropertyValueModelAdapterFactory_(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer) {
@@ -275,8 +484,9 @@ public final class PropertyValueModelTools {
 	 * property value model and transforms its value with the specified
 	 * transformer.
 	 * <p>
-	 * <strong>NB:</strong> The specified transformers will never be passed a <code>null</code> input.
+	 * <strong>NB:</strong> The specified transformers will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> ModifiablePropertyValueModel<V2> transform(ModifiablePropertyValueModel<V1> propertyModel, Transformer<? super V1, ? extends V2> getTransformer, Transformer<? super V2, ? extends V1> setTransformer) {
@@ -289,6 +499,7 @@ public final class PropertyValueModelTools {
 	 * transformer.
 	 * <p>
 	 * <strong>NB:</strong> The specified transformers must be able to handle a <code>null</code> input.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> ModifiablePropertyValueModel<V2> transform_(ModifiablePropertyValueModel<V1> propertyModel, Transformer<? super V1, ? extends V2> getTransformer, Transformer<? super V2, ? extends V1> setTransformer) {
@@ -299,8 +510,9 @@ public final class PropertyValueModelTools {
 	 * Construct a pluggable property value model adapter factory for the specified
 	 * property value model and transformer.
 	 * <p>
-	 * <strong>NB:</strong> The specified transformers will never be passed a <code>null</code> input.
+	 * <strong>NB:</strong> The specified transformers will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PluggableModifiablePropertyValueModel.Adapter.Factory<V2> pluggableModifiablePropertyValueModelAdapterFactory(ModifiablePropertyValueModel<V1> propertyModel, Transformer<? super V1, ? extends V2> getTransformer, Transformer<? super V2, ? extends V1> setTransformer) {
@@ -312,6 +524,7 @@ public final class PropertyValueModelTools {
 	 * property value model and transformer.
 	 * <p>
 	 * <strong>NB:</strong> The specified transformers must be able to handle a <code>null</code> input.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PluggableModifiablePropertyValueModel.Adapter.Factory<V2> pluggableModifiablePropertyValueModelAdapterFactory_(ModifiablePropertyValueModel<V1> propertyModel, Transformer<? super V1, ? extends V2> getTransformer, Transformer<? super V2, ? extends V1> setTransformer) {
@@ -356,6 +569,7 @@ public final class PropertyValueModelTools {
 
 	/**
 	 * Construct a property value model adapter for the specified adapter factory.
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> PropertyValueModel<V> propertyValueModel(PluggablePropertyValueModel.Adapter.Factory<V> adapterFactory) {
@@ -364,6 +578,7 @@ public final class PropertyValueModelTools {
 
 	/**
 	 * Construct a modifiable property value model adapter for the specified adapter factory.
+	 * 
 	 * @see PluggableModifiablePropertyValueModel
 	 */
 	public static <V> ModifiablePropertyValueModel<V> modifiablePropertyValueModel(PluggableModifiablePropertyValueModel.Adapter.Factory<V> adapterFactory) {
@@ -380,6 +595,18 @@ public final class PropertyValueModelTools {
 	}
 
 
+	// ********** factories **********
+
+	/**
+	 * Construct property value model that can be used for
+	 * returning a static value, but still allows listeners to be added.
+	 * Listeners will <em>never</em> be notified of any changes, because there should be none.
+	 */
+	public static <V> PropertyValueModel<V> staticPropertyValueModel(V value) {
+		return new StaticPropertyValueModel<>(value);
+	}
+
+
 	// ********** value transformers **********
 
 	/**
@@ -387,6 +614,7 @@ public final class PropertyValueModelTools {
 	 * but first checks whether the property value model passed to it is <code>null</code>.
 	 * If the property value model is <code>null</code>, the transformer returns
 	 * <code>null</code>.
+	 * 
 	 * @see PropertyValueModel#VALUE_TRANSFORMER
 	 */
 	public static <V, PVM extends PropertyValueModel<? extends V>> Transformer<PVM, V> nullCheckValueTransformer() {
@@ -398,6 +626,7 @@ public final class PropertyValueModelTools {
 	 * but first checks whether the property value model passed to it is <code>null</code>.
 	 * If the property value model is <code>null</code>, the transformer returns
 	 * the specified null value.
+	 * 
 	 * @see PropertyValueModel#VALUE_TRANSFORMER
 	 */
 	public static <V, PVM extends PropertyValueModel<? extends V>> Transformer<PVM, V> nullCheckValueTransformer(V nullValue) {
@@ -408,6 +637,7 @@ public final class PropertyValueModelTools {
 	 * Return a transformer that converts a property value model to its value.
 	 * If the property value model is <code>null</code>, the transformer throws
 	 * a {@link NullPointerException}.
+	 * 
 	 * @see PropertyValueModel#VALUE_TRANSFORMER
 	 */
 	@SuppressWarnings("unchecked")

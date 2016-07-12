@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -137,7 +137,7 @@ public class EclipseLinkEntityMappingsImpl
 
 	@Override
 	protected List<XmlConverter> getXml2_1Converters() {
-		ArrayList<XmlConverter> xmlConverters = new ArrayList<XmlConverter>();
+		ArrayList<XmlConverter> xmlConverters = new ArrayList<>();
 		for (XmlConverter xmlConverter : this.xmlEntityMappings.getConverters()) {
 			if (((XmlNamedConverter) xmlConverter).getName() == null){
 				xmlConverters.add(xmlConverter);
@@ -175,7 +175,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected Iterable<EclipseLinkOrmTypeMapping> getEclipseLinkTypeMappings() {
-		return IterableTools.downCast(this.getTypeMappings());
+		return IterableTools.downcast(this.getTypeMappings());
 	}
 
 
@@ -200,7 +200,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getReadOnlySpecifiedTenantDiscriminatorColumns() {
-		return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(this.getSpecifiedTenantDiscriminatorColumns());
+		return new SuperListIterableWrapper<>(this.getSpecifiedTenantDiscriminatorColumns());
 	}
 
 	public int getSpecifiedTenantDiscriminatorColumnsSize() {
@@ -293,7 +293,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getReadOnlyDefaultTenantDiscriminatorColumns() {
-		return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(this.getDefaultTenantDiscriminatorColumns());
+		return new SuperListIterableWrapper<>(this.getDefaultTenantDiscriminatorColumns());
 	}
 
 	public int getDefaultTenantDiscriminatorColumnsSize() {

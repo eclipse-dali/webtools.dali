@@ -111,7 +111,7 @@ public abstract class PersistentAttributeDetailsPageManager<A extends Persistent
 	protected abstract PropertyValueModel<Boolean> getMappingCompositeEnabledModel();
 
 	private PropertyValueModel<AttributeMapping> buildMappingModel(String key) {
-		return PropertyValueModelTools.filter(this.mappingModel, this.buildKeyEquals(key));
+		return PropertyValueModelTools.filter_(this.mappingModel, this.buildKeyEquals(key));
 	}
 
 	private Predicate<AttributeMapping> buildKeyEquals(String mappingKey) {

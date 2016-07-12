@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,19 +10,19 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2_1.persistence.JptJpaUiPersistenceMessages2_1;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -77,40 +77,40 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 		
 		// ScriptsCreateTarget
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SCRIPTS_CREATE_TARGET);
-		this.addText(parentComposite, this.buildScriptsCreateTargetHolder());
+		this.addText(parentComposite, this.buildScriptsCreateTargetModel());
 		
 		// ScriptsDropTarget
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_SCRIPTS_DROP_TARGET);
-		this.addText(parentComposite, this.buildScriptsDropTargetHolder());
+		this.addText(parentComposite, this.buildScriptsDropTargetModel());
 		
 		// DatabaseProductName
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATABASE_PRODUCT_NAME);
-		this.addText(parentComposite, this.buildDatabaseProductNameHolder());
+		this.addText(parentComposite, this.buildDatabaseProductNameModel());
 		
 		// DatabaseMajorVersion
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATABASE_MAJOR_VERSION);
-		this.addText(parentComposite, this.buildDatabaseMajorVersionHolder());
+		this.addText(parentComposite, this.buildDatabaseMajorVersionModel());
 		
 		// DatabaseMinorVersion
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DATABASE_MINOR_VERSION);
-		this.addText(parentComposite, this.buildDatabaseMinorVersionHolder());
+		this.addText(parentComposite, this.buildDatabaseMinorVersionModel());
 
 		// CreateScriptSource
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_SCRIPT_SOURCE);
-		this.addText(parentComposite, this.buildCreateScriptSourceHolder());
+		this.addText(parentComposite, this.buildCreateScriptSourceModel());
 
 		// DropScriptSource
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DROP_SCRIPT_SOURCE);
-		this.addText(parentComposite, this.buildDropScriptSourceHolder());
+		this.addText(parentComposite, this.buildDropScriptSourceModel());
 
 		// Connection
 		this.addLabel(parentComposite, JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CONNECTION);
-		this.addText(parentComposite, this.buildConnectionHolder());
+		this.addText(parentComposite, this.buildConnectionModel());
 	}
 
 	// ********** ScriptsCreateTarget **********
 	
-	private ModifiablePropertyValueModel<String> buildScriptsCreateTargetHolder() {
+	private ModifiablePropertyValueModel<String> buildScriptsCreateTargetModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY)
@@ -132,7 +132,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 
 	// ********** ScriptsDropTarget **********
 	
-	private ModifiablePropertyValueModel<String> buildScriptsDropTargetHolder() {
+	private ModifiablePropertyValueModel<String> buildScriptsDropTargetModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY)
@@ -154,7 +154,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 
 	// ********** DatabaseProductName **********
 	
-	private ModifiablePropertyValueModel<String> buildDatabaseProductNameHolder() {
+	private ModifiablePropertyValueModel<String> buildDatabaseProductNameModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY)
@@ -176,7 +176,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 
 	// ********** DatabaseMajorVersion **********
 	
-	private ModifiablePropertyValueModel<String> buildDatabaseMajorVersionHolder() {
+	private ModifiablePropertyValueModel<String> buildDatabaseMajorVersionModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY)
@@ -198,7 +198,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 
 	// ********** DatabaseMinorVersion **********
 	
-	private ModifiablePropertyValueModel<String> buildDatabaseMinorVersionHolder() {
+	private ModifiablePropertyValueModel<String> buildDatabaseMinorVersionModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY)
@@ -220,7 +220,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 
 	// ********** CreateScriptSource **********
 	
-	private ModifiablePropertyValueModel<String> buildCreateScriptSourceHolder() {
+	private ModifiablePropertyValueModel<String> buildCreateScriptSourceModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY)
@@ -242,7 +242,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 
 	// ********** DropScriptSource **********
 	
-	private ModifiablePropertyValueModel<String> buildDropScriptSourceHolder() {
+	private ModifiablePropertyValueModel<String> buildDropScriptSourceModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY)
@@ -264,7 +264,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 
 	// ********** Connection **********
 	
-	private ModifiablePropertyValueModel<String> buildConnectionHolder() {
+	private ModifiablePropertyValueModel<String> buildConnectionModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.CONNECTION_PROPERTY)
@@ -291,13 +291,13 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 		return this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_DATABASE_SCHEMAS_LABEL,
-			this.buildCreateDatabaseSchemasHolder(),
-			this.buildCreateDatabaseSchemasStringHolder(),
+			this.buildCreateDatabaseSchemasModel(),
+			this.buildCreateDatabaseSchemasStringModel(),
 			null		// TODO HelpContextIds
 		);
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildCreateDatabaseSchemasHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildCreateDatabaseSchemasModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, Boolean>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY)
@@ -314,22 +314,16 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 		};
 	}
 
-	private PropertyValueModel<String> buildCreateDatabaseSchemasStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(
-			this.buildDefaultCreateDatabaseSchemasHolder()) 
-		{
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DEFAULT_CREATE_DATABASE_SCHEMAS_LABEL, defaultStringValue);
-				}
-				return JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_DATABASE_SCHEMAS_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildCreateDatabaseSchemasStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultCreateDatabaseSchemasModel(), CREATE_DATABASE_SCHEMAS_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultCreateDatabaseSchemasHolder() {
+
+	private static final Transformer<Boolean, String> CREATE_DATABASE_SCHEMAS_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DEFAULT_CREATE_DATABASE_SCHEMAS_LABEL,
+			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_DATABASE_SCHEMAS_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultCreateDatabaseSchemasModel() {
 		return new PropertyAspectAdapter<SchemaGeneration2_1, Boolean>(
 			this.getSubjectHolder(),
 			SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY)

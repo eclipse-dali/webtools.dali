@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,12 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
@@ -49,8 +50,8 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.PageBook;
 
-public abstract class AbstractElementCollectionMappingComposite2_0<T extends ElementCollectionMapping2_0> 
-	extends Pane<T>
+public abstract class AbstractElementCollectionMappingComposite2_0<M extends ElementCollectionMapping2_0> 
+	extends Pane<M>
 	implements JpaComposite
 {
 	private Control basicValueComposite;
@@ -58,7 +59,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 	private Control embeddableValueComposite;
 	
 	protected AbstractElementCollectionMappingComposite2_0(
-			PropertyValueModel<? extends T> mappingModel,
+			PropertyValueModel<? extends M> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -84,6 +85,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		section.setClient(this.buildElementCollectionSectionClient(section));
 	}
 
+	@SuppressWarnings("unused")
 	protected Control buildElementCollectionSectionClient(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
@@ -136,6 +138,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		});
 	}
 	
+	@SuppressWarnings("unused")
 	protected void initializeKeyCollapsibleSection(Composite container) {
 		//nothing yet
 	}
@@ -157,6 +160,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		return this.basicValueComposite;
 	}
 
+	@SuppressWarnings("unused")
 	protected Control buildBasicValueSection(Composite container) {
 		Composite basicComposite = addSubPane(container);
 
@@ -180,6 +184,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		return basicComposite;
 	}
 
+	@SuppressWarnings("unused")
 	protected Composite buildBasicValueTypeSectionClient(Section section) {
 		Composite container = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);
@@ -188,7 +193,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
-			buildNoConverterHolder(), 
+			buildNoConverterModel(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 
@@ -196,28 +201,28 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		Button lobButton = addRadioButton(
 			container, 
 			JptJpaUiDetailsMessages.TYPE_SECTION_LOB, 
-			buildLobConverterHolder(), 
+			buildLobConverterModel(), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
 
 
-		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
+		PropertyValueModel<Converter> converterModel = buildConverterModel();
 		// Temporal
 		addRadioButton(
 			container, 
 			JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
-			buildTemporalBooleanHolder(), 
+			buildTemporalBooleanModel(), 
 			null);
-		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
+		new TemporalTypeCombo(this, this.buildTemporalConverterModel(converterModel), container);
 
 
 		// Enumerated
 		addRadioButton(
 			container, 
 			JptJpaUiDetailsMessages.TYPE_SECTION_ENUMERATED, 
-			buildEnumeratedBooleanHolder(), 
+			buildEnumeratedBooleanModel(), 
 			null);
-		new EnumTypeComboViewer(this, this.buildEnumeratedConverterHolder(converterHolder), container);
+		new EnumTypeComboViewer(this, this.buildEnumeratedConverterModel(converterModel), container);
 
 		return container;
 	}
@@ -234,11 +239,11 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 	}
 
 	private void installValueControlSwitcher(PageBook pageBook) {
-		SWTBindingTools.bind(buildValueHolder(), buildPaneTransformer(pageBook), pageBook);
+		SWTBindingTools.bind(buildValueModel(), buildPaneTransformer(pageBook), pageBook);
 	}
 	
-	protected PropertyValueModel<T.Type> buildValueHolder() {
-		return new PropertyAspectAdapter<T, T.Type>(
+	protected PropertyValueModel<M.Type> buildValueModel() {
+		return new PropertyAspectAdapter<M, M.Type>(
 				this.getSubjectHolder(), CollectionMapping.VALUE_TYPE_PROPERTY) {
 			@Override
 			protected ElementCollectionMapping2_0.Type buildValue_() {
@@ -247,12 +252,12 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		};
 	}
 
-	private Transformer<T.Type, Control> buildPaneTransformer(Composite container) {
+	private Transformer<M.Type, Control> buildPaneTransformer(Composite container) {
 		return new PaneTransformer(container);
 	}
 
 	protected class PaneTransformer
-		extends TransformerAdapter<T.Type, Control>
+		extends TransformerAdapter<M.Type, Control>
 	{
 		private final Composite container;
 
@@ -261,7 +266,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		}
 
 		@Override
-		public Control transform(T.Type type) {
+		public Control transform(M.Type type) {
 			return AbstractElementCollectionMappingComposite2_0.this.transformValueType(type, this.container);
 		}
 	}
@@ -269,7 +274,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 	/**
 	 * Given the selected override, return the control that will be displayed
 	 */
-	protected Control transformValueType(T.Type type, Composite container) {
+	protected Control transformValueType(M.Type type, Composite container) {
 		if (type == null) {
 			return null;
 		}
@@ -284,7 +289,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 	}
 	
 	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableModel() {
-		return new PropertyAspectAdapter<T, CollectionTable2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<M, CollectionTable2_0>(getSubjectHolder()) {
 			@Override
 			protected CollectionTable2_0 buildValue_() {
 				return this.subject.getCollectionTable();
@@ -301,8 +306,8 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildNoConverterModel() {
+		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getConverter().getConverterType() == null);
@@ -317,8 +322,8 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		};
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildLobConverterHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildLobConverterModel() {
+		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
@@ -334,8 +339,8 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		};
 	}
 	
-	private PropertyValueModel<Converter> buildConverterHolder() {
-		return new PropertyAspectAdapter<T, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	protected PropertyValueModel<Converter> buildConverterModel() {
+		return new PropertyAspectAdapter<M, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
 				return this.subject.getConverter();
@@ -343,26 +348,16 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		};
 	}
 	
-	private PropertyValueModel<BaseTemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
-			@Override
-			protected BaseTemporalConverter transform_(Converter converter) {
-				return converter.getConverterType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
-			}
-		};
+	private PropertyValueModel<BaseTemporalConverter> buildTemporalConverterModel(PropertyValueModel<Converter> converterModel) {
+		return PropertyValueModelTools.transform(converterModel, BaseTemporalConverter.CONVERTER_TRANSFORMER);
 	}
 	
-	private PropertyValueModel<BaseEnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, BaseEnumeratedConverter>(converterHolder) {
-			@Override
-			protected BaseEnumeratedConverter transform_(Converter converter) {
-				return converter.getConverterType() == BaseEnumeratedConverter.class ? (BaseEnumeratedConverter) converter : null;
-			}
-		};
+	private PropertyValueModel<BaseEnumeratedConverter> buildEnumeratedConverterModel(PropertyValueModel<Converter> converterModel) {
+		return PropertyValueModelTools.transform(converterModel, BaseEnumeratedConverter.CONVERTER_TRANSFORMER);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildTemporalBooleanModel() {
+		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
@@ -378,8 +373,8 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 		};
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildEnumeratedBooleanModel() {
+		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
@@ -396,11 +391,6 @@ public abstract class AbstractElementCollectionMappingComposite2_0<T extends Ele
 	}
 
 	protected PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<T, SpecifiedAccessReference>(getSubjectHolder()) {
-			@Override
-			protected SpecifiedAccessReference buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), AttributeMapping.PERSISTENT_ATTRIBUTE_TRANSFORMER);
 	}
 }

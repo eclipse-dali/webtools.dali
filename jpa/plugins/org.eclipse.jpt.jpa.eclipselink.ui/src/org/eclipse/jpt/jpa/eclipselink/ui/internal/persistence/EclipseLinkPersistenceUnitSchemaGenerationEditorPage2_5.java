@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,9 +12,10 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkSchemaGeneration;
@@ -84,7 +85,7 @@ public class EclipseLinkPersistenceUnitSchemaGenerationEditorPage2_5
 		SchemaGenerationComposite2_1 schemaGenerationComposite = 
 			new SchemaGenerationComposite2_1(
 				this, 
-				this.buildSchemaGenerationHolder(),
+				this.buildSchemaGenerationModel(),
 				client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -95,7 +96,7 @@ public class EclipseLinkPersistenceUnitSchemaGenerationEditorPage2_5
 		DataLoadingComposite2_1 dataLoadingComposite = 
 			new DataLoadingComposite2_1(
 				this, 
-				this.buildSchemaGenerationHolder(),
+				this.buildSchemaGenerationModel(),
 				client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -104,13 +105,8 @@ public class EclipseLinkPersistenceUnitSchemaGenerationEditorPage2_5
 		return section;
 	}
 
-	private PropertyValueModel<SchemaGeneration2_1> buildSchemaGenerationHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, SchemaGeneration2_1>(this.getSubjectHolder()) {
-			@Override
-			protected SchemaGeneration2_1 transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getSchemaGeneration();
-			}
-		};
+	private PropertyValueModel<SchemaGeneration2_1> buildSchemaGenerationModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), PersistenceUnit2_1.SCHEMA_GENERATION_TRANSFORMER);
 	}
 	
 	// ********** EclipseLink SchemaGeneration **********
@@ -127,15 +123,10 @@ public class EclipseLinkPersistenceUnitSchemaGenerationEditorPage2_5
 	}
 
 	protected Control initializeEclipseLinkSchemaGenerationSection(Section section) {
-		return new EclipseLinkPersistenceXmlSchemaGenerationComposite(this, this.buildEclipseLinkSchemaGenerationHolder(), section).getControl();
+		return new EclipseLinkPersistenceXmlSchemaGenerationComposite(this, this.buildEclipseLinkSchemaGenerationModel(), section).getControl();
 	}
 
-	private PropertyValueModel<EclipseLinkSchemaGeneration> buildEclipseLinkSchemaGenerationHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkSchemaGeneration>(this.getSubjectHolder()) {
-			@Override
-			protected EclipseLinkSchemaGeneration transform_(PersistenceUnit value) {
-				return ((EclipseLinkPersistenceUnit) value).getEclipseLinkSchemaGeneration();
-			}
-		};
+	private PropertyValueModel<EclipseLinkSchemaGeneration> buildEclipseLinkSchemaGenerationModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkPersistenceUnit.ECLIPSELINK_SCHEMA_GENERATION_TRANSFORMER);
 	}
 }

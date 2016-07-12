@@ -21,11 +21,10 @@ import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -38,6 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
 import org.eclipse.osgi.util.NLS;
@@ -82,14 +82,14 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 
 		// Column Definition widgets
 		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_COLUMN_DEFINITION_LABEL);
-		this.addText(container, this.buildColumnDefinitionHolder(getSubjectHolder()));
+		this.addText(container, this.buildColumnDefinitionModel(getSubjectHolder()));
 
 		// Primary key tri-state check box
 		TriStateCheckBox pkCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY,
-			buildPrimaryKeyHolder(),
-			buildPrimaryKeyStringHolder(),
+			buildPrimaryKeyModel(),
+			buildPrimaryKeyStringModel(),
 			EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY);
 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -103,7 +103,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 	}
 
 	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =
-			PredicateTools.nullCheck(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
+			new EclipseLinkVersionIsCompatibleWith<>(EclipseLinkJpaPlatformFactory2_4.VERSION);
 
 	private ColumnCombo<EclipseLinkTenantDiscriminatorColumn2_3> addNameCombo(Composite container) {
 
@@ -332,43 +332,51 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 		};
 	}
 
+	@SuppressWarnings("unused")
 	private void addLengthCombo(Composite container) {
-		new IntegerCombo<EclipseLinkTenantDiscriminatorColumn2_3>(this, container) {
-
-			@Override
-			protected String getHelpId() {
-				return EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_LENGTH;
-			}
-
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return Integer.valueOf(this.subject.getDefaultLength());
-					}
-				};
-			}
-
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getSpecifiedLength();
-					}
-
-					@Override
-					protected void setValue_(Integer value) {
-						((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.subject).setSpecifiedLength(value);
-					}
-				};
-			}
-		};
+		new LengthCombo(this, container);
 	}
 
-	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<? extends EclipseLinkTenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
-		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+	static class LengthCombo
+		extends IntegerCombo<EclipseLinkTenantDiscriminatorColumn2_3>
+	{
+		LengthCombo(Pane<? extends EclipseLinkTenantDiscriminatorColumn2_3> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_LENGTH;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return Integer.valueOf(this.subject.getDefaultLength());
+				}
+			};
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getSpecifiedLength();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					((EclipseLinkSpecifiedTenantDiscriminatorColumn2_3) this.subject).setSpecifiedLength(value);
+				}
+			};
+		}
+	}
+
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionModel(PropertyValueModel<? extends EclipseLinkTenantDiscriminatorColumn2_3> discriminatorColumnModel) {
+		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, String>(discriminatorColumnModel, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -383,7 +391,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 		};
 	}
 
-	ModifiablePropertyValueModel<Boolean> buildPrimaryKeyHolder() {
+	ModifiablePropertyValueModel<Boolean> buildPrimaryKeyModel() {
 		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(getSubjectHolder(), EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -397,20 +405,16 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 		};
 	}
 
-	PropertyValueModel<String> buildPrimaryKeyStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultPrimaryKeyHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY;
-			}
-		};
+	PropertyValueModel<String> buildPrimaryKeyStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultPrimaryKeyModel(), PRIMARY_KEY_TRANSFORMER);
 	}
 
-	PropertyValueModel<Boolean> buildDefaultPrimaryKeyHolder() {
+	private static final Transformer<Boolean, String> PRIMARY_KEY_TRANSFORMER = new BooleanStringTransformer(
+				JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY_WITH_DEFAULT,
+				JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY
+			);
+
+	PropertyValueModel<Boolean> buildDefaultPrimaryKeyModel() {
 		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(
 				getSubjectHolder(),
 				EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY,

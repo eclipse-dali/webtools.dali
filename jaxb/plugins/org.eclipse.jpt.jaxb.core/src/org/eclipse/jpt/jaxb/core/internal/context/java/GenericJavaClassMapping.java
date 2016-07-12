@@ -80,7 +80,7 @@ public class GenericJavaClassMapping
 	
 	public GenericJavaClassMapping(JavaClass parent) {
 		super(parent);
-		this.includedAttributesContainers = new Hashtable<JaxbClassMapping, JaxbAttributesContainer>();
+		this.includedAttributesContainers = new Hashtable<>();
 		this.propOrderContainer = new PropOrderContainer();
 		
 		initFactoryClass();
@@ -669,7 +669,7 @@ public class GenericJavaClassMapping
 	public JaxbAttributeMapping getXmlIdMapping() {
 		Iterator<XmlNamedNodeMapping> allXmlIdMappings = 
 				IterableTools.filter(
-						IterableTools.<JaxbAttributeMapping, XmlNamedNodeMapping>downCast(
+						IterableTools.<JaxbAttributeMapping, XmlNamedNodeMapping>downcast(
 								IterableTools.filter(
 										IterableTools.transform(
 												getAllAttributes(),

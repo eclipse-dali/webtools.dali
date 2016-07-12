@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,8 +32,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkCacheSizeCombo extends IntegerCombo<EclipseLinkCaching> {
-
+public class EclipseLinkCacheSizeCombo
+	extends IntegerCombo<EclipseLinkCaching>
+{
 	/**
 	 * Creates a new <code>CacheSizeComposite</code>.
 	 *
@@ -53,8 +54,8 @@ public class EclipseLinkCacheSizeCombo extends IntegerCombo<EclipseLinkCaching> 
 	}
 
 	@Override
-	protected PropertyValueModel<Integer> buildDefaultHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.DEFAULT_SIZE_PROPERTY) {
+	protected PropertyValueModel<Integer> buildDefaultModel() {
+		return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(this.getSubjectHolder(), EclipseLinkCaching.DEFAULT_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return Integer.valueOf(this.subject.getDefaultSize());
@@ -63,8 +64,8 @@ public class EclipseLinkCacheSizeCombo extends IntegerCombo<EclipseLinkCaching> 
 	}
 
 	@Override
-	protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SIZE_PROPERTY) {
+	protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+		return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(this.getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getSpecifiedSize();

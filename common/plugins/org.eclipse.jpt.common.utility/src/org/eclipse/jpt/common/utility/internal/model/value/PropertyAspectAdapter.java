@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,7 +58,7 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 	 * and property aspects.
 	 */
 	protected PropertyAspectAdapter(String[] aspectNames, S subject) {
-		this(new StaticPropertyValueModel<S>(subject), aspectNames);
+		this(PropertyValueModelTools.staticPropertyValueModel(subject), aspectNames);
 	}
 
 	/**
@@ -86,8 +86,7 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 	 * Construct a property aspect adapter for an "unchanging" property aspect in
 	 * the specified subject. This is useful for a property aspect that does not
 	 * change for a particular subject; but the subject will change, resulting in
-	 * a new property. (A {@link TransformationPropertyValueModel} could also be
-	 * used in this situation.)
+	 * a new property.
 	 */
 	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectModel) {
 		this(subjectModel, EMPTY_ASPECT_NAMES);

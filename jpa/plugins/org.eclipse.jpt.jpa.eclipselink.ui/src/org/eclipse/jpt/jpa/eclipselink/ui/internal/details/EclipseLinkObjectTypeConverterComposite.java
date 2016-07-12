@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,7 +75,7 @@ public class EclipseLinkObjectTypeConverterComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_NAME_TEXT_LABEL);
-		this.addText(container, buildNameTextHolder());
+		this.addText(container, buildNameTextModel());
 		
 		Hyperlink dataTypeHyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_DATA_TYPE_LABEL);
 		this.addDataTypeChooser(container, dataTypeHyperlink);
@@ -91,14 +91,14 @@ public class EclipseLinkObjectTypeConverterComposite
 		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_OBJECT_TYPE_CONVERTER_COMPOSITE_DEFAULT_OBJECT_VALUE_LABEL);
 		this.addEditableCombo(
 			container,
-			buildDefaultObjectValueListHolder(),
-			buildDefaultObjectValueHolder(),
+			buildDefaultObjectValueListModel(),
+			buildDefaultObjectValueModel(),
 			buildStringConverter(),
 			(String) null
 		);
 	}
 	
-	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
 		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
 				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
@@ -121,7 +121,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -172,7 +172,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -223,6 +223,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		};
 	}
 	
+	@SuppressWarnings("unused")
 	protected Composite addConversionValuesTable(Composite container) {
 		// Join Columns group pane
 		Group conversionValuesGroupPane = addTitledGroup(
@@ -250,7 +251,7 @@ public class EclipseLinkObjectTypeConverterComposite
 	}
 
 	private ModifiableCollectionValueModel<EclipseLinkConversionValue> buildSelectedConversionValuesModel() {
-		return new SimpleCollectionValueModel<EclipseLinkConversionValue>();
+		return new SimpleCollectionValueModel<>();
 	}
 
 	protected AddRemoveListPane.Adapter<EclipseLinkConversionValue> buildConversionValuesAdapter() {
@@ -320,16 +321,16 @@ public class EclipseLinkObjectTypeConverterComposite
 	}
 	
 	private ListValueModel<EclipseLinkConversionValue> buildConversionValuesListModel() {
-		return new ItemPropertyListValueModelAdapter<EclipseLinkConversionValue>(buildConversionValuesListHolder(), 
+		return new ItemPropertyListValueModelAdapter<>(buildConversionValuesListModel_(), 
 			EclipseLinkConversionValue.DATA_VALUE_PROPERTY,
 			EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY);
 	}	
 
-	private ListValueModel<EclipseLinkConversionValue> buildConversionValuesListHolder() {
+	private ListValueModel<EclipseLinkConversionValue> buildConversionValuesListModel_() {
 		return new ListAspectAdapter<EclipseLinkObjectTypeConverter, EclipseLinkConversionValue>(getSubjectHolder(), EclipseLinkObjectTypeConverter.CONVERSION_VALUES_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkConversionValue> getListIterable() {
-				return new SuperListIterableWrapper<EclipseLinkConversionValue>(this.subject.getConversionValues());
+				return new SuperListIterableWrapper<>(this.subject.getConversionValues());
 			}
 
 			@Override
@@ -343,7 +344,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		return new TableLabelProvider();
 	}
 	
-	protected ListValueModel<String> buildDefaultObjectValueListHolder() {
+	protected ListValueModel<String> buildDefaultObjectValueListModel() {
 		return new TransformationListValueModel<EclipseLinkConversionValue, String>(buildConversionValuesListModel()) {
 			@Override
 			protected String transformItem(EclipseLinkConversionValue conversionValue) {
@@ -352,7 +353,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		};
 	}
 	
-	protected ModifiablePropertyValueModel<String> buildDefaultObjectValueHolder() {
+	protected ModifiablePropertyValueModel<String> buildDefaultObjectValueModel() {
 		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
 				getSubjectHolder(), EclipseLinkObjectTypeConverter.DEFAULT_OBJECT_VALUE_PROPERTY) {
 			@Override
@@ -374,9 +375,10 @@ public class EclipseLinkObjectTypeConverterComposite
 		return TransformerTools.passThruTransformer(StringTools.EMPTY_STRING);
 	}
 	
-	private class TableLabelProvider extends LabelProvider
-		implements ITableLabelProvider {
-
+	class TableLabelProvider
+		extends LabelProvider
+		implements ITableLabelProvider
+	{
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
 		}
@@ -396,6 +398,9 @@ public class EclipseLinkObjectTypeConverterComposite
 					value = conversionValue.getObjectValue();
 					break;
 				}
+				default: {
+					break;
+				}
 			}
 			
 			if (value == null) {
@@ -406,14 +411,15 @@ public class EclipseLinkObjectTypeConverterComposite
 		}
 	}
 
-	private static class ConversionValueColumnAdapter implements ColumnAdapter<EclipseLinkConversionValue> {
-
+	static class ConversionValueColumnAdapter
+		implements ColumnAdapter<EclipseLinkConversionValue>
+	{
 		public static final int COLUMN_COUNT = 2;
 		//public static final int SELECTION_COLUMN = 0;
 		public static final int DATA_VALUE_COLUMN = 0;
 		public static final int OBJECT_VALUE_COLUMN = 1;
 
-		private ModifiablePropertyValueModel<String> buildDataValueHolder(EclipseLinkConversionValue subject) {
+		ModifiablePropertyValueModel<String> buildDataValueModel(EclipseLinkConversionValue subject) {
 			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.DATA_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -427,7 +433,7 @@ public class EclipseLinkObjectTypeConverterComposite
 			};
 		}
 
-		private ModifiablePropertyValueModel<String> buildObjectValueHolder(EclipseLinkConversionValue subject) {
+		private ModifiablePropertyValueModel<String> buildObjectValueModel(EclipseLinkConversionValue subject) {
 			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -444,8 +450,8 @@ public class EclipseLinkObjectTypeConverterComposite
 		public ModifiablePropertyValueModel<?>[] cellModels(EclipseLinkConversionValue subject) {
 			ModifiablePropertyValueModel<?>[] holders = new ModifiablePropertyValueModel<?>[COLUMN_COUNT];
 			//holders[SELECTION_COLUMN] = new SimplePropertyValueModel<Object>();
-			holders[DATA_VALUE_COLUMN]      = buildDataValueHolder(subject);
-			holders[OBJECT_VALUE_COLUMN]     = buildObjectValueHolder(subject);
+			holders[DATA_VALUE_COLUMN]      = buildDataValueModel(subject);
+			holders[OBJECT_VALUE_COLUMN]     = buildObjectValueModel(subject);
 			return holders;
 		}
 

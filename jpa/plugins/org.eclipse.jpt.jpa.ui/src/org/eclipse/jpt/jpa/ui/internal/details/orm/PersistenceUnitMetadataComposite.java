@@ -17,8 +17,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -60,7 +58,6 @@ import org.eclipse.swt.widgets.Composite;
  * |              ------------------------------------------------------------ |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see PersistenceUnitMetadata
  * @see OrmPersistenceUnitDefaults
  * @see EntityMappingsDetailsPageManager - The parent container
  * @see CatalogCombo
@@ -72,7 +69,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMetadata>
 {
-	PropertyValueModel<OrmPersistenceUnitDefaults> persistenceUnitDefaultsHolder;
+	PropertyValueModel<OrmPersistenceUnitDefaults> persistenceUnitDefaultsModel;
 
 	/**
 	 * Creates a new <code>PersistenceUnitMetadataComposite</code>.
@@ -91,15 +88,15 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.persistenceUnitDefaultsHolder = this.buildPersistenceUnitDefaultsHolder();
+		this.persistenceUnitDefaultsModel = this.buildPersistenceUnitDefaultsModel();
 	}
 
-	protected PropertyValueModel<OrmPersistenceUnitDefaults> getPersistenceUnitDefaultsHolder() {
-		return this.persistenceUnitDefaultsHolder;
+	protected PropertyValueModel<OrmPersistenceUnitDefaults> getPersistenceUnitDefaultsModel() {
+		return this.persistenceUnitDefaultsModel;
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildCascadePersistHolder() {
-		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadePersistModel() {
+		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isCascadePersist());
@@ -114,7 +111,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 
 	protected CatalogCombo<OrmPersistenceUnitDefaults> addCatalogCombo(Composite container) {
 
-		return new CatalogCombo<OrmPersistenceUnitDefaults>(this, getPersistenceUnitDefaultsHolder(), container) {
+		return new CatalogCombo<OrmPersistenceUnitDefaults>(this, getPersistenceUnitDefaultsModel(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -150,18 +147,13 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	private PropertyValueModel<OrmPersistenceUnitDefaults> buildPersistenceUnitDefaultsHolder() {
-		return new TransformationPropertyValueModel<OrmPersistenceUnitMetadata, OrmPersistenceUnitDefaults>(getSubjectHolder()) {
-			@Override
-			protected OrmPersistenceUnitDefaults transform_(OrmPersistenceUnitMetadata value) {
-				return value.getPersistenceUnitDefaults();
-			}
-		};
+	private PropertyValueModel<OrmPersistenceUnitDefaults> buildPersistenceUnitDefaultsModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), OrmPersistenceUnitMetadata.PERSISTENCE_UNIT_DEFAULTS_TRANSFORMER);
 	}
 
 	protected SchemaCombo<OrmPersistenceUnitDefaults> addSchemaCombo(Composite container) {
 
-		return new SchemaCombo<OrmPersistenceUnitDefaults>(this, getPersistenceUnitDefaultsHolder(), container) {
+		return new SchemaCombo<OrmPersistenceUnitDefaults>(this, getPersistenceUnitDefaultsModel(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -217,7 +209,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		OrmPersistenceUnitDefaults.SPECIFIED_CATALOG_PROPERTY
 	});
 
-	protected ModifiablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteModel() {
 		return new PropertyAspectAdapter<OrmPersistenceUnitMetadata, Boolean>(getSubjectHolder(), OrmPersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -231,8 +223,8 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildDelimitedIdentifiersHolder() {
-		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildDelimitedIdentifiersModel() {
+		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.buildBooleanValue_());
@@ -261,13 +253,14 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		return this.addSubPane(container, 2, 0, 0, 0, 0);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
 		// XML mapping metadata complete check box
 		Button metadataCompleteCheckBox = addCheckBox(
 			container,
 			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_XML_MAPPING_METADATA_COMPLETE_CHECK_BOX,
-			buildXmlMappingMetadataCompleteHolder(),
+			buildXmlMappingMetadataCompleteModel(),
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
 		GridData gridData = new GridData();
@@ -278,7 +271,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		Button cascadePersistCheckBox = addCheckBox(
 			container,
 			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_CASCADE_PERSIST_CHECK_BOX,
-			buildCascadePersistHolder(),
+			buildCascadePersistModel(),
 			JpaHelpContextIds.ENTITY_ORM_CASCADE
 		);
 		gridData = new GridData();
@@ -296,13 +289,13 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 
 		// Access type widgets
 		this.addLabel(container, JptJpaUiMessages.ACCESS_TYPE_COMPOSITE_ACCESS);
-		new AccessTypeComboViewer(this, getPersistenceUnitDefaultsHolder(), container);
+		new AccessTypeComboViewer(this, getPersistenceUnitDefaultsModel(), container);
 
 		// Delimited Identifiers check-box
 		Button diCheckBox = this.addCheckBox(
 			container,
 			JptJpaUiDetailsOrmMessages.PERSISTENCE_UNIT_METADATA_COMPOSITE_DELIMITED_IDENTIFIERS_CHECK_BOX,
-			this.buildDelimitedIdentifiersHolder(),
+			this.buildDelimitedIdentifiersModel(),
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);
 		gridData = new GridData();
@@ -317,5 +310,5 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	}
 
 	protected static final Predicate<JptResourceTypeReference> RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0 =
-			PredicateTools.nullCheck(new JptResourceTypeReference.ResourceTypeIsKindOf(GenericOrmXmlDefinition2_0.instance().getResourceType()));
+			new JptResourceTypeReference.ResourceTypeIsKindOf(GenericOrmXmlDefinition2_0.instance().getResourceType());
 }

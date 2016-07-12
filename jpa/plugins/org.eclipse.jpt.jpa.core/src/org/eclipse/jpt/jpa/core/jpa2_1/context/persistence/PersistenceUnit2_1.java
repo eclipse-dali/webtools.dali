@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2_1.context.persistence;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
 
@@ -30,4 +33,13 @@ public interface PersistenceUnit2_1
 	// ********** properties **********
 
 	SchemaGeneration2_1 getSchemaGeneration();
+	Transformer<PersistenceUnit, SchemaGeneration2_1> SCHEMA_GENERATION_TRANSFORMER = new SchemaGenerationTransformer();
+	class SchemaGenerationTransformer
+		extends TransformerAdapter<PersistenceUnit, SchemaGeneration2_1>
+	{
+		@Override
+		public SchemaGeneration2_1 transform(PersistenceUnit pu) {
+			return ((PersistenceUnit2_1) pu).getSchemaGeneration();
+		}
+	}
 }

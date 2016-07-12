@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011s Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * JPA m:m mapping
@@ -25,4 +28,13 @@ public interface ManyToManyMapping
 	extends MultiRelationshipMapping
 {
 	ManyToManyRelationship getRelationship();
+	Transformer<ManyToManyMapping, ManyToManyRelationship> RELATIONSHIP_TRANSFORMER = new RelationshipTransformer();
+	class RelationshipTransformer
+		extends TransformerAdapter<ManyToManyMapping, ManyToManyRelationship>
+	{
+		@Override
+		public ManyToManyRelationship transform(ManyToManyMapping mapping) {
+			return mapping.getRelationship();
+		}
+	}
 }

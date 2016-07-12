@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,11 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
@@ -54,11 +55,6 @@ public abstract class AbstractEmbeddableComposite<E extends Embeddable>
 	protected abstract Control buildEmbeddableSectionClient(Section embeddableSection);
 
 	protected PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<E, SpecifiedAccessReference>(this.getSubjectHolder()) {
-			@Override
-			protected SpecifiedAccessReference buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
 	}
 }

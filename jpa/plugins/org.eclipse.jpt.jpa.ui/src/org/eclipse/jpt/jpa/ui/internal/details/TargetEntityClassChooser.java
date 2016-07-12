@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -87,7 +87,7 @@ public class TargetEntityClassChooser
     }
 
     @Override
-	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<RelationshipMapping, String>(
 			this.getSubjectHolder(),
 			RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY,
@@ -114,17 +114,17 @@ public class TargetEntityClassChooser
     }
 
 	@Override
-	protected ListValueModel<String> buildClassListHolder() {
-		return this.buildDefaultProfilerListHolder();
+	protected ListValueModel<String> buildClassListModel() {
+		return this.buildDefaultProfilerListModel();
 	}
 
-	private ListValueModel<String> buildDefaultProfilerListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			this.buildDefaultProfilerHolder()
+	private ListValueModel<String> buildDefaultProfilerListModel() {
+		return new PropertyListValueModelAdapter<>(
+			this.buildDefaultProfilerModel()
 		);
 	}
 
-	private PropertyValueModel<String> buildDefaultProfilerHolder() {
+	private PropertyValueModel<String> buildDefaultProfilerModel() {
 		return new PropertyAspectAdapter<RelationshipMapping, String>(this.getSubjectHolder(), RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -133,7 +133,7 @@ public class TargetEntityClassChooser
 		};
 	}
 
-	private String getDefaultValue(RelationshipMapping subject) {
+	String getDefaultValue(RelationshipMapping subject) {
 		String defaultValue = subject.getDefaultTargetEntity();
 
 		if (defaultValue != null) {
@@ -173,8 +173,6 @@ public class TargetEntityClassChooser
 
 	/**
 	 * Open the file in an editor of the active workbench page
-	 * @param page
-	 * @param file
 	 */
 	private void openInEditor(IWorkbenchPage page, IFile file) {
 		try {
@@ -183,12 +181,10 @@ public class TargetEntityClassChooser
 			JptJpaUiPlugin.instance().logError(ex);
 		}
 	}
+
 	/**
 	 * Set the selection to the persistent type in the editor
-	 * @param page
-	 * @param persistentType
 	 */
-
 	private void setSelectionInEditor(IWorkbenchPage page, PersistentType persistentType) {
 		JpaSelectionManager selectionManager = PlatformTools.getAdapter(page, JpaSelectionManager.class);
 		selectionManager.setSelection(persistentType);

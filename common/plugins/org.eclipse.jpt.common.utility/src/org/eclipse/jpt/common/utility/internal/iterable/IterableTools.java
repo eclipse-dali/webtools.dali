@@ -526,7 +526,7 @@ public final class IterableTools {
 	 * Return an iterable that converts the specified iterable's element type.
 	 * @see SubIterableWrapper
 	 */
-	public static <E1, E2 extends E1> Iterable<E2> downCast(Iterable<E1> iterable) {
+	public static <E1, E2 extends E1> Iterable<E2> downcast(Iterable<E1> iterable) {
 		return new SubIterableWrapper<>(iterable);
 	}
 
@@ -534,7 +534,7 @@ public final class IterableTools {
 	 * Return an iterable that converts the specified iterable's element type.
 	 * @see SubListIterableWrapper
 	 */
-	public static <E1, E2 extends E1> ListIterable<E2> downCast(ListIterable<E1> iterable) {
+	public static <E1, E2 extends E1> ListIterable<E2> downcast(ListIterable<E1> iterable) {
 		return new SubListIterableWrapper<>(iterable);
 	}
 
@@ -542,7 +542,7 @@ public final class IterableTools {
 	 * Return an iterable that converts the specified iterable's element type.
 	 * @see SuperIterableWrapper
 	 */
-	public static <E> Iterable<E> upCast(Iterable<? extends E> iterable) {
+	public static <E> Iterable<E> upcast(Iterable<? extends E> iterable) {
 		return new SuperIterableWrapper<>(iterable);
 	}
 
@@ -550,7 +550,7 @@ public final class IterableTools {
 	 * Return an iterable that converts the specified iterable's element type.
 	 * @see SuperListIterableWrapper
 	 */
-	public static <E> ListIterable<E> upCast(ListIterable<? extends E> iterable) {
+	public static <E> ListIterable<E> upcast(ListIterable<? extends E> iterable) {
 		return new SuperListIterableWrapper<>(iterable);
 	}
 
@@ -839,6 +839,17 @@ public final class IterableTools {
 	 */
 	public static <E> ListIterable<E> emptyListIterable() {
 		return EmptyListIterable.instance();
+	}
+
+	/**
+	 * Return an iterable that will filter the specified iterable to return only the
+	 * elements that are instances of the specified class.
+	 * @see PredicateTools#instanceOf(Class)
+	 * @see #filter(Iterable, Predicate)
+	 * @see #downcast(Iterable)
+	 */
+	public static <E> Iterable<E> filter(Iterable<?> iterable, Class<E> clazz) {
+		return cast(filter(iterable, PredicateTools.instanceOf(clazz)));
 	}
 
 	/**

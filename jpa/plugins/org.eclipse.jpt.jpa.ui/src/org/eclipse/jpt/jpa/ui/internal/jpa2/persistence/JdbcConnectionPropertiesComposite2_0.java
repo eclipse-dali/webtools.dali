@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,7 +57,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 		super(parentComposite, parent, enabledModel);
 	}
 
-	private ModifiablePropertyValueModel<String> buildPasswordHolder() {
+	private ModifiablePropertyValueModel<String> buildPasswordModel() {
 		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -82,7 +82,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildUrlHolder() {
+	private ModifiablePropertyValueModel<String> buildUrlModel() {
 		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -99,7 +99,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildUserHolder() {
+	private ModifiablePropertyValueModel<String> buildUserModel() {
 		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -140,15 +140,15 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 
 		// Url
 		this.addLabel(container, JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_URL_LABEL);
-		this.addText(container, this.buildUrlHolder());
+		this.addText(container, this.buildUrlModel());
 
 		// User
 		this.addLabel(container, JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_USER_LABEL);
-		this.addText(container, this.buildUserHolder());
+		this.addText(container, this.buildUserModel());
 
 		// Password
 		this.addLabel(container, JptJpaUiPersistenceMessages2_0.JDBC_CONNECTION_PROPERTIES_COMPOSITE_PASSWORD_LABEL);
-		this.addPasswordText(container, this.buildPasswordHolder());
+		this.addPasswordText(container, this.buildPasswordModel());
 	}
 
 	void promptConnection() {
@@ -198,7 +198,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 		return new ClassChooserPane<Connection2_0>(this, container) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<Connection2_0, String>(
 							this.getSubjectHolder(), Connection2_0.DRIVER_PROPERTY) {
 					@Override
@@ -338,7 +338,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 				// Make sure that if the pattern is empty, we specify * in order
 				// to show all the mapping types
 				if (StringTools.isBlank(getPattern())) {
-					patternMatcher.setPattern("*");
+					this.patternMatcher.setPattern("*");
 				}
 			}
 

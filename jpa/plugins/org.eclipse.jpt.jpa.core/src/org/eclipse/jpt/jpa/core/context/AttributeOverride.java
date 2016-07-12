@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Attribute override.
@@ -22,4 +25,13 @@ public interface AttributeOverride
 	extends Override_
 {
 	Column getColumn();
+	Transformer<AttributeOverride, Column> COLUMN_TRANSFORMER = new ColumnTransformer();
+	class ColumnTransformer
+		extends TransformerAdapter<AttributeOverride, Column>
+	{
+		@Override
+		public Column transform(AttributeOverride override) {
+			return override.getColumn();
+		}
+	}
 }

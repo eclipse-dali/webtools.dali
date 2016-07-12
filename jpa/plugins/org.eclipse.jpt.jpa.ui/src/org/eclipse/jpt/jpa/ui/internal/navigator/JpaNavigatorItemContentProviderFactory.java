@@ -20,8 +20,7 @@ import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -98,7 +97,7 @@ public class JpaNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<JpaContextRoot> buildProjectJpaContextRootModel(IProject project) {
-		return new TransformationPropertyValueModel<>(this.buildProjectJpaProjectModel(project), TransformerTools.nullCheck(JpaProject.CONTEXT_ROOT_TRANSFORMER));
+		return PropertyValueModelTools.transform(this.buildProjectJpaProjectModel(project), JpaProject.CONTEXT_ROOT_TRANSFORMER);
 	}
 
 	protected PropertyValueModel<JpaProject> buildProjectJpaProjectModel(IProject project) {

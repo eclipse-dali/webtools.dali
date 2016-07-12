@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,19 +11,19 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -86,6 +86,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		return new EclipseLinkWeavingPropertiesComposite(this, weavingSection).getControl();
 	}
 
+	@SuppressWarnings("unused")
 	protected Control initializeOtherSection(Section otherSection) {
 		Composite container = this.addSubPane(otherSection, 2, 0, 0, 0, 0);
 
@@ -118,7 +119,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		TriStateCheckBox throwExceptionsCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL,
-			this.buildThrowExceptionsHolder(),
+			this.buildThrowExceptionsModel(),
 			this.buildThrowExceptionsStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
@@ -137,6 +138,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		return container;
 	}
 
+	@SuppressWarnings("unused")
 	protected Control initializeCustomizersSection(Section customizersSection) {
 		Composite container = this.addSubPane(customizersSection);
 
@@ -148,6 +150,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		return container;
 	}
 
+	@SuppressWarnings("unused")
 	protected void buildEntityListComposite(Composite parent) {
 		new EclipseLinkEntityListComposite(this, parent); 
 	}
@@ -170,17 +173,13 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	}
 
 	private PropertyValueModel<String> buildValidationOnlyStringModel() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultValidationOnlyModel()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL;
-			}
-		};
+		return PropertyValueModelTools.transform_(this.buildDefaultValidationOnlyModel(), VALIDATION_ONLY_TRANSFORMER);
 	}
+
+	private static final Transformer<Boolean, String> VALIDATION_ONLY_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL
+		);
 
 	private PropertyValueModel<Boolean> buildDefaultValidationOnlyModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
@@ -215,17 +214,13 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	}
 
 	private PropertyValueModel<String> buildValidateSchemaStringModel() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultValidateSchemaModel()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL;
-			}
-		};
+		return PropertyValueModelTools.transform_(this.buildDefaultValidateSchemaModel(), VALIDATE_SCHEMA_TRANSFORMER);
 	}
+
+	private static final Transformer<Boolean, String> VALIDATE_SCHEMA_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL
+		);
 
 	private PropertyValueModel<Boolean> buildDefaultValidateSchemaModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
@@ -245,7 +240,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 
 	//********* throw exceptions ***********
 
-	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -259,17 +254,13 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	}
 
 	private PropertyValueModel<String> buildThrowExceptionsStringModel() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultThrowExceptionsModel()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL;
-			}
-		};
+		return PropertyValueModelTools.transform_(this.buildDefaultThrowExceptionsModel(), THROW_EXCEPTIONS_TRANSFORMER);
 	}
+
+	private static final Transformer<Boolean, String> THROW_EXCEPTIONS_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL
+		);
 
 	private PropertyValueModel<Boolean> buildDefaultThrowExceptionsModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
@@ -294,7 +285,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		return new ClassChooserPane<EclipseLinkCustomization>(this, container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkCustomization, String>(
 							this.getSubjectHolder(), EclipseLinkCustomization.EXCEPTION_HANDLER_PROPERTY) {
 					@Override

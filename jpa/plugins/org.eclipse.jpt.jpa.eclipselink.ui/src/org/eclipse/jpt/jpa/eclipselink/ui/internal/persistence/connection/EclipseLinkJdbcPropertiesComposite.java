@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -52,7 +52,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Connection Properties
-		EclipseLinkJdbcConnectionPropertiesComposite<T> connectionComposite = new EclipseLinkJdbcConnectionPropertiesComposite<T>(this, container);
+		EclipseLinkJdbcConnectionPropertiesComposite<T> connectionComposite = new EclipseLinkJdbcConnectionPropertiesComposite<>(this, container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		connectionComposite.getControl().setLayoutData(gridData);
@@ -88,8 +88,8 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 		TriStateCheckBox sharedCheckBox = this.addTriStateCheckBoxWithDefault(
 				readConnectionClient,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_read_Connections_Shared_Label,
-			this.buildReadConnectionsSharedHolder(),
-			this.buildReadConnectionsSharedStringHolder(),
+			this.buildReadConnectionsSharedModel(),
+			this.buildReadConnectionsSharedStringModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 		GridData gridData = new GridData();
@@ -135,7 +135,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 		return writeConnectionSection;
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildReadConnectionsSharedHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildReadConnectionsSharedModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -149,20 +149,16 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 		};
 	}
 
-	private PropertyValueModel<String> buildReadConnectionsSharedStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultReadConnectionsSharedHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_READ_CONNECTIONS_SHARED_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_read_Connections_Shared_Label;
-			}
-		};
+	private PropertyValueModel<String> buildReadConnectionsSharedStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultReadConnectionsSharedModel(), CACHEABLE_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultReadConnectionsSharedHolder() {
+
+	private static final Transformer<Boolean, String> CACHEABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_READ_CONNECTIONS_SHARED_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_read_Connections_Shared_Label
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultReadConnectionsSharedModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY)
@@ -178,134 +174,155 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 	}
 
 	
+	@SuppressWarnings("unused")
 	private void addReadConnectionsMinCombo(Composite container) {
-		new IntegerCombo<EclipseLinkConnection>(this, container) {
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
-			}
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultReadConnectionsMin();
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MIN_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getReadConnectionsMin();
-					}
-
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setReadConnectionsMin(value);
-					}
-				};
-			}
-		};
+		new ReadConnectionsMinCombo(this, container);
 	}
 
+	static class ReadConnectionsMinCombo
+		extends IntegerCombo<EclipseLinkConnection>
+	{
+		ReadConnectionsMinCombo(Pane<? extends EclipseLinkConnection> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_READ_CONNECTIONS_MIN_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MIN_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getReadConnectionsMin();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setReadConnectionsMin(value);
+				}
+			};
+		}
+	}
+
+	@SuppressWarnings("unused")
 	private void addReadConnectionsMaxCombo(Composite container) {
-		new IntegerCombo<EclipseLinkConnection>(this, container) {
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
-			}
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultReadConnectionsMax();
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MAX_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getReadConnectionsMax();
-					}
-
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setReadConnectionsMax(value);
-					}
-				};
-			}
-		};
+		new ReadConnectionsMaxCombo(this, container);
 	}
 
+	static class ReadConnectionsMaxCombo
+		extends IntegerCombo<EclipseLinkConnection>
+	{
+		ReadConnectionsMaxCombo(Pane<? extends EclipseLinkConnection> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_READ_CONNECTIONS_MAX_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MAX_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getReadConnectionsMax();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setReadConnectionsMax(value);
+				}
+			};
+		}
+	}
+
+	@SuppressWarnings("unused")
 	private void addWriteConnectionsMinCombo(Composite container) {
-		new IntegerCombo<EclipseLinkConnection>(this, container) {
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
-			}
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultWriteConnectionsMin();
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MIN_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getWriteConnectionsMin();
-					}
-
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setWriteConnectionsMin(value);
-					}
-				};
-			}
-		};
+		new WriteConnectionsMinCombo(this, container);
 	}
-	private void addWriteConnectionsMaxCombo(Composite container) {
-		new IntegerCombo<EclipseLinkConnection>(this, container) {
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
-			}
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultWriteConnectionsMax();
-					}
-				};
-			}
-			
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getWriteConnectionsMax();
-					}
 
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setWriteConnectionsMax(value);
-					}
-				};
-			}
-		};
+	static class WriteConnectionsMinCombo
+		extends IntegerCombo<EclipseLinkConnection>
+	{
+		WriteConnectionsMinCombo(Pane<? extends EclipseLinkConnection> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_WRITE_CONNECTIONS_MIN_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MIN_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getWriteConnectionsMin();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setWriteConnectionsMin(value);
+				}
+			};
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void addWriteConnectionsMaxCombo(Composite container) {
+		new WriteConnectionsMaxCombo(this, container);
+	}
+
+	static class WriteConnectionsMaxCombo
+		extends IntegerCombo<EclipseLinkConnection>
+	{
+		WriteConnectionsMaxCombo(Pane<? extends EclipseLinkConnection> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_WRITE_CONNECTIONS_MAX_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getWriteConnectionsMax();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setWriteConnectionsMax(value);
+				}
+			};
+		}
 	}
 }

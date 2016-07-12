@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAttributeOverride;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -41,7 +41,6 @@ public class AttributeOverrideComposite extends Pane<AttributeOverride>
 	 *
 	 * @param subjectHolder The holder of the subject <code>AttributeOverride</code>
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AttributeOverrideComposite(Pane<?> parentPane, 
 								PropertyValueModel<? extends AttributeOverride> subjectHolder,
@@ -55,7 +54,7 @@ public class AttributeOverrideComposite extends Pane<AttributeOverride>
 	protected Composite addComposite(Composite container) {
 		return (Composite) new ColumnComposite(
 			this,
-			buildColumnHolder(),
+			buildColumnModel(),
 			container
 		).getControl();
 	}
@@ -65,12 +64,7 @@ public class AttributeOverrideComposite extends Pane<AttributeOverride>
 		//see addContainer(Composite) - reducing USER handles
 	}
 	
-	private PropertyValueModel<Column> buildColumnHolder() {
-		return new TransformationPropertyValueModel<AttributeOverride, Column>(getSubjectHolder()) {
-			@Override
-			protected Column transform_(AttributeOverride value) {
-				return value.getColumn();
-			}
-		};
+	private PropertyValueModel<Column> buildColumnModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), AttributeOverride.COLUMN_TRANSFORMER);
 	}
 }

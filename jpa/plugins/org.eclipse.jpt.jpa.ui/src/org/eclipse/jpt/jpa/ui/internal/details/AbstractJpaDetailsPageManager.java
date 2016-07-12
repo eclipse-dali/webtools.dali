@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,8 @@ public abstract class AbstractJpaDetailsPageManager<T extends JpaStructureNode>
 	}
 
 	protected JpaPlatformUi getJpaPlatformUi() {
-        return (JpaPlatformUi) getSubject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+		JpaStructureNode node = this.getSubject();
+        return (node == null) ? null : node.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 
 	@SuppressWarnings("unchecked")

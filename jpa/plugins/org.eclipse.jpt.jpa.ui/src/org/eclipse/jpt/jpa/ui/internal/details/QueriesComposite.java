@@ -25,8 +25,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelT
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -34,6 +34,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -127,13 +128,14 @@ public class QueriesComposite
 		installPaneSwitcher(pageBook);
 	}
 	
+	@SuppressWarnings("unused")
 	private AddRemoveListPane<QueryContainer, Query> addListPane(Composite container) {
 
 		return new AddRemoveListPane<QueryContainer, Query>(
 			this,
 			container,
 			buildQueriesAdapter(),
-			buildDisplayableQueriesListHolder(),
+			buildDisplayableQueriesListModel(),
 			this.selectedQueriesModel,
 			buildQueriesListLabelProvider(),
 			JpaHelpContextIds.MAPPING_NAMED_QUERIES
@@ -145,7 +147,7 @@ public class QueriesComposite
 		SWTBindingTools.bind(this.getSelectedQueryModel(), this.buildPaneTransformer(pageBook), pageBook);
 	}
 
-	protected Query addQuery() {
+	public Query addQuery() {
 		return addQueryFromDialog(buildAddQueryDialog());
 	}
 
@@ -175,21 +177,21 @@ public class QueriesComposite
 		return query;
 	}
 
-	private ListValueModel<Query> buildDisplayableQueriesListHolder() {
-		return new ItemPropertyListValueModelAdapter<Query>(
-			buildQueriesListHolder(),
-			Query.NAME_PROPERTY
+	private ListValueModel<Query> buildDisplayableQueriesListModel() {
+		return new ItemPropertyListValueModelAdapter<>(
+			buildQueriesListModel(),
+			JpaNamedContextModel.NAME_PROPERTY
 		);
 	}
 
-	protected ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListHolder() {
+	protected ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListModel() {
 		return new ListAspectAdapter<QueryContainer, NamedNativeQuery>(
 			getSubjectHolder(),
 			QueryContainer.NAMED_NATIVE_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterable<NamedNativeQuery> getListIterable() {
-				return new SuperListIterableWrapper<NamedNativeQuery>(this.subject.getNamedNativeQueries());
+				return new SuperListIterableWrapper<>(this.subject.getNamedNativeQueries());
 			}
 
 			@Override
@@ -200,22 +202,17 @@ public class QueriesComposite
 	}
 
 	private PropertyValueModel<NamedNativeQuery> buildSelectedNamedNativeQueryModel() {
-		return new TransformationPropertyValueModel<Query, NamedNativeQuery>(this.getSelectedQueryModel()) {
-			@Override
-			protected NamedNativeQuery transform_(Query value) {
-				return (value instanceof NamedNativeQuery) ? (NamedNativeQuery) value : null;
-			}
-		};
+		return PropertyValueModelTools.filter(this.getSelectedQueryModel(), NamedNativeQuery.class);
 	}
 
-	protected ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
+	protected ListValueModel<NamedQuery> buildNamedQueriesListModel() {
 		return new ListAspectAdapter<QueryContainer, NamedQuery>(
 			getSubjectHolder(),
 			QueryContainer.NAMED_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterable<NamedQuery> getListIterable() {
-				return new SuperListIterableWrapper<NamedQuery>(this.subject.getNamedQueries());
+				return new SuperListIterableWrapper<>(this.subject.getNamedQueries());
 			}
 
 			@Override
@@ -226,12 +223,7 @@ public class QueriesComposite
 	}
 
 	private PropertyValueModel<NamedQuery> buildSelectedNamedQueryModel() {
-		return new TransformationPropertyValueModel<Query, NamedQuery>(this.getSelectedQueryModel()) {
-			@Override
-			protected NamedQuery transform_(Query value) {
-				return (value instanceof NamedQuery) ? (NamedQuery) value : null;
-			}
-		};
+		return PropertyValueModelTools.filter(this.getSelectedQueryModel(), NamedQuery.class);
 	}
 
 	protected Transformer<Query, Control> buildPaneTransformer(PageBook pageBook) {
@@ -283,10 +275,10 @@ public class QueriesComposite
 		};
 	}
 
-	protected ListValueModel<Query> buildQueriesListHolder() {
-		List<ListValueModel<? extends Query>> list = new ArrayList<ListValueModel<? extends Query>>();
-		list.add(buildNamedQueriesListHolder());
-		list.add(buildNamedNativeQueriesListHolder());
+	protected ListValueModel<Query> buildQueriesListModel() {
+		List<ListValueModel<? extends Query>> list = new ArrayList<>();
+		list.add(buildNamedQueriesListModel());
+		list.add(buildNamedNativeQueriesListModel());
 		return CompositeListValueModel.forModels(list);
 	}
 
@@ -323,7 +315,7 @@ public class QueriesComposite
 	}
 
 	protected Pane<? extends NamedQuery> buildNamedQueryPropertyComposite(PageBook pageBook) {
-		return new NamedQueryPropertyComposite<NamedQuery>(
+		return new NamedQueryPropertyComposite<>(
 			this,
 			this.buildSelectedNamedQueryModel(),
 			pageBook

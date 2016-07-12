@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,21 +10,21 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedBaseColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedNamedColumn;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -81,14 +81,14 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(SpecifiedNamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(SpecifiedNamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(SpecifiedNamedColumn.DB_TABLE_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DB_TABLE_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName.equals(SpecifiedNamedColumn.DB_TABLE_PROPERTY)) {
+				if (propertyName.equals(NamedColumn.DB_TABLE_PROPERTY)) {
 					this.doPopulate();
 				} else {
 					super.propertyChanged(propertyName);
@@ -127,8 +127,8 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, String>(getSubjectHolder(), SpecifiedNamedColumn.COLUMN_DEFINITION_PROPERTY) {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionModel() {
+		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -144,8 +144,8 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		};
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(getSubjectHolder(), SpecifiedBaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildInsertableModel() {
+		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedInsertable();
@@ -158,24 +158,20 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		};
 	}
 
-	private PropertyValueModel<String> buildInsertableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultInsertableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE;
-			}
-		};
+	private PropertyValueModel<String> buildInsertableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultInsertableModel(), INSERTABLE_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
+
+	private static final Transformer<Boolean, String> INSERTABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultInsertableModel() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			SpecifiedBaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
-			SpecifiedBaseColumn.DEFAULT_INSERTABLE_PROPERTY)
+			BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
+			BaseColumn.DEFAULT_INSERTABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -187,10 +183,10 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNullableModel() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			SpecifiedBaseColumn.SPECIFIED_NULLABLE_PROPERTY)
+			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -204,24 +200,20 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		};
 	}
 
-	private PropertyValueModel<String> buildNullableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE;
-			}
-		};
+	private PropertyValueModel<String> buildNullableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultNullableModel(), NULLABLE_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
+
+	private static final Transformer<Boolean, String> NULLABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultNullableModel() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			SpecifiedBaseColumn.SPECIFIED_NULLABLE_PROPERTY,
-			SpecifiedBaseColumn.DEFAULT_NULLABLE_PROPERTY)
+			BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+			BaseColumn.DEFAULT_NULLABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -234,11 +226,11 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 	}
 
 
-	private ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			SpecifiedBaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-			SpecifiedBaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
+			BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -252,26 +244,20 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		};
 	}
 
-	private PropertyValueModel<String> buildUpdatableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
-
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE;
-			}
-		};
+	private PropertyValueModel<String> buildUpdatableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultUpdatableModel(), UPDATABLE_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
+
+	private static final Transformer<Boolean, String> UPDATABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE_WITH_DEFAULT,
+			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultUpdatableModel() {
 		return new PropertyAspectAdapter<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
-			SpecifiedBaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
-			SpecifiedBaseColumn.DEFAULT_UPDATABLE_PROPERTY)
+			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+			BaseColumn.DEFAULT_UPDATABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -310,8 +296,8 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE,
-			buildInsertableHolder(),
-			buildInsertableStringHolder(),
+			buildInsertableModel(),
+			buildInsertableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 		gridData = new GridData();
@@ -322,8 +308,8 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE,
-			buildUpdatableHolder(),
-			buildUpdatableStringHolder(),
+			buildUpdatableModel(),
+			buildUpdatableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
 		gridData = new GridData();
@@ -334,8 +320,8 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
-			buildNullableHolder(),
-			buildNullableStringHolder(),
+			buildNullableModel(),
+			buildNullableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
 		);
 		gridData = new GridData();
@@ -344,7 +330,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 
 		// Column Definition widgets
 		this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_COLUMN_DEFINITION);
-		this.addText(detailsClient, buildColumnDefinitionHolder());
+		this.addText(detailsClient, buildColumnDefinitionModel());
 	}
 
 }

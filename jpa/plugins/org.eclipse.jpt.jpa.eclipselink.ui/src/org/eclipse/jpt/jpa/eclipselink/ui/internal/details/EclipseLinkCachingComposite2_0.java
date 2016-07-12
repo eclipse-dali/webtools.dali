@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,21 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -50,19 +50,16 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ExistenceTypeComposite                                                    |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Entity
  * @see EclipseLinkCaching
  * @see EclipseLinkJavaEntityComposite - The parent container
  * @see EclipseLinkCacheTypeComboViewer
  * @see EclipseLinkCacheSizeCombo
- * @see EclipseLinkAlwaysRefreshComposite
- * @see EclipseLinkRefreshOnlyIfNewerComposite
- * @see EclipseLinkDisableHitsComposite
  *
  * @version 3.0
  * @since 3.0
  */
-public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCaching> extends EclipseLinkCachingComposite<T>
+public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCaching>
+	extends EclipseLinkCachingComposite<T>
 {
 	
 	protected EclipseLinkCachingComposite2_0(Pane<?> parentPane,
@@ -72,23 +69,24 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		super(parentPane, subjectHolder, parent);
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
-		PropertyValueModel<Cacheable2_0> cacheableHolder = buildCacheableHolder();
+		PropertyValueModel<Cacheable2_0> cacheableModel = buildCacheableModel();
 		
 		//Shared Check box, uncheck this and the rest of the panel is disabled
 		TriStateCheckBox sharedCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL,
-			buildSpecifiedCacheableHolder(cacheableHolder),
-			buildCacheableStringHolder(cacheableHolder),
+			buildSpecifiedCacheableModel(cacheableModel),
+			buildCacheableStringModel(cacheableModel),
 			JpaHelpContextIds.ENTITY_CACHEABLE
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		sharedCheckBox.getCheckBox().setLayoutData(gridData);
 
-		final PropertyValueModel<Boolean> cacheableEnableModel = buildCacheableEnabler(cacheableHolder);
+		final PropertyValueModel<Boolean> cacheableEnableModel = buildCacheableEnabler(cacheableModel);
 
 		Label cacheTypeLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHE_TYPE_COMPOSITE_LABEL, cacheableEnableModel);
 		gridData = new GridData();
@@ -126,7 +124,7 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		initializeExistenceCheckingComposite(container);
 	}
 	
-	protected PropertyValueModel<Cacheable2_0> buildCacheableHolder() {
+	protected PropertyValueModel<Cacheable2_0> buildCacheableModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
@@ -135,9 +133,9 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		};
 	}
 	
-	private PropertyValueModel<Boolean> buildCacheableEnabler(PropertyValueModel<Cacheable2_0> cacheableHolder) {
+	private PropertyValueModel<Boolean> buildCacheableEnabler(PropertyValueModel<Cacheable2_0> cacheableModel) {
 		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(
-				cacheableHolder,
+				cacheableModel,
 				Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY, 
 				Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY) {
 			@Override
@@ -147,8 +145,8 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		};
 	}	
 	
-	private ModifiablePropertyValueModel<Boolean> buildSpecifiedCacheableHolder(PropertyValueModel<Cacheable2_0> cacheableHolder) {
-		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(cacheableHolder, Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedCacheableModel(PropertyValueModel<Cacheable2_0> cacheableModel) {
+		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(cacheableModel, Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedCacheable();
@@ -161,22 +159,18 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		};
 	}
 
-	private PropertyValueModel<String> buildCacheableStringHolder(PropertyValueModel<Cacheable2_0> cacheableHolder) {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultCacheableHolder(cacheableHolder)) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_WITH_DEFAULT_LABEL, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildCacheableStringModel(PropertyValueModel<Cacheable2_0> cacheableModel) {
+		return PropertyValueModelTools.transform_(this.buildDefaultCacheableModel(cacheableModel), CACHEABLE_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultCacheableHolder(PropertyValueModel<Cacheable2_0> cacheableHolder) {
+
+	private static final Transformer<Boolean, String> CACHEABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_WITH_DEFAULT_LABEL,
+			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultCacheableModel(PropertyValueModel<Cacheable2_0> cacheableModel) {
 		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(
-			cacheableHolder,
+			cacheableModel,
 			Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
 			Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY)
 		{

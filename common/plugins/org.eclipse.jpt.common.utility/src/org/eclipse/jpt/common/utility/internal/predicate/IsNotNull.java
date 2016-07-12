@@ -25,8 +25,9 @@ public final class IsNotNull
 {
 	public static final Predicate<Object> INSTANCE = new IsNotNull();
 
-	public static Predicate<Object> instance() {
-		return INSTANCE;
+	@SuppressWarnings("unchecked")
+	public static <V> Predicate<V> instance() {
+		return (Predicate<V>) INSTANCE;
 	}
 
 	// ensure single instance

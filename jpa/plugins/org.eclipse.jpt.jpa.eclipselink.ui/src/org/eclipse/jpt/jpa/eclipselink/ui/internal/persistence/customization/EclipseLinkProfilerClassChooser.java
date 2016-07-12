@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,7 +70,7 @@ public class EclipseLinkProfilerClassChooser
 	}
 
     @Override
-	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.PROFILER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -93,7 +93,7 @@ public class EclipseLinkProfilerClassChooser
 		};
     }
 
-	private PropertyValueModel<String> buildDefaultProfilerHolder() {
+	private PropertyValueModel<String> buildDefaultProfilerModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.DEFAULT_PROFILER) {
 			@Override
 			protected String buildValue_() {
@@ -102,9 +102,9 @@ public class EclipseLinkProfilerClassChooser
 		};
 	}
 
-	private ListValueModel<String> buildDefaultProfilerListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			this.buildDefaultProfilerHolder()
+	private ListValueModel<String> buildDefaultProfilerListModel() {
+		return new PropertyListValueModelAdapter<>(
+			this.buildDefaultProfilerModel()
 		);
 	}
 
@@ -156,31 +156,31 @@ public class EclipseLinkProfilerClassChooser
 	}
 
 	@Override
-	protected ListValueModel<String> buildClassListHolder() {
-		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
-		holders.add(this.buildDefaultProfilerListHolder());
-		holders.add(this.buildProfilersListHolder());
-		return CompositeListValueModel.forModels(holders);
+	protected ListValueModel<String> buildClassListModel() {
+		ArrayList<ListValueModel<String>> models = new ArrayList<>(2);
+		models.add(this.buildDefaultProfilerListModel());
+		models.add(this.buildProfilersListModel());
+		return CompositeListValueModel.forModels(models);
 	}
 
 	private Iterator<String> buildProfilers() {
 		return IteratorTools.transform(IteratorTools.iterator(EclipseLinkProfiler.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
-	private CollectionValueModel<String> buildProfilersCollectionHolder() {
-		return new SimpleCollectionValueModel<String>(
+	private CollectionValueModel<String> buildProfilersCollectionModel() {
+		return new SimpleCollectionValueModel<>(
 			CollectionTools.hashBag(this.buildProfilers())
 		);
 	}
 
-	private ListValueModel<String> buildProfilersListHolder() {
-		return new SortedListValueModelAdapter<String>(
-			this.buildProfilersCollectionHolder(),
+	private ListValueModel<String> buildProfilersListModel() {
+		return new SortedListValueModelAdapter<>(
+			this.buildProfilersCollectionModel(),
 			this.buildProfilerComparator()
 		);
 	}
 
-	private String getDefaultValue(EclipseLinkCustomization subject) {
+	String getDefaultValue(EclipseLinkCustomization subject) {
 		String defaultValue = subject.getDefaultProfiler();
 
 		if (defaultValue != null) {

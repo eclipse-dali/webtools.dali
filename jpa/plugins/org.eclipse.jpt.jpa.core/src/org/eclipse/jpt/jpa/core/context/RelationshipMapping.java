@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * JPA relationship (1:1, 1:m, m:1, m:m) mapping.
@@ -29,6 +32,15 @@ public interface RelationshipMapping
 	 * relationship
 	 */
 	MappingRelationship getRelationship();
+		Transformer<RelationshipMapping, MappingRelationship> RELATIONSHIP_TRANSFORMER = new RelationshipTransformer();
+	class RelationshipTransformer
+		extends TransformerAdapter<RelationshipMapping, MappingRelationship>
+	{
+		@Override
+		public MappingRelationship transform(RelationshipMapping mapping) {
+			return mapping.getRelationship();
+		}
+	}
 
 	/**
 	 * Return the relationship owner or <code>null</code> if this is the owning side
@@ -80,4 +92,13 @@ public interface RelationshipMapping
 	// **************** cascade **************************************
 
 	Cascade getCascade();
+		Transformer<RelationshipMapping, Cascade> CASCADE_TRANSFORMER = new CascadeTransformer();
+	class CascadeTransformer
+		extends TransformerAdapter<RelationshipMapping, Cascade>
+	{
+		@Override
+		public Cascade transform(RelationshipMapping mapping) {
+			return mapping.getCascade();
+		}
+	}
 }

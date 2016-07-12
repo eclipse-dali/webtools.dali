@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -63,10 +62,10 @@ public class QueriesComposite2_1
 		}
 		String queryType = dialog.getQueryType();
 		Query query;
-		if (queryType == AddQueryDialog2_1.NAMED_QUERY) {
+		if (queryType == AddQueryDialog.NAMED_QUERY) {
 			query = this.getSubject().addNamedQuery();
 		}
-		else if (queryType == AddQueryDialog2_1.NAMED_NATIVE_QUERY) {
+		else if (queryType == AddQueryDialog.NAMED_NATIVE_QUERY) {
 			query = this.getSubject().addNamedNativeQuery();
 		}
 		else if (queryType == AddQueryDialog2_1.NAMED_STORED_PROCEDURE_QUERY) {
@@ -84,28 +83,19 @@ public class QueriesComposite2_1
 		return new AddQueryDialog2_1(getShell(), this.getResourceManager(), this.getSubject().getPersistenceUnit());
 	}
 
-	protected ListValueModel<NamedStoredProcedureQuery2_1> buildNamedStoredProcedureQueriesListHolder() {
+	protected ListValueModel<NamedStoredProcedureQuery2_1> buildNamedStoredProcedureQueriesListModel() {
 		return new ListAspectAdapter<QueryContainer, NamedStoredProcedureQuery2_1>(
 			getSubjectHolder(),
 			QueryContainer2_1.NAMED_STORED_PROCEDURE_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterable<NamedStoredProcedureQuery2_1> getListIterable() {
-				return new SuperListIterableWrapper<NamedStoredProcedureQuery2_1>(((QueryContainer2_1) this.subject).getNamedStoredProcedureQueries());
+				return new SuperListIterableWrapper<>(((QueryContainer2_1) this.subject).getNamedStoredProcedureQueries());
 			}
 
 			@Override
 			protected int size_() {
 				return ((QueryContainer2_1) this.subject).getNamedStoredProcedureQueriesSize();
-			}
-		};
-	}
-
-	private PropertyValueModel<NamedStoredProcedureQuery2_1> buildSelectedNamedQueryModel() {
-		return new TransformationPropertyValueModel<Query, NamedStoredProcedureQuery2_1>(this.getSelectedQueryModel()) {
-			@Override
-			protected NamedStoredProcedureQuery2_1 transform_(Query value) {
-				return (value instanceof NamedStoredProcedureQuery2_1) ? (NamedStoredProcedureQuery2_1) value : null;
 			}
 		};
 	}
@@ -169,11 +159,11 @@ public class QueriesComposite2_1
 	}
 
 	@Override
-	protected ListValueModel<Query> buildQueriesListHolder() {
-		List<ListValueModel<? extends Query>> list = new ArrayList<ListValueModel<? extends Query>>();
-		list.add(buildNamedQueriesListHolder());
-		list.add(buildNamedNativeQueriesListHolder());
-		list.add(buildNamedStoredProcedureQueriesListHolder());
+	protected ListValueModel<Query> buildQueriesListModel() {
+		List<ListValueModel<? extends Query>> list = new ArrayList<>();
+		list.add(buildNamedQueriesListModel());
+		list.add(buildNamedNativeQueriesListModel());
+		list.add(buildNamedStoredProcedureQueriesListModel());
 		return CompositeListValueModel.forModels(list);
 	}
 

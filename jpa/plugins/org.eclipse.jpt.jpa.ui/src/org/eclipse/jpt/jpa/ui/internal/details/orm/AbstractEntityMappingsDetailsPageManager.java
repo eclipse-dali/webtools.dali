@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -107,6 +107,7 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 		section.setClient(this.initializeEntityMappingsSection(section));
 	}
 	
+	@SuppressWarnings("unused")
 	protected Control initializeEntityMappingsSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
@@ -147,7 +148,7 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 	protected Control initializePersistenceUnitMetadataSection(Composite container) {
 		return new PersistenceUnitMetadataComposite(
 			this,
-			buildPersistentUnitMetadataHolder(),
+			buildPersistentUnitMetadataModel(),
 			container
 		).getControl();
 	}
@@ -189,13 +190,8 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 		};
 	}
 
-	protected PropertyValueModel<OrmPersistenceUnitMetadata> buildPersistentUnitMetadataHolder() {
-		return new TransformationPropertyValueModel<EntityMappings, OrmPersistenceUnitMetadata>(getSubjectHolder()) {
-			@Override
-			protected OrmPersistenceUnitMetadata transform_(EntityMappings entityMappings) {
-				return entityMappings.getPersistenceUnitMetadata();
-			}
-		};
+	protected PropertyValueModel<OrmPersistenceUnitMetadata> buildPersistentUnitMetadataModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EntityMappings.PERSISTENCE_UNIT_METADATA_TRANSFORMER);
 	}
 
 	protected SchemaCombo<EntityMappings> addSchemaCombo(Composite container) {
@@ -291,10 +287,10 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 	}
 
 	protected Control initializeQueriesSection(Composite container) {
-		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite(this, this.buildQueryContainerModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
+	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
 		return new PropertyAspectAdapter<EntityMappings, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {

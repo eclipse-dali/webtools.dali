@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
@@ -43,6 +45,15 @@ public interface OrmPersistenceUnitMetadata
 		String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataComplete"; //$NON-NLS-1$
 
 	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
+		Transformer<OrmPersistenceUnitMetadata, OrmPersistenceUnitDefaults> PERSISTENCE_UNIT_DEFAULTS_TRANSFORMER = new PersistenceUnitDefaultsTransformer();
+	class PersistenceUnitDefaultsTransformer
+		extends TransformerAdapter<OrmPersistenceUnitMetadata, OrmPersistenceUnitDefaults>
+	{
+		@Override
+		public OrmPersistenceUnitDefaults transform(OrmPersistenceUnitMetadata metadata) {
+			return metadata.getPersistenceUnitDefaults();
+		}
+	}
 
 	XmlPersistenceUnitMetadata getXmlPersistenceUnitMetadata();
 	XmlPersistenceUnitMetadata getXmlPersistenceUnitMetadataForUpdate();

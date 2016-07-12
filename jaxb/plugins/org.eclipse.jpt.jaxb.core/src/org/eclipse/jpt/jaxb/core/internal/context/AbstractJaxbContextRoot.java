@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -462,19 +462,19 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	public Iterable<JavaClass> getJavaClasses() {
-		return IterableTools.downCast(IterableTools.filter(getJavaTypes(), new JavaType.IsKind(TypeKind.CLASS)));
+		return IterableTools.downcast(IterableTools.filter(getJavaTypes(), new JavaType.IsKind(TypeKind.CLASS)));
 	}
 	
 	public Iterable<JavaClass> getJavaClasses(JaxbPackage jaxbPackage) {
-		return IterableTools.downCast(IterableTools.filter(getJavaTypes(jaxbPackage), new JavaType.IsKind(TypeKind.CLASS)));
+		return IterableTools.downcast(IterableTools.filter(getJavaTypes(jaxbPackage), new JavaType.IsKind(TypeKind.CLASS)));
 	}
 	
 	public Iterable<JavaEnum> getJavaEnums() {
-		return IterableTools.downCast(IterableTools.filter(getJavaTypes(), new JavaType.IsKind(TypeKind.ENUM)));
+		return IterableTools.downcast(IterableTools.filter(getJavaTypes(), new JavaType.IsKind(TypeKind.ENUM)));
 	}
 	
 	public Iterable<JavaEnum> getJavaEnums(JaxbPackage jaxbPackage) {
-		return IterableTools.downCast(IterableTools.filter(getJavaTypes(jaxbPackage), new JavaType.IsKind(TypeKind.ENUM)));
+		return IterableTools.downcast(IterableTools.filter(getJavaTypes(jaxbPackage), new JavaType.IsKind(TypeKind.ENUM)));
 	}
 	
 	

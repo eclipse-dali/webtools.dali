@@ -24,8 +24,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -77,6 +77,7 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 		);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -85,7 +86,7 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 			this,
 			container,
 			this.buildEntitiesAdapter(),
-			this.buildEntitiesListHolder(),
+			this.buildEntitiesListModel(),
 			this.selectedEntitiesModel,
 			this.buildEntityLabelProvider(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CACHING
@@ -121,7 +122,7 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 		};
 	}
 	
-	private EclipseLinkCachingEntity addEntity() {
+	EclipseLinkCachingEntity addEntity() {
 
 		IType type = this.chooseEntity();
 
@@ -180,7 +181,7 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 		};
 	}
 
-	private ListValueModel<EclipseLinkCachingEntity> buildEntitiesListHolder() {
+	private ListValueModel<EclipseLinkCachingEntity> buildEntitiesListModel() {
 		return new ListAspectAdapter<EclipseLinkCaching, EclipseLinkCachingEntity>(
 					this.getSubjectHolder(), EclipseLinkCaching.ENTITIES_LIST) {
 			@Override
@@ -194,12 +195,7 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<EclipseLinkCachingEntity> entityHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkCachingEntity, Boolean>(entityHolder) {
-			@Override
-			protected Boolean transform_(EclipseLinkCachingEntity value) {
-				return Boolean.valueOf(value.entityNameIsValid());
-			}
-		};
+	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<EclipseLinkCachingEntity> entityModel) {
+		return PropertyValueModelTools.valueIsInSet(entityModel, EclipseLinkCachingEntity.NAME_IS_VALID);
 	}
 }

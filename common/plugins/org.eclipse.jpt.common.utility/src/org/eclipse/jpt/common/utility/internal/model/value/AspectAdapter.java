@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.EventListener;
-
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -67,7 +66,7 @@ public abstract class AspectAdapter<S, A>
 	 * Construct an aspect adapter for the specified subject.
 	 */
 	protected AspectAdapter(S subject) {
-		this(new StaticPropertyValueModel<S>(subject));
+		this(PropertyValueModelTools.staticPropertyValueModel(subject));
 	}
 
 	/**
@@ -174,11 +173,11 @@ public abstract class AspectAdapter<S, A>
 	 * Called by {@link LocalChangeSupport}
 	 */
 	protected void engageModels() {
-		this.engageSubjectHolder();
+		this.engageSubjectModel();
 		this.engageSubject();
 	}
 
-	protected void engageSubjectHolder() {
+	protected void engageSubjectModel() {
 		this.subjectModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
 		// sync our subject *after* we start listening to the subject holder,
 		// since its value might change when a listener is added
@@ -202,7 +201,7 @@ public abstract class AspectAdapter<S, A>
 	 */
 	protected void disengageModels() {
 		this.disengageSubject();
-		this.disengageSubjectHolder();
+		this.disengageSubjectModel();
 	}
 
 	protected void disengageSubject() {
@@ -217,7 +216,7 @@ public abstract class AspectAdapter<S, A>
 	 */
 	protected abstract void disengageSubject_();
 
-	protected void disengageSubjectHolder() {
+	protected void disengageSubjectModel() {
 		this.subjectModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
 		// clear out the subject when we are not listening to its holder
 		this.subject = null;

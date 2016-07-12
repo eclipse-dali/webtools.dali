@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Association override
@@ -31,4 +34,13 @@ public interface AssociationOverride
 	RelationshipMapping getMapping();
 
 	OverrideRelationship getRelationship();
+	Transformer<AssociationOverride, OverrideRelationship> RELATIONSHIP_TRANSFORMER = new RelationshipTransformer();
+	class RelationshipTransformer
+		extends TransformerAdapter<AssociationOverride, OverrideRelationship>
+	{
+		@Override
+		public OverrideRelationship transform(AssociationOverride override) {
+			return override.getRelationship();
+		}
+	}
 }

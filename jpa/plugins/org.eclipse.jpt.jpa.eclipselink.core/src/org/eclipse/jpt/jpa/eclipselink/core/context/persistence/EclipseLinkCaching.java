@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,28 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
- *  Caching
+ * EclipseLink Caching
  */
-public interface EclipseLinkCaching extends PersistenceUnitProperties
+public interface EclipseLinkCaching
+	extends PersistenceUnitProperties
 {
 	EclipseLinkCacheType getDefaultCacheTypeDefault();
+	Transformer<EclipseLinkCaching, EclipseLinkCacheType> DEFAULT_CACHE_TYPE_DEFAULT_TRANSFORMER = new DefaultCacheTypeDefaultTransformer();
+	class DefaultCacheTypeDefaultTransformer
+		extends TransformerAdapter<EclipseLinkCaching, EclipseLinkCacheType>
+	{
+		@Override
+		public EclipseLinkCacheType transform(EclipseLinkCaching caching) {
+			return caching.getDefaultCacheTypeDefault();
+		}
+	}
+
 	EclipseLinkCacheType getCacheTypeDefault();
 	void setCacheTypeDefault(EclipseLinkCacheType cacheTypeDefault);
 		static final String CACHE_TYPE_DEFAULT_PROPERTY = "cacheTypeDefault"; //$NON-NLS-1$
@@ -26,6 +39,16 @@ public interface EclipseLinkCaching extends PersistenceUnitProperties
 		static final EclipseLinkCacheType DEFAULT_CACHE_TYPE_DEFAULT = EclipseLinkCacheType.soft_weak;
 
 	Integer getDefaultCacheSizeDefault();
+	Transformer<EclipseLinkCaching, Integer> DEFAULT_CACHE_SIZE_DEFAULT_TRANSFORMER = new DefaultCacheSizeDefaultTransformer();
+	class DefaultCacheSizeDefaultTransformer
+		extends TransformerAdapter<EclipseLinkCaching, Integer>
+	{
+		@Override
+		public Integer transform(EclipseLinkCaching caching) {
+			return caching.getDefaultCacheSizeDefault();
+		}
+	}
+
 	Integer getCacheSizeDefault();
 	void setCacheSizeDefault(Integer cacheSizeDefault);
 		static final String CACHE_SIZE_DEFAULT_PROPERTY = "cacheSizeDefault"; //$NON-NLS-1$
@@ -34,6 +57,16 @@ public interface EclipseLinkCaching extends PersistenceUnitProperties
 		static final Integer DEFAULT_CACHE_SIZE_DEFAULT = Integer.valueOf(100);
 
 	Boolean getDefaultSharedCacheDefault();
+	Transformer<EclipseLinkCaching, Boolean> DEFAULT_SHARED_CACHE_DEFAULT_TRANSFORMER = new DefaultSharedCacheDefaultTransformer();
+	class DefaultSharedCacheDefaultTransformer
+		extends TransformerAdapter<EclipseLinkCaching, Boolean>
+	{
+		@Override
+		public Boolean transform(EclipseLinkCaching caching) {
+			return caching.getDefaultSharedCacheDefault();
+		}
+	}
+
 	Boolean getSharedCacheDefault();
 	void setSharedCacheDefault(Boolean sharedCacheDefault);
 		static final String SHARED_CACHE_DEFAULT_PROPERTY = "sharedCacheDefault"; //$NON-NLS-1$
@@ -67,6 +100,16 @@ public interface EclipseLinkCaching extends PersistenceUnitProperties
 		static final Boolean DEFAULT_SHARED_CACHE = Boolean.TRUE;
 
 	EclipseLinkFlushClearCache getDefaultFlushClearCache();
+	Transformer<EclipseLinkCaching, EclipseLinkFlushClearCache> DEFAULT_FLUSH_CLEAR_CACHE_TRANSFORMER = new DefaultFlushClearCacheTransformer();
+	class DefaultFlushClearCacheTransformer
+		extends TransformerAdapter<EclipseLinkCaching, EclipseLinkFlushClearCache>
+	{
+		@Override
+		public EclipseLinkFlushClearCache transform(EclipseLinkCaching caching) {
+			return caching.getDefaultFlushClearCache();
+		}
+	}
+
 	EclipseLinkFlushClearCache getFlushClearCache();
 	void setFlushClearCache(EclipseLinkFlushClearCache newFlushClearCache);
 		static final String FLUSH_CLEAR_CACHE_PROPERTY = "flushClearCache"; //$NON-NLS-1$

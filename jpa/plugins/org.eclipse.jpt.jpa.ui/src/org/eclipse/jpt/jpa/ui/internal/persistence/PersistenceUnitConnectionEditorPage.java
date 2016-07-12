@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -70,7 +70,7 @@ public class PersistenceUnitConnectionEditorPage
 		databaseGroup.setLayoutData(gridData);
 
 		// JTA Datasource Name widgets
-		PropertyValueModel<Boolean> enabled = this.buildJTADatasourceNameBooleanHolder();
+		PropertyValueModel<Boolean> enabled = this.buildJTADatasourceNameBooleanModel();
 		this.addLabel(
 			databaseGroup, 
 			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CONNECTION_DATABASE_COMPOSITE_JTA_DATASOURCE_NAME,
@@ -78,14 +78,14 @@ public class PersistenceUnitConnectionEditorPage
 		);
 		this.addText(
 			databaseGroup,
-			buildJTADatasourceNameHolder(),
+			buildJTADatasourceNameModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION,
 			enabled
 		);
 
 
 		// Non-JTA Datasource Name widgets
-		enabled = this.buildNonJTADatasourceNameBooleanHolder();
+		enabled = this.buildNonJTADatasourceNameBooleanModel();
 		this.addLabel(
 			databaseGroup, 
 			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CONNECTION_DATABASE_COMPOSITE_NON_JTA_DATASOURCE_NAME,
@@ -93,7 +93,7 @@ public class PersistenceUnitConnectionEditorPage
 		);
 		this.addText(
 			databaseGroup,
-			buildNonJTADatasourceNameHolder(),
+			buildNonJTADatasourceNameModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION,
 			enabled
 		);
@@ -149,20 +149,15 @@ public class PersistenceUnitConnectionEditorPage
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildJTADatasourceNameBooleanHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeHolder()) {
-			@Override
-			protected Boolean transform_(PersistenceUnitTransactionType value) {
-				return Boolean.valueOf(value == PersistenceUnitTransactionType.JTA);
-			}
-		};
+	private PropertyValueModel<Boolean> buildJTADatasourceNameBooleanModel() {
+		return PropertyValueModelTools.valueIsIdentical_(this.buildTransactionTypeModel(), PersistenceUnitTransactionType.JTA);
 	}
 
-	private ModifiablePropertyValueModel<String> buildJTADatasourceNameHolder() {
+	private ModifiablePropertyValueModel<String> buildJTADatasourceNameModel() {
 		return new PropertyAspectAdapter<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.JTA_DATA_SOURCE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getJtaDataSource();
+				return this.subject.getJtaDataSource();
 			}
 
 			@Override
@@ -170,25 +165,20 @@ public class PersistenceUnitConnectionEditorPage
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setJtaDataSource(value);
+				this.subject.setJtaDataSource(value);
 			}
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildNonJTADatasourceNameBooleanHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeHolder()) {
-			@Override
-			protected Boolean transform_(PersistenceUnitTransactionType value) {
-				return Boolean.valueOf(value == PersistenceUnitTransactionType.RESOURCE_LOCAL);
-			}
-		};
+	private PropertyValueModel<Boolean> buildNonJTADatasourceNameBooleanModel() {
+		return PropertyValueModelTools.valueIsIdentical_(this.buildTransactionTypeModel(), PersistenceUnitTransactionType.RESOURCE_LOCAL);
 	}
 
-	private ModifiablePropertyValueModel<String> buildNonJTADatasourceNameHolder() {
+	private ModifiablePropertyValueModel<String> buildNonJTADatasourceNameModel() {
 		return new PropertyAspectAdapter<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.NON_JTA_DATA_SOURCE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getNonJtaDataSource();
+				return this.subject.getNonJtaDataSource();
 			}
 
 			@Override
@@ -196,12 +186,12 @@ public class PersistenceUnitConnectionEditorPage
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setNonJtaDataSource(value);
+				this.subject.setNonJtaDataSource(value);
 			}
 		};
 	}
 
-	private PropertyValueModel<PersistenceUnitTransactionType> buildTransactionTypeHolder() {
+	private PropertyValueModel<PersistenceUnitTransactionType> buildTransactionTypeModel() {
 		return new PropertyAspectAdapter<PersistenceUnit, PersistenceUnitTransactionType>(
 			getSubjectHolder(),
 			PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY,
@@ -209,7 +199,7 @@ public class PersistenceUnitConnectionEditorPage
 		{
 			@Override
 			protected PersistenceUnitTransactionType buildValue_() {
-				return subject.getTransactionType();
+				return this.subject.getTransactionType();
 			}
 		};
 	}

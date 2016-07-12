@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,7 +47,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		super.setUp();
 		this.testNode.put(KEY_NAME, STRING_VALUE);
 
-		this.nodeHolder = new SimplePropertyValueModel<Preferences>(this.testNode);
+		this.nodeHolder = new SimplePropertyValueModel<>(this.testNode);
 		this.preferenceAdapter = PreferencePropertyValueModel.forString(this.nodeHolder, KEY_NAME, null);
 		this.listener = this.buildValueChangeListener();
 		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
@@ -387,7 +387,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		extends PreferencePropertyValueModel<P>
 	{
 		public static PreferencePropertyValueModel<String> forString(PropertyValueModel<? extends Preferences> preferencesModel, String key, String defaultValue) {
-			return new AlwaysUpdatePreferencePropertyValueModel<String>(
+			return new AlwaysUpdatePreferencePropertyValueModel<>(
 					preferencesModel,
 					key,
 					defaultValue,

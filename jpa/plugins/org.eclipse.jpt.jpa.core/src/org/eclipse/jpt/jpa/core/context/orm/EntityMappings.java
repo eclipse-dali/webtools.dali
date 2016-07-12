@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
@@ -109,6 +111,15 @@ public interface EntityMappings
 	 * Covariant override.
 	 */
 	OrmPersistenceUnitMetadata getPersistenceUnitMetadata();
+		Transformer<EntityMappings, OrmPersistenceUnitMetadata> PERSISTENCE_UNIT_METADATA_TRANSFORMER = new PersistenceUnitMetadataTransformer();
+	class PersistenceUnitMetadataTransformer
+		extends TransformerAdapter<EntityMappings, OrmPersistenceUnitMetadata>
+	{
+		@Override
+		public OrmPersistenceUnitMetadata transform(EntityMappings entityMappings) {
+			return entityMappings.getPersistenceUnitMetadata();
+		}
+	}
 
 	/**
 	 * Covariant override.

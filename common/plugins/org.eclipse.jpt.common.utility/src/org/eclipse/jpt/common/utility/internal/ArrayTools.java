@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -3142,17 +3143,33 @@ public final class ArrayTools {
 	// ********** filter **********
 
 	/**
+	 * Return a new array with the elements of the specified array
+	 * that are instances of the specified class.
+	 */
+	public static <E> E[] filter(Object[] array, Class<E> clazz) {
+		int length = array.length;
+		E[] result = newInstance(clazz, length);
+		return filter(array, PredicateTools.instanceOf(clazz), result, length);
+	}
+
+	/**
 	 * Return a new array with the filtered
 	 * elements of the specified array.
 	 */
 	public static <E> E[] filter(E[] array, Predicate<E> filter) {
 		int length = array.length;
 		E[] result = newInstance(array, length);
+		return filter(array, filter, result, length);
+	}
+
+	private static <E1, E2> E2[] filter(E1[] array, Predicate<E1> filter, E2[] result, int length) {
 		int resultLength = 0;
 		for (int i = 0; i < length; i++) {
-			E e = array[i];
+			E1 e = array[i];
 			if (filter.evaluate(e)) {
-				result[resultLength++] = e;
+				@SuppressWarnings("unchecked")
+				E2 e2 = (E2) e;
+				result[resultLength++] = e2;
 			}
 		}
 		return (resultLength < length) ? subArray(result, 0, resultLength) : result;

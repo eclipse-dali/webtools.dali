@@ -26,9 +26,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -83,6 +82,7 @@ public class EclipseLinkEntityListComposite
 		);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Entities add/remove list pane
@@ -90,7 +90,7 @@ public class EclipseLinkEntityListComposite
 			this,
 			container,
 			this.buildEntitiesAdapter(),
-			this.buildEntitiesListHolder(),
+			this.buildEntitiesListModel(),
 			this.selectedEntitiesModel,
 			this.buildEntityLabelProvider(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -122,7 +122,7 @@ public class EclipseLinkEntityListComposite
 		};
 	}
 	
-	private EclipseLinkCustomizationEntity addEntity() {
+	EclipseLinkCustomizationEntity addEntity() {
 		IType type = this.chooseEntity();
 
 		if (type != null) {
@@ -180,11 +180,7 @@ public class EclipseLinkEntityListComposite
 		};
 	}
 
-	private ModifiablePropertyValueModel<EclipseLinkCustomizationEntity> buildEntityHolder() {
-		return new SimplePropertyValueModel<EclipseLinkCustomizationEntity>();
-	}
-
-	private ListValueModel<EclipseLinkCustomizationEntity> buildEntitiesListHolder() {
+	private ListValueModel<EclipseLinkCustomizationEntity> buildEntitiesListModel() {
 		return new ListAspectAdapter<EclipseLinkCustomization, EclipseLinkCustomizationEntity>(
 				this.getSubjectHolder(), EclipseLinkCustomization.ENTITIES_LIST) {
 			@Override
@@ -198,21 +194,16 @@ public class EclipseLinkEntityListComposite
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(PropertyValueModel<EclipseLinkCustomizationEntity> entityHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkCustomizationEntity, Boolean>(entityHolder) {
-			@Override
-			protected Boolean transform_(EclipseLinkCustomizationEntity value) {
-				return Boolean.valueOf(value.entityNameIsValid());
-			}
-		};
+	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<EclipseLinkCustomizationEntity> entityModel) {
+		return PropertyValueModelTools.valueIsInSet(entityModel, EclipseLinkCustomizationEntity.NAME_IS_VALID);
 	}
 
 
 	private ClassChooserPane<EclipseLinkCustomizationEntity> initializeClassChooser(Composite container, Hyperlink hyperlink) {
-		return new ClassChooserPane<EclipseLinkCustomizationEntity>(this, this.selectedEntityModel, this.buildPaneEnablerHolder(this.selectedEntityModel), container, hyperlink) {
+		return new ClassChooserPane<EclipseLinkCustomizationEntity>(this, this.selectedEntityModel, this.buildPaneEnablerModel(this.selectedEntityModel), container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkCustomizationEntity, String>(
 					this.getSubjectHolder(), EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
 					@Override
@@ -251,11 +242,11 @@ public class EclipseLinkEntityListComposite
 				return EclipseLinkCustomizer.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME;
 			}
 			
-			private String getSubjectName() {
+			String getSubjectName() {
 				return this.getSubjectHolder().getValue().getName();
 			}
 			
-			private EclipseLinkCustomization getSubjectParent() {
+			EclipseLinkCustomization getSubjectParent() {
 				return this.getSubjectHolder().getValue().getParent();
 			}
 		};

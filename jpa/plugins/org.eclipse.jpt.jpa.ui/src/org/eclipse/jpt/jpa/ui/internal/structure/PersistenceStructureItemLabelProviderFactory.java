@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
@@ -113,7 +113,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<ImageDescriptor> buildPersistenceUnitImageDescriptorModel(@SuppressWarnings("unused") PersistenceUnit persistenceUnit) {
-		return new StaticPropertyValueModel<>(JptJpaUiImages.PERSISTENCE_UNIT);
+		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.PERSISTENCE_UNIT);
 	}
 
 	protected static PropertyValueModel<String> buildPersistenceUnitTextModel(PersistenceUnit persistenceUnit) {
@@ -167,7 +167,7 @@ public class PersistenceStructureItemLabelProviderFactory
 
 
 	protected PropertyValueModel<ImageDescriptor> buildMappingFileRefImageDescriptorModel(MappingFileRef mappingFileRef) {
-		return new StaticPropertyValueModel<>(JptCommonUiImages.gray(JptJpaUiImages.MAPPING_FILE_REF, mappingFileRef.isDefault()));
+		return PropertyValueModelTools.staticPropertyValueModel(JptCommonUiImages.gray(JptJpaUiImages.MAPPING_FILE_REF, mappingFileRef.isDefault()));
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefTextModel(MappingFileRef mappingFileRef) {
@@ -206,7 +206,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildClassRefImageDescriptorModel(@SuppressWarnings("unused") ClassRef classRef) {
-		return new StaticPropertyValueModel<>(JptJpaUiImages.CLASS_REF);
+		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.CLASS_REF);
 	}
 
 	protected PropertyValueModel<String> buildClassRefTextModel(ClassRef classRef) {
@@ -246,7 +246,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildJarFileRefImageDescriptorModel(@SuppressWarnings("unused") JarFileRef jarFileRef) {
-		return new StaticPropertyValueModel<>(JptJpaUiImages.JAR_FILE_REF);
+		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.JAR_FILE_REF);
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefTextModel(JarFileRef jarFileRef) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -331,7 +331,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 
 	@Override
 	protected Control addMainControl(Composite container) {
-		Text text = addText(container, buildTextHolder(), getHelpId());
+		Text text = addText(container, buildTextModel(), getHelpId());
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
@@ -346,7 +346,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 *
 	 * @return The holder of the class name
 	 */
-	protected abstract ModifiablePropertyValueModel<String> buildTextHolder();
+	protected abstract ModifiablePropertyValueModel<String> buildTextModel();
 
 	/**
 	 * Prompts the user the Open Type dialog.

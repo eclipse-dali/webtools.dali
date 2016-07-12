@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -74,7 +74,7 @@ public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollecti
 	}
 
     @Override
-	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<ElementCollectionMapping2_0, String>(
 			this.getSubjectHolder(), 
 			ElementCollectionMapping2_0.SPECIFIED_TARGET_CLASS_PROPERTY,
@@ -101,17 +101,17 @@ public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollecti
     }
 
 	@Override
-	protected ListValueModel<String> buildClassListHolder() {
-		return this.buildDefaultProfilerListHolder();
+	protected ListValueModel<String> buildClassListModel() {
+		return this.buildDefaultProfilerListModel();
 	}
 
-	private ListValueModel<String> buildDefaultProfilerListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			this.buildDefaultProfilerHolder()
+	private ListValueModel<String> buildDefaultProfilerListModel() {
+		return new PropertyListValueModelAdapter<>(
+			this.buildDefaultProfilerModel()
 		);
 	}
 
-	private PropertyValueModel<String> buildDefaultProfilerHolder() {
+	private PropertyValueModel<String> buildDefaultProfilerModel() {
 		return new PropertyAspectAdapter<ElementCollectionMapping2_0, String>(this.getSubjectHolder(), ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -120,7 +120,7 @@ public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollecti
 		};
 	}
 
-	private String getDefaultValue(ElementCollectionMapping2_0 subject) {
+	String getDefaultValue(ElementCollectionMapping2_0 subject) {
 		String defaultValue = subject.getDefaultTargetClass();
 
 		if (defaultValue != null) {

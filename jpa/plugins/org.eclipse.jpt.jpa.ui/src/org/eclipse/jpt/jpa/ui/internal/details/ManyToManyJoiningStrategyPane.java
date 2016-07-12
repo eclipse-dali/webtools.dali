@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -73,11 +73,12 @@ public class ManyToManyJoiningStrategyPane
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void initializeLayout(Composite container) {
 		addRadioButton(
 			container,
 			JptJpaUiDetailsMessages.JOINING_MAPPED_BY_LABEL,
-			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyHolder(getSubjectHolder()),
+			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyModel(getSubjectHolder()),
 			null);
 
 		new MappedByJoiningStrategyPane(this, container);
@@ -85,13 +86,13 @@ public class ManyToManyJoiningStrategyPane
 		addRadioButton(
 			container,
 			JptJpaUiDetailsMessages.JOINING_JOIN_TABLE_JOINING_LABEL,
-			JoinTableJoiningStrategyPane.buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder()),
+			JoinTableJoiningStrategyPane.buildUsesJoinTableJoiningStrategyModel(getSubjectHolder()),
 			null);
 
 		new JoinTableJoiningStrategyPane(this, container);
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildUsesMappedByStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesMappedByStrategyModel() {
 		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
 				this.getSubjectHolder(), Relationship.STRATEGY_PROPERTY) {
 			@Override
@@ -110,7 +111,7 @@ public class ManyToManyJoiningStrategyPane
 		};
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildUsesJoinTableStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesJoinTableStrategyModel() {
 		return new PropertyAspectAdapter<SpecifiedJoinTableRelationship, Boolean>(
 				this.getSubjectHolder(), Relationship.STRATEGY_PROPERTY) {
 			@Override

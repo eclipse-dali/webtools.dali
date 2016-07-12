@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -30,7 +30,8 @@ import org.eclipse.swt.widgets.Control;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkReadOnlyTriStateCheckBox extends Pane<EclipseLinkReadOnly>
+public class EclipseLinkReadOnlyTriStateCheckBox
+	extends Pane<EclipseLinkReadOnly>
 {
 	private TriStateCheckBox checkBox;
 
@@ -62,13 +63,13 @@ public class EclipseLinkReadOnlyTriStateCheckBox extends Pane<EclipseLinkReadOnl
 		this.checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_LABEL,
-			buildSpecifiedReadOnlyHolder(),
-			buildReadOnlyStringHolder(),
+			buildSpecifiedReadOnlyModel(),
+			buildReadOnlyStringModel(),
 			null
 		);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildSpecifiedReadOnlyHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedReadOnlyModel() {
 		return new PropertyAspectAdapter<EclipseLinkReadOnly, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY)
@@ -85,20 +86,16 @@ public class EclipseLinkReadOnlyTriStateCheckBox extends Pane<EclipseLinkReadOnl
 		};
 	}
 
-	private PropertyValueModel<String> buildReadOnlyStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultReadOnlyHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildReadOnlyStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultReadOnlyModel(), READ_ONLY_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultReadOnlyHolder() {
+	private static final Transformer<Boolean, String> READ_ONLY_TRANSFORMER = new BooleanStringTransformer(
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_WITH_DEFAULT,
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_LABEL
+			);
+
+	private PropertyValueModel<Boolean> buildDefaultReadOnlyModel() {
 		return new PropertyAspectAdapter<EclipseLinkReadOnly, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY,

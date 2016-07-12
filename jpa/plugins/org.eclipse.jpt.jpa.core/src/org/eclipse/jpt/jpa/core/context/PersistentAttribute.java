@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 /**
  * Context persistent <em>attribute</em> (field or property).
  * <p>
+ * A <em>specified</em> attribute has a 
+ * textual representation in its underlying resource;
+ * while a <em>virtual</em> attribute is derived from another,
+ * overridden context model.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,7 +34,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
  * @since ... a while?
  */
 public interface PersistentAttribute
-	extends JpaStructureNode, AccessReference
+	extends JpaStructureNode, AccessReference, SpecifiedOrVirtual
 {
 	// ********** name **********
 
@@ -133,12 +138,6 @@ public interface PersistentAttribute
 	 * column's name, otherwise return <code>null</code>.
 	 */
 	String getPrimaryKeyColumnName();
-	
-	/**
-	 * Return whether the attribute has a textual representation
-	 * in its underlying resource.
-	 */
-	boolean isVirtual();
 
 	JavaSpecifiedPersistentAttribute getJavaPersistentAttribute();
 }

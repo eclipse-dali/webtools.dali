@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
  * with the configured version.
  * @see EclipseLinkJpaPlatformVersion#isCompatibleWithEclipseLinkVersion(String)
  */
-public class EclipseLinkVersionIsCompatibleWith
-	extends CriterionPredicate<JpaModel, String>
+public class EclipseLinkVersionIsCompatibleWith<M extends JpaModel>
+	extends CriterionPredicate<M, String>
 {
 	public EclipseLinkVersionIsCompatibleWith(String version) {
 		super(version);
@@ -28,7 +28,7 @@ public class EclipseLinkVersionIsCompatibleWith
 		}
 	}
 
-	public boolean evaluate(JpaModel jpaModel) {
+	public boolean evaluate(M jpaModel) {
 		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) jpaModel.getJpaPlatform().getJpaVersion();
 		return jpaVersion.isCompatibleWithEclipseLinkVersion(this.criterion);
 	}

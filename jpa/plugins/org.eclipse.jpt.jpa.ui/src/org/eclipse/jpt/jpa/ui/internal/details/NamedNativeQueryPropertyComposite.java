@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -47,17 +47,12 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see NamedNativeQuery
- * @see NamedNativeQueriesComposite - The parent container
- * @see ClassChooserPane
- *
  * @version 2.0
  * @since 2.0
  */
-public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
+public class NamedNativeQueryPropertyComposite
+	extends Pane<NamedNativeQuery>
 {
-	private ClassChooserPane<NamedNativeQuery> resultClassChooserPane;
-
 	/**
 	 * Creates a new <code>NamedNativeQueryPropertyComposite</code>.
 	 *
@@ -77,7 +72,7 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 		return new ClassChooserPane<NamedNativeQuery>(this, container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.RESULT_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -121,7 +116,7 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildQueryHolder() {
+	private ModifiablePropertyValueModel<String> buildQueryModel() {
 		return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -144,18 +139,18 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 	protected void initializeLayout(Composite container) {
 		// Name widgets
 		this.addLabel(container, JptJpaUiDetailsMessages.NAMED_QUERY_COMPOSITE_NAME_TEXT_LABEL);
-		this.addText(container, buildNameTextHolder());
+		this.addText(container, buildNameTextModel());
 
 		// Result class chooser
 		Hyperlink resultClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.NAMED_NATIVE_QUERY_PROPERTY_COMPOSITE_RESULT_CLASS);
-		this.resultClassChooserPane = this.addResultClassChooser(container, resultClassHyperlink);
+		this.addResultClassChooser(container, resultClassHyperlink);
 
 		// Query text area
 		Label queryLabel = this.addLabel(container, JptJpaUiDetailsMessages.NAMED_NATIVE_QUERY_PROPERTY_COMPOSITE_QUERY);
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		queryLabel.setLayoutData(gridData);
-		this.addMultiLineText(container, buildQueryHolder(), 4, null);
+		this.addMultiLineText(container, buildQueryModel(), 4, null);
 
 		QueryHintsComposite hintsComposite = new QueryHintsComposite(this, container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -163,9 +158,9 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 		hintsComposite.getControl().setLayoutData(gridData);
 	}
 	
-	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
 		return new PropertyAspectAdapter<NamedNativeQuery, String>(
-				getSubjectHolder(), Query.NAME_PROPERTY) {
+				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();

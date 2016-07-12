@@ -13,8 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
@@ -49,6 +47,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 		super(mappingModel, enabledModel, parentComposite, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	protected Control initializeIdSection(Composite container) {
 		container = this.addSubPane(container);
@@ -59,6 +58,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 		return container;
 	}	
 	
+	@SuppressWarnings("unused")
 	@Override
 	protected Control initializeTypeSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
@@ -67,28 +67,28 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
-			buildConverterBooleanHolder(null), 
+			buildConverterBooleanModel(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
-		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
+		PropertyValueModel<Converter> converterModel = buildConverterModel();
 		// Temporal
 		addRadioButton(
 			container, 
 			JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
-			buildConverterBooleanHolder(BaseTemporalConverter.class), 
+			buildConverterBooleanModel(BaseTemporalConverter.class), 
 			null);
-		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
+		new TemporalTypeCombo(this, this.buildTemporalConverterModel(converterModel), container);
 
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
 			container, 
 			JptJpaEclipseLinkUiDetailsMessages.TYPE_SECTION_CONVERTED, 
-			buildConverterBooleanHolder(EclipseLinkConvert.class), 
+			buildConverterBooleanModel(EclipseLinkConvert.class), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 		
-		PropertyValueModel<EclipseLinkConvert> convertModel = this.buildEclipseLinkConvertModel(converterHolder);
+		PropertyValueModel<EclipseLinkConvert> convertModel = this.buildEclipseLinkConvertModel(converterModel);
 		PropertyValueModel<Boolean> convertEnabledModel = PropertyValueModelTools.valueIsNotNull(convertModel);
 		Label convertLabel = this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERT_COMPOSITE_CONVERTER_NAME_LABEL, convertEnabledModel);
 		GridData gridData = new GridData();
@@ -100,7 +100,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 	}
 	
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
-		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, TransformerTools.nullCheck(EclipseLinkConvert.CONVERTER_TRANSFORMER));
+		return PropertyValueModelTools.transform(converterModel, EclipseLinkConvert.CONVERTER_TRANSFORMER);
 	}
 
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableModel() {
@@ -128,10 +128,10 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 	}
 
 	protected Control initializeConvertersSection(Composite container) {
-		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
+		return new EclipseLinkConvertersComposite(this, this.buildConverterContainerModel(), container).getControl();
 	}
 
-	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
+	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterContainerModel() {
 		return new PropertyAspectAdapter<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterContainer buildValue_() {

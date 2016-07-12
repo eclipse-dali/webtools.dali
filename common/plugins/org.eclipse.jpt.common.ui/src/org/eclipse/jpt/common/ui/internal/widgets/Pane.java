@@ -30,7 +30,6 @@ import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -301,7 +300,7 @@ public abstract class Pane<T extends Model> {
 	 * <em>enabled</em> state always matching that of its parent pane.
 	 */
 	private static PropertyValueModel<Boolean> buildDefaultEnabledModel() {
-		return new StaticPropertyValueModel<Boolean>(Boolean.TRUE);
+		return PropertyValueModelTools.staticPropertyValueModel(Boolean.TRUE);
 	}
 
 	/**

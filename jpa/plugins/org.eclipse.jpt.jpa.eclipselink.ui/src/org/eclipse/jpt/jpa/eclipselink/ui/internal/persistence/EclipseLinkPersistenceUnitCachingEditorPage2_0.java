@@ -14,6 +14,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
@@ -178,6 +179,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	private static final Predicate<SharedCacheMode2_0> SHARED_CACHE_MODE_ENABLED = new SharedCacheModeEnabled();
+
 	/* CU private */ static class SharedCacheModeEnabled
 		extends PredicateAdapter<SharedCacheMode2_0>
 	{
@@ -249,36 +251,39 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	protected IntegerCombo<EclipseLinkCaching> addDefaultCacheSizeCombo(Composite container) {
-		return new IntegerCombo<EclipseLinkCaching>(this, container) {	
-			@Override
-			protected String getHelpId() {
-				return EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_SIZE;
-			}
+		return new DefaultCacheSizeCombo(this, container);
+	}
 
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder()) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getDefaultCacheSizeDefault();
-					}
-				};
-			}
+	static class DefaultCacheSizeCombo
+		extends IntegerCombo<EclipseLinkCaching>
+	{
+		DefaultCacheSizeCombo(Pane<? extends EclipseLinkCaching> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
 
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return this.subject.getCacheSizeDefault();
-					}
+		@Override
+		protected String getHelpId() {
+			return EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_SIZE;
+		}
 
-					@Override
-					protected void setValue_(Integer value) {
-						this.subject.setCacheSizeDefault(value);
-					}
-				};
-			}
-		};
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkCaching.DEFAULT_CACHE_SIZE_DEFAULT_TRANSFORMER);
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return this.subject.getCacheSizeDefault();
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					this.subject.setCacheSizeDefault(value);
+				}
+			};
+		}
 	}
 }

@@ -20,6 +20,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.eclipse.jpt.common.utility.factory.Factory;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -506,6 +507,15 @@ public final class MapTools {
 
 
 	// ********** filter **********
+
+	/**
+	 * Return a new map with the values of the specified map
+	 * that are instances of the specified class.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K, V> HashMap<K, V> filter(Map<? extends K, ?> map, Class<V> clazz) {
+		return (HashMap<K, V>) filter(map, PredicateTools.instanceOf(clazz));
+	}
 
 	/**
 	 * Return a new map with the filtered

@@ -61,15 +61,15 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 
 
 	protected PropertyValueModel<Boolean> buildJoinColumnsPaneEnabledModel() {
-		return CollectionValueModelTools.and(this.buildTableIsNotVirtualModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
+		return CollectionValueModelTools.and(this.buildTableIsSpecifiedModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
 	}
 
-	protected PropertyValueModel<Boolean> buildTableIsNotVirtualModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildTableIsNotVirtualPredicate());
+	protected PropertyValueModel<Boolean> buildTableIsSpecifiedModel() {
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildTableIsSpecifiedPredicate(), false);
 	}
 
-	protected Predicate<T> buildTableIsNotVirtualPredicate() {
-		return PredicateTools.nullCheck(PredicateTools.not(this.buildTableIsVirtualPredicate()));
+	protected Predicate<T> buildTableIsSpecifiedPredicate() {
+		return PredicateTools.not(this.buildTableIsVirtualPredicate());
 	}
 
 	protected abstract Predicate<T> buildTableIsVirtualPredicate();
@@ -105,7 +105,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 		return new ListAspectAdapter<T, JoinColumn>(this.getSubjectHolder(), ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
-				return IterableTools.upCast(this.subject.getSpecifiedJoinColumns());
+				return IterableTools.upcast(this.subject.getSpecifiedJoinColumns());
 			}
 			@Override
 			protected int size_() {
@@ -337,7 +337,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 		}
 
 		public ListIterable<JoinColumn> getSpecifiedJoinColumns(T subject) {
-			return IterableTools.upCast(subject.getSpecifiedJoinColumns());
+			return IterableTools.upcast(subject.getSpecifiedJoinColumns());
 		}
 
 		public int getSpecifiedJoinColumnsSize(T subject) {

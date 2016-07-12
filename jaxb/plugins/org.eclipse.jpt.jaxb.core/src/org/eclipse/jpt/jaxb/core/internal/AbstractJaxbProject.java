@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -685,7 +685,7 @@ public abstract class AbstractJaxbProject
 //	}
 	
 	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
-		return IterableTools.downCast(IterableTools.transform(this.getJavaSourceJaxbFiles(), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downcast(IterableTools.transform(this.getJavaSourceJaxbFiles(), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 
 	/**
@@ -865,7 +865,7 @@ public abstract class AbstractJaxbProject
 	// **************** jaxb.index resources **********************************
 	
 	public Iterable<JaxbIndexResource> getJaxbIndexResources() {
-		return IterableTools.downCast(IterableTools.transform(getJaxbFiles(JaxbIndexResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downcast(IterableTools.transform(getJaxbFiles(JaxbIndexResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 	
 	public JaxbIndexResource getJaxbIndexResource(String packageName) {
@@ -881,7 +881,7 @@ public abstract class AbstractJaxbProject
 	// **************** jaxb.properties resources *****************************
 	
 	public Iterable<JaxbPropertiesResource> getJaxbPropertiesResources() {
-		return IterableTools.downCast(IterableTools.transform(getJaxbFiles(JaxbPropertiesResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
+		return IterableTools.downcast(IterableTools.transform(getJaxbFiles(JaxbPropertiesResource.CONTENT_TYPE), JaxbFile.RESOURCE_MODEL_TRANSFORMER));
 	}
 	
 	public JaxbPropertiesResource getJaxbPropertiesResource(String packageName) {

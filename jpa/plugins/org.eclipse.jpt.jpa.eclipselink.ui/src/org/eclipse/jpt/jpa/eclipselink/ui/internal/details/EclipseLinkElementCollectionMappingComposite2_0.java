@@ -13,8 +13,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Converter;
@@ -82,6 +80,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 		};
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected Composite buildBasicValueTypeSectionClient(Section section) {
 		Composite container = super.buildBasicValueTypeSectionClient(section);
@@ -106,15 +105,6 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 		return container;
 	}
 
-	protected PropertyValueModel<Converter> buildConverterModel() {
-		return new PropertyAspectAdapter<ConvertibleMapping, Converter>(this.getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Converter buildValue_() {
-				return this.subject.getConverter();
-			}
-		};
-	}
-
 	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
 		return new PropertyAspectAdapter<ConvertibleMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
@@ -132,7 +122,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 		};
 	}
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
-		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterModel, TransformerTools.nullCheck(EclipseLinkConvert.CONVERTER_TRANSFORMER));
+		return PropertyValueModelTools.transform(converterModel, EclipseLinkConvert.CONVERTER_TRANSFORMER);
 	}
 }
 

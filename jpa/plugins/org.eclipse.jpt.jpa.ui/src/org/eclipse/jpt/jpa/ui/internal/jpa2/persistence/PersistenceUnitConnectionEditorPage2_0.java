@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,11 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_0;
@@ -41,6 +43,7 @@ public class PersistenceUnitConnectionEditorPage2_0
 		super(subjectModel, parent, widgetFactory, resourceManager);
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
 		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
@@ -97,12 +100,7 @@ public class PersistenceUnitConnectionEditorPage2_0
 	}
 
 	private PropertyValueModel<Boolean> buildJdbcConnectionPropertiesPaneEnbaledModel() {
-		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeModel()) {
-			@Override
-			protected Boolean transform(PersistenceUnitTransactionType value) {
-				return Boolean.valueOf(value == PersistenceUnitTransactionType.RESOURCE_LOCAL);
-			}
-		};
+		return PropertyValueModelTools.valueIsIdentical(this.buildTransactionTypeModel(), PersistenceUnitTransactionType.RESOURCE_LOCAL);
 	}
 
 
@@ -175,11 +173,11 @@ public class PersistenceUnitConnectionEditorPage2_0
 		};
 	}
 
-	private void clearJTAProperties() {
+	void clearJTAProperties() {
 		this.getSubject().getPersistenceUnit().setJtaDataSource(null);
 	}
 
-	private void clearResourceLocalProperties() {
+	void clearResourceLocalProperties() {
 		Connection2_0 connection = this.getSubject();
 		connection.getPersistenceUnit().setNonJtaDataSource(null);
 		connection.setDriver(null);
@@ -207,15 +205,17 @@ public class PersistenceUnitConnectionEditorPage2_0
 	}
 
 	private PropertyValueModel<Boolean> buildJTADataSourceModel() {
-		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeModel()) {
-			@Override
-			protected Boolean transform(PersistenceUnitTransactionType value) {
-				return Boolean.valueOf(this.transform2(value));
-			}
-			private boolean transform2(PersistenceUnitTransactionType value) {
-				return value == null || value == PersistenceUnitTransactionType.JTA;
-			}
-		};
+		return PropertyValueModelTools.valueIsInSet_(this.buildTransactionTypeModel(), JTA_DATA_SOURCE_PREDICATE);
+	}
+
+	private static final Predicate<PersistenceUnitTransactionType> JTA_DATA_SOURCE_PREDICATE = new JTADataSourcePredicate();
+	static class JTADataSourcePredicate
+		extends PredicateAdapter<PersistenceUnitTransactionType>
+	{
+		@Override
+		public boolean evaluate(PersistenceUnitTransactionType type) {
+			return (type == null) || (type == PersistenceUnitTransactionType.JTA);
+		}
 	}
 
 	private ModifiablePropertyValueModel<String> buildNonJtaDataSourceModel() {
@@ -236,12 +236,7 @@ public class PersistenceUnitConnectionEditorPage2_0
 	}
 
 	private PropertyValueModel<Boolean> buildNonJTADataSourceModel() {
-		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeModel()) {
-			@Override
-			protected Boolean transform(PersistenceUnitTransactionType value) {
-				return Boolean.valueOf(value == PersistenceUnitTransactionType.RESOURCE_LOCAL);
-			}
-		};
+		return PropertyValueModelTools.valueIsIdentical(this.buildTransactionTypeModel(), PersistenceUnitTransactionType.RESOURCE_LOCAL);
 	}
 
 	private PropertyValueModel<PersistenceUnitTransactionType> buildTransactionTypeModel() {

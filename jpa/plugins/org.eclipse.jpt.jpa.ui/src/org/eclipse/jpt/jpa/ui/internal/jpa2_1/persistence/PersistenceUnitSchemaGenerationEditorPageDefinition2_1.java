@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
@@ -64,22 +62,12 @@ public class PersistenceUnitSchemaGenerationEditorPageDefinition2_1
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected void buildEditorPageContent(Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager, PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
 		new PersistenceUnitSchemaGenerationEditorPage2_1(buildSchemaGenerationModel(persistenceUnitModel), parent, widgetFactory, resourceManager);
 	}
 
 	public static PropertyValueModel<SchemaGeneration2_1> buildSchemaGenerationModel(PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
-		return new TransformationPropertyValueModel<PersistenceUnit, SchemaGeneration2_1>(persistenceUnitModel, SCHEMAGEN_TRANSFORMER);
-	}
-
-	public static final Transformer<PersistenceUnit, SchemaGeneration2_1> SCHEMAGEN_TRANSFORMER = new SchemaGenerationTransformer();
-
-	public static class SchemaGenerationTransformer
-		extends AbstractTransformer<PersistenceUnit, SchemaGeneration2_1>
-	{
-		@Override
-		protected SchemaGeneration2_1 transform_(PersistenceUnit persistenceUnit) {
-			return ((PersistenceUnit2_1) persistenceUnit).getSchemaGeneration();
-		}
+		return PropertyValueModelTools.transform(persistenceUnitModel, PersistenceUnit2_1.SCHEMA_GENERATION_TRANSFORMER);
 	}
 }

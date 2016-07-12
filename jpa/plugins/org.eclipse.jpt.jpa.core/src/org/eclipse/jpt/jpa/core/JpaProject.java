@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -162,9 +162,7 @@ public interface JpaProject
 	 * Return the root of the JPA project's context model.
 	 */
 	JpaContextRoot getContextRoot();
-
-	Transformer<JpaProject, JpaContextRoot> CONTEXT_ROOT_TRANSFORMER = new ContextRootTransformer();
-
+		Transformer<JpaProject, JpaContextRoot> CONTEXT_ROOT_TRANSFORMER = new ContextRootTransformer();
 	class ContextRootTransformer
 		extends TransformerAdapter<JpaProject, JpaContextRoot>
 	{
@@ -382,6 +380,15 @@ public interface JpaProject
 	 * Return the data source the JPA project is mapped to.
 	 */
 	JpaDataSource getDataSource();
+		Transformer<JpaProject, JpaDataSource> DATA_SOURCE_TRANSFORMER = new DataSourceTransformer();
+	class DataSourceTransformer
+		extends TransformerAdapter<JpaProject, JpaDataSource>
+	{
+		@Override
+		public JpaDataSource transform(JpaProject jpaProject) {
+			return jpaProject.getDataSource();
+		}
+	}
 
 	/**
 	 * Return the JPA project's connection.

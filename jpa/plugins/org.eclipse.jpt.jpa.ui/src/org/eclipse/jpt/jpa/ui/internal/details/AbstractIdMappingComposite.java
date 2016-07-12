@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,15 +13,18 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
@@ -33,12 +36,12 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractIdMappingComposite<T extends IdMapping>
-	extends Pane<T>
+public abstract class AbstractIdMappingComposite<M extends IdMapping>
+	extends Pane<M>
     implements JpaComposite
 {
 	public AbstractIdMappingComposite(
-			PropertyValueModel<? extends T> mappingModel,
+			PropertyValueModel<? extends M> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parentComposite,
 			WidgetFactory widgetFactory,
@@ -80,6 +83,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		});
 	}
 	
+	@SuppressWarnings("unused")
 	protected Control initializeTypeSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 		
@@ -87,37 +91,33 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		Button noConverterButton = addRadioButton(
 				container, 
 				JptJpaUiDetailsMessages.TYPE_SECTION_DEFAULT, 
-				buildConverterBooleanHolder(null), 
+				buildConverterBooleanModel(null), 
 				null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
-		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
+		PropertyValueModel<Converter> converterModel = buildConverterModel();
 		// Temporal
 		addRadioButton(
 				container, 
 				JptJpaUiDetailsMessages.TYPE_SECTION_TEMPORAL, 
-				buildConverterBooleanHolder(BaseTemporalConverter.class), 
+				buildConverterBooleanModel(BaseTemporalConverter.class), 
 				null);
-		new TemporalTypeCombo(this, this.buildTemporalConverterHolder(converterHolder), container);
+		new TemporalTypeCombo(this, this.buildTemporalConverterModel(converterModel), container);
 
 		return container;
 	}
 	
+	@SuppressWarnings("unused")
 	protected void initializeGenerationCollapsibleSection(Composite container) {
 		new IdMappingGenerationComposite(this, container);
 	}
 	
 	protected PropertyValueModel<? extends SpecifiedColumn> buildColumnModel() {
-		return new TransformationPropertyValueModel<T, SpecifiedColumn>(getSubjectHolder())  {
-			@Override
-			protected SpecifiedColumn transform_(T value) {
-				return value.getColumn();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), TransformerTools.downcast(ColumnMapping.COLUMN_TRANSFORMER));
 	}
 	
-	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanModel(final Class<? extends Converter> converterType) {
+		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
@@ -133,8 +133,8 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		};
 	}
 	
-	protected PropertyValueModel<Converter> buildConverterHolder() {
-		return new PropertyAspectAdapter<T, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	protected PropertyValueModel<Converter> buildConverterModel() {
+		return new PropertyAspectAdapter<M, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
 				return this.subject.getConverter();
@@ -142,21 +142,11 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		};
 	}
 	
-	protected PropertyValueModel<BaseTemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
-			@Override
-			protected BaseTemporalConverter transform_(Converter converter) {
-				return converter.getConverterType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
-			}
-		};
+	protected PropertyValueModel<BaseTemporalConverter> buildTemporalConverterModel(PropertyValueModel<Converter> converterModel) {
+		return PropertyValueModelTools.transform(converterModel, BaseTemporalConverter.CONVERTER_TRANSFORMER); 
 	}
 
 	protected PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<T, SpecifiedAccessReference>(getSubjectHolder()) {
-			@Override
-			protected SpecifiedAccessReference buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), AttributeMapping.PERSISTENT_ATTRIBUTE_TRANSFORMER);
 	}
 }

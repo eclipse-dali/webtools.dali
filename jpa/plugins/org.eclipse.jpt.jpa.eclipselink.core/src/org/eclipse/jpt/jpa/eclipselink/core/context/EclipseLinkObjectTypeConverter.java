@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * EclipseLink object type converter
@@ -112,4 +113,11 @@ public interface EclipseLinkObjectTypeConverter
 	String getDefaultObjectValue();
 	void setDefaultObjectValue(String value);
 		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValue"; //$NON-NLS-1$
+
+	/**
+	 * A transformer that returns an {@link EclipseLinkObjectTypeConverter} if the passed
+	 * in {@link EclipseLinkConverter} can be cast as such;
+	 * otherwise, it returns <code>null</code>.
+	 */
+	Transformer<EclipseLinkConverter, EclipseLinkObjectTypeConverter> CONVERTER_TRANSFORMER = new ConverterTransformer<>(EclipseLinkObjectTypeConverter.class);
 }

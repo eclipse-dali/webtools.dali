@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,19 +10,19 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -53,8 +53,8 @@ public class EclipseLinkWeavingPropertiesComposite
 		TriStateCheckBox weavingLazyCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL,
-			this.buildWeavingLazyHolder(),
-			this.buildWeavingLazyStringHolder(),
+			this.buildWeavingLazyModel(),
+			this.buildWeavingLazyStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		GridData gridData = new GridData();
@@ -65,8 +65,8 @@ public class EclipseLinkWeavingPropertiesComposite
 		TriStateCheckBox weavingFetchGroupsCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL,
-			this.buildWeavingFetchGroupsHolder(),
-			this.buildWeavingFetchGroupsStringHolder(),
+			this.buildWeavingFetchGroupsModel(),
+			this.buildWeavingFetchGroupsStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		gridData = new GridData();
@@ -77,8 +77,8 @@ public class EclipseLinkWeavingPropertiesComposite
 		TriStateCheckBox weavingInternalCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL,
-			this.buildWeavingInternalHolder(),
-			this.buildWeavingInternalStringHolder(),
+			this.buildWeavingInternalModel(),
+			this.buildWeavingInternalStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		gridData = new GridData();
@@ -89,8 +89,8 @@ public class EclipseLinkWeavingPropertiesComposite
 		TriStateCheckBox weavingEagerCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL,
-			this.buildWeavingEagerHolder(),
-			this.buildWeavingEagerStringHolder(),
+			this.buildWeavingEagerModel(),
+			this.buildWeavingEagerStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		gridData = new GridData();
@@ -101,8 +101,8 @@ public class EclipseLinkWeavingPropertiesComposite
 		TriStateCheckBox weavingChangeTrackingCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL,
-			this.buildWeavingChangeTrackingHolder(),
-			this.buildWeavingChangeTrackingStringHolder(),
+			this.buildWeavingChangeTrackingModel(),
+			this.buildWeavingChangeTrackingStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		gridData = new GridData();
@@ -164,7 +164,7 @@ public class EclipseLinkWeavingPropertiesComposite
 
 	// ********* weaving lazy **********
 	
-	private ModifiablePropertyValueModel<Boolean> buildWeavingLazyHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildWeavingLazyModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_LAZY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -178,20 +178,16 @@ public class EclipseLinkWeavingPropertiesComposite
 		};
 	}
 
-	private PropertyValueModel<String> buildWeavingLazyStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingLazyHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildWeavingLazyStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultWeavingLazyModel(), WEAVING_LAZY_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultWeavingLazyHolder() {
+
+	private static final Transformer<Boolean, String> WEAVING_LAZY_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultWeavingLazyModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.WEAVING_LAZY_PROPERTY)
@@ -209,7 +205,7 @@ public class EclipseLinkWeavingPropertiesComposite
 
 	// ********* weaving fetch groups **********
 
-	private ModifiablePropertyValueModel<Boolean> buildWeavingFetchGroupsHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildWeavingFetchGroupsModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -223,20 +219,16 @@ public class EclipseLinkWeavingPropertiesComposite
 		};
 	}
 
-	private PropertyValueModel<String> buildWeavingFetchGroupsStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingFetchGroupsHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildWeavingFetchGroupsStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultWeavingFetchGroupsModel(), WEAVING_FETCH_GROUPS_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultWeavingFetchGroupsHolder() {
+
+	private static final Transformer<Boolean, String> WEAVING_FETCH_GROUPS_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultWeavingFetchGroupsModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY)
@@ -254,7 +246,7 @@ public class EclipseLinkWeavingPropertiesComposite
 
 	// ********* weaving internal **********
 	
-	private ModifiablePropertyValueModel<Boolean> buildWeavingInternalHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildWeavingInternalModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -268,21 +260,16 @@ public class EclipseLinkWeavingPropertiesComposite
 		};
 	}
 
-	private PropertyValueModel<String> buildWeavingInternalStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingInternalHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildWeavingInternalStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultWeavingInternalModel(), WEAVING_INTERNAL_TRANSFORMER);
 	}
-	
-	
-	private PropertyValueModel<Boolean> buildDefaultWeavingInternalHolder() {
+
+	private static final Transformer<Boolean, String> WEAVING_INTERNAL_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultWeavingInternalModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY)
@@ -300,7 +287,7 @@ public class EclipseLinkWeavingPropertiesComposite
 
 	// ********* weaving eager **********
 	
-	private ModifiablePropertyValueModel<Boolean> buildWeavingEagerHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildWeavingEagerModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_EAGER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -314,20 +301,16 @@ public class EclipseLinkWeavingPropertiesComposite
 		};
 	}
 
-	private PropertyValueModel<String> buildWeavingEagerStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingEagerHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildWeavingEagerStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultWeavingEagerModel(), WEAVING_EAGER_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultWeavingEagerHolder() {
+
+	private static final Transformer<Boolean, String> WEAVING_EAGER_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultWeavingEagerModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.WEAVING_EAGER_PROPERTY)
@@ -345,7 +328,7 @@ public class EclipseLinkWeavingPropertiesComposite
 
 	// ********* weaving change tracking **********
 	
-	private ModifiablePropertyValueModel<Boolean> buildWeavingChangeTrackingHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildWeavingChangeTrackingModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -359,20 +342,16 @@ public class EclipseLinkWeavingPropertiesComposite
 		};
 	}
 
-	private PropertyValueModel<String> buildWeavingChangeTrackingStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingChangeTrackingHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildWeavingChangeTrackingStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultWeavingChangeTrackingModel(), WEAVING_CHANGE_TRACKING_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultWeavingChangeTrackingHolder() {
+
+	private static final Transformer<Boolean, String> WEAVING_CHANGE_TRACKING_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultWeavingChangeTrackingModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY)

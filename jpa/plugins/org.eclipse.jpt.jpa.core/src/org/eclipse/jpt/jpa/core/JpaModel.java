@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,8 +75,8 @@ public interface JpaModel
 	 * with the configured version.
 	 * @see JpaPlatform.Version#isCompatibleWithJpaVersion(String)
 	 */
-	class JpaVersionIsCompatibleWith
-		extends CriterionPredicate<JpaModel, String>
+	class JpaVersionIsCompatibleWith<M extends JpaModel>
+		extends CriterionPredicate<M, String>
 	{
 		public JpaVersionIsCompatibleWith(String version) {
 			super(version);
@@ -84,7 +84,7 @@ public interface JpaModel
 				throw new NullPointerException();
 			}
 		}
-		public boolean evaluate(JpaModel jpaModel) {
+		public boolean evaluate(M jpaModel) {
 			return jpaModel.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(this.criterion);
 		}
 	}

@@ -12,15 +12,13 @@ package org.eclipse.jpt.common.utility.internal.model.value.swing;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
-
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
-
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTStateChangeListenerWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -58,7 +56,7 @@ public class TreeModelAdapter<T>
 	 * the entire tree. Due to limitations in JTree, the root should
 	 * never be set to null while we have listeners.
 	 */
-	private final PropertyValueModel<TreeNodeValueModel<T>> rootHolder;
+	private final PropertyValueModel<TreeNodeValueModel<T>> rootModel;
 	private final PropertyChangeListener rootListener;
 
 	/**
@@ -117,12 +115,12 @@ public class TreeModelAdapter<T>
 	/**
 	 * Construct a tree model for the specified root.
 	 */
-	public TreeModelAdapter(PropertyValueModel<TreeNodeValueModel<T>> rootHolder) {
+	public TreeModelAdapter(PropertyValueModel<TreeNodeValueModel<T>> rootModel) {
 		super();
-		if (rootHolder == null) {
+		if (rootModel == null) {
 			throw new NullPointerException();
 		}
-		this.rootHolder = rootHolder;
+		this.rootModel = rootModel;
 		this.rootListener = this.buildRootListener();
 		this.nodeStateListener = this.buildNodeStateListener();
 		this.nodeValueListener = this.buildNodeValueListener();
@@ -135,7 +133,7 @@ public class TreeModelAdapter<T>
 	 * Construct a tree model for the specified root.
 	 */
 	public TreeModelAdapter(TreeNodeValueModel<T> root) {
-		this(new StaticPropertyValueModel<>(root));
+		this(PropertyValueModelTools.staticPropertyValueModel(root));
 	}
 
 
@@ -284,8 +282,8 @@ public class TreeModelAdapter<T>
 	 * in the underlying tree model.
 	 */
 	private void engageModel() {
-		this.rootHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
-		this.root = this.rootHolder.getValue();
+		this.rootModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
+		this.root = this.rootModel.getValue();
 		if (this.root == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}
@@ -308,7 +306,7 @@ public class TreeModelAdapter<T>
 		this.removeRoot();
 		this.disengageNode(this.root);
 		this.root = null;
-		this.rootHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
+		this.rootModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
 	}
 
 	/**
@@ -325,7 +323,7 @@ public class TreeModelAdapter<T>
 	 * non-root nodes.
 	 */
 	void rootChanged() {
-		TreeNodeValueModel<T> newRoot = this.rootHolder.getValue();
+		TreeNodeValueModel<T> newRoot = this.rootModel.getValue();
 		if (newRoot == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}

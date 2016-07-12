@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ public class EntityMappingsDetailsPageManager2_1
 	
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new QueriesComposite2_1(this, this.buildQueryContainerHolder(), container).getControl();
+		return new QueriesComposite2_1(this, this.buildQueryContainerModel(), container).getControl();
 	}
 
 }

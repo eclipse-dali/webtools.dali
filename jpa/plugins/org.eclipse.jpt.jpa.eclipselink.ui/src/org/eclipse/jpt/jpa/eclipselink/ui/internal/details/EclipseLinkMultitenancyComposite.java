@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -22,13 +21,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkSpecifiedTenantDiscriminatorColumn2_3;
@@ -37,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -68,8 +66,6 @@ import org.eclipse.swt.widgets.Group;
 public class EclipseLinkMultitenancyComposite
 	extends Pane<EclipseLinkMultitenancy2_3>
 {
-	private EclipseLinkTenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3> tenantDiscriminatorColumnsComposite;
-
 	public EclipseLinkMultitenancyComposite(Pane<?> parentPane,
 								PropertyValueModel<? extends EclipseLinkMultitenancy2_3> subjectHolder,
 								Composite parent) {
@@ -88,7 +84,7 @@ public class EclipseLinkMultitenancyComposite
 		this.addCheckBox(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_STRATEGY,
-			buildMultitenantHolder(),
+			buildMultitenantModel(),
 			null);
 		this.addMultitenantStrategyCombo(container).getControl();
 
@@ -96,8 +92,8 @@ public class EclipseLinkMultitenancyComposite
 		TriStateCheckBox includeCriteriaCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA,
-			buildIncludeCriteriaHolder(),
-			buildIncludeCriteriaStringHolder(),
+			buildIncludeCriteriaModel(),
+			buildIncludeCriteriaStringModel(),
 			EclipseLinkHelpContextIds.MULTITENANCY_INCLUDE_CRITERIA);
 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -122,10 +118,10 @@ public class EclipseLinkMultitenancyComposite
 			null
 		);
 
-		this.tenantDiscriminatorColumnsComposite = this.buildTenantDiscriminatorColumnsComposite(tenantDiscriminatorColumnGroupPane);
+		this.buildTenantDiscriminatorColumnsComposite(tenantDiscriminatorColumnGroupPane);
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildMultitenantHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildMultitenantModel() {
 		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_MULTITENANT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -190,7 +186,7 @@ public class EclipseLinkMultitenancyComposite
 		};
 	}
 
-	ModifiablePropertyValueModel<Boolean> buildIncludeCriteriaHolder() {
+	ModifiablePropertyValueModel<Boolean> buildIncludeCriteriaModel() {
 		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -204,20 +200,16 @@ public class EclipseLinkMultitenancyComposite
 		};
 	}
 
-	PropertyValueModel<String> buildIncludeCriteriaStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultIncludeCriteriaHolder()) {
-			@Override
-			protected String transform(Boolean b) {
-				if (b != null) {
-					String defaultStringValue = b.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA;
-			}
-		};
+	PropertyValueModel<String> buildIncludeCriteriaStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultIncludeCriteriaModel(), INCLUDE_CRITERIA_TRANSFORMER);
 	}
 
-	PropertyValueModel<Boolean> buildDefaultIncludeCriteriaHolder() {
+	private static final Transformer<Boolean, String> INCLUDE_CRITERIA_TRANSFORMER = new BooleanStringTransformer(
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA_WITH_DEFAULT,
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA
+			);
+
+	PropertyValueModel<Boolean> buildDefaultIncludeCriteriaModel() {
 		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(
 				getSubjectHolder(),
 				EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY,
@@ -256,7 +248,7 @@ public class EclipseLinkMultitenancyComposite
 		}
 
 		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(EclipseLinkMultitenancy2_3 subject) {
-			return IterableTools.upCast(subject.getDefaultTenantDiscriminatorColumns());
+			return IterableTools.upcast(subject.getDefaultTenantDiscriminatorColumns());
 		}
 
 		public int getDefaultTenantDiscriminatorColumnsSize(EclipseLinkMultitenancy2_3 subject) {
@@ -268,7 +260,7 @@ public class EclipseLinkMultitenancyComposite
 		}
 
 		public ListIterable<EclipseLinkTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns(EclipseLinkMultitenancy2_3 subject) {
-			return IterableTools.upCast(subject.getSpecifiedTenantDiscriminatorColumns());
+			return IterableTools.upcast(subject.getSpecifiedTenantDiscriminatorColumns());
 		}
 
 		public int getSpecifiedTenantDiscriminatorColumnsSize(EclipseLinkMultitenancy2_3 subject) {
@@ -293,7 +285,7 @@ public class EclipseLinkMultitenancyComposite
 	}
 
 	private static final Predicate<EclipseLinkMultitenancy2_3> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =
-			PredicateTools.nullCheck(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory2_4.VERSION));
+			new EclipseLinkVersionIsCompatibleWith<>(EclipseLinkJpaPlatformFactory2_4.VERSION);
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnModel() {
 		return ListValueModelTools.isNotEmptyModifiablePropertyValueModel(this.buildSpecifiedTenantDiscriminatorColumnsListModel(), new OverrideDefaultTenantDiscriminatorColumnModelSetValueClosure());
@@ -360,7 +352,7 @@ public class EclipseLinkMultitenancyComposite
 		return new ListAspectAdapter<EclipseLinkMultitenancy2_3, EclipseLinkSpecifiedTenantDiscriminatorColumn2_3>(this.getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkSpecifiedTenantDiscriminatorColumn2_3> getListIterable() {
-				return IterableTools.upCast(this.subject.getSpecifiedTenantDiscriminatorColumns());
+				return IterableTools.upcast(this.subject.getSpecifiedTenantDiscriminatorColumns());
 			}
 			@Override
 			protected int size_() {

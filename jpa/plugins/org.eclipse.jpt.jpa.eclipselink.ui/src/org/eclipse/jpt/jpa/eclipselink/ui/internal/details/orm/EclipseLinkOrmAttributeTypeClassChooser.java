@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 	}
 
 	@Override
-	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<AttributeMapping, String>(
 			getSubjectHolder(), 
 			OrmAttributeMapping.DEFAULT_ATTRIBUTE_TYPE_PROPERTY,
@@ -94,8 +94,8 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 		return getSubject().getJpaProject().getJavaProject();
 	}
 
-	private static PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
-		return new PropertyAspectAdapter<AttributeMapping, SpecifiedAccessReference>(mappingHolder) {
+	private static PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel(PropertyValueModel<? extends AttributeMapping> mappingModel) {
+		return new PropertyAspectAdapter<AttributeMapping, SpecifiedAccessReference>(mappingModel) {
 			@Override
 			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
@@ -103,9 +103,9 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 		};
 	}
 
-	private static PropertyValueModel<Boolean> buildVirtualAttributeModel(PropertyValueModel<? extends AttributeMapping> mappingHolder) {
+	private static PropertyValueModel<Boolean> buildVirtualAttributeModel(PropertyValueModel<? extends AttributeMapping> mappingModel) {
 		return new PropertyAspectAdapter<SpecifiedAccessReference, Boolean>(
-			buildAccessReferenceModel(mappingHolder),
+			buildAccessReferenceModel(mappingModel),
 			SpecifiedAccessReference.SPECIFIED_ACCESS_PROPERTY,
 			SpecifiedAccessReference.DEFAULT_ACCESS_PROPERTY) {
 			@Override

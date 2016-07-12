@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,11 +15,12 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -50,11 +51,11 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		super(subjectModel, parentComposite, resourceManager);
 	}
 
-	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionModel() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getColumnDefinition();
+				return this.subject.getColumnDefinition();
 			}
 
 			@Override
@@ -62,80 +63,71 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setColumnDefinition(value);
+				this.subject.setColumnDefinition(value);
 			}
 		};
 	}
 
-	private PropertyValueModel<String> buildDefaultNameHolder() {
-		return new TransformationPropertyValueModel<BaseJoinColumnStateObject, String>(getSubjectHolder()) {
-			@Override
-			protected String transform_(BaseJoinColumnStateObject value) {
-				String name = value.getDefaultName();
-
-				if (name == null) {
-					name = DEFAULT_KEY;
-				}
-				else {
-					name = DEFAULT_KEY + name;
-				}
-
-				return name;
-			}
-		};
+	private PropertyValueModel<String> buildDefaultNameModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), DEFAULT_NAME_TRANSFORMER);
 	}
 
-	private ListValueModel<String> buildDefaultNameListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			buildDefaultNameHolder()
+	private static final Transformer<BaseJoinColumnStateObject, String> DEFAULT_NAME_TRANSFORMER = new DefaultNameTransformer();
+	static class DefaultNameTransformer
+		extends TransformerAdapter<BaseJoinColumnStateObject, String>
+	{
+		@Override
+		public String transform(BaseJoinColumnStateObject column) {
+			String name = column.getDefaultName();
+			return (name == null) ? DEFAULT_KEY : DEFAULT_KEY + name;
+		}
+	}
+
+	private ListValueModel<String> buildDefaultNameListModel() {
+		return new PropertyListValueModelAdapter<>(
+			buildDefaultNameModel()
 		);
 	}
 
-	private PropertyValueModel<String> buildDefaultReferencedColumnNameHolder() {
-		return new TransformationPropertyValueModel<BaseJoinColumnStateObject, String>(getSubjectHolder()) {
-			@Override
-			protected String transform_(BaseJoinColumnStateObject value) {
-				String name = value.getDefaultReferencedColumnName();
-
-				if (name == null) {
-					name = DEFAULT_KEY;
-				}
-				else {
-					name = DEFAULT_KEY + name;
-				}
-
-				return name;
-			}
-		};
+	private PropertyValueModel<String> buildDefaultReferencedColumnNameModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), DEFAULT_REFERENCED_COLUMN_NAME_TRANSFORMER);
 	}
 
-	private ListValueModel<String> buildDefaultReferencedColumnNameListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			buildDefaultReferencedColumnNameHolder()
+	private static final Transformer<BaseJoinColumnStateObject, String> DEFAULT_REFERENCED_COLUMN_NAME_TRANSFORMER = new DefaultReferencedColumnNameTransformer();
+	static class DefaultReferencedColumnNameTransformer
+		extends TransformerAdapter<BaseJoinColumnStateObject, String>
+	{
+		@Override
+		public String transform(BaseJoinColumnStateObject column) {
+			String name = column.getDefaultReferencedColumnName();
+			return (name == null) ? DEFAULT_KEY : DEFAULT_KEY + name;
+		}
+	}
+
+	private ListValueModel<String> buildDefaultReferencedColumnNameListModel() {
+		return new PropertyListValueModelAdapter<>(
+			buildDefaultReferencedColumnNameModel()
 		);
 	}
 
-	private PropertyValueModel<String> buildDefaultTableHolder() {
-		return new TransformationPropertyValueModel<BaseJoinColumnStateObject, String>(getSubjectHolder()) {
-			@Override
-			protected String transform_(BaseJoinColumnStateObject value) {
-				String name = value.getDefaultTable();
-
-				if (name == null) {
-					name = DEFAULT_KEY;
-				}
-				else {
-					name = DEFAULT_KEY + name;
-				}
-
-				return name;
-			}
-		};
+	private PropertyValueModel<String> buildDefaultTableModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), DEFAULT_TABLE_TRANSFORMER);
 	}
 
-	private ListValueModel<String> buildDefaultTableListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			buildDefaultTableHolder()
+	private static final Transformer<BaseJoinColumnStateObject, String> DEFAULT_TABLE_TRANSFORMER = new DefaultTableTransformer();
+	static class DefaultTableTransformer
+		extends TransformerAdapter<BaseJoinColumnStateObject, String>
+	{
+		@Override
+		public String transform(BaseJoinColumnStateObject column) {
+			String name = column.getDefaultTable();
+			return (name == null) ? DEFAULT_KEY : DEFAULT_KEY + name;
+		}
+	}
+
+	private ListValueModel<String> buildDefaultTableListModel() {
+		return new PropertyListValueModelAdapter<>(
+			buildDefaultTableModel()
 		);
 	}
 
@@ -187,11 +179,11 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		}
 	}
 
-	private ModifiablePropertyValueModel<String> buildNameHolder() {
+	private ModifiablePropertyValueModel<String> buildNameModel() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getName();
+				return this.subject.getName();
 			}
 
 			@Override
@@ -204,29 +196,29 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 					value = null;
 				}
 
-				subject.setName(value);
+				this.subject.setName(value);
 			}
 		};
 	}
 
-	private ListValueModel<String> buildNameListHolder() {
+	private ListValueModel<String> buildNameListModel() {
 		return new ListAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.NAMES_LIST) {
 			@Override
 			protected ListIterator<String> listIterator_() {
-				return subject.names();
+				return this.subject.names();
 			}
 			@Override
 			protected int size_() {
-				return subject.columnsSize();
+				return this.subject.columnsSize();
 			}
 		};
 	}
 
-	private ListValueModel<String> buildNamesListHolder() {
-		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
-		holders.add(buildDefaultNameListHolder());
-		holders.add(buildNameListHolder());
-		return CompositeListValueModel.forModels(holders);
+	private ListValueModel<String> buildNamesListModel() {
+		ArrayList<ListValueModel<String>> models = new ArrayList<>(2);
+		models.add(buildDefaultNameListModel());
+		models.add(buildNameListModel());
+		return CompositeListValueModel.forModels(models);
 	}
 
 	private Transformer<String, String> buildNameStringConverter() {
@@ -237,11 +229,11 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		});
 	}
 
-	private ModifiablePropertyValueModel<String> buildReferencedColumnNameHolder() {
+	private ModifiablePropertyValueModel<String> buildReferencedColumnNameModel() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getReferencedColumnName();
+				return this.subject.getReferencedColumnName();
 			}
 
 			@Override
@@ -254,29 +246,29 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 					value = null;
 				}
 
-				subject.setReferencedColumnName(value);
+				this.subject.setReferencedColumnName(value);
 			}
 		};
 	}
 
-	private ListValueModel<String> buildReferencedColumnNameListHolder() {
+	private ListValueModel<String> buildReferencedColumnNameListModel() {
 		return new ListAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.REFERENCE_COLUMN_NAMES_LIST) {
 			@Override
 			protected ListIterator<String> listIterator_() {
-				return subject.referenceColumnNames();
+				return this.subject.referenceColumnNames();
 			}
 			@Override
 			protected int size_() {
-				return subject.referenceColumnsSize();
+				return this.subject.referenceColumnsSize();
 			}
 		};
 	}
 
-	private ListValueModel<String> buildReferencedColumnNamesListHolder() {
-		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
-		holders.add(buildDefaultReferencedColumnNameListHolder());
-		holders.add(buildReferencedColumnNameListHolder());
-		return CompositeListValueModel.forModels(holders);
+	private ListValueModel<String> buildReferencedColumnNamesListModel() {
+		ArrayList<ListValueModel<String>> models = new ArrayList<>(2);
+		models.add(buildDefaultReferencedColumnNameListModel());
+		models.add(buildReferencedColumnNameListModel());
+		return CompositeListValueModel.forModels(models);
 	}
 
 	private Transformer<String, String> buildReferencedColumnNameStringConverter() {
@@ -287,11 +279,11 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		});
 	}
 
-	private ModifiablePropertyValueModel<String> buildTableHolder() {
+	private ModifiablePropertyValueModel<String> buildTableModel() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.TABLE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getTable();
+				return this.subject.getTable();
 			}
 
 			@Override
@@ -304,25 +296,25 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 					value = null;
 				}
 
-				subject.setTable(value);
+				this.subject.setTable(value);
 			}
 		};
 	}
 
-	private ListValueModel<String> buildTableListHolder() {
-		return new ListAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), "") {
+	private ListValueModel<String> buildTableListModel() {
+		return new ListAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), StringTools.EMPTY_STRING) {
 			@Override
 			protected ListIterator<String> listIterator_() {
-				return subject.tables();
+				return this.subject.tables();
 			}
 		};
 	}
 
-	private ListValueModel<String> buildTablesListHolder() {
-		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
-		holders.add(buildDefaultTableListHolder());
-		holders.add(buildTableListHolder());
-		return CompositeListValueModel.forModels(holders);
+	private ListValueModel<String> buildTablesListModel() {
+		ArrayList<ListValueModel<String>> models = new ArrayList<>(2);
+		models.add(buildDefaultTableListModel());
+		models.add(buildTableListModel());
+		return CompositeListValueModel.forModels(models);
 	}
 
 	private Transformer<String, String> buildTableStringConverter() {
@@ -345,8 +337,8 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_NAME);
 		Combo nameCombo = this.addEditableCombo(
 			container,
-			buildNamesListHolder(),
-			buildNameHolder(),
+			buildNamesListModel(),
+			buildNameModel(),
 			buildNameStringConverter(),
 			JpaHelpContextIds.MAPPING_JOIN_COLUMN_NAME
 		);
@@ -357,8 +349,8 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_REFERENCED_COLUMN_NAME);
 		Combo referencedColumnNameCombo = this.addEditableCombo(
 			container,
-			buildReferencedColumnNamesListHolder(),
-			buildReferencedColumnNameHolder(),
+			buildReferencedColumnNamesListModel(),
+			buildReferencedColumnNameModel(),
 			buildReferencedColumnNameStringConverter(),
 			JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
@@ -371,8 +363,8 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 
 			Combo tableCombo = this.addEditableCombo(
 				container,
-				buildTablesListHolder(),
-				buildTableHolder(),
+				buildTablesListModel(),
+				buildTableModel(),
 				buildTableStringConverter(),
 				JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 			);
@@ -383,8 +375,8 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 			this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_TABLE);
 			Combo tableCombo = addCombo(
 				container,
-				buildTablesListHolder(),
-				buildTableHolder(),
+				buildTablesListModel(),
+				buildTableModel(),
 				buildTableStringConverter(),
 				JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 			);
@@ -396,7 +388,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 		this.addLabel(container, JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_COLUMN_DEFINITION);
 		this.addText(
 			container,
-			buildColumnDefinitionHolder()
+			buildColumnDefinitionModel()
 		);
 	}
 

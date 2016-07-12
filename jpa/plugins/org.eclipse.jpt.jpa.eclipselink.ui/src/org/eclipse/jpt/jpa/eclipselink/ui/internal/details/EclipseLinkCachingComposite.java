@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,21 +10,21 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -51,14 +51,10 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ExistenceTypeComposite                                                    |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Entity
  * @see EclipseLinkCaching
  * @see EclipseLinkJavaEntityComposite - The parent container
  * @see EclipseLinkCacheTypeComboViewer
  * @see EclipseLinkCacheSizeCombo
- * @see EclipseLinkAlwaysRefreshComposite
- * @see EclipseLinkRefreshOnlyIfNewerComposite
- * @see EclipseLinkDisableHitsComposite
  *
  * @version 2.1
  * @since 2.1
@@ -78,14 +74,15 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		return this.addSubPane(container, 2, 0, 0, 0, 0);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void initializeLayout(Composite container) {
 		//Shared Check box, uncheck this and the rest of the panel is disabled
 		TriStateCheckBox sharedCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL,
-			buildSpecifiedSharedHolder(),
-			buildSharedStringHolder(),
+			buildSpecifiedSharedModel(),
+			buildSharedStringModel(),
 			EclipseLinkHelpContextIds.CACHING_SHARED
 		);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -141,8 +138,8 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		TriStateCheckBox alwaysRefreshCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_LABEL,
-			buildAlwaysRefreshHolder(),
-			buildAlwaysRefreshStringHolder(),
+			buildAlwaysRefreshModel(),
+			buildAlwaysRefreshStringModel(),
 			sharedCacheEnableModel,
 			EclipseLinkHelpContextIds.CACHING_ALWAYS_REFRESH
 		);
@@ -153,8 +150,8 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		TriStateCheckBox refreshOnlyIfNewerCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_LABEL,
-			buildRefreshOnlyIfNewerHolder(),
-			buildRefreshOnlyIfNewerStringHolder(),
+			buildRefreshOnlyIfNewerModel(),
+			buildRefreshOnlyIfNewerStringModel(),
 			sharedCacheEnableModel,
 			EclipseLinkHelpContextIds.CACHING_REFRESH_ONLY_IF_NEWER
 		);
@@ -165,8 +162,8 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		TriStateCheckBox disableHitsCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_LABEL,
-			buildDisableHitsHolder(),
-			buildDisableHitsStringHolder(),
+			buildDisableHitsModel(),
+			buildDisableHitsStringModel(),
 			sharedCacheEnableModel,
 			EclipseLinkHelpContextIds.CACHING_DISABLE_HITS
 		);
@@ -193,7 +190,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}	
 	
-	private ModifiablePropertyValueModel<Boolean> buildSpecifiedSharedHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedSharedModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -207,20 +204,16 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}
 
-	private PropertyValueModel<String> buildSharedStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultSharedHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildSharedStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultSharedModel(), SHARED_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultSharedHolder() {
+
+	private static final Transformer<Boolean, String> SHARED_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CACHING_COMPOSITE_SHARED_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultSharedModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY,
@@ -236,7 +229,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildAlwaysRefreshHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildAlwaysRefreshModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -250,20 +243,16 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}
 
-	private PropertyValueModel<String> buildAlwaysRefreshStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultAlwaysRefreshHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildAlwaysRefreshStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultAlwaysRefreshModel(), ALWAYS_REFRESH_TRANSFORMER);
 	}
+
+	private static final Transformer<Boolean, String> ALWAYS_REFRESH_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_DEFAULT,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_LABEL
+		);
 	
-	private PropertyValueModel<Boolean> buildDefaultAlwaysRefreshHolder() {
+	private PropertyValueModel<Boolean> buildDefaultAlwaysRefreshModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
@@ -279,7 +268,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -293,22 +282,16 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}
 
-	private PropertyValueModel<String> buildRefreshOnlyIfNewerStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultRefreshOnlyIfNewerHolder()) {
-
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildRefreshOnlyIfNewerStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultRefreshOnlyIfNewerModel(), REFRESH_ONLY_IF_NEWER_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultRefreshOnlyIfNewerHolder() {
+
+	private static final Transformer<Boolean, String> REFRESH_ONLY_IF_NEWER_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_DEFAULT,
+			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultRefreshOnlyIfNewerModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY,
@@ -323,7 +306,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			}
 		};
 	}	
-	private ModifiablePropertyValueModel<Boolean> buildDisableHitsHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildDisableHitsModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -337,20 +320,16 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}
 
-	private PropertyValueModel<String> buildDisableHitsStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultDisableHitsHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildDisableHitsStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultDisableHitsModel(), DISABLE_HITS_TRANSFORMER);
 	}
+
+	private static final Transformer<Boolean, String> DISABLE_HITS_TRANSFORMER = new BooleanStringTransformer(
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_DEFAULT,
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_LABEL
+			);
 	
-	private PropertyValueModel<Boolean> buildDefaultDisableHitsHolder() {
+	private PropertyValueModel<Boolean> buildDefaultDisableHitsModel() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY,
@@ -478,5 +457,4 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			}
 		};
 	}
-
 }

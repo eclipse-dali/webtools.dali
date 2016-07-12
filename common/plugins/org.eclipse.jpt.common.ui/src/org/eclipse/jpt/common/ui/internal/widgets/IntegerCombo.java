@@ -13,8 +13,9 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -34,21 +35,15 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class IntegerCombo<T extends Model>
 	extends Pane<T>
 {
-
 	/**
 	 * The main (only) widget of this pane.
 	 */
 	private Combo comboBox;
 
-
-	private PropertyValueModel<String> defaultValueHolder;
+	private PropertyValueModel<String> defaultValueModel;
 	
-	// ********** constructors **********
 
-	protected IntegerCombo(
-						Pane<? extends T> parentPane,
-						Composite parent
-	) {
+	protected IntegerCombo(Pane<? extends T> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 
@@ -56,7 +51,7 @@ public abstract class IntegerCombo<T extends Model>
 		Pane<? extends T> parentPane,
 		Composite parent,
 		PropertyValueModel<Boolean> enabledModel
-		) {
+	) {
 		super(parentPane, parent, enabledModel);
 	}
 
@@ -77,7 +72,6 @@ public abstract class IntegerCombo<T extends Model>
 		super(parentPane, subjectHolder, enabledModel, parent);
 	}
 
-	// ********** initialization **********
 
 	@Override
 	protected boolean addsComposite() {
@@ -91,7 +85,7 @@ public abstract class IntegerCombo<T extends Model>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.defaultValueHolder = this.buildDefaultStringHolder();
+		this.defaultValueModel = this.buildDefaultStringModel();
 		this.comboBox = this.addIntegerCombo(container);
 
 		int margin = FieldDecorationRegistry.getDefault().getMaximumDecorationWidth();
@@ -108,11 +102,11 @@ public abstract class IntegerCombo<T extends Model>
 	protected Combo addIntegerCombo(Composite container) {
 		return this.addEditableCombo(
 				container,
-				buildDefaultListHolder(),
-				buildSelectedItemStringHolder(),
+				buildDefaultListModel(),
+				buildSelectedItemStringModel(),
 				TransformerTools.<String>objectToStringTransformer(),
 				getHelpId()
-				);
+			);
 		
 	}
 	
@@ -124,79 +118,79 @@ public abstract class IntegerCombo<T extends Model>
 		};
 	}
 
-	protected ListValueModel<String> buildDefaultListHolder() {
-		return new PropertyListValueModelAdapter<String>(this.defaultValueHolder);
+	protected ListValueModel<String> buildDefaultListModel() {
+		return new PropertyListValueModelAdapter<>(this.defaultValueModel);
 	}
 	
-	private PropertyValueModel<String> buildDefaultStringHolder() {
-		return new TransformationPropertyValueModel<Integer, String>(buildDefaultHolder()) {
-			@Override
-			protected String transform(Integer value) {
-				if (value == null) {
-					return JptCommonUiMessages.NONE_SELECTED;
-				}
-				return super.transform(value);
-			}
-			@Override
-			protected String transform_(Integer value) {
-				return getDefaultValueString(value);
-			}
-		};
+	private PropertyValueModel<String> buildDefaultStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultModel(), new DefaultStringTransformer());
+	}
+
+	class DefaultStringTransformer
+		extends TransformerAdapter<Integer, String>
+	{
+		@Override
+		public String transform(Integer integer) {
+			return (integer == null) ? JptCommonUiMessages.NONE_SELECTED : IntegerCombo.this.getDefaultValueString(integer);
+		}
 	}
 	
-	private String getDefaultValueString(Integer defaultValue) {
-		return NLS.bind(
-				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-				defaultValue
-			);
+	/* CU private */ String getDefaultValueString(Integer defaultValue) {
+		return NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultValue);
 	}
 	
 	/* CU private */ String getDefaultValueString() {
-		return this.defaultValueHolder.getValue();
+		return this.defaultValueModel.getValue();
 	}
 
-	protected ModifiablePropertyValueModel<String> buildSelectedItemStringHolder() {
-		return new TransformationModifiablePropertyValueModel<Integer, String>(buildSelectedItemHolder()) {
-			@Override
-			protected String transform(Integer v) {
-				return (v == null) ? getDefaultValueString() : v.toString();
+	protected ModifiablePropertyValueModel<String> buildSelectedItemStringModel() {
+		return PropertyValueModelTools.transform_(this.buildSelectedItemModel(), new SelectedItemStringModelGetTransformer(), new SelectedItemStringModelSetTransformer());
+	}
+
+	public class SelectedItemStringModelGetTransformer
+		extends TransformerAdapter<Integer, String>
+	{
+		@Override
+		public String transform(Integer integer) {
+			return (integer == null) ? IntegerCombo.this.getDefaultValueString() : integer.toString();
+		}
+	}
+
+	public class SelectedItemStringModelSetTransformer
+		extends AbstractTransformer<String, Integer>
+	{
+		@Override
+		protected Integer transform_(String string) {
+			try {
+				return Integer.valueOf(string);
+			} catch (NumberFormatException ex) {
+				// if the default is selected from the combo, set length to null
+				return null;
 			}
-			
-			@Override
-			protected Integer transformSetValue_(String v) {
-				try {
-					return Integer.valueOf(v);
-				} catch (NumberFormatException ex) {
-					// if the default is selected from the combo, set length to null
-					return null;
-				}
-			}
-		};
+		}
 	}
 
 	// ********** abstract methods **********
 	
 	protected abstract String getHelpId();
 
-	protected abstract PropertyValueModel<Integer> buildDefaultHolder();
+	protected abstract PropertyValueModel<Integer> buildDefaultModel();
 	
-	protected abstract ModifiablePropertyValueModel<Integer> buildSelectedItemHolder();
+	protected abstract ModifiablePropertyValueModel<Integer> buildSelectedItemModel();
 
 	// ********** combo-box verify listener callback **********
 
 	protected void verifyComboBox(VerifyEvent e) {
 		if (e.character == '\b') {
-			//ignore backspace
-			return;
+			return; // ignore backspace
 		}
-		if (e.text.equals("") //DefaultValueHandler sets the text to "" //$NON-NLS-1$
-				|| e.text.equals(this.defaultValueHolder.getValue())) { 
+		if (e.text.equals("") // DefaultValueHandler sets the text to "" //$NON-NLS-1$
+				|| e.text.equals(this.defaultValueModel.getValue())) { 
 			return;
 		}
 		try {
 			Integer.parseInt(e.text);
-		}
-		catch (NumberFormatException exception) {
+		} catch (NumberFormatException ex) {
 			e.doit = false;
 		}
 	}

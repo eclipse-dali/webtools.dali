@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * JPA LOB converter
@@ -25,4 +27,11 @@ public interface LobConverter
 	extends Converter
 {
 	Class<LobConverter> getConverterType();
+
+	/**
+	 * A transformer that returns an {@link LobConverter} if the passed
+	 * in {@link Converter} can be cast as such;
+	 * otherwise, it returns <code>null</code>.
+	 */
+	Transformer<Converter, LobConverter> CONVERTER_TRANSFORMER = new ConverterTransformer<>(LobConverter.class);
 }

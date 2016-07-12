@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.TypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -23,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
  * Context model corresponding to the XML resource model
  * {@link XmlJavaClassRef}, which corresponds to the <code>class<code> element
  * in the <code>persistence.xml</code> file.
- * This is also used for "implied" class refs; i.e. class refs that are not
+ * This is also used for <em>virtual</em> class refs; i.e. class refs that are not
  * explicitly listed in the <code>persistence.xml</code> file.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -39,7 +40,8 @@ public interface ClassRef
 	extends
 		JpaStructureNode,
 		DeleteTypeRefactoringParticipant,
-		TypeRefactoringParticipant
+		TypeRefactoringParticipant,
+		SpecifiedOrVirtual
 {
 	Class<ClassRef> getStructureType();
 
@@ -47,13 +49,6 @@ public interface ClassRef
 	 * Return whether the class ref is a reference to the specified type.
 	 */
 	boolean isFor(String typeName);
-
-	/**
-	 * Return <code>true</code> if the mapping file ref is <em>virtual</em>;
-	 * return <code>false</code> if the mapping file ref is represented by an
-	 * entry in the <code>persistence.xml</code> file.
-	 */
-	boolean isVirtual();
 
 	/**
 	 * Return the class ref's corresponding resource class ref.

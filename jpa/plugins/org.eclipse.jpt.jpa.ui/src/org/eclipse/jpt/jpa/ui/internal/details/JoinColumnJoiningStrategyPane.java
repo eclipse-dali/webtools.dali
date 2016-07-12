@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,8 +42,7 @@ import org.eclipse.swt.widgets.Control;
  * @since 2.1
  */
 public class JoinColumnJoiningStrategyPane
-	extends AbstractJoiningStrategyPane
-		<JoinColumnRelationship, JoinColumnRelationshipStrategy>
+	extends AbstractJoiningStrategyPane<JoinColumnRelationship>
 {
 	private final boolean includeOverrideCheckBox;
 	
@@ -106,7 +105,7 @@ public class JoinColumnJoiningStrategyPane
 
 	@Override
 	protected Control buildStrategyDetailsComposite(Composite parent) {
-		PropertyValueModel<JoinColumnRelationshipStrategy> joiningStrategyModel = this.buildJoinColumnJoiningStrategyHolder();
+		PropertyValueModel<JoinColumnRelationshipStrategy> joiningStrategyModel = this.buildJoinColumnJoiningStrategyModel();
 
 		return this.includeOverrideCheckBox ?
 				new JoiningStrategyJoinColumnsWithOverrideOptionComposite(this, joiningStrategyModel, parent).getControl() :
@@ -114,11 +113,11 @@ public class JoinColumnJoiningStrategyPane
 	}
 
 	@Override
-	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
-		return buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder());
+	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyModel() {
+		return buildUsesJoinColumnJoiningStrategyModel(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<JoinColumnRelationshipStrategy> buildJoinColumnJoiningStrategyHolder() {
+	protected PropertyValueModel<JoinColumnRelationshipStrategy> buildJoinColumnJoiningStrategyModel() {
 		return new PropertyAspectAdapter
 				<JoinColumnRelationship, JoinColumnRelationshipStrategy>(
 					getSubjectHolder()) {
@@ -129,7 +128,7 @@ public class JoinColumnJoiningStrategyPane
 		};
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends JoinColumnRelationship> subjectHolder) {
+	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyModel(PropertyValueModel<? extends JoinColumnRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<JoinColumnRelationship, Boolean>(
 				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override

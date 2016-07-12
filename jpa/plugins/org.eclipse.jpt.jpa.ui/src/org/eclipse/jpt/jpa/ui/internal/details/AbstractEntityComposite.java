@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,12 +13,14 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
@@ -86,12 +88,12 @@ import org.eclipse.ui.forms.widgets.Section;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  */
-public abstract class AbstractEntityComposite<T extends Entity>
-	extends Pane<T>
+public abstract class AbstractEntityComposite<E extends Entity>
+	extends Pane<E>
     implements JpaComposite
 {
 	protected AbstractEntityComposite(
-			PropertyValueModel<? extends T> entityModel,
+			PropertyValueModel<? extends E> entityModel,
 			Composite parentComposite,
 	        WidgetFactory widgetFactory,
 	        ResourceManager resourceManager) {
@@ -118,6 +120,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 		section.setClient(this.initializeEntitySection(section));
 	}
 	
+	@SuppressWarnings("unused")
 	protected Control initializeEntitySection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
@@ -139,7 +142,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 	
 	protected PropertyValueModel<IdClassReference> buildIdClassReferenceModel() {
-		return new PropertyAspectAdapter<T, IdClassReference>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<E, IdClassReference>(getSubjectHolder()) {
 			@Override
 			protected IdClassReference buildValue_() {
 				return this.subject.getIdClassReference();
@@ -167,7 +170,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 	
 	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapter<T, QueryContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<E, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
 				return this.subject.getQueryContainer();
@@ -231,7 +234,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 	
 	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
-		return new PropertyAspectAdapter<T, GeneratorContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<E, GeneratorContainer>(getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
 				return this.subject.getGeneratorContainer();
@@ -258,12 +261,6 @@ public abstract class AbstractEntityComposite<T extends Entity>
 
 
 	protected PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel() {
-		return new PropertyAspectAdapter<T, SpecifiedAccessReference>(getSubjectHolder()) {
-			@Override
-			protected SpecifiedAccessReference buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), TypeMapping.PERSISTENT_TYPE_TRANSFORMER);
 	}
-
 }

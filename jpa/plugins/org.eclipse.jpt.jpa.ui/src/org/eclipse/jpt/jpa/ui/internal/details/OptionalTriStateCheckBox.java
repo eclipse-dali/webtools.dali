@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -61,13 +61,13 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 		this.checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL,
-			buildSpecifiedOptionalHolder(),
-			buildOptionalStringHolder(),
+			buildSpecifiedOptionalModel(),
+			buildOptionalStringModel(),
 			JpaHelpContextIds.MAPPING_OPTIONAL
 		);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildSpecifiedOptionalHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedOptionalModel() {
 		return new PropertyAspectAdapter<OptionalMapping, Boolean>(getSubjectHolder(), OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -81,20 +81,16 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 		};
 	}
 
-	private PropertyValueModel<String> buildOptionalStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultOptionalHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildOptionalStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultOptionalModel(), OPTIONAL_TRANSFORMER);
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultOptionalHolder() {
+
+	private static final Transformer<Boolean, String> OPTIONAL_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL_DEFAULT,
+			JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultOptionalModel() {
 		return new PropertyAspectAdapter<OptionalMapping, Boolean>(
 			getSubjectHolder(),
 			OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY,

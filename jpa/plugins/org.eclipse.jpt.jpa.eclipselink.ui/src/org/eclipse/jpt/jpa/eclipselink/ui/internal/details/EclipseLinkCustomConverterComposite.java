@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -54,13 +53,13 @@ public class EclipseLinkCustomConverterComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.addLabel(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_NAME_TEXT_LABEL);
-		this.addText(container, buildNameTextHolder());
+		this.addText(container, buildNameTextModel());
 		
 		Hyperlink hyperlink = this.addHyperlink(container, JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_CONVERTER_COMPOSITE_CLASS_LABEL);
 		this.addClassChooser(container, hyperlink);
 	}
 	
-	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
 		return new PropertyAspectAdapter<EclipseLinkCustomConverter, String>(
 				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
@@ -84,7 +83,7 @@ public class EclipseLinkCustomConverterComposite
 		return new ClassChooserPane<EclipseLinkCustomConverter>(this, container, hyperlink) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkCustomConverter, String>(getSubjectHolder(), EclipseLinkConverterClassConverter.CONVERTER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {

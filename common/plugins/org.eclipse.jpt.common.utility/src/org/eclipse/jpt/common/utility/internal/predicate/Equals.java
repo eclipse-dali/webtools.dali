@@ -18,12 +18,14 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * will evaluate to <code>true</code> if the variable is also
  * <code>null</code>.
  * 
+ * @param <V> the type of objects to be evaluated
+ * 
  * @see IsIdentical
  * @see IsNotNull
  * @see IsNull
  */
-public class Equals
-	extends CriterionPredicate<Object, Object>
+public class Equals<V>
+	extends CriterionPredicate<V, Object>
 {
 	/**
 	 * Construct a predicate that will evaluate to <code>true</code> if the
@@ -42,7 +44,7 @@ public class Equals
 		super(criterion);
 	}
 
-	public boolean evaluate(Object variable) {
+	public boolean evaluate(V variable) {
 		return ObjectTools.equals(variable, this.criterion);
 	}
 }

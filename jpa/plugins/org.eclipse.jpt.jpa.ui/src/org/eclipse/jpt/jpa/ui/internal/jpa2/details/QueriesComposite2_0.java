@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,8 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
@@ -42,11 +41,6 @@ public class QueriesComposite2_0
 	}
 	
 	protected PropertyValueModel<NamedQuery2_0> buildSelectedNamedQuery2_0Model() {
-		return new TransformationPropertyValueModel<Query, NamedQuery2_0>(this.getSelectedQueryModel()) {
-			@Override
-			protected NamedQuery2_0 transform_(Query value) {
-				return (value instanceof NamedQuery2_0) ? (NamedQuery2_0) value : null;
-			}
-		};
+		return PropertyValueModelTools.filter(this.getSelectedQueryModel(), NamedQuery2_0.class);
 	}
 }

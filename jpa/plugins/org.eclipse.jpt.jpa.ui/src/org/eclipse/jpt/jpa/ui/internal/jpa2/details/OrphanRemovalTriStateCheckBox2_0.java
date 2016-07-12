@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -34,9 +34,6 @@ import org.eclipse.swt.widgets.Control;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link OrphanRemovable2_0}
- * @see {@link JavaOneToOneMappingComposite2_0} - A container of this widget
- * @see {@link OrmOneToOneMappingComposite2_0} - A container of this widget
  */
 public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>
 {
@@ -70,13 +67,13 @@ public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>
 		this.checkBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL,
-			this.buildSpecifiedOrphanRemovalHolder(),
-			this.buildOrphanRemovalStringHolder(),
+			this.buildSpecifiedOrphanRemovalModel(),
+			this.buildOrphanRemovalStringModel(),
 			null		// TODO
 		);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildSpecifiedOrphanRemovalHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedOrphanRemovalModel() {
 		return new PropertyAspectAdapter<OrphanRemovable2_0, Boolean>(
 				this.getSubjectHolder(), 
 				OrphanRemovable2_0.DEFAULT_ORPHAN_REMOVAL_PROPERTY,
@@ -93,21 +90,16 @@ public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>
 		};
 	}
 
-	private PropertyValueModel<String> buildOrphanRemovalStringHolder() {
-		
-		return new TransformationPropertyValueModel<Boolean, String>(this.buildDefaultOrphanRemovalHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildOrphanRemovalStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultOrphanRemovalModel(), ORPHAN_REMOVAL_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultOrphanRemovalHolder() {
+	private static final Transformer<Boolean, String> ORPHAN_REMOVAL_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL_DEFAULT,
+			JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultOrphanRemovalModel() {
 		return new PropertyAspectAdapter<OrphanRemovable2_0, Boolean>(
 			this.getSubjectHolder(),
 			OrphanRemovable2_0.SPECIFIED_ORPHAN_REMOVAL_PROPERTY,

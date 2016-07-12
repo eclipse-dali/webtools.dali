@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,28 +43,28 @@ public class OrderingComposite
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		PropertyValueModel<Orderable> orderableHolder = buildOrderableModel();
+		PropertyValueModel<Orderable> orderableModel = buildOrderableModel();
 		
 		// No Ordering radio button
 		addRadioButton(
 				container,
 				JptJpaUiDetailsMessages.ORDERING_COMPOSITE_NONE,
-				buildNoOrderingHolder(orderableHolder),
+				buildNoOrderingModel(orderableModel),
 				JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING);
 		
-		ModifiablePropertyValueModel<Boolean> orderByOrderingHolder = buildOrderByOrderingHolder(orderableHolder);
+		ModifiablePropertyValueModel<Boolean> orderByOrderingModel = buildOrderByOrderingModel(orderableModel);
 		
 		// Order by radio button
 		addRadioButton(
 				container,
 				JptJpaUiDetailsMessages.ORDERING_COMPOSITE_ORDER_BY,
-				orderByOrderingHolder,
+				orderByOrderingModel,
 				JpaHelpContextIds.MAPPING_ORDER_BY_ORDERING);
 		
 		OrderByComposite orderByComposite = new OrderByComposite(
 			this,
-			buildOrderByHolder(orderableHolder),
-			orderByOrderingHolder, 
+			buildOrderByModel(orderableModel),
+			orderByOrderingModel, 
 			container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = 16;

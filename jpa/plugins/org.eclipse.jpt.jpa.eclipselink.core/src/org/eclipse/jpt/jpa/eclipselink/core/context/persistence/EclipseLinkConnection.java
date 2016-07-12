@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -42,6 +44,16 @@ public interface EclipseLinkConnection
 		static final Boolean DEFAULT_CACHE_STATEMENTS = Boolean.FALSE;
 
 	Integer getDefaultCacheStatementsSize();
+	Transformer<EclipseLinkConnection, Integer> DEFAULT_CACHE_STATEMENTS_SIZE_TRANSFORMER = new DefaultCacheStatementsSizeTransformer();
+	class DefaultCacheStatementsSizeTransformer
+		extends TransformerAdapter<EclipseLinkConnection, Integer>
+	{
+		@Override
+		public Integer transform(EclipseLinkConnection connection) {
+			return connection.getDefaultCacheStatementsSize();
+		}
+	}
+
 	Integer getCacheStatementsSize();
 	void setCacheStatementsSize(Integer newCacheStatementsSize);
 		static final String CACHE_STATEMENTS_SIZE_PROPERTY = "cacheStatementsSize"; //$NON-NLS-1$
@@ -98,6 +110,16 @@ public interface EclipseLinkConnection
 		static final Boolean DEFAULT_READ_CONNECTIONS_SHARED = Boolean.FALSE;
 
 	Integer getDefaultReadConnectionsMin();
+	Transformer<EclipseLinkConnection, Integer> DEFAULT_READ_CONNECTIONS_MIN_TRANSFORMER = new DefaultReadConnectionsMinTransformer();
+	class DefaultReadConnectionsMinTransformer
+		extends TransformerAdapter<EclipseLinkConnection, Integer>
+	{
+		@Override
+		public Integer transform(EclipseLinkConnection connection) {
+			return connection.getDefaultReadConnectionsMin();
+		}
+	}
+
 	Integer getReadConnectionsMin();
 	void setReadConnectionsMin(Integer newReadConnectionsMin);
 		static final String READ_CONNECTIONS_MIN_PROPERTY = "readConnectionsMin"; //$NON-NLS-1$
@@ -106,6 +128,16 @@ public interface EclipseLinkConnection
 		static final Integer DEFAULT_READ_CONNECTIONS_MIN = Integer.valueOf(2);
 
 	Integer getDefaultReadConnectionsMax();
+	Transformer<EclipseLinkConnection, Integer> DEFAULT_READ_CONNECTIONS_MAX_TRANSFORMER = new DefaultReadConnectionsMaxTransformer();
+	class DefaultReadConnectionsMaxTransformer
+		extends TransformerAdapter<EclipseLinkConnection, Integer>
+	{
+		@Override
+		public Integer transform(EclipseLinkConnection connection) {
+			return connection.getDefaultReadConnectionsMax();
+		}
+	}
+
 	Integer getReadConnectionsMax();
 	void setReadConnectionsMax(Integer newReadConnectionsMax);
 		static final String READ_CONNECTIONS_MAX_PROPERTY = "readConnectionsMax"; //$NON-NLS-1$
@@ -114,6 +146,16 @@ public interface EclipseLinkConnection
 		static final Integer DEFAULT_READ_CONNECTIONS_MAX = Integer.valueOf(2);
 
 	Integer getDefaultWriteConnectionsMin();
+	Transformer<EclipseLinkConnection, Integer> DEFAULT_WRITE_CONNECTIONS_MIN_TRANSFORMER = new DefaultWriteConnectionsMinTransformer();
+	class DefaultWriteConnectionsMinTransformer
+		extends TransformerAdapter<EclipseLinkConnection, Integer>
+	{
+		@Override
+		public Integer transform(EclipseLinkConnection connection) {
+			return connection.getDefaultWriteConnectionsMin();
+		}
+	}
+
 	Integer getWriteConnectionsMin();
 	void setWriteConnectionsMin(Integer newWriteConnectionsMin);
 		static final String WRITE_CONNECTIONS_MIN_PROPERTY = "writeConnectionsMin"; //$NON-NLS-1$
@@ -122,6 +164,16 @@ public interface EclipseLinkConnection
 		static final Integer DEFAULT_WRITE_CONNECTIONS_MIN = Integer.valueOf(5);
 
 	Integer getDefaultWriteConnectionsMax();
+	Transformer<EclipseLinkConnection, Integer> DEFAULT_WRITE_CONNECTIONS_MAX_TRANSFORMER = new DefaultWriteConnectionsMaxTransformer();
+	class DefaultWriteConnectionsMaxTransformer
+		extends TransformerAdapter<EclipseLinkConnection, Integer>
+	{
+		@Override
+		public Integer transform(EclipseLinkConnection connection) {
+			return connection.getDefaultWriteConnectionsMax();
+		}
+	}
+
 	Integer getWriteConnectionsMax();
 	void setWriteConnectionsMax(Integer newWriteConnectionsMax);
 		static final String WRITE_CONNECTIONS_MAX_PROPERTY = "writeConnectionsMax"; //$NON-NLS-1$

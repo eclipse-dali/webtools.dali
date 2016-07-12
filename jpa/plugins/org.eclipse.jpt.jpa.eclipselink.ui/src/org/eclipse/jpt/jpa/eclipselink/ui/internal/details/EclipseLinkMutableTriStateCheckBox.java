@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -31,7 +31,8 @@ import org.eclipse.swt.widgets.Control;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkMutableTriStateCheckBox extends Pane<EclipseLinkMutable>
+public class EclipseLinkMutableTriStateCheckBox
+	extends Pane<EclipseLinkMutable>
 {
 	private TriStateCheckBox checkBox;
 
@@ -63,13 +64,13 @@ public class EclipseLinkMutableTriStateCheckBox extends Pane<EclipseLinkMutable>
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL,
-			buildMutableHolder(),
-			buildMutableStringHolder(),
+			buildMutableModel(),
+			buildMutableStringModel(),
 			null
 		);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildMutableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildMutableModel() {
 		return new PropertyAspectAdapter<EclipseLinkMutable, Boolean>(getSubjectHolder(), EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -84,20 +85,16 @@ public class EclipseLinkMutableTriStateCheckBox extends Pane<EclipseLinkMutable>
 		};
 	}
 
-	private PropertyValueModel<String> buildMutableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultMutableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildMutableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultMutableModel(), MUTABLE_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultMutableHolder() {
+	private static final Transformer<Boolean, String> MUTABLE_TRANSFORMER = new BooleanStringTransformer(
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL_DEFAULT,
+				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL
+			);
+
+	private PropertyValueModel<Boolean> buildDefaultMutableModel() {
 		return new PropertyAspectAdapter<EclipseLinkMutable, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY,

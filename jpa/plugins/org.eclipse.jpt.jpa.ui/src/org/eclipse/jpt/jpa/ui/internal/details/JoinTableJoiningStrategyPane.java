@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,15 +11,16 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -36,17 +37,16 @@ import org.eclipse.swt.widgets.Control;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link SpecifiedJoinTableRelationship}
- * @see {@link SpecifiedJoinTableRelationshipStrategy}
- * @see {@link ManyToOneJoiningStrategyPane}
- * @see {@link ManyToManyJoiningStrategyPane}
+ * @see SpecifiedJoinTableRelationship
+ * @see SpecifiedJoinTableRelationshipStrategy
+ * @see ManyToOneJoiningStrategyPane
+ * @see ManyToManyJoiningStrategyPane
  *
  * @version 2.3
  * @since 2.1
  */
 public class JoinTableJoiningStrategyPane
-	extends AbstractJoiningStrategyPane
-		<JoinTableRelationship, JoinTableRelationshipStrategy>
+	extends AbstractJoiningStrategyPane<JoinTableRelationship>
 {
 	public JoinTableJoiningStrategyPane(
 			Pane<? extends JoinTableRelationship> parentPane, 
@@ -63,16 +63,16 @@ public class JoinTableJoiningStrategyPane
 
 	@Override
 	protected Control buildStrategyDetailsComposite(Composite parent) {
-		JoinTableComposite joinTableComposite = new JoinTableComposite(this, buildJoinTableHolder(), buildJoinTablePaneEnablerHolder(), parent);
+		JoinTableComposite joinTableComposite = new JoinTableComposite(this, buildJoinTableModel(), buildJoinTablePaneEnablerModel(), parent);
 		return joinTableComposite.getControl();
 	}
 
 	@Override
-	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
-		return buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder());
+	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyModel() {
+		return buildUsesJoinTableJoiningStrategyModel(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<JoinTableRelationshipStrategy> buildJoinTableJoiningStrategyHolder() {
+	protected PropertyValueModel<JoinTableRelationshipStrategy> buildJoinTableJoiningStrategyModel() {
 		return new PropertyAspectAdapter
 				<JoinTableRelationship, JoinTableRelationshipStrategy>(
 					getSubjectHolder()) {
@@ -83,9 +83,9 @@ public class JoinTableJoiningStrategyPane
 		};
 	}
 
-	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
+	protected PropertyValueModel<JoinTable> buildJoinTableModel() {
 		return new PropertyAspectAdapter<JoinTableRelationshipStrategy, JoinTable>(
-				this.buildJoinTableJoiningStrategyHolder(), JoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
+				this.buildJoinTableJoiningStrategyModel(), JoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
 			@Override
 			protected JoinTable buildValue_() {
 				return this.subject.getJoinTable();
@@ -93,7 +93,7 @@ public class JoinTableJoiningStrategyPane
 		};
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyHolder(PropertyValueModel<? extends JoinTableRelationship> subjectHolder) {
+	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyModel(PropertyValueModel<? extends JoinTableRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
 			subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
@@ -115,12 +115,7 @@ public class JoinTableJoiningStrategyPane
 		};
 	}
 
-	private TransformationPropertyValueModel<JoinTableRelationship, Boolean> buildJoinTablePaneEnablerHolder() {
-		return new TransformationPropertyValueModel<JoinTableRelationship, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform_(JoinTableRelationship v) {
-				return Boolean.valueOf(!v.isVirtual());
-			}
-		};
+	private PropertyValueModel<Boolean> buildJoinTablePaneEnablerModel() {
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
 	}
 }

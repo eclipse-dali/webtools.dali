@@ -26,6 +26,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -171,12 +172,21 @@ public final class ListTools {
 	// ********** filter **********
 
 	/**
-	 * Return a new list with the filtered
-	 * elements of the specified list.
+	 * Return a new list with the elements of the specified collection
+	 * that are instances of the specified class.
 	 */
-	public static <E> ArrayList<E> filter(Collection<? extends E> list, Predicate<? super E> predicate) {
-		ArrayList<E> result = new ArrayList<>(list.size());
-		for (E each : list) {
+	@SuppressWarnings("unchecked")
+	public static <E> ArrayList<E> filter(Collection<?> collection, Class<E> clazz) {
+		return (ArrayList<E>) filter(collection, PredicateTools.instanceOf(clazz));
+	}
+
+	/**
+	 * Return a new list with the filtered
+	 * elements of the specified collection.
+	 */
+	public static <E> ArrayList<E> filter(Collection<? extends E> collection, Predicate<? super E> predicate) {
+		ArrayList<E> result = new ArrayList<>(collection.size());
+		for (E each : collection) {
 			if (predicate.evaluate(each)) {
 				result.add(each);
 			}

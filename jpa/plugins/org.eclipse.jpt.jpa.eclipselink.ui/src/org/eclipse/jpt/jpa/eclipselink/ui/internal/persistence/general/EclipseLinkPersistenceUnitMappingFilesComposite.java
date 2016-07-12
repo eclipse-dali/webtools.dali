@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,19 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitMappingFilesComposite;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitMappingFilesComposite
@@ -39,24 +39,19 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM,
-			this.buildExcludeEclipselinkOrmHolder(),
-			this.buildExcludeEclipselinkOrmStringHolder(),
+			this.buildExcludeEclipselinkOrmModel(),
+			this.buildExcludeEclipselinkOrmStringModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);
 	}
 	
-	protected PropertyValueModel<EclipseLinkGeneralProperties> buildGeneralPropertiesHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkGeneralProperties>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkGeneralProperties transform_(PersistenceUnit persistenceUnit) {
-				return ((EclipseLinkPersistenceUnit) persistenceUnit).getGeneralProperties();
-			}
-		};
+	protected PropertyValueModel<EclipseLinkGeneralProperties> buildGeneralPropertiesModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkPersistenceUnit.GENERAL_PROPERTIES_TRANSFORMER);
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmModel() {
 		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(
-			buildGeneralPropertiesHolder(),
+			buildGeneralPropertiesModel(),
 			EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
 		{
 			@Override
@@ -71,22 +66,18 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		};
 	}
 
-	private PropertyValueModel<String> buildExcludeEclipselinkOrmStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeEclipselinkOrmHolder()) {
-			@Override
-			protected String transform(Boolean b) {
-				if (b != null) {
-					String defaultStringValue = b.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM_WITH_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM;
-			}
-		};
+	private PropertyValueModel<String> buildExcludeEclipselinkOrmStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultExcludeEclipselinkOrmModel(), EXCLUDE_ECLIPSELINK_ORM_TRANSFORMER);
 	}	
-	
-	private PropertyValueModel<Boolean> buildDefaultExcludeEclipselinkOrmHolder() {
+
+	private static final Transformer<Boolean, String> EXCLUDE_ECLIPSELINK_ORM_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM_WITH_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultExcludeEclipselinkOrmModel() {
 		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(
-			buildGeneralPropertiesHolder(),
+			buildGeneralPropertiesModel(),
 			EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
 		{
 			@Override

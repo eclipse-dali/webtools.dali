@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
@@ -21,18 +20,19 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueMod
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -72,7 +72,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 		TriStateCheckBox sharedCacheCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SHARED_CACHE_LABEL,
-			this.buildSharedCacheHolder(),
+			this.buildSharedCacheModel(),
 			this.buildSharedCacheStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CACHING
 		);
@@ -93,17 +93,12 @@ public class EclipseLinkEntityCachingPropertyComposite
 			propertyNames.add(EclipseLinkCachingEntity.CACHE_TYPE_PROPERTY);
 		}
 
-		private PropertyValueModel<EclipseLinkCaching> buildCachingHolder() {
-			return new TransformationPropertyValueModel<EclipseLinkCachingEntity, EclipseLinkCaching>(getSubjectHolder()) {
-				@Override
-				protected EclipseLinkCaching transform_(EclipseLinkCachingEntity entity) {
-					return entity.getParent();
-				}
-			};
+		private PropertyValueModel<EclipseLinkCaching> buildCachingModel() {
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkCachingEntity.PARENT_TRANSFORMER);
 		}
 
-		private PropertyValueModel<EclipseLinkCacheType> buildDefaultCacheTypeHolder() {
-			return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkCacheType>(buildCachingHolder(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
+		private PropertyValueModel<EclipseLinkCacheType> buildDefaultCacheTypeModel() {
+			return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkCacheType>(buildCachingModel(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
 				@Override
 				protected EclipseLinkCacheType buildValue_() {
 					EclipseLinkCacheType cacheType = this.subject.getCacheTypeDefault();
@@ -175,10 +170,10 @@ public class EclipseLinkEntityCachingPropertyComposite
 		protected void initialize() {
 			super.initialize();
 
-			PropertyValueModel<EclipseLinkCacheType> defaultCacheTypeHolder =
-				buildDefaultCacheTypeHolder();
+			PropertyValueModel<EclipseLinkCacheType> defaultCacheTypeModel =
+				buildDefaultCacheTypeModel();
 
-			defaultCacheTypeHolder.addPropertyChangeListener(
+			defaultCacheTypeModel.addPropertyChangeListener(
 				PropertyValueModel.VALUE,
 				buildDefaultCachingTypePropertyChangeListener()
 			);
@@ -210,52 +205,56 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 	@SuppressWarnings("unused")
 	private void addCacheSizeCombo(Composite container) {
-		new IntegerCombo<EclipseLinkCachingEntity>(this, container) {	
-			@Override
-			protected String getHelpId() {
-				return EclipseLinkHelpContextIds.PERSISTENCE_CACHING;
-			}
-			@Override
-			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(buildCachingHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						Integer size = this.subject.getCacheSizeDefault();
-						if (size == null) {
-							size = this.subject.getDefaultCacheSizeDefault();
-						}
-						return size;
-					}
-				};
-			}
-
-			@Override
-			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EclipseLinkCachingEntity, Integer>(getSubjectHolder(), EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY) {
-					@Override
-					protected Integer buildValue_() {
-						return getSubjectParent().getCacheSizeOf(getSubjectName());
-					}
-
-					@Override
-					protected void setValue_(Integer value) {
-						getSubjectParent().setCacheSizeOf(getSubjectName(), value);
-					}
-				};
-			}
-		};
+		new CacheSizeCombo(this, container);
 	}
 
-	PropertyValueModel<EclipseLinkCaching> buildCachingHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkCachingEntity, EclipseLinkCaching>(this.getSubjectHolder()) {
-			@Override
-			protected EclipseLinkCaching transform_(EclipseLinkCachingEntity entity) {
-				return entity.getParent();
-			}
-		};
+	class CacheSizeCombo
+		extends IntegerCombo<EclipseLinkCachingEntity>
+	{
+		CacheSizeCombo(Pane<? extends EclipseLinkCachingEntity> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+
+		@Override
+		protected String getHelpId() {
+			return EclipseLinkHelpContextIds.PERSISTENCE_CACHING;
+		}
+
+		@Override
+		protected PropertyValueModel<Integer> buildDefaultModel() {
+			return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(buildCachingModel(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					Integer size = this.subject.getCacheSizeDefault();
+					if (size == null) {
+						size = this.subject.getDefaultCacheSizeDefault();
+					}
+					return size;
+				}
+			};
+		}
+
+		@Override
+		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
+			return new PropertyAspectAdapter<EclipseLinkCachingEntity, Integer>(getSubjectHolder(), EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY) {
+				@Override
+				protected Integer buildValue_() {
+					return getSubjectParent().getCacheSizeOf(getSubjectName());
+				}
+
+				@Override
+				protected void setValue_(Integer value) {
+					getSubjectParent().setCacheSizeOf(getSubjectName(), value);
+				}
+			};
+		}
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildSharedCacheHolder() {
+	PropertyValueModel<EclipseLinkCaching> buildCachingModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkCachingEntity.PARENT_TRANSFORMER);
+	}
+
+	private ModifiablePropertyValueModel<Boolean> buildSharedCacheModel() {
 		return new PropertyAspectAdapter<EclipseLinkCachingEntity, Boolean>(
 					getSubjectHolder(), EclipseLinkCachingEntity.SHARED_CACHE_PROPERTY) {
 			@Override
@@ -271,17 +270,13 @@ public class EclipseLinkEntityCachingPropertyComposite
 	}
 
 	private PropertyValueModel<String> buildSharedCacheStringModel() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultAndNonDefaultSharedCacheModel()) {
-			@Override
-			protected String transform(Boolean b) {
-				if (b != null) {
-					String defaultStringValue = b.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_DEFAULT_SHARED_CACHE_LABEL, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SHARED_CACHE_LABEL;
-			}
-		};
+		return PropertyValueModelTools.transform_(this.buildDefaultAndNonDefaultSharedCacheModel(), SHARED_CACHE_TRANSFORMER);
 	}
+
+	private static final Transformer<Boolean, String> SHARED_CACHE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_DEFAULT_SHARED_CACHE_LABEL,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SHARED_CACHE_LABEL
+		);
 
 	private PropertyValueModel<Boolean> buildDefaultAndNonDefaultSharedCacheModel() {
 		// If the size of ListValueModel equals 1, that means the shared
@@ -292,25 +287,25 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 	private ListValueModel<Boolean> buildDefaultAndNonDefaultSharedCacheListModel() {
 		ArrayList<ListValueModel<Boolean>> holders = new ArrayList<>(2);
-		holders.add(buildSharedCacheListHolder());
-		holders.add(buildDefaultSharedCacheListHolder());
+		holders.add(buildSharedCacheListModel());
+		holders.add(buildDefaultSharedCacheListModel());
 		return CompositeListValueModel.forModels(holders);
 	}
 
-	private ListValueModel<Boolean> buildSharedCacheListHolder() {
+	private ListValueModel<Boolean> buildSharedCacheListModel() {
 		return new PropertyListValueModelAdapter<>(
-			buildSharedCacheHolder()
+			buildSharedCacheModel()
 		);
 	}
 
-	private ListValueModel<Boolean> buildDefaultSharedCacheListHolder() {
+	private ListValueModel<Boolean> buildDefaultSharedCacheListModel() {
 		return new PropertyListValueModelAdapter<>(
-			buildDefaultSharedCacheHolder()
+			buildDefaultSharedCacheModel()
 		);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultSharedCacheHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(buildCachingHolder(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
+	private PropertyValueModel<Boolean> buildDefaultSharedCacheModel() {
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(this.buildCachingModel(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Boolean b = this.subject.getSharedCacheDefault();

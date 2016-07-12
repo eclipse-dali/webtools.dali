@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -115,7 +115,7 @@ public abstract class AbstractEntityMappings
 
 	protected final OrmPersistenceUnitMetadata persistenceUnitMetadata;
 
-	protected final Vector<OrmManagedType> managedTypes = new Vector<OrmManagedType>();
+	protected final Vector<OrmManagedType> managedTypes = new Vector<>();
 	protected final ManagedTypeContainerAdapter managedTypeContainerAdapter = new ManagedTypeContainerAdapter();
 
 	protected final ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator> sequenceGeneratorContainer;
@@ -127,7 +127,7 @@ public abstract class AbstractEntityMappings
 	// Lookup of short class name to fully qualified class name for primitives, wrappers, array primitives
 	protected static Map<String, String> PRIMITIVE_CLASSES = null;
 
-	protected final Vector<OrmPersistentType> structureChildren = new Vector<OrmPersistentType>();
+	protected final Vector<OrmPersistentType> structureChildren = new Vector<>();
 
 
 	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
@@ -539,7 +539,7 @@ public abstract class AbstractEntityMappings
 	// ********** persistent types **********
 
 	public Iterable<OrmPersistentType> getPersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_PERSISTENT_TYPE));
+		return IterableTools.downcast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_PERSISTENT_TYPE));
 	}
 		
 	protected static final Predicate<OrmManagedType> TYPE_IS_PERSISTENT_TYPE = new TypeIsPersistentType();
@@ -659,7 +659,7 @@ public abstract class AbstractEntityMappings
 
 	protected static String getPrimitiveClassName(String className) {
 		if (PRIMITIVE_CLASSES == null) {
-			PRIMITIVE_CLASSES = new HashMap<String, String>();
+			PRIMITIVE_CLASSES = new HashMap<>();
 			PRIMITIVE_CLASSES.put("Boolean", Boolean.class.getName()); //$NON-NLS-1$
 			PRIMITIVE_CLASSES.put("Byte", Byte.class.getName()); //$NON-NLS-1$
 			PRIMITIVE_CLASSES.put("Character", Character.class.getName()); //$NON-NLS-1$
@@ -737,7 +737,7 @@ public abstract class AbstractEntityMappings
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
 		}
-		List<XmlMappedSuperclass> mappedSuperclasses = new ArrayList<XmlMappedSuperclass>(addedItems.size());
+		List<XmlMappedSuperclass> mappedSuperclasses = new ArrayList<>(addedItems.size());
 		for (OrmPersistentType persistentType : addedItems) {
 			mappedSuperclasses.add((XmlMappedSuperclass) persistentType.getXmlManagedType());	
 		}
@@ -754,7 +754,7 @@ public abstract class AbstractEntityMappings
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
 		}
-		List<XmlEntity> entities = new ArrayList<XmlEntity>(addedItems.size());
+		List<XmlEntity> entities = new ArrayList<>(addedItems.size());
 		for (OrmPersistentType persistentType : addedItems) {
 			entities.add((XmlEntity) persistentType.getXmlManagedType());	
 		}
@@ -771,7 +771,7 @@ public abstract class AbstractEntityMappings
 		if (addedItems.size() == 0 || sm.isCanceled()) {
 			return;
 		}
-		List<XmlEmbeddable> embeddables = new ArrayList<XmlEmbeddable>(addedItems.size());
+		List<XmlEmbeddable> embeddables = new ArrayList<>(addedItems.size());
 		for (OrmPersistentType persistentType : addedItems) {
 			embeddables.add((XmlEmbeddable) persistentType.getXmlManagedType());	
 		}
@@ -783,7 +783,7 @@ public abstract class AbstractEntityMappings
 
 	protected List<OrmPersistentType> addOrmPersistentTypes(PersistentType.Config[] typeConfigs, String mappingKey, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 10);
-		List<OrmPersistentType> addedItems = new ArrayList<OrmPersistentType>();
+		List<OrmPersistentType> addedItems = new ArrayList<>();
 		for(PersistentType.Config typeConfig : typeConfigs) {
 			if (typeConfig.getMappingKey() == mappingKey) {
 				String typeName = typeConfig.getName();
@@ -878,7 +878,7 @@ public abstract class AbstractEntityMappings
 
 	protected List<XmlManagedType> getXmlManagedTypes_() {
 		// convert lists to arrays to *reduce* risk of ConcurrentModificationException
-		ArrayList<XmlManagedType> types = new ArrayList<XmlManagedType>();
+		ArrayList<XmlManagedType> types = new ArrayList<>();
 		CollectionTools.addAll(types, this.xmlEntityMappings.getMappedSuperclasses().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
 		CollectionTools.addAll(types, this.xmlEntityMappings.getEntities().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
 		CollectionTools.addAll(types, this.xmlEntityMappings.getEmbeddables().toArray(EMPTY_XML_MANAGED_TYPE_ARRAY));
@@ -1084,7 +1084,7 @@ public abstract class AbstractEntityMappings
 	// ********** converter types **********
 
 	public Iterable<OrmConverterType2_1> getConverterTypes() {
-		return IterableTools.downCast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_CONVERTER_TYPE));
+		return IterableTools.downcast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_CONVERTER_TYPE));
 	}
 
 	protected static final Predicate<OrmManagedType> TYPE_IS_CONVERTER_TYPE = new TypeIsConverterType();
@@ -1161,7 +1161,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<OrmTypeMapping> getTypeMappings() {
-		return IterableTools.downCast(IterableTools.transform(this.getPersistentTypes(), PersistentType.MAPPING_TRANSFORMER));
+		return IterableTools.downcast(IterableTools.transform(this.getPersistentTypes(), PersistentType.MAPPING_TRANSFORMER));
 	}
 
 
@@ -1241,7 +1241,7 @@ public abstract class AbstractEntityMappings
 
 	protected Iterable<ReplaceEdit> createRenamePackageEdit(IPackageFragment originalPackage, String newName) {
 		return ObjectTools.equals(this.package_, originalPackage.getElementName()) ?
-				new SingleElementIterable<ReplaceEdit>(this.xmlEntityMappings.createRenamePackageEdit(newName)) :
+				new SingleElementIterable<>(this.xmlEntityMappings.createRenamePackageEdit(newName)) :
 				IterableTools.<ReplaceEdit>emptyIterable();
 	}
 	

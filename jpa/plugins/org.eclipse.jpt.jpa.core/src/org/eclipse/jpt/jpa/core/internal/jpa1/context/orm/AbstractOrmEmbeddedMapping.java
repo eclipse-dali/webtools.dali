@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -123,7 +123,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 
 	protected Iterable<RelationshipMapping> allOverridableAssociations() {
 		return (this.targetEmbeddable != null) ?
-				IterableTools.<AttributeMapping, RelationshipMapping>downCast(this.getAllOverridableAssociations_()) :
+				IterableTools.<AttributeMapping, RelationshipMapping>downcast(this.getAllOverridableAssociations_()) :
 				IterableTools.<RelationshipMapping>emptyIterable();
 	}
 

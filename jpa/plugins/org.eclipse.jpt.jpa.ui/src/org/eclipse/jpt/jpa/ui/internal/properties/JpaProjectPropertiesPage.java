@@ -50,11 +50,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelToo
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -198,16 +194,16 @@ public class JpaProjectPropertiesPage
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaProject>> buildJpaProjectModelModel() {
-		return new TransformationPropertyValueModel<>(this.projectModel, JPA_PROJECT_MODEL_TRANSFORMER);
+		return PropertyValueModelTools.transform(this.projectModel, JPA_PROJECT_MODEL_TRANSFORMER);
 	}
 
 	private static final Transformer<IProject, PropertyValueModel<JpaProject>> JPA_PROJECT_MODEL_TRANSFORMER = new JpaProjectModelTransformer();
 
 	/* CU private */ static class JpaProjectModelTransformer
-		extends AbstractTransformer<IProject, PropertyValueModel<JpaProject>>
+		extends TransformerAdapter<IProject, PropertyValueModel<JpaProject>>
 	{
 		@Override
-		protected PropertyValueModel<JpaProject> transform_(IProject project) {
+		public PropertyValueModel<JpaProject> transform(IProject project) {
 			return project.getAdapter(JpaProjectModel.class);
 		}
 	}
@@ -249,7 +245,18 @@ public class JpaProjectPropertiesPage
 	}
 
 	private PropertyValueModel<ConnectionProfile> buildConnectionProfileModel() {
-		return new ConnectionProfileModel(this.connectionModel);
+		return PropertyValueModelTools.transform(this.connectionModel, CONNECTION_PROFILE_TRANSFORMER);
+	}
+
+	private static final Transformer<String, ConnectionProfile> CONNECTION_PROFILE_TRANSFORMER = new ConnectionProfileTransformer();
+	static class ConnectionProfileTransformer
+		extends TransformerAdapter<String, ConnectionProfile>
+	{
+		@Override
+		public ConnectionProfile transform(String connectionName) {
+			ConnectionProfileFactory factory = getConnectionProfileFactory();
+			return (factory == null) ? null : factory.buildConnectionProfile(connectionName);
+		}
 	}
 
 	private PropertyValueModel<Boolean> buildDisconnectedModel() {
@@ -360,7 +367,7 @@ public class JpaProjectPropertiesPage
 	 * The opposite of the "discover annotated classes" flag.
 	 */
 	private ModifiablePropertyValueModel<Boolean> buildListAnnotatedClassesModel() {
-		return new TransformationModifiablePropertyValueModel<>(this.discoverAnnotatedClassesModel, TransformerTools.notBooleanTransformer(), TransformerTools.notBooleanTransformer());
+		return PropertyValueModelTools.transform_(this.discoverAnnotatedClassesModel, TransformerTools.notBooleanTransformer(), TransformerTools.notBooleanTransformer());
 	}
 
 	// ***** JPA 2.0 project flag
@@ -368,7 +375,7 @@ public class JpaProjectPropertiesPage
 		return PropertyValueModelTools.valueIsInSet(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0);
 	}
 
-	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = PredicateTools.nullCheck(new JpaModel.JpaVersionIsCompatibleWith(JpaProject2_0.FACET_VERSION_STRING));
+	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = new JpaModel.JpaVersionIsCompatibleWith<>(JpaProject2_0.FACET_VERSION_STRING);
 
 	// ***** metamodel models
 	private BufferedModifiablePropertyValueModel<String> buildMetamodelSourceFolderModel() {
@@ -994,24 +1001,6 @@ public class JpaProjectPropertiesPage
 	// ********** UI model adapters **********
 
 	/**
-	 * The JPA project's data source is an auxiliary object that never changes;
-	 * so if we have a JPA project, we have a JPA data source also.
-	 */
-	static class DataSourceModel
-		extends TransformationPropertyValueModel<JpaProject, JpaDataSource>
-	{
-		DataSourceModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel);
-		}
-
-		@Override
-		protected JpaDataSource transform_(JpaProject v) {
-			return v.getDataSource();
-		}
-	}
-
-
-	/**
 	 * The DTP connection profile name is an aspect of the JPA project's
 	 * data source
 	 */
@@ -1019,7 +1008,9 @@ public class JpaProjectPropertiesPage
 		extends PropertyAspectAdapter<JpaDataSource, String>
 	{
 		ConnectionModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(new DataSourceModel(jpaProjectModel), JpaDataSource.CONNECTION_PROFILE_NAME_PROPERTY);
+			// The JPA project's data source is an auxiliary object that never changes;
+			// so if we have a JPA project, we have a JPA data source also.
+			super(PropertyValueModelTools.transform(jpaProjectModel, JpaProject.DATA_SOURCE_TRANSFORMER), JpaDataSource.CONNECTION_PROFILE_NAME_PROPERTY);
 		}
 
 		@Override
@@ -1030,24 +1021,6 @@ public class JpaProjectPropertiesPage
 		@Override
 		public void setValue_(String connection) {
 			this.subject.setConnectionProfileName(connection);
-		}
-	}
-
-
-	/**
-	 * Convert the selected connection profile name to a connection profile
-	 */
-	static class ConnectionProfileModel
-		extends TransformationPropertyValueModel<String, ConnectionProfile>
-	{
-		ConnectionProfileModel(PropertyValueModel<String> connectionModel) {
-			super(connectionModel);
-		}
-
-		@Override
-		protected ConnectionProfile transform_(String connectionName) {
-			ConnectionProfileFactory factory = getConnectionProfileFactory();
-			return (factory == null) ? null : factory.buildConnectionProfile(connectionName);
 		}
 	}
 

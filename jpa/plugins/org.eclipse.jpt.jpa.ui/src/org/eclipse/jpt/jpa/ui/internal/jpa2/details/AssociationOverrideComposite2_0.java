@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
 import org.eclipse.jpt.jpa.ui.internal.details.AssociationOverrideComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityOverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
@@ -46,7 +47,6 @@ public class AssociationOverrideComposite2_0
 	 *
 	 * @param subjectHolder The holder of the subject <code>AssociationOverride</code>
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AssociationOverrideComposite2_0(Pane<?> parentPane, 
 			PropertyValueModel<? extends AssociationOverride> subjectHolder,
@@ -62,17 +62,13 @@ public class AssociationOverrideComposite2_0
 		addJoinTableJoiningStrategyPane(container);
 	}
 	
+	@SuppressWarnings("unused")
 	protected void addJoinTableJoiningStrategyPane(Composite container) {
 		new JoinTableJoiningStrategyPane(this, buildRelationshipModel(), container);		
 	}
 	
 	private PropertyValueModel<JoinTableRelationship> buildRelationshipModel() {
-		return new TransformationPropertyValueModel<AssociationOverride, JoinTableRelationship>(getSubjectHolder()) {
-			@Override
-			protected JoinTableRelationship transform_(AssociationOverride value) {
-				// all specified and virtual (mappings) overrides support join tables
-				return (JoinTableRelationship) value.getRelationship();
-			}
-		};
+		// all specified and virtual (mappings) overrides support join tables
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), TransformerTools.downcast(AssociationOverride.RELATIONSHIP_TRANSFORMER));
 	}
 }

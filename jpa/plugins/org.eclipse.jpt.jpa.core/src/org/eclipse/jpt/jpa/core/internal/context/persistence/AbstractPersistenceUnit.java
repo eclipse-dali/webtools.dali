@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,10 +44,8 @@ import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -150,7 +148,7 @@ public abstract class AbstractPersistenceUnit
 	 * 
 	 * @see #rebuildManagedTypeMap()
 	 */
-	protected final Hashtable<String, ManagedType> managedTypeMap = new Hashtable<String, ManagedType>();
+	protected final Hashtable<String, ManagedType> managedTypeMap = new Hashtable<>();
 
 	protected final ContextListContainer<MappingFileRef, XmlMappingFileRef> specifiedMappingFileRefContainer;
 
@@ -181,10 +179,10 @@ public abstract class AbstractPersistenceUnit
 	protected final ContextListContainer<Property, XmlProperty> propertyContainer;
 
 	/* global generator definitions, defined elsewhere in model */
-	protected final Vector<Generator> generators = new Vector<Generator>();
+	protected final Vector<Generator> generators = new Vector<>();
 
 	/* global query definitions, defined elsewhere in model */
-	protected final Vector<Query> queries = new Vector<Query>();
+	protected final Vector<Query> queries = new Vector<>();
 
 	protected boolean xmlMappingMetadataComplete;
 	protected AccessType defaultAccess;
@@ -193,7 +191,7 @@ public abstract class AbstractPersistenceUnit
 	protected boolean defaultCascadePersist;
 	protected boolean defaultDelimitedIdentifiers;
 
-	protected final Vector<JpaStructureNode> structureChildren = new Vector<JpaStructureNode>();
+	protected final Vector<JpaStructureNode> structureChildren = new Vector<>();
 
 	//****** JPA 2.0 features
 	protected Connection2_0 connection;
@@ -353,7 +351,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void updateStructureChildren() {
-		Vector<JpaStructureNode> newChildren = new Vector<JpaStructureNode>();
+		Vector<JpaStructureNode> newChildren = new Vector<>();
 		CollectionTools.addAll(newChildren, this.getMappingFileRefs());
 		CollectionTools.addAll(newChildren, this.getClassRefs());
 		CollectionTools.addAll(newChildren, this.getJarFileRefs());
@@ -806,7 +804,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<ClassRef> addSpecifiedClassRefs(int index, Iterable<JavaResourceAbstractType> javaResourceTypes) {
-		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<XmlJavaClassRef>();
+		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<>();
 		for (JavaResourceAbstractType javaResourceType : javaResourceTypes) {
 			xmlClassRefs.add(this.buildXmlJavaClassRef(javaResourceType.getTypeBinding().getQualifiedName()));
 		}
@@ -839,7 +837,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void removeSpecifiedClassRefs(Iterable<ClassRef> classRefs) {
-		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<XmlJavaClassRef>();
+		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<>();
 		for (ClassRef classRef : classRefs) {
 			xmlClassRefs.add(classRef.getXmlClassRef());
 		}
@@ -1411,7 +1409,6 @@ public abstract class AbstractPersistenceUnit
 	}
 
 
-
 	// ********** shared cache mode **********
 
 	public SharedCacheMode2_0 getSharedCacheMode() {
@@ -1528,7 +1525,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<String> getGeneratorNames() {
-		return new TransformationIterable<Generator, String>(this.getGenerators(), JpaNamedContextModel.NAME_TRANSFORMER);
+		return new TransformationIterable<>(this.getGenerators(), JpaNamedContextModel.NAME_TRANSFORMER);
 	}
 
 	protected void setGenerators(Iterable<Generator> generators) {
@@ -1800,7 +1797,7 @@ public abstract class AbstractPersistenceUnit
 	 */
 	protected Iterable<PersistentType> getAllJavaPersistentTypesUnique() {
 		// order is significant(?)
-		HashMap<String, PersistentType> map = new HashMap<String, PersistentType>();
+		HashMap<String, PersistentType> map = new HashMap<>();
 		this.addPersistentTypesTo(this.getJarFilePersistentTypes(), map);
 		this.addPersistentTypesTo(this.getClassRefPersistentTypes(), map);
 		this.addPersistentTypesTo(this.getMappingFileJavaPersistentTypes(), map);
@@ -1841,7 +1838,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public Iterable<PersistentType> getPersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_PERSISTENT_TYPE));
+		return IterableTools.downcast(IterableTools.filter(this.getManagedTypes(), TYPE_IS_PERSISTENT_TYPE));
 	}
 
 	protected static final Predicate<ManagedType> TYPE_IS_PERSISTENT_TYPE = new TypeIsPersistentType();
@@ -1868,19 +1865,19 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<PersistentType> getClassRefPersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(
+		return IterableTools.downcast(IterableTools.filter(
 			this.getClassRefManagedTypes(), 
 			TYPE_IS_PERSISTENT_TYPE));
 	}
 
 	protected Iterable<PersistentType> getJarFilePersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(
+		return IterableTools.downcast(IterableTools.filter(
 			this.getJarFileManagedTypes(), 
 			TYPE_IS_PERSISTENT_TYPE));
 	}
 
 	public Iterable<PersistentType> getJavaPersistentTypes() {
-		return IterableTools.downCast(IterableTools.filter(
+		return IterableTools.downcast(IterableTools.filter(
 			this.getJavaManagedTypes(), 
 			TYPE_IS_PERSISTENT_TYPE));
 	}
@@ -1914,11 +1911,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<Entity> filterToEntities(Iterable<TypeMapping> typeMappings) {
-		return new SubIterableWrapper<TypeMapping, Entity>(this.filterToEntities_(typeMappings));
-	}
-
-	protected Iterable<TypeMapping> filterToEntities_(Iterable<TypeMapping> typeMappings) {
-		return IterableTools.filter(typeMappings, PredicateTools.<TypeMapping>instanceOf(Entity.class));
+		return IterableTools.filter(typeMappings, Entity.class);
 	}
 
 	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...
@@ -1962,7 +1955,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected HashSet<String> convertToClassNames(Collection<? extends TypeMapping> typeMappings) {
-		HashSet<String> classNames = new HashSet<String>(typeMappings.size());
+		HashSet<String> classNames = new HashSet<>(typeMappings.size());
 		for (TypeMapping typeMapping : typeMappings) {
 			classNames.add(typeMapping.getPersistentType().getName());
 		}
@@ -1975,12 +1968,12 @@ public abstract class AbstractPersistenceUnit
 	 * each class name is mapped to a <em>list</em> of type mappings.
 	 */
 	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByClassName(Iterable<M> typeMappings) {
-		HashMap<String, ArrayList<M>> map = new HashMap<String, ArrayList<M>>();
+		HashMap<String, ArrayList<M>> map = new HashMap<>();
 		for (M typeMapping : typeMappings) {
 			String typeMappingName = typeMapping.getPersistentType().getName();
 			ArrayList<M> list = map.get(typeMappingName);
 			if (list == null) {
-				list = new ArrayList<M>();
+				list = new ArrayList<>();
 				map.put(typeMappingName, list);
 			}
 			list.add(typeMapping);
@@ -2007,7 +2000,7 @@ public abstract class AbstractPersistenceUnit
 		HashSet<String> mappingFileTypeNames = this.getMappingFileTypeNames();
 
 		// calculate the class refs to be removed
-		ArrayList<ClassRef> deadClassRefs = new ArrayList<ClassRef>();
+		ArrayList<ClassRef> deadClassRefs = new ArrayList<>();
 		for (ClassRef specifiedClassRef : this.getSpecifiedClassRefs()) {
 			JavaManagedType specifiedJMT = specifiedClassRef.getJavaManagedType();
 			if (specifiedJMT == null) {
@@ -2059,7 +2052,7 @@ public abstract class AbstractPersistenceUnit
 	 * mapping files.
 	 */
 	protected HashSet<String> getMappingFileTypeNames() {
-		HashSet<String> result = new HashSet<String>();
+		HashSet<String> result = new HashSet<>();
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			for (ManagedType managedType : mappingFileRef.getManagedTypes()) {
 				result.add(managedType.getName());
@@ -2109,8 +2102,8 @@ public abstract class AbstractPersistenceUnit
 	protected void listInPersistenceXml(PersistentType.Config[] typeConfigs, IProgressMonitor pm) {
 		SubMonitor sm = SubMonitor.convert(pm, 11);
 		sm.setTaskName(JptJpaCoreMessages.MAKE_PERSISTENT_LISTING_IN_PERSISTENCE_XML);
-		Collection<XmlJavaClassRef> addedXmlClassRefs = new ArrayList<XmlJavaClassRef>();
-		Collection<ClassRef> addedClassRefs = new ArrayList<ClassRef>();
+		Collection<XmlJavaClassRef> addedXmlClassRefs = new ArrayList<>();
+		Collection<ClassRef> addedClassRefs = new ArrayList<>();
 		for (PersistentType.Config typeConfig : typeConfigs) {
 			String typeName = typeConfig.getName();
 			XmlJavaClassRef xmlClassRef = this.buildXmlJavaClassRef(typeName);
@@ -2173,7 +2166,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected HashSet<String> convertToNames(Collection<? extends JpaNamedContextModel> nodes) {
-		HashSet<String> names = new HashSet<String>(nodes.size());
+		HashSet<String> names = new HashSet<>(nodes.size());
 		for (JpaNamedContextModel node : nodes) {
 			names.add(node.getName());
 		}
@@ -2181,12 +2174,12 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected <N extends JpaNamedContextModel> HashMap<String, ArrayList<N>> mapByName(Iterable<N> nodes) {
-		HashMap<String, ArrayList<N>> map = new HashMap<String, ArrayList<N>>();
+		HashMap<String, ArrayList<N>> map = new HashMap<>();
 		for (N node : nodes) {
 			String nodeName = node.getName();
 			ArrayList<N> list = map.get(nodeName);
 			if (list == null) {
-				list = new ArrayList<N>();
+				list = new ArrayList<>();
 				map.put(nodeName, list);
 			}
 			list.add(node);
@@ -2199,7 +2192,7 @@ public abstract class AbstractPersistenceUnit
 	 * (by default any Java models with the same name are "duplicates").
 	 */
 	protected <M extends JpaNamedContextModel> ArrayList<M> extractConvertibleJavaModels(Iterable<M> allJavaModels, Iterable<M> mappingFileModels) {
-		ArrayList<M> convertibleModels = new ArrayList<M>();
+		ArrayList<M> convertibleModels = new ArrayList<>();
 
 		HashSet<String> mappingFileModelNames = this.convertToNames(ListTools.arrayList(mappingFileModels));
 		HashMap<String, ArrayList<M>> allJavaModelsByName = this.mapByName(allJavaModels);
@@ -2224,7 +2217,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public Iterable<String> getPackageNames() {
-		Set<String> packageNames = new HashSet<String>();
+		Set<String> packageNames = new HashSet<>();
 		for (ManagedType mType : this.getJavaManagedTypes()) {
 			JavaResourceType jrt = mType.getJavaResourceType();
 			packageNames.add(jrt.getTypeBinding().getPackageName());
@@ -2301,12 +2294,12 @@ public abstract class AbstractPersistenceUnit
 	 * specified, keyed by their file names.
 	 */
 	protected HashMap<String, ArrayList<MappingFileRef>> mapMappingFileRefsByFileName() {
-		HashMap<String, ArrayList<MappingFileRef>> map = new HashMap<String, ArrayList<MappingFileRef>>(this.getMappingFileRefsSize());
+		HashMap<String, ArrayList<MappingFileRef>> map = new HashMap<>(this.getMappingFileRefsSize());
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			String fileName = mappingFileRef.getFileName();
 			ArrayList<MappingFileRef> list = map.get(fileName);
 			if (list == null) {
-				list = new ArrayList<MappingFileRef>();
+				list = new ArrayList<>();
 				map.put(fileName, list);
 			}
 			list.add(mappingFileRef);
@@ -2340,12 +2333,12 @@ public abstract class AbstractPersistenceUnit
 	 * keyed by their class names.
 	 */
 	protected HashMap<String, ArrayList<ManagedType>> mapMappingFileManagedTypesByName() {
-		HashMap<String, ArrayList<ManagedType>> map = new HashMap<String, ArrayList<ManagedType>>();
+		HashMap<String, ArrayList<ManagedType>> map = new HashMap<>();
 		for (ManagedType managedType : this.getMappingFileManagedTypes()) {
 			String mtName = managedType.getName();
 			ArrayList<ManagedType> list = map.get(mtName);
 			if (list == null) {
-				list = new ArrayList<ManagedType>();
+				list = new ArrayList<>();
 				map.put(mtName, list);
 			}
 			list.add(managedType);
@@ -2386,12 +2379,12 @@ public abstract class AbstractPersistenceUnit
 	 * keyed by their class names.
 	 */
 	protected HashMap<String, ArrayList<ClassRef>> mapClassRefsByName() {
-		HashMap<String, ArrayList<ClassRef>> map = new HashMap<String, ArrayList<ClassRef>>(this.getClassRefsSize());
+		HashMap<String, ArrayList<ClassRef>> map = new HashMap<>(this.getClassRefsSize());
 		for (ClassRef classRef : this.getClassRefs()) {
 			String refName = classRef.getClassName();
 			ArrayList<ClassRef> list = map.get(refName);
 			if (list == null) {
-				list = new ArrayList<ClassRef>();
+				list = new ArrayList<>();
 				map.put(refName, list);
 			}
 			list.add(classRef);
@@ -2432,12 +2425,12 @@ public abstract class AbstractPersistenceUnit
 	 * keyed by their file names.
 	 */
 	protected HashMap<String, ArrayList<JarFileRef>> mapJarFileRefsByName() {
-		HashMap<String, ArrayList<JarFileRef>> map = new HashMap<String, ArrayList<JarFileRef>>(this.getJarFileRefsSize());
+		HashMap<String, ArrayList<JarFileRef>> map = new HashMap<>(this.getJarFileRefsSize());
 		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
 			String refName = jarFileRef.getFileName();
 			ArrayList<JarFileRef> list = map.get(refName);
 			if (list == null) {
-				list = new ArrayList<JarFileRef>();
+				list = new ArrayList<>();
 				map.put(refName, list);
 			}
 			list.add(jarFileRef);
@@ -2572,12 +2565,12 @@ public abstract class AbstractPersistenceUnit
 	 * each type mapping name is mapped to a <em>list</em> of type mappings.
 	 */
 	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByName(Iterable<M> typeMappings) {
-		HashMap<String, ArrayList<M>> map = new HashMap<String, ArrayList<M>>();
+		HashMap<String, ArrayList<M>> map = new HashMap<>();
 		for (M typeMapping : typeMappings) {
 			String typeMappingName = typeMapping.getName();
 			ArrayList<M> list = map.get(typeMappingName);
 			if (list == null) {
-				list = new ArrayList<M>();
+				list = new ArrayList<>();
 				map.put(typeMappingName, list);
 			}
 			list.add(typeMapping);
@@ -2729,8 +2722,8 @@ public abstract class AbstractPersistenceUnit
 
 		// build a list of the top-level types and a tree of their associated
 		// member types etc.
-		ArrayList<MetamodelSourceType2_0> topLevelTypes = new ArrayList<MetamodelSourceType2_0>(allPersistentTypes.size());
-		HashMap<String, Collection<MetamodelSourceType2_0>> memberTypeTree = new HashMap<String, Collection<MetamodelSourceType2_0>>();
+		ArrayList<MetamodelSourceType2_0> topLevelTypes = new ArrayList<>(allPersistentTypes.size());
+		HashMap<String, Collection<MetamodelSourceType2_0>> memberTypeTree = new HashMap<>();
 		for (PersistentType type1_0 : allPersistentTypes.values()) {
 			PersistentType2_0 type = (PersistentType2_0) type1_0;
 			String declaringTypeName = type.getDeclaringTypeName();
@@ -2744,7 +2737,7 @@ public abstract class AbstractPersistenceUnit
 				// associate the member type with its declaring type
 				Collection<MetamodelSourceType2_0> memberTypes = memberTypeTree.get(declaringTypeName);
 				if (memberTypes == null) {
-					memberTypes = new ArrayList<MetamodelSourceType2_0>();
+					memberTypes = new ArrayList<>();
 					memberTypeTree.put(declaringTypeName, memberTypes);
 				}
 				memberTypes.add(memberType);
@@ -2788,7 +2781,7 @@ public abstract class AbstractPersistenceUnit
 		// sort the original list so we end up with the same top-level type
 		// remaining every time (i.e. the one that sorts out first)
 		Collections.sort(topLevelTypes, MetamodelSourceType2_0.COMPARATOR);
-		HashSet<String> names = new HashSet<String>(topLevelTypes.size());
+		HashSet<String> names = new HashSet<>(topLevelTypes.size());
 		for (Iterator<MetamodelSourceType2_0> stream = topLevelTypes.iterator(); stream.hasNext(); ) {
 			MetamodelSourceType2_0 topLevelType = stream.next();
 			// hopefully this is case-insensitive enough...
@@ -2798,7 +2791,7 @@ public abstract class AbstractPersistenceUnit
 		}
 
 		// copy the list of metamodel files...
-		HashSet<IFile> deadMetamodelFiles = new HashSet<IFile>(this.metamodelFiles);
+		HashSet<IFile> deadMetamodelFiles = new HashSet<>(this.metamodelFiles);
 		this.metamodelFiles.clear();
 		for (MetamodelSourceType2_0 topLevelType : topLevelTypes) {
 			IFile metamodelFile = topLevelType.getMetamodelFile();
@@ -2831,7 +2824,7 @@ public abstract class AbstractPersistenceUnit
 	 * (i.e. the classes in the <code>orm.xml</code> take precedence)
 	 */
 	protected HashMap<String, PersistentType> getMetamodelPersistentTypes() {
-		HashMap<String, PersistentType> allPersistentTypes = new HashMap<String, PersistentType>();
+		HashMap<String, PersistentType> allPersistentTypes = new HashMap<>();
 		this.addPersistentTypesTo(this.getMetamodelJarFilePersistentTypes(), allPersistentTypes);
 		this.addPersistentTypesTo(this.getMetamodelClassRefPersistentTypes(), allPersistentTypes);
 		this.addPersistentTypesTo(this.getMetamodelMappingFilePersistentTypes(), allPersistentTypes);
@@ -2847,7 +2840,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<PersistentType2_0> getJarFilePersistentTypes2_0() {
-		return IterableTools.downCast(this.getJarFilePersistentTypes());
+		return IterableTools.downcast(this.getJarFilePersistentTypes());
 	}
 
 	/**
@@ -2859,7 +2852,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<PersistentType2_0> getClassRefPersistentTypes2_0() {
-		return IterableTools.downCast(this.getClassRefPersistentTypes());
+		return IterableTools.downcast(this.getClassRefPersistentTypes());
 	}
 
 	/**
@@ -2871,7 +2864,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<PersistentType2_0> getMappingFilePersistentTypes2_0() {
-		return IterableTools.downCast(this.getMappingFilePersistentTypes());
+		return IterableTools.downcast(this.getMappingFilePersistentTypes());
 	}
 
 	protected MetamodelSourceType2_0 selectSourceType(Iterable<MetamodelSourceType2_0> types, String typeName) {

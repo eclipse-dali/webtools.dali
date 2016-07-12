@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,13 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -31,17 +32,17 @@ import org.eclipse.swt.widgets.Control;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link MappedByRelationship}
- * @see {@link SpecifiedMappedByRelationshipStrategy}
- * @see {@link OneToOneJoiningStrategyPane}
- * @see {@link OneToManyJoiningStrategyPane}
- * @see {@link ManyToManyJoiningStrategyPane}
+ * @see MappedByRelationship
+ * @see SpecifiedMappedByRelationshipStrategy
+ * @see OneToOneJoiningStrategyPane
+ * @see OneToManyJoiningStrategyPane
+ * @see ManyToManyJoiningStrategyPane
  *
  * @version 2.3
  * @since 2.1
  */
 public class MappedByJoiningStrategyPane 
-	extends AbstractJoiningStrategyPane<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>
+	extends AbstractJoiningStrategyPane<MappedByRelationship>
 {
 	/**
 	 * Creates a new <code>MappedByJoiningStrategyPane</code>.
@@ -57,16 +58,16 @@ public class MappedByJoiningStrategyPane
 
 	@Override
 	protected Control buildStrategyDetailsComposite(Composite parent) {
-		MappedByPane mappedByPane = new MappedByPane(this, this.buildMappedByJoiningStrategyHolder(), buildMappedByRelationshipPaneEnablerHolder(), parent);
+		MappedByPane mappedByPane = new MappedByPane(this, this.buildMappedByJoiningStrategyModel(), buildMappedByRelationshipPaneEnablerModel(), parent);
 		return mappedByPane.getControl();
 	}	
 
 	@Override
-	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
-		return buildUsesMappedByJoiningStrategyHolder(getSubjectHolder());
+	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyModel() {
+		return buildUsesMappedByJoiningStrategyModel(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<SpecifiedMappedByRelationshipStrategy> buildMappedByJoiningStrategyHolder() {
+	protected PropertyValueModel<SpecifiedMappedByRelationshipStrategy> buildMappedByJoiningStrategyModel() {
 		return new PropertyAspectAdapter<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>(
 				getSubjectHolder()) {
 			@Override
@@ -76,7 +77,7 @@ public class MappedByJoiningStrategyPane
 		};
 	}
 
-	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
+	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyModel(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
 				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
@@ -96,12 +97,7 @@ public class MappedByJoiningStrategyPane
 	}
 
 
-	private TransformationPropertyValueModel<MappedByRelationship, Boolean> buildMappedByRelationshipPaneEnablerHolder() {
-		return new TransformationPropertyValueModel<MappedByRelationship, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform_(MappedByRelationship v) {
-				return Boolean.valueOf(!v.isVirtual());
-			}
-		};
+	private PropertyValueModel<Boolean> buildMappedByRelationshipPaneEnablerModel() {
+		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
 	}
 }

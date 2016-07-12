@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
-import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class StaticValueModelTests extends TestCase {
-	private PropertyValueModel<String> objectHolder;
-	private static final PropertyValueModel<String> OBJECT_HOLDER = new StaticPropertyValueModel<String>("foo");
+public class StaticValueModelTests
+	extends TestCase
+{
+	private PropertyValueModel<String> testModel;
+	private static final PropertyValueModel<String> OBJECT_HOLDER = PropertyValueModelTools.staticPropertyValueModel("foo");
 
 	
 	public StaticValueModelTests(String name) {
@@ -27,7 +29,7 @@ public class StaticValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.objectHolder = OBJECT_HOLDER;
+		this.testModel = OBJECT_HOLDER;
 	}
 
 	@Override
@@ -37,11 +39,11 @@ public class StaticValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertEquals("foo", this.objectHolder.getValue());
+		assertEquals("foo", this.testModel.getValue());
 	}
 
 	public void testToString() {
-		assertTrue(this.objectHolder.toString().indexOf("foo") >= 0);
+		assertTrue(this.testModel.toString().indexOf("foo") >= 0);
 	}
 
 }

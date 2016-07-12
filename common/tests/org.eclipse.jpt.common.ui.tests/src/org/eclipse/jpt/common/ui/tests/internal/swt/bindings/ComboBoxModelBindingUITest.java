@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,10 +19,9 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -71,13 +70,13 @@ public class ComboBoxModelBindingUITest
 		super(null);
 		this.nameListModel = this.buildNameListModel();
 		this.testModel = new TestModel(DEFAULT_NAME);
-		this.testModelModel = new SimplePropertyValueModel<TestModel>(this.testModel);
+		this.testModelModel = new SimplePropertyValueModel<>(this.testModel);
 		this.nameModel = new NameModel(this.testModelModel);
 		this.allCapsNameModel = this.buildAllCapsNameModel(this.testModelModel);
 
-		this.nameListSelectionModel = new SimplePropertyValueModel<String>();
-		this.nameListIndexTextModel = new SimplePropertyValueModel<String>();
-		this.nameListNameModel = new SimplePropertyValueModel<String>();
+		this.nameListSelectionModel = new SimplePropertyValueModel<>();
+		this.nameListIndexTextModel = new SimplePropertyValueModel<>();
+		this.nameListNameModel = new SimplePropertyValueModel<>();
 	}
 	private static final Transformer<String, Integer> STRING_INTEGER_TRANSFORMER = new StringIntegerTransformer();
 	static class StringIntegerTransformer
@@ -94,7 +93,7 @@ public class ComboBoxModelBindingUITest
 	}
 
 	private SimpleListValueModel<String> buildNameListModel() {
-		SimpleListValueModel<String> x = new SimpleListValueModel<String>();
+		SimpleListValueModel<String> x = new SimpleListValueModel<>();
 		x.add("Daphne");
 		x.add("Fred");
 		x.add("Scooby-Doo");
@@ -120,16 +119,16 @@ public class ComboBoxModelBindingUITest
 	}
 
 	private PropertyValueModel<String> buildAllCapsNameModel(PropertyValueModel<TestModel> vm) {
-		return new TransformationPropertyValueModel<String, String>(new NameModel(vm), UPPER_CASE_TRANSFORMER);
+		return PropertyValueModelTools.transform(new NameModel(vm), UPPER_CASE_TRANSFORMER);
 	}
 
 	public static final Transformer<String, String> UPPER_CASE_TRANSFORMER = new UpperCaseTransformer();
 
 	/* CU private */ static class UpperCaseTransformer
-		extends AbstractTransformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		@Override
-		protected String transform_(String string) {
+		public String transform(String string) {
 			return string.toUpperCase();
 		}
 	}

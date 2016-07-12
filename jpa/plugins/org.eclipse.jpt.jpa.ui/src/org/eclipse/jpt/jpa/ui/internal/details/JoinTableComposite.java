@@ -132,7 +132,7 @@ public class JoinTableComposite
 	}
 
 	protected PropertyValueModel<Boolean> buildInverseJoinColumnsPaneEnabledModel() {
-		return CollectionValueModelTools.and(this.buildTableIsNotVirtualModel(), this.buildSpecifiedInverseJoinColumnsIsNotEmptyModel());
+		return CollectionValueModelTools.and(this.buildTableIsSpecifiedModel(), this.buildSpecifiedInverseJoinColumnsIsNotEmptyModel());
 	}
 
 	protected PropertyValueModel<Boolean> buildSpecifiedInverseJoinColumnsIsNotEmptyModel() {
@@ -177,7 +177,7 @@ public class JoinTableComposite
 		return new ListAspectAdapter<JoinTable, JoinColumn>(this.getSubjectHolder(), JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterable<JoinColumn> getListIterable() {
-				return IterableTools.upCast(this.subject.getSpecifiedInverseJoinColumns());
+				return IterableTools.upcast(this.subject.getSpecifiedInverseJoinColumns());
 			}
 
 			@Override

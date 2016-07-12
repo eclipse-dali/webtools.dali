@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,28 +48,28 @@ public class OrderingComposite2_0
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		PropertyValueModel<Orderable2_0> orderableHolder = buildOrderableModel();
+		PropertyValueModel<Orderable2_0> orderableModel = buildOrderableModel();
 
 		// No Ordering radio button
 		addRadioButton(
 				container,
 				JptJpaUiDetailsMessages.ORDERING_COMPOSITE_NONE,
-				buildNoOrderingHolder(orderableHolder),
+				buildNoOrderingModel(orderableModel),
 				JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING);
 		
-		ModifiablePropertyValueModel<Boolean> orderByOrderingHolder = buildOrderByOrderingHolder(orderableHolder);
+		ModifiablePropertyValueModel<Boolean> orderByOrderingModel = buildOrderByOrderingModel(orderableModel);
 		
 		// Order by radio button
 		addRadioButton(
 				container,
 				JptJpaUiDetailsMessages.ORDERING_COMPOSITE_ORDER_BY,
-				orderByOrderingHolder,
+				orderByOrderingModel,
 				JpaHelpContextIds.MAPPING_ORDER_BY_ORDERING);
 		
 		OrderByComposite orderByComposite = new OrderByComposite(
 			this,
-			buildOrderByHolder(orderableHolder),
-			orderByOrderingHolder, 
+			buildOrderByModel(orderableModel),
+			orderByOrderingModel, 
 			container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = 16;
@@ -79,14 +79,14 @@ public class OrderingComposite2_0
 		addRadioButton(
 			container,
 			JptJpaUiDetailsMessages2_0.ORDERING_COMPOSITE_ORDER_COLUMN,
-			buildOrderColumnOrderingHolder(orderableHolder),
+			buildOrderColumnOrderingModel(orderableModel),
 			JpaHelpContextIds.MAPPING_ORDER_COLUMN_ORDERING
 		);
 
 		OrderColumnComposite2_0 orderColumnComposite = new OrderColumnComposite2_0(
 			this,
-			buildOrderColumnHolder(orderableHolder),
-			buildPaneEnablerHolder(orderableHolder), 
+			buildOrderColumnModel(orderableModel),
+			buildPaneEnablerModel(orderableModel), 
 			container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = 16;
@@ -94,28 +94,28 @@ public class OrderingComposite2_0
 
 	}
 	
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
-		return buildOrderColumnOrderingHolder(orderableHolder);
+	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<Orderable2_0> orderableModel) {
+		return buildOrderColumnOrderingModel(orderableModel);
 	}
 	
-	protected ModifiablePropertyValueModel<Boolean> buildOrderColumnOrderingHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable2_0, Boolean>(orderableHolder, Orderable2_0.ORDER_COLUMN_ORDERING_PROPERTY) {
+	protected ModifiablePropertyValueModel<Boolean> buildOrderColumnOrderingModel(PropertyValueModel<Orderable2_0> orderableModel) {
+		return new PropertyAspectAdapter<Orderable2_0, Boolean>(orderableModel, Orderable2_0.ORDER_COLUMN_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isOrderColumnOrdering());
 			}
 
 			@Override
-			protected void setValue_(Boolean value) {
-				if (value) {
+			protected void setValue_(Boolean b) {
+				if (b.booleanValue()) {
 					this.subject.setOrderColumnOrdering();
 				}
 			}
 		};
 	}
 	
-	protected PropertyValueModel<SpecifiedOrderColumn2_0> buildOrderColumnHolder(PropertyValueModel<Orderable2_0> orderableHolder) {
-		return new PropertyAspectAdapter<Orderable2_0, SpecifiedOrderColumn2_0>(orderableHolder) {
+	protected PropertyValueModel<SpecifiedOrderColumn2_0> buildOrderColumnModel(PropertyValueModel<Orderable2_0> orderableModel) {
+		return new PropertyAspectAdapter<Orderable2_0, SpecifiedOrderColumn2_0>(orderableModel) {
 			@Override
 			protected SpecifiedOrderColumn2_0 buildValue_() {
 				return this.subject.getOrderColumn();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -31,8 +31,6 @@ import org.eclipse.swt.widgets.Control;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Cacheable2_0
- * @see JavaEntityComposite2_0 - A container of this widget
- * @see OrmEntityComposite2_0 - A container of this widget
  */
 public class CacheableTriStateCheckBox2_0
 	extends Pane<Cacheable2_0>
@@ -62,14 +60,14 @@ public class CacheableTriStateCheckBox2_0
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL,
-			buildCacheableBooleanHolder(),
-			buildCacheableStringHolder(),
+			buildCacheableBooleanModel(),
+			buildCacheableStringModel(),
 			JpaHelpContextIds.ENTITY_CACHEABLE
 		);
 	}
 	
 
-	private ModifiablePropertyValueModel<Boolean> buildCacheableBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildCacheableBooleanModel() {
 		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(
 			getSubjectHolder(),
 			Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY,
@@ -87,22 +85,16 @@ public class CacheableTriStateCheckBox2_0
 		};
 	}
 
-	private PropertyValueModel<String> buildCacheableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultCacheableHolder()) {
-
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_WITH_DEFAULT_LABEL, defaultStringValue);
-				}
-				return JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildCacheableStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultCacheableModel(), CACHEABLE_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultCacheableHolder() {
+	private static final Transformer<Boolean, String> CACHEABLE_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_WITH_DEFAULT_LABEL,
+			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultCacheableModel() {
 		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(
 			getSubjectHolder(),
 			Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,

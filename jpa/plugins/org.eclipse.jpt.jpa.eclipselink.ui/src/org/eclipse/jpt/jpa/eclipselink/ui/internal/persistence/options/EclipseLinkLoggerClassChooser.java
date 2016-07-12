@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -76,7 +76,7 @@ public class EclipseLinkLoggerClassChooser
     }
     
 	@Override
-	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.LOGGER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -99,7 +99,7 @@ public class EclipseLinkLoggerClassChooser
 		};
 	}
 
-	private PropertyValueModel<String> buildDefaultLoggerHolder() {
+	private PropertyValueModel<String> buildDefaultLoggerModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.DEFAULT_LOGGER) {
 			@Override
 			protected String buildValue_() {
@@ -108,9 +108,9 @@ public class EclipseLinkLoggerClassChooser
 		};
 	}
 
-	private ListValueModel<String> buildDefaultLoggerListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			this.buildDefaultLoggerHolder()
+	private ListValueModel<String> buildDefaultLoggerListModel() {
+		return new PropertyListValueModelAdapter<>(
+			this.buildDefaultLoggerModel()
 		);
 	}
 
@@ -162,31 +162,31 @@ public class EclipseLinkLoggerClassChooser
 	}
 
 	@Override
-	protected ListValueModel<String> buildClassListHolder() {
-		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
-		holders.add(this.buildDefaultLoggerListHolder());
-		holders.add(this.buildLoggersListHolder());
-		return CompositeListValueModel.forModels(holders);
+	protected ListValueModel<String> buildClassListModel() {
+		ArrayList<ListValueModel<String>> models = new ArrayList<>(2);
+		models.add(this.buildDefaultLoggerListModel());
+		models.add(this.buildLoggersListModel());
+		return CompositeListValueModel.forModels(models);
 	}
 
 	private Iterator<String> buildLoggers() {
 		return IteratorTools.transform(IteratorTools.iterator(EclipseLinkLogger.values()), PersistenceXmlEnumValue.ENUM_NAME_TRANSFORMER);
 	}
 
-	private CollectionValueModel<String> buildLoggersCollectionHolder() {
-		return new SimpleCollectionValueModel<String>(
+	private CollectionValueModel<String> buildLoggersCollectionModel() {
+		return new SimpleCollectionValueModel<>(
 			CollectionTools.hashBag(this.buildLoggers())
 		);
 	}
 
-	private ListValueModel<String> buildLoggersListHolder() {
-		return new SortedListValueModelAdapter<String>(
-			this.buildLoggersCollectionHolder(),
+	private ListValueModel<String> buildLoggersListModel() {
+		return new SortedListValueModelAdapter<>(
+			this.buildLoggersCollectionModel(),
 			this.buildLoggerComparator()
 		);
 	}
 
-	private String getDefaultValue(EclipseLinkLogging subject) {
+	String getDefaultValue(EclipseLinkLogging subject) {
 		String defaultValue = subject.getDefaultLogger();
 
 		if (defaultValue != null) {

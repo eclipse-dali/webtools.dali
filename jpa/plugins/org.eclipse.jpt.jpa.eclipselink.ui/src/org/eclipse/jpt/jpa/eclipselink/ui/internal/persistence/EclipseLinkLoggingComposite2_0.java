@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,19 +10,19 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkLoggingComposite;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -127,8 +127,8 @@ public class EclipseLinkLoggingComposite2_0
 			this.addTriStateCheckBoxWithDefault(
 				container,
 				JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LABEL,
-				this.buildConnectionHolder(),
-				this.buildConnectionStringHolder(),
+				this.buildConnectionModel(),
+				this.buildConnectionStringModel(),
 				null
 //				EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_CONNECTION	// TODO
 			);
@@ -138,7 +138,7 @@ public class EclipseLinkLoggingComposite2_0
 		connectionCheckBox.getCheckBox().setLayoutData(gridData);
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildConnectionHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildConnectionModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging2_0, Boolean>(getSubjectHolder(), EclipseLinkLogging2_0.CONNECTION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -152,20 +152,16 @@ public class EclipseLinkLoggingComposite2_0
 		};
 	}
 
-	private PropertyValueModel<String> buildConnectionStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(this.buildDefaultConnectionHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildConnectionStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultConnectionModel(), CONNECTION_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultConnectionHolder() {
+	private static final Transformer<Boolean, String> CONNECTION_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultConnectionModel() {
 		return new PropertyAspectAdapter<EclipseLinkLogging2_0, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging2_0.CONNECTION_PROPERTY)

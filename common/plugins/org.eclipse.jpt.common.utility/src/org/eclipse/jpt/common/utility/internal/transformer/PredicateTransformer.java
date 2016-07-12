@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.transformer;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -43,6 +44,6 @@ public class PredicateTransformer<I>
 
 	@Override
 	public String toString() {
-		return super.toString();
+		return ObjectTools.toString(this, this.predicate);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,6 @@ import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
@@ -30,10 +29,10 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapt
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.NullListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TreeModelAdapter;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
@@ -47,6 +46,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.TreeNodeValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.model.Displayable;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class TreeModelAdapterTests extends TestCase {
@@ -189,8 +189,8 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	public void testTreeStructureChanged() {
-		ModifiablePropertyValueModel<TreeNodeValueModel<Object>> nodeHolder = new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
-		TreeModel treeModel = this.buildTreeModel(nodeHolder);
+		ModifiablePropertyValueModel<TreeNodeValueModel<Object>> nodeModel = new SimplePropertyValueModel<>(this.buildSortedRootNode());
+		TreeModel treeModel = this.buildTreeModel(nodeModel);
 		this.eventFired = false;
 		treeModel.addTreeModelListener(new TestTreeModelListener() {
 			@Override
@@ -206,7 +206,7 @@ public class TreeModelAdapterTests extends TestCase {
 				TreeModelAdapterTests.this.eventFired = true;
 			}
 		});
-		nodeHolder.setValue(this.buildUnsortedRootNode());
+		nodeModel.setValue(this.buildUnsortedRootNode());
 		assertTrue(this.eventFired);
 	}
 
@@ -303,7 +303,7 @@ public class TreeModelAdapterTests extends TestCase {
 			super();
 			this.parent = parent;
 			this.name = name;
-			this.children = new HashBag<TestModel>();
+			this.children = new HashBag<>();
 		}
 
 		public TestModel getParent() {
@@ -358,8 +358,9 @@ public class TreeModelAdapterTests extends TestCase {
 
 		public String dumpString() {
 			StringWriter sw = new StringWriter();
-			IndentingPrintWriter ipw = new IndentingPrintWriter(sw);
-			this.dumpOn(ipw);
+			try (IndentingPrintWriter ipw = new IndentingPrintWriter(sw)) {
+				this.dumpOn(ipw);
+			}
 			return sw.toString();
 		}
 		public void dumpOn(IndentingPrintWriter writer) {
@@ -371,9 +372,10 @@ public class TreeModelAdapterTests extends TestCase {
 			writer.undent();
 		}
 		public void dumpOn(OutputStream stream) {
-			IndentingPrintWriter writer = new IndentingPrintWriter(new OutputStreamWriter(stream));
-			this.dumpOn(writer);
-			writer.flush();
+			try (IndentingPrintWriter writer = new IndentingPrintWriter(new OutputStreamWriter(stream))) {
+				this.dumpOn(writer);
+				writer.flush();
+			}
 		}
 		public void dump() {
 			this.dumpOn(System.out);
@@ -516,8 +518,9 @@ public class TreeModelAdapterTests extends TestCase {
 
 		public String dumpString() {
 			StringWriter sw = new StringWriter();
-			IndentingPrintWriter ipw = new IndentingPrintWriter(sw);
-			this.dumpOn(ipw);
+			try (IndentingPrintWriter ipw = new IndentingPrintWriter(sw)) {
+				this.dumpOn(ipw);
+			}
 			return sw.toString();
 		}
 
@@ -532,9 +535,10 @@ public class TreeModelAdapterTests extends TestCase {
 		}
 
 		public void dumpOn(OutputStream stream) {
-			IndentingPrintWriter writer = new IndentingPrintWriter(new OutputStreamWriter(stream));
-			this.dumpOn(writer);
-			writer.flush();
+			try (IndentingPrintWriter writer = new IndentingPrintWriter(new OutputStreamWriter(stream))) {
+				this.dumpOn(writer);
+				writer.flush();
+			}
 		}
 
 		public void dump() {
@@ -607,11 +611,11 @@ public class TreeModelAdapterTests extends TestCase {
 		/** the list should be sorted */
 		@Override
 		protected ListValueModel<TreeNodeValueModel<Object>> buildChildrenModel(TestModel testModel) {
-			return new SortedListValueModelWrapper<TreeNodeValueModel<Object>>(this.buildDisplayStringAdapter(testModel));
+			return new SortedListValueModelWrapper<>(this.buildDisplayStringAdapter(testModel));
 		}
 		/** the display string (name) of each node can change */
 		protected ListValueModel<TreeNodeValueModel<Object>> buildDisplayStringAdapter(TestModel testModel) {
-			return new ItemPropertyListValueModelAdapter<TreeNodeValueModel<Object>>(this.buildNodeAdapter(testModel), DISPLAY_STRING_PROPERTY);
+			return new ItemPropertyListValueModelAdapter<>(this.buildNodeAdapter(testModel), DISPLAY_STRING_PROPERTY);
 		}
 		/** children are also sorted nodes */
 		@Override
@@ -676,7 +680,7 @@ public class TreeModelAdapterTests extends TestCase {
 		protected ListValueModel<TreeNodeValueModel<Object>> buildSpecialChildrenModel() {
 			TreeNodeValueModel<Object>[] children = new NameTestNode[1];
 			children[0] = new NameTestNode(this);
-			return new SimpleListValueModel<TreeNodeValueModel<Object>>(Arrays.asList(children));
+			return new SimpleListValueModel<>(Arrays.asList(children));
 		}
 		/** children are also special nodes */
 		@Override
@@ -700,7 +704,7 @@ public class TreeModelAdapterTests extends TestCase {
 			this.nameListener = this.buildNameListener();
 			this.specialNode = specialNode;
 			this.nameAdapter = this.buildNameAdapter();
-			this.childrenModel = new NullListValueModel<TreeNodeValueModel<Object>>();
+			this.childrenModel = new NullListValueModel<>();
 		}
 		protected PropertyChangeListener buildNameListener() {
 			return new PropertyChangeListener() {
@@ -762,11 +766,12 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	private TreeModel buildTreeModel(TestNode root) {
-		return this.buildTreeModel(new StaticPropertyValueModel<TreeNodeValueModel<Object>>(root));
+		return this.buildTreeModel(PropertyValueModelTools.staticPropertyValueModel(root));
 	}
 
-	private TreeModel buildTreeModel(PropertyValueModel<TreeNodeValueModel<Object>> rootHolder) {
-		return new TreeModelAdapter<Object>(rootHolder) {
+	private TreeModel buildTreeModel(PropertyValueModel<TreeNodeValueModel<Object>> rootModel) {
+		return new TreeModelAdapter<Object>(rootModel) {
+			private static final long serialVersionUID = 1L;
 			@Override
 			protected ListChangeListener buildChildrenListener() {
 				return this.buildChildrenListener_();

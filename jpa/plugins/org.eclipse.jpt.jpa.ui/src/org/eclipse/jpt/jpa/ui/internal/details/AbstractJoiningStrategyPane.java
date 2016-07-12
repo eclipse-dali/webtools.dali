@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -45,8 +44,7 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.3
  * @since 2.1
  */
-public abstract class AbstractJoiningStrategyPane
-		<R extends Relationship, S extends RelationshipStrategy> 
+public abstract class AbstractJoiningStrategyPane<R extends Relationship> 
 	extends Pane<R>
 {
 	protected Control strategyDetailsComposite;
@@ -71,7 +69,7 @@ public abstract class AbstractJoiningStrategyPane
 		super(parentPane, subjectHolder, parent);
 	}
 	
-	protected abstract ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder();
+	protected abstract ModifiablePropertyValueModel<Boolean> buildUsesStrategyModel();
 	
 
 	@Override
@@ -92,7 +90,7 @@ public abstract class AbstractJoiningStrategyPane
 	protected void initializeLayout(Composite container) {
 		this.strategyDetailsComposite = this.buildStrategyDetailsComposite(container);
 		// the container is a PageBook, it was built in addComposite(Composite)
-		SWTBindingTools.bind(this.buildUsesStrategyHolder(), buildPageBookTransformer(container), (PageBook) container);
+		SWTBindingTools.bind(this.buildUsesStrategyModel(), buildPageBookTransformer(container), (PageBook) container);
 	}
 	
 	protected Control getStrategyDetailsComposite(Composite parent) {

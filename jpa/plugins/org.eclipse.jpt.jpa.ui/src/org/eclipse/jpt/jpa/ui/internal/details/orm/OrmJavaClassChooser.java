@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,10 +33,6 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * choose a class from the package.
  * Not sure if this should be driven by the UI or by ui api in the model
  *
- * @see OrmManagedType
- * @see OrmPersistentTypeDetailsPage - The parent container
- * @see ClassChooserPane
- *
  * @version 2.0
  * @since 1.0
  */
@@ -58,7 +54,7 @@ public class OrmJavaClassChooser extends ClassChooserPane<OrmManagedType> {
 	}
 
 	@Override
-	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<OrmManagedType, String>(getSubjectHolder(), OrmManagedType.CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {

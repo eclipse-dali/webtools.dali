@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -75,13 +74,5 @@ public interface EclipseLinkConvert
 	 * in {@link Converter} can be cast as such;
 	 * otherwise, it returns <code>null</code>.
 	 */
-	Transformer<Converter, EclipseLinkConvert> CONVERTER_TRANSFORMER = new ConverterTransformer();
-	class ConverterTransformer
-		extends TransformerAdapter<Converter, EclipseLinkConvert>
-	{
-		@Override
-		public EclipseLinkConvert transform(Converter converter) {
-			return (converter.getConverterType() == EclipseLinkConvert.class) ? (EclipseLinkConvert) converter : null;
-		}
-	}
+	Transformer<Converter, EclipseLinkConvert> CONVERTER_TRANSFORMER = new ConverterTransformer<>(EclipseLinkConvert.class);
 }

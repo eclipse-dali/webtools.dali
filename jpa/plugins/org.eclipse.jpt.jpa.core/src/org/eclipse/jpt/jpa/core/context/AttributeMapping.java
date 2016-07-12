@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,6 +37,15 @@ public interface AttributeMapping
 	 * containment hierarchy).
 	 */
 	SpecifiedPersistentAttribute getPersistentAttribute();
+	Transformer<AttributeMapping, SpecifiedPersistentAttribute> PERSISTENT_ATTRIBUTE_TRANSFORMER = new PersistentAttributeTransformer();
+	class PersistentAttributeTransformer
+		extends TransformerAdapter<AttributeMapping, SpecifiedPersistentAttribute>
+	{
+		@Override
+		public SpecifiedPersistentAttribute transform(AttributeMapping mapping) {
+			return mapping.getPersistentAttribute();
+		}
+	}
 
 	/**
 	 * Return the mapping's name, which corresponds to the name of the

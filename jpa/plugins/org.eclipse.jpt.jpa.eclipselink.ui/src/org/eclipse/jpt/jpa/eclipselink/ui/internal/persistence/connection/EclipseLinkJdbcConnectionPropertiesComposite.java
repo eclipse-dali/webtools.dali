@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -28,9 +27,10 @@ import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
@@ -38,9 +38,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConne
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -68,11 +68,11 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		super(parent, parentComposite);
 	}
 
-	private ModifiablePropertyValueModel<String> buildPasswordHolder() {
+	private ModifiablePropertyValueModel<String> buildPasswordModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getPassword();
+				return this.subject.getPassword();
 			}
 
 			@Override
@@ -80,7 +80,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setPassword(value);
+				this.subject.setPassword(value);
 			}
 		};
 	}
@@ -93,11 +93,11 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildUrlHolder() {
+	private ModifiablePropertyValueModel<String> buildUrlModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getUrl();
+				return this.subject.getUrl();
 			}
 
 			@Override
@@ -105,16 +105,16 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setUrl(value);
+				this.subject.setUrl(value);
 			}
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildUserHolder() {
+	private ModifiablePropertyValueModel<String> buildUserModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getUser();
+				return this.subject.getUser();
 			}
 
 			@Override
@@ -122,7 +122,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setUser(value);
+				this.subject.setUser(value);
 			}
 		};
 	}
@@ -151,23 +151,23 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 
 		// Url
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_URL_LABEL);
-		this.addText(container, buildUrlHolder());
+		this.addText(container, buildUrlModel());
 
 		// User
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_USER_LABEL);
-		this.addText(container, buildUserHolder());
+		this.addText(container, buildUserModel());
 
 		// Password
 		this.addLabel(container, JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_PASSWORD_LABEL);
-		this.addPasswordText(container, buildPasswordHolder());
+		this.addPasswordText(container, buildPasswordModel());
 
 		// Bind Parameters
 
 		TriStateCheckBox bindParametersCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL,
-			this.buildBindParametersHolder(),
-			this.buildBindParametersStringHolder(),
+			this.buildBindParametersModel(),
+			this.buildBindParametersStringModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -180,7 +180,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		return new ClassChooserPane<EclipseLinkConnection>(this, container) {
 
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextModel() {
 				return new PropertyAspectAdapter<EclipseLinkConnection, String>(
 							this.getSubjectHolder(), EclipseLinkConnection.DRIVER_PROPERTY) {
 					@Override
@@ -216,7 +216,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildBindParametersHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildBindParametersModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.BIND_PARAMETERS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -230,20 +230,16 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		};
 	}
 
-	private PropertyValueModel<String> buildBindParametersStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultBindParametersHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.BOOLEAN_TRUE : JptCommonUiMessages.BOOLEAN_FALSE;
-					return NLS.bind(JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL_DEFAULT, defaultStringValue);
-				}
-				return JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL;
-			}
-		};
+	private PropertyValueModel<String> buildBindParametersStringModel() {
+		return PropertyValueModelTools.transform_(this.buildDefaultBindParametersModel(), BIND_PARAMETERS_TRANSFORMER);
 	}
 
-	private PropertyValueModel<Boolean> buildDefaultBindParametersHolder() {
+	private static final Transformer<Boolean, String> BIND_PARAMETERS_TRANSFORMER = new BooleanStringTransformer(
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL_DEFAULT,
+			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL
+		);
+
+	private PropertyValueModel<Boolean> buildDefaultBindParametersModel() {
 		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkConnection.BIND_PARAMETERS_PROPERTY)
@@ -403,7 +399,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 				// Make sure that if the pattern is empty, we specify * in order
 				// to show all the mapping types
 				if (StringTools.isBlank(getPattern())) {
-					patternMatcher.setPattern("*");
+					this.patternMatcher.setPattern("*");
 				}
 			}
 

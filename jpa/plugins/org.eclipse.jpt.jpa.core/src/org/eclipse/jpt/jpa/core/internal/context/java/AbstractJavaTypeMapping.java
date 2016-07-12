@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -112,7 +112,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute mappings **********
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings() {
-		return IterableTools.downCast(IterableTools.transform(getPersistentType().getAttributes(), PersistentAttribute.MAPPING_TRANSFORMER));
+		return IterableTools.downcast(IterableTools.transform(getPersistentType().getAttributes(), PersistentAttribute.MAPPING_TRANSFORMER));
 	}
 
 	public Iterable<JavaAttributeMapping> getAttributeMappings(String mappingKey) {
@@ -132,7 +132,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
-		return new FilteringIterable<AttributeMapping>(getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
+		return new FilteringIterable<>(getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
 	}
 	
 	public Iterable<AttributeMapping> getIdAttributeMappings() {

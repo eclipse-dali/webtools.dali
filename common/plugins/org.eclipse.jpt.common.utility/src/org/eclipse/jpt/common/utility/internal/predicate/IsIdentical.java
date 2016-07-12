@@ -16,12 +16,14 @@ package org.eclipse.jpt.common.utility.internal.predicate;
  * will evaluate to <code>true</code> if the variable is also
  * <code>null</code>.
  * 
+ * @param <V> the type of objects to be evaluated
+ * 
  * @see Equals
  * @see IsNotNull
  * @see IsNull
  */
-public class IsIdentical
-	extends CriterionPredicate<Object, Object>
+public class IsIdentical<V>
+	extends CriterionPredicate<V, Object>
 {
 	/**
 	 * Construct a predicate that will evaluate to <code>true</code> if the
@@ -32,7 +34,7 @@ public class IsIdentical
 		super(criterion);
 	}
 
-	public boolean evaluate(Object variable) {
+	public boolean evaluate(V variable) {
 		return variable == this.criterion;
 	}
 }

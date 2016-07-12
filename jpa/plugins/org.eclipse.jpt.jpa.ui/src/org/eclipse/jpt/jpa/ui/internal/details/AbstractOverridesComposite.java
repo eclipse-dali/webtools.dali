@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,15 +18,17 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
+import org.eclipse.jpt.common.utility.internal.closure.ClosureTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -38,6 +40,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAssociationOverride;
@@ -61,7 +64,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 	private Pane<AssociationOverride> associationOverridePane;
 	
 	private ModifiablePropertyValueModel<Override_> selectedOverrideModel;
-	private ModifiablePropertyValueModel<Boolean> overrideVirtualOverrideHolder;
+	private ModifiablePropertyValueModel<Boolean> overrideVirtualOverrideModel;
 	
 	
 	protected AbstractOverridesComposite(
@@ -79,7 +82,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 	}
 
 	private ModifiablePropertyValueModel<Override_> buildSelectedOverrideModel() {
-		return new SimplePropertyValueModel<Override_>();
+		return new SimplePropertyValueModel<>();
 	}
 	
 	protected abstract boolean supportsAssociationOverrides();
@@ -93,24 +96,20 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		Button overrideCheckBox = addCheckBox(
 			container,
 				JptJpaUiDetailsMessages.OVERRIDES_COMPOSITE_OVERRIDE_DEFAULT,
-				getOverrideVirtualOverrideHolder(),
+				getOverrideVirtualOverrideModel(),
 				null);
-		SWTBindingTools.bindVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
+		SWTBindingTools.bindVisibleState(this.buildSelectedOverrideVisibleModel(), overrideCheckBox);
 		
 		// Property pane
 		PageBook pageBook = addPageBook(container);
 		installOverrideControlSwitcher(this.selectedOverrideModel, pageBook);
 	}
 	
-	private PropertyValueModel<Boolean> buildSelectedOverrideBooleanHolder() {
-		return new TransformationPropertyValueModel<Override_, Boolean>(this.selectedOverrideModel) {
-			@Override
-			protected Boolean transform(Override_ value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
+	private PropertyValueModel<Boolean> buildSelectedOverrideVisibleModel() {
+		return PropertyValueModelTools.valueIsNotNull(this.selectedOverrideModel);
 	}
 	
+	@SuppressWarnings("unused")
 	private void initializeOverridesList(Composite container) {
 		new AddRemoveListPane<T, Override_>(
 				this,
@@ -130,23 +129,18 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 
 	protected Pane<AttributeOverride> getAttributeOverridePane(PageBook pageBook) {
 		if (this.attributeOverridePane == null) {
-			PropertyValueModel<AttributeOverride>  attributeOverrideHolder = buildAttributeOverrideHolder();
-			this.attributeOverridePane = buildAttributeOverridePane(pageBook, attributeOverrideHolder);
+			PropertyValueModel<AttributeOverride>  attributeOverrideModel = buildAttributeOverrideModel();
+			this.attributeOverridePane = buildAttributeOverridePane(pageBook, attributeOverrideModel);
 		}
 		return this.attributeOverridePane;
 	}
 	
-	protected Pane<AttributeOverride> buildAttributeOverridePane(PageBook pageBook, PropertyValueModel<AttributeOverride> overrideHolder) {
-		return new AttributeOverrideComposite(this, overrideHolder, buildOverrideBooleanHolder(overrideHolder), pageBook);
+	protected Pane<AttributeOverride> buildAttributeOverridePane(PageBook pageBook, PropertyValueModel<AttributeOverride> overrideModel) {
+		return new AttributeOverrideComposite(this, overrideModel, buildOverrideIsSpecifiedModel(overrideModel), pageBook);
 	}
 	
-	private PropertyValueModel<Boolean> buildOverrideBooleanHolder(PropertyValueModel<? extends Override_> overrideHolder) {
-		return new TransformationPropertyValueModel<Override_, Boolean>(overrideHolder) {
-			@Override
-			protected Boolean transform_(Override_ v) {
-				return Boolean.valueOf(!v.isVirtual());
-			}
-		};
+	private <O extends Override_> PropertyValueModel<Boolean> buildOverrideIsSpecifiedModel(PropertyValueModel<O> overrideModel) {
+		return PropertyValueModelTools.valueIsInSet(overrideModel, SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
 	}
 
 	protected Pane<AssociationOverride> getAssociationOverridePane(PageBook pageBook) {
@@ -157,37 +151,27 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		return this.associationOverridePane;
 	}
 
-	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> overrideHolder) {
-		return new AssociationOverrideComposite(this, overrideHolder, buildOverrideBooleanHolder(overrideHolder), pageBook);		
+	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> overrideModel) {
+		return new AssociationOverrideComposite(this, overrideModel, buildOverrideIsSpecifiedModel(overrideModel), pageBook);		
 	}
 	
-	private void installOverrideControlSwitcher(PropertyValueModel<Override_> overrideHolder, PageBook pageBook) {
-		SWTBindingTools.bind(overrideHolder, buildPaneTransformer(pageBook), pageBook);
+	private void installOverrideControlSwitcher(PropertyValueModel<Override_> overrideModel, PageBook pageBook) {
+		SWTBindingTools.bind(overrideModel, buildPaneTransformer(pageBook), pageBook);
 	}
 	
 	private PropertyValueModel<AssociationOverride> buildAssociationOverrideModel() {
-		return new TransformationPropertyValueModel<Override_, AssociationOverride>(this.selectedOverrideModel) {
-			@Override
-			protected AssociationOverride transform_(Override_ v) {
-				return (v instanceof AssociationOverride) ? (AssociationOverride) v : null;
-			}
-		};
+		return PropertyValueModelTools.filter(this.selectedOverrideModel, AssociationOverride.class);
 	}
 	
-	private PropertyValueModel<AttributeOverride> buildAttributeOverrideHolder() {
-		return new TransformationPropertyValueModel<Override_, AttributeOverride>(this.selectedOverrideModel) {
-			@Override
-			protected AttributeOverride transform_(Override_ v) {
-				return (v instanceof AttributeOverride) ? (AttributeOverride) v : null;
-			}
-		};
+	private PropertyValueModel<AttributeOverride> buildAttributeOverrideModel() {
+		return PropertyValueModelTools.filter(this.selectedOverrideModel, AttributeOverride.class);
 	}
 	
-	private ListValueModel<VirtualAssociationOverride> buildDefaultAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AssociationOverrideContainer, VirtualAssociationOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
+	private ListValueModel<VirtualAssociationOverride> buildDefaultAssociationOverridesListModel(PropertyValueModel<AssociationOverrideContainer> containerModel) {
+		return new ListAspectAdapter<AssociationOverrideContainer, VirtualAssociationOverride>(containerModel, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
 			protected ListIterable<VirtualAssociationOverride> getListIterable() {
-				return new SuperListIterableWrapper<VirtualAssociationOverride>(this.subject.getVirtualOverrides());
+				return new SuperListIterableWrapper<>(this.subject.getVirtualOverrides());
 			}
 			
 			@Override
@@ -197,11 +181,11 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		};
 	}
 	
-	private ListValueModel<VirtualAttributeOverride> buildDefaultAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AttributeOverrideContainer, VirtualAttributeOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
+	private ListValueModel<VirtualAttributeOverride> buildDefaultAttributeOverridesListModel(PropertyValueModel<AttributeOverrideContainer> containerModel) {
+		return new ListAspectAdapter<AttributeOverrideContainer, VirtualAttributeOverride>(containerModel, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
 			protected ListIterable<VirtualAttributeOverride> getListIterable() {
-				return new SuperListIterableWrapper<VirtualAttributeOverride>(this.subject.getVirtualOverrides());
+				return new SuperListIterableWrapper<>(this.subject.getVirtualOverrides());
 			}
 			
 			@Override
@@ -211,27 +195,29 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		};
 	}
 	
-	protected ModifiablePropertyValueModel<Boolean> getOverrideVirtualOverrideHolder() {
-		if (this.overrideVirtualOverrideHolder == null) {
-			this.overrideVirtualOverrideHolder = buildOverrideVirtualOverrideHolder();
+	protected ModifiablePropertyValueModel<Boolean> getOverrideVirtualOverrideModel() {
+		if (this.overrideVirtualOverrideModel == null) {
+			this.overrideVirtualOverrideModel = this.buildOverrideVirtualOverrideModel();
 		}
-		return this.overrideVirtualOverrideHolder;
+		return this.overrideVirtualOverrideModel;
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildOverrideVirtualOverrideHolder() {
-		return new TransformationModifiablePropertyValueModel<Override_, Boolean>(this.selectedOverrideModel) {
-			@Override
-			public void setValue(Boolean value) {
-				updateOverride(value.booleanValue());
-			}
-			
-			@Override
-			protected Boolean transform_(Override_ v) {
-				return Boolean.valueOf( ! v.isVirtual());
-			}
-		};
+	private ModifiablePropertyValueModel<Boolean> buildOverrideVirtualOverrideModel() {
+		return PropertyValueModelTools.transform(
+				this.selectedOverrideModel, 
+				TransformerTools.adapt(SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE),
+				ClosureTools.booleanClosure(new OverrideVirtualOverrideModelSetValueClosure())
+			);
 	}
-	
+
+	class OverrideVirtualOverrideModelSetValueClosure
+		implements BooleanClosure.Adapter
+	{
+		public void execute(boolean value) {
+			AbstractOverridesComposite.this.updateOverride(value);
+		}
+	}
+
 	String buildOverrideDisplayString(Override_ override) {
 		String overrideType;
 		
@@ -281,29 +267,29 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		};
 	}
 	
-	protected ListValueModel<Override_> buildOverridesListHolder() {
-		PropertyValueModel<AttributeOverrideContainer> attributeOverrideContainerHolder = buildAttributeOverrideContainerHolder();
-		List<ListValueModel<? extends Override_>> list = new ArrayList<ListValueModel<? extends Override_>>();
+	protected ListValueModel<Override_> buildOverridesListModel_() {
+		PropertyValueModel<AttributeOverrideContainer> attributeOverrideContainerModel = buildAttributeOverrideContainerModel();
+		List<ListValueModel<? extends Override_>> list = new ArrayList<>();
 		
-		list.add(buildSpecifiedAttributeOverridesListHolder(attributeOverrideContainerHolder));
-		list.add(buildDefaultAttributeOverridesListHolder(attributeOverrideContainerHolder));
+		list.add(buildSpecifiedAttributeOverridesListModel(attributeOverrideContainerModel));
+		list.add(buildDefaultAttributeOverridesListModel(attributeOverrideContainerModel));
 		
 		if (supportsAssociationOverrides()) {
-			PropertyValueModel<AssociationOverrideContainer> associationOverrideContainerHolder = buildAssociationOverrideContainerHolder();
-			list.add(buildSpecifiedAssociationOverridesListHolder(associationOverrideContainerHolder));
-			list.add(buildDefaultAssociationOverridesListHolder(associationOverrideContainerHolder));
+			PropertyValueModel<AssociationOverrideContainer> associationOverrideContainerModel = buildAssociationOverrideContainerModel();
+			list.add(buildSpecifiedAssociationOverridesListModel(associationOverrideContainerModel));
+			list.add(buildDefaultAssociationOverridesListModel(associationOverrideContainerModel));
 		}
 		
 		return CompositeListValueModel.forModels(list);
 	}
 	
-	protected abstract PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder();
+	protected abstract PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerModel();
 	
-	protected abstract PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder();
+	protected abstract PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerModel();
 	
 	private ListValueModel<Override_> buildOverridesListModel() {
-		return new ItemPropertyListValueModelAdapter<Override_>(
-				buildOverridesListHolder(),
+		return new ItemPropertyListValueModelAdapter<>(
+				buildOverridesListModel_(),
 				Override_.NAME_PROPERTY);
 	}
 	
@@ -341,11 +327,11 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		return null;
 	}
 	
-	private ListValueModel<SpecifiedAssociationOverride> buildSpecifiedAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AssociationOverrideContainer, SpecifiedAssociationOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
+	private ListValueModel<SpecifiedAssociationOverride> buildSpecifiedAssociationOverridesListModel(PropertyValueModel<AssociationOverrideContainer> containerModel) {
+		return new ListAspectAdapter<AssociationOverrideContainer, SpecifiedAssociationOverride>(containerModel, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
 			protected ListIterable<SpecifiedAssociationOverride> getListIterable() {
-				return new SuperListIterableWrapper<SpecifiedAssociationOverride>(this.subject.getSpecifiedOverrides());
+				return new SuperListIterableWrapper<>(this.subject.getSpecifiedOverrides());
 			}
 			
 			@Override
@@ -355,11 +341,11 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 		};
 	}
 	
-	private ListValueModel<SpecifiedAttributeOverride> buildSpecifiedAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AttributeOverrideContainer, SpecifiedAttributeOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
+	private ListValueModel<SpecifiedAttributeOverride> buildSpecifiedAttributeOverridesListModel(PropertyValueModel<AttributeOverrideContainer> containerModel) {
+		return new ListAspectAdapter<AttributeOverrideContainer, SpecifiedAttributeOverride>(containerModel, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
 			protected ListIterable<SpecifiedAttributeOverride> getListIterable() {
-				return new SuperListIterableWrapper<SpecifiedAttributeOverride>(this.subject.getSpecifiedOverrides());
+				return new SuperListIterableWrapper<>(this.subject.getSpecifiedOverrides());
 			}
 			
 			@Override
