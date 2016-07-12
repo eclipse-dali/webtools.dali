@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -261,12 +262,18 @@ class JpaTextEditorManager
 
 	/**
 	 * Pre-condition: executing on the UI thread.
-	 * If the new JPA selection is not <code>null</code> and it is different
-	 * from the text editor's current JPA selection, modify the text editor's
-	 * selection.
+	 * <p>
+	 * If all the following are true:<ul>
+	 * <li>the new JPA selection is non-<code>null</code>
+	 * <li>the text editor does <em>not</em> have the current focus
+	 *     (i.e. the selection change event did not originate from the text editor)
+	 * <li>the new JPA selection is different from the text editor's
+	 *     current JPA selection
+	 * </ul>
+	 * then modify the text editor's selection.
 	 */
 	/* CU private */ void setTextEditorJpaSelection_(JpaStructureNode selection) {
-		if ((selection != null) && (selection != this.getTextEditorJpaSelection())) {
+		if ((selection != null) && ( ! this.textEditorHasFocus()) && (selection != this.getTextEditorJpaSelection())) {
 			this.setTextEditorSelection(selection.getSelectionTextRange());
 		}
 	}
@@ -289,6 +296,10 @@ class JpaTextEditorManager
 		// (or if the text editor does not have a *post* selection provider)
 		IPostSelectionProvider selProvider = this.getTextEditorSelectionProvider();
 		return (selProvider == null) ? null : this.getTextEditorJpaSelection(selProvider.getSelection());
+	}
+
+	private boolean textEditorHasFocus() {
+		return this.textEditor.getAdapter(Control.class).isFocusControl();
 	}
 
 	private JpaStructureNode getTextEditorJpaSelection(ISelection selection) {
