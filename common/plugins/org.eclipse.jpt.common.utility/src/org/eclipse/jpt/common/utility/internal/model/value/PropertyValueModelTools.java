@@ -111,7 +111,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueEquals_(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueNotEquals_(PropertyValueModel<?> propertyModel, Object value) {
-		return valueAffirms_(propertyModel, PredicateTools.isNotEqual(value));
+		return valueAffirms(propertyModel, PredicateTools.isNotEqual(value));
 	}
 
 	/**
@@ -369,13 +369,29 @@ public final class PropertyValueModelTools {
 	 * of the specified class, it will return the specified default value.
 	 * <p>
 	 * <strong>NB:</strong> If the wrapped value is <code>null</code>,
-	 * the model returns the specified default value.
+	 * the model returns a <code>null</code> value.
 	 * 
 	 * @see #filter(PropertyValueModel, Class)
 	 * @see PredicateTools#instanceOf(Class)
 	 */
 	public static <V> PropertyValueModel<V> filter(PropertyValueModel<?> propertyModel, Class<V> clazz, V defaultValue) {
 		return transform(propertyModel, TransformerTools.cast(TransformerTools.filteringTransformer(PredicateTools.instanceOf(clazz), defaultValue)));
+	}
+
+	/**
+	 * Construct a property value model that filters the specified
+	 * property value model to return the wrapped value only if it is an instance
+	 * of the specified class. If the wrapped value is <em>not</em> an instance
+	 * of the specified class, it will return the specified default value.
+	 * <p>
+	 * <strong>NB:</strong> If the wrapped value is <code>null</code>,
+	 * the model returns the specified default value.
+	 * 
+	 * @see #filter(PropertyValueModel, Class)
+	 * @see PredicateTools#instanceOf(Class)
+	 */
+	public static <V> PropertyValueModel<V> filter_(PropertyValueModel<?> propertyModel, Class<V> clazz, V defaultValue) {
+		return transform_(propertyModel, TransformerTools.cast(TransformerTools.filteringTransformer(PredicateTools.instanceOf(clazz), defaultValue)));
 	}
 
 	/**
@@ -449,7 +465,7 @@ public final class PropertyValueModelTools {
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> PropertyValueModel<V> filter_(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> filter, V defaultValue) {
-		return transform(propertyModel, TransformerTools.filteringTransformer(filter, defaultValue));
+		return transform_(propertyModel, TransformerTools.filteringTransformer(filter, defaultValue));
 	}
 
 	/**
