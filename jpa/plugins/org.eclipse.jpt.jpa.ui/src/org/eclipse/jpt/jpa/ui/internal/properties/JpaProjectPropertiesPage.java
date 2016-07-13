@@ -372,7 +372,7 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA 2.0 project flag
 	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
-		return PropertyValueModelTools.valueAffirms(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0);
+		return PropertyValueModelTools.valueAffirms(this.jpaProjectModel, IS_COMPATIBLE_WITH_JPA_2_0, false);
 	}
 
 	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = new JpaModel.JpaVersionIsCompatibleWith<>(JpaProject2_0.FACET_VERSION_STRING);

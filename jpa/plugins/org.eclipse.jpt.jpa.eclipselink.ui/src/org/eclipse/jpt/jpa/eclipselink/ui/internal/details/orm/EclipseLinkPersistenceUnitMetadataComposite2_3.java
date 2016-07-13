@@ -73,7 +73,8 @@ import org.eclipse.swt.widgets.Group;
  * @version 3.1
  * @since 3.1
  */
-public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceUnitMetadataComposite
+public class EclipseLinkPersistenceUnitMetadataComposite2_3
+	extends PersistenceUnitMetadataComposite
 {
 
 	protected EclipseLinkTenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults> tenantDiscriminatorColumnsComposite;
@@ -155,7 +156,7 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 	}
 
 	private PropertyValueModel<Boolean> buildDelimitedIdentifiersCheckBoxIsVisibleModel() {
-		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_JPA_2_0);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_JPA_2_0, false);
 	}
 
 	protected static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = new JpaModel.JpaVersionIsCompatibleWith<>(JpaProject2_0.FACET_VERSION_STRING);

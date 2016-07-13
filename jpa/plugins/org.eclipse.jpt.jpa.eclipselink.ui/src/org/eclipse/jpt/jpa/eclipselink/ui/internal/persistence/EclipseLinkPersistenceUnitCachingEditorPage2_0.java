@@ -17,10 +17,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCacheType;
@@ -163,7 +161,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	private PropertyValueModel<Boolean> buildSharedCacheModeEnabledModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
-		return PropertyValueModelTools.valueAffirms(this.buildSharedCacheModeModel(persistenceUnitModel), SHARED_CACHE_MODE_ENABLED);
+		return PropertyValueModelTools.valueIsNotIdentical(this.buildSharedCacheModeModel(persistenceUnitModel), SharedCacheMode2_0.NONE);
 	}
 
 	private PropertyValueModel<SharedCacheMode2_0> buildSharedCacheModeModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
@@ -176,17 +174,6 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 				return this.subject.getSharedCacheMode();
 			}
 		};
-	}
-
-	private static final Predicate<SharedCacheMode2_0> SHARED_CACHE_MODE_ENABLED = new SharedCacheModeEnabled();
-
-	/* CU private */ static class SharedCacheModeEnabled
-		extends PredicateAdapter<SharedCacheMode2_0>
-	{
-		@Override
-		public boolean evaluate(SharedCacheMode2_0 mode) {
-			return mode != SharedCacheMode2_0.NONE;
-		}
 	}
 
 	protected EnumFormComboViewer<EclipseLinkCaching, EclipseLinkCacheType> buildDefaultCacheTypeCombo(Composite container) {

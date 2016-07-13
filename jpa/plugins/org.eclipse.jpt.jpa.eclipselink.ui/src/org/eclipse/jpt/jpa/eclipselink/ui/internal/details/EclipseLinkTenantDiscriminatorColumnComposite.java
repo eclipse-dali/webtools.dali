@@ -44,7 +44,9 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseLinkTenantDiscriminatorColumn2_3> {
+public class EclipseLinkTenantDiscriminatorColumnComposite
+	extends Pane<EclipseLinkTenantDiscriminatorColumn2_3>
+{
 
 	public EclipseLinkTenantDiscriminatorColumnComposite(Pane<?> parentPane,
 	                                   PropertyValueModel<EclipseLinkTenantDiscriminatorColumn2_3> subjectHolder,
@@ -99,7 +101,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 	}
 
 	private PropertyValueModel<Boolean> buildPKCheckBoxIsVisibleModel() {
-		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4, false);
 	}
 
 	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =

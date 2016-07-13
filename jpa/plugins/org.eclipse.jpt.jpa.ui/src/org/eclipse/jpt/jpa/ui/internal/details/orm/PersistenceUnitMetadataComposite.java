@@ -67,7 +67,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMetadata>
+public class PersistenceUnitMetadataComposite
+	extends Pane<OrmPersistenceUnitMetadata>
 {
 	PropertyValueModel<OrmPersistenceUnitDefaults> persistenceUnitDefaultsModel;
 
@@ -306,7 +307,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	}
 
 	protected PropertyValueModel<Boolean> buildResourceTypeIsKindOfOrmXml2_0Model() {
-		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0, false);
 	}
 
 	protected static final Predicate<JptResourceTypeReference> RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0 =

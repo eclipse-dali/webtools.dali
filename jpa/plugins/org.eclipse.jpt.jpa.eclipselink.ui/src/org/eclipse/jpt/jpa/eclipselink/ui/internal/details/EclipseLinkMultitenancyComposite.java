@@ -281,7 +281,7 @@ public class EclipseLinkMultitenancyComposite
 	}
 
 	private PropertyValueModel<Boolean> buildIncludeCriteriaCheckBoxIsVisibleModel() {
-		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4, false);
 	}
 
 	private static final Predicate<EclipseLinkMultitenancy2_3> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =
