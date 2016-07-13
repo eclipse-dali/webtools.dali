@@ -98,6 +98,6 @@ public class MappedByJoiningStrategyPane
 
 
 	private PropertyValueModel<Boolean> buildMappedByRelationshipPaneEnablerModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
 	}
 }

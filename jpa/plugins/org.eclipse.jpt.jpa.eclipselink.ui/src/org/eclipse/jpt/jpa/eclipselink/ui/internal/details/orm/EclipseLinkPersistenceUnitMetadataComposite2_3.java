@@ -155,7 +155,7 @@ public class EclipseLinkPersistenceUnitMetadataComposite2_3 extends PersistenceU
 	}
 
 	private PropertyValueModel<Boolean> buildDelimitedIdentifiersCheckBoxIsVisibleModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), IS_COMPATIBLE_WITH_JPA_2_0);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_JPA_2_0);
 	}
 
 	protected static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = new JpaModel.JpaVersionIsCompatibleWith<>(JpaProject2_0.FACET_VERSION_STRING);

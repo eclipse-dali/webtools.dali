@@ -99,7 +99,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite extends Pane<EclipseL
 	}
 
 	private PropertyValueModel<Boolean> buildPKCheckBoxIsVisibleModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), IS_COMPATIBLE_WITH_ECLIPSELINK_2_4);
 	}
 
 	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_ECLIPSELINK_2_4 =

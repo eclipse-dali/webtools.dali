@@ -70,7 +70,7 @@ public class OrmPersistentAttributeDetailsPageManager
 	}
 	
 	private PropertyValueModel<Boolean> buildVirtualAttributeEnabledModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
 	}
 
 	@Override

@@ -163,7 +163,7 @@ public class JoiningStrategyJoinColumnsComposite
 	}
 
 	protected PropertyValueModel<Boolean> buildStrategyIsSpecifiedModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildStrategyIsSpecifiedPredicate(), false);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), this.buildStrategyIsSpecifiedPredicate(), false);
 	}
 
 	protected Predicate<JoinColumnRelationshipStrategy> buildStrategyIsSpecifiedPredicate() {

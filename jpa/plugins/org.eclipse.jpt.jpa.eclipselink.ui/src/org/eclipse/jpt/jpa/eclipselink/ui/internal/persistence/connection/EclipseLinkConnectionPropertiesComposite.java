@@ -103,7 +103,7 @@ public class EclipseLinkConnectionPropertiesComposite<T extends EclipseLinkConne
 	}
 
 	private PropertyValueModel<Boolean> buildJTADataSourceModel() {
-		return PropertyValueModelTools.valueIsInSet_(this.buildTransactionTypeModel(), JTA_DATA_SOURCE_PREDICATE);
+		return PropertyValueModelTools.valueAffirms_(this.buildTransactionTypeModel(), JTA_DATA_SOURCE_PREDICATE);
 	}
 
 	private static final Predicate<PersistenceUnitTransactionType> JTA_DATA_SOURCE_PREDICATE = new JTADataSourcePredicate();

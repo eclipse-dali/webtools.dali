@@ -140,7 +140,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextModel>
 	}
 	
 	private <O extends Override_> PropertyValueModel<Boolean> buildOverrideIsSpecifiedModel(PropertyValueModel<O> overrideModel) {
-		return PropertyValueModelTools.valueIsInSet(overrideModel, SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
+		return PropertyValueModelTools.valueAffirms(overrideModel, SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
 	}
 
 	protected Pane<AssociationOverride> getAssociationOverridePane(PageBook pageBook) {

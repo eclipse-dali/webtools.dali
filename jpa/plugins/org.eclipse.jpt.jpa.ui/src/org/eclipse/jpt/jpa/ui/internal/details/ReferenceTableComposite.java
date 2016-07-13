@@ -64,7 +64,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 	}
 
 	protected PropertyValueModel<Boolean> buildTableIsSpecifiedModel() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), this.buildTableIsSpecifiedPredicate(), false);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), this.buildTableIsSpecifiedPredicate(), false);
 	}
 
 	protected Predicate<T> buildTableIsSpecifiedPredicate() {

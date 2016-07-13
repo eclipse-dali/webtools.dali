@@ -195,7 +195,7 @@ public class EclipseLinkEntityListComposite
 	}
 
 	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<EclipseLinkCustomizationEntity> entityModel) {
-		return PropertyValueModelTools.valueIsInSet(entityModel, EclipseLinkCustomizationEntity.NAME_IS_VALID);
+		return PropertyValueModelTools.valueAffirms(entityModel, EclipseLinkCustomizationEntity.NAME_IS_VALID);
 	}
 
 

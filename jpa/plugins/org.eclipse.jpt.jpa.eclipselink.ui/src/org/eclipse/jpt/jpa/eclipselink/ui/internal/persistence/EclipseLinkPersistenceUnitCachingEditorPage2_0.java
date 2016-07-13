@@ -163,7 +163,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	private PropertyValueModel<Boolean> buildSharedCacheModeEnabledModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
-		return PropertyValueModelTools.valueIsInSet(this.buildSharedCacheModeModel(persistenceUnitModel), SHARED_CACHE_MODE_ENABLED);
+		return PropertyValueModelTools.valueAffirms(this.buildSharedCacheModeModel(persistenceUnitModel), SHARED_CACHE_MODE_ENABLED);
 	}
 
 	private PropertyValueModel<SharedCacheMode2_0> buildSharedCacheModeModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {

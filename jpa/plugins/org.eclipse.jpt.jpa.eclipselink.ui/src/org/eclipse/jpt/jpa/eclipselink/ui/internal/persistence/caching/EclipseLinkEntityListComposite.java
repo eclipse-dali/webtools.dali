@@ -196,6 +196,6 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 	}
 
 	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<EclipseLinkCachingEntity> entityModel) {
-		return PropertyValueModelTools.valueIsInSet(entityModel, EclipseLinkCachingEntity.NAME_IS_VALID);
+		return PropertyValueModelTools.valueAffirms(entityModel, EclipseLinkCachingEntity.NAME_IS_VALID);
 	}
 }

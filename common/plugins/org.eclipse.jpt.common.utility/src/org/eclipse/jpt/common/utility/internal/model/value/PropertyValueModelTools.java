@@ -36,7 +36,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueIsNotNull(PropertyValueModel)
 	 */
 	public static PropertyValueModel<Boolean> valueIsNull(PropertyValueModel<?> propertyModel) {
-		return valueIsInSet_(propertyModel, PredicateTools.isNull());
+		return valueAffirms_(propertyModel, PredicateTools.isNull());
 	}
 
 	/**
@@ -47,7 +47,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueIsNull(PropertyValueModel)
 	 */
 	public static PropertyValueModel<Boolean> valueIsNotNull(PropertyValueModel<?> propertyModel) {
-		return valueIsInSet_(propertyModel, PredicateTools.isNotNull());
+		return valueAffirms_(propertyModel, PredicateTools.isNotNull());
 	}
 
 	/**
@@ -63,7 +63,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueEquals_(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueEquals(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet_(propertyModel, PredicateTools.isEqual(value));
+		return valueAffirms_(propertyModel, PredicateTools.isEqual(value));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueEquals(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueEquals_(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet(propertyModel, PredicateTools.isEqual(value));
+		return valueAffirms(propertyModel, PredicateTools.isEqual(value));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueEquals(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueNotEquals(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet_(propertyModel, PredicateTools.isNotEqual(value));
+		return valueAffirms_(propertyModel, PredicateTools.isNotEqual(value));
 	}
 
 	/**
@@ -111,7 +111,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueEquals_(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueNotEquals_(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet_(propertyModel, PredicateTools.isNotEqual(value));
+		return valueAffirms_(propertyModel, PredicateTools.isNotEqual(value));
 	}
 
 	/**
@@ -127,7 +127,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueIsNotIdentical(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueIsIdentical(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet_(propertyModel, PredicateTools.isIdentical(value));
+		return valueAffirms_(propertyModel, PredicateTools.isIdentical(value));
 	}
 
 	/**
@@ -143,7 +143,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueIsNotIdentical_(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueIsIdentical_(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet(propertyModel, PredicateTools.isIdentical(value));
+		return valueAffirms(propertyModel, PredicateTools.isIdentical(value));
 	}
 
 	/**
@@ -159,7 +159,7 @@ public final class PropertyValueModelTools {
 	 * @see #valueIsIdentical(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueIsNotIdentical(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet_(propertyModel, PredicateTools.isNotIdentical(value));
+		return valueAffirms_(propertyModel, PredicateTools.isNotIdentical(value));
 	}
 
 	/**
@@ -175,74 +175,74 @@ public final class PropertyValueModelTools {
 	 * @see #valueIsIdentical_(PropertyValueModel, Object)
 	 */
 	public static PropertyValueModel<Boolean> valueIsNotIdentical_(PropertyValueModel<?> propertyModel, Object value) {
-		return valueIsInSet(propertyModel, PredicateTools.isNotIdentical(value));
+		return valueAffirms(propertyModel, PredicateTools.isNotIdentical(value));
 	}
 
 	/**
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
-	 * is in the set defined by the specified predicate.
+	 * affirms the specified predicate.
 	 * <p>
 	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
 	 * the returned model's value will also be a <code>null</code>
 	 * {@link Boolean}; and the value will <em>never</em> be passed to the specified
 	 * predicate.
 	 * 
-	 * @see #valueIsInSet_(PropertyValueModel, Predicate)
-	 * @see #valueIsInSet(PropertyValueModel, Predicate, boolean)
-	 * @see #valueIsInSet(PropertyValueModel, Predicate, Boolean)
+	 * @see #valueAffirms_(PropertyValueModel, Predicate)
+	 * @see #valueAffirms(PropertyValueModel, Predicate, boolean)
+	 * @see #valueAffirms(PropertyValueModel, Predicate, Boolean)
 	 */
-	public static <V> PropertyValueModel<Boolean> valueIsInSet(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate) {
-		return valueIsInSet(propertyModel, predicate, null);
+	public static <V> PropertyValueModel<Boolean> valueAffirms(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate) {
+		return valueAffirms(propertyModel, predicate, null);
 	}
 
 	/**
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
-	 * is in the set defined by the specified predicate.
+	 * affirms the specified predicate.
 	 * <p>
 	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
 	 * the returned model's value will be the specified null result;
 	 * and the value will <em>never</em> be passed to the specified predicate.
 	 * 
-	 * @see #valueIsInSet(PropertyValueModel, Predicate)
-	 * @see #valueIsInSet_(PropertyValueModel, Predicate)
-	 * @see #valueIsInSet(PropertyValueModel, Predicate, Boolean)
+	 * @see #valueAffirms(PropertyValueModel, Predicate)
+	 * @see #valueAffirms_(PropertyValueModel, Predicate)
+	 * @see #valueAffirms(PropertyValueModel, Predicate, Boolean)
 	 */
-	public static <V> PropertyValueModel<Boolean> valueIsInSet(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate, boolean nullResult) {
-		return valueIsInSet(propertyModel, predicate, Boolean.valueOf(nullResult));
+	public static <V> PropertyValueModel<Boolean> valueAffirms(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate, boolean nullResult) {
+		return valueAffirms(propertyModel, predicate, Boolean.valueOf(nullResult));
 	}
 
 	/**
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
-	 * is in the set defined by the specified predicate.
+	 * affirms the specified predicate.
 	 * <p>
 	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
 	 * the returned model's value will be the specified null result;
 	 * and the value will <em>never</em> be passed to the specified predicate.
 	 * 
-	 * @see #valueIsInSet(PropertyValueModel, Predicate)
-	 * @see #valueIsInSet_(PropertyValueModel, Predicate)
-	 * @see #valueIsInSet(PropertyValueModel, Predicate, boolean)
+	 * @see #valueAffirms(PropertyValueModel, Predicate)
+	 * @see #valueAffirms_(PropertyValueModel, Predicate)
+	 * @see #valueAffirms(PropertyValueModel, Predicate, boolean)
 	 */
-	public static <V> PropertyValueModel<Boolean> valueIsInSet(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate, Boolean nullResult) {
+	public static <V> PropertyValueModel<Boolean> valueAffirms(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate, Boolean nullResult) {
 		return transform_(propertyModel, TransformerTools.adapt(predicate, nullResult));
 	}
 
 	/**
 	 * Construct a property value model adapter for the specified
 	 * property value model that returns whether the property's value
-	 * is in the set defined by the specified predicate.
+	 * affirms the specified predicate.
 	 * <p>
 	 * <strong>NB:</strong> The specified predicate must be able to
 	 * handle a <code>null</code> variable.
 	 * 
-	 * @see #valueIsInSet(PropertyValueModel, Predicate)
-	 * @see #valueIsInSet(PropertyValueModel, Predicate, boolean)
-	 * @see #valueIsInSet(PropertyValueModel, Predicate, Boolean)
+	 * @see #valueAffirms(PropertyValueModel, Predicate)
+	 * @see #valueAffirms(PropertyValueModel, Predicate, boolean)
+	 * @see #valueAffirms(PropertyValueModel, Predicate, Boolean)
 	 */
-	public static <V> PropertyValueModel<Boolean> valueIsInSet_(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate) {
+	public static <V> PropertyValueModel<Boolean> valueAffirms_(PropertyValueModel<? extends V> propertyModel, Predicate<? super V> predicate) {
 		return transform_(propertyModel, TransformerTools.adapt(predicate));
 	}
 

@@ -306,7 +306,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	}
 
 	protected PropertyValueModel<Boolean> buildResourceTypeIsKindOfOrmXml2_0Model() {
-		return PropertyValueModelTools.valueIsInSet(this.getSubjectHolder(), RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0);
 	}
 
 	protected static final Predicate<JptResourceTypeReference> RESOURCE_TYPE_IS_KIND_OF_ORM_XML_2_0 =
