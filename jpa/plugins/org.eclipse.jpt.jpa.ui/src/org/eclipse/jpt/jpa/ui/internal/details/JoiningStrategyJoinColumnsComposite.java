@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
@@ -160,7 +159,7 @@ public class JoiningStrategyJoinColumnsComposite
 	}
 
 	protected PropertyValueModel<Boolean> buildJoinColumnsPaneEnabledModel() {
-		return CollectionValueModelTools.and(this.buildStrategyIsSpecifiedModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
+		return PropertyValueModelTools.and(this.buildStrategyIsSpecifiedModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
 	}
 
 	protected PropertyValueModel<Boolean> buildStrategyIsSpecifiedModel() {

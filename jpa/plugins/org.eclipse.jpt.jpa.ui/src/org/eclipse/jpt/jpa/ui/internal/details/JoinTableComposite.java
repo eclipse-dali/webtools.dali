@@ -13,9 +13,9 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -132,7 +132,7 @@ public class JoinTableComposite
 	}
 
 	protected PropertyValueModel<Boolean> buildInverseJoinColumnsPaneEnabledModel() {
-		return CollectionValueModelTools.and(this.buildTableIsSpecifiedModel(), this.buildSpecifiedInverseJoinColumnsIsNotEmptyModel());
+		return PropertyValueModelTools.and(this.buildTableIsSpecifiedModel(), this.buildSpecifiedInverseJoinColumnsIsNotEmptyModel());
 	}
 
 	protected PropertyValueModel<Boolean> buildSpecifiedInverseJoinColumnsIsNotEmptyModel() {

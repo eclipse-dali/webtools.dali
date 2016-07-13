@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
@@ -61,7 +60,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 
 
 	protected PropertyValueModel<Boolean> buildJoinColumnsPaneEnabledModel() {
-		return CollectionValueModelTools.and(this.buildTableIsSpecifiedModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
+		return PropertyValueModelTools.and(this.buildTableIsSpecifiedModel(), this.buildSpecifiedJoinColumnsIsNotEmptyModel());
 	}
 
 	protected PropertyValueModel<Boolean> buildTableIsSpecifiedModel() {

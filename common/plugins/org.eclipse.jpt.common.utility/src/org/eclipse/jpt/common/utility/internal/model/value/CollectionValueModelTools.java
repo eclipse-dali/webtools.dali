@@ -14,7 +14,6 @@ import java.util.Collection;
 import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.closure.BooleanClosure;
 import org.eclipse.jpt.common.utility.internal.closure.ClosureTools;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -157,78 +156,8 @@ public final class CollectionValueModelTools {
 	 * otherwise its value is {@link Boolean#FALSE}.
 	 * The model's default value, when it contains no nested models, is {@link Boolean#TRUE}.
 	 */
-	@SafeVarargs
-	public static PropertyValueModel<Boolean> and(PropertyValueModel<Boolean>... models) {
-		return compositePropertyValueModel(AND_TRANSFORMER, models);
-	}
-
-	/**
-	 * Construct a boolean property value model that is a composite AND of the
-	 * specified boolean property value models; i.e. the model's value is {@link Boolean#TRUE}
-	 * if all the contained models' values are {@link Boolean#TRUE},
-	 * otherwise its value is {@link Boolean#FALSE}.
-	 * The model's default value, when it contains no nested models, is {@link Boolean#TRUE}.
-	 */
-	public static PropertyValueModel<Boolean> and(Collection<? extends PropertyValueModel<Boolean>> models) {
-		return compositePropertyValueModel(models, AND_TRANSFORMER);
-	}
-
-	/**
-	 * Construct a boolean property value model that is a composite AND of the
-	 * specified boolean property value models; i.e. the model's value is {@link Boolean#TRUE}
-	 * if all the contained models' values are {@link Boolean#TRUE},
-	 * otherwise its value is {@link Boolean#FALSE}.
-	 * The model's default value, when it contains no nested models, is {@link Boolean#TRUE}.
-	 */
 	public static PropertyValueModel<Boolean> and(CollectionValueModel<? extends PropertyValueModel<Boolean>> collectionModel) {
-		return compositePropertyValueModel(collectionModel, AND_TRANSFORMER);
-	}
-
-	/**
-	 * @see AndTransformer
-	 */
-	public static final Transformer<Collection<Boolean>, Boolean> AND_TRANSFORMER = new AndTransformer();
-
-	/**
-	 * A transformer that transforms a collection of {@link Boolean}s into a single
-	 * {@link Boolean} by ANDing them together. Its default value is {@link Boolean#TRUE}.
-	 * @see #and(CollectionValueModel)
-	 */
-	public static final class AndTransformer
-		extends TransformerAdapter<Collection<Boolean>, Boolean>
-	{
-		@Override
-		public Boolean transform(Collection<Boolean> booleans) {
-			for (Boolean b : booleans) {
-				if ( ! b.booleanValue()) {
-					return Boolean.FALSE;
-				}
-			}
-			return Boolean.TRUE;
-		}
-	}
-
-	/**
-	 * Construct a boolean property value model that is a composite OR of the
-	 * specified boolean property value models; i.e. the model's value is {@link Boolean#FALSE}
-	 * if all the contained models' values are {@link Boolean#FALSE},
-	 * otherwise its value is {@link Boolean#TRUE}.
-	 * The model's default value, when it contains no nested models, is {@link Boolean#FALSE}.
-	 */
-	@SafeVarargs
-	public static PropertyValueModel<Boolean> or(PropertyValueModel<Boolean>... models) {
-		return compositePropertyValueModel(OR_TRANSFORMER, models);
-	}
-
-	/**
-	 * Construct a boolean property value model that is a composite OR of the
-	 * specified boolean property value models; i.e. the model's value is {@link Boolean#FALSE}
-	 * if all the contained models' values are {@link Boolean#FALSE},
-	 * otherwise its value is {@link Boolean#TRUE}.
-	 * The model's default value, when it contains no nested models, is {@link Boolean#FALSE}.
-	 */
-	public static PropertyValueModel<Boolean> or(Collection<? extends PropertyValueModel<Boolean>> models) {
-		return compositePropertyValueModel(models, OR_TRANSFORMER);
+		return compositePropertyValueModel(collectionModel, PropertyValueModelTools.AND_TRANSFORMER);
 	}
 
 	/**
@@ -239,31 +168,7 @@ public final class CollectionValueModelTools {
 	 * The model's default value, when it contains no nested models, is {@link Boolean#FALSE}.
 	 */
 	public static PropertyValueModel<Boolean> or(CollectionValueModel<? extends PropertyValueModel<Boolean>> collectionModel) {
-		return compositePropertyValueModel(collectionModel, OR_TRANSFORMER);
-	}
-
-	/**
-	 * @see OrTransformer
-	 */
-	public static final Transformer<Collection<Boolean>, Boolean> OR_TRANSFORMER = new OrTransformer();
-
-	/**
-	 * A transformer that transforms a collection of {@link Boolean}s into a single
-	 * {@link Boolean} by ORing them together. Its default value is {@link Boolean#FALSE}.
-	 * @see #or(CollectionValueModel)
-	 */
-	public static final class OrTransformer
-		extends TransformerAdapter<Collection<Boolean>, Boolean>
-	{
-		@Override
-		public Boolean transform(Collection<Boolean> booleans) {
-			for (Boolean b : booleans) {
-				if (b.booleanValue()) {
-					return Boolean.TRUE;
-				}
-			}
-			return Boolean.FALSE;
-		}
+		return compositePropertyValueModel(collectionModel, PropertyValueModelTools.OR_TRANSFORMER);
 	}
 
 

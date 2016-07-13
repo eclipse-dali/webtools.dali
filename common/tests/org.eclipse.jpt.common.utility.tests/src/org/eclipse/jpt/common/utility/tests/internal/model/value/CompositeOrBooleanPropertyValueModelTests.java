@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -76,7 +77,7 @@ public class CompositeOrBooleanPropertyValueModelTests
 	}
 
 	public void testGetValue2() {
-		this.compositePVM = CollectionValueModelTools.or(this.pvm1, this.pvm2, this.pvm3, this.pvm4);
+		this.compositePVM = PropertyValueModelTools.or(this.pvm1, this.pvm2, this.pvm3, this.pvm4);
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addChangeListener(listener);
@@ -84,7 +85,7 @@ public class CompositeOrBooleanPropertyValueModelTests
 	}
 
 	public void testGetValue3() {
-		this.compositePVM = CollectionValueModelTools.or(Arrays.asList(this.pvm1, this.pvm2, this.pvm3, this.pvm4));
+		this.compositePVM = PropertyValueModelTools.or(Arrays.asList(this.pvm1, this.pvm2, this.pvm3, this.pvm4));
 		assertNull(this.compositePVM.getValue());
 		ChangeListener listener = this.buildListener();
 		this.compositePVM.addChangeListener(listener);

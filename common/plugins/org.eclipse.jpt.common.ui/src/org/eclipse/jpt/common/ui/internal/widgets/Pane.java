@@ -27,7 +27,6 @@ import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.events.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -324,7 +323,7 @@ public abstract class Pane<T extends Model> {
 	private static PropertyValueModel<Boolean> andEnabledModel(Pane<?> pane, PropertyValueModel<Boolean> enabledModel) {
 		enabledModel = buildNonNullModel(enabledModel);
 		// NB: we fetch private state from the pane
-		return (pane == null) ? enabledModel : CollectionValueModelTools.and(pane.enabledModel, enabledModel);
+		return (pane == null) ? enabledModel : PropertyValueModelTools.and(pane.enabledModel, enabledModel);
 	}
 
 	/**
