@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import java.util.Collection;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -50,15 +49,7 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 	 * and property aspect.
 	 */
 	protected PropertyAspectAdapter(String aspectName, S subject) {
-		this(new String[] {aspectName}, subject);
-	}
-
-	/**
-	 * Construct a property aspect adapter for the specified subject
-	 * and property aspects.
-	 */
-	protected PropertyAspectAdapter(String[] aspectNames, S subject) {
-		this(PropertyValueModelTools.staticPropertyValueModel(subject), aspectNames);
+		this(PropertyValueModelTools.staticPropertyValueModel(subject), new String[] {aspectName});
 	}
 
 	/**
@@ -72,24 +63,6 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 		}
 		this.aspectNames = aspectNames;
 		this.aspectChangeListener = this.buildAspectChangeListener();
-	}
-
-	/**
-	 * Construct a property aspect adapter for the specified subject model
-	 * and property aspects.
-	 */
-	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectModel, Collection<String> aspectNames) {
-		this(subjectModel, aspectNames.toArray(new String[aspectNames.size()]));
-	}
-
-	/**
-	 * Construct a property aspect adapter for an "unchanging" property aspect in
-	 * the specified subject. This is useful for a property aspect that does not
-	 * change for a particular subject; but the subject will change, resulting in
-	 * a new property.
-	 */
-	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectModel) {
-		this(subjectModel, EMPTY_ASPECT_NAMES);
 	}
 
 

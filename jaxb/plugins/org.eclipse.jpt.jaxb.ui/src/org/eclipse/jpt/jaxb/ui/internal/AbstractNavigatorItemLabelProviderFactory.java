@@ -341,7 +341,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	}
 
 	public PropertyValueModel<ImageDescriptor> buildJavaPersistentAttributeImageDescriptorModel(JavaPersistentAttribute item) {
-		return new PropertyAspectAdapter<JavaPersistentAttribute, ImageDescriptor>(IMAGE_ASPECT_NAMES, item) {
+		return new PropertyAspectAdapter<JavaPersistentAttribute, ImageDescriptor>(PropertyValueModelTools.staticPropertyValueModel(item), IMAGE_ASPECT_NAMES) {
 			@Override
 			protected ImageDescriptor buildValue_() {
 				return AbstractNavigatorItemLabelProviderFactory.this.buildJavaPersistentAttributeImageDescriptor(this.subject.getMappingKey());
