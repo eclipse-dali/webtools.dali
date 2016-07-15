@@ -52,8 +52,8 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 		this.closure.execute(value);
 	}
 
-	public void engageModel() {
-		this.adapter.engageModel();
+	public V engageModel() {
+		return this.adapter.engageModel();
 	}
 
 	public void disengageModel() {

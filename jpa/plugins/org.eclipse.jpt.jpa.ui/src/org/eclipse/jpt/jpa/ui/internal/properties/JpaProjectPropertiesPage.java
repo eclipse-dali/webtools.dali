@@ -1763,11 +1763,11 @@ public class JpaProjectPropertiesPage
 			this.userOverrideDefaultModel.setValue(value);
 		}
 
-		public void engageModel() {
+		public String engageModel() {
 			this.userOverrideDefaultFlagModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
 			this.userOverrideDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
 			this.databaseDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
-			this.value = this.buildValue();
+			return this.value = this.buildValue();
 		}
 
 		public void disengageModel() {

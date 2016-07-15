@@ -1168,10 +1168,10 @@ public class PropertyValueModelToolsTests
 			this.value = null;
 		}
 
-		public void engageModel() {
+		public String engageModel() {
 			this.stringModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
 			String v = this.stringModel.getValue();
-			this.value = v.substring(v.length() / 2);
+			return this.value = v.substring(v.length() / 2);
 		}
 
 		public String getValue() {

@@ -74,10 +74,10 @@ public abstract class BasePropertyPluggablePropertyValueModelAdapter<V1, V2, M e
 		return this.value;
 	}
 
-	public void engageModel() {
+	public V2 engageModel() {
 		this.propertyModel.addPropertyChangeListener(PropertyValueModel.VALUE, this);
 		this.propertyModelValue = this.propertyModel.getValue();
-		this.value = this.buildValue();
+		return this.value = this.buildValue();
 	}
 
 	public void disengageModel() {

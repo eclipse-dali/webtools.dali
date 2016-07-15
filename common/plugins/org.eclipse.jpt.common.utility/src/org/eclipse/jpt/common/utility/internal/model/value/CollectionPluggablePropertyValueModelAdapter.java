@@ -85,10 +85,10 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 		return this.value;
 	}
 
-	public void engageModel() {
+	public V engageModel() {
 		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
 		CollectionTools.addAll(this.collection, this.collectionModel);
-		this.value = this.buildValue();
+		return this.value = this.buildValue();
 	}
 
 	public void disengageModel() {

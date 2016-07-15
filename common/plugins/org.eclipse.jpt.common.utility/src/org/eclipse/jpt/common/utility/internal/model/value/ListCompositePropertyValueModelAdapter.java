@@ -108,10 +108,10 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 		return this.value;
 	}
 
-	public void engageModel() {
+	public V engageModel() {
 		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
 		this.addComponentPVMs(0, this.listModel);
-		this.value = this.buildValue();
+		return this.value = this.buildValue();
 	}
 
 	public void disengageModel() {

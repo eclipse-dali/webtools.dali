@@ -112,10 +112,10 @@ public final class CompositePropertyValueModelAdapter<E, V>
 		return this.value;
 	}
 
-	public void engageModel() {
+	public V engageModel() {
 		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
 		this.addComponentPVMs(this.collectionModel);
-		this.value = this.buildValue();
+		return this.value = this.buildValue();
 	}
 
 	public void disengageModel() {

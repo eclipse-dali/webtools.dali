@@ -149,16 +149,16 @@ public class BufferedPropertyValueModelAdapter<V>
 		}
 	}
 
-	public void engageModel() {
-		this.wrappedValueModel.addPropertyChangeListener(PropertyValueModel.VALUE, this);
-		this.wrappedValue = this.wrappedValueModel.getValue();
+	public V engageModel() {
 		this.trigger.addListener(this.triggerListener);
+		this.wrappedValueModel.addPropertyChangeListener(PropertyValueModel.VALUE, this);
+		return this.wrappedValue = this.wrappedValueModel.getValue();
 	}
 
 	public void disengageModel() {
+		this.trigger.removeListener(this.triggerListener);
 		this.setBuffering(false);
 		this.bufferedValue = null;
-		this.trigger.removeListener(this.triggerListener);
 		this.wrappedValue = null;
 		this.wrappedValueModel.removePropertyChangeListener(PropertyValueModel.VALUE, this);
 	}

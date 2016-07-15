@@ -138,10 +138,9 @@ public abstract class BasePluggablePropertyValueModel<V, A extends BasePluggable
 	 * Start listening to the underlying model and build the value.
 	 */
 	protected void engageModel() {
-		this.adapter.engageModel();
 		// sync our value *after* we start listening to the model,
 		// since the model's value might change when a listener is added
-		this.value = this.adapter.getValue();
+		this.value = this.adapter.engageModel();
 	}
 
 	/**
@@ -205,9 +204,10 @@ public abstract class BasePluggablePropertyValueModel<V, A extends BasePluggable
 		AV getValue();
 
 		/**
-		 * Start listening to the adapted model.
+		 * Start listening to the adapted model
+		 * and return its current value.
 		 */
-		void engageModel();
+		AV engageModel();
 
 		/**
 		 * Stop listening to the adapted model.

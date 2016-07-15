@@ -111,17 +111,18 @@ public abstract class BaseCompoundPropertyValueModelAdapter<V, IM extends Proper
 		return this.value;
 	}
 
-	public void engageModel() {
+	public V engageModel() {
 		this.outerModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.outerValueListener);
 		this.innerModel = this.outerModel.getValue();
-		this.engageInnerModel();
+		return this.engageInnerModel();
 	}
 
-	private void engageInnerModel() {
-		if (this.innerModel != null) {
-			this.innerModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.innerValueListener);
-			this.value = this.innerModel.getValue();
+	private V engageInnerModel() {
+		if (this.innerModel == null) {
+			return null;
 		}
+		this.innerModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.innerValueListener);
+		return this.value = this.innerModel.getValue();
 	}
 
 	public void disengageModel() {
