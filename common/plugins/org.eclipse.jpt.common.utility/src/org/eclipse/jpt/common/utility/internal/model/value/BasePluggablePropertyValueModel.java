@@ -174,7 +174,7 @@ public abstract class BasePluggablePropertyValueModel<V, A extends BasePluggable
 	// ********** Adapter Listener **********
 
 	/**
-	 * Simple callback.
+	 * Simple callback. Allows us to keep the callback method internal.
 	 */
 	/* CU private */ class AdapterListener
 		implements Adapter.Listener<V>

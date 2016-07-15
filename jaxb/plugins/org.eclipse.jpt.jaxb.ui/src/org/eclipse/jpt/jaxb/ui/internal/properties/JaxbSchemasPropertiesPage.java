@@ -55,9 +55,10 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.BufferedPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -108,7 +109,7 @@ public class JaxbSchemasPropertiesPage
 	
 	private final PropertyValueModel<JaxbProject> jaxbProjectModel;
 	
-	protected final BufferedModifiablePropertyValueModel.Trigger trigger;
+	protected final BufferedPropertyValueModelAdapter.Trigger trigger;
 	
 	private final SchemasModel schemasModel;
 	
@@ -118,11 +119,11 @@ public class JaxbSchemasPropertiesPage
 	public JaxbSchemasPropertiesPage() {
 		super();
 		this.resourceManager = this.buildResourceManager();
-		this.projectModel = new SimplePropertyValueModel<IProject>();
+		this.projectModel = new SimplePropertyValueModel<>();
 		this.jaxbProjectModel = new JaxbProjectModel(this.projectModel);
-		this.trigger = new BufferedModifiablePropertyValueModel.Trigger();
+		this.trigger = PropertyValueModelTools.bufferedPropertyValueModelAdapterTrigger();
 		this.schemasModel = new SchemasModel(this.jaxbProjectModel, this.trigger);
-		this.schemasSelectionModel = new SimpleCollectionValueModel<Schema>();
+		this.schemasSelectionModel = new SimpleCollectionValueModel<>();
 		setDescription(JptJaxbUiMessages.SCHEMAS_PAGE_DESCRIPTION);
 	}
 	
@@ -198,7 +199,7 @@ public class JaxbSchemasPropertiesPage
 		// create the table
 		TableViewer schemasTable = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		TableModelAdapter.adapt(
-				new SortedListValueModelAdapter<Schema>(this.schemasModel),
+				new SortedListValueModelAdapter<>(this.schemasModel),
 				this.schemasSelectionModel,
 				schemasTable.getTable(),
 				new SchemaColumnAdapter(),
@@ -274,7 +275,7 @@ public class JaxbSchemasPropertiesPage
 	}
 	
 	
-	private void addSchema() {
+	void addSchema() {
 		// constructs a dialog for editing the new schema namespace and location
 		AddEditSchemaDialog dialog = 
 				new AddEditSchemaDialog(
@@ -292,14 +293,14 @@ public class JaxbSchemasPropertiesPage
 		Schema schema = this.schemasModel.addSchema(dialog.getNamespace(), dialog.getLocation());
 		
         // select the new schema
-        this.schemasSelectionModel.setValues(new SingleElementIterable<Schema>(schema));
+        this.schemasSelectionModel.setValues(new SingleElementIterable<>(schema));
 	}
 	
 	private PropertyValueModel<Boolean> buildEditEnabledModel() {
 		return CollectionValueModelTools.containsSingleElementPropertyValueModel(this.schemasSelectionModel);
 	}
 	
-	private void editSelectedSchema() {
+	void editSelectedSchema() {
 		// constructs a dialog for editing the new schema namespace and location
 		final Schema schema = this.schemasSelectionModel.iterator().next();
 		AddEditSchemaDialog dialog = 
@@ -323,7 +324,7 @@ public class JaxbSchemasPropertiesPage
 		return CollectionValueModelTools.isNotEmptyPropertyValueModel(this.schemasSelectionModel);
 	}
 	
-	private void removeSelectedSchemas() {
+	void removeSelectedSchemas() {
 		this.schemasModel.removeSchemas(this.schemasSelectionModel);
 	}
 	
@@ -436,7 +437,8 @@ public class JaxbSchemasPropertiesPage
 	
 	static class SchemasModel
 			extends AspectAdapter<JaxbProject, Collection<Schema>>
-			implements CollectionValueModel<Schema> {
+			implements CollectionValueModel<Schema>, BufferedPropertyValueModelAdapter.Trigger.Listener
+	{
 		
 		/**
 		 * The collection of schemas
@@ -447,64 +449,45 @@ public class JaxbSchemasPropertiesPage
 		 * This is the trigger that indicates whether the buffered value
 		 * should be accepted or reset.
 		 */
-		protected final PropertyValueModel<Boolean> triggerHolder;
+		protected final BufferedPropertyValueModelAdapter.Trigger trigger;
 	
-		/** This listens to the trigger holder. */
-		protected final PropertyChangeListener triggerChangeListener;
-
 		
-		SchemasModel(PropertyValueModel<JaxbProject> subjectHolder, PropertyValueModel<Boolean> triggerHolder) {
-			super(subjectHolder);
-			this.schemas = new ArrayList<Schema>();
-			this.triggerHolder = triggerHolder;
-			this.triggerChangeListener = buildTriggerChangeListener();
-		}
-		
-		
-		protected PropertyChangeListener buildTriggerChangeListener() {
-			return new PropertyChangeListener() {
-				public void propertyChanged(PropertyChangeEvent event) {
-					triggerChanged(event);
-				}
-			};
+		SchemasModel(PropertyValueModel<JaxbProject> projectModel, BufferedPropertyValueModelAdapter.Trigger trigger) {
+			super(projectModel);
+			this.schemas = new ArrayList<>();
+			this.trigger = trigger;
 		}
 		
 		protected Collection<Schema> buildSchemas_() {
-			ArrayList<Schema> schemas = new ArrayList<Schema>();
+			ArrayList<Schema> result = new ArrayList<>();
 			for (SchemaEntry entry : this.subject.getSchemaLibrary().getSchemaEntries()) {
-				schemas.add(new Schema(entry.getNamespace(), entry.getLocation()));
+				result.add(new Schema(entry.getNamespace(), entry.getLocation()));
 			}
-			return schemas;
+			return result;
 		}
 		
 		public boolean hasChanges() {
-			return (this.subject == null) ? false : ! this.schemas.equals(buildSchemas_());
-		}
-		
-		protected void triggerChanged(PropertyChangeEvent event) {
-			if (hasChanges()) {
-				if (this.subject != null && ((Boolean) event.getNewValue()).booleanValue()) {
-					this.accept();
-				} else {
-					this.reset();
-				}
-			}
+			return (this.subject != null) && ! this.schemas.equals(buildSchemas_());
 		}
 		
 		public void accept() {
-			List<String> schemaLocations = new Vector<String>();
-			for (Schema schema : this.schemas) {
-				schemaLocations.add(schema.getLocation());
+			if (this.hasChanges()) {
+				List<String> schemaLocations = new Vector<>();
+				for (Schema schema : this.schemas) {
+					schemaLocations.add(schema.getLocation());
+				}
+				this.subject.getSchemaLibrary().setSchemaLocations(schemaLocations);
 			}
-			this.subject.getSchemaLibrary().setSchemaLocations(schemaLocations);
 		}
 		
 		public void reset() {
-			this.schemas.clear();
-			if (this.subject != null) {
-				this.schemas.addAll(buildSchemas_());
+			if (this.hasChanges()) {
+				this.schemas.clear();
+				if (this.subject != null) {
+					this.schemas.addAll(buildSchemas_());
+				}
+				fireCollectionChanged(VALUES, getAspectValue());
 			}
-			fireCollectionChanged(VALUES, getAspectValue());
 		}
 		
 		public Schema addSchema(String namespace, String location) {
@@ -513,8 +496,8 @@ public class JaxbSchemasPropertiesPage
 			return schema;
 		}
 		
-		public void removeSchemas(Iterable<Schema> schemas) {
-			removeItemsFromCollection(schemas, this.schemas, VALUES);
+		public void removeSchemas(Iterable<Schema> items) {
+			removeItemsFromCollection(items, this.schemas, VALUES);
 		}
 		
 		
@@ -537,7 +520,7 @@ public class JaxbSchemasPropertiesPage
 		
 		@Override
 		protected void fireAspectChanged(Collection<Schema> oldValue, Collection<Schema> newValue) {
-			this.synchronizeCollection(newValue, new ArrayList<Schema>(oldValue), VALUES);
+			this.synchronizeCollection(newValue, new ArrayList<>(oldValue), VALUES);
 		}
 		
 		@Override
@@ -553,12 +536,12 @@ public class JaxbSchemasPropertiesPage
 		@Override
 		protected void engageModels() {
 			super.engageModels();
-			this.triggerHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.triggerChangeListener);
+			this.trigger.addListener(this);
 		}
 		
 		@Override
 		protected void disengageModels() {
-			this.triggerHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.triggerChangeListener);
+			this.trigger.removeListener(this);
 			super.disengageModels();
 		}
 		
@@ -733,9 +716,9 @@ public class JaxbSchemasPropertiesPage
 		
 		private String defaultMessage;
 		
-		private final ModifiablePropertyValueModel<String> location;
+		private final ModifiablePropertyValueModel<String> locationModel;
 		
-		private final ModifiablePropertyValueModel<String> namespace;
+		private final ModifiablePropertyValueModel<String> namespaceModel;
 		
 		private XSDSchema resolvedSchema;
 		
@@ -749,19 +732,19 @@ public class JaxbSchemasPropertiesPage
 			this.resourceManager = resourceManager;
 			this.currentSchema = currentSchema;
 			this.allSchemas = allSchemas;
-			this.location = new SimplePropertyValueModel<String>();
-			this.namespace = new SimplePropertyValueModel<String>();
+			this.locationModel = new SimplePropertyValueModel<>();
+			this.namespaceModel = new SimplePropertyValueModel<>();
 			
 			this.mode = (this.currentSchema == null) ? Mode.ADD : Mode.EDIT;
 			if (this.mode == Mode.ADD) {
 				this.defaultMessage = JptJaxbUiMessages.SCHEMAS_PAGE_ADD_SCHEMA_MESSAGE;
-				this.location.setValue(null);
-				this.namespace.setValue(null);
+				this.locationModel.setValue(null);
+				this.namespaceModel.setValue(null);
 			}
 			else {
 				this.defaultMessage = JptJaxbUiMessages.SCHEMAS_PAGE_EDIT_SCHEMA_MESSAGE;
-				this.location.setValue(currentSchema.getLocation());
-				this.namespace.setValue(currentSchema.getNamespace());
+				this.locationModel.setValue(currentSchema.getLocation());
+				this.namespaceModel.setValue(currentSchema.getNamespace());
 			}
 		}
 		
@@ -779,7 +762,7 @@ public class JaxbSchemasPropertiesPage
 		
 		@Override
 		protected Control createDialogArea(Composite parent) {
-			Composite dialogArea = (Composite) super.createDialogArea(parent);
+			Composite da = (Composite) super.createDialogArea(parent);
 			
 			setMessage(this.defaultMessage);
 			if (this.mode == Mode.ADD) {
@@ -789,7 +772,7 @@ public class JaxbSchemasPropertiesPage
 				setTitle(JptJaxbUiMessages.SCHEMAS_PAGE_EDIT_SCHEMA_TITLE);
 			}
 			
-			Composite composite = new Composite(dialogArea, SWT.NONE);
+			Composite composite = new Composite(da, SWT.NONE);
 			composite.setLayout(new GridLayout(3, false));
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			
@@ -801,7 +784,7 @@ public class JaxbSchemasPropertiesPage
 			locationText.setText(locationDisplayString());
 			locationText.setEditable(false);
 			locationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-			this.location.addPropertyChangeListener(
+			this.locationModel.addPropertyChangeListener(
 					PropertyValueModel.VALUE,
 					new PropertyChangeListener() {
 						public void propertyChanged(PropertyChangeEvent event) {
@@ -831,7 +814,7 @@ public class JaxbSchemasPropertiesPage
 			namespaceText.setText(namespaceDisplayString());
 			namespaceText.setEditable(false);
 			namespaceText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-			this.namespace.addPropertyChangeListener(
+			this.namespaceModel.addPropertyChangeListener(
 					PropertyValueModel.VALUE,
 					new PropertyChangeListener() {
 						public void propertyChanged(PropertyChangeEvent event) {
@@ -839,9 +822,9 @@ public class JaxbSchemasPropertiesPage
 						}
 					});
 			
-			Dialog.applyDialogFont(dialogArea);
+			Dialog.applyDialogFont(da);
 			
-			return dialogArea;
+			return da;
 		}
 		
 		@Override
@@ -857,7 +840,7 @@ public class JaxbSchemasPropertiesPage
 			return true;
 		}
 		
-		private void browseForSchemaLocation() {
+		void browseForSchemaLocation() {
 			SchemaLocationDialog dialog = new SchemaLocationDialog(getShell(), this.resourceManager);
 			
 			// opens the dialog - just returns if the user cancels it
@@ -866,7 +849,7 @@ public class JaxbSchemasPropertiesPage
 			}
 			
 			String location = dialog.getLocation();
-			this.location.setValue(location);
+			this.locationModel.setValue(location);
 			
 			String resolvedUri = XsdUtil.getResolvedUri(location);
 			
@@ -877,14 +860,14 @@ public class JaxbSchemasPropertiesPage
 							: ((schema.getTargetNamespace()) == null ? 
 									StringTools.EMPTY_STRING
 									: schema.getTargetNamespace());
-			this.namespace.setValue(newNamespace);
+			this.namespaceModel.setValue(newNamespace);
 			this.resolvedSchema = schema;
 			
 			validate();
 		}
 		
 		public String getNamespace() {
-			return this.namespace.getValue();
+			return this.namespaceModel.getValue();
 		}
 		
 		protected String namespaceDisplayString() {
@@ -892,7 +875,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		public String getLocation() {
-			return this.location.getValue();
+			return this.locationModel.getValue();
 		}
 		
 		protected String locationDisplayString() {
@@ -906,7 +889,7 @@ public class JaxbSchemasPropertiesPage
 			else if (isDuplicateNamespace()) {
 				setErrorMessage(JptJaxbUiMessages.SCHEMAS_PAGE_DUPLICATE_NAMESPACE_MESSAGE);
 			}
-			else if (StringTools.isBlank(this.location.getValue())) {
+			else if (StringTools.isBlank(this.locationModel.getValue())) {
 				setErrorMessage(JptJaxbUiMessages.SCHEMAS_PAGE_NO_LOCATION_MESSAGE);
 			}
 			else {

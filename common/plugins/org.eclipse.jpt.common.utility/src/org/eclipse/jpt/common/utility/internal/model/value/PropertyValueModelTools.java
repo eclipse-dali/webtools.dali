@@ -10,7 +10,9 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Collection;
+import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -497,6 +499,34 @@ public final class PropertyValueModelTools {
 	 */
 	public static <V> ModifiablePropertyValueModel<V> filterModifiable(ModifiablePropertyValueModel<V> propertyModel, Predicate<? super V> getFilter, V defaultGetValue, Predicate<? super V> setFilter, V defaultSetValue) {
 		return transform(propertyModel, TransformerTools.filteringTransformer(getFilter, defaultGetValue), TransformerTools.filteringTransformer(setFilter, defaultSetValue));
+	}
+
+
+	// ********** buffered wrapper **********
+
+	/**
+	 * Construct a trigger that can be used to accept or reset one or more
+	 * buffered property value models (or any other listeners).
+	 * 
+	 * @see #buffer(ModifiablePropertyValueModel, BufferedPropertyValueModelAdapter.Trigger)
+	 */
+	public static BufferedPropertyValueModelAdapter.Trigger bufferedPropertyValueModelAdapterTrigger() {
+		return new BufferedPropertyValueModelAdapter.Trigger();
+	}
+
+	/**
+	 * Construct a property value model that wraps the specified
+	 * property value model and buffers its value, using the specified trigger.
+	 * 
+	 * @see BufferedPropertyValueModelAdapter
+	 * @see #bufferedPropertyValueModelAdapterTrigger()
+	 * @see PluggablePropertyValueModel
+	 */
+	public static <V> Association<ModifiablePropertyValueModel<V>, PropertyValueModel<Boolean>> buffer(ModifiablePropertyValueModel<V> propertyModel, BufferedPropertyValueModelAdapter.Trigger trigger) {
+		BufferedPropertyValueModelAdapter.Factory<V> factory = new BufferedPropertyValueModelAdapter.Factory<>(propertyModel, trigger);
+		ModifiablePropertyValueModel<V> model = modifiablePropertyValueModel(factory);
+		PropertyValueModel<Boolean> bufferingModel = factory.getBufferingModel();
+		return new SimpleAssociation<>(model, bufferingModel);
 	}
 
 

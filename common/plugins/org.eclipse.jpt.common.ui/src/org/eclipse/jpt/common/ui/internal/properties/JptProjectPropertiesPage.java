@@ -28,7 +28,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.BufferedPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.listener.AbstractChangeListener;
@@ -65,7 +66,7 @@ public abstract class JptProjectPropertiesPage
 	protected volatile boolean engaged = false;
 
 	protected final ModifiablePropertyValueModel<IProject> projectModel;
-	protected final BufferedModifiablePropertyValueModel.Trigger trigger;
+	protected final BufferedPropertyValueModelAdapter.Trigger trigger;
 
 	protected final ChangeListener validationListener;
 
@@ -74,7 +75,7 @@ public abstract class JptProjectPropertiesPage
 		super();
 
 		this.projectModel = new SimplePropertyValueModel<>();
-		this.trigger = new BufferedModifiablePropertyValueModel.Trigger();
+		this.trigger = PropertyValueModelTools.bufferedPropertyValueModelAdapterTrigger();
 
 		this.buildModels();
 
@@ -350,15 +351,15 @@ public abstract class JptProjectPropertiesPage
 	 * Return whether any of the models are buffering a change.
 	 */
 	private boolean isBuffering() {
-		for (BufferedModifiablePropertyValueModel<?> model : this.buildBufferedModels()) {
-			if (model.isBuffering()) {
+		for (PropertyValueModel<Boolean> flag : this.buildBufferingFlags()) {
+			if (flag.getValue().booleanValue()) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	protected abstract BufferedModifiablePropertyValueModel<?>[] buildBufferedModels();
+	protected abstract PropertyValueModel<Boolean>[] buildBufferingFlags();
 
 	@Override
 	protected void performDefaults() {

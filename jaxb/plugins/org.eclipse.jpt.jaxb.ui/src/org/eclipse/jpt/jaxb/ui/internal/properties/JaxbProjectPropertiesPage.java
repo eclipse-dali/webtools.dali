@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,11 +19,12 @@ import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
+import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
@@ -33,6 +34,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -66,7 +68,8 @@ public class JaxbProjectPropertiesPage
 	
 	private PropertyValueModel<JaxbProject> jaxbProjectModel;
 	
-	private BufferedModifiablePropertyValueModel<JaxbPlatformConfig> platformModel;
+	private ModifiablePropertyValueModel<JaxbPlatformConfig> platformModel;
+	private PropertyValueModel<Boolean> platformModelBufferingFlag;
 	private PropertyChangeListener platformListener;
 	
 	/* private */ static final Comparator<String> STRING_COMPARATOR = new ICUStringCollator();
@@ -82,16 +85,17 @@ public class JaxbProjectPropertiesPage
 	protected void buildModels() {
 		this.jaxbProjectModel = new JaxbProjectModel(this.projectModel);
 		
-		this.platformModel = this.buildPlatformModel();
+		Association<ModifiablePropertyValueModel<JaxbPlatformConfig>, PropertyValueModel<Boolean>> platformAssoc = this.buildPlatformModel();
+		this.platformModel = platformAssoc.getKey();
+		this.platformModelBufferingFlag = platformAssoc.getValue();
 		this.platformListener = this.buildPlatformListener();
 	}
 	
 	
 	// ***** platform ID model
 	
-	private BufferedModifiablePropertyValueModel<JaxbPlatformConfig> buildPlatformModel() {
-		return new BufferedModifiablePropertyValueModel<JaxbPlatformConfig>(
-				new PlatformModel(this.jaxbProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<JaxbPlatformConfig>, PropertyValueModel<Boolean>> buildPlatformModel() {
+		return PropertyValueModelTools.buffer(new PlatformModel(this.jaxbProjectModel), this.trigger);
 	}
 	
 	private PropertyChangeListener buildPlatformListener(){
@@ -134,8 +138,7 @@ public class JaxbProjectPropertiesPage
 	protected void adjustLibraryProviders() {
 		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
 		if (lid != null) {
-			List<JaxbLibraryProviderInstallOperationConfig> jaxbConfigs 
-					= new ArrayList<JaxbLibraryProviderInstallOperationConfig>();
+			List<JaxbLibraryProviderInstallOperationConfig> jaxbConfigs = new ArrayList<>();
 			// add the currently selected one first
 			JaxbLibraryProviderInstallOperationConfig currentJaxbConfig = null;
 			LibraryProviderOperationConfig config = lid.getLibraryProviderOperationConfig();
@@ -216,10 +219,10 @@ public class JaxbProjectPropertiesPage
 	 */
 	@SuppressWarnings("unchecked")
 	private ListValueModel<JaxbPlatformConfig> buildPlatformChoicesModel() {
-		return new SortedListValueModelAdapter<JaxbPlatformConfig>(
-				new SetCollectionValueModel<JaxbPlatformConfig>(
+		return new SortedListValueModelAdapter<>(
+				new SetCollectionValueModel<>(
 						CompositeCollectionValueModel.forModels(
-								new PropertyCollectionValueModelAdapter<JaxbPlatformConfig>(this.platformModel),
+								new PropertyCollectionValueModelAdapter<>(this.platformModel),
 								buildRegistryPlatformsModel())),
 				JAXB_PLATFORM_CONFIG_COMPARATOR);
 	}
@@ -229,7 +232,7 @@ public class JaxbProjectPropertiesPage
 			IterableTools.filter(
 					this.getJaxbPlatformConfigs(),
 					new JaxbPlatformConfig.SupportsJaxbFacetVersion(getProjectFacetVersion()));
-		return new StaticCollectionValueModel<JaxbPlatformConfig>(enabledPlatforms);
+		return new StaticCollectionValueModel<>(enabledPlatforms);
 	}
 
 	private Iterable<JaxbPlatformConfig> getJaxbPlatformConfigs() {
@@ -249,7 +252,7 @@ public class JaxbProjectPropertiesPage
 	
 	@Override
 	protected boolean projectRebuildRequired() {
-		return this.platformModel.isBuffering();
+		return this.platformModelBufferingFlag.getValue().booleanValue();
 	}
 	
 	@Override
@@ -262,9 +265,10 @@ public class JaxbProjectPropertiesPage
 	}
 	
 	@Override
-	protected BufferedModifiablePropertyValueModel<?>[] buildBufferedModels() {
-		return new BufferedModifiablePropertyValueModel[] {
-			this.platformModel
+	@SuppressWarnings("unchecked")
+	protected PropertyValueModel<Boolean>[] buildBufferingFlags() {
+		return new PropertyValueModel[] {
+			this.platformModelBufferingFlag
 		};
 	}
 	

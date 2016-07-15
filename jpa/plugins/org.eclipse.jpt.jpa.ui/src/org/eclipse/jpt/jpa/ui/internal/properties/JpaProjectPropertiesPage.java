@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ControlTools;
+import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -39,7 +40,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggableModifiablePropertyValueModel;
@@ -119,31 +119,39 @@ public class JpaProjectPropertiesPage
 	private PropertyValueModel<JpaProject> jpaProjectModel;
 	private PropertyValueModel<Boolean> jpaProjectIsNotNullFlagModel;
 
-	private BufferedModifiablePropertyValueModel<JpaPlatform.Config> jpaPlatformConfigModel;
+	private ModifiablePropertyValueModel<JpaPlatform.Config> jpaPlatformConfigModel;
+	private PropertyValueModel<Boolean> jpaPlatformConfigModelBufferingFlag;
 	private PropertyChangeListener jpaPlatformConfigListener;
 
-	private BufferedModifiablePropertyValueModel<String> connectionModel;
+	private ModifiablePropertyValueModel<String> connectionModel;
+	private PropertyValueModel<Boolean> connectionModelBufferingFlag;
 	private PropertyValueModel<ConnectionProfile> connectionProfileModel;
 	private PropertyValueModel<Boolean> disconnectedModel;
 	private PropertyChangeListener disconnectedModelListener;
 	private Link connectLink;
 
-	private BufferedModifiablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
-	private BufferedModifiablePropertyValueModel<String> userOverrideDefaultCatalogModel;
+	private ModifiablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
+	private PropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModelBufferingFlag;
+	private ModifiablePropertyValueModel<String> userOverrideDefaultCatalogModel;
+	private PropertyValueModel<Boolean> userOverrideDefaultCatalogModelBufferingFlag;
 	private ModifiablePropertyValueModel<String> defaultCatalogModel;
 	private ListValueModel<String> catalogChoicesModel;
 
-	private BufferedModifiablePropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModel;
-	private BufferedModifiablePropertyValueModel<String> userOverrideDefaultSchemaModel;
+	private ModifiablePropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModel;
+	private PropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModelBufferingFlag;
+	private ModifiablePropertyValueModel<String> userOverrideDefaultSchemaModel;
+	private PropertyValueModel<Boolean> userOverrideDefaultSchemaModelBufferingFlag;
 	private ModifiablePropertyValueModel<String> defaultSchemaModel;
 	private ListValueModel<String> schemaChoicesModel;
 
-	private BufferedModifiablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
+	private ModifiablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
+	private PropertyValueModel<Boolean> discoverAnnotatedClassesModelBufferingFlag;
 	private ModifiablePropertyValueModel<Boolean> listAnnotatedClassesModel;
 
 	private PropertyValueModel<Boolean> jpa2_0ProjectFlagModel;
 
-	private BufferedModifiablePropertyValueModel<String> metamodelSourceFolderModel;
+	private ModifiablePropertyValueModel<String> metamodelSourceFolderModel;
+	private PropertyValueModel<Boolean> metamodelSourceFolderModelBufferingFlag;
 	private ListValueModel<String> javaSourceFolderChoicesModel;
 
 	private static final String BUILD_PATHS_PROPERTY_PAGE_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage"; //$NON-NLS-1$
@@ -161,30 +169,46 @@ public class JpaProjectPropertiesPage
 		this.jpaProjectModel = this.buildJpaProjectModel();
 		this.jpaProjectIsNotNullFlagModel = this.buildJpaProjectIsNotNullFlagModel();
 
-		this.jpaPlatformConfigModel = this.buildJpaPlatformConfigModel();
+		Association<ModifiablePropertyValueModel<JpaPlatform.Config>, PropertyValueModel<Boolean>> platformConfigAssoc = this.buildJpaPlatformConfigModel();
+		this.jpaPlatformConfigModel = platformConfigAssoc.getKey();
+		this.jpaPlatformConfigModelBufferingFlag = platformConfigAssoc.getValue();
 		this.jpaPlatformConfigListener = this.buildJpaPlatformConfigListener();
 
-		this.connectionModel = this.buildConnectionModel();
+		Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> connectionAssoc = this.buildConnectionModel();
+		this.connectionModel = connectionAssoc.getKey();
+		this.connectionModelBufferingFlag = connectionAssoc.getValue();
 		this.connectionProfileModel = this.buildConnectionProfileModel();
 		this.disconnectedModel = this.buildDisconnectedModel();
 		this.disconnectedModelListener = this.buildDisconnectedModelListener();
 
-		this.userOverrideDefaultCatalogFlagModel = this.buildUserOverrideDefaultCatalogFlagModel();
-		this.userOverrideDefaultCatalogModel = this.buildUserOverrideDefaultCatalogModel();
+		Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> userOverrideDefaultCatalogFlagAssoc = this.buildUserOverrideDefaultCatalogFlagModel();
+		this.userOverrideDefaultCatalogFlagModel = userOverrideDefaultCatalogFlagAssoc.getKey();
+		this.userOverrideDefaultCatalogFlagModelBufferingFlag = userOverrideDefaultCatalogFlagAssoc.getValue();
+		Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> userOverrideDefaultCatalogAssoc = this.buildUserOverrideDefaultCatalogModel();
+		this.userOverrideDefaultCatalogModel = userOverrideDefaultCatalogAssoc.getKey();
+		this.userOverrideDefaultCatalogModelBufferingFlag = userOverrideDefaultCatalogAssoc.getValue();
 		this.defaultCatalogModel = this.buildDefaultCatalogModel();
 		this.catalogChoicesModel = this.buildCatalogChoicesModel();
 
-		this.userOverrideDefaultSchemaFlagModel = this.buildUserOverrideDefaultSchemaFlagModel();
-		this.userOverrideDefaultSchemaModel = this.buildUserOverrideDefaultSchemaModel();
+		Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> userOverrideDefaultSchemaFlagAssoc = this.buildUserOverrideDefaultSchemaFlagModel();
+		this.userOverrideDefaultSchemaFlagModel = userOverrideDefaultSchemaFlagAssoc.getKey();
+		this.userOverrideDefaultSchemaFlagModelBufferingFlag = userOverrideDefaultSchemaFlagAssoc.getValue();
+		Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> userOverrideDefaultSchemaAssoc = this.buildUserOverrideDefaultSchemaModel();
+		this.userOverrideDefaultSchemaModel = userOverrideDefaultSchemaAssoc.getKey();
+		this.userOverrideDefaultSchemaModelBufferingFlag = userOverrideDefaultSchemaAssoc.getValue();
 		this.defaultSchemaModel = this.buildDefaultSchemaModel();
 		this.schemaChoicesModel = this.buildSchemaChoicesModel();
 
-		this.discoverAnnotatedClassesModel = this.buildDiscoverAnnotatedClassesModel();
+		Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> discoverAnnotatedClassesAssoc = this.buildDiscoverAnnotatedClassesModel();
+		this.discoverAnnotatedClassesModel = discoverAnnotatedClassesAssoc.getKey();
+		this.discoverAnnotatedClassesModelBufferingFlag = discoverAnnotatedClassesAssoc.getValue();
 		this.listAnnotatedClassesModel = this.buildListAnnotatedClassesModel();
 
 		this.jpa2_0ProjectFlagModel = this.buildJpa2_0ProjectFlagModel();
 
-		this.metamodelSourceFolderModel = this.buildMetamodelSourceFolderModel();
+		Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> metamodelSourceFolderAssoc = this.buildMetamodelSourceFolderModel();
+		this.metamodelSourceFolderModel = metamodelSourceFolderAssoc.getKey();
+		this.metamodelSourceFolderModelBufferingFlag = metamodelSourceFolderAssoc.getValue();
 		this.javaSourceFolderChoicesModel = this.buildJavaSourceFolderChoicesModel();
 	}
 
@@ -214,8 +238,8 @@ public class JpaProjectPropertiesPage
 	}
 
 	// ***** JPA platform config model
-	private BufferedModifiablePropertyValueModel<JpaPlatform.Config> buildJpaPlatformConfigModel() {
-		return new BufferedModifiablePropertyValueModel<>(new JpaPlatformConfigModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<JpaPlatform.Config>, PropertyValueModel<Boolean>> buildJpaPlatformConfigModel() {
+		return PropertyValueModelTools.buffer(new JpaPlatformConfigModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private PropertyChangeListener buildJpaPlatformConfigListener(){
@@ -240,8 +264,8 @@ public class JpaProjectPropertiesPage
 	}
 
 	// ***** connection models
-	private BufferedModifiablePropertyValueModel<String> buildConnectionModel() {
-		return new BufferedModifiablePropertyValueModel<>(new ConnectionModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> buildConnectionModel() {
+		return PropertyValueModelTools.buffer(new ConnectionModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private PropertyValueModel<ConnectionProfile> buildConnectionProfileModel() {
@@ -264,12 +288,12 @@ public class JpaProjectPropertiesPage
 	}
 
 	// ***** catalog models
-	private BufferedModifiablePropertyValueModel<Boolean> buildUserOverrideDefaultCatalogFlagModel() {
-		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultCatalogFlagModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> buildUserOverrideDefaultCatalogFlagModel() {
+		return PropertyValueModelTools.buffer(new UserOverrideDefaultCatalogFlagModel(this.jpaProjectModel), this.trigger);
 	}
 
-	private BufferedModifiablePropertyValueModel<String> buildUserOverrideDefaultCatalogModel() {
-		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultCatalogModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>>  buildUserOverrideDefaultCatalogModel() {
+		return PropertyValueModelTools.buffer(new UserOverrideDefaultCatalogModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultCatalogModel() {
@@ -313,12 +337,12 @@ public class JpaProjectPropertiesPage
 	}
 
 	// ***** schema models
-	private BufferedModifiablePropertyValueModel<Boolean> buildUserOverrideDefaultSchemaFlagModel() {
-		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultSchemaFlagModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> buildUserOverrideDefaultSchemaFlagModel() {
+		return PropertyValueModelTools.buffer(new UserOverrideDefaultSchemaFlagModel(this.jpaProjectModel), this.trigger);
 	}
 
-	private BufferedModifiablePropertyValueModel<String> buildUserOverrideDefaultSchemaModel() {
-		return new BufferedModifiablePropertyValueModel<>(new UserOverrideDefaultSchemaModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> buildUserOverrideDefaultSchemaModel() {
+		return PropertyValueModelTools.buffer(new UserOverrideDefaultSchemaModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultSchemaModel() {
@@ -359,8 +383,8 @@ public class JpaProjectPropertiesPage
 	}
 
 	// ***** discover/list annotated classes models
-	private BufferedModifiablePropertyValueModel<Boolean> buildDiscoverAnnotatedClassesModel() {
-		return new BufferedModifiablePropertyValueModel<>(new DiscoverAnnotatedClassesModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> buildDiscoverAnnotatedClassesModel() {
+		return PropertyValueModelTools.buffer(new DiscoverAnnotatedClassesModel(this.jpaProjectModel), this.trigger);
 	}
 
 	/**
@@ -378,8 +402,8 @@ public class JpaProjectPropertiesPage
 	private static final Predicate<JpaModel> IS_COMPATIBLE_WITH_JPA_2_0 = new JpaModel.JpaVersionIsCompatibleWith<>(JpaProject2_0.FACET_VERSION_STRING);
 
 	// ***** metamodel models
-	private BufferedModifiablePropertyValueModel<String> buildMetamodelSourceFolderModel() {
-		return new BufferedModifiablePropertyValueModel<>(new MetamodelSourceFolderModel(this.jpaProjectModel), this.trigger);
+	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> buildMetamodelSourceFolderModel() {
+		return PropertyValueModelTools.buffer(new MetamodelSourceFolderModel(this.jpaProjectModel), this.trigger);
 	}
 
 	private ListValueModel<String> buildJavaSourceFolderChoicesModel() {
@@ -865,7 +889,7 @@ public class JpaProjectPropertiesPage
 
 	@Override
 	protected boolean projectRebuildRequired() {
-		return this.jpaPlatformConfigModel.isBuffering();
+		return this.jpaPlatformConfigModelBufferingFlag.getValue().booleanValue();
 	}
 
 	@Override
@@ -890,16 +914,17 @@ public class JpaProjectPropertiesPage
 	}
 
 	@Override
-	protected BufferedModifiablePropertyValueModel<?>[] buildBufferedModels() {
-		return new BufferedModifiablePropertyValueModel[] {
-				this.jpaPlatformConfigModel,
-				this.connectionModel,
-				this.userOverrideDefaultCatalogFlagModel,
-				this.userOverrideDefaultCatalogModel,
-				this.userOverrideDefaultSchemaFlagModel,
-				this.userOverrideDefaultSchemaModel,
-				this.discoverAnnotatedClassesModel,
-				this.metamodelSourceFolderModel
+	@SuppressWarnings("unchecked")
+	protected PropertyValueModel<Boolean>[] buildBufferingFlags() {
+		return new PropertyValueModel[] {
+				this.jpaPlatformConfigModelBufferingFlag,
+				this.connectionModelBufferingFlag,
+				this.userOverrideDefaultCatalogFlagModelBufferingFlag,
+				this.userOverrideDefaultCatalogModelBufferingFlag,
+				this.userOverrideDefaultSchemaFlagModelBufferingFlag,
+				this.userOverrideDefaultSchemaModelBufferingFlag,
+				this.discoverAnnotatedClassesModelBufferingFlag,
+				this.metamodelSourceFolderModelBufferingFlag
 		};
 	}
 

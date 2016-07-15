@@ -22,7 +22,7 @@ public class JptCommonUtilityModelValueTests {
 		suite.addTest(JptCommonUtilityModelValuePrefsTests.suite());
 		suite.addTest(JptCommonUtilityModelValueSwingTests.suite());
 
-		suite.addTestSuite(BufferedModifiablePropertyValueModelTests.class);
+		suite.addTestSuite(BufferedPropertyValueModelTests.class);
 		suite.addTestSuite(CachingTransformationPropertyValueModelTests.class);
 		suite.addTestSuite(CollectionAspectAdapterTests.class);
 		suite.addTestSuite(CollectionListValueModelAdapterTests.class);
