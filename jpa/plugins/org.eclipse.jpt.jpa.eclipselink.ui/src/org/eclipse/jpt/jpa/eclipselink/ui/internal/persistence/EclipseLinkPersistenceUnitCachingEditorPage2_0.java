@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -96,7 +96,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Model() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, PersistenceUnit2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, PersistenceUnit2_0>(this.getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit2_0 buildValue_() {
 				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();
@@ -165,7 +165,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	private PropertyValueModel<SharedCacheMode2_0> buildSharedCacheModeModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
-		return new PropertyAspectAdapter<PersistenceUnit2_0, SharedCacheMode2_0>(
+		return new PropertyAspectAdapterXXXX<PersistenceUnit2_0, SharedCacheMode2_0>(
 								persistenceUnitModel, 
 								PersistenceUnit2_0.SPECIFIED_SHARED_CACHE_MODE_PROPERTY, 
 								PersistenceUnit2_0.DEFAULT_SHARED_CACHE_MODE_PROPERTY) {
@@ -260,7 +260,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getCacheSizeDefault();

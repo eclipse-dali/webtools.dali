@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -55,8 +55,8 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	public void testHasListeners() {
 		AbstractModel subjectCustomization = (AbstractModel) this.customization; // Subject
 		
-		PropertyAspectAdapter<EclipseLinkCustomization, Boolean> throwExceptionsAA = 
-			(PropertyAspectAdapter<EclipseLinkCustomization, Boolean>) this.throwExceptionsHolder;
+		PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean> throwExceptionsAA = 
+			(PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>) this.throwExceptionsHolder;
 		assertTrue(throwExceptionsAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectCustomization.hasAnyPropertyChangeListeners(EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY));
 		
@@ -83,7 +83,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 
 	// ****** ThrowExceptions *******
 	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<EclipseLinkCustomization> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(subjectHolder, EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(subjectHolder, EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getThrowExceptions();

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -185,7 +185,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<IdMapping, Boolean>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getGeneratedValue() != null);
@@ -205,7 +205,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 	
 	private PropertyValueModel<GeneratorContainer> buildGeneratorContainer() {
-		return new PropertyAspectAdapter<IdMapping, GeneratorContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<IdMapping, GeneratorContainer>(getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
 				return this.subject.getGeneratorContainer();
@@ -250,7 +250,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getSequenceGenerator() != null);
@@ -291,7 +291,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapter<GeneratorContainer, SequenceGenerator>(generatorHolder, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, SequenceGenerator>(generatorHolder, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
 				return this.subject.getSequenceGenerator();
@@ -355,7 +355,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapter<GeneratorContainer, TableGenerator>(generatorHolder, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, TableGenerator>(generatorHolder, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected TableGenerator buildValue_() {
 				return this.subject.getTableGenerator();
@@ -372,7 +372,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
  	private ModifiablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getTableGenerator() != null);
@@ -453,7 +453,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	private PropertyValueModel<GeneratedValue> buildGeneratedValueHolder() {
-		return new PropertyAspectAdapter<IdMapping, GeneratedValue>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<IdMapping, GeneratedValue>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
 			protected GeneratedValue buildValue_() {
 				return getSubject().getGeneratedValue();
@@ -462,7 +462,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 	
 	protected final ModifiablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapter<GeneratedValue, String>(buildGeneratedValueHolder(), GeneratedValue.SPECIFIED_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratedValue, String>(buildGeneratedValueHolder(), GeneratedValue.SPECIFIED_GENERATOR_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getSpecifiedGenerator();
@@ -529,7 +529,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	protected PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
-		return new PropertyAspectAdapter<IdMapping, PersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<IdMapping, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
 				return this.subject.getPersistenceUnit();

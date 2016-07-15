@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -75,7 +75,7 @@ public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollecti
 
     @Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, String>(
+		return new PropertyAspectAdapterXXXX<ElementCollectionMapping2_0, String>(
 			this.getSubjectHolder(), 
 			ElementCollectionMapping2_0.SPECIFIED_TARGET_CLASS_PROPERTY,
 			ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
@@ -112,7 +112,7 @@ public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollecti
 	}
 
 	private PropertyValueModel<String> buildDefaultProfilerModel() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, String>(this.getSubjectHolder(), ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<ElementCollectionMapping2_0, String>(this.getSubjectHolder(), ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return TargetClassChooser2_0.this.getDefaultValue(this.subject);

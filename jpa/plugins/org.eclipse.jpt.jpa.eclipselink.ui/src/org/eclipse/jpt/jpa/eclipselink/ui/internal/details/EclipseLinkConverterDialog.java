@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -170,7 +170,7 @@ public class EclipseLinkConverterDialog
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNameHolder() {
-			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, String>(getSubjectHolder(), EclipseLinkConverterStateObject.NAME_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConverterStateObject, String>(getSubjectHolder(), EclipseLinkConverterStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getName();
@@ -184,7 +184,7 @@ public class EclipseLinkConverterDialog
 		}
 
 		private ModifiablePropertyValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeHolder() {
-			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, Class<? extends EclipseLinkConverter>>(getSubjectHolder(), EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConverterStateObject, Class<? extends EclipseLinkConverter>>(getSubjectHolder(), EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY) {
 				@Override
 				protected Class<? extends EclipseLinkConverter> buildValue_() {
 					return this.subject.getConverterType();

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -58,7 +58,7 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedMetadataCompleteModel() {
-		return new PropertyAspectAdapter<OrmTypeMapping, Boolean>(
+		return new PropertyAspectAdapterXXXX<OrmTypeMapping, Boolean>(
 			getSubjectHolder(),
 			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY)
 		{
@@ -84,7 +84,7 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 		);
 
 	private PropertyValueModel<Boolean> buildOverrideMetadataCompleteModel() {
-		return new PropertyAspectAdapter<OrmTypeMapping, Boolean>(
+		return new PropertyAspectAdapterXXXX<OrmTypeMapping, Boolean>(
 			getSubjectHolder(),
 			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY,
 			OrmTypeMapping.OVERRIDE_METADATA_COMPLETE_PROPERTY)

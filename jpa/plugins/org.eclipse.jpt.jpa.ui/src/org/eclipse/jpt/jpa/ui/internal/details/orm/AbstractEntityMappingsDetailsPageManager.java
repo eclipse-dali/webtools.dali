@@ -14,7 +14,7 @@ import java.util.Collection;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
@@ -291,7 +291,7 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 	}
 
 	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapter<EntityMappings, QueryContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EntityMappings, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
 				return this.subject.getQueryContainer();

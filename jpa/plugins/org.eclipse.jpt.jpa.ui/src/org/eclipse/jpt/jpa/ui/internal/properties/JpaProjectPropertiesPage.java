@@ -44,7 +44,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionVa
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggableModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
@@ -1030,7 +1030,7 @@ public class JpaProjectPropertiesPage
 	 * data source
 	 */
 	static class ConnectionModel
-		extends PropertyAspectAdapter<JpaDataSource, String>
+		extends PropertyAspectAdapterXXXX<JpaDataSource, String>
 	{
 		ConnectionModel(PropertyValueModel<JpaProject> jpaProjectModel) {
 			// The JPA project's data source is an auxiliary object that never changes;
@@ -1179,7 +1179,7 @@ public class JpaProjectPropertiesPage
 	 * (either catalog or schema);
 	 */
 	abstract static class UserOverrideDefaultFlagModel
-		extends PropertyAspectAdapter<JpaProject, Boolean>
+		extends PropertyAspectAdapterXXXX<JpaProject, Boolean>
 	{
 		UserOverrideDefaultFlagModel(PropertyValueModel<JpaProject> jpaProjectModel, String propertyName) {
 			super(jpaProjectModel, propertyName);
@@ -1239,7 +1239,7 @@ public class JpaProjectPropertiesPage
 	 * The JPA project's user override default catalog
 	 */
 	static class UserOverrideDefaultCatalogModel
-		extends PropertyAspectAdapter<JpaProject, String>
+		extends PropertyAspectAdapterXXXX<JpaProject, String>
 	{
 		UserOverrideDefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectModel) {
 			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY);
@@ -1261,7 +1261,7 @@ public class JpaProjectPropertiesPage
 	 * The JPA project's user override default catalog
 	 */
 	static class UserOverrideDefaultSchemaModel
-		extends PropertyAspectAdapter<JpaProject, String>
+		extends PropertyAspectAdapterXXXX<JpaProject, String>
 	{
 		UserOverrideDefaultSchemaModel(PropertyValueModel<JpaProject> jpaProjectModel) {
 			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY);
@@ -1284,7 +1284,7 @@ public class JpaProjectPropertiesPage
 	 * classes
 	 */
 	static class DiscoverAnnotatedClassesModel
-		extends PropertyAspectAdapter<JpaProject, Boolean>
+		extends PropertyAspectAdapterXXXX<JpaProject, Boolean>
 	{
 		DiscoverAnnotatedClassesModel(PropertyValueModel<JpaProject> jpaProjectModel) {
 			super(jpaProjectModel, JpaProject.DISCOVERS_ANNOTATED_CLASSES_PROPERTY);
@@ -1307,7 +1307,7 @@ public class JpaProjectPropertiesPage
 	 * is written.
 	 */
 	static class MetamodelSourceFolderModel
-		extends PropertyAspectAdapter<JpaProject, String>
+		extends PropertyAspectAdapterXXXX<JpaProject, String>
 	{
 		MetamodelSourceFolderModel(PropertyValueModel<JpaProject> jpaProjectModel) {
 			super(jpaProjectModel, JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_PROPERTY);

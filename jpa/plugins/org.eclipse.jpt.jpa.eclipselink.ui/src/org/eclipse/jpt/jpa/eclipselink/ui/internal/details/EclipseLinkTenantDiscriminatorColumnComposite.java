@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -353,7 +353,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return Integer.valueOf(this.subject.getDefaultLength());
@@ -363,7 +363,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getSpecifiedLength();
@@ -378,7 +378,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 	}
 
 	private ModifiablePropertyValueModel<String> buildColumnDefinitionModel(PropertyValueModel<? extends EclipseLinkTenantDiscriminatorColumn2_3> discriminatorColumnModel) {
-		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, String>(discriminatorColumnModel, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, String>(discriminatorColumnModel, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -394,7 +394,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 	}
 
 	ModifiablePropertyValueModel<Boolean> buildPrimaryKeyModel() {
-		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(getSubjectHolder(), EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(getSubjectHolder(), EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedPrimaryKey();
@@ -417,7 +417,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 			);
 
 	PropertyValueModel<Boolean> buildDefaultPrimaryKeyModel() {
-		return new PropertyAspectAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(
 				getSubjectHolder(),
 				EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY,
 				EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY_PROPERTY) {

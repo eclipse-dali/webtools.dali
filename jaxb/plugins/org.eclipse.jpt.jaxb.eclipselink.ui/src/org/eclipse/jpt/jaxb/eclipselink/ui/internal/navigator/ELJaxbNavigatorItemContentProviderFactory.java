@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCurator;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -94,7 +94,7 @@ public class ELJaxbNavigatorItemContentProviderFactory
 	protected CollectionValueModel<JaxbContextNode> buildOxmFileChildrenModel(final ELJaxbPackage jaxbPackage) {
 		return new FilteringCollectionValueModel<JaxbContextNode>(
 				new PropertyCollectionValueModelAdapter<JaxbContextNode>(
-						new PropertyAspectAdapter<ELJaxbPackage, JaxbContextNode>(ELJaxbPackage.OXM_FILE_PROPERTY, jaxbPackage) {
+						new PropertyAspectAdapterXXXX<ELJaxbPackage, JaxbContextNode>(ELJaxbPackage.OXM_FILE_PROPERTY, jaxbPackage) {
 							@Override
 							protected JaxbContextNode buildValue_() {
 								return this.subject.getOxmFile();
@@ -170,7 +170,7 @@ public class ELJaxbNavigatorItemContentProviderFactory
 	}
 	
 	protected PropertyValueModel<OxmXmlBindings> buildXmlBindingsModel(OxmFile oxmFile) {
-		return new PropertyAspectAdapter<OxmFile, OxmXmlBindings>(OxmFile.XML_BINDINGS_PROPERTY, oxmFile) {
+		return new PropertyAspectAdapterXXXX<OxmFile, OxmXmlBindings>(OxmFile.XML_BINDINGS_PROPERTY, oxmFile) {
 			@Override
 			protected OxmXmlBindings buildValue_() {
 				return this.subject.getXmlBindings();

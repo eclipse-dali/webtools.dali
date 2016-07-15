@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -40,7 +40,7 @@ public class JavaPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCo
 	}
 	
 	private PropertyValueModel<SpecifiedPrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<JavaEntity, SpecifiedPrimaryKeyJoinColumn>(getSubjectHolder(), JavaEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<JavaEntity, SpecifiedPrimaryKeyJoinColumn>(getSubjectHolder(), JavaEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN_PROPERTY) {
 			@Override
 			protected SpecifiedPrimaryKeyJoinColumn buildValue_() {
 				return subject.getDefaultPrimaryKeyJoinColumn();

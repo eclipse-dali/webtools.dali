@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.DefaultWidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -65,7 +65,7 @@ public class TriStateCheckBoxModelAdapterUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectHolder, TestModel.FLAG1_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectHolder, TestModel.FLAG1_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.isFlag1();
@@ -78,7 +78,7 @@ public class TriStateCheckBoxModelAdapterUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectHolder, TestModel.FLAG2_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectHolder, TestModel.FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.isFlag2();
@@ -91,7 +91,7 @@ public class TriStateCheckBoxModelAdapterUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectHolder, TestModel.NOT_FLAG2_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectHolder, TestModel.NOT_FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.isNotFlag2();

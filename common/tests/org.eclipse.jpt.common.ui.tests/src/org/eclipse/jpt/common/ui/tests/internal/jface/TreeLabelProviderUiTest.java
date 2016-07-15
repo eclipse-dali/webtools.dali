@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -346,7 +346,7 @@ public class TreeLabelProviderUiTest
 	}
 
 	/* CU private */ static PropertyValueModel<ImageDescriptor> buildImageDescriptorModel(Vehicle vehicle) {
-		return new PropertyAspectAdapter<Vehicle, ImageDescriptor>(PropertyValueModelTools.staticPropertyValueModel(vehicle), IMAGE_ASPECT_NAMES) {
+		return new PropertyAspectAdapterXXXX<Vehicle, ImageDescriptor>(PropertyValueModelTools.staticPropertyValueModel(vehicle), IMAGE_ASPECT_NAMES) {
 			@Override
 			protected ImageDescriptor buildValue_() {
 				return this.subject.getImageDescriptor();
@@ -361,7 +361,7 @@ public class TreeLabelProviderUiTest
 			};
 
 	/* CU private */ static PropertyValueModel<String> buildTextModel(Vehicle vehicle) {
-		return new PropertyAspectAdapter<Vehicle, String>(PropertyValueModelTools.staticPropertyValueModel(vehicle), TEXT_ASPECT_NAMES) {
+		return new PropertyAspectAdapterXXXX<Vehicle, String>(PropertyValueModelTools.staticPropertyValueModel(vehicle), TEXT_ASPECT_NAMES) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColor().getDescription() + ' ' + this.subject.getVehicleType().getDescription();

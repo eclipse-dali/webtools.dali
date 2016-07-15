@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -127,7 +127,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
-		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.specifiedDiscriminatorValueIsAllowed());
@@ -142,7 +142,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultDiscriminatorValueHolder() {
-		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Entity, String>(getSubjectHolder(), Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return defaultValue(this.subject);
@@ -167,7 +167,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 
 
 	private ModifiablePropertyValueModel<String> buildDiscriminatorValueHolder() {
-		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				String value = this.subject.getSpecifiedDiscriminatorValue();

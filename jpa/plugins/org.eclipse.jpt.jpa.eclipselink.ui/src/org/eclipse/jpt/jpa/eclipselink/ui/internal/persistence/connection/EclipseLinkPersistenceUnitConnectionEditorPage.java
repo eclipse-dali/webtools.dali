@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -160,7 +160,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
 				return this.subject.getPersistenceUnit();
@@ -241,7 +241,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNativeSqlModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.NATIVE_SQL_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.NATIVE_SQL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getNativeSql();
@@ -265,7 +265,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultNativeSqlModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkConnection.NATIVE_SQL_PROPERTY)
 		{
@@ -281,7 +281,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 
 	private ModifiablePropertyValueModel<Boolean> buildCacheStatementsModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getCacheStatements();
@@ -329,7 +329,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.CACHE_STATEMENTS_SIZE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getCacheStatementsSize();

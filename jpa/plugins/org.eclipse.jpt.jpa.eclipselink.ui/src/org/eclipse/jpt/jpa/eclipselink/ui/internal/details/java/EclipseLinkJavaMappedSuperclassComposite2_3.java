@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
@@ -91,8 +91,8 @@ public class EclipseLinkJavaMappedSuperclassComposite2_3
 		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<EclipseLinkJavaMappedSuperclass, EclipseLinkJavaMultitenancy2_3> buildMultitenancyModel() {
-		return new PropertyAspectAdapter<EclipseLinkJavaMappedSuperclass, EclipseLinkJavaMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapterXXXX<EclipseLinkJavaMappedSuperclass, EclipseLinkJavaMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapterXXXX<EclipseLinkJavaMappedSuperclass, EclipseLinkJavaMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJavaMultitenancy2_3 buildValue_() {
 				return this.subject.getMultitenancy();

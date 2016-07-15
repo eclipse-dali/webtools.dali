@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -71,7 +71,7 @@ public class EclipseLinkMutableTriStateCheckBox
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildMutableModel() {
-		return new PropertyAspectAdapter<EclipseLinkMutable, Boolean>(getSubjectHolder(), EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkMutable, Boolean>(getSubjectHolder(), EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedMutable();
@@ -95,7 +95,7 @@ public class EclipseLinkMutableTriStateCheckBox
 			);
 
 	private PropertyValueModel<Boolean> buildDefaultMutableModel() {
-		return new PropertyAspectAdapter<EclipseLinkMutable, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkMutable, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY,
 			EclipseLinkMutable.DEFAULT_MUTABLE_PROPERTY)

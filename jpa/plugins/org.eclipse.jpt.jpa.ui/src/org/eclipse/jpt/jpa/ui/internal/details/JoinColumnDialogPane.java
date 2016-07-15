@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -32,7 +32,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildInsertableModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getInsertable();
@@ -55,7 +55,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultInsertableModel() {
-		return new PropertyAspectAdapter<T, Boolean>(
+		return new PropertyAspectAdapterXXXX<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.INSERTABLE_PROPERTY)
 		{
@@ -70,7 +70,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNullableModel() {
-		return new PropertyAspectAdapter<T, Boolean>(
+		return new PropertyAspectAdapterXXXX<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.NULLABLE_PROPERTY)
 		{
@@ -96,7 +96,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultNullableModel() {
-		return new PropertyAspectAdapter<T, Boolean>(
+		return new PropertyAspectAdapterXXXX<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.NULLABLE_PROPERTY)
 		{
@@ -111,7 +111,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildUniqueModel() {
-		return new PropertyAspectAdapter<T, Boolean>(
+		return new PropertyAspectAdapterXXXX<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UNIQUE_PROPERTY)
 		{
@@ -137,7 +137,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultUniqueModel() {
-		return new PropertyAspectAdapter<T, Boolean>(
+		return new PropertyAspectAdapterXXXX<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UNIQUE_PROPERTY)
 		{
@@ -152,7 +152,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getUpdatable();
@@ -175,7 +175,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultUpdatableModel() {
-		return new PropertyAspectAdapter<T, Boolean>(
+		return new PropertyAspectAdapterXXXX<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UPDATABLE_PROPERTY)
 		{

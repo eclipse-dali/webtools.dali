@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.FolderChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -189,7 +189,7 @@ public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 	//************ Create DDL file name ************
 
 	private PropertyValueModel<String> buildDefaultCreateDdlFileNameHolder() {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultCreateFileNameValue(subject);
@@ -204,7 +204,7 @@ public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 	}
 
 	private ModifiablePropertyValueModel<String> buildCreateDdlFileNameHolder() {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.CREATE_FILE_NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.CREATE_FILE_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -243,7 +243,7 @@ public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 
 
 	private PropertyValueModel<String> buildDefaultDropDdlFileNameHolder() {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject);
@@ -258,7 +258,7 @@ public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 	}
 
 	private ModifiablePropertyValueModel<String> buildDropDdlFileNameHolder() {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DROP_FILE_NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DROP_FILE_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -297,7 +297,7 @@ public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, String>(
+				return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, String>(
 										getSubjectHolder(), EclipseLinkSchemaGeneration.APPLICATION_LOCATION_PROPERTY) {
 					@Override
 					protected String buildValue_() {

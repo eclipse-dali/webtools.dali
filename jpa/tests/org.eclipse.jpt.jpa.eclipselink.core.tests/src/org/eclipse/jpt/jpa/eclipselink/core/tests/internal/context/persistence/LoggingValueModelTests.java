@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -52,8 +52,8 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testHasListeners() {
 		AbstractModel subjectLogging = (AbstractModel) this.logging; // Subject
 		
-		PropertyAspectAdapter<EclipseLinkLogging, Boolean> timestampAA = 
-			(PropertyAspectAdapter<EclipseLinkLogging, Boolean>) this.timestampHolder;
+		PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean> timestampAA = 
+			(PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>) this.timestampHolder;
 		assertTrue(timestampAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectLogging.hasAnyPropertyChangeListeners(EclipseLinkLogging.TIMESTAMP_PROPERTY));
 		
@@ -80,7 +80,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	// ****** Timestamp *******
 	private ModifiablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<EclipseLinkLogging> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(subjectHolder, EclipseLinkLogging.TIMESTAMP_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(subjectHolder, EclipseLinkLogging.TIMESTAMP_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getTimestamp();

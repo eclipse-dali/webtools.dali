@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
@@ -85,7 +85,7 @@ public abstract class AbstractJavaMappedSuperclassComposite<T extends JavaMapped
 	}
 	
 	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapter<T, QueryContainer>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, QueryContainer>(this.getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
 				return this.subject.getQueryContainer();

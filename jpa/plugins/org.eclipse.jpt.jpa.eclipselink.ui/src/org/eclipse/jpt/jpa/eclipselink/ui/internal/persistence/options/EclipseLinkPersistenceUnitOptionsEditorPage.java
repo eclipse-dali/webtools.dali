@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -249,7 +249,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** session name *********
 
 	private PropertyValueModel<String> buildDefaultSessionNameModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_SESSION_NAME) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_SESSION_NAME) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionNameDefaultValue(this.subject);
@@ -264,7 +264,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildSessionNameModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.SESSION_NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.SESSION_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -302,7 +302,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** sessions xml *********
 
 	private PropertyValueModel<String> buildDefaultSessionsXmlFileNameModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_SESSIONS_XML) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_SESSIONS_XML) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionsXmlDefaultValue(this.subject);
@@ -317,7 +317,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildSessionsXmlFileNameModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.SESSIONS_XML_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.SESSIONS_XML_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -355,7 +355,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** target database *********
 
 	private PropertyValueModel<String> buildDefaultTargetDatabaseModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_TARGET_DATABASE) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_TARGET_DATABASE) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetDatabaseDefaultValue(this.subject);
@@ -457,7 +457,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildTargetDatabaseModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.TARGET_DATABASE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.TARGET_DATABASE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -519,7 +519,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** target server *********
 
 	private PropertyValueModel<String> buildDefaultTargetServerModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_TARGET_SERVER) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_TARGET_SERVER) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetServerDefaultValue(this.subject);
@@ -591,7 +591,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildTargetServerModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.TARGET_SERVER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.TARGET_SERVER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				String name = this.subject.getTargetServer();
@@ -655,7 +655,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkOptions, String>(
+				return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(
 							this.getSubjectHolder(), EclipseLinkOptions.SESSION_EVENT_LISTENER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -699,7 +699,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** include descriptor queries *********
 	
 	private ModifiablePropertyValueModel<Boolean> buildIncludeDescriptorQueriesModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(this.optionsModel, EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(this.optionsModel, EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getIncludeDescriptorQueries();
@@ -722,7 +722,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultIncludeDescriptorQueriesModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(
 			this.optionsModel,
 			EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)
 		{
@@ -740,7 +740,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** temporal mutable *********
 
 	protected ModifiablePropertyValueModel<Boolean> buildTemporalMutableModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(this.optionsModel, EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(this.optionsModel, EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getTemporalMutable();
@@ -763,7 +763,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultTemporalMutableModel() {
-		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(
 			this.optionsModel,
 			EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY)
 		{

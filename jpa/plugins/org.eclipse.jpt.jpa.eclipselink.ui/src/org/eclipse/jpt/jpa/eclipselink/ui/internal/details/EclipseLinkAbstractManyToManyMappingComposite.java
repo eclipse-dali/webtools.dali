@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
@@ -71,7 +71,7 @@ public abstract class EclipseLinkAbstractManyToManyMappingComposite<T extends Ec
 	}
 
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
-		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
 				return this.subject.getJoinFetch();
@@ -99,7 +99,7 @@ public abstract class EclipseLinkAbstractManyToManyMappingComposite<T extends Ec
 	}
 
 	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterContainer buildValue_() {
 				return this.subject.getConverterContainer();

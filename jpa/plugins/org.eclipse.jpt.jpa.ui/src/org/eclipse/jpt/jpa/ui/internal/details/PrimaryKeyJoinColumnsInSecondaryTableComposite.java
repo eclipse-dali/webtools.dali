@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -88,7 +88,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnModel() {
-		return new PropertyAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
+		return new PropertyAspectAdapterXXXX<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
 			@Override
 			protected PrimaryKeyJoinColumn buildValue_() {
 				return this.subject.getDefaultPrimaryKeyJoinColumn();

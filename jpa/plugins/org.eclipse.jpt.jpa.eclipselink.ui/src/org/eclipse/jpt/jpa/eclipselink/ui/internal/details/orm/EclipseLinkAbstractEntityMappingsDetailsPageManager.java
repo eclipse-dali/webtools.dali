@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
@@ -118,7 +118,7 @@ public abstract class EclipseLinkAbstractEntityMappingsDetailsPageManager
 	}
 
 	private PropertyValueModel<EclipseLinkOrmConverterContainer> buildConverterHolder() {
-		return new PropertyAspectAdapter<EntityMappings, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EntityMappings, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkOrmConverterContainer buildValue_() {
 				return ((EclipseLinkEntityMappings) this.subject).getConverterContainer();

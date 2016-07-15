@@ -29,7 +29,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.DocumentAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -66,7 +66,7 @@ public class DocumentAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();

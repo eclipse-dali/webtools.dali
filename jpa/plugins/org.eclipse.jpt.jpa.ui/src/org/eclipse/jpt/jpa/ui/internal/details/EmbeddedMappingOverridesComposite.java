@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
@@ -35,7 +35,7 @@ public class EmbeddedMappingOverridesComposite
 	
 	@Override
 	protected PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerModel() {
-		return new PropertyAspectAdapter<BaseEmbeddedMapping, AttributeOverrideContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<BaseEmbeddedMapping, AttributeOverrideContainer>(getSubjectHolder()) {
 			@Override
 			protected AttributeOverrideContainer buildValue_() {
 				return this.subject.getAttributeOverrideContainer();

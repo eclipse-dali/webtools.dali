@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
@@ -60,7 +60,7 @@ public class CascadePane2_0
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeDetachModel() {
-		return new PropertyAspectAdapter<Cascade2_0, Boolean>(getSubjectHolder(), Cascade2_0.DETACH_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Cascade2_0, Boolean>(getSubjectHolder(), Cascade2_0.DETACH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isDetach());

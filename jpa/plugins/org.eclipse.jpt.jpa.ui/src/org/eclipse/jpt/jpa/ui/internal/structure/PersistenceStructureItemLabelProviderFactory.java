@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -121,7 +121,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	public static class PersistenceUnitTextModel
-		extends PropertyAspectAdapter<PersistenceUnit, String>
+		extends PropertyAspectAdapterXXXX<PersistenceUnit, String>
 	{
 		public PersistenceUnitTextModel(PersistenceUnit subject) {
 			super(PersistenceUnit.NAME_PROPERTY, subject);
@@ -175,7 +175,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	public static class MappingFileRefTextModel
-		extends PropertyAspectAdapter<MappingFileRef, String>
+		extends PropertyAspectAdapterXXXX<MappingFileRef, String>
 	{
 		public MappingFileRefTextModel(MappingFileRef subject) {
 			super(MappingFileRef.FILE_NAME_PROPERTY, subject);
@@ -214,7 +214,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	public static class ClassRefTextModel
-		extends PropertyAspectAdapter<ClassRef, String>
+		extends PropertyAspectAdapterXXXX<ClassRef, String>
 	{
 		public ClassRefTextModel(ClassRef subject) {
 			super(ClassRef.CLASS_NAME_PROPERTY, subject);
@@ -254,7 +254,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	public static class JarFileRefTextModel
-		extends PropertyAspectAdapter<JarFileRef, String>
+		extends PropertyAspectAdapterXXXX<JarFileRef, String>
 	{
 		public JarFileRefTextModel(JarFileRef subject) {
 			super(JarFileRef.FILE_NAME_PROPERTY, subject);

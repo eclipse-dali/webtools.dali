@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -63,7 +63,7 @@ public class OrmMappedSuperclassComposite
 	}
 
 	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmPersistentType>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<OrmMappedSuperclass, OrmPersistentType>(getSubjectHolder()) {
 			@Override
 			protected OrmPersistentType buildValue_() {
 				return this.subject.getPersistentType();

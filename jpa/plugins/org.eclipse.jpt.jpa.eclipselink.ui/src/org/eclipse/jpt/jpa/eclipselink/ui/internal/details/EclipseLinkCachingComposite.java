@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -179,7 +179,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	protected abstract void initializeExistenceCheckingComposite(Composite container);
 	
 	private PropertyValueModel<Boolean> buildSharedCacheEnabler() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
 				getSubjectHolder(), 
 				EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY, 
 				EclipseLinkCaching.DEFAULT_SHARED_PROPERTY) {
@@ -191,7 +191,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	}	
 	
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedSharedModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedShared();
@@ -214,7 +214,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultSharedModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY,
 			EclipseLinkCaching.DEFAULT_SHARED_PROPERTY)
@@ -230,7 +230,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildAlwaysRefreshModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedAlwaysRefresh();
@@ -253,7 +253,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		);
 	
 	private PropertyValueModel<Boolean> buildDefaultAlwaysRefreshModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
 			EclipseLinkCaching.DEFAULT_ALWAYS_REFRESH_PROPERTY)
@@ -269,7 +269,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedRefreshOnlyIfNewer();
@@ -292,7 +292,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultRefreshOnlyIfNewerModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY,
 			EclipseLinkCaching.DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY)
@@ -307,7 +307,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		};
 	}	
 	private ModifiablePropertyValueModel<Boolean> buildDisableHitsModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedDisableHits();
@@ -330,7 +330,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			);
 	
 	private PropertyValueModel<Boolean> buildDefaultDisableHitsModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY,
 			EclipseLinkCaching.DEFAULT_DISABLE_HITS_PROPERTY)

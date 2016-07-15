@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -69,7 +69,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 	}
 
 	private ModifiablePropertyValueModel<String> buildPasswordModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.PASSWORD_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getPassword();
@@ -94,7 +94,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 	}
 
 	private ModifiablePropertyValueModel<String> buildUrlModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.URL_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getUrl();
@@ -111,7 +111,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.USER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, String>(getSubjectHolder(), EclipseLinkConnection.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getUser();
@@ -181,7 +181,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkConnection, String>(
+				return new PropertyAspectAdapterXXXX<EclipseLinkConnection, String>(
 							this.getSubjectHolder(), EclipseLinkConnection.DRIVER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -217,7 +217,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildBindParametersModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.BIND_PARAMETERS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.BIND_PARAMETERS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getBindParameters();
@@ -240,7 +240,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultBindParametersModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkConnection.BIND_PARAMETERS_PROPERTY)
 		{

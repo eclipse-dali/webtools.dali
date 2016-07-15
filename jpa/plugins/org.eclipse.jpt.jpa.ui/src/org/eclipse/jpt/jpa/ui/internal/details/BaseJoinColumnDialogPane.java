@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -52,7 +52,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<String> buildColumnDefinitionModel() {
-		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -180,7 +180,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameModel() {
-		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -230,7 +230,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<String> buildReferencedColumnNameModel() {
-		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getReferencedColumnName();
@@ -280,7 +280,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject>
 	}
 
 	private ModifiablePropertyValueModel<String> buildTableModel() {
-		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.TABLE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.TABLE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getTable();

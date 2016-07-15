@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -139,7 +139,7 @@ public class EclipseLinkLoggingComposite2_0
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildConnectionModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging2_0, Boolean>(getSubjectHolder(), EclipseLinkLogging2_0.CONNECTION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging2_0, Boolean>(getSubjectHolder(), EclipseLinkLogging2_0.CONNECTION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getConnection();
@@ -162,7 +162,7 @@ public class EclipseLinkLoggingComposite2_0
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultConnectionModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging2_0, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging2_0, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging2_0.CONNECTION_PROPERTY)
 		{

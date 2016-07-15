@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
@@ -66,7 +66,7 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 	}
 
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<NamedQuery, String>(
+		return new PropertyAspectAdapterXXXX<NamedQuery, String>(
 				getSubjectHolder(), Query.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -84,7 +84,7 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 	}
 
 	protected ModifiablePropertyValueModel<String> buildQueryHolder() {
-		return new PropertyAspectAdapter<NamedQuery, String>(getSubjectHolder(), NamedQuery.QUERY_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<NamedQuery, String>(getSubjectHolder(), NamedQuery.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getQuery();

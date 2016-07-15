@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
@@ -64,7 +64,7 @@ public abstract class EclipseLinkAbstractJavaEmbeddableComposite<T extends Eclip
 	}
 
 	protected PropertyValueModel<EclipseLinkJavaConverterContainer> buildConverterContainerValueModel() {
-		return new PropertyAspectAdapter<T, EclipseLinkJavaConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, EclipseLinkJavaConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJavaConverterContainer buildValue_() {
 				return this.subject.getConverterContainer();

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
@@ -108,7 +108,7 @@ public class EclipseLinkOrmOneToOneMappingComposite2_0
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
-		return new PropertyAspectAdapter<EclipseLinkOneToOneMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOneToOneMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
 				return this.subject.getJoinFetch();
@@ -117,7 +117,7 @@ public class EclipseLinkOrmOneToOneMappingComposite2_0
 	}
 	
 	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnedModel() {
-		return new PropertyAspectAdapter<EclipseLinkOneToOneMapping2_0, EclipseLinkPrivateOwned>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOneToOneMapping2_0, EclipseLinkPrivateOwned>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPrivateOwned buildValue_() {
 				return this.subject.getPrivateOwned();

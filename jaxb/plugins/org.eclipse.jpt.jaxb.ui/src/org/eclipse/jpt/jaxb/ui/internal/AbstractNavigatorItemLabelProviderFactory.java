@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -150,7 +150,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		
 		
 		protected PropertyValueModel<Boolean> buildIsXmlRegistryModel() {
-			return new PropertyAspectAdapter<JavaClass, Boolean>(JavaClass.XML_REGISTRY_PROPERTY, this.subject) {
+			return new PropertyAspectAdapterXXXX<JavaClass, Boolean>(JavaClass.XML_REGISTRY_PROPERTY, this.subject) {
 				@Override
 				protected Boolean buildValue_() {
 					return Boolean.valueOf(this.subject.getXmlRegistry() != null);
@@ -159,7 +159,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<JavaClassMapping> buildMappingModel() {
-			return new PropertyAspectAdapter<JavaClass, JavaClassMapping> (JavaType.MAPPING_PROPERTY, this.subject) {
+			return new PropertyAspectAdapterXXXX<JavaClass, JavaClassMapping> (JavaType.MAPPING_PROPERTY, this.subject) {
 				@Override
 				protected JavaClassMapping buildValue_() {
 					return this.subject.getMapping();
@@ -168,7 +168,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<Boolean> buildIsXmlTransientModel() {
-			return new PropertyAspectAdapter<JavaClassMapping, Boolean>(this.mappingModel, JaxbTypeMapping.XML_TRANSIENT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<JavaClassMapping, Boolean>(this.mappingModel, JaxbTypeMapping.XML_TRANSIENT_PROPERTY) {
 				@Override
 				protected Boolean buildValue_() {
 					return Boolean.valueOf(this.subject.isXmlTransient());
@@ -252,7 +252,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		
 		
 		protected PropertyValueModel<JavaEnumMapping> buildMappingModel() {
-			return new PropertyAspectAdapter<JavaEnum, JavaEnumMapping> (JavaType.MAPPING_PROPERTY, this.subject) {
+			return new PropertyAspectAdapterXXXX<JavaEnum, JavaEnumMapping> (JavaType.MAPPING_PROPERTY, this.subject) {
 				@Override
 				protected JavaEnumMapping buildValue_() {
 					return this.subject.getMapping();
@@ -261,7 +261,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<Boolean> buildIsXmlTransientModel() {
-			return new PropertyAspectAdapter<JavaEnumMapping, Boolean>(this.mappingModel, JaxbTypeMapping.XML_TRANSIENT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<JavaEnumMapping, Boolean>(this.mappingModel, JaxbTypeMapping.XML_TRANSIENT_PROPERTY) {
 				@Override
 				protected Boolean buildValue_() {
 					return Boolean.valueOf(this.subject.isXmlTransient());
@@ -341,7 +341,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	}
 
 	public PropertyValueModel<ImageDescriptor> buildJavaPersistentAttributeImageDescriptorModel(JavaPersistentAttribute item) {
-		return new PropertyAspectAdapter<JavaPersistentAttribute, ImageDescriptor>(PropertyValueModelTools.staticPropertyValueModel(item), IMAGE_ASPECT_NAMES) {
+		return new PropertyAspectAdapterXXXX<JavaPersistentAttribute, ImageDescriptor>(PropertyValueModelTools.staticPropertyValueModel(item), IMAGE_ASPECT_NAMES) {
 			@Override
 			protected ImageDescriptor buildValue_() {
 				return AbstractNavigatorItemLabelProviderFactory.this.buildJavaPersistentAttributeImageDescriptor(this.subject.getMappingKey());

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -136,7 +136,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildReadConnectionsSharedModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getReadConnectionsShared();
@@ -159,7 +159,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultReadConnectionsSharedModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY)
 		{
@@ -198,7 +198,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MIN_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MIN_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getReadConnectionsMin();
@@ -236,7 +236,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MAX_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.READ_CONNECTIONS_MAX_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getReadConnectionsMax();
@@ -274,7 +274,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MIN_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MIN_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getWriteConnectionsMin();
@@ -312,7 +312,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Integer>(getSubjectHolder(), EclipseLinkConnection.WRITE_CONNECTIONS_MAX_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getWriteConnectionsMax();

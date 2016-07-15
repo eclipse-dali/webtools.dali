@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -83,7 +83,7 @@ public class MappedByPane
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildAttributePropertyValueModel() {
-		return new PropertyAspectAdapter<SpecifiedMappedByRelationshipStrategy, String>(
+		return new PropertyAspectAdapterXXXX<SpecifiedMappedByRelationshipStrategy, String>(
 				getSubjectHolder(), SpecifiedMappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY) {
 			@Override
 			protected String buildValue_() {

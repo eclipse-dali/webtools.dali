@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.Collection;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
@@ -121,7 +121,7 @@ public class NewNameDialog
 		}
 
 		private ModifiablePropertyValueModel<String> buildNameModel() {
-			return new PropertyAspectAdapter<NewNameStateObject, String>(getSubjectHolder(), NewNameStateObject.NAME_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<NewNameStateObject, String>(getSubjectHolder(), NewNameStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getName();

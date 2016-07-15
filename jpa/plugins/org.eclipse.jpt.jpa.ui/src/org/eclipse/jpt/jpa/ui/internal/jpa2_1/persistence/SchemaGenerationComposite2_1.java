@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -111,7 +111,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** ScriptsCreateTarget **********
 	
 	private ModifiablePropertyValueModel<String> buildScriptsCreateTargetModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.SCRIPTS_CREATE_TARGET_PROPERTY)
 		{
@@ -133,7 +133,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** ScriptsDropTarget **********
 	
 	private ModifiablePropertyValueModel<String> buildScriptsDropTargetModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.SCRIPTS_DROP_TARGET_PROPERTY)
 		{
@@ -155,7 +155,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** DatabaseProductName **********
 	
 	private ModifiablePropertyValueModel<String> buildDatabaseProductNameModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DATABASE_PRODUCT_NAME_PROPERTY)
 		{
@@ -177,7 +177,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** DatabaseMajorVersion **********
 	
 	private ModifiablePropertyValueModel<String> buildDatabaseMajorVersionModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DATABASE_MAJOR_VERSION_PROPERTY)
 		{
@@ -199,7 +199,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** DatabaseMinorVersion **********
 	
 	private ModifiablePropertyValueModel<String> buildDatabaseMinorVersionModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DATABASE_MINOR_VERSION_PROPERTY)
 		{
@@ -221,7 +221,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** CreateScriptSource **********
 	
 	private ModifiablePropertyValueModel<String> buildCreateScriptSourceModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.CREATE_SCRIPT_SOURCE_PROPERTY)
 		{
@@ -243,7 +243,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** DropScriptSource **********
 	
 	private ModifiablePropertyValueModel<String> buildDropScriptSourceModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.DROP_SCRIPT_SOURCE_PROPERTY)
 		{
@@ -265,7 +265,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** Connection **********
 	
 	private ModifiablePropertyValueModel<String> buildConnectionModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.CONNECTION_PROPERTY)
 		{
@@ -298,7 +298,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildCreateDatabaseSchemasModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, Boolean>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, Boolean>(
 			this.getSubjectHolder(), 
 			SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY)
 		{
@@ -324,7 +324,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultCreateDatabaseSchemasModel() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, Boolean>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, Boolean>(
 			this.getSubjectHolder(),
 			SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY)
 		{

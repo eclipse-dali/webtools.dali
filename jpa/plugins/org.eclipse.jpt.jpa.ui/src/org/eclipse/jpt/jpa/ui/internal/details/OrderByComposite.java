@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -50,7 +50,7 @@ public class OrderByComposite
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildKeyHolder() {
-		return new PropertyAspectAdapter<OrderBy, String>(getSubjectHolder(), OrderBy.KEY_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<OrderBy, String>(getSubjectHolder(), OrderBy.KEY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				String key = this.subject.getKey();

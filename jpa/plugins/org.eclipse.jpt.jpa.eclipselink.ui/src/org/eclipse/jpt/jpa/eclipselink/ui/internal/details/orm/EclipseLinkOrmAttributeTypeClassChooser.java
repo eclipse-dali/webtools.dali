@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -50,7 +50,7 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<AttributeMapping, String>(
+		return new PropertyAspectAdapterXXXX<AttributeMapping, String>(
 			getSubjectHolder(), 
 			OrmAttributeMapping.DEFAULT_ATTRIBUTE_TYPE_PROPERTY,
 			OrmAttributeMapping.SPECIFIED_ATTRIBUTE_TYPE_PROPERTY) {
@@ -95,7 +95,7 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 	}
 
 	private static PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel(PropertyValueModel<? extends AttributeMapping> mappingModel) {
-		return new PropertyAspectAdapter<AttributeMapping, SpecifiedAccessReference>(mappingModel) {
+		return new PropertyAspectAdapterXXXX<AttributeMapping, SpecifiedAccessReference>(mappingModel) {
 			@Override
 			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
@@ -104,7 +104,7 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 	}
 
 	private static PropertyValueModel<Boolean> buildVirtualAttributeModel(PropertyValueModel<? extends AttributeMapping> mappingModel) {
-		return new PropertyAspectAdapter<SpecifiedAccessReference, Boolean>(
+		return new PropertyAspectAdapterXXXX<SpecifiedAccessReference, Boolean>(
 			buildAccessReferenceModel(mappingModel),
 			SpecifiedAccessReference.SPECIFIED_ACCESS_PROPERTY,
 			SpecifiedAccessReference.DEFAULT_ACCESS_PROPERTY) {

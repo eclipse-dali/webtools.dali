@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -79,7 +79,7 @@ public class EclipseLinkCustomizerClassChooser extends ClassChooserComboPane<Ecl
 
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomizer, String>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomizer, String>(
 				getSubjectHolder(), 
 				EclipseLinkCustomizer.SPECIFIED_CUSTOMIZER_CLASS_PROPERTY,
 				EclipseLinkCustomizer.DEFAULT_CUSTOMIZER_CLASS_PROPERTY) {
@@ -112,7 +112,7 @@ public class EclipseLinkCustomizerClassChooser extends ClassChooserComboPane<Ecl
 	@Override
 	protected ListValueModel<String> buildClassListModel() {
 		return new PropertyListValueModelAdapter<>(
-			new PropertyAspectAdapter<EclipseLinkCustomizer, String>(
+			new PropertyAspectAdapterXXXX<EclipseLinkCustomizer, String>(
 					getSubjectHolder(), EclipseLinkCustomizer.DEFAULT_CUSTOMIZER_CLASS_PROPERTY) {
 				@Override
 				protected String buildValue_() {

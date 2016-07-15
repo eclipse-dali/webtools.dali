@@ -48,7 +48,7 @@ import javax.swing.text.Document;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
@@ -531,7 +531,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameAdapter() {
-		return new PropertyAspectAdapter<Person, String>(this.selectedPersonHolder, Person.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Person, String>(this.selectedPersonHolder, Person.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -555,7 +555,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildBirthDateAdapter() {
-		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Person, Object>(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
 			@Override
 			protected Date buildValue_() {
 				return this.subject.getBirthDate();
@@ -579,7 +579,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildGoneWestDateAdapter() {
-		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Person, Object>(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
 			@Override
 			protected Date buildValue_() {
 				return this.subject.getGoneWestDate();
@@ -603,7 +603,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildEyeColorAdapter() {
-		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Person, Object>(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
 				return this.subject.getEyeColor();
@@ -630,7 +630,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildEvilAdapter() {
-		return new PropertyAspectAdapter<Person, Boolean>(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Person, Boolean>(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isEvil());
@@ -654,7 +654,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildRankAdapter() {
-		return new PropertyAspectAdapter<Person, Number>(this.selectedPersonHolder, Person.RANK_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Person, Number>(this.selectedPersonHolder, Person.RANK_PROPERTY) {
 			@Override
 			protected Number buildValue_() {
 				return new Integer(this.subject.getRank());
@@ -678,7 +678,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildAdventureCountAdapter() {
-		return new PropertyAspectAdapter<Person, Number>(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Person, Number>(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
 			@Override
 			protected Number buildValue_() {
 				return new Integer(this.subject.getAdventureCount());

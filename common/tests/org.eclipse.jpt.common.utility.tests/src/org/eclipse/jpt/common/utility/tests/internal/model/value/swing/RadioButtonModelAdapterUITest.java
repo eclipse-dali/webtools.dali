@@ -28,7 +28,7 @@ import javax.swing.WindowConstants;
 
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.RadioButtonModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -67,7 +67,7 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildColorModel(PropertyValueModel<ColoredThing> ctm) {
-		return new PropertyAspectAdapter<ColoredThing, String>(ctm, ColoredThing.COLOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<ColoredThing, String>(ctm, ColoredThing.COLOR_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColor();

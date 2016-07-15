@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -68,7 +68,7 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedOptionalModel() {
-		return new PropertyAspectAdapter<OptionalMapping, Boolean>(getSubjectHolder(), OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<OptionalMapping, Boolean>(getSubjectHolder(), OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedOptional();
@@ -91,7 +91,7 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultOptionalModel() {
-		return new PropertyAspectAdapter<OptionalMapping, Boolean>(
+		return new PropertyAspectAdapterXXXX<OptionalMapping, Boolean>(
 			getSubjectHolder(),
 			OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY,
 			OptionalMapping.DEFAULT_OPTIONAL_PROPERTY)

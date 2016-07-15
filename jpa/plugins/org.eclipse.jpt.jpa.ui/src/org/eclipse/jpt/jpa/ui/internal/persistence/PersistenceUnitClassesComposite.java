@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
@@ -154,7 +154,7 @@ public class PersistenceUnitClassesComposite
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildExcludeUnlistedClassesModel() {
-		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
 		{
@@ -180,7 +180,7 @@ public class PersistenceUnitClassesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultExcludeUnlistedClassesModel() {
-		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
 			PersistenceUnit.DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY)

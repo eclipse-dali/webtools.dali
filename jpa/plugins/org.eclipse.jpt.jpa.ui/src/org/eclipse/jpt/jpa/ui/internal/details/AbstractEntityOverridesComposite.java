@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
@@ -35,7 +35,7 @@ public abstract class AbstractEntityOverridesComposite
 	
 	@Override
 	protected PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerModel() {
-		return new PropertyAspectAdapter<Entity, AttributeOverrideContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<Entity, AttributeOverrideContainer>(getSubjectHolder()) {
 			@Override
 			protected AttributeOverrideContainer buildValue_() {
 				return this.subject.getAttributeOverrideContainer();
@@ -45,7 +45,7 @@ public abstract class AbstractEntityOverridesComposite
 	
 	@Override
 	protected PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerModel() {
-		return new PropertyAspectAdapter<Entity, AssociationOverrideContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<Entity, AssociationOverrideContainer>(getSubjectHolder()) {
 			@Override
 			protected AssociationOverrideContainer buildValue_() {
 				return this.subject.getAssociationOverrideContainer();

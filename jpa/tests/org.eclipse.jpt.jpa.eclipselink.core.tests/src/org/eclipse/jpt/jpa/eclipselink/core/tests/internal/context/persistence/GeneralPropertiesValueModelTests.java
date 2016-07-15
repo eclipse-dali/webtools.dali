@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -52,8 +52,8 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	public void testHasListeners() {
 		AbstractModel subjectGeneralProperty = (AbstractModel) this.generalProperty; // Subject
 		
-		PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean> excludeEclipselinkOrmAA = 
-			(PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>) this.excludeEclipselinkOrmHolder;
+		PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean> excludeEclipselinkOrmAA = 
+			(PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean>) this.excludeEclipselinkOrmHolder;
 		assertTrue(excludeEclipselinkOrmAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectGeneralProperty.hasAnyPropertyChangeListeners(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY));
 		
@@ -80,7 +80,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 
 	// ****** ExcludeEclipselinkOrm *******
 	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmAA(PropertyValueModel<EclipseLinkGeneralProperties> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(subjectHolder, EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean>(subjectHolder, EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getExcludeEclipselinkOrm();

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -82,7 +82,7 @@ public class EclipseLinkOrmElementCollectionMappingComposite2_1
 	}
 
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
-		return new PropertyAspectAdapter<EclipseLinkElementCollectionMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkElementCollectionMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
 				return this.subject.getJoinFetch();

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
@@ -76,7 +76,7 @@ public class NamedQueryPropertyComposite2_0 extends Pane<NamedQuery2_0> {
 	}
 
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<NamedQuery2_0, String>(getSubjectHolder(), Query.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<NamedQuery2_0, String>(getSubjectHolder(), Query.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -93,7 +93,7 @@ public class NamedQueryPropertyComposite2_0 extends Pane<NamedQuery2_0> {
 	}
 
 	protected ModifiablePropertyValueModel<String> buildQueryHolder() {
-		return new PropertyAspectAdapter<NamedQuery2_0, String>(getSubjectHolder(), NamedQuery.QUERY_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<NamedQuery2_0, String>(getSubjectHolder(), NamedQuery.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getQuery();

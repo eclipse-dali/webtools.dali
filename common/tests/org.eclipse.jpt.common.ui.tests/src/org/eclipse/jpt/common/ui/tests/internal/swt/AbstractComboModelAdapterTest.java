@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.ui.internal.swt.AbstractComboModelAdapter.Selectio
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -82,7 +82,7 @@ public abstract class AbstractComboModelAdapterTest {
 	}
 
 	private ModifiablePropertyValueModel<SimpleDisplayable> buildSelectedItemHolder() {
-		return new PropertyAspectAdapter<Model, SimpleDisplayable>(subjectHolder, Model.ITEM_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Model, SimpleDisplayable>(subjectHolder, Model.ITEM_PROPERTY) {
 			@Override
 			protected SimpleDisplayable buildValue_() {
 				return subject.getItem();

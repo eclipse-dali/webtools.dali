@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
@@ -62,7 +62,7 @@ public class EclipseLinkTypeConverterComposite
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
-		return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkTypeConverter, String>(
 				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -86,7 +86,7 @@ public class EclipseLinkTypeConverterComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.DATA_TYPE_PROPERTY) {
+				return new PropertyAspectAdapterXXXX<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getDataType();
@@ -137,7 +137,7 @@ public class EclipseLinkTypeConverterComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.OBJECT_TYPE_PROPERTY) {
+				return new PropertyAspectAdapterXXXX<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getObjectType();

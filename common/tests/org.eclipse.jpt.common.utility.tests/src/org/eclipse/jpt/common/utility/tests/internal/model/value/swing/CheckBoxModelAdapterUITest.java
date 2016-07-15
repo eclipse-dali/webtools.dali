@@ -27,7 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.CheckBoxModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -69,7 +69,7 @@ public class CheckBoxModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.FLAG1_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(vm, TestModel.FLAG1_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isFlag1());
@@ -82,7 +82,7 @@ public class CheckBoxModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.FLAG2_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(vm, TestModel.FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isFlag2());
@@ -95,7 +95,7 @@ public class CheckBoxModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.NOT_FLAG2_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(vm, TestModel.NOT_FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isNotFlag2());

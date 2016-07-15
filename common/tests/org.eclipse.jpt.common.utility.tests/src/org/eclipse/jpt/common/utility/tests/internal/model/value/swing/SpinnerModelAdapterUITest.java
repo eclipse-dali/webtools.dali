@@ -30,7 +30,7 @@ import javax.swing.WindowConstants;
 
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.DateSpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ListSpinnerModelAdapter;
@@ -82,7 +82,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildBirthDateHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, Object>(vm, TestModel.BIRTH_DATE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Object>(vm, TestModel.BIRTH_DATE_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
 				return this.subject.getBirthDate();
@@ -99,7 +99,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildAgeHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, Number>(vm, TestModel.AGE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Number>(vm, TestModel.AGE_PROPERTY) {
 			@Override
 			protected Number buildValue_() {
 				return new Integer(this.subject.getAge());
@@ -116,7 +116,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildEyeColorHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, Object>(vm, TestModel.EYE_COLOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Object>(vm, TestModel.EYE_COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
 				return this.subject.getEyeColor();

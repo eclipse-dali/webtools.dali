@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -140,7 +140,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.LOCK_TIMEOUT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Options2_0, Integer>(getSubjectHolder(), Options2_0.LOCK_TIMEOUT_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getLockTimeout();
@@ -185,7 +185,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<Options2_0, Integer>(getSubjectHolder(), Options2_0.QUERY_TIMEOUT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Options2_0, Integer>(getSubjectHolder(), Options2_0.QUERY_TIMEOUT_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getQueryTimeout();
@@ -386,7 +386,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 	// ********** Private methods **********
 
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Model() {
-		return new PropertyAspectAdapter<Options2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<Options2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit2_0 buildValue_() {
 				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();

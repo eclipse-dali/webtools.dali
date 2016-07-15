@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -88,7 +88,7 @@ public class TargetEntityClassChooser
 
     @Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<RelationshipMapping, String>(
+		return new PropertyAspectAdapterXXXX<RelationshipMapping, String>(
 			this.getSubjectHolder(),
 			RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY,
 			RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY) {
@@ -125,7 +125,7 @@ public class TargetEntityClassChooser
 	}
 
 	private PropertyValueModel<String> buildDefaultProfilerModel() {
-		return new PropertyAspectAdapter<RelationshipMapping, String>(this.getSubjectHolder(), RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<RelationshipMapping, String>(this.getSubjectHolder(), RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return TargetEntityClassChooser.this.getDefaultValue(this.subject);

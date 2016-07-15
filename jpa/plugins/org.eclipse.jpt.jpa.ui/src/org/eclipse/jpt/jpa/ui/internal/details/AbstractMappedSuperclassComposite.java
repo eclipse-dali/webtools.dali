@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
@@ -66,7 +66,7 @@ public abstract class AbstractMappedSuperclassComposite<M extends MappedSupercla
 	}
 
 	protected PropertyValueModel<IdClassReference> buildIdClassReferenceModel() {
-		return new PropertyAspectAdapter<M, IdClassReference>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<M, IdClassReference>(getSubjectHolder()) {
 			@Override
 			protected IdClassReference buildValue_() {
 				return this.subject.getIdClassReference();

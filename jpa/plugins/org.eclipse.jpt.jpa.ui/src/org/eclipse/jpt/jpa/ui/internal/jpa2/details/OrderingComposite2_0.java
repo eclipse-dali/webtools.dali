@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
@@ -99,7 +99,7 @@ public class OrderingComposite2_0
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildOrderColumnOrderingModel(PropertyValueModel<Orderable2_0> orderableModel) {
-		return new PropertyAspectAdapter<Orderable2_0, Boolean>(orderableModel, Orderable2_0.ORDER_COLUMN_ORDERING_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Orderable2_0, Boolean>(orderableModel, Orderable2_0.ORDER_COLUMN_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isOrderColumnOrdering());
@@ -115,7 +115,7 @@ public class OrderingComposite2_0
 	}
 	
 	protected PropertyValueModel<SpecifiedOrderColumn2_0> buildOrderColumnModel(PropertyValueModel<Orderable2_0> orderableModel) {
-		return new PropertyAspectAdapter<Orderable2_0, SpecifiedOrderColumn2_0>(orderableModel) {
+		return new PropertyAspectAdapterXXXX<Orderable2_0, SpecifiedOrderColumn2_0>(orderableModel) {
 			@Override
 			protected SpecifiedOrderColumn2_0 buildValue_() {
 				return this.subject.getOrderColumn();

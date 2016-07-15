@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -71,7 +71,7 @@ public class EclipseLinkProfilerClassChooser
 
     @Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.PROFILER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.PROFILER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -94,7 +94,7 @@ public class EclipseLinkProfilerClassChooser
     }
 
 	private PropertyValueModel<String> buildDefaultProfilerModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.DEFAULT_PROFILER) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.DEFAULT_PROFILER) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkProfilerClassChooser.this.getDefaultValue(this.subject);

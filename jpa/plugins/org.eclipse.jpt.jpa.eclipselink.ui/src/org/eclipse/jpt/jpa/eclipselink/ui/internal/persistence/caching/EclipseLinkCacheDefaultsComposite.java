@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -157,7 +157,7 @@ public class EclipseLinkCacheDefaultsComposite<T extends EclipseLinkCaching>
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getCacheSizeDefault();
@@ -172,7 +172,7 @@ public class EclipseLinkCacheDefaultsComposite<T extends EclipseLinkCaching>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildDefaultSharedCacheModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSharedCacheDefault();
@@ -195,7 +195,7 @@ public class EclipseLinkCacheDefaultsComposite<T extends EclipseLinkCaching>
 			);
 
 	private PropertyValueModel<Boolean> buildDefaultDefaultSharedCacheModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY)
 		{

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -84,7 +84,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	}
 
 	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
-		return new PropertyAspectAdapter<T, OrmPersistentType>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, OrmPersistentType>(getSubjectHolder()) {
 			@Override
 			protected OrmPersistentType buildValue_() {
 				return this.subject.getPersistentType();
@@ -111,8 +111,8 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 		return new EclipseLinkOrmCachingComposite(this, buildCachingModel(), container).getControl();
 	}
 	
-	protected PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingModel() {
-		return new PropertyAspectAdapter<T, EclipseLinkCaching>(getSubjectHolder()) {
+	protected PropertyAspectAdapterXXXX<T, EclipseLinkCaching> buildCachingModel() {
+		return new PropertyAspectAdapterXXXX<T, EclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkCaching buildValue_() {
 				return this.subject.getCaching();
@@ -140,7 +140,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	}
 
 	private PropertyValueModel<EclipseLinkOrmConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<T, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkOrmConverterContainer buildValue_() {
 				return this.subject.getConverterContainer();
@@ -187,7 +187,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	}
 
 	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
-		return new PropertyAspectAdapter<T, GeneratorContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, GeneratorContainer>(getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
 				return this.subject.getGeneratorContainer();

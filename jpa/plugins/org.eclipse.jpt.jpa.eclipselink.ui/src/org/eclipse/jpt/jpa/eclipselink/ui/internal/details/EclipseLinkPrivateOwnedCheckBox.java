@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
@@ -64,9 +64,9 @@ public class EclipseLinkPrivateOwnedCheckBox extends Pane<EclipseLinkPrivateOwne
 		);
 	}
 
-	private PropertyAspectAdapter<EclipseLinkPrivateOwned, Boolean> buildPrivateOwnedHolder() {
+	private PropertyAspectAdapterXXXX<EclipseLinkPrivateOwned, Boolean> buildPrivateOwnedHolder() {
 
-		return new PropertyAspectAdapter<EclipseLinkPrivateOwned, Boolean>(getSubjectHolder(), EclipseLinkPrivateOwned.PRIVATE_OWNED_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkPrivateOwned, Boolean>(getSubjectHolder(), EclipseLinkPrivateOwned.PRIVATE_OWNED_PROPERTY) {
 
 			@Override
 			protected Boolean buildValue_() {

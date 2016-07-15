@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -159,7 +159,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	//********* validation only ***********
 
 	private ModifiablePropertyValueModel<Boolean> buildValidationOnlyModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getValidationOnly();
@@ -182,7 +182,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultValidationOnlyModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY)
 		{
@@ -200,7 +200,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	//********* validate schema ***********
 
 	private ModifiablePropertyValueModel<Boolean> buildValidateSchemaModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getValidateSchema();
@@ -223,7 +223,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultValidateSchemaModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY)
 		{
@@ -241,7 +241,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 	//********* throw exceptions ***********
 
 	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(getSubjectHolder(), EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getThrowExceptions();
@@ -263,7 +263,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultThrowExceptionsModel() {
-		return new PropertyAspectAdapter<EclipseLinkCustomization, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY)
 		{
@@ -286,7 +286,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkCustomization, String>(
+				return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, String>(
 							this.getSubjectHolder(), EclipseLinkCustomization.EXCEPTION_HANDLER_PROPERTY) {
 					@Override
 					protected String buildValue_() {

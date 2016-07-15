@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapt
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -86,7 +86,7 @@ public class EclipseLinkConvertCombo
 	}
 
 	protected final ModifiablePropertyValueModel<String> buildConvertNameHolder() {
-		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getSpecifiedConverterName();
@@ -118,7 +118,7 @@ public class EclipseLinkConvertCombo
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultNameHolder() {
-		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				String name = this.subject.getDefaultConverterName();
@@ -224,7 +224,7 @@ public class EclipseLinkConvertCombo
 	}
 
 	protected PropertyValueModel<EclipseLinkPersistenceUnit> buildPersistenceUnitHolder() {
-		return new PropertyAspectAdapter<EclipseLinkConvert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConvert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPersistenceUnit buildValue_() {
 				return this.subject.getPersistenceUnit();

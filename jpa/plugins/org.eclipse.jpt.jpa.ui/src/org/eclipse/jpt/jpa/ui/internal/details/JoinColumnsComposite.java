@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -205,7 +205,7 @@ public class JoinColumnsComposite<T extends JpaModel>
 	}
 
 	private PropertyValueModel<JoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getDefaultPropertyName()) {
+		return new PropertyAspectAdapterXXXX<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getDefaultPropertyName()) {
 			@Override
 			protected JoinColumn buildValue_() {
 				return JoinColumnsComposite.this.joinColumnsEditor.getDefaultJoinColumn(this.subject);

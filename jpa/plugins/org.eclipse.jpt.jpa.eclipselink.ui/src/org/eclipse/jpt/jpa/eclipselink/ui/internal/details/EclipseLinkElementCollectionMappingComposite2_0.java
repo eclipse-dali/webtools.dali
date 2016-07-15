@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -72,7 +72,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 	}
 
 	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterContainer buildValue_() {
 				return this.subject.getConverterContainer();
@@ -106,7 +106,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
-		return new PropertyAspectAdapter<ConvertibleMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<ConvertibleMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();

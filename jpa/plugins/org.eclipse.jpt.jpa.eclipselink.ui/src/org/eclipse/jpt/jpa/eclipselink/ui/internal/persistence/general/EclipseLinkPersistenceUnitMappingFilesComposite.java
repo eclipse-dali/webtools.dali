@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -50,7 +50,7 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmModel() {
-		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean>(
 			buildGeneralPropertiesModel(),
 			EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
 		{
@@ -76,7 +76,7 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultExcludeEclipselinkOrmModel() {
-		return new PropertyAspectAdapter<EclipseLinkGeneralProperties, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean>(
 			buildGeneralPropertiesModel(),
 			EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
 		{

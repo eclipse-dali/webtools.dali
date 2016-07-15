@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -70,7 +70,7 @@ public class EclipseLinkReadOnlyTriStateCheckBox
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedReadOnlyModel() {
-		return new PropertyAspectAdapter<EclipseLinkReadOnly, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkReadOnly, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY)
 		{
@@ -96,7 +96,7 @@ public class EclipseLinkReadOnlyTriStateCheckBox
 			);
 
 	private PropertyValueModel<Boolean> buildDefaultReadOnlyModel() {
-		return new PropertyAspectAdapter<EclipseLinkReadOnly, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkReadOnly, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY,
 			EclipseLinkReadOnly.DEFAULT_READ_ONLY_PROPERTY)

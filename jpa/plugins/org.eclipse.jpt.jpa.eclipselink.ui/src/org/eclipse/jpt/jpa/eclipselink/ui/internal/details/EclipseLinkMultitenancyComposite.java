@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -122,7 +122,7 @@ public class EclipseLinkMultitenancyComposite
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildMultitenantModel() {
-		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_MULTITENANT_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_MULTITENANT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isSpecifiedMultitenant());
@@ -187,7 +187,7 @@ public class EclipseLinkMultitenancyComposite
 	}
 
 	ModifiablePropertyValueModel<Boolean> buildIncludeCriteriaModel() {
-		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedIncludeCriteria();
@@ -210,7 +210,7 @@ public class EclipseLinkMultitenancyComposite
 			);
 
 	PropertyValueModel<Boolean> buildDefaultIncludeCriteriaModel() {
-		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkMultitenancy2_3, Boolean>(
 				getSubjectHolder(),
 				EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY,
 				EclipseLinkMultitenancy2_3.DEFAULT_INCLUDE_CRITERIA_PROPERTY) {

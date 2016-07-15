@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -70,7 +70,7 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 	}
 
 	private ModifiablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {
-		return new PropertyAspectAdapter<BaseTemporalConverter, TemporalType>(getSubjectHolder(), BaseTemporalConverter.TEMPORAL_TYPE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<BaseTemporalConverter, TemporalType>(getSubjectHolder(), BaseTemporalConverter.TEMPORAL_TYPE_PROPERTY) {
 			@Override
 			protected TemporalType buildValue_() {
 				return this.subject.getTemporalType();

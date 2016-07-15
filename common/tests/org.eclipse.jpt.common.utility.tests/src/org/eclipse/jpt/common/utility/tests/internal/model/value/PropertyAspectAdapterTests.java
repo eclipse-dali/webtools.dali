@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public class PropertyAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private ModifiablePropertyValueModel<TestSubject> subjectHolder1;
-	private PropertyAspectAdapter<TestSubject, String> aa1;
+	private PropertyAspectAdapterXXXX<TestSubject, String> aa1;
 	private PropertyChangeEvent event1;
 	private PropertyChangeListener listener1;
 
@@ -54,8 +54,8 @@ public class PropertyAspectAdapterTests extends TestCase {
 		this.subject2 = new TestSubject("bar", "test subject 2");
 	}
 
-	private PropertyAspectAdapter<TestSubject, String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
+	private PropertyAspectAdapterXXXX<TestSubject, String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+		return new PropertyAspectAdapterXXXX<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
 			// this is not a aspect adapter - the value is determined by the aspect name
 			@Override
 			protected String buildValue_() {
@@ -228,7 +228,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	}
 
 	private ModifiablePropertyValueModel<String> buildMultipleAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY, TestSubject.DESCRIPTION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY, TestSubject.DESCRIPTION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName() + ":" + this.subject.getDescription();
@@ -290,7 +290,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	}
 
 	private ModifiablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
 			@Override
 			protected String buildValue() {
 				return (this.subject == null) ? "<unnamed>" : this.subject.getName();

@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -158,7 +158,7 @@ public class AddGeneratorDialog
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNameHolder() {
-			return new PropertyAspectAdapter<AddGeneratorStateObject, String>(getSubjectHolder(), AddGeneratorStateObject.NAME_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<AddGeneratorStateObject, String>(getSubjectHolder(), AddGeneratorStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getName();
@@ -172,7 +172,7 @@ public class AddGeneratorDialog
 		}
 
 		private ModifiablePropertyValueModel<String> buildGeneratorTypeHolder() {
-			return new PropertyAspectAdapter<AddGeneratorStateObject, String>(getSubjectHolder(), AddGeneratorStateObject.GENERATOR_TYPE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<AddGeneratorStateObject, String>(getSubjectHolder(), AddGeneratorStateObject.GENERATOR_TYPE_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getGeneratorType();

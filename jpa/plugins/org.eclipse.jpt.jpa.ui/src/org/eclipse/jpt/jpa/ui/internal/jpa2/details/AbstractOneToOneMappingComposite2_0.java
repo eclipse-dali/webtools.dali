@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
@@ -45,7 +45,7 @@ public abstract class AbstractOneToOneMappingComposite2_0<T extends OneToOneMapp
 	}
 	
 	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityModel() {
-		return new PropertyAspectAdapter<T, DerivedIdentity2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, DerivedIdentity2_0>(getSubjectHolder()) {
 			@Override
 			protected DerivedIdentity2_0 buildValue_() {
 				return this.subject.getDerivedIdentity();
@@ -54,7 +54,7 @@ public abstract class AbstractOneToOneMappingComposite2_0<T extends OneToOneMapp
 	}
 
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableModel() {
-		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, OrphanRemovable2_0>(getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return this.subject.getOrphanRemoval();

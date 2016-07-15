@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManagedType;
@@ -55,7 +55,7 @@ public class OrmJavaClassChooser extends ClassChooserPane<OrmManagedType> {
 
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<OrmManagedType, String>(getSubjectHolder(), OrmManagedType.CLASS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<OrmManagedType, String>(getSubjectHolder(), OrmManagedType.CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getClass_();

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -142,7 +142,7 @@ public abstract class AbstractEntityComposite<E extends Entity>
 	}
 	
 	protected PropertyValueModel<IdClassReference> buildIdClassReferenceModel() {
-		return new PropertyAspectAdapter<E, IdClassReference>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<E, IdClassReference>(getSubjectHolder()) {
 			@Override
 			protected IdClassReference buildValue_() {
 				return this.subject.getIdClassReference();
@@ -170,7 +170,7 @@ public abstract class AbstractEntityComposite<E extends Entity>
 	}
 	
 	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapter<E, QueryContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<E, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
 				return this.subject.getQueryContainer();
@@ -234,7 +234,7 @@ public abstract class AbstractEntityComposite<E extends Entity>
 	}
 	
 	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
-		return new PropertyAspectAdapter<E, GeneratorContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<E, GeneratorContainer>(getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
 				return this.subject.getGeneratorContainer();

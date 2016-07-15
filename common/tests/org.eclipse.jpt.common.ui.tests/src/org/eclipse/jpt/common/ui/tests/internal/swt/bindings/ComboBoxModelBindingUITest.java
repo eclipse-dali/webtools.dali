@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -103,7 +103,7 @@ public class ComboBoxModelBindingUITest
 	}
 
 	private static class NameModel
-		extends PropertyAspectAdapter<TestModel, String>
+		extends PropertyAspectAdapterXXXX<TestModel, String>
 	{
 		NameModel(PropertyValueModel<TestModel> vm) {
 			super(vm, TestModel.NAME_PROPERTY);

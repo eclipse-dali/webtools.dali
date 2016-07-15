@@ -13,7 +13,7 @@ import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
@@ -120,7 +120,7 @@ public abstract class PersistentAttributeDetailsPageManager<A extends Persistent
 
 
 	private ModifiablePropertyValueModel<AttributeMapping> buildMappingModel() {
-		return new PropertyAspectAdapter<A, AttributeMapping>(
+		return new PropertyAspectAdapterXXXX<A, AttributeMapping>(
 			getSubjectHolder(),
 			PersistentAttribute.MAPPING_PROPERTY)
 		{

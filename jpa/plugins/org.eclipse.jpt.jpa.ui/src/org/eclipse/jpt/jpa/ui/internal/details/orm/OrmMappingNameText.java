@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -64,7 +64,7 @@ public class OrmMappingNameText
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameHolder() {
-		return new PropertyAspectAdapter<AttributeMapping, String>(getSubjectHolder(), OrmAttributeMapping.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<AttributeMapping, String>(getSubjectHolder(), OrmAttributeMapping.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();

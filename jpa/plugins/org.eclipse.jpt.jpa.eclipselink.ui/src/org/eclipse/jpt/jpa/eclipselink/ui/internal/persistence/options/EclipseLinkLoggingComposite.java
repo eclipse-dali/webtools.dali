@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.FileChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -182,7 +182,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 	
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EclipseLinkLogging, String>(
+				return new PropertyAspectAdapterXXXX<EclipseLinkLogging, String>(
 										getSubjectHolder(), EclipseLinkLogging.LOG_FILE_LOCATION_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -231,7 +231,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 	//************* timestamp ************
 	
 	private ModifiablePropertyValueModel<Boolean> buildTimestampModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.TIMESTAMP_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.TIMESTAMP_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getTimestamp();
@@ -254,7 +254,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultTimestampModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.TIMESTAMP_PROPERTY)
 		{
@@ -272,7 +272,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 	//************* thread ************
 	
 	private ModifiablePropertyValueModel<Boolean> buildThreadModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.THREAD_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.THREAD_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getThread();
@@ -295,7 +295,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultThreadModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.THREAD_PROPERTY)
 		{
@@ -313,7 +313,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 	//************* session ************
 
 	private ModifiablePropertyValueModel<Boolean> buildSessionModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.SESSION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.SESSION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSession();
@@ -336,7 +336,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultSessionModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.SESSION_PROPERTY)
 		{
@@ -354,7 +354,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 	//********** exceptions ************
 	
 	private ModifiablePropertyValueModel<Boolean> buildExceptionsModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.EXCEPTIONS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(getSubjectHolder(), EclipseLinkLogging.EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getExceptions();
@@ -377,7 +377,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultExceptionsModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
 			getSubjectHolder(),
 			EclipseLinkLogging.EXCEPTIONS_PROPERTY)
 		{

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -118,7 +118,7 @@ public class ColumnComposite
 	});
 
 	ModifiablePropertyValueModel<String> buildColumnDefinitionModel() {
-		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -135,7 +135,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildInsertableModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedInsertable();
@@ -158,7 +158,7 @@ public class ColumnComposite
 		);
 
 	PropertyValueModel<Boolean> buildDefaultInsertableModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
 				BaseColumn.DEFAULT_INSERTABLE_PROPERTY) {
@@ -174,7 +174,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildNullableModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
 			
@@ -200,7 +200,7 @@ public class ColumnComposite
 		);
 
 	PropertyValueModel<Boolean> buildDefaultNullableModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
 				BaseColumn.DEFAULT_NULLABLE_PROPERTY) {
@@ -268,7 +268,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildUniqueModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
 			
@@ -294,7 +294,7 @@ public class ColumnComposite
 		);
 
 	PropertyValueModel<Boolean> buildDefaultUniqueModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
 				BaseColumn.DEFAULT_UNIQUE_PROPERTY) {
@@ -310,7 +310,7 @@ public class ColumnComposite
 	}
 	
 	ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
 				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
@@ -337,7 +337,7 @@ public class ColumnComposite
 		);
 
 	PropertyValueModel<Boolean> buildDefaultUpdatableModel() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
 				BaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
@@ -474,7 +474,7 @@ public class ColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return Integer.valueOf(this.subject.getDefaultLength());
@@ -484,7 +484,7 @@ public class ColumnComposite
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getSpecifiedLength();
@@ -515,7 +515,7 @@ public class ColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return Integer.valueOf(this.subject.getDefaultPrecision());
@@ -525,7 +525,7 @@ public class ColumnComposite
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getSpecifiedPrecision();
@@ -558,7 +558,7 @@ public class ColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return Integer.valueOf(this.subject.getDefaultScale());
@@ -568,7 +568,7 @@ public class ColumnComposite
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getSpecifiedScale();

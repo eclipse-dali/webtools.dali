@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToOneRelationship2_0;
@@ -75,7 +75,7 @@ public class EclipseLinkJavaManyToOneMappingComposite2_0
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
-		return new PropertyAspectAdapter<EclipseLinkManyToOneMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkManyToOneMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
 				return this.subject.getJoinFetch();

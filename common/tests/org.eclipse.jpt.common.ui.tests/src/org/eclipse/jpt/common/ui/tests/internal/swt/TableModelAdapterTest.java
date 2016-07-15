@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -1074,7 +1074,7 @@ public class TableModelAdapterTest {
 		static final int TITLE_COLUMN = 1;
 
 		private ModifiablePropertyValueModel<String> buildManagerHolder(Employee subject) {
-			return new PropertyAspectAdapter<Employee, String>(Employee.MANAGER_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<Employee, String>(Employee.MANAGER_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getManager();
@@ -1088,7 +1088,7 @@ public class TableModelAdapterTest {
 		}
 
 		private ModifiablePropertyValueModel<String> buildNameHolder(Employee subject) {
-			return new PropertyAspectAdapter<Employee, String>(Employee.NAME_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<Employee, String>(Employee.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getName();
@@ -1102,7 +1102,7 @@ public class TableModelAdapterTest {
 		}
 
 		private ModifiablePropertyValueModel<String> buildTitleHolder(Employee subject) {
-			return new PropertyAspectAdapter<Employee, String>(Employee.TITLE_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<Employee, String>(Employee.TITLE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getTitle();

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEntity2_0;
@@ -75,7 +75,7 @@ public class JavaEntityComposite2_0
 	}
 	
 	protected PropertyValueModel<Cacheable2_0> buildCacheableModel() {
-		return new PropertyAspectAdapter<JavaEntity2_0, Cacheable2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<JavaEntity2_0, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
 				return this.subject.getCacheable();

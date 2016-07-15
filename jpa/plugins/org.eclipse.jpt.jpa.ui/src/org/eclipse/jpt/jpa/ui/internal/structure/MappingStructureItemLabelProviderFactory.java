@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -74,7 +74,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	public static class PersistentTypeMappingModel
-		extends PropertyAspectAdapter<PersistentType, TypeMapping>
+		extends PropertyAspectAdapterXXXX<PersistentType, TypeMapping>
 	{
 		public PersistentTypeMappingModel(PersistentType subject) {
 			super(PersistentType.MAPPING_PROPERTY, subject);
@@ -114,7 +114,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 	
 	public static class PersistentTypeTextModel
-		extends PropertyAspectAdapter<PersistentType, String>
+		extends PropertyAspectAdapterXXXX<PersistentType, String>
 	{
 		public PersistentTypeTextModel(PersistentType subject) {
 			super(ManagedType.NAME_PROPERTY, subject);
@@ -157,7 +157,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	public static class PersistentAttributeMappingModel
-		extends PropertyAspectAdapter<PersistentAttribute, AttributeMapping>
+		extends PropertyAspectAdapterXXXX<PersistentAttribute, AttributeMapping>
 	{
 		public PersistentAttributeMappingModel(PersistentAttribute subject) {
 			super(PersistentAttribute.MAPPING_PROPERTY, subject);
@@ -197,7 +197,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	public static class PersistentAttributeTextModel
-		extends PropertyAspectAdapter<PersistentAttribute, String>
+		extends PropertyAspectAdapterXXXX<PersistentAttribute, String>
 	{
 		public PersistentAttributeTextModel(PersistentAttribute subject) {
 			super(PersistentAttribute.NAME_PROPERTY, subject);

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
@@ -91,7 +91,7 @@ public class OrmOneToManyMappingComposite2_0
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableModel() {
-		return new PropertyAspectAdapter<OneToManyMapping2_0, OrphanRemovable2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<OneToManyMapping2_0, OrphanRemovable2_0>(this.getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return this.subject.getOrphanRemoval();

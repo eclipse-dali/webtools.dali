@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -51,8 +51,8 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testHasListeners() {
 		AbstractModel subjectOptions = (AbstractModel) this.options; // Subject
 		
-		PropertyAspectAdapter<EclipseLinkOptions, Boolean> includeDescriptorQueriesAA = 
-			(PropertyAspectAdapter<EclipseLinkOptions, Boolean>) this.includeDescriptorQueriesHolder;
+		PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean> includeDescriptorQueriesAA = 
+			(PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>) this.includeDescriptorQueriesHolder;
 		assertTrue(includeDescriptorQueriesAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectOptions.hasAnyPropertyChangeListeners(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY));
 		
@@ -79,7 +79,7 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	// ****** IncludeDescriptorQueries *******
 	private ModifiablePropertyValueModel<Boolean> buildIncludeDescriptorQueriesAA(PropertyValueModel<EclipseLinkOptions> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkOptions, Boolean>(subjectHolder, EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(subjectHolder, EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getIncludeDescriptorQueries();

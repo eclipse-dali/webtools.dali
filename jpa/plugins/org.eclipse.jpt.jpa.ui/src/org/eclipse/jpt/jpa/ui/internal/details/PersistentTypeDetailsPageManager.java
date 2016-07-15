@@ -13,7 +13,7 @@ import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
@@ -100,8 +100,8 @@ public class PersistentTypeDetailsPageManager
 		return PropertyValueModelTools.filter_(this.mappingModel, buildMappingFilter(key));
 	}
 
-	private PropertyAspectAdapter<PersistentType, TypeMapping> buildMappingModel() {
-		return new PropertyAspectAdapter<PersistentType, TypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
+	private PropertyAspectAdapterXXXX<PersistentType, TypeMapping> buildMappingModel() {
+		return new PropertyAspectAdapterXXXX<PersistentType, TypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
 			@Override
 			protected TypeMapping buildValue_() {
 				return this.subject.getMapping();

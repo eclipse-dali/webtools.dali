@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -117,7 +117,7 @@ public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends Ec
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildLazyConnectionModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(this.getSubjectHolder(), EclipseLinkConnection.LAZY_CONNECTION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(this.getSubjectHolder(), EclipseLinkConnection.LAZY_CONNECTION_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getLazyConnection();
@@ -140,7 +140,7 @@ public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends Ec
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultLazyConnectionModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
 			this.getSubjectHolder(),
 			EclipseLinkConnection.LAZY_CONNECTION_PROPERTY)
 		{

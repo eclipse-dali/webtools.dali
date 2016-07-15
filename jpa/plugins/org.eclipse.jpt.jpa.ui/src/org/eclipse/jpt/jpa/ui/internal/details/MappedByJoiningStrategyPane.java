@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -68,7 +68,7 @@ public class MappedByJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<SpecifiedMappedByRelationshipStrategy> buildMappedByJoiningStrategyModel() {
-		return new PropertyAspectAdapter<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>(
+		return new PropertyAspectAdapterXXXX<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>(
 				getSubjectHolder()) {
 			@Override
 			protected SpecifiedMappedByRelationshipStrategy buildValue_() {
@@ -78,7 +78,7 @@ public class MappedByJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyModel(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
-		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
+		return new PropertyAspectAdapterXXXX<MappedByRelationship, Boolean>(
 				subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {

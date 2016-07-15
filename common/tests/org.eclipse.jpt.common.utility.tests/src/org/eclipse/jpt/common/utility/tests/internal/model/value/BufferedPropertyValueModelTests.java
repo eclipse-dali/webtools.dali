@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -78,7 +78,7 @@ public class BufferedPropertyValueModelTests
 	}
 
 	private ModifiablePropertyValueModel<Integer> buildIDModel(PropertyValueModel<Employee> eHolder) {
-		return new PropertyAspectAdapter<Employee, Integer>(eHolder, Employee.ID_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Employee, Integer>(eHolder, Employee.ID_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return new Integer(this.subject.getID());
@@ -91,7 +91,7 @@ public class BufferedPropertyValueModelTests
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameModel(PropertyValueModel<Employee> eHolder) {
-		return new PropertyAspectAdapter<Employee, String>(eHolder, Employee.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Employee, String>(eHolder, Employee.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -104,7 +104,7 @@ public class BufferedPropertyValueModelTests
 	}
 
 	private ModifiablePropertyValueModel<Date> buildHireDateModel(PropertyValueModel<Employee> eHolder) {
-		return new PropertyAspectAdapter<Employee, Date>(eHolder, Employee.HIRE_DATE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Employee, Date>(eHolder, Employee.HIRE_DATE_PROPERTY) {
 			@Override
 			protected Date buildValue_() {
 				return this.subject.getHireDate();

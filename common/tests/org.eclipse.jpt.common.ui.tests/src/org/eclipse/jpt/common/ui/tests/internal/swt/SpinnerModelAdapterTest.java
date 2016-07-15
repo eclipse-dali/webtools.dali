@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -37,7 +37,7 @@ public class SpinnerModelAdapterTest {
 	}
 
 	private ModifiablePropertyValueModel<Integer> buildValueHolder() {
-		return new PropertyAspectAdapter<Model, Integer>(subjectHolder, Model.VALUE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Model, Integer>(subjectHolder, Model.VALUE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return subject.getValue();

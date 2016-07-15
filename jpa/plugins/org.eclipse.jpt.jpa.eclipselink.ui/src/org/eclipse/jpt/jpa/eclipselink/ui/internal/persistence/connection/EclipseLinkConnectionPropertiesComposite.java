@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -86,7 +86,7 @@ public class EclipseLinkConnectionPropertiesComposite<T extends EclipseLinkConne
 	}
 	
 	private ModifiablePropertyValueModel<String> buildJtaDataSourceModel() {
-		return new PropertyAspectAdapter<PersistenceUnit, String>(buildPersistenceUnitModel(), PersistenceUnit.JTA_DATA_SOURCE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, String>(buildPersistenceUnitModel(), PersistenceUnit.JTA_DATA_SOURCE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getJtaDataSource();
@@ -117,7 +117,7 @@ public class EclipseLinkConnectionPropertiesComposite<T extends EclipseLinkConne
 	}
 
 	private ModifiablePropertyValueModel<String> buildNonJtaDataSourceModel() {
-		return new PropertyAspectAdapter<PersistenceUnit, String>(buildPersistenceUnitModel(), PersistenceUnit.NON_JTA_DATA_SOURCE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, String>(buildPersistenceUnitModel(), PersistenceUnit.NON_JTA_DATA_SOURCE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getNonJtaDataSource();
@@ -138,7 +138,7 @@ public class EclipseLinkConnectionPropertiesComposite<T extends EclipseLinkConne
 	}
 
 	private PropertyValueModel<PersistenceUnitTransactionType> buildTransactionTypeModel() {
-		return new PropertyAspectAdapter<PersistenceUnit, PersistenceUnitTransactionType>(
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, PersistenceUnitTransactionType>(
 				buildPersistenceUnitModel(), 
 				PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY, 
 				PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY) {
@@ -150,7 +150,7 @@ public class EclipseLinkConnectionPropertiesComposite<T extends EclipseLinkConne
 	}
 
 	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
-		return new PropertyAspectAdapter<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
 				return this.subject.getPersistenceUnit();

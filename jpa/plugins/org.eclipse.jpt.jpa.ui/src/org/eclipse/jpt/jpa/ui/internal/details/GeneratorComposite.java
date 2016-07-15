@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -71,7 +71,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 	}
 
 	protected final ModifiablePropertyValueModel<String> buildGeneratorNameModel() {
-		return new PropertyAspectAdapter<Generator, String>(getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Generator, String>(getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -119,7 +119,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return Integer.valueOf(this.subject.getDefaultAllocationSize());
@@ -129,7 +129,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getSpecifiedAllocationSize();
@@ -162,7 +162,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_INITIAL_VALUE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_INITIAL_VALUE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return Integer.valueOf(this.subject.getDefaultInitialValue());
@@ -172,7 +172,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return this.subject.getSpecifiedInitialValue();

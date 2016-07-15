@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
@@ -58,7 +58,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 	}
 
 	private ModifiablePropertyValueModel<String> buildPasswordModel() {
-		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.PASSWORD_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getPassword();
@@ -83,7 +83,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 	}
 
 	private ModifiablePropertyValueModel<String> buildUrlModel() {
-		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.URL_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getUrl();
@@ -100,7 +100,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserModel() {
-		return new PropertyAspectAdapter<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.USER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Connection2_0, String>(this.getSubjectHolder(), Connection2_0.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getUser();
@@ -199,7 +199,7 @@ public class JdbcConnectionPropertiesComposite2_0 extends Pane<Connection2_0>
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<Connection2_0, String>(
+				return new PropertyAspectAdapterXXXX<Connection2_0, String>(
 							this.getSubjectHolder(), Connection2_0.DRIVER_PROPERTY) {
 					@Override
 					protected String buildValue_() {

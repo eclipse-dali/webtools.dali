@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableTypeMapping;
@@ -53,7 +53,7 @@ public class EclipseLinkNonEmbeddableTypeMappingAdvancedComposite
 	}
 	
 	private PropertyValueModel<EclipseLinkReadOnly> buildReadOnlyHolder() {
-		return new PropertyAspectAdapter<TypeMapping, EclipseLinkReadOnly>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<TypeMapping, EclipseLinkReadOnly>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkReadOnly buildValue_() {
 				return ((EclipseLinkNonEmbeddableTypeMapping) this.subject).getReadOnly();

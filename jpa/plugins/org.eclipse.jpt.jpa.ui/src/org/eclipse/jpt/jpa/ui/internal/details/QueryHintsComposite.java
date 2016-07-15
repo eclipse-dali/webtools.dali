@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -141,7 +141,7 @@ public class QueryHintsComposite extends Pane<Query>
 		static final int VALUE_COLUMN_INDEX = 1;
 
 		private ModifiablePropertyValueModel<String> buildNameHolder(QueryHint subject) {
-			return new PropertyAspectAdapter<QueryHint, String>(QueryHint.NAME_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<QueryHint, String>(QueryHint.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getName();
@@ -155,7 +155,7 @@ public class QueryHintsComposite extends Pane<Query>
 		}
 
 		private ModifiablePropertyValueModel<?> buildValueHolder(QueryHint subject) {
-			return new PropertyAspectAdapter<QueryHint, String>(QueryHint.VALUE_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<QueryHint, String>(QueryHint.VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getValue();

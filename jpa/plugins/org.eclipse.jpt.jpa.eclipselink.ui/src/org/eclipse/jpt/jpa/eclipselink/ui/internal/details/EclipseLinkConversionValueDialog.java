@@ -14,7 +14,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
@@ -177,7 +177,7 @@ public class EclipseLinkConversionValueDialog
 		}
 
 		private ModifiablePropertyValueModel<String> buildDataValueHolder() {
-			return new PropertyAspectAdapter<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.DATA_VALUE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.DATA_VALUE_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getDataValue();
@@ -191,7 +191,7 @@ public class EclipseLinkConversionValueDialog
 		}
 
 		private ModifiablePropertyValueModel<String> buildObjectValueHolder() {
-			return new PropertyAspectAdapter<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.OBJECT_VALUE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.OBJECT_VALUE_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getObjectValue();

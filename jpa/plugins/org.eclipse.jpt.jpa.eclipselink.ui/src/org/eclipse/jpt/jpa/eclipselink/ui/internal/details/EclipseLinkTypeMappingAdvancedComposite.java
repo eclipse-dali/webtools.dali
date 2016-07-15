@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
@@ -28,7 +28,7 @@ public abstract class EclipseLinkTypeMappingAdvancedComposite<T extends TypeMapp
 	}
 
 	protected PropertyValueModel<EclipseLinkCustomizer> buildCustomizerHolder() {
-		return new PropertyAspectAdapter<TypeMapping, EclipseLinkCustomizer>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<TypeMapping, EclipseLinkCustomizer>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkCustomizer buildValue_() {
 				return ((EclipseLinkTypeMapping) this.subject).getCustomizer();
@@ -37,7 +37,7 @@ public abstract class EclipseLinkTypeMappingAdvancedComposite<T extends TypeMapp
 	}
 
 	protected PropertyValueModel<EclipseLinkChangeTracking> buildChangeTrackingHolder() {
-		return new PropertyAspectAdapter<TypeMapping, EclipseLinkChangeTracking>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<TypeMapping, EclipseLinkChangeTracking>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkChangeTracking buildValue_() {
 				return ((EclipseLinkTypeMapping) this.subject).getChangeTracking();

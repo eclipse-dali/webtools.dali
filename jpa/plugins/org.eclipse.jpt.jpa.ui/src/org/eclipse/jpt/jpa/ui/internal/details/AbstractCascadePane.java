@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
@@ -99,7 +99,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	}
 		
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeAllModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), Cascade.ALL_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(getSubjectHolder(), Cascade.ALL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isAll());
@@ -113,7 +113,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeMergeModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), Cascade.MERGE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(getSubjectHolder(), Cascade.MERGE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isMerge());
@@ -127,7 +127,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypePersistModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), Cascade.PERSIST_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(getSubjectHolder(), Cascade.PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isPersist());
@@ -141,7 +141,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeRefreshModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), Cascade.REFRESH_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(getSubjectHolder(), Cascade.REFRESH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isRefresh());
@@ -155,7 +155,7 @@ public abstract class AbstractCascadePane<T extends Cascade>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeRemoveModel() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), Cascade.REMOVE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(getSubjectHolder(), Cascade.REMOVE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isRemove());

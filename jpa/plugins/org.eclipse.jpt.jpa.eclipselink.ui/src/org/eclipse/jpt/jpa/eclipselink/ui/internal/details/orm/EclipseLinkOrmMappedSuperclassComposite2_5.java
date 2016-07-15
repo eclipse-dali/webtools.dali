@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
@@ -76,7 +76,7 @@ public class EclipseLinkOrmMappedSuperclassComposite2_5
 	}
 
 	private PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, QueryContainer>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkOrmMappedSuperclass, QueryContainer>(
 				getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
@@ -104,8 +104,8 @@ public class EclipseLinkOrmMappedSuperclassComposite2_5
 		return new EclipseLinkMultitenancyComposite(this, this.buildMultitenancyModel(), container).getControl();
 	}
 
-	private PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, EclipseLinkOrmMultitenancy2_3> buildMultitenancyModel() {
-		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, EclipseLinkOrmMultitenancy2_3>(getSubjectHolder()) {
+	private PropertyAspectAdapterXXXX<EclipseLinkOrmMappedSuperclass, EclipseLinkOrmMultitenancy2_3> buildMultitenancyModel() {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOrmMappedSuperclass, EclipseLinkOrmMultitenancy2_3>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkOrmMultitenancy2_3 buildValue_() {
 				return this.subject.getMultitenancy();

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -73,7 +73,7 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<JoinTableRelationshipStrategy> buildJoinTableJoiningStrategyModel() {
-		return new PropertyAspectAdapter
+		return new PropertyAspectAdapterXXXX
 				<JoinTableRelationship, JoinTableRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
@@ -84,7 +84,7 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<JoinTable> buildJoinTableModel() {
-		return new PropertyAspectAdapter<JoinTableRelationshipStrategy, JoinTable>(
+		return new PropertyAspectAdapterXXXX<JoinTableRelationshipStrategy, JoinTable>(
 				this.buildJoinTableJoiningStrategyModel(), JoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
 			@Override
 			protected JoinTable buildValue_() {
@@ -94,7 +94,7 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyModel(PropertyValueModel<? extends JoinTableRelationship> subjectHolder) {
-		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
+		return new PropertyAspectAdapterXXXX<JoinTableRelationship, Boolean>(
 			subjectHolder, Relationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {

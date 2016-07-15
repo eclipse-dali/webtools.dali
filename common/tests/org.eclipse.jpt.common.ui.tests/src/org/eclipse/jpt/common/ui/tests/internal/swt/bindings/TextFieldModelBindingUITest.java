@@ -16,7 +16,7 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -62,7 +62,7 @@ public class TextFieldModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameModel(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.name();
@@ -75,7 +75,7 @@ public class TextFieldModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<String> buildAllCapsNameModel(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.name().toUpperCase();

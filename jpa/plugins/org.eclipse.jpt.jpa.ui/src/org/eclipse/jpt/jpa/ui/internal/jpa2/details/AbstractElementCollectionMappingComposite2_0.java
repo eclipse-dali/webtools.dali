@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -243,7 +243,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	protected PropertyValueModel<M.Type> buildValueModel() {
-		return new PropertyAspectAdapter<M, M.Type>(
+		return new PropertyAspectAdapterXXXX<M, M.Type>(
 				this.getSubjectHolder(), CollectionMapping.VALUE_TYPE_PROPERTY) {
 			@Override
 			protected ElementCollectionMapping2_0.Type buildValue_() {
@@ -289,7 +289,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableModel() {
-		return new PropertyAspectAdapter<M, CollectionTable2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<M, CollectionTable2_0>(getSubjectHolder()) {
 			@Override
 			protected CollectionTable2_0 buildValue_() {
 				return this.subject.getCollectionTable();
@@ -298,7 +298,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	protected PropertyValueModel<SpecifiedColumn> buildValueColumnModel() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, SpecifiedColumn>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<ElementCollectionMapping2_0, SpecifiedColumn>(getSubjectHolder()) {
 			@Override
 			protected SpecifiedColumn buildValue_() {
 				return this.subject.getValueColumn();
@@ -307,7 +307,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNoConverterModel() {
-		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getConverter().getConverterType() == null);
@@ -323,7 +323,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildLobConverterModel() {
-		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
@@ -340,7 +340,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	protected PropertyValueModel<Converter> buildConverterModel() {
-		return new PropertyAspectAdapter<M, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<M, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
 				return this.subject.getConverter();
@@ -357,7 +357,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildTemporalBooleanModel() {
-		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
@@ -374,7 +374,7 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildEnumeratedBooleanModel() {
-		return new PropertyAspectAdapter<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<M, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();

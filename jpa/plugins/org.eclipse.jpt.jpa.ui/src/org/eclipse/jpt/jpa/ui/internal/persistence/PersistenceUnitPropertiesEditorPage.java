@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -129,7 +129,7 @@ public class PersistenceUnitPropertiesEditorPage
 		public static final int VALUE_COLUMN = 2;
 
 		private ModifiablePropertyValueModel<String> buildNameModel(PersistenceUnit.Property subject) {
-			return new PropertyAspectAdapter<PersistenceUnit.Property, String>(PersistenceUnit.Property.NAME_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<PersistenceUnit.Property, String>(PersistenceUnit.Property.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getName();
@@ -143,7 +143,7 @@ public class PersistenceUnitPropertiesEditorPage
 		}
 
 		private ModifiablePropertyValueModel<String> buildValueModel(PersistenceUnit.Property subject) {
-			return new PropertyAspectAdapter<PersistenceUnit.Property, String>(PersistenceUnit.Property.VALUE_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<PersistenceUnit.Property, String>(PersistenceUnit.Property.VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getValue();

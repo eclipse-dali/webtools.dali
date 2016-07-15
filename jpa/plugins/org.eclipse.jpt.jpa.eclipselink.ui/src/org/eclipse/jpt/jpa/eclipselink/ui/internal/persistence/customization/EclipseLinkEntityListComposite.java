@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -204,7 +204,7 @@ public class EclipseLinkEntityListComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkCustomizationEntity, String>(
+				return new PropertyAspectAdapterXXXX<EclipseLinkCustomizationEntity, String>(
 					this.getSubjectHolder(), EclipseLinkCustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
 					@Override
 					protected String buildValue_() {

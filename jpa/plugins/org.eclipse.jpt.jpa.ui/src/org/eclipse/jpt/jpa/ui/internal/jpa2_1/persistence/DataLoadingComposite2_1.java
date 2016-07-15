@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
@@ -56,7 +56,7 @@ public class DataLoadingComposite2_1 extends Pane<SchemaGeneration2_1>
 	// ********** SqlLoadScriptSource **********
 	
 	private ModifiablePropertyValueModel<String> buildSqlLoadScriptSourceHolder() {
-		return new PropertyAspectAdapter<SchemaGeneration2_1, String>(
+		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, String>(
 				this.getSubjectHolder(), 
 				SchemaGeneration2_1.SQL_LOAD_SCRIPT_SOURCE_PROPERTY) 
 		{

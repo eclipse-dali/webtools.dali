@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -97,7 +97,7 @@ public class PersistenceUnitMetadataComposite
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildCascadePersistModel() {
-		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isCascadePersist());
@@ -211,7 +211,7 @@ public class PersistenceUnitMetadataComposite
 	});
 
 	protected ModifiablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteModel() {
-		return new PropertyAspectAdapter<OrmPersistenceUnitMetadata, Boolean>(getSubjectHolder(), OrmPersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<OrmPersistenceUnitMetadata, Boolean>(getSubjectHolder(), OrmPersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isXmlMappingMetadataComplete());
@@ -225,7 +225,7 @@ public class PersistenceUnitMetadataComposite
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildDelimitedIdentifiersModel() {
-		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.buildBooleanValue_());

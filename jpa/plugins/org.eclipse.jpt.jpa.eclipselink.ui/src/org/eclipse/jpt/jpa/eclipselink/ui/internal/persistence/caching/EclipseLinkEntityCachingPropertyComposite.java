@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -98,7 +98,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 		}
 
 		private PropertyValueModel<EclipseLinkCacheType> buildDefaultCacheTypeModel() {
-			return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkCacheType>(buildCachingModel(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType>(buildCachingModel(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
 				@Override
 				protected EclipseLinkCacheType buildValue_() {
 					EclipseLinkCacheType cacheType = this.subject.getCacheTypeDefault();
@@ -222,7 +222,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(buildCachingModel(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Integer>(buildCachingModel(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					Integer size = this.subject.getCacheSizeDefault();
@@ -236,7 +236,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapter<EclipseLinkCachingEntity, Integer>(getSubjectHolder(), EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkCachingEntity, Integer>(getSubjectHolder(), EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
 					return getSubjectParent().getCacheSizeOf(getSubjectName());
@@ -255,7 +255,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSharedCacheModel() {
-		return new PropertyAspectAdapter<EclipseLinkCachingEntity, Boolean>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkCachingEntity, Boolean>(
 					getSubjectHolder(), EclipseLinkCachingEntity.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -305,7 +305,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultSharedCacheModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(this.buildCachingModel(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(this.buildCachingModel(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Boolean b = this.subject.getSharedCacheDefault();

@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
@@ -118,7 +118,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	public static class JpaContextRootPersistenceXml
-		extends PropertyAspectAdapter<JpaContextRoot, PersistenceXml>
+		extends PropertyAspectAdapterXXXX<JpaContextRoot, PersistenceXml>
 	{
 		public JpaContextRootPersistenceXml(JpaContextRoot jpaContextModelRoot) {
 			super(JpaContextRoot.PERSISTENCE_XML_PROPERTY, jpaContextModelRoot);
@@ -166,7 +166,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	public static class PersistenceXmlPersistenceModel
-		extends PropertyAspectAdapter<PersistenceXml, Persistence>
+		extends PropertyAspectAdapterXXXX<PersistenceXml, Persistence>
 	{
 		public PersistenceXmlPersistenceModel(PersistenceXml persistenceXml) {
 			super(XmlFile.ROOT_PROPERTY, persistenceXml);
@@ -259,7 +259,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	public static class PersistenceUnitImpliedMappingFileModel
-		extends PropertyAspectAdapter<MappingFileRef, MappingFile>
+		extends PropertyAspectAdapterXXXX<MappingFileRef, MappingFile>
 	{
 		public PersistenceUnitImpliedMappingFileModel(PropertyValueModel<MappingFileRef> refModel) {
 			super(refModel, MappingFileRef.MAPPING_FILE_PROPERTY);
@@ -271,7 +271,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	public static class PersistenceUnitImpliedMappingFileRefModel
-		extends PropertyAspectAdapter<PersistenceUnit, MappingFileRef>
+		extends PropertyAspectAdapterXXXX<PersistenceUnit, MappingFileRef>
 	{
 		public PersistenceUnitImpliedMappingFileRefModel(PersistenceUnit persistenceUnit) {
 			super(PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY, persistenceUnit);
@@ -444,7 +444,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	public static class OrmXmlEntityMappingsModel
-		extends PropertyAspectAdapter<OrmXml, EntityMappings>
+		extends PropertyAspectAdapterXXXX<OrmXml, EntityMappings>
 	{
 		public OrmXmlEntityMappingsModel(OrmXml ormXml) {
 			super(XmlFile.ROOT_PROPERTY, ormXml);

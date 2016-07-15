@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.widgets.PackageChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.swt.widgets.Composite;
@@ -49,7 +49,7 @@ public class OrmPackageChooser extends PackageChooserPane<EntityMappings>
 
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextHolder() {
-		return new PropertyAspectAdapter<EntityMappings, String>(getSubjectHolder(), EntityMappings.PACKAGE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EntityMappings, String>(getSubjectHolder(), EntityMappings.PACKAGE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getPackage();

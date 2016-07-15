@@ -57,7 +57,7 @@ import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -667,7 +667,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNamespaceCellModel(Schema subject) {
-			return new PropertyAspectAdapter<Schema, String>(Schema.NAMESPACE_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<Schema, String>(Schema.NAMESPACE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getNamespace();
@@ -676,7 +676,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		private ModifiablePropertyValueModel<String> buildLocationCellModel(Schema subject) {
-			return new PropertyAspectAdapter<Schema, String>(Schema.LOCATION_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<Schema, String>(Schema.LOCATION_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getLocation();

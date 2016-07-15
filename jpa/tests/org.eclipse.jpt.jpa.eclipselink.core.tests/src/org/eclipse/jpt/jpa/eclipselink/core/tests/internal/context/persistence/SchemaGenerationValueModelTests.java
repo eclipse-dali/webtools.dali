@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -84,7 +84,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 
 	/** ****** DdlGenerationType ******* */
 	private ModifiablePropertyValueModel<EclipseLinkDdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, EclipseLinkDdlGenerationType>(subjectHolder, EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, EclipseLinkDdlGenerationType>(subjectHolder, EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
 			@Override
 			protected EclipseLinkDdlGenerationType buildValue_() {
 				return this.subject.getDdlGenerationType();
@@ -107,7 +107,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 
 	/** ****** OutputMode ******* */
 	private ModifiablePropertyValueModel<EclipseLinkOutputMode> buildOutputModeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapter<EclipseLinkSchemaGeneration, EclipseLinkOutputMode>(subjectHolder, EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, EclipseLinkOutputMode>(subjectHolder, EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY) {
 			@Override
 			protected EclipseLinkOutputMode buildValue_() {
 				return this.subject.getOutputMode();

@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -99,7 +99,7 @@ public class EclipseLinkObjectTypeConverterComposite
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
-		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkObjectTypeConverter, String>(
 				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -122,7 +122,7 @@ public class EclipseLinkObjectTypeConverterComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.DATA_TYPE_PROPERTY) {
+				return new PropertyAspectAdapterXXXX<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getDataType();
@@ -173,7 +173,7 @@ public class EclipseLinkObjectTypeConverterComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.OBJECT_TYPE_PROPERTY) {
+				return new PropertyAspectAdapterXXXX<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getObjectType();
@@ -354,7 +354,7 @@ public class EclipseLinkObjectTypeConverterComposite
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildDefaultObjectValueModel() {
-		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
+		return new PropertyAspectAdapterXXXX<EclipseLinkObjectTypeConverter, String>(
 				getSubjectHolder(), EclipseLinkObjectTypeConverter.DEFAULT_OBJECT_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -420,7 +420,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		public static final int OBJECT_VALUE_COLUMN = 1;
 
 		ModifiablePropertyValueModel<String> buildDataValueModel(EclipseLinkConversionValue subject) {
-			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.DATA_VALUE_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.DATA_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getDataValue();
@@ -434,7 +434,7 @@ public class EclipseLinkObjectTypeConverterComposite
 		}
 
 		private ModifiablePropertyValueModel<String> buildObjectValueModel(EclipseLinkConversionValue subject) {
-			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY, subject) {
+			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getObjectValue();

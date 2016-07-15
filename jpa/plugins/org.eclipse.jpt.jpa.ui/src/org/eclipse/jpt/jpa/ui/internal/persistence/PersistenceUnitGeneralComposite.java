@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -56,7 +56,7 @@ public class PersistenceUnitGeneralComposite extends Pane<PersistenceUnit>
 	}
 
 	private ModifiablePropertyValueModel<String> buildPersistenceProviderHolder() {
-		return new PropertyAspectAdapter<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.PROVIDER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.PROVIDER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getProvider();
@@ -73,7 +73,7 @@ public class PersistenceUnitGeneralComposite extends Pane<PersistenceUnit>
 	}
 
 	private ModifiablePropertyValueModel<String> buildPersistenceUnitNameHolder() {
-		return new PropertyAspectAdapter<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.NAME_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getName();
@@ -87,7 +87,7 @@ public class PersistenceUnitGeneralComposite extends Pane<PersistenceUnit>
 	}
 
 	private ModifiablePropertyValueModel<String> buildPersistenceUnitDescriptionHolder() {
-		return new PropertyAspectAdapter<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.DESCRIPTION_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.DESCRIPTION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getDescription();

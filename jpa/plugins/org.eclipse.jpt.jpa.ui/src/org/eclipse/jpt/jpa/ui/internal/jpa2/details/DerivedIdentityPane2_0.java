@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
@@ -81,7 +81,7 @@ public class DerivedIdentityPane2_0
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildUsesNullDerivedIdentityStrategyHolder() {
-		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
+		return new PropertyAspectAdapterXXXX<DerivedIdentity2_0, Boolean>(
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
 			
 			@Override
@@ -100,7 +100,7 @@ public class DerivedIdentityPane2_0
 	}
 		
 	protected ModifiablePropertyValueModel<Boolean> buildUsesIdDerivedIdentityStrategyHolder() {
-		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
+		return new PropertyAspectAdapterXXXX<DerivedIdentity2_0, Boolean>(
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
 			
 			@Override
@@ -119,7 +119,7 @@ public class DerivedIdentityPane2_0
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
-		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
+		return new PropertyAspectAdapterXXXX<DerivedIdentity2_0, Boolean>(
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
 			
 			@Override
@@ -142,7 +142,7 @@ public class DerivedIdentityPane2_0
 	}
 	
 	protected PropertyValueModel<MapsIdDerivedIdentityStrategy2_0> buildMapsIdStrategyHolder() {
-		return new PropertyAspectAdapter<DerivedIdentity2_0, MapsIdDerivedIdentityStrategy2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<DerivedIdentity2_0, MapsIdDerivedIdentityStrategy2_0>(getSubjectHolder()) {
 			@Override
 			protected MapsIdDerivedIdentityStrategy2_0 buildValue_() {
 				return this.subject.getMapsIdDerivedIdentityStrategy();

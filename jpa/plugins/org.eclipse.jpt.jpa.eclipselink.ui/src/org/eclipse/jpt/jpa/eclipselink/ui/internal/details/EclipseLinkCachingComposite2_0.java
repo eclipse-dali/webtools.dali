@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -125,7 +125,7 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 	}
 	
 	protected PropertyValueModel<Cacheable2_0> buildCacheableModel() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Cacheable2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
 				return ((CacheableReference2_0) this.subject).getCacheable();
@@ -134,7 +134,7 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 	}
 	
 	private PropertyValueModel<Boolean> buildCacheableEnabler(PropertyValueModel<Cacheable2_0> cacheableModel) {
-		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(
+		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(
 				cacheableModel,
 				Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY, 
 				Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY) {
@@ -146,7 +146,7 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 	}	
 	
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedCacheableModel(PropertyValueModel<Cacheable2_0> cacheableModel) {
-		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(cacheableModel, Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(cacheableModel, Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedCacheable();
@@ -169,7 +169,7 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultCacheableModel(PropertyValueModel<Cacheable2_0> cacheableModel) {
-		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(
+		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(
 			cacheableModel,
 			Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
 			Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY)

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaCaching;
@@ -71,7 +71,7 @@ public class EclipseLinkJavaCachingComposite extends EclipseLinkCachingComposite
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
-		return new PropertyAspectAdapter<EclipseLinkJavaCaching, Boolean>(getSubjectHolder(), EclipseLinkJavaCaching.EXISTENCE_CHECKING_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkJavaCaching, Boolean>(getSubjectHolder(), EclipseLinkJavaCaching.EXISTENCE_CHECKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isExistenceChecking());

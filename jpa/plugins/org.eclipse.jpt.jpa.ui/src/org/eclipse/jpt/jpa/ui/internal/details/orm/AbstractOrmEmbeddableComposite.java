@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -58,7 +58,7 @@ public abstract class AbstractOrmEmbeddableComposite<T extends OrmEmbeddable>
 	}
 
 	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
-		return new PropertyAspectAdapter<T, OrmPersistentType>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<T, OrmPersistentType>(getSubjectHolder()) {
 			@Override
 			protected OrmPersistentType buildValue_() {
 				return this.subject.getPersistentType();

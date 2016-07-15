@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.AbstractTreeNodeValue
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.NullListValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -714,7 +714,7 @@ public class TreeModelAdapterTests extends TestCase {
 			};
 		}
 		protected ModifiablePropertyValueModel<String> buildNameAdapter() {
-			return new PropertyAspectAdapter<TestModel, String>(TestModel.NAME_PROPERTY, this.getTestModel()) {
+			return new PropertyAspectAdapterXXXX<TestModel, String>(TestModel.NAME_PROPERTY, this.getTestModel()) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getName();

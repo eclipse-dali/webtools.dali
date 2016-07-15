@@ -16,7 +16,7 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -64,7 +64,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag1Model(PropertyValueModel<TestModel> subjectModel) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectModel, TestModel.FLAG1_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectModel, TestModel.FLAG1_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isFlag1());
@@ -77,7 +77,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag2Model(PropertyValueModel<TestModel> subjectModel) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectModel, TestModel.FLAG2_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectModel, TestModel.FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isFlag2());
@@ -90,7 +90,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Model(PropertyValueModel<TestModel> subjectModel) {
-		return new PropertyAspectAdapter<TestModel, Boolean>(subjectModel, TestModel.NOT_FLAG2_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectModel, TestModel.NOT_FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isNotFlag2());

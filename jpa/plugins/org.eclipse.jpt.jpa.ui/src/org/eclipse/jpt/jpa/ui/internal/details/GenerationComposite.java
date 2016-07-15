@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -142,7 +142,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 
 	protected PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorContainer, SequenceGenerator>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, SequenceGenerator>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
 				return this.subject.getSequenceGenerator();
@@ -159,7 +159,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getSequenceGenerator() != null);
@@ -218,7 +218,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorContainer, TableGenerator>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, TableGenerator>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected TableGenerator buildValue_() {
 				return this.subject.getTableGenerator();
@@ -235,7 +235,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 
 	protected PropertyValueModel<Boolean> buildTableGeneratorExpanstionStateHolder() {
-		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getTableGenerator() != null);
@@ -244,7 +244,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getTableGenerator() != null);

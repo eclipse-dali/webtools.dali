@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
@@ -73,7 +73,7 @@ public class NamedNativeQueryPropertyComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.RESULT_CLASS_PROPERTY) {
+				return new PropertyAspectAdapterXXXX<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.RESULT_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getResultClass();
@@ -117,7 +117,7 @@ public class NamedNativeQueryPropertyComposite
 	}
 
 	private ModifiablePropertyValueModel<String> buildQueryModel() {
-		return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.QUERY_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getQuery();
@@ -159,7 +159,7 @@ public class NamedNativeQueryPropertyComposite
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
-		return new PropertyAspectAdapter<NamedNativeQuery, String>(
+		return new PropertyAspectAdapterXXXX<NamedNativeQuery, String>(
 				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {

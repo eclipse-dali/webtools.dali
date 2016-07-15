@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -77,7 +77,7 @@ public class EclipseLinkLoggerClassChooser
     
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.LOGGER_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.LOGGER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
@@ -100,7 +100,7 @@ public class EclipseLinkLoggerClassChooser
 	}
 
 	private PropertyValueModel<String> buildDefaultLoggerModel() {
-		return new PropertyAspectAdapter<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.DEFAULT_LOGGER) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.DEFAULT_LOGGER) {
 			@Override
 			protected String buildValue_() {
 				return EclipseLinkLoggerClassChooser.this.getDefaultValue(this.subject);

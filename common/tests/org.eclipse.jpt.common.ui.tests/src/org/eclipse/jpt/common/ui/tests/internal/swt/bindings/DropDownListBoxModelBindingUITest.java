@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.comparator.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -270,7 +270,7 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	static class PriorityTaskAdapter
-		extends PropertyAspectAdapter<TaskList, Task>
+		extends PropertyAspectAdapterXXXX<TaskList, Task>
 	{
 		PriorityTaskAdapter(ModifiablePropertyValueModel<TaskList> taskListModel) {
 			super(taskListModel, TaskList.PRIORITY_TASK_PROPERTY);
@@ -290,7 +290,7 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	static class PriorityTaskNameAdapter
-		extends PropertyAspectAdapter<TaskList, String>
+		extends PropertyAspectAdapterXXXX<TaskList, String>
 	{
 		PriorityTaskNameAdapter(ModifiablePropertyValueModel<TaskList> taskListModel) {
 			super(taskListModel, TaskList.PRIORITY_TASK_NAME_PROPERTY);

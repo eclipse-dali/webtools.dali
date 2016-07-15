@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -27,7 +27,7 @@ public abstract class AbstractOrderingComposite<T extends Orderable>
 	}
 	
 	protected PropertyValueModel<T> buildOrderableModel() {
-		return new PropertyAspectAdapter<CollectionMapping, T>(getSubjectHolder()) {
+		return new PropertyAspectAdapterXXXX<CollectionMapping, T>(getSubjectHolder()) {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected T buildValue_() {
@@ -37,7 +37,7 @@ public abstract class AbstractOrderingComposite<T extends Orderable>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildNoOrderingModel(PropertyValueModel<T> orderableModel) {
-		return new PropertyAspectAdapter<T, Boolean>(orderableModel, Orderable.NO_ORDERING_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(orderableModel, Orderable.NO_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isNoOrdering());
@@ -53,7 +53,7 @@ public abstract class AbstractOrderingComposite<T extends Orderable>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildOrderByOrderingModel(PropertyValueModel<T> orderableModel) {
-		return new PropertyAspectAdapter<T, Boolean>(orderableModel, Orderable.ORDER_BY_ORDERING_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<T, Boolean>(orderableModel, Orderable.ORDER_BY_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isOrderByOrdering());

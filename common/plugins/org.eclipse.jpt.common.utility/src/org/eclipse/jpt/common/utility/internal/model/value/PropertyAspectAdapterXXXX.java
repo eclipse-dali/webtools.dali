@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * @param <S> the type of the model's subject
  * @param <V> the type of the subject's property aspect
  */
-public abstract class PropertyAspectAdapter<S extends Model, V>
+public abstract class PropertyAspectAdapterXXXX<S extends Model, V>
 	extends AspectPropertyValueModelAdapter<S, V>
 {
 	/** The name of the subject's properties that we use for the value. */
@@ -48,7 +48,7 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 	 * Construct a property aspect adapter for the specified subject
 	 * and property aspect.
 	 */
-	protected PropertyAspectAdapter(String aspectName, S subject) {
+	protected PropertyAspectAdapterXXXX(String aspectName, S subject) {
 		this(PropertyValueModelTools.staticPropertyValueModel(subject), new String[] {aspectName});
 	}
 
@@ -56,7 +56,7 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 	 * Construct a property aspect adapter for the specified subject model
 	 * and property aspects.
 	 */
-	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectModel, String... aspectNames) {
+	protected PropertyAspectAdapterXXXX(PropertyValueModel<? extends S> subjectModel, String... aspectNames) {
 		super(subjectModel);
 		if (aspectNames == null) {
 			throw new NullPointerException();
@@ -81,7 +81,7 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			PropertyAspectAdapter.this.aspectChanged(event);
+			PropertyAspectAdapterXXXX.this.aspectChanged(event);
 		}
 	}
 

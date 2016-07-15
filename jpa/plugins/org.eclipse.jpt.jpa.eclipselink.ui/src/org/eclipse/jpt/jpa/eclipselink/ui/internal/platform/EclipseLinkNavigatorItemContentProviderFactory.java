@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -76,7 +76,7 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 	}
 
 	public static class PersistenceUnitImpliedEclipseLinkMappingFileRefModel
-		extends PropertyAspectAdapter<EclipseLinkPersistenceUnit, MappingFileRef>
+		extends PropertyAspectAdapterXXXX<EclipseLinkPersistenceUnit, MappingFileRef>
 	{
 		public PersistenceUnitImpliedEclipseLinkMappingFileRefModel(EclipseLinkPersistenceUnit persistenceUnit) {
 			super(EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, persistenceUnit);
