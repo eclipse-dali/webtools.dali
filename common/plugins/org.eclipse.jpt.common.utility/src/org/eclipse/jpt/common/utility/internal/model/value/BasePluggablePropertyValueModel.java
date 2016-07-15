@@ -198,12 +198,6 @@ public abstract class BasePluggablePropertyValueModel<V, A extends BasePluggable
 	 */
 	public interface Adapter<AV> {
 		/**
-		 * Return the current property value, as derived from the
-		 * current state of the adapted model.
-		 */
-		AV getValue();
-
-		/**
 		 * Start listening to the adapted model
 		 * and return its current value.
 		 */

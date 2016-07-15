@@ -44,10 +44,6 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 		this.closure = closure;
 	}
 
-	public V getValue() {
-		return this.adapter.getValue();
-	}
-
 	public void setValue(V value) {
 		this.closure.execute(value);
 	}
