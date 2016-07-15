@@ -1174,10 +1174,6 @@ public class PropertyValueModelToolsTests
 			return this.value = v.substring(v.length() / 2);
 		}
 
-		public String getValue() {
-			return this.value;
-		}
-
 		public void setValue(String value) {
 			this.value = value;
 			this.stringModel.setValue(value + value);

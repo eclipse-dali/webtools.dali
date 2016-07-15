@@ -85,10 +85,6 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 
 	// ********** PluggablePropertyValueModel.Adapter **********
 
-	public V getValue() {
-		return this.value;
-	}
-
 	public V engageModel() {
 		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
 		ListTools.addAll(this.list, 0, this.listModel);

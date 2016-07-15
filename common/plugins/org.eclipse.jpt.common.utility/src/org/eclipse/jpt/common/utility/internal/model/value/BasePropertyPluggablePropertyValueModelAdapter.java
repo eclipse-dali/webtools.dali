@@ -70,10 +70,6 @@ public abstract class BasePropertyPluggablePropertyValueModelAdapter<V1, V2, M e
 
 	// ********** BasePluggablePropertyValueModel.Adapter **********
 
-	public V2 getValue() {
-		return this.value;
-	}
-
 	public V2 engageModel() {
 		this.propertyModel.addPropertyChangeListener(PropertyValueModel.VALUE, this);
 		this.propertyModelValue = this.propertyModel.getValue();

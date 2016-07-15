@@ -123,10 +123,6 @@ public class BufferedPropertyValueModelAdapter<V>
 
 	// ********** PluggableModifiablePropertyValueModel.Adapter **********
 
-	public V getValue() {
-		return this.isBuffering() ? this.bufferedValue : this.wrappedValue;
-	}
-
 	public void setValue(V value) {
 		if (this.isBuffering()) {
 			if (ObjectTools.equals(value, this.wrappedValue)) {

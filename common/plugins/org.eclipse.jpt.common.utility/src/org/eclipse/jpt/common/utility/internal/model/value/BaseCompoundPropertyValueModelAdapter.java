@@ -107,10 +107,6 @@ public abstract class BaseCompoundPropertyValueModelAdapter<V, IM extends Proper
 
 	// ********** BasePluggablePropertyValueModel.Adapter **********
 
-	public V getValue() {
-		return this.value;
-	}
-
 	public V engageModel() {
 		this.outerModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.outerValueListener);
 		this.innerModel = this.outerModel.getValue();

@@ -1750,10 +1750,6 @@ public class JpaProjectPropertiesPage
 			this.listener = listener;
 		}
 
-		public String getValue() {
-			return this.value;
-		}
-
 		/**
 		 * This will be called when the user makes a selection from the
 		 * drop-down; which is possible only when the checkbox is checked

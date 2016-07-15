@@ -108,10 +108,6 @@ public final class CompositePropertyValueModelAdapter<E, V>
 
 	// ********** PluggablePropertyValueModel.Adapter **********
 
-	public V getValue() {
-		return this.value;
-	}
-
 	public V engageModel() {
 		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
 		this.addComponentPVMs(this.collectionModel);

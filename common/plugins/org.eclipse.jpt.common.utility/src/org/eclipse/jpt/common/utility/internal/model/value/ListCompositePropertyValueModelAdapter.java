@@ -104,10 +104,6 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 
 	// ********** PluggablePropertyValueModel.Adapter **********
 
-	public V getValue() {
-		return this.value;
-	}
-
 	public V engageModel() {
 		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
 		this.addComponentPVMs(0, this.listModel);

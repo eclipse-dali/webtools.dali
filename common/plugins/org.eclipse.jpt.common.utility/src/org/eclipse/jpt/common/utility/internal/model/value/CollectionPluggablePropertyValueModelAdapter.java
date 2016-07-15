@@ -81,10 +81,6 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 
 	// ********** PluggablePropertyValueModel.Adapter **********
 
-	public V getValue() {
-		return this.value;
-	}
-
 	public V engageModel() {
 		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this);
 		CollectionTools.addAll(this.collection, this.collectionModel);
