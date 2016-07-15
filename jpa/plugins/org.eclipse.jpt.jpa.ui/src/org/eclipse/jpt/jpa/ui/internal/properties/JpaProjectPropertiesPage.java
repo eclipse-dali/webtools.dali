@@ -1770,11 +1770,11 @@ public class JpaProjectPropertiesPage
 			return this.value = this.buildValue();
 		}
 
-		public void disengageModel() {
-			this.value = null;
+		public String disengageModel() {
 			this.databaseDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
 			this.userOverrideDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
 			this.userOverrideDefaultFlagModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
+			return this.value = null;
 		}
 
 		/* CU private */ void update() {

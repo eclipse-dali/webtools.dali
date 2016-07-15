@@ -155,12 +155,12 @@ public class BufferedPropertyValueModelAdapter<V>
 		return this.wrappedValue = this.wrappedValueModel.getValue();
 	}
 
-	public void disengageModel() {
+	public V disengageModel() {
 		this.trigger.removeListener(this.triggerListener);
+		this.wrappedValueModel.removePropertyChangeListener(PropertyValueModel.VALUE, this);
 		this.setBuffering(false);
 		this.bufferedValue = null;
-		this.wrappedValue = null;
-		this.wrappedValueModel.removePropertyChangeListener(PropertyValueModel.VALUE, this);
+		return this.wrappedValue = null;
 	}
 
 

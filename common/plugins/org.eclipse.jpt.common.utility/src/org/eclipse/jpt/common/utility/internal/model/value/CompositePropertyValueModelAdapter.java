@@ -118,13 +118,10 @@ public final class CompositePropertyValueModelAdapter<E, V>
 		return this.value = this.buildValue();
 	}
 
-	public void disengageModel() {
-		this.value = null;
-		this.removeComponentPVMs(this.collectionModel);
-		if ( ! this.values.isEmpty()) {
-			throw new IllegalStateException("extraneous values: " + this.values); //$NON-NLS-1$
-		}
+	public V disengageModel() {
 		this.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this);
+		this.removeCachedPVMs();
+		return this.value = null;
 	}
 
 

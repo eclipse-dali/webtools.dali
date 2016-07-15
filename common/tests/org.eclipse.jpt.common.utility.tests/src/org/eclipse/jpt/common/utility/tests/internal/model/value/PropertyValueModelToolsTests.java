@@ -1183,9 +1183,9 @@ public class PropertyValueModelToolsTests
 			this.stringModel.setValue(value + value);
 		}
 
-		public void disengageModel() {
-			this.value = null;
+		public String disengageModel() {
 			this.stringModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
+			return this.value = null;
 		}
 
 		void stringChanged(String newStringValue) {

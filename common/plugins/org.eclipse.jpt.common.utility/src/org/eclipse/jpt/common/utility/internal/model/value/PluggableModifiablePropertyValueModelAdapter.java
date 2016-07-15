@@ -52,8 +52,8 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 		return this.adapter.engageModel();
 	}
 
-	public void disengageModel() {
-		this.adapter.disengageModel();
+	public V disengageModel() {
+		return this.adapter.disengageModel();
 	}
 
 

@@ -204,9 +204,10 @@ public abstract class BasePluggablePropertyValueModel<V, A extends BasePluggable
 		AV engageModel();
 
 		/**
-		 * Stop listening to the adapted model.
+		 * Stop listening to the adapted model
+		 * and return its current value.
 		 */
-		void disengageModel();
+		AV disengageModel();
 
 		/**
 		 * Callback interface.

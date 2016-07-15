@@ -95,10 +95,10 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 		return this.value = this.buildValue();
 	}
 
-	public void disengageModel() {
-		this.value = null;
-		this.list.clear();
+	public V disengageModel() {
 		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this);
+		this.list.clear();
+		return this.value = null;
 	}
 
 

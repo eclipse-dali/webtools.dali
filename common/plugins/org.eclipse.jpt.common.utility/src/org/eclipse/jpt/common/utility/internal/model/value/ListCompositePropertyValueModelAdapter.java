@@ -114,13 +114,10 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 		return this.value = this.buildValue();
 	}
 
-	public void disengageModel() {
-		this.value = null;
-		this.removeComponentPVMs(0, this.listModel.size(), this.listModel);
-		if ( ! this.values.isEmpty()) {
-			throw new IllegalStateException("extraneous values: " + this.values); //$NON-NLS-1$
-		}
+	public V disengageModel() {
 		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this);
+		this.removeCachedPVMs();
+		return this.value = null;
 	}
 
 

@@ -91,10 +91,10 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 		return this.value = this.buildValue();
 	}
 
-	public void disengageModel() {
-		this.value = null;
-		this.collection.clear();
+	public V disengageModel() {
 		this.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this);
+		this.collection.clear();
+		return this.value = null;
 	}
 
 
