@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueMod
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -134,7 +134,7 @@ public class EclipseLinkTenantDiscriminatorColumnsComposite<T extends JpaModel>
 	}
 
 	protected class PaneTransformer
-		extends AbstractTransformer<EclipseLinkTenantDiscriminatorColumn2_3, Control>
+		extends TransformerAdapter<EclipseLinkTenantDiscriminatorColumn2_3, Control>
 	{
 		private final PageBook pageBook;
 
@@ -143,8 +143,8 @@ public class EclipseLinkTenantDiscriminatorColumnsComposite<T extends JpaModel>
 		}
 
 		@Override
-		public Control transform_(EclipseLinkTenantDiscriminatorColumn2_3 column) {
-			return getTenantDiscriminatorColumnComposite(this.pageBook).getControl();
+		public Control transform(EclipseLinkTenantDiscriminatorColumn2_3 column) {
+			return (column == null) ? null : getTenantDiscriminatorColumnComposite(this.pageBook).getControl();
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.model.value;
 
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -45,10 +45,10 @@ public interface TreeNodeValueModel<V>
 		@SuppressWarnings("rawtypes")
 		Transformer PARENT_TRANSFORMER = new ParentTransformer();
 		class ParentTransformer<V>
-			extends AbstractTransformer<TreeNodeValueModel<V>, TreeNodeValueModel<V>>
+			extends TransformerAdapter<TreeNodeValueModel<V>, TreeNodeValueModel<V>>
 		{
 			@Override
-			protected TreeNodeValueModel<V> transform_(TreeNodeValueModel<V> treeNodeValueModel) {
+			public TreeNodeValueModel<V> transform(TreeNodeValueModel<V> treeNodeValueModel) {
 				return treeNodeValueModel.parent();
 			}
 		}

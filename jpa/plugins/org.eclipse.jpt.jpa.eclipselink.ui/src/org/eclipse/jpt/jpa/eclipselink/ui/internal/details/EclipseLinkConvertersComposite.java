@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -231,7 +231,7 @@ public class EclipseLinkConvertersComposite
 	}
 
 	protected class PaneTransformer
-		extends AbstractTransformer<EclipseLinkConverter, Control>
+		extends TransformerAdapter<EclipseLinkConverter, Control>
 	{
 		private final PageBook pageBook;
 
@@ -240,7 +240,10 @@ public class EclipseLinkConvertersComposite
 		}
 
 		@Override
-		public Control transform_(EclipseLinkConverter converter) {
+		public Control transform(EclipseLinkConverter converter) {
+			if (converter == null) {
+				return null;
+			}
 			if (converter.getConverterType() == EclipseLinkCustomConverter.class) {
 				return EclipseLinkConvertersComposite.this.getCustomConverterComposite(this.pageBook).getControl();
 			}

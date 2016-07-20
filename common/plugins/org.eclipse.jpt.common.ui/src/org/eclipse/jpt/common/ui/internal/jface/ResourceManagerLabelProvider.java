@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -76,10 +76,13 @@ public class ResourceManagerLabelProvider<E>
 	 */
 	public ResourceManagerLabelProvider(Transformer<E, ImageDescriptor> imageDescriptorTransformer, Transformer<E, String> textTransformer, ResourceManager resourceManager) {
 		super(textTransformer);
-		if ((imageDescriptorTransformer == null) || (resourceManager == null)) {
+		if (imageDescriptorTransformer == null) {
 			throw new NullPointerException();
 		}
-		this.imageDescriptorTransformer = imageDescriptorTransformer;
+		this.imageDescriptorTransformer = TransformerTools.nullCheck(imageDescriptorTransformer);
+		if (resourceManager == null) {
+			throw new NullPointerException();
+		}
 		this.resourceManager = new LocalResourceManager(resourceManager);
 	}
 

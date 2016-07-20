@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -119,10 +119,13 @@ public abstract class PersistenceUnitJarFilesComposite
 
 	private static final Transformer<JarFileRef, String> JAR_FILE_REF_LABEL_TEXT_TRANSFORMER = new JarFileRefLabelTextTransformer();
 	/* CU private */ static class JarFileRefLabelTextTransformer
-		extends AbstractTransformer<JarFileRef, String>
+		extends TransformerAdapter<JarFileRef, String>
 	{
 		@Override
-		protected String transform_(JarFileRef jarFileRef) {
+		public String transform(JarFileRef jarFileRef) {
+			if (jarFileRef == null) {
+				return null;
+			}
 			String name = jarFileRef.getFileName();
 			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_JAR_FILES_COMPOSITE_NO_FILE_NAME;
 		}

@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -45,21 +45,21 @@ public class TransformationPropertyValueModelTests
 
 	private static final Transformer<String, String> UPPER_CASE_TRANSFORMER = new UpperCaseTransformer();
 	static class UpperCaseTransformer
-		extends AbstractTransformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		@Override
-		public String transform_(String s) {
-			return s.toUpperCase();
+		public String transform(String s) {
+			return (s == null) ? null : s.toUpperCase();
 		}
 	}
 
 	private static final Transformer<String, String> LOWER_CASE_TRANSFORMER = new LowerCaseTransformer();
 	static class LowerCaseTransformer
-		extends AbstractTransformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		@Override
-		public String transform_(String s) {
-			return s.toLowerCase();
+		public String transform(String s) {
+			return (s == null) ? null : s.toLowerCase();
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,13 @@
 package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.io.Serializable;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class TransformerPredicateTests
@@ -68,12 +68,12 @@ public class TransformerPredicateTests
 	}
 
 	static class LessThan42Transformer
-		extends AbstractTransformer<Integer, Boolean>
+		extends TransformerAdapter<Integer, Boolean>
 		implements Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		@Override
-		protected Boolean transform_(Integer integer) {
+		public Boolean transform(Integer integer) {
 			return Boolean.valueOf(integer.intValue() < 42);
 		}
 		@Override

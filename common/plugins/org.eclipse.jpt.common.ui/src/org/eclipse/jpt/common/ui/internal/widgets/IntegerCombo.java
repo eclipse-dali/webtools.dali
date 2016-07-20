@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -157,10 +156,10 @@ public abstract class IntegerCombo<T extends Model>
 	}
 
 	public class SelectedItemStringModelSetTransformer
-		extends AbstractTransformer<String, Integer>
+		extends TransformerAdapter<String, Integer>
 	{
 		@Override
-		protected Integer transform_(String string) {
+		public Integer transform(String string) {
 			try {
 				return Integer.valueOf(string);
 			} catch (NumberFormatException ex) {

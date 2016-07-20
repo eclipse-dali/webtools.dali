@@ -10,13 +10,13 @@
 package org.eclipse.jpt.common.utility.tests.internal.predicate;
 
 import java.io.Serializable;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.predicate.IsNotNull;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class TransformationPredicateTests
@@ -62,12 +62,12 @@ public class TransformationPredicateTests
 		}
 		static final Transformer<Person, String> NAME_TRANSFORMER = new NameTransformer();
 		static class NameTransformer
-			extends AbstractTransformer<Person, String>
+			extends TransformerAdapter<Person, String>
 			implements Serializable
 		{
 			private static final long serialVersionUID = 1L;
 			@Override
-			protected String transform_(Person person) {
+			public String transform(Person person) {
 				return person.name;
 			}
 			@Override

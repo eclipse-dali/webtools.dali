@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,8 +22,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @see XMLStringEncoder
  */
 public final class XMLStringDecoder
-	extends AbstractTransformer<String, String>
-	implements Serializable
+	implements Transformer<String, String>, Serializable
 {
 	public static final Transformer<String, String> INSTANCE = new XMLStringDecoder();
 
@@ -43,7 +42,7 @@ public final class XMLStringDecoder
 	 * replaced by the characters themselves.
 	 */
 	@Override
-	protected String transform_(String s) {
+	public String transform(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 		StringBuilder temp = new StringBuilder();	// performance tweak
 		this.decode(sb, new StringReader(s), temp);

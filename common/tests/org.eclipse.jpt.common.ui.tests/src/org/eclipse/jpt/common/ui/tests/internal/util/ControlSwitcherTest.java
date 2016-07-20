@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -85,13 +85,13 @@ public final class ControlSwitcherTest {
 	}
 
 	protected class PaneTransformer
-		extends AbstractTransformer<Boolean, Control>
+		extends TransformerAdapter<Boolean, Control>
 	{
 		@Override
-		public Control transform_(Boolean value) {
-			return value.booleanValue() ?
+		public Control transform(Boolean value) {
+			return (value == null) ? null : (value.booleanValue() ?
 					ControlSwitcherTest.this.pane1 :
-					ControlSwitcherTest.this.pane2;
+					ControlSwitcherTest.this.pane2);
 		}
 	}
 

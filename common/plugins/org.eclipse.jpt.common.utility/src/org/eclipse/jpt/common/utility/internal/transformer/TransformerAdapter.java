@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
  * 
- * @see AbstractTransformer
  * @see NullOutputTransformer
  */
 public class TransformerAdapter<I, O>

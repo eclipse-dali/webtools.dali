@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -208,7 +208,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 	}
 
 	protected class PaneTransformer
-		extends AbstractTransformer<OrmGenerator, Control>
+		extends TransformerAdapter<OrmGenerator, Control>
 	{
 		private final Composite container;
 
@@ -217,7 +217,10 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		}
 
 		@Override
-		public Control transform_(OrmGenerator generator) {
+		public Control transform(OrmGenerator generator) {
+			if (generator == null) {
+				return null;
+			}
 			if (generator instanceof OrmSequenceGenerator) {
 				return EntityMappingsGeneratorsComposite.this.getSequenceGeneratorComposite(this.container).getControl();
 			}

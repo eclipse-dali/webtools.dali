@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,14 +14,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -35,6 +34,7 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class TransformationListValueModelTests extends TestCase {
@@ -329,17 +329,17 @@ public class TransformationListValueModelTests extends TestCase {
 
 		@Override
 		ListValueModel<String> buildTransformedListHolder(ListValueModel<String> lvm) {
-			return new TransformationListValueModel<String, String>(lvm, UPPER_CASE_TRANSFORMER);
+			return new TransformationListValueModel<>(lvm, UPPER_CASE_TRANSFORMER);
 		}
 	}
 	
 	static final Transformer<String, String> UPPER_CASE_TRANSFORMER = new UpperCaseTransformer();
 	static class UpperCaseTransformer
-		extends AbstractTransformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		@Override
-		public String transform_(String s) {
-			return s.toUpperCase();
+		public String transform(String s) {
+			return (s == null) ? null : s.toUpperCase();
 		}
 	}
 }

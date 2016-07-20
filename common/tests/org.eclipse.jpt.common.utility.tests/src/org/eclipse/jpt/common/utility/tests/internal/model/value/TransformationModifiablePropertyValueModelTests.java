@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -220,21 +220,21 @@ public class TransformationModifiablePropertyValueModelTests
 
 	private static final Transformer<Person, Person> PARENT_TRANSFORMER = new ParentTransformer();
 	static class ParentTransformer
-		extends AbstractTransformer<Person, Person>
+		extends TransformerAdapter<Person, Person>
 	{
 		@Override
-		public Person transform_(Person p) {
-			return p.getParent();
+		public Person transform(Person p) {
+			return (p == null) ? null : p.getParent();
 		}
 	}
 
 	private static final Transformer<Person, Person> CHILD_TRANSFORMER = new ChildTransformer();
 	static class ChildTransformer
-		extends AbstractTransformer<Person, Person>
+		extends TransformerAdapter<Person, Person>
 	{
 		@Override
-		public Person transform_(Person p) {
-			return p.getChild();
+		public Person transform(Person p) {
+			return (p == null) ? null : p.getChild();
 		}
 	}
 }

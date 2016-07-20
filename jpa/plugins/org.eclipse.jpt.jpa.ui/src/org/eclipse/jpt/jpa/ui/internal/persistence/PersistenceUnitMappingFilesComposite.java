@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -144,10 +144,13 @@ public abstract class PersistenceUnitMappingFilesComposite
 
 	private static final Transformer<MappingFileRef, String> MAPPING_FILE_REF_LABEL_TEXT_TRANSFORMER = new MappingFileRefLabelTextTransformer();
 	/* CU private */ static class MappingFileRefLabelTextTransformer
-		extends AbstractTransformer<MappingFileRef, String>
+		extends TransformerAdapter<MappingFileRef, String>
 	{
 		@Override
-		protected String transform_(MappingFileRef mappingFileRef) {
+		public String transform(MappingFileRef mappingFileRef) {
+			if (mappingFileRef == null) {
+				return null;
+			}
 			String name = mappingFileRef.getFileName();
 			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_MAPPING_FILES_COMPOSITE_ORM_NO_NAME;
 		}

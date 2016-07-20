@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -231,7 +231,7 @@ public class QueriesComposite
 	}
 	
 	protected class PaneTransformer
-		extends AbstractTransformer<Query, Control>
+		extends TransformerAdapter<Query, Control>
 	{
 		private final PageBook pageBook;
 
@@ -240,7 +240,10 @@ public class QueriesComposite
 		}
 
 		@Override
-		public Control transform_(Query query) {
+		public Control transform(Query query) {
+			if (query == null) {
+				return null;
+			}
 			if (query instanceof NamedNativeQuery) {
 				return QueriesComposite.this.getNamedNativeQueryPropertyComposite(this.pageBook).getControl();
 			}

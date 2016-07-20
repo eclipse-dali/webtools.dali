@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -76,11 +76,11 @@ public abstract class PersistentAttributeDetailsPageManager<A extends Persistent
 	}
 
 	protected class PaneTransformer
-		extends AbstractTransformer<AttributeMapping, Control>
+		extends TransformerAdapter<AttributeMapping, Control>
 	{
 		@Override
-		public Control transform_(AttributeMapping attributeMapping) {
-			return getMappingComposite(attributeMapping.getKey()).getControl();
+		public Control transform(AttributeMapping attributeMapping) {
+			return (attributeMapping == null) ? null : getMappingComposite(attributeMapping.getKey()).getControl();
 		}
 	}
 

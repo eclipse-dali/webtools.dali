@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.internal.factory.FactoryTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.queue.QueueTools;
 import org.eclipse.jpt.common.utility.internal.stack.StackTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.queue.Queue;
 import org.eclipse.jpt.common.utility.stack.Stack;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -478,20 +478,20 @@ public class MapToolsTests
 
 	public static final Transformer<String, String> REVERSE_STRING_TRANSFORMER = new ReverseStringTransformer();
 	public static class ReverseStringTransformer
-		extends AbstractTransformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		@Override
-		protected String transform_(String input) {
+		public String transform(String input) {
 			return StringTools.reverse(input);
 		}
 	}
 
 	public static final Transformer<String, String> SORT_STRING_TRANSFORMER = new SortStringTransformer();
 	public static class SortStringTransformer
-		extends AbstractTransformer<String, String>
+		extends TransformerAdapter<String, String>
 	{
 		@Override
-		protected String transform_(String input) {
+		public String transform(String input) {
 			return new String(ArrayTools.sort(input.toCharArray()));
 		}
 	}

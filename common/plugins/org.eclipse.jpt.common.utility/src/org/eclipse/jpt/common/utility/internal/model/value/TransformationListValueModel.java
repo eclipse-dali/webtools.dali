@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -307,11 +307,11 @@ public class TransformationListValueModel<E1, E2>
 	 * implementation of {@link TransformationListValueModel#transformItem_(Object)}.
 	 */
 	protected class DefaultTransformer
-		extends AbstractTransformer<E1, E2>
+		extends TransformerAdapter<E1, E2>
 	{
 		@Override
-		public E2 transform_(E1 item) {
-			return TransformationListValueModel.this.transformItem_(item);
+		public E2 transform(E1 item) {
+			return (item == null) ? null : TransformationListValueModel.this.transformItem_(item);
 		}
 	}
 }

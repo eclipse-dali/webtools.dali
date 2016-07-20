@@ -32,7 +32,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -208,14 +207,17 @@ public class PersistenceUnitClassesComposite
 	//also need to make the image and label the same in the structure view
 	private static final Transformer<ClassRef, ImageDescriptor> CLASS_REF_LABEL_IMAGE_DESCRIPTOR_TRANSFORMER = new ClassRefLabelImageDescriptorTransformer();
 	/* CU private */ static class ClassRefLabelImageDescriptorTransformer
-		extends AbstractTransformer<ClassRef, ImageDescriptor>
+		extends TransformerAdapter<ClassRef, ImageDescriptor>
 	{
 		@Override
-		protected ImageDescriptor transform_(ClassRef classRef) {
+		public ImageDescriptor transform(ClassRef classRef) {
 			return this.getImageDescriptor(classRef);
 		}
 
 		private ImageDescriptor getImageDescriptor(ClassRef classRef) {
+			if (classRef == null) {
+				return null;
+			}
 			if (classRef.getJavaManagedType() == null) {
 				return JptJpaUiImages.NULL_TYPE_MAPPING;
 			}
@@ -242,10 +244,13 @@ public class PersistenceUnitClassesComposite
 
 	private static final Transformer<ClassRef, String> CLASS_REF_LABEL_TEXT_TRANSFORMER = new ClassRefLabelTextTransformer();
 	/* CU private */ static class ClassRefLabelTextTransformer
-		extends AbstractTransformer<ClassRef, String>
+		extends TransformerAdapter<ClassRef, String>
 	{
 		@Override
-		protected String transform_(ClassRef classRef) {
+		public String transform(ClassRef classRef) {
+			if (classRef == null) {
+				return null;
+			}
 			String name = classRef.getClassName();
 			return (name != null) ? name : JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_CLASS_REF_NO_NAME;
 		}

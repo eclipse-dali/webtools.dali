@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.internal.transformer;
 import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * This transformer will replace any of a specified set of characters with an XML
@@ -19,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * @see XMLStringDecoder
  */
 public class XMLStringEncoder
-	extends AbstractTransformer<String, String>
+	implements Transformer<String, String>
 {
 	/** The set of characters to be converted into XML character references. */
 	private final char[] chars;
@@ -69,7 +70,7 @@ public class XMLStringEncoder
 	 * replaced with XML character references.
 	 */
 	@Override
-	protected String transform_(String s) {
+	public String transform(String s) {
 		int len = s.length();
 		// allow for a few encoded characters
 		StringBuilder sb = new StringBuilder(len + 20);
