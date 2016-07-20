@@ -9,22 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.closure;
 
-import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.closure.InterruptibleBiClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
- * A composite of closures. Pass the composite's argument to each closure,
+ * A composite of closures. Pass the composite's arguments to each closure,
  * in sequence.
  * 
- * @param <A> the type of the object passed to the closure
+ * @param <A1> the type of the first object passed to the closure
+ * @param <A2> the type of the second object passed to the closure
  */
-public class CompositeClosure<A>
-	implements Closure<A>
+public class CompositeInterruptibleBiClosure<A1, A2>
+	implements InterruptibleBiClosure<A1, A2>
 {
-	private final Iterable<? extends Closure<? super A>> closures;
+	private final Iterable<? extends InterruptibleBiClosure<? super A1, ? super A2>> closures;
 
-	public CompositeClosure(Iterable<? extends Closure<? super A>> closures) {
+	public CompositeInterruptibleBiClosure(Iterable<? extends InterruptibleBiClosure<? super A1, ? super A2>> closures) {
 		super();
 		if (IterableTools.isOrContainsNull(closures)) {
 			throw new NullPointerException();
@@ -32,9 +33,9 @@ public class CompositeClosure<A>
 		this.closures = closures;
 	}
 
-	public void execute(A argument) {
-		for (Closure<? super A> closure : this.closures) {
-			closure.execute(argument);
+	public void execute(A1 argument1, A2 argument2) throws InterruptedException {
+		for (InterruptibleBiClosure<? super A1, ? super A2> closure : this.closures) {
+			closure.execute(argument1, argument2);
 		}
 	}
 

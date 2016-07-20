@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
+import org.eclipse.jpt.common.utility.tests.internal.closure.JptCommonUtilityClosureTests;
 import org.eclipse.jpt.common.utility.tests.internal.collection.JptCommonUtilityCollectionTests;
 import org.eclipse.jpt.common.utility.tests.internal.command.JptCommonUtilityCommandTests;
 import org.eclipse.jpt.common.utility.tests.internal.comparator.JptCommonUtilityComparatorTests;
@@ -38,6 +39,7 @@ public class JptCommonUtilityTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonUtilityTests.class.getPackage().getName());
 
+		suite.addTest(JptCommonUtilityClosureTests.suite());
 		suite.addTest(JptCommonUtilityCollectionTests.suite());
 		suite.addTest(JptCommonUtilityCommandTests.suite());
 		suite.addTest(JptCommonUtilityComparatorTests.suite());

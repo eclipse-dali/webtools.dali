@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,11 +40,17 @@ public class MethodClosure<A>
 
 	public MethodClosure(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
 		super();
-		if ((methodName == null) || ArrayTools.isOrContainsNull(parameterTypes) || (arguments == null)) {
+		if (methodName == null) {
 			throw new NullPointerException();
 		}
 		this.methodName = methodName;
+		if (ArrayTools.isOrContainsNull(parameterTypes)) {
+			throw new NullPointerException();
+		}
 		this.parameterTypes = parameterTypes;
+		if (arguments == null) {
+			throw new NullPointerException();
+		}
 		this.arguments = arguments;
 	}
 

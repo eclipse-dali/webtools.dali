@@ -20,7 +20,9 @@ public class JptCommonUtilityClosureTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonUtilityClosureTests.class.getPackage().getName());
 
+		suite.addTestSuite(BiClosureToolsTests.class);
 		suite.addTestSuite(BooleanClosureTests.class);
+		suite.addTestSuite(ClosureToolsTests.class);
 		suite.addTestSuite(NullableBooleanClosureTests.class);
 
 		return suite;

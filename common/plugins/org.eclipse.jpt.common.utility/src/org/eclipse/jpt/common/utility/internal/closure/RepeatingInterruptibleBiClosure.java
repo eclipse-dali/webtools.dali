@@ -9,37 +9,36 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.closure;
 
-import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
+import org.eclipse.jpt.common.utility.closure.InterruptibleBiClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * @see RepeatingClosure
- * @see ConditionalInterruptibleClosure
- * @see SwitchInterruptibleClosure
- * @see UntilInterruptibleClosure
- * @see WhileInterruptibleClosure
+ * BiClosure that executes another closure a specified number of times.
+ * 
+ * @param <A1> the type of the first object passed to the closure
+ * @param <A2> the type of the second object passed to the closure
  */
-public class RepeatingInterruptibleClosure<A>
-	implements InterruptibleClosure<A>
+public class RepeatingInterruptibleBiClosure<A1, A2>
+	implements InterruptibleBiClosure<A1, A2>
 {
 	private final int count;
-	private final InterruptibleClosure<? super A> closure;
+	private final InterruptibleBiClosure<? super A1, ? super A2> closure;
 
-	public RepeatingInterruptibleClosure(InterruptibleClosure<? super A> closure, int count) {
+	public RepeatingInterruptibleBiClosure(InterruptibleBiClosure<? super A1, ? super A2> closure, int count) {
 		super();
 		if (closure == null) {
 			throw new NullPointerException();
 		}
+		this.closure = closure;
 		if (count < 0) {
 			throw new IndexOutOfBoundsException("invalid count: " + count); //$NON-NLS-1$
 		}
-		this.closure = closure;
 		this.count = count;
 	}
 
-	public void execute(A argument) throws InterruptedException {
+	public void execute(A1 argument1, A2 argument2) throws InterruptedException {
 		for (int i = this.count; i-- > 0;) {
-			this.closure.execute(argument);
+			this.closure.execute(argument1, argument2);
 		}
 	}
 

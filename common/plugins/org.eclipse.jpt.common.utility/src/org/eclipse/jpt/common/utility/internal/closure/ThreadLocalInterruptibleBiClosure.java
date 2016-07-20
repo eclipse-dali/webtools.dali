@@ -9,24 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.closure;
 
-import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.closure.InterruptibleBiClosure;
 
 /**
  * This closure allows the client to specify a different closure for each
  * thread. If there is no closure for the current thread, the configured default
  * closure is executed.
  * 
- * @param <A> the type of the object passed to the closure
+ * @param <A1> the type of the first object passed to the closure
+ * @param <A2> the type of the second object passed to the closure
  * 
- * @see #set(Closure)
+ * @see #set(BiClosure)
  */
-public class ThreadLocalClosure<A>
-	implements Closure<A>
+public class ThreadLocalInterruptibleBiClosure<A1, A2>
+	implements InterruptibleBiClosure<A1, A2>
 {
-	private final ThreadLocal<Closure<? super A>> threadLocal;
-	private final Closure<? super A> defaultClosure;
+	private final ThreadLocal<InterruptibleBiClosure<? super A1, ? super A2>> threadLocal;
+	private final InterruptibleBiClosure<? super A1, ? super A2> defaultClosure;
 
-	public ThreadLocalClosure(Closure<? super A> defaultClosure) {
+	public ThreadLocalInterruptibleBiClosure(InterruptibleBiClosure<? super A1, ? super A2> defaultClosure) {
 		super();
 		if (defaultClosure == null) {
 			throw new NullPointerException();
@@ -35,23 +37,23 @@ public class ThreadLocalClosure<A>
 		this.threadLocal = this.buildThreadLocal();
 	}
 
-	private ThreadLocal<Closure<? super A>> buildThreadLocal() {
+	private ThreadLocal<InterruptibleBiClosure<? super A1, ? super A2>> buildThreadLocal() {
 		return new ThreadLocal<>();
 	}
 
-	public void execute(A argument) {
-		this.get().execute(argument);
+	public void execute(A1 argument1, A2 argument2) throws InterruptedException {
+		this.get().execute(argument1, argument2);
 	}
 
-	private Closure<? super A> get() {
-		Closure<? super A> closure = this.threadLocal.get();
+	private InterruptibleBiClosure<? super A1, ? super A2> get() {
+		InterruptibleBiClosure<? super A1, ? super A2> closure = this.threadLocal.get();
 		return (closure != null) ? closure : this.defaultClosure;
 	}
 
 	/**
 	 * Set the current thread's closure to the specified value.
 	 */
-	public void set(Closure<? super A> closure) {
+	public void set(BiClosure<? super A1, ? super A2> closure) {
 		this.threadLocal.set(closure);
 	}
 

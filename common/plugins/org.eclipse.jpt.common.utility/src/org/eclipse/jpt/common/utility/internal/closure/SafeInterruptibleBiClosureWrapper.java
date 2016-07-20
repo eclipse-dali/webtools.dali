@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.closure;
 
+import org.eclipse.jpt.common.utility.closure.InterruptibleBiClosure;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.closure.Closure;
 
 /**
  * Closure wrapper that will handle any exceptions thrown by the wrapped
@@ -19,16 +19,17 @@ import org.eclipse.jpt.common.utility.closure.Closure;
  * wrapped closure throws an exception, the safe closure will handle
  * the exception and return.
  * 
- * @param <A> the type of the object passed to the closure
+ * @param <A1> the type of the first object passed to the closure
+ * @param <A2> the type of the second object passed to the closure
  */
-public class SafeClosureWrapper<A>
-	implements Closure<A>
+public class SafeInterruptibleBiClosureWrapper<A1, A2>
+	implements InterruptibleBiClosure<A1, A2>
 {
-	private final Closure<? super A> closure;
+	private final InterruptibleBiClosure<? super A1, ? super A2> closure;
 	private final ExceptionHandler exceptionHandler;
 
 
-	public SafeClosureWrapper(Closure<? super A> closure, ExceptionHandler exceptionHandler) {
+	public SafeInterruptibleBiClosureWrapper(InterruptibleBiClosure<? super A1, ? super A2> closure, ExceptionHandler exceptionHandler) {
 		super();
 		if (closure == null) {
 			throw new NullPointerException();
@@ -40,9 +41,11 @@ public class SafeClosureWrapper<A>
 		this.exceptionHandler = exceptionHandler;
 	}
 
-	public void execute(A argument) {
+	public void execute(A1 argument1, A2 argument2) throws InterruptedException {
 		try {
-			this.closure.execute(argument);
+			this.closure.execute(argument1, argument2);
+		} catch (InterruptedException ex) {
+			throw ex;
 		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
 		}
