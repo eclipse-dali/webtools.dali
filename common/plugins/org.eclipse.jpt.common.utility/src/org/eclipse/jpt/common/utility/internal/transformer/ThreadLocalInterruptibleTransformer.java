@@ -18,14 +18,14 @@ public class ThreadLocalInterruptibleTransformer<I, O>
 	implements InterruptibleTransformer<I, O>
 {
 	private final ThreadLocal<InterruptibleTransformer<? super I, ? extends O>> threadLocal;
-	private final InterruptibleTransformer<? super I, ? extends O> defaultInterruptibleTransformer;
+	private final InterruptibleTransformer<? super I, ? extends O> defaultTransformer;
 
-	public ThreadLocalInterruptibleTransformer(InterruptibleTransformer<? super I, ? extends O> defaultInterruptibleTransformer) {
+	public ThreadLocalInterruptibleTransformer(InterruptibleTransformer<? super I, ? extends O> defaultTransformer) {
 		super();
-		if (defaultInterruptibleTransformer == null) {
+		if (defaultTransformer == null) {
 			throw new NullPointerException();
 		}
-		this.defaultInterruptibleTransformer = defaultInterruptibleTransformer;
+		this.defaultTransformer = defaultTransformer;
 		this.threadLocal = this.buildThreadLocal();
 	}
 
@@ -39,10 +39,7 @@ public class ThreadLocalInterruptibleTransformer<I, O>
 
 	private InterruptibleTransformer<? super I, ? extends O> get() {
 		InterruptibleTransformer<? super I, ? extends O> transformer = this.threadLocal.get();
-		if (transformer != null) {
-			return transformer;
-		}
-		return this.defaultInterruptibleTransformer;
+		return (transformer != null) ? transformer : this.defaultTransformer;
 	}
 
 	/**
@@ -53,7 +50,7 @@ public class ThreadLocalInterruptibleTransformer<I, O>
 	}
 
 	public InterruptibleTransformer<? super I, ? extends O> getDefaultInterruptibleTransformer() {
-		return this.defaultInterruptibleTransformer;
+		return this.defaultTransformer;
 	}
 
 	/**

@@ -46,10 +46,7 @@ public class ThreadLocalTransformer<I, O>
 
 	private Transformer<? super I, ? extends O> get() {
 		Transformer<? super I, ? extends O> transformer = this.threadLocal.get();
-		if (transformer != null) {
-			return transformer;
-		}
-		return this.defaultTransformer;
+		return (transformer != null) ? transformer : this.defaultTransformer;
 	}
 
 	/**
