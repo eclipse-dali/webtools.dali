@@ -20,7 +20,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * 
  * @param <A> the type of the object passed to the closure
  * 
- * @see AbstractClosure
  * @see NullClosure
  * @see ClosureAdapter
  */

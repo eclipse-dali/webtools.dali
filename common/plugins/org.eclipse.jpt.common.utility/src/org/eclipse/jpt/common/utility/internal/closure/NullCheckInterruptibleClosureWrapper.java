@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * @see NullCheckClosureWrapper
- * @see AbstractInterruptibleClosure
  * @see NullClosure
  * @see InterruptibleClosureAdapter
  */
