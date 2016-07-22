@@ -37,7 +37,6 @@ public class JptCommonUtilityModelValueTests {
 		suite.addTestSuite(CompoundPropertyValueModelTests.class);
 		suite.addTestSuite(ExtendedListValueModelWrapperTests.class);
 		suite.addTestSuite(FilteringCollectionValueModelTests.class);
-		suite.addTestSuite(FilteringPropertyValueModelTests.class);
 		suite.addTestSuite(ItemCollectionListValueModelAdapterTests.class);
 		suite.addTestSuite(ItemListListValueModelAdapterTests.class);
 		suite.addTestSuite(ItemPropertyListValueModelAdapterTests.class);

@@ -1158,35 +1158,31 @@ public class PropertyValueModelToolsTests
 		private final ModifiablePropertyValueModel<String> stringModel;
 		private final PluggableModifiablePropertyValueModel.Adapter.Listener<String> listener;
 		private final PropertyChangeListener stringListener;
-		private volatile String value;
 
 		public HalfStringModelAdapter(ModifiablePropertyValueModel<String> stringModel, PluggableModifiablePropertyValueModel.Adapter.Listener<String> listener) {
 			super();
 			this.stringModel = stringModel;
 			this.listener = listener;
 			this.stringListener = new StringListener();
-			this.value = null;
 		}
 
 		public String engageModel() {
 			this.stringModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
 			String v = this.stringModel.getValue();
-			return this.value = v.substring(v.length() / 2);
+			return v.substring(v.length() / 2);
 		}
 
 		public void setValue(String value) {
-			this.value = value;
 			this.stringModel.setValue(value + value);
 		}
 
 		public String disengageModel() {
 			this.stringModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
-			return this.value = null;
+			return null;
 		}
 
 		void stringChanged(String newStringValue) {
 			String newValue = newStringValue.substring(newStringValue.length() / 2);
-			this.value = newValue;
 			this.listener.valueChanged(newValue);
 		}
 
@@ -1271,21 +1267,21 @@ public class PropertyValueModelToolsTests
 
 	public void testNullCheckValueTransformer() {
 		SimplePropertyValueModel<String> stringModel = new SimplePropertyValueModel<>("foo");
-		Transformer<PropertyValueModel<String>, String> transformer = PropertyValueModelTools.nullCheckValueTransformer();
+		Transformer<PropertyValueModel<String>, String> transformer = PropertyValueModelTools.valueTransformer();
 		assertEquals("foo", transformer.transform(stringModel));
 		assertNull(transformer.transform(null));
 	}
 
 	public void testNullCheckValueTransformerObject() {
 		SimplePropertyValueModel<String> stringModel = new SimplePropertyValueModel<>("foo");
-		Transformer<PropertyValueModel<String>, String> transformer = PropertyValueModelTools.nullCheckValueTransformer("XXX");
+		Transformer<PropertyValueModel<String>, String> transformer = PropertyValueModelTools.valueTransformer("XXX");
 		assertEquals("foo", transformer.transform(stringModel));
 		assertEquals("XXX", transformer.transform(null));
 	}
 
 	public void testValueTransformer() {
 		SimplePropertyValueModel<String> stringModel = new SimplePropertyValueModel<>("foo");
-		Transformer<PropertyValueModel<String>, String> transformer = PropertyValueModelTools.valueTransformer();
+		Transformer<PropertyValueModel<String>, String> transformer = PropertyValueModelTools.valueTransformer_();
 		assertEquals("foo", transformer.transform(stringModel));
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.model.value;
+
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Extend {@link PropertyValueModel} to allow the setting of the property's value.
@@ -28,4 +31,18 @@ public interface ModifiablePropertyValueModel<V>
 	 * @see PropertyValueModel#VALUE
 	 */
 	void setValue(V value);
+
+	@SuppressWarnings("rawtypes")
+	BiClosure SET_VALUE_CLOSURE = new SetValueClosure();
+	class SetValueClosure<V>
+		implements BiClosure<ModifiablePropertyValueModel<V>, V>
+	{
+		public void execute(ModifiablePropertyValueModel<V> pvm, V value) {
+			pvm.setValue(value);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.singletonToString(this);
+		}
+	}
 }

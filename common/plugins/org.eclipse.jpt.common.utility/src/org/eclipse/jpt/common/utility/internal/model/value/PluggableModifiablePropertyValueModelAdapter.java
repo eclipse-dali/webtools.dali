@@ -44,10 +44,6 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 		this.closure = closure;
 	}
 
-	public void setValue(V value) {
-		this.closure.execute(value);
-	}
-
 	public V engageModel() {
 		return this.adapter.engageModel();
 	}
@@ -56,14 +52,23 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 		return this.adapter.disengageModel();
 	}
 
+	public void setValue(V value) {
+		this.closure.execute(value);
+	}
 
-	// ********** PluggableModifiablePropertyValueModel.Adapter.Factory **********
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this, this.adapter);
+	}
+
+
+	// ********** Factory **********
 
 	public static class Factory<V>
 		implements PluggableModifiablePropertyValueModel.Adapter.Factory<V>
 	{
-		/* CU private */ final BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory;
-		/* CU private */ final Closure<? super V> closure;
+		private final BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory;
+		private final Closure<? super V> closure;
 
 		public Factory(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<? super V> closure) {
 			super();

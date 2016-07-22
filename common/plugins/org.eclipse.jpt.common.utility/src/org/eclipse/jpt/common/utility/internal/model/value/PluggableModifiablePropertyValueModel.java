@@ -42,17 +42,17 @@ public final class PluggableModifiablePropertyValueModel<V>
 
 	// ********** Adapter interfaces **********
 
-	public interface Adapter<AV>
-		extends BasePluggablePropertyValueModel.Adapter<AV>
+	public interface Adapter<V>
+		extends BasePluggablePropertyValueModel.Adapter<V>
 	{
 		/**
 		 * Set the adapted model's value,
 		 * based on the specified new value of the property value model.
 		 */
-		void setValue(AV value);
+		void setValue(V value);
 
-		interface Factory<AFV>
-			extends BasePluggablePropertyValueModel.Adapter.Factory<AFV, Adapter<AFV>>
+		interface Factory<V>
+			extends BasePluggablePropertyValueModel.Adapter.Factory<V, Adapter<V>>
 		{
 			// NOP
 		}

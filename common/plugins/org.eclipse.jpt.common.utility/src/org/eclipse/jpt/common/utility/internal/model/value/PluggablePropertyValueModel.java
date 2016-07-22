@@ -27,11 +27,11 @@ public final class PluggablePropertyValueModel<V>
 
 	// ********** Adapter interfaces **********
 
-	public interface Adapter<AV>
-		extends BasePluggablePropertyValueModel.Adapter<AV>
+	public interface Adapter<V>
+		extends BasePluggablePropertyValueModel.Adapter<V>
 	{
-		interface Factory<AFV>
-			extends BasePluggablePropertyValueModel.Adapter.Factory<AFV, Adapter<AFV>>
+		interface Factory<V>
+			extends BasePluggablePropertyValueModel.Adapter.Factory<V, Adapter<V>>
 		{
 			// NOP
 		}

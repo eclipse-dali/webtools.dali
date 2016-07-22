@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -18,7 +21,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * <p>
  * This adapter is constructed with a {@link PropertyValueModel
  * property value model} and a {@link Transformer transformer} that can
- * transform the property to another value.
+ * transform the wrapped model's value to this model's derived value.
  * <p>
  * This is an adapter that can be used by a {@link PluggablePropertyValueModel}.
  * 
@@ -28,28 +31,104 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @see PluggablePropertyValueModel
  */
 public final class PropertyPluggablePropertyValueModelAdapter<V1, V2>
-	extends BasePropertyPluggablePropertyValueModelAdapter<V1, V2, PropertyValueModel<? extends V1>, PluggablePropertyValueModel.Adapter<V2>, PropertyPluggablePropertyValueModelAdapter.Factory<V1, V2>>
-	implements PluggablePropertyValueModel.Adapter<V2>
+	implements PluggablePropertyValueModel.Adapter<V2>, PropertyChangeListener
 {
+	/** The wrapped model */
+	private final PropertyValueModel<? extends V1> propertyModel;
+
+	/** Transformer that converts the wrapped model's value to this model's value. */
+	private final Transformer<? super V1, ? extends V2> transformer;
+
+	/** The <em>real</em> adapter. */
+	private final BasePluggablePropertyValueModel.Adapter.Listener<V2> listener;
+
+	/** Cached copy of model's value. */
+	/* package */ volatile V1 propertyModelValue;
+
+
+	// ********** constructors **********
 
 	public PropertyPluggablePropertyValueModelAdapter(Factory<V1, V2> factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
-		super(factory, listener);
+		super();
+		if (factory == null) {
+			throw new NullPointerException();
+		}
+		this.propertyModel = factory.propertyModel;
+		this.transformer = factory.transformer;
+		if (listener == null) {
+			throw new NullPointerException();
+		}
+		this.listener = listener;
+	}
+
+
+	// ********** BasePluggablePropertyValueModel.Adapter **********
+
+	public V2 engageModel() {
+		this.propertyModel.addPropertyChangeListener(PropertyValueModel.VALUE, this);
+		this.propertyModelValue = this.propertyModel.getValue();
+		return this.buildValue();
+	}
+
+	public V2 disengageModel() {
+		this.propertyModel.removePropertyChangeListener(PropertyValueModel.VALUE, this);
+		this.propertyModelValue = null;
+		return null;
+	}
+
+
+	// ********** PropertyChangeListener **********
+
+	@SuppressWarnings("unchecked")
+	public void propertyChanged(PropertyChangeEvent event) {
+		this.propertyModelValue = (V1) event.getNewValue();
+		this.update();
+	}
+
+
+	// ********** misc **********
+
+	private void update() {
+		this.listener.valueChanged(this.buildValue());
+	}
+
+	private V2 buildValue() {
+		return this.transformer.transform(this.propertyModelValue);
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this, this.buildValue());
 	}
 
 
 	// ********** Factory **********
 
 	public static class Factory<V1, V2>
-		extends BasePropertyPluggablePropertyValueModelAdapter.Factory<V1, V2, PropertyValueModel<? extends V1>, PluggablePropertyValueModel.Adapter<V2>>
 		implements PluggablePropertyValueModel.Adapter.Factory<V2>
 	{
+		/* CU private */ final PropertyValueModel<? extends V1> propertyModel;
+		/* CU private */ final Transformer<? super V1, ? extends V2> transformer;
+
 		public Factory(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer) {
-			super(propertyModel, transformer);
+			super();
+			if (propertyModel == null) {
+				throw new NullPointerException();
+			}
+			this.propertyModel = propertyModel;
+			if (transformer == null) {
+				throw new NullPointerException();
+			}
+			this.transformer = transformer;
+		}
+
+		public PropertyPluggablePropertyValueModelAdapter<V1, V2> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+			return new PropertyPluggablePropertyValueModelAdapter<>(this, listener);
 		}
 
 		@Override
-		public PluggablePropertyValueModel.Adapter<V2> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
-			return new PropertyPluggablePropertyValueModelAdapter<>(this, listener);
+		public String toString() {
+			return ObjectTools.toString(this);
 		}
 	}
 }
