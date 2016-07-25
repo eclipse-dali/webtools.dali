@@ -62,6 +62,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelToo
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -69,11 +70,13 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
+import org.eclipse.jpt.jaxb.ui.JaxbProjectModel;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.SelectFileOrXMLCatalogIdPanel;
@@ -120,7 +123,7 @@ public class JaxbSchemasPropertiesPage
 		super();
 		this.resourceManager = this.buildResourceManager();
 		this.projectModel = new SimplePropertyValueModel<>();
-		this.jaxbProjectModel = new JaxbProjectModel(this.projectModel);
+		this.jaxbProjectModel = this.buildJaxbProjectModel();
 		this.trigger = PropertyValueModelTools.bufferedPropertyValueModelAdapterTrigger();
 		this.schemasModel = new SchemasModel(this.jaxbProjectModel, this.trigger);
 		this.schemasSelectionModel = new SimpleCollectionValueModel<>();
@@ -133,6 +136,25 @@ public class JaxbSchemasPropertiesPage
 
 	private ResourceManager getParentResourceManager() {
 		return JFaceResources.getResources();
+	}
+
+	private PropertyValueModel<JaxbProject> buildJaxbProjectModel() {
+		return PropertyValueModelTools.compound(this.buildJaxbProjectModelModel());
+	}
+
+	private PropertyValueModel<PropertyValueModel<JaxbProject>> buildJaxbProjectModelModel() {
+		return PropertyValueModelTools.transform(this.projectModel, JAXB_PROJECT_MODEL_TRANSFORMER);
+	}
+
+	private static final Transformer<IProject, PropertyValueModel<JaxbProject>> JAXB_PROJECT_MODEL_TRANSFORMER = new JaxbProjectModelTransformer();
+
+	/* CU private */ static class JaxbProjectModelTransformer
+		extends TransformerAdapter<IProject, PropertyValueModel<JaxbProject>>
+	{
+		@Override
+		public PropertyValueModel<JaxbProject> transform(IProject project) {
+			return project.getAdapter(JaxbProjectModel.class);
+		}
 	}
 
 	protected IProject getProject() {

@@ -14,20 +14,22 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.Association;
+import org.eclipse.jpt.common.utility.internal.closure.ClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -36,6 +38,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -43,6 +46,7 @@ import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
+import org.eclipse.jpt.jaxb.ui.JaxbProjectModel;
 import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiMessages;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
@@ -83,7 +87,7 @@ public class JaxbProjectPropertiesPage
 	
 	@Override
 	protected void buildModels() {
-		this.jaxbProjectModel = new JaxbProjectModel(this.projectModel);
+		this.jaxbProjectModel = this.buildJaxbProjectModel();
 		
 		Association<ModifiablePropertyValueModel<JaxbPlatformConfig>, PropertyValueModel<Boolean>> platformAssoc = this.buildPlatformModel();
 		this.platformModel = platformAssoc.getKey();
@@ -92,10 +96,57 @@ public class JaxbProjectPropertiesPage
 	}
 	
 	
+	// ***** JAXB project model
+	private PropertyValueModel<JaxbProject> buildJaxbProjectModel() {
+		return PropertyValueModelTools.compound(this.buildJaxbProjectModelModel());
+	}
+
+	private PropertyValueModel<PropertyValueModel<JaxbProject>> buildJaxbProjectModelModel() {
+		return PropertyValueModelTools.transform(this.projectModel, JAXB_PROJECT_MODEL_TRANSFORMER);
+	}
+
+	private static final Transformer<IProject, PropertyValueModel<JaxbProject>> JAXB_PROJECT_MODEL_TRANSFORMER = new JaxbProjectModelTransformer();
+
+	/* CU private */ static class JaxbProjectModelTransformer
+		extends TransformerAdapter<IProject, PropertyValueModel<JaxbProject>>
+	{
+		@Override
+		public PropertyValueModel<JaxbProject> transform(IProject project) {
+			return project.getAdapter(JaxbProjectModel.class);
+		}
+	}
+
 	// ***** platform ID model
 	
 	private Association<ModifiablePropertyValueModel<JaxbPlatformConfig>, PropertyValueModel<Boolean>> buildPlatformModel() {
-		return PropertyValueModelTools.buffer(new PlatformModel(this.jaxbProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildPlatformModel_(), this.trigger);
+	}
+	
+	private ModifiablePropertyValueModel<JaxbPlatformConfig> buildPlatformModel_() {
+		return PropertyValueModelTools.transform(this.jaxbProjectModel, JAXB_PROJECT_PLATFORM_CONFIG_TRANSFORMER, new JaxbProjectSetPlatformConfigClosure());
+	}
+	
+	private static final TransformerAdapter<JaxbProject, JaxbPlatformConfig> JAXB_PROJECT_PLATFORM_CONFIG_TRANSFORMER = new JaxbProjectPlatformConfigTransformer();
+	static class JaxbProjectPlatformConfigTransformer
+		extends TransformerAdapter<JaxbProject, JaxbPlatformConfig>
+	{
+		@Override
+		public JaxbPlatformConfig transform(JaxbProject jaxbProject) {
+			return jaxbProject.getPlatform().getConfig();
+		}
+	}
+
+	class JaxbProjectSetPlatformConfigClosure
+		extends ClosureAdapter<JaxbPlatformConfig>
+	{
+		@Override
+		public void execute(JaxbPlatformConfig platformConfig) {
+			setJaxbProjectPlatformConfig(platformConfig);
+		}
+	}
+
+	void setJaxbProjectPlatformConfig(JaxbPlatformConfig platformConfig) {
+		JaxbPreferences.setJaxbPlatformID(this.jaxbProjectModel.getValue().getProject(), platformConfig.getId());
 	}
 	
 	private PropertyChangeListener buildPlatformListener(){
@@ -308,42 +359,5 @@ public class JaxbProjectPropertiesPage
 		
 		/* library provider */
 		// default validation is OK
-	}
-	
-	
-	// ********** UI model adapters **********
-	
-	/**
-	 * Treat the JAXB platform as an "aspect" of the JAXB project.
-	 * The platform ID is stored in the project preferences.
-	 * The platform ID does not change for a JAXB project - if the user wants a
-	 * different platform, we build an entirely new JAXB project.
-	 */
-	static class PlatformModel
-			extends AspectPropertyValueModelAdapter<JaxbProject, JaxbPlatformConfig> {
-		
-		PlatformModel(PropertyValueModel<JaxbProject> jaxbProjectModel) {
-			super(jaxbProjectModel);
-		}
-		
-		@Override
-		protected JaxbPlatformConfig buildValue_() {
-			return this.subject.getPlatform().getConfig();
-		}
-		
-		@Override
-		public void setValue_(JaxbPlatformConfig newPlatform) {
-			JaxbPreferences.setJaxbPlatformID(this.subject.getProject(), newPlatform.getId());
-		}
-		
-		@Override
-		protected void engageSubject_() {
-			// the platform ID does not change
-		}
-		
-		@Override
-		protected void disengageSubject_() {
-			// the platform ID does not change
-		}
 	}
 }
