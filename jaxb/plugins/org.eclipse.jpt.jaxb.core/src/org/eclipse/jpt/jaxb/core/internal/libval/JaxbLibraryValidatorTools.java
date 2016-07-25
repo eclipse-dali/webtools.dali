@@ -133,8 +133,8 @@ public class JaxbLibraryValidatorTools {
 		if (vm instanceof IVMInstall2) {
 			String javaVersion = ((IVMInstall2) vm).getJavaVersion();
 			if (javaVersion != null) {
-				// all other versions except 1.7 and 1.6 have no corresponding version (as of yet)
-				if (javaVersion.startsWith(JavaCore.VERSION_1_7)) {
+				// versions earlier than 1.6 have no corresponding version (as of yet)
+				if (javaVersion.startsWith(JavaCore.VERSION_1_7) || javaVersion.startsWith(JavaCore.VERSION_1_8)) {
 					return FACET_VERSION_2_2;
 				}
 				// 1.6 must be further analyzed
