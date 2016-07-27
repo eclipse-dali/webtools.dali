@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.BasePluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -90,7 +89,7 @@ public class FileAdapterFactory
 		 * (At least we hope there is only a single JPA file remaining.)
 		 */
 		LocalJpaFileModel(IFile file) {
-			super(new CollectionPluggablePropertyValueModelAdapter.Factory<>(
+			super(CollectionValueModelTools.transformationPluggablePropertyValueModelAdapterFactory(
 							CollectionValueModelTools.filter(
 								new JpaFilesModel(file.getProject().getAdapter(JpaProjectModel.class)),
 								new JpaFile.FileEquals(file)

@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionTransformationPluggablePropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -179,7 +179,7 @@ public class CollectionPropertyValueModelAdapterTests
 	}
 
 	public void testToString3() {
-		CollectionPluggablePropertyValueModelAdapter.Factory<String, Boolean> f = new CollectionPluggablePropertyValueModelAdapter.Factory<>(this.collectionModel, new LocalTransformer("666"));
+		CollectionTransformationPluggablePropertyValueModelAdapter.Factory<String, Boolean> f = new CollectionTransformationPluggablePropertyValueModelAdapter.Factory<>(this.collectionModel, new LocalTransformer("666"));
 		assertTrue(f.toString().indexOf("Factory") != -1);
 	}
 

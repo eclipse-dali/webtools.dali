@@ -89,7 +89,7 @@ public class ProjectAdapterFactory
 		 * (At least we hope there is only a single JPA project remaining.)
 		 */
 		LocalJpaProjectModel(IProject project) {
-			super(CollectionValueModelTools.pluggablePropertyValueModelAdapterFactory(
+			super(CollectionValueModelTools.transformationPluggablePropertyValueModelAdapterFactory(
 							CollectionValueModelTools.filter(
 								project.getWorkspace().getAdapter(JpaProjectsModel.class),
 								new JpaProject.ProjectEquals(project)

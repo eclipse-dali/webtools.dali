@@ -1209,7 +1209,7 @@ public class PropertyValueModelToolsTests
 	}
 
 	public void testPluggableModifiablePropertyValueModel_NPE() {
-		PluggablePropertyValueModel.Adapter.Factory<String> factory = CollectionValueModelTools.pluggablePropertyValueModelAdapterFactory(new SimpleCollectionValueModel<>(), new TransformerAdapter<>());
+		PluggablePropertyValueModel.Adapter.Factory<String> factory = CollectionValueModelTools.transformationPluggablePropertyValueModelAdapterFactory(new SimpleCollectionValueModel<>(), new TransformerAdapter<>());
 		Closure<String> closure = null;
 		boolean exCaught = false;
 		try {

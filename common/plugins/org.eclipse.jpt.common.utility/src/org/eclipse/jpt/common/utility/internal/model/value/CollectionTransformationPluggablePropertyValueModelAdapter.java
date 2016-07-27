@@ -39,7 +39,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @see PluggablePropertyValueModel
  */
-public final class CollectionPluggablePropertyValueModelAdapter<E, V>
+public final class CollectionTransformationPluggablePropertyValueModelAdapter<E, V>
 	implements PluggablePropertyValueModel.Adapter<V>, CollectionChangeListener
 {
 	/** The wrapped model */
@@ -63,7 +63,7 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 
 	// ********** constructors **********
 
-	public CollectionPluggablePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public CollectionTransformationPluggablePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 		super();
 		if (factory == null) {
 			throw new NullPointerException();
@@ -157,7 +157,7 @@ public final class CollectionPluggablePropertyValueModelAdapter<E, V>
 		}
 
 		public Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
-			return new CollectionPluggablePropertyValueModelAdapter<>(this, listener);
+			return new CollectionTransformationPluggablePropertyValueModelAdapter<>(this, listener);
 		}
 
 		@Override

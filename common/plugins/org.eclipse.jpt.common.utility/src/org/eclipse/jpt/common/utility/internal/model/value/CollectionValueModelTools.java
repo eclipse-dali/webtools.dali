@@ -189,7 +189,7 @@ public final class CollectionValueModelTools {
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <E, V> PropertyValueModel<V> propertyValueModel(CollectionValueModel<? extends E> collectionModel, Transformer<? super Collection<E>, V> transformer) {
-		return PropertyValueModelTools.propertyValueModel(pluggablePropertyValueModelAdapterFactory(collectionModel, transformer));
+		return PropertyValueModelTools.propertyValueModel(transformationPluggablePropertyValueModelAdapterFactory(collectionModel, transformer));
 	}
 
 	/**
@@ -197,8 +197,8 @@ public final class CollectionValueModelTools {
 	 * collection value model and transformer.
 	 * @see PluggablePropertyValueModel
 	 */
-	public static <E, V> PluggablePropertyValueModel.Adapter.Factory<V> pluggablePropertyValueModelAdapterFactory(CollectionValueModel<? extends E> collectionModel, Transformer<? super Collection<E>, V> transformer) {
-		return new CollectionPluggablePropertyValueModelAdapter.Factory<>(collectionModel, transformer);
+	public static <E, V> PluggablePropertyValueModel.Adapter.Factory<V> transformationPluggablePropertyValueModelAdapterFactory(CollectionValueModel<? extends E> collectionModel, Transformer<? super Collection<E>, V> transformer) {
+		return new CollectionTransformationPluggablePropertyValueModelAdapter.Factory<>(collectionModel, transformer);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public final class CollectionValueModelTools {
 	 * This model will use the specified collection mutator to modify the collection value model.
 	 */
 	public static ModifiablePropertyValueModel<Boolean> booleanModifiablePropertyValueModel(CollectionValueModel<?> collectionModel, Transformer<? super Collection<?>, Boolean> transformer, BooleanClosure.Adapter collectionMutator) {
-		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = pluggablePropertyValueModelAdapterFactory(collectionModel, transformer);
+		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = transformationPluggablePropertyValueModelAdapterFactory(collectionModel, transformer);
 		Closure<Boolean> closure = ClosureTools.booleanClosure(collectionMutator);
 		return PropertyValueModelTools.pluggableModifiablePropertyValueModel(factory, closure);
 	}

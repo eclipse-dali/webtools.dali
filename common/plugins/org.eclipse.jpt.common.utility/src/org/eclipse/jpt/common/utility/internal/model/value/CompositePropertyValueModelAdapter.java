@@ -47,7 +47,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <V> the type of the model's derived value
  * 
  * @see PluggablePropertyValueModel
- * @see CollectionPluggablePropertyValueModelAdapter
+ * @see CollectionTransformationPluggablePropertyValueModelAdapter
  */
 public final class CompositePropertyValueModelAdapter<E, V>
 	implements PluggablePropertyValueModel.Adapter<V>, CollectionChangeListener
