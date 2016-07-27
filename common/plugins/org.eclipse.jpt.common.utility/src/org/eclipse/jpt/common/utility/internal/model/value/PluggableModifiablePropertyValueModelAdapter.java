@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
  * 
  * @param <V> the type of the model's derived value
  */
-public class PluggableModifiablePropertyValueModelAdapter<V>
+public final class PluggableModifiablePropertyValueModelAdapter<V>
 	implements PluggableModifiablePropertyValueModel.Adapter<V>
 {
 	/** Read the adapted model with this. */
@@ -64,7 +64,7 @@ public class PluggableModifiablePropertyValueModelAdapter<V>
 
 	// ********** Factory **********
 
-	public static class Factory<V>
+	public static final class Factory<V>
 		implements PluggableModifiablePropertyValueModel.Adapter.Factory<V>
 	{
 		private final BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory;

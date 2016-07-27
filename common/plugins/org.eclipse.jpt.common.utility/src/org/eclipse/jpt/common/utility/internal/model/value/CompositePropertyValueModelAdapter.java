@@ -89,13 +89,20 @@ public final class CompositePropertyValueModelAdapter<E, V>
 
 	// ********** constructor **********
 
-	public CompositePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public CompositePropertyValueModelAdapter(
+			CollectionValueModel<? extends PropertyValueModel<? extends E>> collectionModel,
+			Transformer<? super Collection<E>, V> transformer,
+			BasePluggablePropertyValueModel.Adapter.Listener<V> listener
+	) {
 		super();
-		if (factory == null) {
+		if (collectionModel == null) {
 			throw new NullPointerException();
 		}
-		this.collectionModel = factory.collectionModel;
-		this.transformer = factory.transformer;
+		this.collectionModel = collectionModel;
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
+		this.transformer = transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -234,11 +241,11 @@ public final class CompositePropertyValueModelAdapter<E, V>
 
 	// ********** PluggablePropertyValueModel.Adapter.Factory **********
 
-	public static class Factory<E, V>
+	public static final class Factory<E, V>
 		implements PluggablePropertyValueModel.Adapter.Factory<V>
 	{
-		/* CU private */ final CollectionValueModel<? extends PropertyValueModel<? extends E>> collectionModel;
-		/* CU private */ final Transformer<? super Collection<E>, V> transformer;
+		private final CollectionValueModel<? extends PropertyValueModel<? extends E>> collectionModel;
+		private final Transformer<? super Collection<E>, V> transformer;
 
 		public Factory(CollectionValueModel<? extends PropertyValueModel<? extends E>> collectionModel, Transformer<? super Collection<E>, V> transformer) {
 			super();
@@ -253,7 +260,7 @@ public final class CompositePropertyValueModelAdapter<E, V>
 		}
 
 		public Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
-			return new CompositePropertyValueModelAdapter<>(this, listener);
+			return new CompositePropertyValueModelAdapter<>(this.collectionModel, this.transformer, listener);
 		}
 
 		@Override

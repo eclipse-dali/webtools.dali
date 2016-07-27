@@ -53,7 +53,11 @@ public final class PluggablePropertyAspectAdapter<V, S, SM extends PropertyValue
 	private final BasePluggablePropertyValueModel.Adapter.Listener<V> listener; // backpointer
 
 
-	public PluggablePropertyAspectAdapter(SM subjectModel, SubjectAdapter.Factory<V, S> subjectAdapterFactory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public PluggablePropertyAspectAdapter(
+			SM subjectModel,
+			SubjectAdapter.Factory<V, S> subjectAdapterFactory,
+			BasePluggablePropertyValueModel.Adapter.Listener<V> listener
+	) {
 		super();
 		if (subjectModel == null) {
 			throw new NullPointerException();

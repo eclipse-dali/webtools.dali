@@ -46,7 +46,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * @param <V> the type of the model's value
  * @see PropertyAspectAdapterXXXX
  */
-public class BufferedPropertyValueModelAdapter<V>
+public final class BufferedPropertyValueModelAdapter<V>
 	implements PluggableModifiablePropertyValueModel.Adapter<V>, PropertyChangeListener
 {
 	/**
@@ -263,7 +263,7 @@ public class BufferedPropertyValueModelAdapter<V>
 	 * A trigger is used to <em>accept</em> or <em>reset</em> one or more
 	 * buffered value models.
 	 */
-	public static class Trigger {
+	public static final class Trigger {
 		private final ListenerList<Listener> listenerList = ModelTools.listenerList();
 
 		public Trigger() {
@@ -310,7 +310,7 @@ public class BufferedPropertyValueModelAdapter<V>
 
 	// ********** Factory **********
 
-	public static class Factory<V>
+	public static final class Factory<V>
 		implements PluggableModifiablePropertyValueModel.Adapter.Factory<V>
 	{
 		/* CU private */ final ModifiablePropertyValueModel<V> wrappedValueModel;

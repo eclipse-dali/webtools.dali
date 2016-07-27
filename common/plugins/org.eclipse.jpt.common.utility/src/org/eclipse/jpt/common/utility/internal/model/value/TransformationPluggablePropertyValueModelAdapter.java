@@ -48,13 +48,20 @@ public final class TransformationPluggablePropertyValueModelAdapter<V1, V2>
 
 	// ********** constructors **********
 
-	public TransformationPluggablePropertyValueModelAdapter(Factory<V1, V2> factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+	public TransformationPluggablePropertyValueModelAdapter(
+			PropertyValueModel<? extends V1> propertyModel,
+			Transformer<? super V1, ? extends V2> transformer,
+			BasePluggablePropertyValueModel.Adapter.Listener<V2> listener
+	) {
 		super();
-		if (factory == null) {
+		if (propertyModel == null) {
 			throw new NullPointerException();
 		}
-		this.propertyModel = factory.propertyModel;
-		this.transformer = factory.transformer;
+		this.propertyModel = propertyModel;
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
+		this.transformer = transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -104,11 +111,11 @@ public final class TransformationPluggablePropertyValueModelAdapter<V1, V2>
 
 	// ********** Factory **********
 
-	public static class Factory<V1, V2>
+	public static final class Factory<V1, V2>
 		implements PluggablePropertyValueModel.Adapter.Factory<V2>
 	{
-		/* CU private */ final PropertyValueModel<? extends V1> propertyModel;
-		/* CU private */ final Transformer<? super V1, ? extends V2> transformer;
+		private final PropertyValueModel<? extends V1> propertyModel;
+		private final Transformer<? super V1, ? extends V2> transformer;
 
 		public Factory(PropertyValueModel<? extends V1> propertyModel, Transformer<? super V1, ? extends V2> transformer) {
 			super();
@@ -123,7 +130,7 @@ public final class TransformationPluggablePropertyValueModelAdapter<V1, V2>
 		}
 
 		public TransformationPluggablePropertyValueModelAdapter<V1, V2> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
-			return new TransformationPluggablePropertyValueModelAdapter<>(this, listener);
+			return new TransformationPluggablePropertyValueModelAdapter<>(this.propertyModel, this.transformer, listener);
 		}
 
 		@Override

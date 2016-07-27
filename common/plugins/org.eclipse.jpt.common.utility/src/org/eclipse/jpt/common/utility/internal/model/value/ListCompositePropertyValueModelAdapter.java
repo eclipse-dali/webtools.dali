@@ -86,13 +86,20 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 
 	// ********** constructor **********
 
-	public ListCompositePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public ListCompositePropertyValueModelAdapter(
+			ListValueModel<? extends PropertyValueModel<? extends E>> listModel,
+			Transformer<? super List<E>, V> transformer,
+			BasePluggablePropertyValueModel.Adapter.Listener<V> listener
+	) {
 		super();
-		if (factory == null) {
+		if (listModel == null) {
 			throw new NullPointerException();
 		}
-		this.listModel = factory.listModel;
-		this.transformer = factory.transformer;
+		this.listModel = listModel;
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
+		this.transformer = transformer;
 		if (listener == null) {
 			throw new NullPointerException();
 		}
@@ -252,11 +259,11 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 
 	// ********** PluggablePropertyValueModel.Adapter.Factory **********
 
-	public static class Factory<E, V>
+	public static final class Factory<E, V>
 		implements PluggablePropertyValueModel.Adapter.Factory<V>
 	{
-		/* CU private */ final ListValueModel<? extends PropertyValueModel<? extends E>> listModel;
-		/* CU private */ final Transformer<? super List<E>, V> transformer;
+		private final ListValueModel<? extends PropertyValueModel<? extends E>> listModel;
+		private final Transformer<? super List<E>, V> transformer;
 
 		public Factory(ListValueModel<? extends PropertyValueModel<? extends E>> listModel, Transformer<? super List<E>, V> transformer) {
 			super();
@@ -271,7 +278,7 @@ public final class ListCompositePropertyValueModelAdapter<E, V>
 		}
 
 		public Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
-			return new ListCompositePropertyValueModelAdapter<>(this, listener);
+			return new ListCompositePropertyValueModelAdapter<>(this.listModel, this.transformer, listener);
 		}
 
 		@Override
