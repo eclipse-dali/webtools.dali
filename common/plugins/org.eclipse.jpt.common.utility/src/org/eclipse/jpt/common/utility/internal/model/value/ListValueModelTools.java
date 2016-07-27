@@ -165,7 +165,7 @@ public final class ListValueModelTools {
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <E, V> PropertyValueModel<V> propertyValueModel(ListValueModel<? extends E> listModel, Transformer<? super List<E>, V> transformer) {
-		return PropertyValueModelTools.propertyValueModel(pluggablePropertyValueModelAdapterFactory(listModel, transformer));
+		return PropertyValueModelTools.propertyValueModel(transformationPluggablePropertyValueModelAdapterFactory(listModel, transformer));
 	}
 
 	/**
@@ -173,8 +173,8 @@ public final class ListValueModelTools {
 	 * list value model and transformer.
 	 * @see PluggablePropertyValueModel
 	 */
-	public static <E, V> PluggablePropertyValueModel.Adapter.Factory<V> pluggablePropertyValueModelAdapterFactory(ListValueModel<? extends E> listModel, Transformer<? super List<E>, V> transformer) {
-		return new ListPluggablePropertyValueModelAdapter.Factory<>(listModel, transformer);
+	public static <E, V> PluggablePropertyValueModel.Adapter.Factory<V> transformationPluggablePropertyValueModelAdapterFactory(ListValueModel<? extends E> listModel, Transformer<? super List<E>, V> transformer) {
+		return new ListTransformationPluggablePropertyValueModelAdapter.Factory<>(listModel, transformer);
 	}
 
 	/**
@@ -194,7 +194,7 @@ public final class ListValueModelTools {
 	 * This model will use the specified list mutator to modify the list value model.
 	 */
 	public static ModifiablePropertyValueModel<Boolean> booleanModifiablePropertyValueModel(ListValueModel<?> listModel, Transformer<? super Collection<?>, Boolean> transformer, BooleanClosure.Adapter listMutator) {
-		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = pluggablePropertyValueModelAdapterFactory(listModel, transformer);
+		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = transformationPluggablePropertyValueModelAdapterFactory(listModel, transformer);
 		Closure<Boolean> closure = ClosureTools.booleanClosure(listMutator);
 		return PropertyValueModelTools.pluggableModifiablePropertyValueModel(factory, closure);
 	}

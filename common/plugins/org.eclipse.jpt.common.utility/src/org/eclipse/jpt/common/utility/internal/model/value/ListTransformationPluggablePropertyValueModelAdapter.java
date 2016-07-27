@@ -43,7 +43,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @see PluggablePropertyValueModel
  */
-public final class ListPluggablePropertyValueModelAdapter<E, V>
+public final class ListTransformationPluggablePropertyValueModelAdapter<E, V>
 	implements PluggablePropertyValueModel.Adapter<V>, ListChangeListener
 {
 	/** The wrapped model */
@@ -67,7 +67,7 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 
 	// ********** constructors **********
 
-	public ListPluggablePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
+	public ListTransformationPluggablePropertyValueModelAdapter(Factory<E, V> factory, BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
 		super();
 		if (factory == null) {
 			throw new NullPointerException();
@@ -177,7 +177,7 @@ public final class ListPluggablePropertyValueModelAdapter<E, V>
 		}
 
 		public Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
-			return new ListPluggablePropertyValueModelAdapter<>(this, listener);
+			return new ListTransformationPluggablePropertyValueModelAdapter<>(this, listener);
 		}
 
 		@Override

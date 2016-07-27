@@ -152,7 +152,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultPrimaryKeyJoinColumnModel() {
-		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = ListValueModelTools.pluggablePropertyValueModelAdapterFactory(
+		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = ListValueModelTools.transformationPluggablePropertyValueModelAdapterFactory(
 				this.buildSpecifiedPrimaryKeyJoinColumnsListModel(),
 				new OverrideDefaultPrimaryKeyJoinColumnModelTransformer()
 			);

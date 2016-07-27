@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.ListPluggablePropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListTransformationPluggablePropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
@@ -206,7 +206,7 @@ public class ListPropertyValueModelAdapterTests
 	}
 
 	public void testToString3() {
-		ListPluggablePropertyValueModelAdapter.Factory<String, Boolean> f = new ListPluggablePropertyValueModelAdapter.Factory<>(this.listModel, new LocalTransformer(2, "666"));
+		ListTransformationPluggablePropertyValueModelAdapter.Factory<String, Boolean> f = new ListTransformationPluggablePropertyValueModelAdapter.Factory<>(this.listModel, new LocalTransformer(2, "666"));
 		assertTrue(f.toString().indexOf("Factory") != -1);
 	}
 
