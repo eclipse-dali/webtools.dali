@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,10 +55,11 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -304,7 +305,8 @@ public class JpaMakePersistentWizardPage
 			}
 		});
 
-		SWTBindingTools.bindEnabledState(new ListInOrmMappingFileModel(this.annotateInJavaModel), mappingFileLink, mappingFileText, browseButton);
+		PropertyValueModel<Boolean> notAnnotateInJavaModel = PropertyValueModelTools.transform_(this.annotateInJavaModel, TransformerTools.notBooleanTransformer());
+		SWTBindingTools.bindEnabledState(notAnnotateInJavaModel, mappingFileLink, mappingFileText, browseButton);
 		
 		return composite;
 	}
@@ -648,24 +650,6 @@ public class JpaMakePersistentWizardPage
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			return this.javaElementComparator.compare(viewer, ((TypeConfig) e1).jdtType,  ((TypeConfig) e2).jdtType);
 		}
-	}
-	
-	static class ListInOrmMappingFileModel
-		extends AspectPropertyValueModelAdapter<Boolean, Boolean>
-	{
-		ListInOrmMappingFileModel(PropertyValueModel<Boolean> annotateInJavaModel) {
-			super(annotateInJavaModel);
-		}
-
-		@Override
-		protected Boolean buildValue_() {
-			return Boolean.valueOf(!this.subject.booleanValue());
-		}
-
-		@Override
-		protected void engageSubject_() {/*nothing*/}
-		@Override
-		protected void disengageSubject_() {/*nothing*/}
 	}
 
 

@@ -11,9 +11,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -28,26 +26,26 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @param <V> the type of the adapter's value
  * @param <S> the type of the subject (and the subject model's value)
- * @param <SM> the type of the subject model
  * 
  * @see PluggableModifiablePropertyValueModel
  */
-public final class ModifiablePropertyAspectAdapter<V, S extends Model, SM extends PropertyValueModel<S>>
+public final class ModifiablePropertyAspectAdapter<V, S>
 	implements PluggableModifiablePropertyValueModel.Adapter<V>
 {
-	/** The "get" half of the aspect adapter */
-	private final PropertyAspectAdapter<V, S, SM> adapter;
+	/** The adapter used to "get" the subject's aspect value. */
+	private final GetAdapter<V, S> getAdapter;
 
 	/** The closure used to "set" the subject's new aspect value. */
 	private final BiClosure<? super S, ? super V> setClosure;
 
 
-	public ModifiablePropertyAspectAdapter(PropertyAspectAdapter<V, S, SM> adapter, BiClosure<? super S, ? super V> setClosure) {
+	public ModifiablePropertyAspectAdapter(GetAdapter<V, S> getAdapter, BiClosure<? super S, ? super V> setClosure) {
 		super();
-		if (adapter == null) {
+		if (getAdapter == null) {
 			throw new NullPointerException();
 		}
-		this.adapter = adapter;
+		this.getAdapter = getAdapter;
+
 		if (setClosure == null) {
 			throw new NullPointerException();
 		}
@@ -55,37 +53,55 @@ public final class ModifiablePropertyAspectAdapter<V, S extends Model, SM extend
 	}
 
 	public V engageModel() {
-		return this.adapter.engageModel();
+		return this.getAdapter.engageModel();
 	}
 
 	public V disengageModel() {
-		return this.adapter.disengageModel();
+		return this.getAdapter.disengageModel();
 	}
 
 	public void setValue(V value) {
-		this.setClosure.execute(this.adapter.subject, value);
+		this.setClosure.execute(this.getAdapter.getSubject(), value);
 	}
 
 	@Override
 	public String toString() {
-		return ObjectTools.toString(this, this.adapter.buildValue());
+		return ObjectTools.toString(this, this.getAdapter);
 	}
 
+	/**
+	 * Extend the pluggable pvm adapter so we can get the
+	 * other adapter's subject and set the value of its aspect.
+	 */
+	public interface GetAdapter<V, S>
+		extends PluggablePropertyValueModel.Adapter<V>
+	{
+		/**
+		 * Return the adapter's subject.
+		 */
+		S getSubject();
+
+		interface Factory<V, S> {
+			GetAdapter<V, S> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener);
+		}
+	}
+		
 
 	// ********** Factory **********
 
-	public static final class Factory<V, S extends Model, SM extends PropertyValueModel<S>>
+	public static final class Factory<V, S>
 		implements PluggableModifiablePropertyValueModel.Adapter.Factory<V>
 	{
-		private final PropertyAspectAdapter.Factory<V, S, SM> factory;
+		private final ModifiablePropertyAspectAdapter.GetAdapter.Factory<V, S> getAdapterFactory;
 		private final BiClosure<? super S, ? super V> setClosure;
 
-		public Factory(PropertyAspectAdapter.Factory<V, S, SM> factory, BiClosure<? super S, ? super V> setClosure) {
+		public Factory(GetAdapter.Factory<V, S> getAdapterFactory, BiClosure<? super S, ? super V> setClosure) {
 			super();
-			if (factory == null) {
+			if (getAdapterFactory == null) {
 				throw new NullPointerException();
 			}
-			this.factory = factory;
+			this.getAdapterFactory = getAdapterFactory;
+
 			if (setClosure == null) {
 				throw new NullPointerException();
 			}
@@ -94,7 +110,7 @@ public final class ModifiablePropertyAspectAdapter<V, S extends Model, SM extend
 
 		@Override
 		public PluggableModifiablePropertyValueModel.Adapter<V> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V> listener) {
-			return new ModifiablePropertyAspectAdapter<>(this.factory.buildAdapter(listener), this.setClosure);
+			return new ModifiablePropertyAspectAdapter<>(this.getAdapterFactory.buildAdapter(listener), this.setClosure);
 		}
 	}
 }

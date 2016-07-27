@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.BasePluggablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionPluggablePropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -90,7 +89,7 @@ public class ProjectAdapterFactory
 		 * (At least we hope there is only a single JPA project remaining.)
 		 */
 		LocalJpaProjectModel(IProject project) {
-			super(new CollectionPluggablePropertyValueModelAdapter.Factory<>(
+			super(CollectionValueModelTools.pluggablePropertyValueModelAdapterFactory(
 							CollectionValueModelTools.filter(
 								project.getWorkspace().getAdapter(JpaProjectsModel.class),
 								new JpaProject.ProjectEquals(project)

@@ -850,8 +850,8 @@ public final class PropertyValueModelTools {
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the factory's model's value will also be <code>null</code>.
 	 */
-	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PropertyAspectAdapter.Factory<V, IM, OM> compoundPropertyValueModelAdapterFactory(OM outerModel) {
-		return aspectAdapterFactory_(
+	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundPropertyValueModelAdapterFactory(OM outerModel) {
+		return modelAspectAdapterFactory_(
 				outerModel,
 				PropertyValueModel.VALUE,
 				valueTransformer()
@@ -866,8 +866,8 @@ public final class PropertyValueModelTools {
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the factory's model will throw a {@link NullPointerException}.
 	 */
-	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PropertyAspectAdapter.Factory<V, IM, OM> compoundPropertyValueModelAdapterFactory_(OM outerModel) {
-		return aspectAdapterFactory_(
+	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundPropertyValueModelAdapterFactory_(OM outerModel) {
+		return modelAspectAdapterFactory_(
 				outerModel,
 				PropertyValueModel.VALUE,
 				valueTransformer_()
@@ -936,65 +936,87 @@ public final class PropertyValueModelTools {
 	// ********** aspect adapters **********
 
 	/**
-	 * Construct a property aspect adapter for the
+	 * Construct a model property aspect adapter for the
 	 * specified subject model, aspect name, and transformer.
 	 * <p>
 	 * <strong>NB:</strong>
 	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
 	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> aspectAdapter(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> modelAspectAdapter(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return propertyValueModel(aspectAdapterFactory(subjectModel, aspectName, transformer));
+		return propertyValueModel(modelAspectAdapterFactory(subjectModel, aspectName, transformer));
 	}
 
 	/**
-	 * Construct a property aspect adapter for the
+	 * Construct a model property aspect adapter for the
 	 * specified subject model, aspect name, and transformer.
 	 * <p>
 	 * <strong>NB:</strong>
 	 * The specified transformer must be able to handle a <code>null</code> subject.
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> aspectAdapter_(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> modelAspectAdapter_(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return propertyValueModel(aspectAdapterFactory_(subjectModel, aspectName, transformer));
+		return propertyValueModel(modelAspectAdapterFactory_(subjectModel, aspectName, transformer));
 	}
 
 	/**
-	 * Construct a property aspect adapter factory for the
+	 * Construct a model property aspect adapter factory for the
 	 * specified subject model, aspect name, and transformer.
 	 * <p>
 	 * <strong>NB:</strong>
 	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
 	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyAspectAdapter.Factory<V, S, SM> aspectAdapterFactory(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> modelAspectAdapterFactory(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return aspectAdapterFactory_(subjectModel, aspectName, TransformerTools.nullCheck(transformer));
+		return modelAspectAdapterFactory_(subjectModel, aspectName, TransformerTools.nullCheck(transformer));
 	}
 
 	/**
-	 * Construct a property aspect adapter factory for the
+	 * Construct a model property aspect adapter factory for the
 	 * specified subject model, aspect name, and transformer.
 	 * <p>
 	 * <strong>NB:</strong>
 	 * The specified transformer must be able to handle a <code>null</code> subject.
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyAspectAdapter.Factory<V, S, SM> aspectAdapterFactory_(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> modelAspectAdapterFactory_(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return new PropertyAspectAdapter.Factory<>(subjectModel, aspectName, transformer);
+		return pluggableAspectAdapterFactory(subjectModel, new ModelPropertyAspectAdapter.Factory<>(aspectName, transformer));
+	}
+
+	/**
+	 * Construct a property aspect adapter for the
+	 * specified subject model and subject adapter factory.
+	 */
+	public static <V, S, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> aspectAdapter(
+			SM subjectModel,
+			PluggablePropertyAspectAdapter.SubjectAdapter.Factory<V, S> subjectAdapterFactory
+	) {
+		return propertyValueModel(pluggableAspectAdapterFactory(subjectModel, subjectAdapterFactory));
+	}
+
+	/**
+	 * Construct a property aspect adapter factory for the
+	 * specified subject model and subject adapter factory.
+	 */
+	public static <V, S, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> pluggableAspectAdapterFactory(
+			SM subjectModel,
+			PluggablePropertyAspectAdapter.SubjectAdapter.Factory<V, S> subjectAdapterFactory
+	) {
+		return new PluggablePropertyAspectAdapter.Factory<>(subjectModel, subjectAdapterFactory);
 	}
 
 
@@ -1053,7 +1075,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiablePropertyAspectAdapterFactory(aspectAdapterFactory(subjectModel, aspectName, getTransformer), setClosure);
+		return modifiablePropertyAspectAdapterFactory(modelAspectAdapterFactory(subjectModel, aspectName, getTransformer), setClosure);
 	}
 
 	/**
@@ -1071,7 +1093,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiablePropertyAspectAdapterFactory_(aspectAdapterFactory_(subjectModel, aspectName, getTransformer), setClosure);
+		return modifiablePropertyAspectAdapterFactory_(modelAspectAdapterFactory_(subjectModel, aspectName, getTransformer), setClosure);
 	}
 
 	/**
@@ -1082,11 +1104,11 @@ public final class PropertyValueModelTools {
 	 * If the subject is <code>null</code>, the specified closure will
 	 * not be executed.
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory(
-			PropertyAspectAdapter.Factory<V, S, SM> factory,
+	public static <V, S> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory(
+			ModifiablePropertyAspectAdapter.GetAdapter.Factory<V, S> getAdapterFactory,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiablePropertyAspectAdapterFactory_(factory, nullCheckSetClosureWrapper(setClosure));
+		return modifiablePropertyAspectAdapterFactory_(getAdapterFactory, nullCheckSetClosureWrapper(setClosure));
 	}
 
 	/**
@@ -1097,11 +1119,11 @@ public final class PropertyValueModelTools {
 	 * The specified closure must be able to handle a <code>null</code>
 	 * subject (i.e. first argument).
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory_(
-			PropertyAspectAdapter.Factory<V, S, SM> factory,
+	public static <V, S> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory_(
+			ModifiablePropertyAspectAdapter.GetAdapter.Factory<V, S> getAdapterFactory,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return new ModifiablePropertyAspectAdapter.Factory<>(factory, setClosure);
+		return new ModifiablePropertyAspectAdapter.Factory<>(getAdapterFactory, setClosure);
 	}
 
 

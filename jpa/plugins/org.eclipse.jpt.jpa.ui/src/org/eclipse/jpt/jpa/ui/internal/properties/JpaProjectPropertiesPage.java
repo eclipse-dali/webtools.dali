@@ -34,15 +34,16 @@ import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.closure.ClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectCollectionValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggableModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
@@ -238,10 +239,45 @@ public class JpaProjectPropertiesPage
 	}
 
 	// ***** JPA platform config model
+	/**
+	 * The JPA platform ID is stored in the project preferences.
+	 * The JPA platform does not change for a JPA project - if the user wants a
+	 * different JPA platform, we build an entirely new JPA project.
+	 */
 	private Association<ModifiablePropertyValueModel<JpaPlatform.Config>, PropertyValueModel<Boolean>> buildJpaPlatformConfigModel() {
-		return PropertyValueModelTools.buffer(new JpaPlatformConfigModel(this.jpaProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildJpaPlatformConfigModel_(), this.trigger);
+	}
+	
+	private ModifiablePropertyValueModel<JpaPlatform.Config> buildJpaPlatformConfigModel_() {
+		return PropertyValueModelTools.transform(this.jpaProjectModel, JPA_PROJECT_PLATFORM_CONFIG_TRANSFORMER, new JpaProjectSetPlatformConfigClosure());
+	}
+	
+	private static final TransformerAdapter<JpaProject, JpaPlatform.Config> JPA_PROJECT_PLATFORM_CONFIG_TRANSFORMER = new JpaProjectPlatformConfigTransformer();
+	static class JpaProjectPlatformConfigTransformer
+		extends TransformerAdapter<JpaProject, JpaPlatform.Config>
+	{
+		@Override
+		public JpaPlatform.Config transform(JpaProject jpaProject) {
+			String jpaPlatformID = JpaPreferences.getJpaPlatformID(jpaProject.getProject());
+			JpaPlatformManager jpaPlatformManager = getJpaPlatformManager();
+			return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(jpaPlatformID);
+		}
 	}
 
+	class JpaProjectSetPlatformConfigClosure
+		extends ClosureAdapter<JpaPlatform.Config>
+	{
+		@Override
+		public void execute(JpaPlatform.Config platformConfig) {
+			JpaProjectPropertiesPage.this.setJpaProjectPlatformConfig(platformConfig);
+		}
+	}
+
+	void setJpaProjectPlatformConfig(JpaPlatform.Config jpaPlatformConfig) {
+		String jpaPlatformID = jpaPlatformConfig.getId();
+		JpaPreferences.setJpaPlatformID(this.jpaProjectModel.getValue().getProject(), jpaPlatformID);
+	}
+	
 	private PropertyChangeListener buildJpaPlatformConfigListener(){
 		return new JpaPlatformConfigListener();
 	}
@@ -283,8 +319,15 @@ public class JpaProjectPropertiesPage
 		}
 	}
 
+	/**
+	 * Monitor the connection profile's connection to the database
+	 * (used to enable the "Connect" link)
+	 */
 	private PropertyValueModel<Boolean> buildDisconnectedModel() {
-		return new DisconnectedModel(this.connectionProfileModel);
+		return PropertyValueModelTools.aspectAdapter(
+				this.connectionProfileModel,
+				new ConnectionProfilePropertyAspectAdapter.Factory<>(ConnectionProfile.DISCONNECTED_TRANSFORMER)
+			);
 	}
 
 	// ***** catalog models
@@ -308,8 +351,14 @@ public class JpaProjectPropertiesPage
 				);
 	}
 
+	/**
+	 * Database-determined default catalog
+	 */
 	private PropertyValueModel<String> buildDatabaseDefaultCatalogModel() {
-		return new DatabaseDefaultCatalogModel(this.connectionProfileModel);
+		return PropertyValueModelTools.aspectAdapter(
+				this.connectionProfileModel,
+				new ConnectionProfilePropertyAspectAdapter.Factory<>(CONNECTION_PROFILE_DATABASE_DEFAULT_CATALOG_TRANSFORMER)
+			);
 	}
 
 	/**
@@ -358,7 +407,11 @@ public class JpaProjectPropertiesPage
 	}
 
 	private PropertyValueModel<String> buildDatabaseDefaultSchemaModel() {
-		return new DatabaseDefaultSchemaModel(this.connectionProfileModel, this.defaultCatalogModel);
+		return PropertyValueModelTools.propertyValueModel(this.buildDatabaseDefaultSchemaModelAdapterFactory());
+	}
+
+	private PluggablePropertyValueModel.Adapter.Factory<String> buildDatabaseDefaultSchemaModelAdapterFactory() {
+		return new DatabaseDefaultSchemaModelAdapter.Factory(this.connectionProfileModel, this.disconnectedModel, this.defaultCatalogModel);
 	}
 
 	/**
@@ -1051,44 +1104,6 @@ public class JpaProjectPropertiesPage
 
 
 	/**
-	 * Treat the JPA platform config as an "aspect" of the JPA project.
-	 * The JPA platform ID is stored in the project preferences.
-	 * The JPA platform does not change for a JPA project - if the user wants a
-	 * different JPA platform, we build an entirely new JPA project.
-	 */
-	static class JpaPlatformConfigModel
-		extends AspectPropertyValueModelAdapter<JpaProject, JpaPlatform.Config>
-	{
-		JpaPlatformConfigModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel);
-		}
-
-		@Override
-		protected JpaPlatform.Config buildValue_() {
-			String jpaPlatformID = JpaPreferences.getJpaPlatformID(this.subject.getProject());
-			JpaPlatformManager jpaPlatformManager = getJpaPlatformManager();
-			return (jpaPlatformManager == null) ? null : jpaPlatformManager.getJpaPlatformConfig(jpaPlatformID);
-		}
-
-		@Override
-		public void setValue_(JpaPlatform.Config jpaPlatformConfig) {
-			String jpaPlatformID = jpaPlatformConfig.getId();
-			JpaPreferences.setJpaPlatformID(this.subject.getProject(), jpaPlatformID);
-		}
-
-		@Override
-		protected void engageSubject_() {
-			// the JPA platform does not change
-		}
-
-		@Override
-		protected void disengageSubject_() {
-			// the JPA platform does not change
-		}
-	}
-
-
-	/**
 	 * The connections are held by a singleton, so the model can be a singleton
 	 * also.
 	 */
@@ -1420,23 +1435,31 @@ public class JpaProjectPropertiesPage
 
 
 	/**
-	 * Abstract property aspect adapter for DTP connection profile connection/database
+	 * property aspect adapter for DTP connection profile connection/database
 	 */
-	abstract static class ConnectionProfilePropertyAspectAdapter<V>
-		extends AspectPropertyValueModelAdapter<ConnectionProfile, V>
+	static class ConnectionProfilePropertyAspectAdapter<V>
+		implements PluggablePropertyAspectAdapter.SubjectAdapter<V, ConnectionProfile>
 	{
+		private final Transformer<? super ConnectionProfile, ? extends V> transformer;
+		private final PluggablePropertyAspectAdapter.SubjectAdapter.Listener<V> listener;
 		private final ConnectionListener connectionListener;
 
-		ConnectionProfilePropertyAspectAdapter(PropertyValueModel<ConnectionProfile> connectionProfileModel) {
-			super(connectionProfileModel);
-			this.connectionListener = this.buildConnectionListener();
+		ConnectionProfilePropertyAspectAdapter(Transformer<? super ConnectionProfile, ? extends V> transformer, PluggablePropertyAspectAdapter.SubjectAdapter.Listener<V> listener) {
+			super();
+			if (transformer == null) {
+				throw new NullPointerException();
+			}
+			this.transformer = transformer;
+
+			if (listener == null) {
+				throw new NullPointerException();
+			}
+			this.listener = listener;
+
+			this.connectionListener = new LocalConnectionListener();
 		}
 
 		// the connection opening is probably the only thing that will happen...
-		private ConnectionListener buildConnectionListener() {
-			return new LocalConnectionListener();
-		}
-
 		class LocalConnectionListener
 			extends ConnectionAdapter
 		{
@@ -1447,54 +1470,58 @@ public class JpaProjectPropertiesPage
 		}
 
 		void connectionOpened(ConnectionProfile profile) {
-			if (profile.equals(this.subject)) {
-				this.aspectChanged();
+			this.listener.valueChanged(this.transformer.transform(profile));
+		}
+
+		public V engageSubject(ConnectionProfile subject) {
+			if (subject != null) {
+				subject.addConnectionListener(this.connectionListener);
+			}
+			return this.transformer.transform(subject);
+		}
+
+		public V disengageSubject(ConnectionProfile subject) {
+			if (subject != null) {
+				subject.removeConnectionListener(this.connectionListener);
+			}
+			return this.transformer.transform(subject);
+		}
+
+		// ********** Factory **********
+
+		static class Factory<V>
+			implements PluggablePropertyAspectAdapter.SubjectAdapter.Factory<V, ConnectionProfile>
+		{
+			/* CU private */ final Transformer<? super ConnectionProfile, ? extends V> transformer;
+
+			public Factory(Transformer<? super ConnectionProfile, ? extends V> transformer) {
+				super();
+				if (transformer == null) {
+					throw new NullPointerException();
+				}
+				this.transformer = TransformerTools.nullCheck(transformer);
+			}
+
+			public PluggablePropertyAspectAdapter.SubjectAdapter<V, ConnectionProfile> buildAdapter(PluggablePropertyAspectAdapter.SubjectAdapter.Listener<V> listener) {
+				return new ConnectionProfilePropertyAspectAdapter<>(this.transformer, listener);
+			}
+
+			@Override
+			public String toString() {
+				return ObjectTools.toString(this);
 			}
 		}
-
-		@Override
-		protected void engageSubject_() {
-			this.subject.addConnectionListener(this.connectionListener);
-		}
-
-		@Override
-		protected void disengageSubject_() {
-			this.subject.removeConnectionListener(this.connectionListener);
-		}
 	}
 
 
-	/**
-	 * Monitor the connection profile's connection to the database
-	 * (used to enable the "Connect" link)
-	 */
-	static class DisconnectedModel
-		extends ConnectionProfilePropertyAspectAdapter<Boolean>
+	private static final Transformer<ConnectionProfile, String> CONNECTION_PROFILE_DATABASE_DEFAULT_CATALOG_TRANSFORMER = new ConnectionProfileDatabaseDefaultCatalogTransformer();
+
+	static class ConnectionProfileDatabaseDefaultCatalogTransformer
+		extends TransformerAdapter<ConnectionProfile, String>
 	{
-		DisconnectedModel(PropertyValueModel<ConnectionProfile> connectionProfileModel) {
-			super(connectionProfileModel);
-		}
-
 		@Override
-		protected Boolean buildValue_() {
-			return Boolean.valueOf((this.subject != null) && this.subject.isDisconnected());
-		}
-	}
-
-
-	/**
-	 * Database-determined default catalog
-	 */
-	static class DatabaseDefaultCatalogModel
-		extends ConnectionProfilePropertyAspectAdapter<String>
-	{
-		DatabaseDefaultCatalogModel(PropertyValueModel<ConnectionProfile> connectionProfileModel) {
-			super(connectionProfileModel);
-		}
-
-		@Override
-		protected String buildValue_() {
-			Database db = this.subject.getDatabase();
+		public String transform(ConnectionProfile cp) {
+			Database db = cp.getDatabase();
 			return (db == null) ? null : db.getDefaultCatalogIdentifier();
 		}
 	}
@@ -1505,48 +1532,90 @@ public class JpaProjectPropertiesPage
 	 * on the current value of the default catalog (which may be overridden
 	 * by the user).
 	 */
-	static class DatabaseDefaultSchemaModel
-		extends ConnectionProfilePropertyAspectAdapter<String>
+	static class DatabaseDefaultSchemaModelAdapter
+		implements PluggablePropertyValueModel.Adapter<String>
 	{
-		private final PropertyValueModel<String> defaultCatalogModel;
-		private final PropertyChangeListener catalogListener;
+		private final PropertyValueModel<ConnectionProfile> connectionProfileModel;
+		private final PropertyChangeListener connectionProfileListener;
+		/* class private */ volatile ConnectionProfile connectionProfile;
 
-		DatabaseDefaultSchemaModel(
+		private final PropertyValueModel<Boolean> connectionProfileConnectedModel;
+		private final PropertyChangeListener connectionProfileConnectedListener;
+		/* class private */ volatile Boolean connectionProfileConnected;
+
+		private final PropertyValueModel<String> defaultCatalogModel;
+		private final PropertyChangeListener defaultCatalogListener;
+		/* class private */ volatile String defaultCatalog;
+
+		private final PluggablePropertyValueModel.Adapter.Listener<String> listener;
+
+
+		DatabaseDefaultSchemaModelAdapter(
 				PropertyValueModel<ConnectionProfile> connectionProfileModel,
-				PropertyValueModel<String> defaultCatalogModel
+				PropertyValueModel<Boolean> connectionProfileConnectedModel,
+				PropertyValueModel<String> defaultCatalogModel,
+				PluggablePropertyValueModel.Adapter.Listener<String> listener
 		) {
-			super(connectionProfileModel);
+			super();
+			if (connectionProfileModel == null) {
+				throw new NullPointerException();
+			}
+			this.connectionProfileModel = connectionProfileModel;
+			this.connectionProfileListener = new ConnectionProfileListener();
+
+			if (connectionProfileConnectedModel == null) {
+				throw new NullPointerException();
+			}
+			this.connectionProfileConnectedModel = connectionProfileConnectedModel;
+			this.connectionProfileConnectedListener = new ConnectionProfileConnectedListener();
+
+			if (defaultCatalogModel == null) {
+				throw new NullPointerException();
+			}
 			this.defaultCatalogModel = defaultCatalogModel;
-			this.catalogListener = new CatalogListener();
+			this.defaultCatalogListener = new DefaultCatalogListener();
+
+			if (listener == null) {
+				throw new NullPointerException();
+			}
+			this.listener = listener;
 		}
 
-		/* class private */ class CatalogListener
+		/* class private */ class ConnectionProfileListener
 			extends PropertyChangeAdapter
 		{
 			@Override
 			public void propertyChanged(PropertyChangeEvent event) {
-				DatabaseDefaultSchemaModel.this.catalogChanged();
+				DatabaseDefaultSchemaModelAdapter.this.connectionProfile = (ConnectionProfile) event.getNewValue();
+				DatabaseDefaultSchemaModelAdapter.this.update();
 			}
 		}
 
-		void catalogChanged() {
-			this.aspectChanged();
+		/* class private */ class ConnectionProfileConnectedListener
+			extends PropertyChangeAdapter
+		{
+			@Override
+			public void propertyChanged(PropertyChangeEvent event) {
+				DatabaseDefaultSchemaModelAdapter.this.connectionProfileConnected = (Boolean) event.getNewValue();
+				DatabaseDefaultSchemaModelAdapter.this.update();
+			}
 		}
 
-		@Override
-		protected void engageSubject_() {
-			super.engageSubject_();
-			this.defaultCatalogModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.catalogListener);
+		/* class private */ class DefaultCatalogListener
+			extends PropertyChangeAdapter
+		{
+			@Override
+			public void propertyChanged(PropertyChangeEvent event) {
+				DatabaseDefaultSchemaModelAdapter.this.defaultCatalog = (String) event.getNewValue();
+				DatabaseDefaultSchemaModelAdapter.this.update();
+			}
 		}
 
-		@Override
-		protected void disengageSubject_() {
-			this.defaultCatalogModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.catalogListener);
-			super.disengageSubject_();
+		/* class private */ void update() {
+			this.listener.valueChanged(this.buildValue());
 		}
 
-		@Override
-		protected String buildValue_() {
+		private String buildValue() {
 			SchemaContainer sc = this.getSchemaContainer();
 			return (sc == null) ? null : sc.getDefaultSchemaIdentifier();
 		}
@@ -1561,13 +1630,75 @@ public class JpaProjectPropertiesPage
 		}
 
 		private Catalog getCatalog() {
-			String name = this.defaultCatalogModel.getValue();
 			// if we get here we know the database is not null
-			return (name == null) ? null : this.getDatabase().getCatalogForIdentifier(name);
+			return (this.defaultCatalog == null) ? null : this.getDatabase().getCatalogForIdentifier(this.defaultCatalog);
 		}
 
 		private Database getDatabase() {
-			return this.subject.getDatabase();
+			return (this.connectionProfile == null) ? null : this.connectionProfile.getDatabase();
+		}
+
+		public String engageModel() {
+			this.connectionProfileModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.connectionProfileListener);
+			this.connectionProfile = this.connectionProfileModel.getValue();
+			this.connectionProfileConnectedModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.connectionProfileConnectedListener);
+			this.connectionProfileConnected = this.connectionProfileConnectedModel.getValue();
+			this.defaultCatalogModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.defaultCatalogListener);
+			this.defaultCatalog = this.defaultCatalogModel.getValue();
+			return this.buildValue();
+		}
+
+		public String disengageModel() {
+			this.connectionProfileModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.connectionProfileListener);
+			this.connectionProfile = null;
+			this.connectionProfileConnectedModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.connectionProfileConnectedListener);
+			this.connectionProfileConnected = null;
+			this.defaultCatalogModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.defaultCatalogListener);
+			this.defaultCatalog = null;
+			return null;
+		}
+
+		// ********** Factory **********
+
+		static class Factory
+			implements PluggablePropertyValueModel.Adapter.Factory<String>
+		{
+			private final PropertyValueModel<ConnectionProfile> connectionProfileModel;
+
+			private final PropertyValueModel<Boolean> connectionProfileConnectedModel;
+
+			private final PropertyValueModel<String> defaultCatalogModel;
+
+			public Factory(
+					PropertyValueModel<ConnectionProfile> connectionProfileModel,
+					PropertyValueModel<Boolean> connectionProfileConnectedModel,
+					PropertyValueModel<String> defaultCatalogModel
+			) {
+				super();
+				if (connectionProfileModel == null) {
+					throw new NullPointerException();
+				}
+				this.connectionProfileModel = connectionProfileModel;
+
+				if (connectionProfileConnectedModel == null) {
+					throw new NullPointerException();
+				}
+				this.connectionProfileConnectedModel = connectionProfileConnectedModel;
+
+				if (defaultCatalogModel == null) {
+					throw new NullPointerException();
+				}
+				this.defaultCatalogModel = defaultCatalogModel;
+			}
+
+			public DatabaseDefaultSchemaModelAdapter buildAdapter(PluggablePropertyValueModel.Adapter.Listener<String> listener) {
+				return new DatabaseDefaultSchemaModelAdapter(this.connectionProfileModel, this.connectionProfileConnectedModel, this.defaultCatalogModel, listener);
+			}
+
+			@Override
+			public String toString() {
+				return ObjectTools.toString(this);
+			}
 		}
 	}
 
@@ -1733,7 +1864,6 @@ public class JpaProjectPropertiesPage
 		/* CU private */ volatile String databaseDefault = null;
 
 		private final PluggablePropertyValueModel.Adapter.Listener<String> listener;
-		private volatile String value = null;
 
 
 		public DefaultDatabaseComponentModelAdapter(Factory factory, PluggablePropertyValueModel.Adapter.Listener<String> listener) {
@@ -1763,18 +1893,18 @@ public class JpaProjectPropertiesPage
 			this.userOverrideDefaultFlagModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
 			this.userOverrideDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
 			this.databaseDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
-			return this.value = this.buildValue();
+			return this.buildValue();
 		}
 
 		public String disengageModel() {
 			this.databaseDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
 			this.userOverrideDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
 			this.userOverrideDefaultFlagModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
-			return this.value = null;
+			return null;
 		}
 
 		/* CU private */ void update() {
-			this.listener.valueChanged(this.value = this.buildValue());
+			this.listener.valueChanged(this.buildValue());
 		}
 
 		/**
@@ -1787,7 +1917,7 @@ public class JpaProjectPropertiesPage
 
 		@Override
 		public String toString() {
-			return ObjectTools.toString(this, this.value);
+			return ObjectTools.toString(this, this.buildValue());
 		}
 
 

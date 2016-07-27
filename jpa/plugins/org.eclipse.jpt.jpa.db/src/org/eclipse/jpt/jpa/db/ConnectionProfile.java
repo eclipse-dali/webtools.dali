@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.db;
 import java.sql.Connection;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Database connection profile
@@ -134,6 +136,15 @@ public interface ConnectionProfile
 	 * @see #isActive()
 	 */
 	boolean isConnected();
+	Transformer<ConnectionProfile, Boolean> CONNECTED_TRANSFORMER = new DisconnectedTransformer();
+	class ConnectedTransformer
+		extends TransformerAdapter<ConnectionProfile, Boolean>
+	{
+		@Override
+		public Boolean transform(ConnectionProfile connectionProfile) {
+			return Boolean.valueOf(connectionProfile.isConnected());
+		}
+	}
 
 	/**
 	 * Return whether the profile is not connected to a live database session
@@ -142,6 +153,15 @@ public interface ConnectionProfile
 	 * @see #isConnected()
 	 */
 	boolean isDisconnected();
+	Transformer<ConnectionProfile, Boolean> DISCONNECTED_TRANSFORMER = new DisconnectedTransformer();
+	class DisconnectedTransformer
+		extends TransformerAdapter<ConnectionProfile, Boolean>
+	{
+		@Override
+		public Boolean transform(ConnectionProfile connectionProfile) {
+			return Boolean.valueOf(connectionProfile.isDisconnected());
+		}
+	}
 
 	/**
 	 * Connect to the database.
