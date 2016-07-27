@@ -561,7 +561,7 @@ public final class PropertyValueModelTools {
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
-		return propertyValueModel(pluggablePropertyValueModelAdapterFactory(propertyModel, transformer));
+		return propertyValueModel(transformationPluggablePropertyValueModelAdapterFactory(propertyModel, transformer));
 	}
 
 	/**
@@ -577,7 +577,7 @@ public final class PropertyValueModelTools {
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
-		return propertyValueModel(pluggablePropertyValueModelAdapterFactory_(propertyModel, transformer));
+		return propertyValueModel(transformationPluggablePropertyValueModelAdapterFactory_(propertyModel, transformer));
 	}
 
 	/**
@@ -630,7 +630,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super V1, ? extends V2> transformer,
 			Closure<? super V2> setValueClosure
 	) {
-		return pluggableModifiablePropertyValueModel(pluggablePropertyValueModelAdapterFactory(propertyModel, transformer), setValueClosure);
+		return pluggableModifiablePropertyValueModel(transformationPluggablePropertyValueModelAdapterFactory(propertyModel, transformer), setValueClosure);
 	}
 
 	/**
@@ -647,7 +647,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super V1, ? extends V2> transformer,
 			Closure<? super V2> setValueClosure
 	) {
-		return pluggableModifiablePropertyValueModel(pluggablePropertyValueModelAdapterFactory_(propertyModel, transformer), setValueClosure);
+		return pluggableModifiablePropertyValueModel(transformationPluggablePropertyValueModelAdapterFactory_(propertyModel, transformer), setValueClosure);
 	}
 
 	/**
@@ -659,11 +659,11 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @see PluggablePropertyValueModel
 	 */
-	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> pluggablePropertyValueModelAdapterFactory(
+	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> transformationPluggablePropertyValueModelAdapterFactory(
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
-		return pluggablePropertyValueModelAdapterFactory_(propertyModel, TransformerTools.nullCheck(transformer));
+		return transformationPluggablePropertyValueModelAdapterFactory_(propertyModel, TransformerTools.nullCheck(transformer));
 	}
 
 	/**
@@ -674,11 +674,11 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @see PluggablePropertyValueModel
 	 */
-	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> pluggablePropertyValueModelAdapterFactory_(
+	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> transformationPluggablePropertyValueModelAdapterFactory_(
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
-		return new PropertyPluggablePropertyValueModelAdapter.Factory<>(propertyModel, transformer);
+		return new TransformationPluggablePropertyValueModelAdapter.Factory<>(propertyModel, transformer);
 	}
 
 

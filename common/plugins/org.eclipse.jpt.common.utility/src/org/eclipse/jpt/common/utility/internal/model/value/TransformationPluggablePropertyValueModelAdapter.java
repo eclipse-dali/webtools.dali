@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @see PluggablePropertyValueModel
  */
-public final class PropertyPluggablePropertyValueModelAdapter<V1, V2>
+public final class TransformationPluggablePropertyValueModelAdapter<V1, V2>
 	implements PluggablePropertyValueModel.Adapter<V2>, PropertyChangeListener
 {
 	/** The wrapped model */
@@ -48,7 +48,7 @@ public final class PropertyPluggablePropertyValueModelAdapter<V1, V2>
 
 	// ********** constructors **********
 
-	public PropertyPluggablePropertyValueModelAdapter(Factory<V1, V2> factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+	public TransformationPluggablePropertyValueModelAdapter(Factory<V1, V2> factory, BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
 		super();
 		if (factory == null) {
 			throw new NullPointerException();
@@ -122,8 +122,8 @@ public final class PropertyPluggablePropertyValueModelAdapter<V1, V2>
 			this.transformer = transformer;
 		}
 
-		public PropertyPluggablePropertyValueModelAdapter<V1, V2> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
-			return new PropertyPluggablePropertyValueModelAdapter<>(this, listener);
+		public TransformationPluggablePropertyValueModelAdapter<V1, V2> buildAdapter(BasePluggablePropertyValueModel.Adapter.Listener<V2> listener) {
+			return new TransformationPluggablePropertyValueModelAdapter<>(this, listener);
 		}
 
 		@Override
