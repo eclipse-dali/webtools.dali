@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,8 +55,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	public void testHasListeners() {
 		AbstractModel subjectCustomization = (AbstractModel) this.customization; // Subject
 		
-		PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean> throwExceptionsAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>) this.throwExceptionsHolder;
+		AbstractModel throwExceptionsAA = (AbstractModel) this.throwExceptionsHolder;
 		assertTrue(throwExceptionsAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectCustomization.hasAnyPropertyChangeListeners(EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY));
 		

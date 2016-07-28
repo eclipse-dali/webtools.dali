@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -85,8 +85,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	public void testHasListeners() {
 		AbstractModel subjectCaching = (AbstractModel) this.caching; // Subject
-		PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType> cacheTypeAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType>) this.cacheTypeHolder;
+		AbstractModel cacheTypeAA = (AbstractModel) this.cacheTypeHolder;
 		assertTrue(cacheTypeAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.CACHE_TYPE_PROPERTY));
 		
@@ -94,8 +93,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 		assertFalse(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.CACHE_TYPE_PROPERTY));
 		assertFalse(cacheTypeAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		
-		PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean> sharedCacheAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>) this.sharedCacheHolder;
+		AbstractModel sharedCacheAA = (AbstractModel) this.sharedCacheHolder;
 		assertTrue(sharedCacheAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.SHARED_CACHE_PROPERTY));
 		
@@ -103,8 +101,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 		assertFalse(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.SHARED_CACHE_PROPERTY));
 		assertFalse(sharedCacheAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		
-		PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType> cacheTypeDefaultAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType>) this.cacheTypeDefaultHolder;
+		AbstractModel cacheTypeDefaultAA = (AbstractModel) this.cacheTypeDefaultHolder;
 		assertTrue(cacheTypeDefaultAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY));
 		
@@ -112,8 +109,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 		assertFalse(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY));
 		assertFalse(cacheTypeDefaultAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		
-		PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean> sharedCacheDefaultAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>) this.sharedCacheDefaultHolder;
+		AbstractModel sharedCacheDefaultAA = (AbstractModel) this.sharedCacheDefaultHolder;
 		assertTrue(sharedCacheDefaultAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY));
 		

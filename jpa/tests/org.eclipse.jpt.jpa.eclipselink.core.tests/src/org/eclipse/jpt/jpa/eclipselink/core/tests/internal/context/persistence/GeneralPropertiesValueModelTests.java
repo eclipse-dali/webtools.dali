@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,8 +52,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	public void testHasListeners() {
 		AbstractModel subjectGeneralProperty = (AbstractModel) this.generalProperty; // Subject
 		
-		PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean> excludeEclipselinkOrmAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean>) this.excludeEclipselinkOrmHolder;
+		AbstractModel excludeEclipselinkOrmAA = (AbstractModel) this.excludeEclipselinkOrmHolder;
 		assertTrue(excludeEclipselinkOrmAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectGeneralProperty.hasAnyPropertyChangeListeners(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY));
 		

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,8 +52,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testHasListeners() {
 		AbstractModel subjectLogging = (AbstractModel) this.logging; // Subject
 		
-		PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean> timestampAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>) this.timestampHolder;
+		AbstractModel timestampAA = (AbstractModel) this.timestampHolder;
 		assertTrue(timestampAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectLogging.hasAnyPropertyChangeListeners(EclipseLinkLogging.TIMESTAMP_PROPERTY));
 		

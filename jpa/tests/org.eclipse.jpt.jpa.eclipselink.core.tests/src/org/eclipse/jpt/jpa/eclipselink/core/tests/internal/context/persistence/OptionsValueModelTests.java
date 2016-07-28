@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,8 +51,7 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testHasListeners() {
 		AbstractModel subjectOptions = (AbstractModel) this.options; // Subject
 		
-		PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean> includeDescriptorQueriesAA = 
-			(PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>) this.includeDescriptorQueriesHolder;
+		AbstractModel includeDescriptorQueriesAA = (AbstractModel) this.includeDescriptorQueriesHolder;
 		assertTrue(includeDescriptorQueriesAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(subjectOptions.hasAnyPropertyChangeListeners(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY));
 		
