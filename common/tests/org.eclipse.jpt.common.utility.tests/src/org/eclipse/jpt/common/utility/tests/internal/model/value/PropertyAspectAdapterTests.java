@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 public class PropertyAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private ModifiablePropertyValueModel<TestSubject> subjectHolder1;
-	private PropertyAspectAdapterXXXX<TestSubject, String> aa1;
+	private ModifiablePropertyValueModel<String> aa1;
 	private PropertyChangeEvent event1;
 	private PropertyChangeListener listener1;
 
@@ -45,7 +45,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject1 = new TestSubject("foo", "test subject 1");
-		this.subjectHolder1 = new SimplePropertyValueModel<TestSubject> (this.subject1);
+		this.subjectHolder1 = new SimplePropertyValueModel<> (this.subject1);
 		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
 		this.listener1 = this.buildValueChangeListener1();
 		this.aa1.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
@@ -54,7 +54,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		this.subject2 = new TestSubject("bar", "test subject 2");
 	}
 
-	private PropertyAspectAdapterXXXX<TestSubject, String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+	private ModifiablePropertyValueModel<String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
 		return new PropertyAspectAdapterXXXX<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
 			// this is not a aspect adapter - the value is determined by the aspect name
 			@Override
@@ -191,24 +191,24 @@ public class PropertyAspectAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() {
-		assertTrue(this.aa1.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.aa1).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(this.subject1.hasAnyPropertyChangeListeners(TestSubject.NAME_PROPERTY));
 		this.aa1.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
 		assertFalse(this.subject1.hasAnyPropertyChangeListeners(TestSubject.NAME_PROPERTY));
-		assertFalse(this.aa1.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertFalse(((AbstractModel) this.aa1).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		ChangeListener listener2 = this.buildValueChangeListener1();
 		this.aa1.addChangeListener(listener2);
-		assertTrue(this.aa1.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.aa1).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(this.subject1.hasAnyPropertyChangeListeners(TestSubject.NAME_PROPERTY));
 		this.aa1.removeChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyPropertyChangeListeners(TestSubject.NAME_PROPERTY));
-		assertFalse(this.aa1.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertFalse(((AbstractModel) this.aa1).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
 	public void testMultipleAspectAdapter() {
 		TestSubject testSubject = new TestSubject("fred", "husband");
-		ModifiablePropertyValueModel<TestSubject> testSubjectHolder = new SimplePropertyValueModel<TestSubject>(testSubject);
+		ModifiablePropertyValueModel<TestSubject> testSubjectHolder = new SimplePropertyValueModel<>(testSubject);
 		ModifiablePropertyValueModel<String> testAA = this.buildMultipleAspectAdapter(testSubjectHolder);
 		PropertyChangeListener testListener = this.buildMultipleValueChangeListener();
 		testAA.addPropertyChangeListener(PropertyValueModel.VALUE, testListener);
@@ -256,7 +256,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	 */
 	public void testCustomBuildValueWithNullSubject() {
 		TestSubject customSubject = new TestSubject("fred", "laborer");
-		ModifiablePropertyValueModel<TestSubject> customSubjectHolder = new SimplePropertyValueModel<TestSubject>(customSubject);
+		ModifiablePropertyValueModel<TestSubject> customSubjectHolder = new SimplePropertyValueModel<>(customSubject);
 		ModifiablePropertyValueModel<String> customAA = this.buildCustomAspectAdapter(customSubjectHolder);
 		PropertyChangeListener customListener = this.buildCustomValueChangeListener();
 		customAA.addPropertyChangeListener(PropertyValueModel.VALUE, customListener);

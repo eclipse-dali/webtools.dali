@@ -100,7 +100,7 @@ public class PersistentTypeDetailsPageManager
 		return PropertyValueModelTools.filter_(this.mappingModel, buildMappingFilter(key));
 	}
 
-	private PropertyAspectAdapterXXXX<PersistentType, TypeMapping> buildMappingModel() {
+	private PropertyValueModel<TypeMapping> buildMappingModel() {
 		return new PropertyAspectAdapterXXXX<PersistentType, TypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
 			@Override
 			protected TypeMapping buildValue_() {
