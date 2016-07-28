@@ -18,12 +18,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * returning a static value, but still allows listeners to be added.
  * Listeners will <em>never</em> be notified of any changes, because there should be none.
  */
-public class StaticPropertyValueModel<T>
+public class StaticPropertyValueModel<V>
 	extends AbstractModel
-	implements PropertyValueModel<T>, Serializable
+	implements PropertyValueModel<V>, Serializable
 {
 	/** The value. */
-	protected final T value;
+	protected final V value;
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,12 +31,12 @@ public class StaticPropertyValueModel<T>
 	/**
 	 * Construct a static property value model for the specified value.
 	 */
-	public StaticPropertyValueModel(T value) {
+	public StaticPropertyValueModel(V value) {
 		super();
 		this.value = value;
 	}
 
-	public T getValue() {
+	public V getValue() {
 		return this.value;
 	}
 

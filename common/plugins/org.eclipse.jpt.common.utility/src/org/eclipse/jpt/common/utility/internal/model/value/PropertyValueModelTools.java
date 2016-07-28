@@ -937,6 +937,37 @@ public final class PropertyValueModelTools {
 
 	/**
 	 * Construct a model property aspect adapter for the
+	 * specified subject, aspect name, and transformer.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
+	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
+	 */
+	public static <V, S extends Model> PropertyValueModel<V> modelAspectAdapter(
+			S subject,
+			String aspectName,
+			Transformer<? super S, ? extends V> transformer
+	) {
+		return modelAspectAdapter(staticPropertyValueModel(subject), aspectName, transformer);
+	}
+
+	/**
+	 * Construct a model property aspect adapter for the
+	 * specified subject, aspect name, and transformer.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 */
+	public static <V, S extends Model> PropertyValueModel<V> modelAspectAdapter_(
+			S subject,
+			String aspectName,
+			Transformer<? super S, ? extends V> transformer
+	) {
+		return modelAspectAdapter_(staticPropertyValueModel(subject), aspectName, transformer);
+	}
+
+	/**
+	 * Construct a model property aspect adapter for the
 	 * specified subject model, aspect name, and transformer.
 	 * <p>
 	 * <strong>NB:</strong>
@@ -1165,9 +1196,20 @@ public final class PropertyValueModelTools {
 	 * Construct property value model that can be used for
 	 * returning a static value, but still allows listeners to be added.
 	 * Listeners will <em>never</em> be notified of any changes, because there should be none.
+	 * 
+	 * @see #simpleModel(Object)
 	 */
 	public static <V> PropertyValueModel<V> staticPropertyValueModel(V value) {
 		return new StaticPropertyValueModel<>(value);
+	}
+
+	/**
+	 * Construct a simple property value model that has the specified value.
+	 * 
+	 * @see #staticPropertyValueModel(Object)
+	 */
+	public static <V> ModifiablePropertyValueModel<V> simpleModel(V value) {
+		return new SimplePropertyValueModel<>(value);
 	}
 
 
