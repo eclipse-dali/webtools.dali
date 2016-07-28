@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,8 @@ import java.util.Collection;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -42,6 +44,15 @@ public interface XmlFile
 	 * String constant associated with changes to the root property.
 	 */
 	String ROOT_PROPERTY = "root"; //$NON-NLS-1$
+	Transformer<XmlFile, Root> ROOT_TRANSFORMER = new RootTransformer();
+	class RootTransformer
+		extends TransformerAdapter<XmlFile, Root>
+	{
+		@Override
+		public Root transform(XmlFile xmlFile) {
+			return xmlFile.getRoot();
+		}
+	}
 
 	/**
 	 * Return the resource model object

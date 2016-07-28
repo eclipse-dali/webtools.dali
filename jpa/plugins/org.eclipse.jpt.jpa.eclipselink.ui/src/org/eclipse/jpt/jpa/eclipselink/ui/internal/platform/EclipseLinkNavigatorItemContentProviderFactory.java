@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
@@ -72,18 +72,6 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<MappingFileRef> buildPersistenceUnitImpliedEclipseLinkMappingFileRefModel(EclipseLinkPersistenceUnit item) {
-		return new PersistenceUnitImpliedEclipseLinkMappingFileRefModel(item);
-	}
-
-	public static class PersistenceUnitImpliedEclipseLinkMappingFileRefModel
-		extends PropertyAspectAdapterXXXX<EclipseLinkPersistenceUnit, MappingFileRef>
-	{
-		public PersistenceUnitImpliedEclipseLinkMappingFileRefModel(EclipseLinkPersistenceUnit persistenceUnit) {
-			super(EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, persistenceUnit);
-		}
-		@Override
-		protected MappingFileRef buildValue_() {
-			return this.subject.getImpliedEclipseLinkMappingFileRef();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(item, EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_TRANSFORMER);
 	}
 }

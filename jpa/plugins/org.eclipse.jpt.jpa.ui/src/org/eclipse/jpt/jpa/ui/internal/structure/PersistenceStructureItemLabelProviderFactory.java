@@ -171,19 +171,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefTextModel(MappingFileRef mappingFileRef) {
-		return new MappingFileRefTextModel(mappingFileRef);
-	}
-
-	public static class MappingFileRefTextModel
-		extends PropertyAspectAdapterXXXX<MappingFileRef, String>
-	{
-		public MappingFileRefTextModel(MappingFileRef subject) {
-			super(MappingFileRef.FILE_NAME_PROPERTY, subject);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getFileName();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(mappingFileRef, MappingFileRef.FILE_NAME_PROPERTY, MappingFileRef.FILE_NAME_TRANSFORMER);
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefDescriptionModel(MappingFileRef mappingFileRef) {
@@ -210,19 +198,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildClassRefTextModel(ClassRef classRef) {
-		return new ClassRefTextModel(classRef);
-	}
-
-	public static class ClassRefTextModel
-		extends PropertyAspectAdapterXXXX<ClassRef, String>
-	{
-		public ClassRefTextModel(ClassRef subject) {
-			super(ClassRef.CLASS_NAME_PROPERTY, subject);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getClassName();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(classRef, ClassRef.CLASS_NAME_PROPERTY, ClassRef.CLASS_NAME_TRANSFORMER);
 	}
 
 	protected PropertyValueModel<String> buildClassRefDescriptionModel(ClassRef classRef) {
@@ -250,19 +226,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefTextModel(JarFileRef jarFileRef) {
-		return new JarFileRefTextModel(jarFileRef);
-	}
-
-	public static class JarFileRefTextModel
-		extends PropertyAspectAdapterXXXX<JarFileRef, String>
-	{
-		public JarFileRefTextModel(JarFileRef subject) {
-			super(JarFileRef.FILE_NAME_PROPERTY, subject);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getFileName();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(jarFileRef, JarFileRef.FILE_NAME_PROPERTY, JarFileRef.FILE_NAME_TRANSFORMER);
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefDescriptionModel(JarFileRef jarFileRef) {

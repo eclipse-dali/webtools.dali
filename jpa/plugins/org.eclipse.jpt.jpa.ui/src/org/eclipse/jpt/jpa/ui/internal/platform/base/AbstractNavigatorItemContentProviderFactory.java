@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -422,7 +423,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<EntityMappings> buildOrmXmlEntityMappingsModel(OrmXml ormXml) {
-		return new OrmXmlEntityMappingsModel(ormXml);
+		return PropertyValueModelTools.modelAspectAdapter(ormXml, XmlFile.ROOT_PROPERTY, TransformerTools.downcast(XmlFile.ROOT_TRANSFORMER));
 	}
 
 	public static class EntityMappingsManagedTypesModel
@@ -440,18 +441,6 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 		@Override
 		protected int size_() {
 			return this.subject.getManagedTypesSize();
-		}
-	}
-
-	public static class OrmXmlEntityMappingsModel
-		extends PropertyAspectAdapterXXXX<OrmXml, EntityMappings>
-	{
-		public OrmXmlEntityMappingsModel(OrmXml ormXml) {
-			super(XmlFile.ROOT_PROPERTY, ormXml);
-		}
-		@Override
-		protected EntityMappings buildValue_() {
-			return this.subject.getRoot();
 		}
 	}
 

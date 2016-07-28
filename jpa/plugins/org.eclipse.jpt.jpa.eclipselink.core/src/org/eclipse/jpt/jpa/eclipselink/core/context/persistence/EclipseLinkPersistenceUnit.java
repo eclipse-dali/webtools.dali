@@ -100,6 +100,15 @@ public class EclipseLinkPersistenceUnit
 	 * String constant associated with changes to the implied eclipselink mapping file ref
 	 */
 	public static final String IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY = "impliedEclipseLinkMappingFileRef"; //$NON-NLS-1$
+	public static final Transformer<EclipseLinkPersistenceUnit, MappingFileRef> IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_TRANSFORMER = new ImpliedEclipseLinkMappingFileRefTransformer();
+	public static class ImpliedEclipseLinkMappingFileRefTransformer
+		extends TransformerAdapter<EclipseLinkPersistenceUnit, MappingFileRef>
+	{
+		@Override
+		public MappingFileRef transform(EclipseLinkPersistenceUnit pu) {
+			return pu.getImpliedEclipseLinkMappingFileRef();
+		}
+	}
 
 	/**
 	 * Store the implied EL mapping file ref even if it is not part of the context model.

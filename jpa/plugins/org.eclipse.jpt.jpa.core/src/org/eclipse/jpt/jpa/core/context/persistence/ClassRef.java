@@ -68,6 +68,15 @@ public interface ClassRef
 	 * Return the class name of the class ref.
 	 */
 	String getClassName();
+	Transformer<ClassRef, String> CLASS_NAME_TRANSFORMER = new ClassNameTransformer();
+	class ClassNameTransformer
+		extends TransformerAdapter<ClassRef, String>
+	{
+		@Override
+		public String transform(ClassRef ref) {
+			return ref.getClassName();
+		}
+	}
 
 	/**
 	 * Set the class name of the class ref.
