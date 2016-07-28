@@ -54,7 +54,7 @@ public class JavaPersistentAttributeDetailsPageManager
 		super.initializeLayout(container);
 	}
 
-	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = PropertyValueModelTools.staticPropertyValueModel(Boolean.TRUE);
+	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = PropertyValueModelTools.staticModel(Boolean.TRUE);
 
 	@Override
 	protected PropertyValueModel<Boolean> getMappingCompositeEnabledModel() {

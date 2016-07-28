@@ -66,7 +66,7 @@ public abstract class AspectAdapter<S, A>
 	 * Construct an aspect adapter for the specified subject.
 	 */
 	protected AspectAdapter(S subject) {
-		this(PropertyValueModelTools.staticPropertyValueModel(subject));
+		this(PropertyValueModelTools.staticModel(subject));
 	}
 
 	/**

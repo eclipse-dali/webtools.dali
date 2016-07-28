@@ -220,7 +220,7 @@ public final class CollectionValueModelTools {
 	public static ModifiablePropertyValueModel<Boolean> booleanModifiablePropertyValueModel(CollectionValueModel<?> collectionModel, Transformer<? super Collection<?>, Boolean> transformer, BooleanClosure.Adapter collectionMutator) {
 		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = transformationPluggablePropertyValueModelAdapterFactory(collectionModel, transformer);
 		Closure<Boolean> closure = ClosureTools.booleanClosure(collectionMutator);
-		return PropertyValueModelTools.pluggableModifiablePropertyValueModel(factory, closure);
+		return PropertyValueModelTools.pluggableModifiableModel(factory, closure);
 	}
 
 

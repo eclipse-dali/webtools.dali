@@ -128,7 +128,7 @@ public class RadioButtonModelAdapter<V>
 		}
 
 		private static <V> PluggablePropertyValueModel.Adapter.Factory<Boolean> buildAdapterFactory(PropertyValueModel<V> sharedValueModel, V buttonValue) {
-			return PropertyValueModelTools.transformationPluggablePropertyValueModelAdapterFactory_(sharedValueModel, new GetTransformer<>(buttonValue));
+			return PropertyValueModelTools.transformationPluggableModelAdapterFactory_(sharedValueModel, new GetTransformer<>(buttonValue));
 		}
 	
 		public void setValue(Boolean value) {

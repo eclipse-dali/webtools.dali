@@ -157,7 +157,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 				new OverrideDefaultPrimaryKeyJoinColumnModelTransformer()
 			);
 		Closure<Boolean> closure = ClosureTools.booleanClosure(new OverrideDefaultPrimaryKeyJoinColumnModelSetValueClosure());
-		return PropertyValueModelTools.pluggableModifiablePropertyValueModel(factory, closure);
+		return PropertyValueModelTools.pluggableModifiableModel(factory, closure);
 	}
 
 	private AddRemovePane.Adapter<SpecifiedPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnAdapter() {

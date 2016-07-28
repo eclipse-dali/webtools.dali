@@ -49,7 +49,7 @@ public abstract class PropertyAspectAdapterXXXX<S extends Model, V>
 	 * and property aspect.
 	 */
 	protected PropertyAspectAdapterXXXX(String aspectName, S subject) {
-		this(PropertyValueModelTools.staticPropertyValueModel(subject), new String[] {aspectName});
+		this(PropertyValueModelTools.staticModel(subject), new String[] {aspectName});
 	}
 
 	/**

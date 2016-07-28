@@ -75,7 +75,7 @@ public abstract class JptProjectPropertiesPage
 		super();
 
 		this.projectModel = new SimplePropertyValueModel<>();
-		this.trigger = PropertyValueModelTools.bufferedPropertyValueModelAdapterTrigger();
+		this.trigger = PropertyValueModelTools.bufferedModelAdapterTrigger();
 
 		this.buildModels();
 

@@ -346,7 +346,7 @@ public class TreeLabelProviderUiTest
 	}
 
 	/* CU private */ static PropertyValueModel<ImageDescriptor> buildImageDescriptorModel(Vehicle vehicle) {
-		return new PropertyAspectAdapterXXXX<Vehicle, ImageDescriptor>(PropertyValueModelTools.staticPropertyValueModel(vehicle), IMAGE_ASPECT_NAMES) {
+		return new PropertyAspectAdapterXXXX<Vehicle, ImageDescriptor>(PropertyValueModelTools.staticModel(vehicle), IMAGE_ASPECT_NAMES) {
 			@Override
 			protected ImageDescriptor buildValue_() {
 				return this.subject.getImageDescriptor();
@@ -361,7 +361,7 @@ public class TreeLabelProviderUiTest
 			};
 
 	/* CU private */ static PropertyValueModel<String> buildTextModel(Vehicle vehicle) {
-		return new PropertyAspectAdapterXXXX<Vehicle, String>(PropertyValueModelTools.staticPropertyValueModel(vehicle), TEXT_ASPECT_NAMES) {
+		return new PropertyAspectAdapterXXXX<Vehicle, String>(PropertyValueModelTools.staticModel(vehicle), TEXT_ASPECT_NAMES) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColor().getDescription() + ' ' + this.subject.getVehicleType().getDescription();

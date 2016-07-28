@@ -340,7 +340,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultCatalogModel() {
-		return PropertyValueModelTools.modifiablePropertyValueModel(this.buildDefaultCatalogModelAdapterFactory());
+		return PropertyValueModelTools.modifiableModel(this.buildDefaultCatalogModelAdapterFactory());
 	}
 
 	private PluggableModifiablePropertyValueModel.Adapter.Factory<String> buildDefaultCatalogModelAdapterFactory() {
@@ -395,7 +395,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultSchemaModel() {
-		return PropertyValueModelTools.modifiablePropertyValueModel(this.buildDefaultSchemaModelAdapterFactory());
+		return PropertyValueModelTools.modifiableModel(this.buildDefaultSchemaModelAdapterFactory());
 	}
 
 	private PluggableModifiablePropertyValueModel.Adapter.Factory<String> buildDefaultSchemaModelAdapterFactory() {

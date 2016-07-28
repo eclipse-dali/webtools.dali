@@ -196,7 +196,7 @@ public final class ListValueModelTools {
 	public static ModifiablePropertyValueModel<Boolean> booleanModifiablePropertyValueModel(ListValueModel<?> listModel, Transformer<? super Collection<?>, Boolean> transformer, BooleanClosure.Adapter listMutator) {
 		PluggablePropertyValueModel.Adapter.Factory<Boolean> factory = transformationPluggablePropertyValueModelAdapterFactory(listModel, transformer);
 		Closure<Boolean> closure = ClosureTools.booleanClosure(listMutator);
-		return PropertyValueModelTools.pluggableModifiablePropertyValueModel(factory, closure);
+		return PropertyValueModelTools.pluggableModifiableModel(factory, closure);
 	}
 
 

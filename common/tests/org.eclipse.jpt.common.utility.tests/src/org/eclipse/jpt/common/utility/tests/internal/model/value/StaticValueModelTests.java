@@ -19,7 +19,7 @@ public class StaticValueModelTests
 	extends TestCase
 {
 	private PropertyValueModel<String> testModel;
-	private static final PropertyValueModel<String> OBJECT_HOLDER = PropertyValueModelTools.staticPropertyValueModel("foo");
+	private static final PropertyValueModel<String> OBJECT_HOLDER = PropertyValueModelTools.staticModel("foo");
 
 	
 	public StaticValueModelTests(String name) {

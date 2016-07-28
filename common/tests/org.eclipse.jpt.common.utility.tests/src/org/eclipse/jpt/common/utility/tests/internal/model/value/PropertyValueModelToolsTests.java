@@ -1108,7 +1108,7 @@ public class PropertyValueModelToolsTests
 	public void testModifiablePropertyValueModel() {
 		ModifiablePropertyValueModel<String> doubleStringModel = new SimplePropertyValueModel<>("foofoo");
 		PluggableModifiablePropertyValueModel.Adapter.Factory<String> factory = new HalfStringModelAdapter.Factory(doubleStringModel);
-		ModifiablePropertyValueModel<String> halfStringModel = PropertyValueModelTools.modifiablePropertyValueModel(factory);
+		ModifiablePropertyValueModel<String> halfStringModel = PropertyValueModelTools.modifiableModel(factory);
 		LocalListener listener = new LocalListener();
 		halfStringModel.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
 
@@ -1213,7 +1213,7 @@ public class PropertyValueModelToolsTests
 		Closure<String> closure = null;
 		boolean exCaught = false;
 		try {
-			ModifiablePropertyValueModel<String> pvm = PropertyValueModelTools.pluggableModifiablePropertyValueModel(factory, closure);
+			ModifiablePropertyValueModel<String> pvm = PropertyValueModelTools.pluggableModifiableModel(factory, closure);
 			fail("bogus: " + pvm);
 		} catch (NullPointerException ex) {
 			exCaught = true;

@@ -65,7 +65,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	 * and collection aspects.
 	 */
 	protected CollectionAspectAdapter(String[] aspectNames, S subject) {
-		this(PropertyValueModelTools.staticPropertyValueModel(subject), aspectNames);
+		this(PropertyValueModelTools.staticModel(subject), aspectNames);
 	}
 
 	/**

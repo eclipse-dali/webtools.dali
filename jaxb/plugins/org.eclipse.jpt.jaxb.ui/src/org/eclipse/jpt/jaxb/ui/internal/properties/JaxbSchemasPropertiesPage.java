@@ -124,7 +124,7 @@ public class JaxbSchemasPropertiesPage
 		this.resourceManager = this.buildResourceManager();
 		this.projectModel = new SimplePropertyValueModel<>();
 		this.jaxbProjectModel = this.buildJaxbProjectModel();
-		this.trigger = PropertyValueModelTools.bufferedPropertyValueModelAdapterTrigger();
+		this.trigger = PropertyValueModelTools.bufferedModelAdapterTrigger();
 		this.schemasModel = new SchemasModel(this.jaxbProjectModel, this.trigger);
 		this.schemasSelectionModel = new SimpleCollectionValueModel<>();
 		setDescription(JptJaxbUiMessages.SCHEMAS_PAGE_DESCRIPTION);

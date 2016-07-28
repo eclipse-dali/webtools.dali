@@ -766,7 +766,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	private TreeModel buildTreeModel(TestNode root) {
-		return this.buildTreeModel(PropertyValueModelTools.staticPropertyValueModel(root));
+		return this.buildTreeModel(PropertyValueModelTools.staticModel(root));
 	}
 
 	private TreeModel buildTreeModel(PropertyValueModel<TreeNodeValueModel<Object>> rootModel) {

@@ -299,7 +299,7 @@ public abstract class Pane<T extends Model> {
 	 * <em>enabled</em> state always matching that of its parent pane.
 	 */
 	private static PropertyValueModel<Boolean> buildDefaultEnabledModel() {
-		return PropertyValueModelTools.staticPropertyValueModel(Boolean.TRUE);
+		return PropertyValueModelTools.staticModel(Boolean.TRUE);
 	}
 
 	/**

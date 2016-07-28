@@ -133,7 +133,7 @@ public class TreeModelAdapter<T>
 	 * Construct a tree model for the specified root.
 	 */
 	public TreeModelAdapter(TreeNodeValueModel<T> root) {
-		this(PropertyValueModelTools.staticPropertyValueModel(root));
+		this(PropertyValueModelTools.staticModel(root));
 	}
 
 

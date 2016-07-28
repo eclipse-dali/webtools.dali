@@ -193,6 +193,8 @@ public final class PropertyValueModelTools {
 	 * {@link Boolean}; and the value will <em>never</em> be passed to the specified
 	 * predicate.
 	 * 
+	 * @param <V> the type of the wrapped model's value
+	 * 
 	 * @see #valueAffirms_(PropertyValueModel, Predicate)
 	 * @see #valueAffirms(PropertyValueModel, Predicate, boolean)
 	 * @see #valueAffirms(PropertyValueModel, Predicate, Boolean)
@@ -209,6 +211,8 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong> If specified model's value is <code>null</code>,
 	 * the returned model's value will be the specified null result;
 	 * and the value will <em>never</em> be passed to the specified predicate.
+	 * 
+	 * @param <V> the type of the wrapped model's value
 	 * 
 	 * @see #valueAffirms(PropertyValueModel, Predicate)
 	 * @see #valueAffirms_(PropertyValueModel, Predicate)
@@ -231,6 +235,8 @@ public final class PropertyValueModelTools {
 	 * the returned model's value will be the specified null result;
 	 * and the value will <em>never</em> be passed to the specified predicate.
 	 * 
+	 * @param <V> the type of the wrapped model's value
+	 * 
 	 * @see #valueAffirms(PropertyValueModel, Predicate)
 	 * @see #valueAffirms_(PropertyValueModel, Predicate)
 	 * @see #valueAffirms(PropertyValueModel, Predicate, boolean)
@@ -250,6 +256,8 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> The specified predicate must be able to
 	 * handle a <code>null</code> variable.
+	 * 
+	 * @param <V> the type of the wrapped model's value
 	 * 
 	 * @see #valueAffirms(PropertyValueModel, Predicate)
 	 * @see #valueAffirms(PropertyValueModel, Predicate, boolean)
@@ -368,6 +376,8 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong> If the wrapped value is <code>null</code>,
 	 * the model returns a <code>null</code> value.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see #filter(PropertyValueModel, Class, Object)
 	 * @see PredicateTools#instanceOf(Class)
 	 */
@@ -383,6 +393,8 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> If the wrapped value is <code>null</code>,
 	 * the model returns a <code>null</code> value.
+	 * 
+	 * @param <V> the type of the model's value
 	 * 
 	 * @see #filter(PropertyValueModel, Class)
 	 * @see PredicateTools#instanceOf(Class)
@@ -403,6 +415,8 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> If the wrapped value is <code>null</code>,
 	 * the model returns the specified default value.
+	 * 
+	 * @param <V> the type of the model's value
 	 * 
 	 * @see #filter(PropertyValueModel, Class)
 	 * @see PredicateTools#instanceOf(Class)
@@ -426,6 +440,8 @@ public final class PropertyValueModelTools {
 	 * Instead, if the wrapped value is <code>null</code>, the model returns a
 	 * <code>null</code> value.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see #filter(PropertyValueModel, Predicate, Object)
 	 * @see #filter_(PropertyValueModel, Predicate)
 	 * @see PluggablePropertyValueModel
@@ -442,6 +458,8 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> The specified filter must be able to handle
 	 * a <code>null</code> variable.
+	 * 
+	 * @param <V> the type of the model's value
 	 * 
 	 * @see #filter(PropertyValueModel, Predicate)
 	 * @see #filter_(PropertyValueModel, Predicate, Object)
@@ -462,6 +480,8 @@ public final class PropertyValueModelTools {
 	 * a <code>null</code> variable.
 	 * Instead, if the wrapped value is <code>null</code>, the model returns the specified
 	 * default value.
+	 * 
+	 * @param <V> the type of the model's value
 	 * 
 	 * @see #filter(PropertyValueModel, Predicate)
 	 * @see #filter_(PropertyValueModel, Predicate, Object)
@@ -485,6 +505,8 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong> The specified filter must be able to handle
 	 * a <code>null</code> variable.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see #filter(PropertyValueModel, Predicate, Object)
 	 * @see #filter_(PropertyValueModel, Predicate)
 	 * @see PluggablePropertyValueModel
@@ -506,7 +528,7 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @see #buffer(ModifiablePropertyValueModel, BufferedPropertyValueModelAdapter.Trigger)
 	 */
-	public static BufferedPropertyValueModelAdapter.Trigger bufferedPropertyValueModelAdapterTrigger() {
+	public static BufferedPropertyValueModelAdapter.Trigger bufferedModelAdapterTrigger() {
 		return new BufferedPropertyValueModelAdapter.Trigger();
 	}
 
@@ -516,8 +538,10 @@ public final class PropertyValueModelTools {
 	 * Return an association of the buffered model and another boolean model
 	 * that indicates whether the buffered model is actually buffering a value.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see BufferedPropertyValueModelAdapter
-	 * @see #bufferedPropertyValueModelAdapterTrigger()
+	 * @see #bufferedModelAdapterTrigger()
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> Association<ModifiablePropertyValueModel<V>, PropertyValueModel<Boolean>> buffer(
@@ -525,7 +549,7 @@ public final class PropertyValueModelTools {
 			BufferedPropertyValueModelAdapter.Trigger trigger
 	) {
 		BufferedPropertyValueModelAdapter.Factory<V> factory = new BufferedPropertyValueModelAdapter.Factory<>(propertyModel, trigger);
-		ModifiablePropertyValueModel<V> model = modifiablePropertyValueModel(factory);
+		ModifiablePropertyValueModel<V> model = modifiableModel(factory);
 		PropertyValueModel<Boolean> bufferingModel = factory.getBufferingModel();
 		return new SimpleAssociation<>(model, bufferingModel);
 	}
@@ -537,6 +561,8 @@ public final class PropertyValueModelTools {
 	 * Construct a property value model that wraps the specified
 	 * property value model and returns the specified null value
 	 * if the specified model's value is <code>null</code>.
+	 * 
+	 * @param <V> the type of the model's value
 	 * 
 	 * @see PluggablePropertyValueModel
 	 */
@@ -555,13 +581,16 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong> The specified transformer will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
 	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PropertyValueModel<V2> transform(
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
-		return propertyValueModel(transformationPluggablePropertyValueModelAdapterFactory(propertyModel, transformer));
+		return propertyValueModel(transformationPluggableModelAdapterFactory(propertyModel, transformer));
 	}
 
 	/**
@@ -571,13 +600,16 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> The specified transformer must be able to handle a <code>null</code> input.
 	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> PropertyValueModel<V2> transform_(
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
-		return propertyValueModel(transformationPluggablePropertyValueModelAdapterFactory_(propertyModel, transformer));
+		return propertyValueModel(transformationPluggableModelAdapterFactory_(propertyModel, transformer));
 	}
 
 	/**
@@ -587,6 +619,9 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> The specified transformers will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
+	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
 	 * 
 	 * @see PluggablePropertyValueModel
 	 */
@@ -604,6 +639,9 @@ public final class PropertyValueModelTools {
 	 * transformers.
 	 * <p>
 	 * <strong>NB:</strong> The specified transformers must be able to handle a <code>null</code> input.
+	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
 	 * 
 	 * @see PluggablePropertyValueModel
 	 */
@@ -623,6 +661,9 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong> The specified transformer will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
 	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> ModifiablePropertyValueModel<V2> transform(
@@ -630,7 +671,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super V1, ? extends V2> transformer,
 			Closure<? super V2> setValueClosure
 	) {
-		return pluggableModifiablePropertyValueModel(transformationPluggablePropertyValueModelAdapterFactory(propertyModel, transformer), setValueClosure);
+		return pluggableModifiableModel(transformationPluggableModelAdapterFactory(propertyModel, transformer), setValueClosure);
 	}
 
 	/**
@@ -640,6 +681,9 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> The specified transformer must be able to handle a <code>null</code> input.
 	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V1, V2> ModifiablePropertyValueModel<V2> transform_(
@@ -647,7 +691,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super V1, ? extends V2> transformer,
 			Closure<? super V2> setValueClosure
 	) {
-		return pluggableModifiablePropertyValueModel(transformationPluggablePropertyValueModelAdapterFactory_(propertyModel, transformer), setValueClosure);
+		return pluggableModifiableModel(transformationPluggableModelAdapterFactory_(propertyModel, transformer), setValueClosure);
 	}
 
 	/**
@@ -657,13 +701,16 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong> The specified transformer will <em>never</em> be passed a <code>null</code> input.
 	 * Instead, a <code>null</code> input will be transformed into a <code>null</code> output.
 	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
-	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> transformationPluggablePropertyValueModelAdapterFactory(
+	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> transformationPluggableModelAdapterFactory(
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
-		return transformationPluggablePropertyValueModelAdapterFactory_(propertyModel, TransformerTools.nullCheck(transformer));
+		return transformationPluggableModelAdapterFactory_(propertyModel, TransformerTools.nullCheck(transformer));
 	}
 
 	/**
@@ -672,9 +719,12 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong> The specified transformer must be able to handle a <code>null</code> input.
 	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the returned model's value
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
-	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> transformationPluggablePropertyValueModelAdapterFactory_(
+	public static <V1, V2> PluggablePropertyValueModel.Adapter.Factory<V2> transformationPluggableModelAdapterFactory_(
 			PropertyValueModel<? extends V1> propertyModel,
 			Transformer<? super V1, ? extends V2> transformer
 	) {
@@ -688,6 +738,9 @@ public final class PropertyValueModelTools {
 	 * Construct a "set" closure that wraps the specified modifiable property value model and
 	 * uses the specified "set" transformer to transform the incoming value before
 	 * forwarding it to the model.
+	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the "set" closure's model's value
 	 */
 	public static <V1, V2> Closure<V2> setTransformerClosureAdapter(ModifiablePropertyValueModel<V1> propertyModel, Transformer<? super V2, ? extends V1> setTransformer) {
 		return new SetTransformerClosureAdapter<>(propertyModel, setTransformer);
@@ -697,6 +750,9 @@ public final class PropertyValueModelTools {
 	 * "Set" closure that wraps a modifiable property value model and
 	 * uses a "set" transformer to transform the incoming value before
 	 * forwarding it to the model.
+	 * 
+	 * @param <V1> the type of the wrapped model's value
+	 * @param <V2> the type of the "set" closure's model's value
 	 */
 	public static final class SetTransformerClosureAdapter<V1, V2>
 		implements Closure<V2>
@@ -729,6 +785,9 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a "set" closure that wraps another "set" closure and
 	 * provides a hook to do nothing if the target object is <code>null</code>.
+	 * 
+	 * @param <A1> the type of the "set" closure's "target" object
+	 * @param <A2> the type of the "set" closure's argument
 	 */
 	public static <A1, A2> BiClosure<A1, A2> nullCheckSetClosureWrapper(BiClosure<? super A1, ? super A2> closure) {
 		return nullCheckSetClosureWrapper(closure, ClosureTools.nullClosure());
@@ -738,6 +797,9 @@ public final class PropertyValueModelTools {
 	 * Construct a "set" closure that wraps another "set" closure and
 	 * provides a hook to execute a different closure
 	 * if the target object is <code>null</code>.
+	 * 
+	 * @param <A1> the type of the "set" closure's "target" object
+	 * @param <A2> the type of the "set" closure's argument
 	 */
 	public static <A1, A2> BiClosure<A1, A2> nullCheckSetClosureWrapper(BiClosure<? super A1, ? super A2> closure, Closure<? super A2> nullTargetSetClosure) {
 		return new NullCheckSetClosureWrapper<>(closure, nullTargetSetClosure);
@@ -747,6 +809,9 @@ public final class PropertyValueModelTools {
 	 * "Set" closure that wraps another "set" closure and
 	 * provides a hook to execute a different closure
 	 * if the target object is <code>null</code>.
+	 * 
+	 * @param <A1> the type of the "set" closure's "target" object
+	 * @param <A2> the type of the "set" closure's argument
 	 */
 	public static final class NullCheckSetClosureWrapper<A1, A2>
 		implements BiClosure<A1, A2>
@@ -783,6 +848,9 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a "set" bi-closure that wraps another "set" closure and
 	 * forwards only the second argument to it.
+	 * 
+	 * @param <A1> the type of the "set" closure's "target" object
+	 * @param <A2> the type of the "set" closure's argument
 	 */
 	public static <A1, A2> BiClosure<A1, A2> setClosureAdapter(Closure<? super A2> closure) {
 		return new SetClosureAdapter<>(closure);
@@ -791,6 +859,9 @@ public final class PropertyValueModelTools {
 	/**
 	 * "Set" bi-closure that wraps another "set" closure and
 	 * forwards only the second argument to it.
+	 * 
+	 * @param <A1> the type of the "set" closure's "target" object
+	 * @param <A2> the type of the "set" closure's argument
 	 */
 	public static final class SetClosureAdapter<A1, A2>
 		implements BiClosure<A1, A2>
@@ -825,9 +896,11 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the model's value will also be <code>null</code>.
+	 * 
+	 * @param <V> the type of the model's value
 	 */
 	public static <V> PropertyValueModel<V> compound(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
-		return propertyValueModel(compoundPropertyValueModelAdapterFactory(outerModel));
+		return propertyValueModel(compoundModelAdapterFactory(outerModel));
 	}
 
 	/**
@@ -837,9 +910,11 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the model will throw a {@link NullPointerException}.
+	 * 
+	 * @param <V> the type of the model's value
 	 */
 	public static <V> PropertyValueModel<V> compound_(PropertyValueModel<? extends PropertyValueModel<? extends V>> outerModel) {
-		return propertyValueModel(compoundPropertyValueModelAdapterFactory_(outerModel));
+		return propertyValueModel(compoundModelAdapterFactory_(outerModel));
 	}
 
 	/**
@@ -849,8 +924,12 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the factory's model's value will also be <code>null</code>.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <IM> the type of the "inner" model
+	 * @param <OM> the type of the "outer" model
 	 */
-	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundPropertyValueModelAdapterFactory(OM outerModel) {
+	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundModelAdapterFactory(OM outerModel) {
 		return modelAspectAdapterFactory_(
 				outerModel,
 				PropertyValueModel.VALUE,
@@ -865,8 +944,12 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the factory's model will throw a {@link NullPointerException}.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <IM> the type of the "inner" model
+	 * @param <OM> the type of the "outer" model
 	 */
-	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundPropertyValueModelAdapterFactory_(OM outerModel) {
+	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundModelAdapterFactory_(OM outerModel) {
 		return modelAspectAdapterFactory_(
 				outerModel,
 				PropertyValueModel.VALUE,
@@ -882,9 +965,11 @@ public final class PropertyValueModelTools {
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the model's value will also be <code>null</code>
 	 * and, if the model's value is set, it will do nothing.
+	 * 
+	 * @param <V> the type of the model's value
 	 */
 	public static <V> ModifiablePropertyValueModel<V> compoundModifiable(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
-		return modifiablePropertyValueModel(compoundModifiablePropertyValueModelAdapterFactory(outerModel));
+		return modifiableModel(compoundModifiableModelAdapterFactory(outerModel));
 	}
 
 	/**
@@ -895,9 +980,11 @@ public final class PropertyValueModelTools {
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the model will throw a {@link NullPointerException}
 	 * when either its value is get or set.
+	 * 
+	 * @param <V> the type of the model's value
 	 */
 	public static <V> ModifiablePropertyValueModel<V> compoundModifiable_(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
-		return modifiablePropertyValueModel(compoundModifiablePropertyValueModelAdapterFactory_(outerModel));
+		return modifiableModel(compoundModifiableModelAdapterFactory_(outerModel));
 	}
 
 	/**
@@ -908,10 +995,12 @@ public final class PropertyValueModelTools {
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the model's value will also be <code>null</code>
 	 * and, if the model's value is set, it will do nothing.
+	 * 
+	 * @param <V> the type of the model's value
 	 */
-	public static <V> PluggableModifiablePropertyValueModel.Adapter.Factory<V> compoundModifiablePropertyValueModelAdapterFactory(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
+	public static <V> PluggableModifiablePropertyValueModel.Adapter.Factory<V> compoundModifiableModelAdapterFactory(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
 		return modifiablePropertyAspectAdapterFactory_(
-				compoundPropertyValueModelAdapterFactory(outerModel),
+				compoundModelAdapterFactory(outerModel),
 				setValueClosure()
 			);
 	}
@@ -924,10 +1013,12 @@ public final class PropertyValueModelTools {
 	 * If the <em>outer</em> model's value is ever <code>null</code>,
 	 * the factory's model will throw a {@link NullPointerException}
 	 * when either its value is get or set.
+	 * 
+	 * @param <V> the type of the model's value
 	 */
-	public static <V> PluggableModifiablePropertyValueModel.Adapter.Factory<V> compoundModifiablePropertyValueModelAdapterFactory_(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
+	public static <V> PluggableModifiablePropertyValueModel.Adapter.Factory<V> compoundModifiableModelAdapterFactory_(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> outerModel) {
 		return modifiablePropertyAspectAdapterFactory_(
-				compoundPropertyValueModelAdapterFactory_(outerModel),
+				compoundModelAdapterFactory_(outerModel),
 				setValueClosure_()
 			);
 	}
@@ -942,13 +1033,16 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
 	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
 	 */
 	public static <V, S extends Model> PropertyValueModel<V> modelAspectAdapter(
 			S subject,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return modelAspectAdapter(staticPropertyValueModel(subject), aspectName, transformer);
+		return modelAspectAdapter(staticModel(subject), aspectName, transformer);
 	}
 
 	/**
@@ -957,13 +1051,16 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong>
 	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
 	 */
 	public static <V, S extends Model> PropertyValueModel<V> modelAspectAdapter_(
 			S subject,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return modelAspectAdapter_(staticPropertyValueModel(subject), aspectName, transformer);
+		return modelAspectAdapter_(staticModel(subject), aspectName, transformer);
 	}
 
 	/**
@@ -973,6 +1070,10 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
 	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> modelAspectAdapter(
 			SM subjectModel,
@@ -988,6 +1089,10 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong>
 	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> modelAspectAdapter_(
 			SM subjectModel,
@@ -1004,6 +1109,10 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
 	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> modelAspectAdapterFactory(
 			SM subjectModel,
@@ -1019,6 +1128,10 @@ public final class PropertyValueModelTools {
 	 * <p>
 	 * <strong>NB:</strong>
 	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> modelAspectAdapterFactory_(
 			SM subjectModel,
@@ -1031,6 +1144,10 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a property aspect adapter for the
 	 * specified subject model and subject adapter factory.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> aspectAdapter(
 			SM subjectModel,
@@ -1042,6 +1159,10 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a property aspect adapter factory for the
 	 * specified subject model and subject adapter factory.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> pluggableAspectAdapterFactory(
 			SM subjectModel,
@@ -1062,6 +1183,10 @@ public final class PropertyValueModelTools {
 	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
 	 * Likewise, if the subject is <code>null</code>, the specified closure will
 	 * not be executed.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<V> modifiablePropertyAspectAdapter(
 			SM subjectModel,
@@ -1069,7 +1194,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiablePropertyValueModel(modifiablePropertyAspectAdapterFactory(subjectModel, aspectName, getTransformer, setClosure));
+		return modifiableModel(modifiablePropertyAspectAdapterFactory(subjectModel, aspectName, getTransformer, setClosure));
 	}
 
 	/**
@@ -1080,6 +1205,10 @@ public final class PropertyValueModelTools {
 	 * The specified transformer must be able to handle a <code>null</code> subject.
 	 * Likewise, the specified closure must be able to handle a <code>null</code>
 	 * subject (i.e. first argument).
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<V> modifiablePropertyAspectAdapter_(
 			SM subjectModel,
@@ -1087,7 +1216,7 @@ public final class PropertyValueModelTools {
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiablePropertyValueModel(modifiablePropertyAspectAdapterFactory_(subjectModel, aspectName, getTransformer, setClosure));
+		return modifiableModel(modifiablePropertyAspectAdapterFactory_(subjectModel, aspectName, getTransformer, setClosure));
 	}
 
 	/**
@@ -1099,6 +1228,10 @@ public final class PropertyValueModelTools {
 	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
 	 * Likewise, if the subject is <code>null</code>, the specified closure will
 	 * not be executed.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory(
 			SM subjectModel,
@@ -1117,6 +1250,10 @@ public final class PropertyValueModelTools {
 	 * The specified transformer must be able to handle a <code>null</code> subject.
 	 * Likewise, the specified closure must be able to handle a <code>null</code>
 	 * subject (i.e. first argument).
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 * @param <SM> the type of the subject model
 	 */
 	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory_(
 			SM subjectModel,
@@ -1134,6 +1271,9 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the subject is <code>null</code>, the specified closure will
 	 * not be executed.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
 	 */
 	public static <V, S> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory(
 			ModifiablePropertyAspectAdapter.GetAdapter.Factory<V, S> getAdapterFactory,
@@ -1149,6 +1289,9 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * The specified closure must be able to handle a <code>null</code>
 	 * subject (i.e. first argument).
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
 	 */
 	public static <V, S> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiablePropertyAspectAdapterFactory_(
 			ModifiablePropertyAspectAdapter.GetAdapter.Factory<V, S> getAdapterFactory,
@@ -1163,6 +1306,8 @@ public final class PropertyValueModelTools {
 	/**
 	 * Construct a property value model adapter for the specified adapter factory.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see PluggablePropertyValueModel
 	 */
 	public static <V> PropertyValueModel<V> propertyValueModel(PluggablePropertyValueModel.Adapter.Factory<V> adapterFactory) {
@@ -1174,18 +1319,22 @@ public final class PropertyValueModelTools {
 	 * property value model adapter adapter factory and closure.
 	 * The specified closure is invoked when the model's value is set.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see PluggableModifiablePropertyValueModel
 	 */
-	public static <V> ModifiablePropertyValueModel<V> pluggableModifiablePropertyValueModel(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<? super V> setValueClosure) {
-		return modifiablePropertyValueModel(new PluggableModifiablePropertyValueModelAdapter.Factory<>(factory, setValueClosure));
+	public static <V> ModifiablePropertyValueModel<V> pluggableModifiableModel(BasePluggablePropertyValueModel.Adapter.Factory<V, ? extends BasePluggablePropertyValueModel.Adapter<V>> factory, Closure<? super V> setValueClosure) {
+		return modifiableModel(new PluggableModifiablePropertyValueModelAdapter.Factory<>(factory, setValueClosure));
 	}
 
 	/**
 	 * Construct a modifiable property value model adapter for the specified adapter factory.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see PluggableModifiablePropertyValueModel
 	 */
-	public static <V> ModifiablePropertyValueModel<V> modifiablePropertyValueModel(PluggableModifiablePropertyValueModel.Adapter.Factory<V> adapterFactory) {
+	public static <V> ModifiablePropertyValueModel<V> modifiableModel(PluggableModifiablePropertyValueModel.Adapter.Factory<V> adapterFactory) {
 		return new PluggableModifiablePropertyValueModel<>(adapterFactory);
 	}
 
@@ -1197,16 +1346,20 @@ public final class PropertyValueModelTools {
 	 * returning a static value, but still allows listeners to be added.
 	 * Listeners will <em>never</em> be notified of any changes, because there should be none.
 	 * 
+	 * @param <V> the type of the model's value
+	 * 
 	 * @see #simpleModel(Object)
 	 */
-	public static <V> PropertyValueModel<V> staticPropertyValueModel(V value) {
+	public static <V> PropertyValueModel<V> staticModel(V value) {
 		return new StaticPropertyValueModel<>(value);
 	}
 
 	/**
 	 * Construct a simple property value model that has the specified value.
 	 * 
-	 * @see #staticPropertyValueModel(Object)
+	 * @param <V> the type of the model's value
+	 * 
+	 * @see #staticModel(Object)
 	 */
 	public static <V> ModifiablePropertyValueModel<V> simpleModel(V value) {
 		return new SimplePropertyValueModel<>(value);
@@ -1222,6 +1375,9 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the property value model is <code>null</code>, the transformer returns
 	 * <code>null</code>.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <PVM> the type of the model
 	 * 
 	 * @see #valueTransformer(Object)
 	 * @see #valueTransformer_()
@@ -1243,6 +1399,9 @@ public final class PropertyValueModelTools {
 	 * If the property value model is <code>null</code>, the transformer returns
 	 * the specified null value.
 	 * 
+	 * @param <V> the type of the model's value
+	 * @param <PVM> the type of the model
+	 * 
 	 * @see #valueTransformer()
 	 * @see #valueTransformer_()
 	 * @see PropertyValueModel#VALUE_TRANSFORMER
@@ -1257,6 +1416,9 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the property value model is <code>null</code>, the transformer throws
 	 * a {@link NullPointerException}.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <PVM> the type of the model
 	 * 
 	 * @see #valueTransformer(Object)
 	 * @see #valueTransformer()
@@ -1273,6 +1435,9 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the property value model is <code>null</code>, the closure
 	 * does nothing.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <PVM> the type of the model
 	 * 
 	 * @see #setValueClosure_()
 	 * @see PropertyValueModel#VALUE_TRANSFORMER
@@ -1291,6 +1456,9 @@ public final class PropertyValueModelTools {
 	 * <strong>NB:</strong>
 	 * If the property value model is <code>null</code>, the closure throws
 	 * a {@link NullPointerException}.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <PVM> the type of the model
 	 * 
 	 * @see #setValueClosure()
 	 * @see PropertyValueModel#VALUE_TRANSFORMER

@@ -50,7 +50,7 @@ public abstract class ListCurator<S extends Model, E>
 	 * Construct a curator for the specified subject.
 	 */
 	protected ListCurator(S subject) {
-		this(PropertyValueModelTools.staticPropertyValueModel(subject));
+		this(PropertyValueModelTools.staticModel(subject));
 	}
 
 	/**

@@ -61,7 +61,7 @@ public class BufferedPropertyValueModelTests
 		this.employee = new Employee(17, "Freddy", new Date());
 		this.employeeModel = new SimplePropertyValueModel<>(this.employee);
 
-		this.trigger = PropertyValueModelTools.bufferedPropertyValueModelAdapterTrigger();
+		this.trigger = PropertyValueModelTools.bufferedModelAdapterTrigger();
 
 		this.idModel = this.buildIDModel(this.employeeModel);
 		Association<ModifiablePropertyValueModel<Integer>, PropertyValueModel<Boolean>> idAssociation = PropertyValueModelTools.buffer(this.idModel, this.trigger);

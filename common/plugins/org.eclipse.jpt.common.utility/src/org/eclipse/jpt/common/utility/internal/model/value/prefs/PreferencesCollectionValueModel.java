@@ -52,7 +52,7 @@ public class PreferencesCollectionValueModel<P>
 	 * Construct an adapter for the specified preferences node.
 	 */
 	public PreferencesCollectionValueModel(Preferences preferences, Adapter<P> adapter) {
-		this(PropertyValueModelTools.staticPropertyValueModel(preferences), adapter);
+		this(PropertyValueModelTools.staticModel(preferences), adapter);
 	}
 
 	/**

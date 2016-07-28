@@ -106,7 +106,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildOxmJavaTypeImageDescriptorModel(@SuppressWarnings("unused") OxmJavaType item) {
-		return PropertyValueModelTools.staticPropertyValueModel(JptJaxbUiImages.JAXB_CLASS);
+		return PropertyValueModelTools.staticModel(JptJaxbUiImages.JAXB_CLASS);
 	}
 
 	protected PropertyValueModel<String> buildOxmJavaTypeTextModel(OxmJavaType item) {
@@ -141,7 +141,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildOxmXmlEnumImageDescriptorModel(@SuppressWarnings("unused") OxmXmlEnum item) {
-		return PropertyValueModelTools.staticPropertyValueModel(JptJaxbUiImages.JAXB_ENUM);
+		return PropertyValueModelTools.staticModel(JptJaxbUiImages.JAXB_ENUM);
 	}
 	
 	protected PropertyValueModel<String> buildOxmXmlEnumTextModel(OxmXmlEnum item) {

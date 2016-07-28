@@ -434,11 +434,11 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	// ********** java type **********
 
 	public PropertyValueModel<String> buildJavaTypeTextModel(JavaType item) {
-		return PropertyValueModelTools.staticPropertyValueModel(item.getTypeName().getTypeQualifiedName());
+		return PropertyValueModelTools.staticModel(item.getTypeName().getTypeQualifiedName());
 	}
 
 	public PropertyValueModel<String> buildJavaTypeDescriptionModel(JavaType item) {
-		return PropertyValueModelTools.staticPropertyValueModel(this.buildJavaTypeDescription(item));
+		return PropertyValueModelTools.staticModel(this.buildJavaTypeDescription(item));
 	}
 
 	protected String buildJavaTypeDescription(JavaType item) {
@@ -467,7 +467,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	}
 
 	public PropertyValueModel<ImageDescriptor> buildJavaPersistentAttributeImageDescriptorModel(JavaPersistentAttribute item) {
-		return new PropertyAspectAdapterXXXX<JavaPersistentAttribute, ImageDescriptor>(PropertyValueModelTools.staticPropertyValueModel(item), IMAGE_ASPECT_NAMES) {
+		return new PropertyAspectAdapterXXXX<JavaPersistentAttribute, ImageDescriptor>(PropertyValueModelTools.staticModel(item), IMAGE_ASPECT_NAMES) {
 			@Override
 			protected ImageDescriptor buildValue_() {
 				return AbstractNavigatorItemLabelProviderFactory.this.buildJavaPersistentAttributeImageDescriptor(this.subject.getMappingKey());
@@ -485,7 +485,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	};
 
 	public PropertyValueModel<String> buildJavaPersistentAttributeTextModel(JavaPersistentAttribute item) {
-		return PropertyValueModelTools.staticPropertyValueModel(this.buildJavaPersistentAttributeText(item));
+		return PropertyValueModelTools.staticModel(this.buildJavaPersistentAttributeText(item));
 	}
 
 	protected String buildJavaPersistentAttributeText(JavaPersistentAttribute item) {
@@ -499,7 +499,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	}
 
 	public PropertyValueModel<String> buildJavaPersistentAttributeDescriptionModel(JavaPersistentAttribute item) {
-		return PropertyValueModelTools.staticPropertyValueModel(this.buildJavaPersistentAttributeDescription(item));
+		return PropertyValueModelTools.staticModel(this.buildJavaPersistentAttributeDescription(item));
 	}
 
 	protected String buildJavaPersistentAttributeDescription(JavaPersistentAttribute item) {

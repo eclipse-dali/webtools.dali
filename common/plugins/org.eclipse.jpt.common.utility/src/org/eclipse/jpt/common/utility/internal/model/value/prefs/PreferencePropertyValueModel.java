@@ -167,7 +167,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public PreferencePropertyValueModel(Preferences preferences, String key, P defaultValue, Transformer<String, P> stringTransformer) {
-		this(PropertyValueModelTools.staticPropertyValueModel(preferences), key, defaultValue, stringTransformer);
+		this(PropertyValueModelTools.staticModel(preferences), key, defaultValue, stringTransformer);
 	}
 
 	/**

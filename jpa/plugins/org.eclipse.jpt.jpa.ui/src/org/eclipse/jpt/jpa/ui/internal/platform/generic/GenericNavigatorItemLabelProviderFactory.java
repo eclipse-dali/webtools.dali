@@ -119,7 +119,7 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildConverterTypeImageDescriptorModel(@SuppressWarnings("unused") ManagedType item) {
-		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.CONVERTER);
+		return PropertyValueModelTools.staticModel(JptJpaUiImages.CONVERTER);
 	}
 
 	protected PropertyValueModel<String> buildConverterTypeTextModel(ManagedType managedType) {

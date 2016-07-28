@@ -69,7 +69,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	 * and list aspects.
 	 */
 	protected ListAspectAdapter(String[] aspectNames, S subject) {
-		this(PropertyValueModelTools.staticPropertyValueModel(subject), aspectNames);
+		this(PropertyValueModelTools.staticModel(subject), aspectNames);
 	}
 
 	/**

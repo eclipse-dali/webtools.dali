@@ -138,7 +138,7 @@ public class PersistentTypeDetailsPageManager
 			);
 	}
 
-	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = PropertyValueModelTools.staticPropertyValueModel(Boolean.TRUE);
+	private static final PropertyValueModel<Boolean> TRUE_ENABLED_MODEL = PropertyValueModelTools.staticModel(Boolean.TRUE);
 
 	protected PropertyValueModel<Boolean> getMappingCompositeEnabledModel() {
 		return TRUE_ENABLED_MODEL;		

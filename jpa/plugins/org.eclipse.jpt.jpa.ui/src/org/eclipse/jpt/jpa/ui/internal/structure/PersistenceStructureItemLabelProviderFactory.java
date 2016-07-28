@@ -113,7 +113,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<ImageDescriptor> buildPersistenceUnitImageDescriptorModel(@SuppressWarnings("unused") PersistenceUnit persistenceUnit) {
-		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.PERSISTENCE_UNIT);
+		return PropertyValueModelTools.staticModel(JptJpaUiImages.PERSISTENCE_UNIT);
 	}
 
 	protected static PropertyValueModel<String> buildPersistenceUnitTextModel(PersistenceUnit persistenceUnit) {
@@ -167,7 +167,7 @@ public class PersistenceStructureItemLabelProviderFactory
 
 
 	protected PropertyValueModel<ImageDescriptor> buildMappingFileRefImageDescriptorModel(MappingFileRef mappingFileRef) {
-		return PropertyValueModelTools.staticPropertyValueModel(JptCommonUiImages.gray(JptJpaUiImages.MAPPING_FILE_REF, mappingFileRef.isDefault()));
+		return PropertyValueModelTools.staticModel(JptCommonUiImages.gray(JptJpaUiImages.MAPPING_FILE_REF, mappingFileRef.isDefault()));
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefTextModel(MappingFileRef mappingFileRef) {
@@ -206,7 +206,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildClassRefImageDescriptorModel(@SuppressWarnings("unused") ClassRef classRef) {
-		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.CLASS_REF);
+		return PropertyValueModelTools.staticModel(JptJpaUiImages.CLASS_REF);
 	}
 
 	protected PropertyValueModel<String> buildClassRefTextModel(ClassRef classRef) {
@@ -246,7 +246,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildJarFileRefImageDescriptorModel(@SuppressWarnings("unused") JarFileRef jarFileRef) {
-		return PropertyValueModelTools.staticPropertyValueModel(JptJpaUiImages.JAR_FILE_REF);
+		return PropertyValueModelTools.staticModel(JptJpaUiImages.JAR_FILE_REF);
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefTextModel(JarFileRef jarFileRef) {
