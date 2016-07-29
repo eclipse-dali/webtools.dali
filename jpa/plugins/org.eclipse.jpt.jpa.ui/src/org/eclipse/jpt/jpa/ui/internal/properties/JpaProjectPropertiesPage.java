@@ -316,7 +316,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildConnectionModel_() {
-		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.buildDataSourceModel(),
 				JpaDataSource.CONNECTION_PROFILE_NAME_PROPERTY,
 				JpaDataSource.CONNECTION_PROFILE_NAME_TRANSFORMER,
@@ -375,7 +375,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserOverrideDefaultCatalogModel_() {
-		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.jpaProjectModel,
 				JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY,
 				JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_TRANSFORMER,
@@ -450,7 +450,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserOverrideDefaultSchemaModel_() {
-		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.jpaProjectModel,
 				JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY,
 				JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_TRANSFORMER,
@@ -505,7 +505,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildDiscoverAnnotatedClassesModel_() {
-		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.jpaProjectModel,
 				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PROPERTY,
 				JpaProject.DISCOVERS_ANNOTATED_CLASSES_TRANSFORMER,
@@ -540,7 +540,7 @@ public class JpaProjectPropertiesPage
 	 * The folder where the source for the generated Canonical Metamodel is written.
 	 */
 	private ModifiablePropertyValueModel<String> buildMetamodelSourceFolderModel_() {
-		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.jpaProject2_0Model,
 				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_PROPERTY,
 				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_TRANSFORMER,

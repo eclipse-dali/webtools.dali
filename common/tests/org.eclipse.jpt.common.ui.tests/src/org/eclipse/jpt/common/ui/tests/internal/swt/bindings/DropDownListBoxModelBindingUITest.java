@@ -270,7 +270,7 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Task> buildPriorityTaskAdapter() {
-		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.taskListModel,
 				TaskList.PRIORITY_TASK_PROPERTY,
 				TaskList.PRIORITY_TASK_TRANSFORMER,
@@ -279,7 +279,7 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<String> buildPriorityTaskNameAdapter() {
-		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.taskListModel,
 				TaskList.PRIORITY_TASK_NAME_PROPERTY,
 				TaskList.PRIORITY_TASK_NAME_TRANSFORMER,

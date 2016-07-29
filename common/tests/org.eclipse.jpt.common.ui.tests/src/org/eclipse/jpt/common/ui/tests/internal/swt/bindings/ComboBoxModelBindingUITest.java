@@ -72,7 +72,7 @@ public class ComboBoxModelBindingUITest
 		this.nameListModel = this.buildNameListModel();
 		this.testModel = new TestModel(DEFAULT_NAME);
 		this.testModelModel = new SimplePropertyValueModel<>(this.testModel);
-		this.nameModel = PropertyValueModelTools.modifiablePropertyAspectAdapter(this.testModelModel, TestModel.NAME_PROPERTY, TestModel.NAME_TRANSFORMER, TestModel.SET_NAME_CLOSURE);
+		this.nameModel = PropertyValueModelTools.modifiableModelAspectAdapter(this.testModelModel, TestModel.NAME_PROPERTY, TestModel.NAME_TRANSFORMER, TestModel.SET_NAME_CLOSURE);
 		this.allCapsNameModel = PropertyValueModelTools.transform(this.nameModel, UPPER_CASE_TRANSFORMER);
 
 		this.nameListSelectionModel = new SimplePropertyValueModel<>();
