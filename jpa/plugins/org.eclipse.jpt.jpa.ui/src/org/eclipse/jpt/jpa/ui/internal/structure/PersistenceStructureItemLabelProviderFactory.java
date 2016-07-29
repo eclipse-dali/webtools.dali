@@ -22,10 +22,10 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
@@ -117,37 +117,31 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildPersistenceUnitTextModel(PersistenceUnit persistenceUnit) {
-		return new PersistenceUnitTextModel(persistenceUnit);
-	}
-
-	public static class PersistenceUnitTextModel
-		extends PropertyAspectAdapterXXXX<PersistenceUnit, String>
-	{
-		public PersistenceUnitTextModel(PersistenceUnit subject) {
-			super(PersistenceUnit.NAME_PROPERTY, subject);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getName();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistenceUnit,
+				PersistenceUnit.NAME_PROPERTY,
+				PersistenceUnit.NAME_TRANSFORMER
+			);
 	}
 
 	protected static PropertyValueModel<String> buildPersistenceUnitDescriptionModel(PersistenceUnit persistenceUnit) {
-		return new PersistenceUnitDescriptionModel(persistenceUnit);
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistenceUnit,
+				PersistenceUnit.NAME_PROPERTY,
+				PERSISTENT_UNIT_DESCRIPTION_TRANSFORMER
+			);
 	}
 
-	public static class PersistenceUnitDescriptionModel
-		extends PersistenceUnitTextModel
+	public static final Transformer<PersistenceUnit, String> PERSISTENT_UNIT_DESCRIPTION_TRANSFORMER = new PersistentUnitDescriptionTransformer();
+	public static final class PersistentUnitDescriptionTransformer
+		extends TransformerAdapter<PersistenceUnit, String>
 	{
-		public PersistenceUnitDescriptionModel(PersistenceUnit subject) {
-			super(subject);
-		}
 		@Override
-		protected String buildValue_() {
+		public String transform(PersistenceUnit pu) {
 			StringBuilder sb = new StringBuilder();
-			sb.append(super.buildValue_());
+			sb.append(pu.getName());
 			sb.append(" - ");  //$NON-NLS-1$
-			sb.append(this.subject.getResource().getFullPath().makeRelative());
+			sb.append(pu.getResource().getFullPath().makeRelative());
 			return sb.toString();
 		}
 	}
@@ -171,7 +165,11 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefTextModel(MappingFileRef mappingFileRef) {
-		return PropertyValueModelTools.modelAspectAdapter(mappingFileRef, MappingFileRef.FILE_NAME_PROPERTY, MappingFileRef.FILE_NAME_TRANSFORMER);
+		return PropertyValueModelTools.modelAspectAdapter(
+				mappingFileRef,
+				MappingFileRef.FILE_NAME_PROPERTY,
+				MappingFileRef.FILE_NAME_TRANSFORMER
+			);
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefDescriptionModel(MappingFileRef mappingFileRef) {
@@ -198,7 +196,11 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildClassRefTextModel(ClassRef classRef) {
-		return PropertyValueModelTools.modelAspectAdapter(classRef, ClassRef.CLASS_NAME_PROPERTY, ClassRef.CLASS_NAME_TRANSFORMER);
+		return PropertyValueModelTools.modelAspectAdapter(
+				classRef,
+				ClassRef.CLASS_NAME_PROPERTY,
+				ClassRef.CLASS_NAME_TRANSFORMER
+			);
 	}
 
 	protected PropertyValueModel<String> buildClassRefDescriptionModel(ClassRef classRef) {
@@ -226,7 +228,11 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefTextModel(JarFileRef jarFileRef) {
-		return PropertyValueModelTools.modelAspectAdapter(jarFileRef, JarFileRef.FILE_NAME_PROPERTY, JarFileRef.FILE_NAME_TRANSFORMER);
+		return PropertyValueModelTools.modelAspectAdapter(
+				jarFileRef,
+				JarFileRef.FILE_NAME_PROPERTY,
+				JarFileRef.FILE_NAME_TRANSFORMER
+			);
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefDescriptionModel(JarFileRef jarFileRef) {

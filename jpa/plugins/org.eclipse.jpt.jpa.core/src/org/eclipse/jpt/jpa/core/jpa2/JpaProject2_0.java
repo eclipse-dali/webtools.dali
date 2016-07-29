@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,10 @@ package org.eclipse.jpt.jpa.core.jpa2;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -58,12 +62,30 @@ public interface JpaProject2_0
 	 * Metamodel.
 	 */
 	String getMetamodelSourceFolderName();
+		Transformer<JpaProject2_0, String> METAMODEL_SOURCE_FOLDER_NAME_TRANSFORMER = new MetamodelSourceFolderNameTransformer();
+	class MetamodelSourceFolderNameTransformer
+		extends TransformerAdapter<JpaProject2_0, String>
+	{
+		@Override
+		public String transform(JpaProject2_0 jpaProject) {
+			return jpaProject.getMetamodelSourceFolderName();
+		}
+	}
 
 	/**
 	 * Set the name of the folder that holds the generated Canonical
 	 * Metamodel.
 	 */
 	void setMetamodelSourceFolderName(String metamodelSourceFolderName);
+		BiClosure<JpaProject2_0, String> SET_METAMODEL_SOURCE_FOLDER_NAME_CLOSURE = new SetMetamodelSourceFolderNameClosure();
+	class SetMetamodelSourceFolderNameClosure
+		extends BiClosureAdapter<JpaProject2_0, String>
+	{
+		@Override
+		public void execute(JpaProject2_0 jpaProject, String metamodelSourceFolderName) {
+			jpaProject.setMetamodelSourceFolderName(metamodelSourceFolderName);
+		}
+	}
 
 	/**
 	 * Return the package fragment root that holds the generated Canonical

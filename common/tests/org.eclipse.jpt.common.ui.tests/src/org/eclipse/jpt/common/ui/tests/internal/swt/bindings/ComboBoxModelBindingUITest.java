@@ -15,10 +15,11 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -71,8 +72,8 @@ public class ComboBoxModelBindingUITest
 		this.nameListModel = this.buildNameListModel();
 		this.testModel = new TestModel(DEFAULT_NAME);
 		this.testModelModel = new SimplePropertyValueModel<>(this.testModel);
-		this.nameModel = new NameModel(this.testModelModel);
-		this.allCapsNameModel = this.buildAllCapsNameModel(this.testModelModel);
+		this.nameModel = PropertyValueModelTools.modifiablePropertyAspectAdapter(this.testModelModel, TestModel.NAME_PROPERTY, TestModel.NAME_TRANSFORMER, TestModel.SET_NAME_CLOSURE);
+		this.allCapsNameModel = PropertyValueModelTools.transform(this.nameModel, UPPER_CASE_TRANSFORMER);
 
 		this.nameListSelectionModel = new SimplePropertyValueModel<>();
 		this.nameListIndexTextModel = new SimplePropertyValueModel<>();
@@ -100,26 +101,6 @@ public class ComboBoxModelBindingUITest
 		x.add("Shaggy");
 		x.add("Velma");
 		return x;
-	}
-
-	private static class NameModel
-		extends PropertyAspectAdapterXXXX<TestModel, String>
-	{
-		NameModel(PropertyValueModel<TestModel> vm) {
-			super(vm, TestModel.NAME_PROPERTY);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.name();
-		}
-		@Override
-		protected void setValue_(String value) {
-			this.subject.setName(value);
-		}
-	}
-
-	private PropertyValueModel<String> buildAllCapsNameModel(PropertyValueModel<TestModel> vm) {
-		return PropertyValueModelTools.transform(new NameModel(vm), UPPER_CASE_TRANSFORMER);
 	}
 
 	public static final Transformer<String, String> UPPER_CASE_TRANSFORMER = new UpperCaseTransformer();
@@ -452,11 +433,29 @@ public class ComboBoxModelBindingUITest
 
 	// ********** model class **********
 
-	class TestModel
+	static class TestModel
 		extends AbstractModel
 	{
 		private String name;
 			public static final String NAME_PROPERTY = "name";
+			public static final Transformer<TestModel, String> NAME_TRANSFORMER = new NameTransformer();
+			public static final class NameTransformer
+				extends TransformerAdapter<TestModel, String>
+			{
+				@Override
+				public String transform(TestModel input) {
+					return input.name();
+				}
+			}
+			public static final BiClosure<TestModel, String> SET_NAME_CLOSURE = new SetNameClosure();
+			public static final class SetNameClosure
+				extends BiClosureAdapter<TestModel, String>
+			{
+				@Override
+				public void execute(TestModel argument1, String argument2) {
+					argument1.setName(argument2);
+				}
+			}
 
 		public TestModel(String name) {
 			this.name = name;

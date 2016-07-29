@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,6 +48,8 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 	protected String class_;
 
 	protected String name;
+	protected String simpleName;
+	protected String typeQualifiedName;
 
 	protected JavaManagedType javaManagedType;
 
@@ -74,6 +76,8 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setSimpleName(this.buildSimpleName());
+		this.setTypeQualifiedName(this.buildTypeQualifiedName());
 		this.updateJavaManagedType(monitor);
 	}
 
@@ -121,12 +125,39 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 		return this.getEntityMappings().qualify(this.class_);		
 	}
 
-	public String getSimpleName(){
-		String className = this.getName();
-		return StringTools.isBlank(className) ? null : ClassNameTools.simpleName(className);
+	protected TextRange getClassTextRange() {
+		return this.getValidationTextRange(this.getXmlManagedType().getClassTextRange());
 	}
 
+
+	// ********** simple name **********
+
+	public String getSimpleName(){
+		return this.simpleName;
+	}
+
+	protected void setSimpleName(String simpleName) {
+		String old = this.simpleName;
+		this.firePropertyChanged(SIMPLE_NAME_PROPERTY, old, this.simpleName = simpleName);
+	}
+
+	protected String buildSimpleName(){
+		return StringTools.isBlank(this.name) ? null : ClassNameTools.simpleName(this.name);
+	}
+
+
+	// ********** type-qualified name **********
+
 	public String getTypeQualifiedName() {
+		return this.typeQualifiedName;
+	}
+
+	protected void setTypeQualifiedName(String typeQualifiedName) {
+		String old = this.typeQualifiedName;
+		this.firePropertyChanged(TYPE_QUALIFIED_NAME_PROPERTY, old, this.typeQualifiedName = typeQualifiedName);
+	}
+
+	protected String buildTypeQualifiedName() {
 		String className = this.class_;
 		if (className == null) {
 			return null;
@@ -135,10 +166,6 @@ public abstract class AbstractOrmManagedType<P extends EntityMappings>
 		className = (lastPeriod == -1) ? className : className.substring(lastPeriod + 1);
 		className = className.replace('$', '.');
 		return className;
-	}
-
-	protected TextRange getClassTextRange() {
-		return this.getValidationTextRange(this.getXmlManagedType().getClassTextRange());
 	}
 
 

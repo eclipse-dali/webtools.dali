@@ -23,7 +23,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -450,6 +452,15 @@ public interface JpaProject
 	 * default catalog should be used).
 	 */
 	String getUserOverrideDefaultCatalog();
+		Transformer<JpaProject, String> USER_OVERRIDE_DEFAULT_CATALOG_TRANSFORMER = new UserOverrideDefaultCatalogTransformer();
+	class UserOverrideDefaultCatalogTransformer
+		extends TransformerAdapter<JpaProject, String>
+	{
+		@Override
+		public String transform(JpaProject jpaProject) {
+			return jpaProject.getUserOverrideDefaultCatalog();
+		}
+	}
 
 	/**
 	 * Set the <em>identifier</em> of the catalog to be used as a default
@@ -459,6 +470,15 @@ public interface JpaProject
 	 * default catalog should be used).
 	 */
 	void setUserOverrideDefaultCatalog(String catalog);
+		BiClosure<JpaProject, String> SET_USER_OVERRIDE_DEFAULT_CATALOG_CLOSURE = new SetUserOverrideDefaultCatalogClosure();
+	class SetUserOverrideDefaultCatalogClosure
+		extends BiClosureAdapter<JpaProject, String>
+	{
+		@Override
+		public void execute(JpaProject jpaProject, String catalog) {
+			jpaProject.setUserOverrideDefaultCatalog(catalog);
+		}
+	}
 
 
 	// ********** user override default schema **********
@@ -477,6 +497,15 @@ public interface JpaProject
 	 * default schema should be used).
 	 */
 	String getUserOverrideDefaultSchema();
+		Transformer<JpaProject, String> USER_OVERRIDE_DEFAULT_SCHEMA_TRANSFORMER = new UserOverrideDefaultSchemaTransformer();
+	class UserOverrideDefaultSchemaTransformer
+		extends TransformerAdapter<JpaProject, String>
+	{
+		@Override
+		public String transform(JpaProject jpaProject) {
+			return jpaProject.getUserOverrideDefaultSchema();
+		}
+	}
 
 	/**
 	 * Set the <em>identifier</em> of the schema to be used as a default
@@ -486,6 +515,15 @@ public interface JpaProject
 	 * default schema should be used).
 	 */
 	void setUserOverrideDefaultSchema(String schema);
+		BiClosure<JpaProject, String> SET_USER_OVERRIDE_DEFAULT_SCHEMA_CLOSURE = new SetUserOverrideDefaultSchemaClosure();
+	class SetUserOverrideDefaultSchemaClosure
+		extends BiClosureAdapter<JpaProject, String>
+	{
+		@Override
+		public void execute(JpaProject jpaProject, String schema) {
+			jpaProject.setUserOverrideDefaultSchema(schema);
+		}
+	}
 
 
 	// ********** discover annotated classes **********
@@ -519,6 +557,15 @@ public interface JpaProject
 	 * by the JPA implementation.
 	 */
 	boolean discoversAnnotatedClasses();
+		Transformer<JpaProject, Boolean> DISCOVERS_ANNOTATED_CLASSES_TRANSFORMER = new DiscoversAnnotatedClassesTransformer();
+	class DiscoversAnnotatedClassesTransformer
+		extends TransformerAdapter<JpaProject, Boolean>
+	{
+		@Override
+		public Boolean transform(JpaProject jpaProject) {
+			return Boolean.valueOf(jpaProject.discoversAnnotatedClasses());
+		}
+	}
 
 	/**
 	 * Set whether the JPA project will not generate error messages for any
@@ -527,6 +574,15 @@ public interface JpaProject
 	 * @see #discoversAnnotatedClasses()
 	 */
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
+		BiClosure<JpaProject, Boolean> SET_DISCOVERS_ANNOTATED_CLASSES_CLOSURE = new SetDiscoversAnnotatedClassesClosure();
+	class SetDiscoversAnnotatedClassesClosure
+		extends BiClosureAdapter<JpaProject, Boolean>
+	{
+		@Override
+		public void execute(JpaProject jpaProject, Boolean discoversAnnotatedClasses) {
+			jpaProject.setDiscoversAnnotatedClasses(discoversAnnotatedClasses.booleanValue());
+		}
+	}
 
 
 	// ********** manager **********

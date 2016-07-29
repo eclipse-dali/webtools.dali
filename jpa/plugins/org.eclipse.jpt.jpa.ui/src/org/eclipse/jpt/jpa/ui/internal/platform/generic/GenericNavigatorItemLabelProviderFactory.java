@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaModel;
@@ -123,19 +122,11 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildConverterTypeTextModel(ManagedType managedType) {
-		return new ConverterTypeTextModel(managedType);
-	}
-
-	public static class ConverterTypeTextModel
-		extends PropertyAspectAdapterXXXX<ManagedType, String>
-	{
-		public ConverterTypeTextModel(ManagedType subject) {
-			super(ManagedType.NAME_PROPERTY, subject);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getSimpleName();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(
+				managedType,
+				ManagedType.SIMPLE_NAME_PROPERTY,
+				ManagedType.SIMPLE_NAME_TRANSFORMER
+			);
 	}
 
 	protected PropertyValueModel<String> buildConverterTypeDescriptionModel(ManagedType managedType) {

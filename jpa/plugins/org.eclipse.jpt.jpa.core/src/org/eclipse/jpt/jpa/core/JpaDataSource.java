@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Table;
@@ -33,12 +37,30 @@ public interface JpaDataSource
 	 * The connection profile is looked up based on this setting.
 	 */
 	String getConnectionProfileName();
+	Transformer<JpaDataSource, String> CONNECTION_PROFILE_NAME_TRANSFORMER = new ConnectionProfileNameTransformer();
+	class ConnectionProfileNameTransformer
+		extends TransformerAdapter<JpaDataSource, String>
+	{
+		@Override
+		public String transform(JpaDataSource dataSource) {
+			return dataSource.getConnectionProfileName();
+		}
+	}
 
 	/**
 	 * Set the data source's connection profile name.
 	 * The connection profile is looked up based on this setting.
 	 */
 	void setConnectionProfileName(String connectionProfileName);
+	BiClosure<JpaDataSource, String> SET_CONNECTION_PROFILE_NAME_CLOSURE = new SetConnectionProfileNameClosure();
+	class SetConnectionProfileNameClosure
+		extends BiClosureAdapter<JpaDataSource, String>
+	{
+		@Override
+		public void execute(JpaDataSource dataSource, String name) {
+			dataSource.setConnectionProfileName(name);
+		}
+	}
 
 	/**
 	 * ID string used when connectionProfileName property is changed

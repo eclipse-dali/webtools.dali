@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,15 +21,19 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.comparator.ComparatorAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -266,43 +270,21 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Task> buildPriorityTaskAdapter() {
-		return new PriorityTaskAdapter(this.taskListModel);
-	}
-
-	static class PriorityTaskAdapter
-		extends PropertyAspectAdapterXXXX<TaskList, Task>
-	{
-		PriorityTaskAdapter(ModifiablePropertyValueModel<TaskList> taskListModel) {
-			super(taskListModel, TaskList.PRIORITY_TASK_PROPERTY);
-		}
-		@Override
-		protected Task buildValue_() {
-			return this.subject.getPriorityTask();
-		}
-		@Override
-		protected void setValue_(Task value) {
-			this.subject.setPriorityTask(value);
-		}
+		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+				this.taskListModel,
+				TaskList.PRIORITY_TASK_PROPERTY,
+				TaskList.PRIORITY_TASK_TRANSFORMER,
+				TaskList.SET_PRIORITY_TASK_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<String> buildPriorityTaskNameAdapter() {
-		return new PriorityTaskNameAdapter(this.taskListModel);
-	}
-
-	static class PriorityTaskNameAdapter
-		extends PropertyAspectAdapterXXXX<TaskList, String>
-	{
-		PriorityTaskNameAdapter(ModifiablePropertyValueModel<TaskList> taskListModel) {
-			super(taskListModel, TaskList.PRIORITY_TASK_NAME_PROPERTY);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getPriorityTaskName();
-		}
-		@Override
-		protected void setValue_(String value) {
-			// ignore
-		}
+		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+				this.taskListModel,
+				TaskList.PRIORITY_TASK_NAME_PROPERTY,
+				TaskList.PRIORITY_TASK_NAME_TRANSFORMER,
+				TaskList.SET_PRIORITY_TASK_NAME_CLOSURE
+			);
 	}
 
 	private void buildControlPanel(Composite parent, Control taskListPanel) {
@@ -535,8 +517,44 @@ public class DropDownListBoxModelBindingUITest
 			public static final String TASKS_LIST = "tasks";
 		private String priorityTaskName = null;
 			public static final String PRIORITY_TASK_NAME_PROPERTY = "priorityTaskName";
+			public static final Transformer<TaskList, String> PRIORITY_TASK_NAME_TRANSFORMER = new PriorityTaskNameTransformer();
+			public static final class PriorityTaskNameTransformer
+				extends TransformerAdapter<TaskList, String>
+			{
+				@Override
+				public String transform(TaskList taskList) {
+					return taskList.getPriorityTaskName();
+				}
+			}
+			public static final BiClosure<TaskList, String> SET_PRIORITY_TASK_NAME_CLOSURE = new SetPriorityTaskNameClosure();
+			public static final class SetPriorityTaskNameClosure
+				extends BiClosureAdapter<TaskList, String>
+			{
+				@Override
+				public void execute(TaskList taskList, String taskName) {
+					taskList.setPriorityTaskName(taskName);
+				}
+			}
 		private Task priorityTask = null;
 			public static final String PRIORITY_TASK_PROPERTY = "priorityTask";
+			public static final Transformer<TaskList, Task> PRIORITY_TASK_TRANSFORMER = new PriorityTaskTransformer();
+			public static final class PriorityTaskTransformer
+				extends TransformerAdapter<TaskList, Task>
+			{
+				@Override
+				public Task transform(TaskList taskList) {
+					return taskList.getPriorityTask();
+				}
+			}
+			public static final BiClosure<TaskList, Task> SET_PRIORITY_TASK_CLOSURE = new SetPriorityTaskClosure();
+			public static final class SetPriorityTaskClosure
+				extends BiClosureAdapter<TaskList, Task>
+			{
+				@Override
+				public void execute(TaskList taskList, Task task) {
+					taskList.setPriorityTask(task);
+				}
+			}
 		public TaskList() {
 			super();
 		}
@@ -578,7 +596,7 @@ public class DropDownListBoxModelBindingUITest
 			this.clearList(this.taskNames, TASK_NAMES_LIST);
 			this.clearList(this.tasks, TASKS_LIST);
 		}
-		private void setPriorityTaskName(String priorityTaskName) {
+		void setPriorityTaskName(String priorityTaskName) {
 			String old = this.priorityTaskName;
 			this.priorityTaskName = priorityTaskName;
 			this.firePropertyChanged(PRIORITY_TASK_NAME_PROPERTY, old, priorityTaskName);

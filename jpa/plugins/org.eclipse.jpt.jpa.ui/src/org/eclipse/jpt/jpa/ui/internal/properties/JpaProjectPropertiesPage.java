@@ -35,6 +35,7 @@ import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.closure.ClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.closure.ClosureTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -45,7 +46,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueMode
 import org.eclipse.jpt.common.utility.internal.model.value.PluggableModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
@@ -118,6 +118,7 @@ public class JpaProjectPropertiesPage
 	public static final String PROP_ID = "org.eclipse.jpt.jpa.ui.jpaProjectProperties"; //$NON-NLS-1$
 
 	private PropertyValueModel<JpaProject> jpaProjectModel;
+	private PropertyValueModel<JpaProject2_0> jpaProject2_0Model;
 	private PropertyValueModel<Boolean> jpaProjectIsNotNullFlagModel;
 
 	private ModifiablePropertyValueModel<JpaPlatform.Config> jpaPlatformConfigModel;
@@ -168,6 +169,7 @@ public class JpaProjectPropertiesPage
 	@Override
 	protected void buildModels() {
 		this.jpaProjectModel = this.buildJpaProjectModel();
+		this.jpaProject2_0Model = this.buildJpaProject2_0Model();
 		this.jpaProjectIsNotNullFlagModel = this.buildJpaProjectIsNotNullFlagModel();
 
 		Association<ModifiablePropertyValueModel<JpaPlatform.Config>, PropertyValueModel<Boolean>> platformConfigAssoc = this.buildJpaPlatformConfigModel();
@@ -233,6 +235,11 @@ public class JpaProjectPropertiesPage
 		}
 	}
 
+	// ***** JPA 2.0 project model
+	private PropertyValueModel<JpaProject2_0> buildJpaProject2_0Model() {
+		return PropertyValueModelTools.filter(this.jpaProjectModel, JpaProject2_0.class);
+	}
+
 	// ***** JPA project is not null model
 	private PropertyValueModel<Boolean> buildJpaProjectIsNotNullFlagModel() {
 		return PropertyValueModelTools.valueIsNotNull(this.jpaProjectModel);
@@ -249,7 +256,11 @@ public class JpaProjectPropertiesPage
 	}
 	
 	private ModifiablePropertyValueModel<JpaPlatform.Config> buildJpaPlatformConfigModel_() {
-		return PropertyValueModelTools.transform(this.jpaProjectModel, JPA_PROJECT_PLATFORM_CONFIG_TRANSFORMER, new JpaProjectSetPlatformConfigClosure());
+		return PropertyValueModelTools.transform(
+				this.jpaProjectModel,
+				JPA_PROJECT_PLATFORM_CONFIG_TRANSFORMER,
+				new JpaProjectSetPlatformConfigClosure()
+			);
 	}
 	
 	private static final TransformerAdapter<JpaProject, JpaPlatform.Config> JPA_PROJECT_PLATFORM_CONFIG_TRANSFORMER = new JpaProjectPlatformConfigTransformer();
@@ -301,7 +312,20 @@ public class JpaProjectPropertiesPage
 
 	// ***** connection models
 	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> buildConnectionModel() {
-		return PropertyValueModelTools.buffer(new ConnectionModel(this.jpaProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildConnectionModel_(), this.trigger);
+	}
+
+	private ModifiablePropertyValueModel<String> buildConnectionModel_() {
+		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+				this.buildDataSourceModel(),
+				JpaDataSource.CONNECTION_PROFILE_NAME_PROPERTY,
+				JpaDataSource.CONNECTION_PROFILE_NAME_TRANSFORMER,
+				JpaDataSource.SET_CONNECTION_PROFILE_NAME_CLOSURE
+			);
+	}
+
+	private PropertyValueModel<JpaDataSource> buildDataSourceModel() {
+		return PropertyValueModelTools.transform(this.jpaProjectModel, JpaProject.DATA_SOURCE_TRANSFORMER);
 	}
 
 	private PropertyValueModel<ConnectionProfile> buildConnectionProfileModel() {
@@ -332,11 +356,31 @@ public class JpaProjectPropertiesPage
 
 	// ***** catalog models
 	private Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> buildUserOverrideDefaultCatalogFlagModel() {
-		return PropertyValueModelTools.buffer(new UserOverrideDefaultCatalogFlagModel(this.jpaProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildUserOverrideDefaultCatalogFlagModel_(), this.trigger);
 	}
 
-	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>>  buildUserOverrideDefaultCatalogModel() {
-		return PropertyValueModelTools.buffer(new UserOverrideDefaultCatalogModel(this.jpaProjectModel), this.trigger);
+	/**
+	 * Whether the JPA project has a user override default catalog specified.
+	 */
+	private ModifiablePropertyValueModel<Boolean> buildUserOverrideDefaultCatalogFlagModel_() {
+		return PropertyValueModelTools.transform(
+				this.buildUserOverrideDefaultCatalogModel_(),
+				TransformerTools.adapt(StringTools.IS_NOT_BLANK),
+				ClosureTools.nullClosure()
+			);
+	}
+
+	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> buildUserOverrideDefaultCatalogModel() {
+		return PropertyValueModelTools.buffer(this.buildUserOverrideDefaultCatalogModel_(), this.trigger);
+	}
+
+	private ModifiablePropertyValueModel<String> buildUserOverrideDefaultCatalogModel_() {
+		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+				this.jpaProjectModel,
+				JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY,
+				JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_TRANSFORMER,
+				JpaProject.SET_USER_OVERRIDE_DEFAULT_CATALOG_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultCatalogModel() {
@@ -387,11 +431,31 @@ public class JpaProjectPropertiesPage
 
 	// ***** schema models
 	private Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> buildUserOverrideDefaultSchemaFlagModel() {
-		return PropertyValueModelTools.buffer(new UserOverrideDefaultSchemaFlagModel(this.jpaProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildUserOverrideDefaultSchemaFlagModel_(), this.trigger);
+	}
+
+	/**
+	 * Whether the JPA project has a user override default schema specified.
+	 */
+	private ModifiablePropertyValueModel<Boolean> buildUserOverrideDefaultSchemaFlagModel_() {
+		return PropertyValueModelTools.transform(
+				this.buildUserOverrideDefaultSchemaModel_(),
+				TransformerTools.adapt(StringTools.IS_NOT_BLANK),
+				ClosureTools.nullClosure()
+			);
 	}
 
 	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> buildUserOverrideDefaultSchemaModel() {
-		return PropertyValueModelTools.buffer(new UserOverrideDefaultSchemaModel(this.jpaProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildUserOverrideDefaultSchemaModel_(), this.trigger);
+	}
+
+	private ModifiablePropertyValueModel<String> buildUserOverrideDefaultSchemaModel_() {
+		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+				this.jpaProjectModel,
+				JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY,
+				JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_TRANSFORMER,
+				JpaProject.SET_USER_OVERRIDE_DEFAULT_SCHEMA_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<String> buildDefaultSchemaModel() {
@@ -437,14 +501,27 @@ public class JpaProjectPropertiesPage
 
 	// ***** discover/list annotated classes models
 	private Association<ModifiablePropertyValueModel<Boolean>, PropertyValueModel<Boolean>> buildDiscoverAnnotatedClassesModel() {
-		return PropertyValueModelTools.buffer(new DiscoverAnnotatedClassesModel(this.jpaProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildDiscoverAnnotatedClassesModel_(), this.trigger);
+	}
+
+	private ModifiablePropertyValueModel<Boolean> buildDiscoverAnnotatedClassesModel_() {
+		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+				this.jpaProjectModel,
+				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PROPERTY,
+				JpaProject.DISCOVERS_ANNOTATED_CLASSES_TRANSFORMER,
+				JpaProject.SET_DISCOVERS_ANNOTATED_CLASSES_CLOSURE
+			);
 	}
 
 	/**
 	 * The opposite of the "discover annotated classes" flag.
 	 */
 	private ModifiablePropertyValueModel<Boolean> buildListAnnotatedClassesModel() {
-		return PropertyValueModelTools.transform_(this.discoverAnnotatedClassesModel, TransformerTools.notBooleanTransformer(), TransformerTools.notBooleanTransformer());
+		return PropertyValueModelTools.transform_(
+				this.discoverAnnotatedClassesModel,
+				TransformerTools.notBooleanTransformer(),
+				TransformerTools.notBooleanTransformer()
+			);
 	}
 
 	// ***** JPA 2.0 project flag
@@ -456,7 +533,19 @@ public class JpaProjectPropertiesPage
 
 	// ***** metamodel models
 	private Association<ModifiablePropertyValueModel<String>, PropertyValueModel<Boolean>> buildMetamodelSourceFolderModel() {
-		return PropertyValueModelTools.buffer(new MetamodelSourceFolderModel(this.jpaProjectModel), this.trigger);
+		return PropertyValueModelTools.buffer(this.buildMetamodelSourceFolderModel_(), this.trigger);
+	}
+
+	/**
+	 * The folder where the source for the generated Canonical Metamodel is written.
+	 */
+	private ModifiablePropertyValueModel<String> buildMetamodelSourceFolderModel_() {
+		return PropertyValueModelTools.modifiablePropertyAspectAdapter(
+				this.jpaProject2_0Model,
+				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_PROPERTY,
+				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_TRANSFORMER,
+				JpaProject2_0.SET_METAMODEL_SOURCE_FOLDER_NAME_CLOSURE
+			);
 	}
 
 	private ListValueModel<String> buildJavaSourceFolderChoicesModel() {
@@ -1079,31 +1168,6 @@ public class JpaProjectPropertiesPage
 	// ********** UI model adapters **********
 
 	/**
-	 * The DTP connection profile name is an aspect of the JPA project's
-	 * data source
-	 */
-	static class ConnectionModel
-		extends PropertyAspectAdapterXXXX<JpaDataSource, String>
-	{
-		ConnectionModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			// The JPA project's data source is an auxiliary object that never changes;
-			// so if we have a JPA project, we have a JPA data source also.
-			super(PropertyValueModelTools.transform(jpaProjectModel, JpaProject.DATA_SOURCE_TRANSFORMER), JpaDataSource.CONNECTION_PROFILE_NAME_PROPERTY);
-		}
-
-		@Override
-		protected String buildValue_() {
-			return this.subject.getConnectionProfileName();
-		}
-
-		@Override
-		public void setValue_(String connection) {
-			this.subject.setConnectionProfileName(connection);
-		}
-	}
-
-
-	/**
 	 * The connections are held by a singleton, so the model can be a singleton
 	 * also.
 	 */
@@ -1185,163 +1249,6 @@ public class JpaProjectPropertiesPage
 			if (this.connectionProfileFactory != null) {
 				this.connectionProfileFactory.removeConnectionProfileListener(this.connectionProfileListener);
 			}
-		}
-	}
-
-
-	/**
-	 * Adapt whether the JPA project has a user override specified
-	 * (either catalog or schema);
-	 */
-	abstract static class UserOverrideDefaultFlagModel
-		extends PropertyAspectAdapterXXXX<JpaProject, Boolean>
-	{
-		UserOverrideDefaultFlagModel(PropertyValueModel<JpaProject> jpaProjectModel, String propertyName) {
-			super(jpaProjectModel, propertyName);
-		}
-
-		@Override
-		protected Boolean buildValue_() {
-			return Boolean.valueOf(this.specifiesUserOverrideDefault());
-		}
-
-		boolean specifiesUserOverrideDefault() {
-			return ! StringTools.isBlank(this.getUserOverrideDefault());
-		}
-
-		abstract String getUserOverrideDefault();
-
-		@Override
-		protected void setValue_(Boolean value) {
-			// ignore
-		}
-	}
-
-
-	/**
-	 * Whether the JPA project has a user override default catalog specified.
-	 */
-	static class UserOverrideDefaultCatalogFlagModel
-		extends UserOverrideDefaultFlagModel
-	{
-		UserOverrideDefaultCatalogFlagModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY);
-		}
-		@Override
-		public String getUserOverrideDefault() {
-			return this.subject.getUserOverrideDefaultCatalog();
-		}
-	}
-
-
-	/**
-	 * Whether the JPA project has a user override default schema specified.
-	 */
-	static class UserOverrideDefaultSchemaFlagModel
-		extends UserOverrideDefaultFlagModel
-	{
-		UserOverrideDefaultSchemaFlagModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY);
-		}
-		@Override
-		public String getUserOverrideDefault() {
-			return this.subject.getUserOverrideDefaultSchema();
-		}
-	}
-
-
-	/**
-	 * The JPA project's user override default catalog
-	 */
-	static class UserOverrideDefaultCatalogModel
-		extends PropertyAspectAdapterXXXX<JpaProject, String>
-	{
-		UserOverrideDefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY);
-		}
-
-		@Override
-		protected String buildValue_() {
-			return this.subject.getUserOverrideDefaultCatalog();
-		}
-
-		@Override
-		public void setValue_(String catalog) {
-			this.subject.setUserOverrideDefaultCatalog(catalog);
-		}
-	}
-
-
-	/**
-	 * The JPA project's user override default catalog
-	 */
-	static class UserOverrideDefaultSchemaModel
-		extends PropertyAspectAdapterXXXX<JpaProject, String>
-	{
-		UserOverrideDefaultSchemaModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY);
-		}
-
-		@Override
-		protected String buildValue_() {
-			return this.subject.getUserOverrideDefaultSchema();
-		}
-
-		@Override
-		public void setValue_(String schema) {
-			this.subject.setUserOverrideDefaultSchema(schema);
-		}
-	}
-
-
-	/**
-	 * Flag on the JPA project indicating whether it should discover annotated
-	 * classes
-	 */
-	static class DiscoverAnnotatedClassesModel
-		extends PropertyAspectAdapterXXXX<JpaProject, Boolean>
-	{
-		DiscoverAnnotatedClassesModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel, JpaProject.DISCOVERS_ANNOTATED_CLASSES_PROPERTY);
-		}
-
-		@Override
-		protected Boolean buildValue_() {
-			return Boolean.valueOf(this.subject.discoversAnnotatedClasses());
-		}
-
-		@Override
-		protected void setValue_(Boolean value) {
-			this.subject.setDiscoversAnnotatedClasses(value.booleanValue());
-		}
-	}
-
-
-	/**
-	 * The folder where the source for the generated Canonical Metamodel
-	 * is written.
-	 */
-	static class MetamodelSourceFolderModel
-		extends PropertyAspectAdapterXXXX<JpaProject, String>
-	{
-		MetamodelSourceFolderModel(PropertyValueModel<JpaProject> jpaProjectModel) {
-			super(jpaProjectModel, JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_PROPERTY);
-		}
-
-		@Override
-		protected String buildValue_() {
-			return this.subjectIsInJpa2_0Project() ? ((JpaProject2_0) this.subject).getMetamodelSourceFolderName() : null;
-		}
-
-		@Override
-		protected void setValue_(String value) {
-			if (this.subjectIsInJpa2_0Project()) {
-				((JpaProject2_0) this.subject).setMetamodelSourceFolderName(value);
-			}
-		}
-
-		private boolean subjectIsInJpa2_0Project() {
-			return this.subject.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JpaProject2_0.FACET_VERSION_STRING);
 		}
 	}
 
@@ -1851,15 +1758,14 @@ public class JpaProjectPropertiesPage
 		implements PluggableModifiablePropertyValueModel.Adapter<String>
 	{
 		private final PropertyValueModel<Boolean> userOverrideDefaultFlagModel;
-		private final ModifiablePropertyValueModel<String> userOverrideDefaultModel;
-		private final PropertyValueModel<String> databaseDefaultModel;
-
 		private final PropertyChangeListener userOverrideDefaultFlagListener = new UserOverrideDefaultFlagListener();
 		/* CU private */ volatile boolean userOverrideDefaultFlag = false;
 
+		private final ModifiablePropertyValueModel<String> userOverrideDefaultModel;
 		private final PropertyChangeListener userOverrideDefaultListener = new UserOverrideDefaultListener();
 		/* CU private */ volatile String userOverrideDefault = null;
 
+		private final PropertyValueModel<String> databaseDefaultModel;
 		private final PropertyChangeListener databaseDefaultListener = new DatabaseDefaultListener();
 		/* CU private */ volatile String databaseDefault = null;
 
@@ -1891,15 +1797,22 @@ public class JpaProjectPropertiesPage
 
 		public String engageModel() {
 			this.userOverrideDefaultFlagModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
+			Boolean flag = this.userOverrideDefaultFlagModel.getValue();
+			this.userOverrideDefaultFlag = (flag != null) && flag.booleanValue();
 			this.userOverrideDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
+			this.userOverrideDefault = this.userOverrideDefaultModel.getValue();
 			this.databaseDefaultModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
+			this.databaseDefault = this.databaseDefaultModel.getValue();
 			return this.buildValue();
 		}
 
 		public String disengageModel() {
 			this.databaseDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.databaseDefaultListener);
+			this.databaseDefault = null;
 			this.userOverrideDefaultModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultListener);
+			this.userOverrideDefault = null;
 			this.userOverrideDefaultFlagModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.userOverrideDefaultFlagListener);
+			this.userOverrideDefaultFlag = false;
 			return null;
 		}
 

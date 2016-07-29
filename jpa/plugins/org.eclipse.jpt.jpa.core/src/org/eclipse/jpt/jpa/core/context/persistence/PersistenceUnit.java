@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -279,6 +279,15 @@ public interface PersistenceUnit
 	 * Return the persistence unit's implied mapping file ref.
 	 */
 	MappingFileRef getImpliedMappingFileRef();
+	Transformer<PersistenceUnit, MappingFileRef> IMPLIED_MAPPING_FILE_REF_TRANSFORMER = new ImpliedMappingFileRefTransformer();
+	class ImpliedMappingFileRefTransformer
+		extends TransformerAdapter<PersistenceUnit, MappingFileRef>
+	{
+		@Override
+		public MappingFileRef transform(PersistenceUnit persistenceUnit) {
+			return persistenceUnit.getImpliedMappingFileRef();
+		}
+	}
 
 
 	// ********** jar file refs **********

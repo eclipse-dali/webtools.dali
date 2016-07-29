@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,6 +70,16 @@ public interface ManagedType
 	 * @see #getTypeQualifiedName()
 	 */
 	String getSimpleName();
+		String SIMPLE_NAME_PROPERTY = "simpleName"; //$NON-NLS-1$
+	Transformer<ManagedType, String> SIMPLE_NAME_TRANSFORMER = new SimpleNameTransformer();
+	class SimpleNameTransformer
+		extends TransformerAdapter<ManagedType, String>
+	{
+		@Override
+		public String transform(ManagedType mt) {
+			return mt.getSimpleName();
+		}
+	}
 
 	/**
 	 * Return the persistent type's type-qualified name; i.e. the type's
@@ -78,6 +88,16 @@ public interface ManagedType
 	 * @see #getSimpleName()
 	 */
 	String getTypeQualifiedName();
+		String TYPE_QUALIFIED_NAME_PROPERTY = "typeQualifiedName"; //$NON-NLS-1$
+	Transformer<ManagedType, String> TYPE_QUALIFIED_NAME_TRANSFORMER = new TypeQualifiedNameTransformer();
+	class TypeQualifiedNameTransformer
+		extends TransformerAdapter<ManagedType, String>
+	{
+		@Override
+		public String transform(ManagedType mt) {
+			return mt.getTypeQualifiedName();
+		}
+	}
 
 	/**
 	 * Return the Java resource type.

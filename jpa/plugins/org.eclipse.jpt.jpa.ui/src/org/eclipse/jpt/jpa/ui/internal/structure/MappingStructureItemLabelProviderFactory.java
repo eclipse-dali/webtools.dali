@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.NullItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -70,19 +69,11 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 	
 	protected static PropertyValueModel<TypeMapping> buildPersistentTypeMappingModel(PersistentType persistentType) {
-		return new PersistentTypeMappingModel(persistentType);
-	}
-
-	public static class PersistentTypeMappingModel
-		extends PropertyAspectAdapterXXXX<PersistentType, TypeMapping>
-	{
-		public PersistentTypeMappingModel(PersistentType subject) {
-			super(PersistentType.MAPPING_PROPERTY, subject);
-		}
-		@Override
-		protected TypeMapping buildValue_() {
-			return this.subject.getMapping();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistentType,
+				PersistentType.MAPPING_PROPERTY,
+				PersistentType.MAPPING_TRANSFORMER
+			);
 	}
 
 	protected static final Transformer<TypeMapping, ImageDescriptor> TYPE_MAPPING_IMAGE_DESCRIPTOR_TRANSFORMER = new TypeMappingImageDescriptorTransformer();
@@ -110,19 +101,11 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildPersistentTypeTextModel(PersistentType persistentType) {
-		return new PersistentTypeTextModel(persistentType);
-	}
-	
-	public static class PersistentTypeTextModel
-		extends PropertyAspectAdapterXXXX<PersistentType, String>
-	{
-		public PersistentTypeTextModel(PersistentType subject) {
-			super(ManagedType.NAME_PROPERTY, subject);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getTypeQualifiedName();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistentType,
+				ManagedType.TYPE_QUALIFIED_NAME_PROPERTY,
+				ManagedType.TYPE_QUALIFIED_NAME_TRANSFORMER
+			);
 	}
 	
 	protected static PropertyValueModel<String> buildPersistentTypeDescriptionModel(PersistentType persistentType) {
@@ -153,19 +136,11 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<AttributeMapping> buildPersistentAttributeMappingModel(PersistentAttribute persistentAttribute) {
-		return new PersistentAttributeMappingModel(persistentAttribute);
-	}
-
-	public static class PersistentAttributeMappingModel
-		extends PropertyAspectAdapterXXXX<PersistentAttribute, AttributeMapping>
-	{
-		public PersistentAttributeMappingModel(PersistentAttribute subject) {
-			super(PersistentAttribute.MAPPING_PROPERTY, subject);
-		}
-		@Override
-		protected AttributeMapping buildValue_() {
-			return this.subject.getMapping();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistentAttribute,
+				PersistentAttribute.MAPPING_PROPERTY,
+				PersistentAttribute.MAPPING_TRANSFORMER
+			);
 	}
 
 	protected static final Transformer<AttributeMapping, ImageDescriptor> ATTRIBUTE_MAPPING_IMAGE_DESCRIPTOR_TRANSFORMER = new AttributeMappingImageDescriptorTransformer();
@@ -193,19 +168,11 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildPersistentAttributeTextModel(PersistentAttribute persistentAttribute) {
-		return new PersistentAttributeTextModel(persistentAttribute);
-	}
-
-	public static class PersistentAttributeTextModel
-		extends PropertyAspectAdapterXXXX<PersistentAttribute, String>
-	{
-		public PersistentAttributeTextModel(PersistentAttribute subject) {
-			super(PersistentAttribute.NAME_PROPERTY, subject);
-		}
-		@Override
-		protected String buildValue_() {
-			return this.subject.getName();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistentAttribute,
+				PersistentAttribute.NAME_PROPERTY,
+				PersistentAttribute.NAME_TRANSFORMER
+			);
 	}
 
 	protected static PropertyValueModel<String> buildPersistentAttributeDescriptionModel(PersistentAttribute persistentAttribute) {
@@ -217,7 +184,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildTypeTextModel(PersistentAttribute persistentAttribute) {
-		return new PersistentTypeTextModel(persistentAttribute.getDeclaringPersistentType());
+		return buildPersistentTypeTextModel(persistentAttribute.getDeclaringPersistentType());
 	}
 
 	@Override

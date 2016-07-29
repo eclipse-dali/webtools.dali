@@ -64,14 +64,18 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 	 * property model is <code>null</code>.
 	 */
 	protected CollectionValueModel<MappingFile> buildPersistenceUnitImpliedEclipseLinkMappingFilesModel(EclipseLinkPersistenceUnit item) {
-		return new PropertyCollectionValueModelAdapter<MappingFile>(this.buildPersistenceUnitImpliedEclipseLinkMappingFileModel(item));
+		return new PropertyCollectionValueModelAdapter<>(this.buildPersistenceUnitImpliedEclipseLinkMappingFileModel(item));
 	}
 
 	protected PropertyValueModel<MappingFile> buildPersistenceUnitImpliedEclipseLinkMappingFileModel(EclipseLinkPersistenceUnit item) {
-		return new PersistenceUnitImpliedMappingFileModel(this.buildPersistenceUnitImpliedEclipseLinkMappingFileRefModel(item));
+		return this.buildPersistenceUnitImpliedMappingFileModel(this.buildPersistenceUnitImpliedEclipseLinkMappingFileRefModel(item));
 	}
 
 	protected PropertyValueModel<MappingFileRef> buildPersistenceUnitImpliedEclipseLinkMappingFileRefModel(EclipseLinkPersistenceUnit item) {
-		return PropertyValueModelTools.modelAspectAdapter(item, EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_TRANSFORMER);
+		return PropertyValueModelTools.modelAspectAdapter(
+				item,
+				EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY,
+				EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_TRANSFORMER
+			);
 	}
 }

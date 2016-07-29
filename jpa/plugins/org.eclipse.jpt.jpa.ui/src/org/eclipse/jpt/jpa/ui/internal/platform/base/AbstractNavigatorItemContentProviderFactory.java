@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
@@ -115,19 +114,11 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<PersistenceXml> buildJpaContextRootPersistenceXmlModel(JpaContextRoot jpaContextRoot) {
-		return new JpaContextRootPersistenceXml(jpaContextRoot);
-	}
-
-	public static class JpaContextRootPersistenceXml
-		extends PropertyAspectAdapterXXXX<JpaContextRoot, PersistenceXml>
-	{
-		public JpaContextRootPersistenceXml(JpaContextRoot jpaContextModelRoot) {
-			super(JpaContextRoot.PERSISTENCE_XML_PROPERTY, jpaContextModelRoot);
-		}
-		@Override
-		protected PersistenceXml buildValue_() {
-			return this.subject.getPersistenceXml();
-		}
+		return PropertyValueModelTools.modelAspectAdapter(
+				jpaContextRoot,
+				JpaContextRoot.PERSISTENCE_XML_PROPERTY,
+				JpaContextRoot.PERSISTENCE_XML_TRANSFORMER
+			);
 	}
 
 
@@ -145,7 +136,11 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<Persistence> buildPersistenceXmlPersistenceModel(PersistenceXml persistenceXml) {
-		return new PersistenceXmlPersistenceModel(persistenceXml);
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistenceXml,
+				XmlFile.ROOT_PROPERTY,
+				TransformerTools.downcast(XmlFile.ROOT_TRANSFORMER)
+			);
 	}
 
 	public static class PersistencePersistenceUnitsModel
@@ -163,18 +158,6 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 		@Override
 		protected int size_() {
 			return this.subject.getPersistenceUnitsSize();
-		}
-	}
-
-	public static class PersistenceXmlPersistenceModel
-		extends PropertyAspectAdapterXXXX<PersistenceXml, Persistence>
-	{
-		public PersistenceXmlPersistenceModel(PersistenceXml persistenceXml) {
-			super(XmlFile.ROOT_PROPERTY, persistenceXml);
-		}
-		@Override
-		protected Persistence buildValue_() {
-			return this.subject.getRoot();
 		}
 	}
 
@@ -248,39 +231,23 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	 * property model is <code>null</code>.
 	 */
 	protected CollectionValueModel<MappingFile> buildPersistenceUnitImpliedMappingFilesModel(PersistenceUnit persistenceUnit) {
-		return new PropertyCollectionValueModelAdapter<MappingFile>(this.buildPersistenceUnitImpliedMappingFileModel(persistenceUnit));
-	}
-
-	protected PropertyValueModel<MappingFile> buildPersistenceUnitImpliedMappingFileModel(PersistenceUnit persistenceUnit) {
-		return new PersistenceUnitImpliedMappingFileModel(this.buildPersistenceUnitImpliedMappingFileRefModel(persistenceUnit));
+		return new PropertyCollectionValueModelAdapter<>(this.buildPersistenceUnitImpliedMappingFileModel(this.buildPersistenceUnitImpliedMappingFileRefModel(persistenceUnit)));
 	}
 
 	protected PropertyValueModel<MappingFileRef> buildPersistenceUnitImpliedMappingFileRefModel(PersistenceUnit persistenceUnit) {
-		return new PersistenceUnitImpliedMappingFileRefModel(persistenceUnit);
+		return PropertyValueModelTools.modelAspectAdapter(
+				persistenceUnit,
+				PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
+				PersistenceUnit.IMPLIED_MAPPING_FILE_REF_TRANSFORMER
+			);
 	}
 
-	public static class PersistenceUnitImpliedMappingFileModel
-		extends PropertyAspectAdapterXXXX<MappingFileRef, MappingFile>
-	{
-		public PersistenceUnitImpliedMappingFileModel(PropertyValueModel<MappingFileRef> refModel) {
-			super(refModel, MappingFileRef.MAPPING_FILE_PROPERTY);
-		}
-		@Override
-		protected MappingFile buildValue_() {
-			return this.subject.getMappingFile();
-		}
-	}
-
-	public static class PersistenceUnitImpliedMappingFileRefModel
-		extends PropertyAspectAdapterXXXX<PersistenceUnit, MappingFileRef>
-	{
-		public PersistenceUnitImpliedMappingFileRefModel(PersistenceUnit persistenceUnit) {
-			super(PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY, persistenceUnit);
-		}
-		@Override
-		protected MappingFileRef buildValue_() {
-			return this.subject.getImpliedMappingFileRef();
-		}
+	protected PropertyValueModel<MappingFile> buildPersistenceUnitImpliedMappingFileModel(PropertyValueModel<MappingFileRef> refModel) {
+		return PropertyValueModelTools.modelAspectAdapter(
+				refModel,
+				MappingFileRef.MAPPING_FILE_PROPERTY,
+				MappingFileRef.MAPPING_FILE_TRANSFORMER
+			);
 	}
 
 
@@ -423,7 +390,11 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<EntityMappings> buildOrmXmlEntityMappingsModel(OrmXml ormXml) {
-		return PropertyValueModelTools.modelAspectAdapter(ormXml, XmlFile.ROOT_PROPERTY, TransformerTools.downcast(XmlFile.ROOT_TRANSFORMER));
+		return PropertyValueModelTools.modelAspectAdapter(
+				ormXml,
+				XmlFile.ROOT_PROPERTY,
+				TransformerTools.downcast(XmlFile.ROOT_TRANSFORMER)
+			);
 	}
 
 	public static class EntityMappingsManagedTypesModel

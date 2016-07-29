@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2013, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,6 +31,8 @@ public abstract class AbstractJavaManagedType<P extends JpaContextModel>
 	protected final JavaResourceType resourceType;
 
 	protected String name;
+	protected String simpleName;
+	protected String typeQualifiedName;
 
 
 	protected AbstractJavaManagedType(P parent, JavaResourceType resourceType) {
@@ -51,6 +53,8 @@ public abstract class AbstractJavaManagedType<P extends JpaContextModel>
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setSimpleName(this.buildSimpleName());
+		this.setTypeQualifiedName(this.buildTypeQualifiedName());
 	}
 
 
@@ -58,15 +62,6 @@ public abstract class AbstractJavaManagedType<P extends JpaContextModel>
 
 	public String getName() {
 		return this.name;
-	}
-
-	public String getSimpleName(){
-		return ClassNameTools.simpleName(this.name);
-	}
-
-	public String getTypeQualifiedName() {
-		String packageName = this.getPackageName();
-		return StringTools.isBlank(packageName) ? this.name : this.name.substring(packageName.length() + 1);
 	}
 
 	protected void setName(String name) {
@@ -81,6 +76,39 @@ public abstract class AbstractJavaManagedType<P extends JpaContextModel>
 
 	public TextRange getSelectionTextRange() {
 		return this.resourceType.getNameTextRange();
+	}
+
+
+	// ********** simple name **********
+
+	public String getSimpleName(){
+		return this.simpleName;
+	}
+
+	protected void setSimpleName(String simpleName) {
+		String old = this.simpleName;
+		this.firePropertyChanged(SIMPLE_NAME_PROPERTY, old, this.simpleName = simpleName);
+	}
+
+	protected String buildSimpleName(){
+		return ClassNameTools.simpleName(this.name);
+	}
+
+
+	// ********** type-qualified name **********
+
+	public String getTypeQualifiedName() {
+		return this.typeQualifiedName;
+	}
+
+	protected void setTypeQualifiedName(String typeQualifiedName) {
+		String old = this.typeQualifiedName;
+		this.firePropertyChanged(TYPE_QUALIFIED_NAME_PROPERTY, old, this.typeQualifiedName = typeQualifiedName);
+	}
+
+	protected String buildTypeQualifiedName() {
+		String packageName = this.getPackageName();
+		return StringTools.isBlank(packageName) ? this.name : this.name.substring(packageName.length() + 1);
 	}
 
 
