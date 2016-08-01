@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,15 +18,16 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.closure.Closure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TableModelAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -37,6 +38,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class TableModelAdapterTests
@@ -316,94 +318,66 @@ public class TableModelAdapterTests
 		}
 	
 		private ModifiablePropertyValueModel<Object> buildNameAdapter(Person person) {
-			return new PropertyAspectAdapterXXXX<Person, Object>(Person.NAME_PROPERTY, person) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getName();
-				}
-				@Override
-				protected void setValue_(Object value) {
-					this.subject.setName((String) value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					person,
+					Person.NAME_PROPERTY,
+					Person.NAME_TRANSFORMER,
+					PropertyValueModelTools.downcast(Person.SET_NAME_CLOSURE)
+				);
 		}
 	
 		private ModifiablePropertyValueModel<Object> buildBirthDateAdapter(Person person) {
-			return new PropertyAspectAdapterXXXX<Person, Object>(Person.BIRTH_DATE_PROPERTY, person) {
-				@Override
-				protected Date buildValue_() {
-					return this.subject.getBirthDate();
-				}
-				@Override
-				protected void setValue_(Object value) {
-					this.subject.setBirthDate((Date) value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					person,
+					Person.BIRTH_DATE_PROPERTY,
+					Person.BIRTH_DATE_TRANSFORMER,
+					PropertyValueModelTools.downcast(Person.SET_BIRTH_DATE_CLOSURE)
+				);
 		}
 	
 		private ModifiablePropertyValueModel<Object> buildGoneWestDateAdapter(Person person) {
-			return new PropertyAspectAdapterXXXX<Person, Object>(Person.GONE_WEST_DATE_PROPERTY, person) {
-				@Override
-				protected Date buildValue_() {
-					return this.subject.getGoneWestDate();
-				}
-				@Override
-				protected void setValue_(Object value) {
-					this.subject.setGoneWestDate((Date) value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					person,
+					Person.GONE_WEST_DATE_PROPERTY,
+					Person.GONE_WEST_DATE_TRANSFORMER,
+					PropertyValueModelTools.downcast(Person.SET_GONE_WEST_DATE_CLOSURE)
+				);
 		}
 	
 		private ModifiablePropertyValueModel<Object> buildEyeColorAdapter(Person person) {
-			return new PropertyAspectAdapterXXXX<Person, Object>(Person.EYE_COLOR_PROPERTY, person) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getEyeColor();
-				}
-				@Override
-				protected void setValue_(Object value) {
-					this.subject.setEyeColor((String) value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					person,
+					Person.EYE_COLOR_PROPERTY,
+					Person.EYE_COLOR_TRANSFORMER,
+					PropertyValueModelTools.downcast(Person.SET_EYE_COLOR_CLOSURE)
+				);
 		}
 	
 		private ModifiablePropertyValueModel<Object> buildEvilAdapter(Person person) {
-			return new PropertyAspectAdapterXXXX<Person, Object>(Person.EVIL_PROPERTY, person) {
-				@Override
-				protected Boolean buildValue_() {
-					return Boolean.valueOf(this.subject.isEvil());
-				}
-				@Override
-				protected void setValue_(Object value) {
-					this.subject.setEvil(((Boolean)value).booleanValue());
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					person,
+					Person.EVIL_PROPERTY,
+					Person.EVIL_TRANSFORMER,
+					PropertyValueModelTools.downcast(Person.SET_EVIL_CLOSURE)
+				);
 		}
 	
 		private ModifiablePropertyValueModel<Object> buildRankAdapter(Person person) {
-			return new PropertyAspectAdapterXXXX<Person, Object>(Person.RANK_PROPERTY, person) {
-				@Override
-				protected Integer buildValue_() {
-					return new Integer(this.subject.getRank());
-				}
-				@Override
-				protected void setValue_(Object value) {
-					this.subject.setRank(((Integer) value).intValue());
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					person,
+					Person.RANK_PROPERTY,
+					Person.RANK_TRANSFORMER,
+					PropertyValueModelTools.downcast(Person.SET_RANK_CLOSURE)
+				);
 		}
 	
 		private ModifiablePropertyValueModel<Object> buildAdventureCountAdapter(Person person) {
-			return new PropertyAspectAdapterXXXX<Person, Object>(Person.ADVENTURE_COUNT_PROPERTY, person) {
-				@Override
-				protected Integer buildValue_() {
-					return new Integer(this.subject.getAdventureCount());
-				}
-				@Override
-				protected void setValue_(Object value) {
-					this.subject.setAdventureCount(((Integer) value).intValue());
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					person,
+					Person.ADVENTURE_COUNT_PROPERTY,
+					Person.ADVENTURE_COUNT_TRANSFORMER,
+					PropertyValueModelTools.downcast(Person.SET_ADVENTURE_COUNT_CLOSURE)
+				);
 		}
 	
 	}
@@ -484,16 +458,91 @@ public class TableModelAdapterTests
 	}
 	
 	
-	public static class Person extends AbstractModel implements Comparable<Person> {
+	public static class Person
+		extends AbstractModel
+		implements Comparable<Person>
+	{
 		private Crowd crowd;
 		private String name;
 			public static final String NAME_PROPERTY= "name";
+			public static final Transformer<Person, String> NAME_TRANSFORMER = new NameTransformer();
+			public static final class NameTransformer
+				extends TransformerAdapter<Person, String>
+			{
+				@Override
+				public String transform(Person person) {
+					return person.getName();
+				}
+			}
+			public static final BiClosure<Person, String> SET_NAME_CLOSURE = new SetNameClosure();
+			public static final class SetNameClosure
+				extends BiClosureAdapter<Person, String>
+			{
+				@Override
+				public void execute(Person person, String name) {
+					person.setName(name);
+				}
+			}
 		private Date birthDate;
 			public static final String BIRTH_DATE_PROPERTY= "birthDate";
+			public static final Transformer<Person, Date> BIRTH_DATE_TRANSFORMER = new BirthDateTransformer();
+			public static final class BirthDateTransformer
+				extends TransformerAdapter<Person, Date>
+			{
+				@Override
+				public Date transform(Person person) {
+					return person.getBirthDate();
+				}
+			}
+			public static final BiClosure<Person, Date> SET_BIRTH_DATE_CLOSURE = new SetBirthDateClosure();
+			public static final class SetBirthDateClosure
+				extends BiClosureAdapter<Person, Date>
+			{
+				@Override
+				public void execute(Person person, Date birthDate) {
+					person.setBirthDate(birthDate);
+				}
+			}
 		private Date goneWestDate;
 			public static final String GONE_WEST_DATE_PROPERTY= "goneWestDate";
+			public static final Transformer<Person, Date> GONE_WEST_DATE_TRANSFORMER = new GoneWestDateTransformer();
+			public static final class GoneWestDateTransformer
+				extends TransformerAdapter<Person, Date>
+			{
+				@Override
+				public Date transform(Person person) {
+					return person.getGoneWestDate();
+				}
+			}
+			public static final BiClosure<Person, Date> SET_GONE_WEST_DATE_CLOSURE = new SetGoneWestDateClosure();
+			public static final class SetGoneWestDateClosure
+				extends BiClosureAdapter<Person, Date>
+			{
+				@Override
+				public void execute(Person person, Date date) {
+					person.setGoneWestDate(date);
+				}
+			}
 		private String eyeColor;
 			public static final String EYE_COLOR_PROPERTY= "eyeColor";
+			public static final Transformer<Person, String> EYE_COLOR_TRANSFORMER = new EyeColorTransformer();
+			public static final class EyeColorTransformer
+				extends TransformerAdapter<Person, String>
+			{
+				@Override
+				public String transform(Person person) {
+					return person.getEyeColor();
+				}
+			}
+			public static final BiClosure<Person, String> SET_EYE_COLOR_CLOSURE = new SetEyeColorClosure();
+			public static final class SetEyeColorClosure
+				extends BiClosureAdapter<Person, String>
+			{
+				@Override
+				public void execute(Person person, String name) {
+					person.setEyeColor(name);
+				}
+			}
 			public static final String EYE_COLOR_BLUE = "blue";
 			public static final String EYE_COLOR_GREEN = "green";
 			public static final String EYE_COLOR_BROWN = "brown";
@@ -503,10 +552,64 @@ public class TableModelAdapterTests
 			public static final String DEFAULT_EYE_COLOR = EYE_COLOR_BLUE;
 		private boolean evil;
 			public static final String EVIL_PROPERTY= "evil";
+			public static final Transformer<Person, Boolean> EVIL_TRANSFORMER = new EvilTransformer();
+			public static final class EvilTransformer
+				extends TransformerAdapter<Person, Boolean>
+			{
+				@Override
+				public Boolean transform(Person person) {
+					return Boolean.valueOf(person.isEvil());
+				}
+			}
+			public static final BiClosure<Person, Boolean> SET_EVIL_CLOSURE = new SetEvilClosure();
+			public static final class SetEvilClosure
+				extends BiClosureAdapter<Person, Boolean>
+			{
+				@Override
+				public void execute(Person person, Boolean evil) {
+					person.setEvil(evil.booleanValue());
+				}
+			}
 		private int rank;
 			public static final String RANK_PROPERTY= "rank";
+			public static final Transformer<Person, Integer> RANK_TRANSFORMER = new RankTransformer();
+			public static final class RankTransformer
+				extends TransformerAdapter<Person, Integer>
+			{
+				@Override
+				public Integer transform(Person person) {
+					return Integer.valueOf(person.getRank());
+				}
+			}
+			public static final BiClosure<Person, Integer> SET_RANK_CLOSURE = new SetRankClosure();
+			public static final class SetRankClosure
+				extends BiClosureAdapter<Person, Integer>
+			{
+				@Override
+				public void execute(Person person, Integer rank) {
+					person.setRank(rank.intValue());
+				}
+			}
 		private int adventureCount;
 			public static final String ADVENTURE_COUNT_PROPERTY= "adventureCount";
+			public static final Transformer<Person, Integer> ADVENTURE_COUNT_TRANSFORMER = new AdventureCountTransformer();
+			public static final class AdventureCountTransformer
+				extends TransformerAdapter<Person, Integer>
+			{
+				@Override
+				public Integer transform(Person person) {
+					return Integer.valueOf(person.getAdventureCount());
+				}
+			}
+			public static final BiClosure<Person, Integer> SET_ADVENTURE_COUNT_CLOSURE = new SetAdventureCountClosure();
+			public static final class SetAdventureCountClosure
+				extends BiClosureAdapter<Person, Integer>
+			{
+				@Override
+				public void execute(Person person, Integer count) {
+					person.setAdventureCount(count.intValue());
+				}
+			}
 	
 		Person(Crowd crowd, String name) {
 			super();
@@ -551,15 +654,6 @@ public class TableModelAdapterTests
 			Object old = this.name;
 			this.name = name;
 			this.firePropertyChanged(NAME_PROPERTY, old, name);
-		}
-		public static final Transformer<Person, String> NAME_TRANSFORMER = new NameTransformer();
-		public static class NameTransformer
-			extends TransformerAdapter<Person, String>
-		{
-			@Override
-			public String transform(Person person) {
-				return person.getName();
-			}
 		}
 	
 		public Date getBirthDate() {

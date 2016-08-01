@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,12 +26,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.CheckBoxModelAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Play around with a set of check boxes.
@@ -69,42 +73,30 @@ public class CheckBoxModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(vm, TestModel.FLAG1_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isFlag1());
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setFlag1(value.booleanValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.FLAG1_PROPERTY,
+				TestModel.FLAG1_TRANSFORMER,
+				TestModel.SET_FLAG1_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(vm, TestModel.FLAG2_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isFlag2());
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setFlag2(value.booleanValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.FLAG2_PROPERTY,
+				TestModel.FLAG2_TRANSFORMER,
+				TestModel.SET_FLAG2_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(vm, TestModel.NOT_FLAG2_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isNotFlag2());
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setNotFlag2(value.booleanValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.NOT_FLAG2_PROPERTY,
+				TestModel.NOT_FLAG2_TRANSFORMER,
+				TestModel.SET_NOT_FLAG2_CLOSURE
+			);
 	}
 
 	private ButtonModel buildCheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder) {
@@ -266,13 +258,69 @@ public class CheckBoxModelAdapterUITest {
 	}
 
 
-	private class TestModel extends AbstractModel {
+	private static class TestModel
+		extends AbstractModel
+	{
 		private boolean flag1;
 			public static final String FLAG1_PROPERTY = "flag1";
+			public static final Transformer<TestModel, Boolean> FLAG1_TRANSFORMER = new Flag1Transformer();
+			public static final class Flag1Transformer
+				extends TransformerAdapter<TestModel, Boolean>
+			{
+				@Override
+				public Boolean transform(TestModel model) {
+					return Boolean.valueOf(model.isFlag1());
+				}
+			}
+			public static final BiClosure<TestModel, Boolean> SET_FLAG1_CLOSURE = new SetFlag1Closure();
+			public static final class SetFlag1Closure
+				extends BiClosureAdapter<TestModel, Boolean>
+			{
+				@Override
+				public void execute(TestModel model, Boolean flag1) {
+					model.setFlag1(flag1.booleanValue());
+				}
+			}
 		private boolean flag2;
 			public static final String FLAG2_PROPERTY = "flag2";
+			public static final Transformer<TestModel, Boolean> FLAG2_TRANSFORMER = new Flag2Transformer();
+			public static final class Flag2Transformer
+				extends TransformerAdapter<TestModel, Boolean>
+			{
+				@Override
+				public Boolean transform(TestModel model) {
+					return Boolean.valueOf(model.isFlag2());
+				}
+			}
+			public static final BiClosure<TestModel, Boolean> SET_FLAG2_CLOSURE = new SetFlag2Closure();
+			public static final class SetFlag2Closure
+				extends BiClosureAdapter<TestModel, Boolean>
+			{
+				@Override
+				public void execute(TestModel model, Boolean flag2) {
+					model.setFlag2(flag2.booleanValue());
+				}
+			}
 		private boolean notFlag2;
 			public static final String NOT_FLAG2_PROPERTY = "notFlag2";
+			public static final Transformer<TestModel, Boolean> NOT_FLAG2_TRANSFORMER = new NotFlag2Transformer();
+			public static final class NotFlag2Transformer
+				extends TransformerAdapter<TestModel, Boolean>
+			{
+				@Override
+				public Boolean transform(TestModel model) {
+					return Boolean.valueOf(model.isNotFlag2());
+				}
+			}
+			public static final BiClosure<TestModel, Boolean> SET_NOT_FLAG2_CLOSURE = new SetNotFlag2Closure();
+			public static final class SetNotFlag2Closure
+				extends BiClosureAdapter<TestModel, Boolean>
+			{
+				@Override
+				public void execute(TestModel model, Boolean flag2) {
+					model.setNotFlag2(flag2.booleanValue());
+				}
+			}
 	
 		public TestModel(boolean flag1, boolean flag2) {
 			this.flag1 = flag1;

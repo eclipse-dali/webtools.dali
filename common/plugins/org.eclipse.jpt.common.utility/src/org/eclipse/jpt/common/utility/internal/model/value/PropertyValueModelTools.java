@@ -886,6 +886,60 @@ public final class PropertyValueModelTools {
 		}
 	}
 
+	/**
+	 * Wrap a "set" closure that takes an argument of type <code>X</code>
+	 * and allow it to be used as a "set" closure that takes an argument of
+	 * type <code>A2</code>, a super type of <code>X</code>;
+	 * the assumption being the closure will <em>always</em> be passed an argument of
+	 * type <code>X</code>.
+	 * Obviously, if the closure is passed an argument that is not of type
+	 * <code>X</code>, the closure will throw a {@link ClassCastException}.
+	 * 
+	 * @param <A1> the type of the "set" closure's "target" object
+	 * @param <A2> the type of the "set" closure's argument
+	 * @param <X> the type of the wrapped "set" closure's argument
+	 */
+	public static <A1, A2, X extends A2> BiClosure<A1, A2> downcast(BiClosure<? super A1, ? super X> closure) {
+		return new DowncastingSetClosureWrapper<>(closure);
+	}
+
+	/**
+	 * Wrap a "set" closure that takes an argument of type <code>X</code>
+	 * and allow it to be used as a "set" closure that takes an argument of
+	 * type <code>A2</code>, a super type of <code>X</code>;
+	 * the assumption being the closure will <em>always</em> be passed an argument of
+	 * type <code>X</code>.
+	 * Obviously, if the closure is passed an argument that is not of type
+	 * <code>X</code>, the closure will throw a {@link ClassCastException}.
+	 * 
+	 * @param <A1> the type of the "set" closure's "target" object
+	 * @param <A2> the type of the "set" closure's argument
+	 * @param <X> the type of the wrapped "set" closure's argument
+	 */
+	public static final class DowncastingSetClosureWrapper<A1, A2, X extends A2>
+		implements BiClosure<A1, A2>
+	{
+		private final BiClosure<? super A1, ? super X> closure;
+		
+		public DowncastingSetClosureWrapper(BiClosure<? super A1, ? super X> closure) {
+			super();
+			if (closure == null) {
+				throw new NullPointerException();
+			}
+			this.closure = closure;
+		}
+
+		@SuppressWarnings("unchecked")
+		public void execute(A1 argument1, A2 argument2) {
+			this.closure.execute(argument1, (X) argument2);
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.closure);
+		}
+	}
+
 
 	// ********** compound PVMs **********
 
@@ -1173,6 +1227,49 @@ public final class PropertyValueModelTools {
 
 
 	// ********** modifiable aspect adapters **********
+
+	/**
+	 * Construct a modifiable property aspect adapter for the
+	 * specified subject, aspect name, transformer, and closure.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
+	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code> value.
+	 * Likewise, if the subject is <code>null</code>, the specified closure will
+	 * not be executed.
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 */
+	public static <V, S extends Model> ModifiablePropertyValueModel<V> modifiableModelAspectAdapter(
+			S subject,
+			String aspectName,
+			Transformer<? super S, ? extends V> getTransformer,
+			BiClosure<? super S, ? super V> setClosure
+	) {
+		return modifiableModelAspectAdapter(staticModel(subject), aspectName, getTransformer, setClosure);
+	}
+
+	/**
+	 * Construct a modifiable property aspect adapter for the
+	 * specified subject, aspect name, transformer, and closure.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * Likewise, the specified closure must be able to handle a <code>null</code>
+	 * subject (i.e. first argument).
+	 * 
+	 * @param <V> the type of the model's value
+	 * @param <S> the type of the subject
+	 */
+	public static <V, S extends Model> ModifiablePropertyValueModel<V> modifiableModelAspectAdapter_(
+			S subject,
+			String aspectName,
+			Transformer<? super S, ? extends V> getTransformer,
+			BiClosure<? super S, ? super V> setClosure
+	) {
+		return modifiableModelAspectAdapter_(staticModel(subject), aspectName, getTransformer, setClosure);
+	}
 
 	/**
 	 * Construct a modifiable property aspect adapter for the

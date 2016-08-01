@@ -11,12 +11,14 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import java.util.Date;
 import org.eclipse.jpt.common.utility.Association;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
@@ -78,42 +81,30 @@ public class BufferedPropertyValueModelTests
 	}
 
 	private ModifiablePropertyValueModel<Integer> buildIDModel(PropertyValueModel<Employee> eHolder) {
-		return new PropertyAspectAdapterXXXX<Employee, Integer>(eHolder, Employee.ID_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return new Integer(this.subject.getID());
-			}
-			@Override
-			protected void setValue_(Integer value) {
-				this.subject.setID(value.intValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				eHolder,
+				Employee.ID_PROPERTY,
+				Employee.ID_TRANSFORMER,
+				Employee.SET_ID_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameModel(PropertyValueModel<Employee> eHolder) {
-		return new PropertyAspectAdapterXXXX<Employee, String>(eHolder, Employee.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getName();
-			}
-			@Override
-			protected void setValue_(String value) {
-				this.subject.setName(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				eHolder,
+				Employee.NAME_PROPERTY,
+				Employee.NAME_TRANSFORMER,
+				Employee.SET_NAME_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<Date> buildHireDateModel(PropertyValueModel<Employee> eHolder) {
-		return new PropertyAspectAdapterXXXX<Employee, Date>(eHolder, Employee.HIRE_DATE_PROPERTY) {
-			@Override
-			protected Date buildValue_() {
-				return this.subject.getHireDate();
-			}
-			@Override
-			protected void setValue_(Date value) {
-				this.subject.setHireDate(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				eHolder,
+				Employee.HIRE_DATE_PROPERTY,
+				Employee.HIRE_DATE_TRANSFORMER,
+				Employee.SET_HIRE_DATE_CLOSURE
+			);
 	}
 
 	@Override
@@ -549,15 +540,69 @@ public class BufferedPropertyValueModelTests
 
 	// ********** Employee **********
 
-	class Employee
+	static class Employee
 		extends AbstractModel
 	{
 		private int id;
 			public static final String ID_PROPERTY = "id";
+			public static final Transformer<Employee, Integer> ID_TRANSFORMER = new IDTransformer();
+			public static final class IDTransformer
+				extends TransformerAdapter<Employee, Integer>
+			{
+				@Override
+				public Integer transform(Employee model) {
+					return Integer.valueOf(model.getID());
+				}
+			}
+			public static final BiClosure<Employee, Integer> SET_ID_CLOSURE = new SetIDClosure();
+			public static final class SetIDClosure
+				extends BiClosureAdapter<Employee, Integer>
+			{
+				@Override
+				public void execute(Employee model, Integer id) {
+					model.setID(id.intValue());
+				}
+			}
 		private String name;
 			public static final String NAME_PROPERTY = "name";
+			public static final Transformer<Employee, String> NAME_TRANSFORMER = new NameTransformer();
+			public static final class NameTransformer
+				extends TransformerAdapter<Employee, String>
+			{
+				@Override
+				public String transform(Employee model) {
+					return model.getName();
+				}
+			}
+			public static final BiClosure<Employee, String> SET_NAME_CLOSURE = new SetNameClosure();
+			public static final class SetNameClosure
+				extends BiClosureAdapter<Employee, String>
+			{
+				@Override
+				public void execute(Employee model, String name) {
+					model.setName(name);
+				}
+			}
 		private Date hireDate;
 			public static final String HIRE_DATE_PROPERTY = "hireDate";
+			public static final Transformer<Employee, Date> HIRE_DATE_TRANSFORMER = new HireDateTransformer();
+			public static final class HireDateTransformer
+				extends TransformerAdapter<Employee, Date>
+			{
+				@Override
+				public Date transform(Employee model) {
+					return model.getHireDate();
+				}
+			}
+			public static final BiClosure<Employee, Date> SET_HIRE_DATE_CLOSURE = new SetHireDateClosure();
+			public static final class SetHireDateClosure
+				extends BiClosureAdapter<Employee, Date>
+			{
+				@Override
+				public void execute(Employee model, Date hireDate) {
+					model.setHireDate(hireDate);
+				}
+			}
 
 		Employee(int id, String name, Date hireDate) {
 			super();
@@ -570,24 +615,21 @@ public class BufferedPropertyValueModelTests
 		}
 		void setID(int id) {
 			int old = this.id;
-			this.id = id;
-			this.firePropertyChanged(ID_PROPERTY, old, id);
+			this.firePropertyChanged(ID_PROPERTY, old, this.id = id);
 		}
 		String getName() {
 			return this.name;
 		}
 		void setName(String name) {
 			Object old = this.name;
-			this.name = name;
-			this.firePropertyChanged(NAME_PROPERTY, old, name);
+			this.firePropertyChanged(NAME_PROPERTY, old, this.name = name);
 		}
 		Date getHireDate() {
 			return this.hireDate;
 		}
 		void setHireDate(Date hireDate) {
 			Object old = this.hireDate;
-			this.hireDate = hireDate;
-			this.firePropertyChanged(HIRE_DATE_PROPERTY, old, hireDate);
+			this.firePropertyChanged(HIRE_DATE_PROPERTY, old, this.hireDate = hireDate);
 		}
 		@Override
 		public void toString(StringBuilder sb) {

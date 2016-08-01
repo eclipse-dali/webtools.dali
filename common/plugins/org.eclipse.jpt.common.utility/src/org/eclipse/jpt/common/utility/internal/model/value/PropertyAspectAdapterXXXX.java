@@ -81,7 +81,7 @@ public abstract class PropertyAspectAdapterXXXX<S extends Model, V>
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			PropertyAspectAdapterXXXX.this.aspectChanged(event);
+			aspectChanged(event);
 		}
 	}
 

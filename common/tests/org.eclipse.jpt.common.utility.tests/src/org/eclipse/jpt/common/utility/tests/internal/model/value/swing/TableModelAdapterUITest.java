@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -48,7 +47,7 @@ import javax.swing.text.Document;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
@@ -531,16 +530,12 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameAdapter() {
-		return new PropertyAspectAdapterXXXX<Person, String>(this.selectedPersonHolder, Person.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getName();
-			}
-			@Override
-			protected void setValue_(String value) {
-				this.subject.setName(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.selectedPersonHolder,
+				Person.NAME_PROPERTY,
+				Person.NAME_TRANSFORMER,
+				PropertyValueModelTools.downcast(Person.SET_NAME_CLOSURE)
+			);
 	}
 
 
@@ -555,16 +550,12 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildBirthDateAdapter() {
-		return new PropertyAspectAdapterXXXX<Person, Object>(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
-			@Override
-			protected Date buildValue_() {
-				return this.subject.getBirthDate();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				this.subject.setBirthDate((Date) value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.selectedPersonHolder,
+				Person.BIRTH_DATE_PROPERTY,
+				Person.BIRTH_DATE_TRANSFORMER,
+				PropertyValueModelTools.downcast(Person.SET_BIRTH_DATE_CLOSURE)
+			);
 	}
 
 
@@ -579,16 +570,12 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildGoneWestDateAdapter() {
-		return new PropertyAspectAdapterXXXX<Person, Object>(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
-			@Override
-			protected Date buildValue_() {
-				return this.subject.getGoneWestDate();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				this.subject.setGoneWestDate((Date) value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.selectedPersonHolder,
+				Person.GONE_WEST_DATE_PROPERTY,
+				Person.GONE_WEST_DATE_TRANSFORMER,
+				PropertyValueModelTools.downcast(Person.SET_GONE_WEST_DATE_CLOSURE)
+			);
 	}
 
 
@@ -603,16 +590,12 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildEyeColorAdapter() {
-		return new PropertyAspectAdapterXXXX<Person, Object>(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
-			@Override
-			protected Object buildValue_() {
-				return this.subject.getEyeColor();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				this.subject.setEyeColor((String) value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.selectedPersonHolder,
+				Person.EYE_COLOR_PROPERTY,
+				Person.EYE_COLOR_TRANSFORMER,
+				PropertyValueModelTools.downcast(Person.SET_EYE_COLOR_CLOSURE)
+			);
 	}
 
 
@@ -630,16 +613,12 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildEvilAdapter() {
-		return new PropertyAspectAdapterXXXX<Person, Boolean>(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isEvil());
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setEvil(value.booleanValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.selectedPersonHolder,
+				Person.EVIL_PROPERTY,
+				Person.EVIL_TRANSFORMER,
+				PropertyValueModelTools.downcast(Person.SET_EVIL_CLOSURE)
+			);
 	}
 
 
@@ -654,16 +633,12 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildRankAdapter() {
-		return new PropertyAspectAdapterXXXX<Person, Number>(this.selectedPersonHolder, Person.RANK_PROPERTY) {
-			@Override
-			protected Number buildValue_() {
-				return new Integer(this.subject.getRank());
-			}
-			@Override
-			protected void setValue_(Number value) {
-				this.subject.setRank(value.intValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.selectedPersonHolder,
+				Person.RANK_PROPERTY,
+				Person.RANK_TRANSFORMER,
+				PropertyValueModelTools.downcast(Person.SET_RANK_CLOSURE)
+			);
 	}
 
 
@@ -678,16 +653,12 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildAdventureCountAdapter() {
-		return new PropertyAspectAdapterXXXX<Person, Number>(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
-			@Override
-			protected Number buildValue_() {
-				return new Integer(this.subject.getAdventureCount());
-			}
-			@Override
-			protected void setValue_(Number value) {
-				this.subject.setAdventureCount(value.intValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.selectedPersonHolder,
+				Person.ADVENTURE_COUNT_PROPERTY,
+				Person.ADVENTURE_COUNT_TRANSFORMER,
+				PropertyValueModelTools.downcast(Person.SET_ADVENTURE_COUNT_CLOSURE)
+			);
 	}
 
 

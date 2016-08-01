@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ComboBoxModel;
@@ -29,19 +28,22 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ComboBoxModelAdapter;
 import org.eclipse.jpt.common.utility.internal.swing.FilteringListBrowser;
 import org.eclipse.jpt.common.utility.internal.swing.ListChooser;
 import org.eclipse.jpt.common.utility.internal.swing.SimpleListCellRenderer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 
 /**
@@ -84,16 +86,12 @@ public class ComboBoxModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, Object>(vm, TestModel.COLOR_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getColor();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				this.subject.setColor((String) value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.COLOR_PROPERTY,
+				TestModel.COLOR_TRANSFORMER,
+				PropertyValueModelTools.downcast(TestModel.SET_COLOR_CLOSURE)
+			);
 	}
 
 	protected TestModel buildTestModel() {
@@ -312,9 +310,30 @@ public class ComboBoxModelAdapterUITest {
 	}
 
 
-	protected static class TestModel extends AbstractModel {
+	protected static class TestModel
+		extends AbstractModel
+	{
 		private String color;
 			public static final String COLOR_PROPERTY = "color";
+			public static final Transformer<TestModel, String> COLOR_TRANSFORMER = new ColorTransformer();
+			public static final class ColorTransformer
+				extends TransformerAdapter<TestModel, String>
+			{
+				@Override
+				public String transform(TestModel model) {
+					return model.getColor();
+				}
+			}
+		
+			public static final BiClosure<TestModel, String> SET_COLOR_CLOSURE = new SetColorClosure();
+			public static final class SetColorClosure
+				extends BiClosureAdapter<TestModel, String>
+			{
+				@Override
+				public void execute(TestModel model, String color) {
+					model.setColor(color);
+				}
+			}
 			public static final String RED = "red";
 			public static final String ORANGE = "orange";
 			public static final String YELLOW = "yellow";
@@ -358,8 +377,7 @@ public class ComboBoxModelAdapterUITest {
 		public void setColor(String color) {
 			this.checkColor(color);
 			Object old = this.color;
-			this.color = color;
-			this.firePropertyChanged(COLOR_PROPERTY, old, color);
+			this.firePropertyChanged(COLOR_PROPERTY, old, this.color = color);
 		}
 		public void checkColor(String c) {
 			if ( ! validColors().contains(c)) {

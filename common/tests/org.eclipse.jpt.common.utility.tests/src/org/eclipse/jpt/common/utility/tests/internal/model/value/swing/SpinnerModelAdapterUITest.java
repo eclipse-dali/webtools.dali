@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -27,16 +26,19 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.WindowConstants;
-
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.DateSpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ListSpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.NumberSpinnerModelAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Play around with a set of spinners.
@@ -82,16 +84,12 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildBirthDateHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, Object>(vm, TestModel.BIRTH_DATE_PROPERTY) {
-			@Override
-			protected Object buildValue_() {
-				return this.subject.getBirthDate();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				this.subject.setBirthDate((Date) value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.BIRTH_DATE_PROPERTY,
+				TestModel.BIRTH_DATE_TRANSFORMER,
+				PropertyValueModelTools.downcast(TestModel.SET_BIRTH_DATE_CLOSURE)
+			);
 	}
 
 	private SpinnerModel buildBirthDateSpinnerModel(ModifiablePropertyValueModel<Object> valueHolder) {
@@ -99,16 +97,12 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildAgeHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, Number>(vm, TestModel.AGE_PROPERTY) {
-			@Override
-			protected Number buildValue_() {
-				return new Integer(this.subject.getAge());
-			}
-			@Override
-			protected void setValue_(Number value) {
-				this.subject.setAge(value.intValue());
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.AGE_PROPERTY,
+				TestModel.AGE_TRANSFORMER,
+				TestModel.SET_AGE_CLOSURE
+			);
 	}
 
 	private SpinnerModel buildAgeSpinnerModel(ModifiablePropertyValueModel<Number> valueHolder) {
@@ -116,16 +110,12 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildEyeColorHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, Object>(vm, TestModel.EYE_COLOR_PROPERTY) {
-			@Override
-			protected Object buildValue_() {
-				return this.subject.getEyeColor();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				this.subject.setEyeColor((String) value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.EYE_COLOR_PROPERTY,
+				TestModel.EYE_COLOR_TRANSFORMER,
+				PropertyValueModelTools.downcast(TestModel.SET_EYE_COLOR_CLOSURE)
+			);
 	}
 
 	private SpinnerModel buildEyeColorSpinnerModel(ModifiablePropertyValueModel<Object> valueHolder) {
@@ -263,17 +253,75 @@ public class SpinnerModelAdapterUITest {
 	}
 
 
-	static class TestModel extends AbstractModel {
+	static class TestModel
+		extends AbstractModel
+	{
 		private Calendar birthCal = Calendar.getInstance();
 			// "virtual" properties
 			public static final String BIRTH_DATE_PROPERTY = "birthDate";
+			public static final Transformer<TestModel, Date> BIRTH_DATE_TRANSFORMER = new BirthDateTransformer();
+			public static final class BirthDateTransformer
+				extends TransformerAdapter<TestModel, Date>
+			{
+				@Override
+				public Date transform(TestModel model) {
+					return model.getBirthDate();
+				}
+			}
+			public static final BiClosure<TestModel, Date> SET_BIRTH_DATE_CLOSURE = new SetBirthDateClosure();
+			public static final class SetBirthDateClosure
+				extends BiClosureAdapter<TestModel, Date>
+			{
+				@Override
+				public void execute(TestModel model, Date birthDate) {
+					model.setBirthDate(birthDate);
+				}
+			}
+
 			public static final String AGE_PROPERTY = "age";
+			public static final Transformer<TestModel, Number> AGE_TRANSFORMER = new AgeTransformer();
+			public static final class AgeTransformer
+				extends TransformerAdapter<TestModel, Number>
+			{
+				@Override
+				public Number transform(TestModel model) {
+					return Integer.valueOf(model.getAge());
+				}
+			}
+			public static final BiClosure<TestModel, Number> SET_AGE_CLOSURE = new SetAgeClosure();
+			public static final class SetAgeClosure
+				extends BiClosureAdapter<TestModel, Number>
+			{
+				@Override
+				public void execute(TestModel model, Number age) {
+					model.setAge(age.intValue());
+				}
+			}
+
 			public static final Date DEFAULT_BIRTH_DATE = new Date();
 			public static final int DEFAULT_AGE = 0;
 			public static final int MIN_AGE = 0;
 			public static final int MAX_AGE = 150;
 		private String eyeColor;
 			public static final String EYE_COLOR_PROPERTY = "eyeColor";
+			public static final Transformer<TestModel, String> EYE_COLOR_TRANSFORMER = new EyeColorTransformer();
+			public static final class EyeColorTransformer
+				extends TransformerAdapter<TestModel, String>
+			{
+				@Override
+				public String transform(TestModel model) {
+					return model.getEyeColor();
+				}
+			}
+			public static final BiClosure<TestModel, String> SET_EYE_COLOR_CLOSURE = new SetEyeColorClosure();
+			public static final class SetEyeColorClosure
+				extends BiClosureAdapter<TestModel, String>
+			{
+				@Override
+				public void execute(TestModel model, String eyeColor) {
+					model.setEyeColor(eyeColor);
+				}
+			}
 			public static final String[] VALID_EYE_COLORS = {"blue", "brown", "green", "hazel", "pink"};
 			public static final String DEFAULT_EYE_COLOR = VALID_EYE_COLORS[3];
 	
@@ -332,8 +380,7 @@ public class SpinnerModelAdapterUITest {
 				throw new IllegalArgumentException(eyeColor);
 			}
 			Object old = this.eyeColor;
-			this.eyeColor = eyeColor;
-			this.firePropertyChanged(EYE_COLOR_PROPERTY, old, eyeColor);
+			this.firePropertyChanged(EYE_COLOR_PROPERTY, old, this.eyeColor = eyeColor);
 		}
 		@Override
 		public String toString() {

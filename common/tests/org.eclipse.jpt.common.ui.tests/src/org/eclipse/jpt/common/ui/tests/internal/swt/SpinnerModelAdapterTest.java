@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,10 +13,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -37,17 +41,12 @@ public class SpinnerModelAdapterTest {
 	}
 
 	private ModifiablePropertyValueModel<Integer> buildValueHolder() {
-		return new PropertyAspectAdapterXXXX<Model, Integer>(subjectHolder, Model.VALUE_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return subject.getValue();
-			}
-
-			@Override
-			protected void setValue_(Integer value) {
-				subject.setValue(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.subjectHolder,
+				Model.VALUE_PROPERTY,
+				Model.VALUE_TRANSFORMER,
+				Model.SET_VALUE_CLOSURE
+			);
 	}
 
 	@Before
@@ -318,6 +317,24 @@ public class SpinnerModelAdapterTest {
 		private Integer value;
 
 		static final String VALUE_PROPERTY = "value";
+		public static final Transformer<Model, Integer> VALUE_TRANSFORMER = new ValueTransformer();
+		public static final class ValueTransformer
+			extends TransformerAdapter<Model, Integer>
+		{
+			@Override
+			public Integer transform(Model model) {
+				return model.getValue();
+			}
+		}
+		public static final BiClosure<Model, Integer> SET_VALUE_CLOSURE = new SetValueClosure();
+		public static final class SetValueClosure
+			extends BiClosureAdapter<Model, Integer>
+		{
+			@Override
+			public void execute(Model model, Integer value) {
+				model.setValue(value);
+			}
+		}
 
 		void clearSetValueCalledFlag() {
 			setValueCalled = false;

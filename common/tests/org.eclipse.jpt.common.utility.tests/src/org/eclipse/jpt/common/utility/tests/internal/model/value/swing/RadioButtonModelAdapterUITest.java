@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -25,14 +24,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.WindowConstants;
-
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.RadioButtonModelAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 
 /**
@@ -67,16 +69,12 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildColorModel(PropertyValueModel<ColoredThing> ctm) {
-		return new PropertyAspectAdapterXXXX<ColoredThing, String>(ctm, ColoredThing.COLOR_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getColor();
-			}
-			@Override
-			protected void setValue_(String value) {
-				this.subject.setColor(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				ctm,
+				ColoredThing.COLOR_PROPERTY,
+				ColoredThing.COLOR_TRANSFORMER,
+				ColoredThing.SET_COLOR_CLOSURE
+			);
 	}
 
 	private ButtonModel buildRadioButtonModelAdapter(ModifiablePropertyValueModel<String> colorPVM, String color) {
@@ -230,6 +228,24 @@ public class RadioButtonModelAdapterUITest {
 	{
 		private String color;
 			public static final String COLOR_PROPERTY = "color";
+			public static final Transformer<ColoredThing, String> COLOR_TRANSFORMER = new ColorTransformer();
+			public static final class ColorTransformer
+				extends TransformerAdapter<ColoredThing, String>
+			{
+				@Override
+				public String transform(ColoredThing model) {
+					return model.getColor();
+				}
+			}
+			public static final BiClosure<ColoredThing, String> SET_COLOR_CLOSURE = new SetColorClosure();
+			public static final class SetColorClosure
+				extends BiClosureAdapter<ColoredThing, String>
+			{
+				@Override
+				public void execute(ColoredThing model, String color) {
+					model.setColor(color);
+				}
+			}
 			public static final String RED = "red";
 			public static final String GREEN = "green";
 			public static final String BLUE = "blue";
@@ -254,8 +270,7 @@ public class RadioButtonModelAdapterUITest {
 				throw new IllegalArgumentException(color);
 			}
 			Object old = this.color;
-			this.color = color;
-			this.firePropertyChanged(COLOR_PROPERTY, old, color);
+			this.firePropertyChanged(COLOR_PROPERTY, old, this.color = color);
 		}
 		@Override
 		public String toString() {

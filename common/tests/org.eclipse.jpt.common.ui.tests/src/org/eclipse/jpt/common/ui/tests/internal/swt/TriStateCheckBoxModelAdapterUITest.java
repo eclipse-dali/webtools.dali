@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,15 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.DefaultWidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -31,7 +35,6 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -48,59 +51,46 @@ public class TriStateCheckBoxModelAdapterUITest
 	private final ModifiablePropertyValueModel<Boolean> notFlag2Holder;
 
 	public static void main(String[] args) throws Exception {
-		Window window = new TriStateCheckBoxModelAdapterUITest(args);
+		Window window = new TriStateCheckBoxModelAdapterUITest();
 		window.setBlockOnOpen(true);
 		window.open();
-		Display.getCurrent().dispose();
 		System.exit(0);
 	}
 
-	private TriStateCheckBoxModelAdapterUITest(String[] args) {
+	private TriStateCheckBoxModelAdapterUITest() {
 		super(null);
 		this.testModel = new TestModel(Boolean.TRUE, Boolean.FALSE);
-		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<>(this.testModel);
 		this.flag1Holder = this.buildFlag1Holder(this.testModelHolder);
 		this.flag2Holder = this.buildFlag2Holder(this.testModelHolder);
 		this.notFlag2Holder = this.buildNotFlag2Holder(this.testModelHolder);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectHolder, TestModel.FLAG1_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.isFlag1();
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setFlag1(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectHolder,
+				TestModel.FLAG1_PROPERTY,
+				TestModel.FLAG1_TRANSFORMER,
+				TestModel.SET_FLAG1_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectHolder, TestModel.FLAG2_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.isFlag2();
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setFlag2(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectHolder,
+				TestModel.FLAG2_PROPERTY,
+				TestModel.FLAG2_TRANSFORMER,
+				TestModel.SET_FLAG2_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<TestModel, Boolean>(subjectHolder, TestModel.NOT_FLAG2_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.isNotFlag2();
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setNotFlag2(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectHolder,
+				TestModel.NOT_FLAG2_PROPERTY,
+				TestModel.NOT_FLAG2_TRANSFORMER,
+				TestModel.SET_NOT_FLAG2_CLOSURE
+			);
 	}
 
 	@Override
@@ -260,13 +250,69 @@ public class TriStateCheckBoxModelAdapterUITest
 	}
 
 
-	private class TestModel extends AbstractModel {
+	static class TestModel
+		extends AbstractModel
+	{
 		private Boolean flag1;
 			public static final String FLAG1_PROPERTY = "flag1";
+			public static final Transformer<TestModel, Boolean> FLAG1_TRANSFORMER = new Flag1Transformer();
+			public static final class Flag1Transformer
+				extends TransformerAdapter<TestModel, Boolean>
+			{
+				@Override
+				public Boolean transform(TestModel model) {
+					return model.isFlag1();
+				}
+			}
+			public static final BiClosure<TestModel, Boolean> SET_FLAG1_CLOSURE = new SetFlag1Closure();
+			public static final class SetFlag1Closure
+				extends BiClosureAdapter<TestModel, Boolean>
+			{
+				@Override
+				public void execute(TestModel model, Boolean flag1) {
+					model.setFlag1(flag1);
+				}
+			}
 		private Boolean flag2;
 			public static final String FLAG2_PROPERTY = "flag2";
+			public static final Transformer<TestModel, Boolean> FLAG2_TRANSFORMER = new Flag2Transformer();
+			public static final class Flag2Transformer
+				extends TransformerAdapter<TestModel, Boolean>
+			{
+				@Override
+				public Boolean transform(TestModel model) {
+					return model.isFlag2();
+				}
+			}
+			public static final BiClosure<TestModel, Boolean> SET_FLAG2_CLOSURE = new SetFlag2Closure();
+			public static final class SetFlag2Closure
+				extends BiClosureAdapter<TestModel, Boolean>
+			{
+				@Override
+				public void execute(TestModel model, Boolean flag2) {
+					model.setFlag2(flag2);
+				}
+			}
 		private Boolean notFlag2;
 			public static final String NOT_FLAG2_PROPERTY = "notFlag2";
+			public static final Transformer<TestModel, Boolean> NOT_FLAG2_TRANSFORMER = new NotFlag2Transformer();
+			public static final class NotFlag2Transformer
+				extends TransformerAdapter<TestModel, Boolean>
+			{
+				@Override
+				public Boolean transform(TestModel model) {
+					return model.isNotFlag2();
+				}
+			}
+			public static final BiClosure<TestModel, Boolean> SET_NOT_FLAG2_CLOSURE = new SetNotFlag2Closure();
+			public static final class SetNotFlag2Closure
+				extends BiClosureAdapter<TestModel, Boolean>
+			{
+				@Override
+				public void execute(TestModel model, Boolean flag2) {
+					model.setNotFlag2(flag2);
+				}
+			}
 	
 		public TestModel(Boolean flag1, Boolean flag2) {
 			this.flag1 = flag1;
@@ -306,7 +352,7 @@ public class TriStateCheckBoxModelAdapterUITest
 			return this.notFlag2;
 		}
 		public void setNotFlag2(Boolean notFlag2) {
-			this.setFlag2(this.next(flag2));
+			this.setFlag2(this.next(notFlag2));
 		}
 		public void nextNotFlag2() {
 			this.setNotFlag2(this.next(this.notFlag2));

@@ -20,7 +20,9 @@ import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -28,13 +30,13 @@ import org.eclipse.jpt.common.utility.internal.model.value.AbstractTreeNodeValue
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.NullListValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TreeModelAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
@@ -46,6 +48,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.TreeNodeValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.model.Displayable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
@@ -283,14 +286,34 @@ public class TreeModelAdapterTests extends TestCase {
 	 * This is a typical model class with the typical change notifications
 	 * for #name and #children.
 	 */
-	public static class TestModel extends AbstractModel {
-
+	public static class TestModel
+		extends AbstractModel
+	{
 		// the  parent is immutable; the root's parent is null
 		private final TestModel parent;
 
 		// the name is mutable; so I guess it isn't the "primary key" :-)
 		private String name;
 			public static final String NAME_PROPERTY = "name";
+			public static final Transformer<TestModel, String> NAME_TRANSFORMER = new NameTransformer();
+			public static final class NameTransformer
+				extends TransformerAdapter<TestModel, String>
+			{
+				@Override
+				public String transform(TestModel model) {
+					return model.getName();
+				}
+			}
+		
+			public static final BiClosure<TestModel, String> SET_NAME_CLOSURE = new SetNameClosure();
+			public static final class SetNameClosure
+				extends BiClosureAdapter<TestModel, String>
+			{
+				@Override
+				public void execute(TestModel model, String name) {
+					model.setName(name);
+				}
+			}
 
 		private final Collection<TestModel> children;
 			public static final String CHILDREN_COLLECTION = "children";
@@ -714,16 +737,12 @@ public class TreeModelAdapterTests extends TestCase {
 			};
 		}
 		protected ModifiablePropertyValueModel<String> buildNameAdapter() {
-			return new PropertyAspectAdapterXXXX<TestModel, String>(TestModel.NAME_PROPERTY, this.getTestModel()) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getName();
-				}
-				@Override
-				protected void setValue_(String value) {
-					this.subject.setName(value);
-				}
-			};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.getTestModel(),
+				TestModel.NAME_PROPERTY,
+				TestModel.NAME_TRANSFORMER,
+				TestModel.SET_NAME_CLOSURE
+			);
 		}
 
 		public TestModel getTestModel() {

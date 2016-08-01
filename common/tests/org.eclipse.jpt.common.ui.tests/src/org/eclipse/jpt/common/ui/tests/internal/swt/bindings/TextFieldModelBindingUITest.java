@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,11 +15,16 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.closure.ClosureTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -56,35 +61,32 @@ public class TextFieldModelBindingUITest
 	private TextFieldModelBindingUITest() {
 		super(null);
 		this.testModel = new TestModel(DEFAULT_NAME);
-		this.testModelModel = new SimplePropertyValueModel<TestModel>(this.testModel);
+		this.testModelModel = new SimplePropertyValueModel<>(this.testModel);
 		this.nameModel = this.buildNameModel(this.testModelModel);
 		this.allCapsNameModel = this.buildAllCapsNameModel(this.testModelModel);
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameModel(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.name();
-			}
-			@Override
-			protected void setValue_(String value) {
-				this.subject.setName(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				vm,
+				TestModel.NAME_PROPERTY,
+				TestModel.NAME_TRANSFORMER,
+				TestModel.SET_NAME_CLOSURE
+			);
 	}
 
 	private ModifiablePropertyValueModel<String> buildAllCapsNameModel(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapterXXXX<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.name().toUpperCase();
-			}
-			@Override
-			protected void setValue_(String value) {
-				// do nothing
-			}
-		};
+		return PropertyValueModelTools.transform(this.buildNameModel(vm), TO_UPPER_CASE_TRANSFORMER, ClosureTools.nullClosure());
+	}
+
+	public static final Transformer<String, String> TO_UPPER_CASE_TRANSFORMER = new ToUpperCaseTransformer();
+	public static final class ToUpperCaseTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String string) {
+			return string.toUpperCase();
+		}
 	}
 
 	@Override
@@ -228,11 +230,29 @@ public class TextFieldModelBindingUITest
 
 	// ********** model class **********
 
-	class TestModel
+	static class TestModel
 		extends AbstractModel
 	{
 		private String name;
 			public static final String NAME_PROPERTY = "name";
+			public static final Transformer<TestModel, String> NAME_TRANSFORMER = new NameTransformer();
+			public static final class NameTransformer
+				extends TransformerAdapter<TestModel, String>
+			{
+				@Override
+				public String transform(TestModel model) {
+					return model.name();
+				}
+			}
+			public static final BiClosure<TestModel, String> SET_NAME_CLOSURE = new SetNameClosure();
+			public static final class SetNameClosure
+				extends BiClosureAdapter<TestModel, String>
+			{
+				@Override
+				public void execute(TestModel model, String name) {
+					model.setName(name);
+				}
+			}
 
 		public TestModel(String name) {
 			this.name = name;

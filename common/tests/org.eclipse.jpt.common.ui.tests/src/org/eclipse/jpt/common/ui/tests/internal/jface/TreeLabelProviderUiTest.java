@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,13 +36,14 @@ import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,7 +56,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
@@ -65,7 +65,7 @@ public class TreeLabelProviderUiTest
 {
 	private TreeViewer treeViewer;
 
-	/* CU private */ ModifiablePropertyValueModel<Vehicle> selectedVehicleModel = new SimplePropertyValueModel<Vehicle>();
+	/* CU private */ ModifiablePropertyValueModel<Vehicle> selectedVehicleModel = new SimplePropertyValueModel<>();
 
 
 	public static void main(String[] args) {
@@ -73,7 +73,6 @@ public class TreeLabelProviderUiTest
 		window.setBlockOnOpen(true);
 		window.open();
 
-		Display.getCurrent().dispose();
 		System.exit(0);
 	}
 
@@ -346,33 +345,12 @@ public class TreeLabelProviderUiTest
 	}
 
 	/* CU private */ static PropertyValueModel<ImageDescriptor> buildImageDescriptorModel(Vehicle vehicle) {
-		return new PropertyAspectAdapterXXXX<Vehicle, ImageDescriptor>(PropertyValueModelTools.staticModel(vehicle), IMAGE_ASPECT_NAMES) {
-			@Override
-			protected ImageDescriptor buildValue_() {
-				return this.subject.getImageDescriptor();
-			}
-		};
+		return PropertyValueModelTools.modelAspectAdapter(vehicle, Vehicle.IMAGE_DESCRIPTOR_PROPERTY, Vehicle.IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
-	private static final String[] IMAGE_ASPECT_NAMES =
-			new String[] {
-				Vehicle.COLOR_PROPERTY,
-				Vehicle.GRAYED_PROPERTY,
-				Vehicle.TRANSLUCENT_PROPERTY
-			};
 
 	/* CU private */ static PropertyValueModel<String> buildTextModel(Vehicle vehicle) {
-		return new PropertyAspectAdapterXXXX<Vehicle, String>(PropertyValueModelTools.staticModel(vehicle), TEXT_ASPECT_NAMES) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getColor().getDescription() + ' ' + this.subject.getVehicleType().getDescription();
-			}
-		};
+		return PropertyValueModelTools.modelAspectAdapter(vehicle, Vehicle.TEXT_PROPERTY, Vehicle.TEXT_TRANSFORMER);
 	}
-	private static final String[] TEXT_ASPECT_NAMES =
-			new String[] {
-				Vehicle.VEHICLE_TYPE_PROPERTY,
-				Vehicle.COLOR_PROPERTY
-			};
 
 	/* CU private */ static PropertyValueModel<String> buildDescriptionModel(Vehicle vehicle) {
 		return buildTextModel(vehicle);
@@ -434,11 +412,37 @@ public class TreeLabelProviderUiTest
 		private boolean translucent = false;
 		public final static String TRANSLUCENT_PROPERTY = "translucent";
 
+		private ImageDescriptor imageDescriptor;
+		public final static String IMAGE_DESCRIPTOR_PROPERTY = "imageDescriptor";
+		public final static Transformer<Vehicle, ImageDescriptor> IMAGE_DESCRIPTOR_TRANSFORMER = new ImageDescriptorTransformer();
+		public final static class ImageDescriptorTransformer
+			extends TransformerAdapter<Vehicle, ImageDescriptor>
+		{
+			@Override
+			public ImageDescriptor transform(Vehicle vehicle) {
+				return vehicle.getImageDescriptor();
+			}
+		}
+
+		private String text;
+		public final static String TEXT_PROPERTY = "text";
+		public final static Transformer<Vehicle, String> TEXT_TRANSFORMER = new TextTransformer();
+		public final static class TextTransformer
+			extends TransformerAdapter<Vehicle, String>
+		{
+			@Override
+			public String transform(Vehicle vehicle) {
+				return vehicle.getText();
+			}
+		}
+
 
 		Vehicle(TreeNode parent, VehicleType vehicleType, VehicleColor color) {
 			super(parent);
 			this.vehicleType = vehicleType;
 			this.color = color;
+			this.imageDescriptor = this.buildImageDescriptor();
+			this.text = this.buildText();
 		}
 
 		public VehicleType getVehicleType() {
@@ -447,8 +451,7 @@ public class TreeLabelProviderUiTest
 
 		public void setVehicleType(VehicleType vehicleType) {
 			VehicleType old = this.vehicleType;
-			this.vehicleType = vehicleType;
-			this.firePropertyChanged(VEHICLE_TYPE_PROPERTY, old, vehicleType);
+			this.firePropertyChanged(VEHICLE_TYPE_PROPERTY, old, this.vehicleType = vehicleType);
 		}
 
 		public VehicleColor getColor() {
@@ -457,8 +460,9 @@ public class TreeLabelProviderUiTest
 
 		public void setColor(VehicleColor color) {
 			VehicleColor old = this.color;
-			this.color = color;
-			this.firePropertyChanged(COLOR_PROPERTY, old, color);
+			if (this.firePropertyChanged(COLOR_PROPERTY, old, this.color = color)) {
+				this.updateImageDescriptor();
+			}
 		}
 
 		public boolean isGrayed() {
@@ -467,8 +471,9 @@ public class TreeLabelProviderUiTest
 
 		public void setGrayed(boolean grayed) {
 			boolean old = this.grayed;
-			this.grayed = grayed;
-			this.firePropertyChanged(GRAYED_PROPERTY, old, grayed);
+			if (this.firePropertyChanged(GRAYED_PROPERTY, old, this.grayed = grayed)) {
+				this.updateImageDescriptor();
+			}
 		}
 
 		public boolean isTranslucent() {
@@ -477,12 +482,45 @@ public class TreeLabelProviderUiTest
 
 		public void setTranslucent(boolean translucent) {
 			boolean old = this.translucent;
-			this.translucent = translucent;
-			this.firePropertyChanged(TRANSLUCENT_PROPERTY, old, translucent);
+			if (this.firePropertyChanged(TRANSLUCENT_PROPERTY, old, this.translucent = translucent)) {
+				this.updateImageDescriptor();
+			}
 		}
 
 		public ImageDescriptor getImageDescriptor() {
+			return this.imageDescriptor;
+		}
+
+		private void updateImageDescriptor() {
+			this.setImageDescriptor(this.buildImageDescriptor());
+		}
+
+		private void setImageDescriptor(ImageDescriptor imageDescriptor) {
+			ImageDescriptor old = this.imageDescriptor;
+			this.firePropertyChanged(IMAGE_DESCRIPTOR_PROPERTY, old, this.imageDescriptor = imageDescriptor);
+		}
+
+		private ImageDescriptor buildImageDescriptor() {
 			return VehicleImageDescriptorFactory.buildImageDescriptor(this.color, this.grayed, this.translucent);
+		}
+
+		public String getText() {
+			return this.text;
+		}
+
+		private void updateText() {
+			this.setText(this.buildText());
+		}
+
+		private void setText(String text) {
+			String old = this.text;
+			if (this.firePropertyChanged(TEXT_PROPERTY, old, this.text = text)) {
+				this.updateText();
+			}
+		}
+
+		private String buildText() {
+			return this.color.getDescription() + ' ' + this.vehicleType.getDescription();
 		}
 
 		@Override

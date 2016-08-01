@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,13 @@ import java.util.Collection;
 import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * This is the state object used by the <code>NewNameDialog</code>, which stores
@@ -46,6 +50,24 @@ final class NewNameStateObject
 	 * Notifies a change in the name property.
 	 */
 	static final String NAME_PROPERTY = "name";
+	static final Transformer<NewNameStateObject, String> NAME_TRANSFORMER = new NameTransformer();
+	static final class NameTransformer
+		extends TransformerAdapter<NewNameStateObject, String>
+	{
+		@Override
+		public String transform(NewNameStateObject newNameState) {
+			return newNameState.getName();
+		}
+	}
+	static final BiClosure<NewNameStateObject, String> SET_NAME_CLOSURE = new SetNameClosure();
+	static final class SetNameClosure
+		extends BiClosureAdapter<NewNameStateObject, String>
+	{
+		@Override
+		public void execute(NewNameStateObject newNameState, String name) {
+			newNameState.setName(name);
+		}
+	}
 
 	/**
 	 * Creates a new <code>NewNameStateObject</code>.

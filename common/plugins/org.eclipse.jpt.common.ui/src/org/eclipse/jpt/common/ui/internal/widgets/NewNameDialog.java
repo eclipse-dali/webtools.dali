@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.Collection;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
@@ -121,17 +121,12 @@ public class NewNameDialog
 		}
 
 		private ModifiablePropertyValueModel<String> buildNameModel() {
-			return new PropertyAspectAdapterXXXX<NewNameStateObject, String>(getSubjectHolder(), NewNameStateObject.NAME_PROPERTY) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getName();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					this.subject.setName(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					this.getSubjectHolder(),
+					NewNameStateObject.NAME_PROPERTY,
+					NewNameStateObject.NAME_TRANSFORMER,
+					NewNameStateObject.SET_NAME_CLOSURE
+				);
 		}
 
 		void selectAll() {

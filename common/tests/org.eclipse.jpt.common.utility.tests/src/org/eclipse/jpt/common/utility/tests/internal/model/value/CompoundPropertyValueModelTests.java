@@ -125,7 +125,7 @@ public class CompoundPropertyValueModelTests
 
 		assertEquals("foo", this.keyModel.getValue()); // simple PVM
 		assertNull(this.valueModelModel.getValue());
-		assertEquals("XXX", this.testModel.getValue());
+		assertNull(this.testModel.getValue());
 	}
 
 	public void testLazyListening() {

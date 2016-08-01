@@ -44,7 +44,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * via the "OK" button in a dialog.
  * 
  * @param <V> the type of the model's value
- * @see PropertyAspectAdapterXXXX
+ * @see PropertyValueModelTools#buffer(ModifiablePropertyValueModel, Trigger)
  */
 public final class BufferedPropertyValueModelAdapter<V>
 	implements PluggableModifiablePropertyValueModel.Adapter<V>, PropertyChangeListener

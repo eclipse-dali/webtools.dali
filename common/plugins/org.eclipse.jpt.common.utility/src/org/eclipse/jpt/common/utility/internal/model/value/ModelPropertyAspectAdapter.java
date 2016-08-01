@@ -64,7 +64,7 @@ public final class ModelPropertyAspectAdapter<V, S extends Model>
 		if (subject != null) {
 			subject.removePropertyChangeListener(this.propertyName, this);
 		}
-		return this.propertyTransformer.transform(subject);
+		return this.propertyTransformer.transform(null);
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {

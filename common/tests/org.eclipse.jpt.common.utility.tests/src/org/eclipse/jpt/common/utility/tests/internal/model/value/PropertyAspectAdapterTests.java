@@ -9,21 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
-import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
-public class PropertyAspectAdapterTests extends TestCase {
+public class PropertyAspectAdapterTests
+	extends TestCase
+{
 	private TestSubject subject1;
 	private ModifiablePropertyValueModel<TestSubject> subjectHolder1;
 	private ModifiablePropertyValueModel<String> aa1;
@@ -31,8 +36,6 @@ public class PropertyAspectAdapterTests extends TestCase {
 	private PropertyChangeListener listener1;
 
 	private TestSubject subject2;
-
-	private PropertyChangeEvent multipleValueEvent;
 
 	private PropertyChangeEvent customValueEvent;
 
@@ -45,7 +48,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject1 = new TestSubject("foo", "test subject 1");
-		this.subjectHolder1 = new SimplePropertyValueModel<> (this.subject1);
+		this.subjectHolder1 = new SimplePropertyValueModel<>(this.subject1);
 		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
 		this.listener1 = this.buildValueChangeListener1();
 		this.aa1.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
@@ -55,29 +58,12 @@ public class PropertyAspectAdapterTests extends TestCase {
 	}
 
 	private ModifiablePropertyValueModel<String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
-			// this is not a aspect adapter - the value is determined by the aspect name
-			@Override
-			protected String buildValue_() {
-				if (this.aspectNames[0] == TestSubject.NAME_PROPERTY) {
-					return this.subject.getName();
-				} else if (this.aspectNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
-					return this.subject.getDescription();
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
-				}
-			}
-			@Override
-			protected void setValue_(String value) {
-				if (this.aspectNames[0] == TestSubject.NAME_PROPERTY) {
-					this.subject.setName(value);
-				} else if (this.aspectNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
-					this.subject.setDescription(value);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
-				}
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectHolder,
+				TestSubject.NAME_PROPERTY,
+				TestSubject.NAME_TRANSFORMER,
+				TestSubject.SET_NAME_CLOSURE
+			);
 	}
 
 	private ChangeListener buildValueChangeListener1() {
@@ -206,48 +192,6 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertFalse(((AbstractModel) this.aa1).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
-	public void testMultipleAspectAdapter() {
-		TestSubject testSubject = new TestSubject("fred", "husband");
-		ModifiablePropertyValueModel<TestSubject> testSubjectHolder = new SimplePropertyValueModel<>(testSubject);
-		ModifiablePropertyValueModel<String> testAA = this.buildMultipleAspectAdapter(testSubjectHolder);
-		PropertyChangeListener testListener = this.buildMultipleValueChangeListener();
-		testAA.addPropertyChangeListener(PropertyValueModel.VALUE, testListener);
-		assertEquals("fred:husband", testAA.getValue());
-
-		this.multipleValueEvent = null;
-		testSubject.setName("wilma");
-		assertEquals("wilma:husband", testAA.getValue());
-		assertEquals("fred:husband", this.multipleValueEvent.getOldValue());
-		assertEquals("wilma:husband", this.multipleValueEvent.getNewValue());
-
-		this.multipleValueEvent = null;
-		testSubject.setDescription("wife");
-		assertEquals("wilma:wife", testAA.getValue());
-		assertEquals("wilma:husband", this.multipleValueEvent.getOldValue());
-		assertEquals("wilma:wife", this.multipleValueEvent.getNewValue());
-	}
-
-	private ModifiablePropertyValueModel<String> buildMultipleAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY, TestSubject.DESCRIPTION_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getName() + ":" + this.subject.getDescription();
-			}
-		};
-	}
-
-	private PropertyChangeListener buildMultipleValueChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				PropertyAspectAdapterTests.this.multipleValueChanged(e);
-			}
-		};
-	}
-
-	void multipleValueChanged(PropertyChangeEvent e) {
-		this.multipleValueEvent = e;
-	}
-
 	/**
 	 * test a bug where we would call #buildValue() in
 	 * #engageNonNullSubject(), when we needed to call
@@ -290,12 +234,12 @@ public class PropertyAspectAdapterTests extends TestCase {
 	}
 
 	private ModifiablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
-			@Override
-			protected String buildValue() {
-				return (this.subject == null) ? "<unnamed>" : this.subject.getName();
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter_(
+				subjectHolder,
+				TestSubject.NAME_PROPERTY,
+				TestSubject.CUSTOM_NAME_TRANSFORMER,
+				TestSubject.SET_NAME_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildCustomValueChangeListener() {
@@ -313,11 +257,58 @@ public class PropertyAspectAdapterTests extends TestCase {
 
 	// ********** test model **********
 	
-	private static class TestSubject extends AbstractModel {
+	public static class TestSubject
+		extends AbstractModel
+	{
 		private String name;
-		public static final String NAME_PROPERTY = "name";
+			public static final String NAME_PROPERTY = "name";
+			public static final Transformer<TestSubject, String> NAME_TRANSFORMER = new NameTransformer();
+			public static final class NameTransformer
+				extends TransformerAdapter<TestSubject, String>
+			{
+				@Override
+				public String transform(TestSubject model) {
+					return model.getName();
+				}
+			}
+			public static final Transformer<TestSubject, String> CUSTOM_NAME_TRANSFORMER = new CustomNameTransformer();
+			public static final class CustomNameTransformer
+				extends TransformerAdapter<TestSubject, String>
+			{
+				@Override
+				public String transform(TestSubject model) {
+					return (model == null) ? "<unnamed>" : model.getName();
+				}
+			}
+			public static final BiClosure<TestSubject, String> SET_NAME_CLOSURE = new SetNameClosure();
+			public static final class SetNameClosure
+				extends BiClosureAdapter<TestSubject, String>
+			{
+				@Override
+				public void execute(TestSubject model, String name) {
+					model.setName(name);
+				}
+			}
 		private String description;
-		public static final String DESCRIPTION_PROPERTY = "description";
+			public static final String DESCRIPTION_PROPERTY = "description";
+			public static final Transformer<TestSubject, String> DESCRIPTION_TRANSFORMER = new DescriptionTransformer();
+			public static final class DescriptionTransformer
+				extends TransformerAdapter<TestSubject, String>
+			{
+				@Override
+				public String transform(TestSubject model) {
+					return model.getDescription();
+				}
+			}
+			public static final BiClosure<TestSubject, String> SET_DESCRIPTION_CLOSURE = new SetDescriptionClosure();
+			public static final class SetDescriptionClosure
+				extends BiClosureAdapter<TestSubject, String>
+			{
+				@Override
+				public void execute(TestSubject model, String name) {
+					model.setDescription(name);
+				}
+			}
 	
 		public TestSubject(String name, String description) {
 			this.name = name;
@@ -328,16 +319,14 @@ public class PropertyAspectAdapterTests extends TestCase {
 		}
 		public void setName(String name) {
 			Object old = this.name;
-			this.name = name;
-			this.firePropertyChanged(NAME_PROPERTY, old, name);
+			this.firePropertyChanged(NAME_PROPERTY, old, this.name = name);
 		}
 		public String getDescription() {
 			return this.description;
 		}
 		public void setDescription(String description) {
 			Object old = this.description;
-			this.description = description;
-			this.firePropertyChanged(DESCRIPTION_PROPERTY, old, description);
+			this.firePropertyChanged(DESCRIPTION_PROPERTY, old, this.description = description);
 		}
 	}
 }

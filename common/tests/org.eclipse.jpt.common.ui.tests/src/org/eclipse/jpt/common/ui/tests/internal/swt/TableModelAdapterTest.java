@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,17 +19,22 @@ import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -940,15 +945,71 @@ public class TableModelAdapterTest {
 		Assert.assertEquals("TableItem[MANAGER_COLUMN] was not set correctly", expectedManager, actualManager);
 	}
 
-	private class Employee extends AbstractModel {
-
+	private static class Employee
+		extends AbstractModel
+	{
 		private String manager;
-		private String name;
-		private String title;
-
 		static final String MANAGER_PROPERTY = "manager";
+		public static final Transformer<Employee, String> MANAGER_TRANSFORMER = new ManagerTransformer();
+		public static final class ManagerTransformer
+			extends TransformerAdapter<Employee, String>
+		{
+			@Override
+			public String transform(Employee employee) {
+				return employee.getManager();
+			}
+		}
+		public static final BiClosure<Employee, String> SET_MANAGER_CLOSURE = new SetManagerClosure();
+		public static final class SetManagerClosure
+			extends BiClosureAdapter<Employee, String>
+		{
+			@Override
+			public void execute(Employee employee, String manager) {
+				employee.setManager(manager);
+			}
+		}
+
+		private String name;
 		static final String NAME_PROPERTY = "name";
+		public static final Transformer<Employee, String> NAME_TRANSFORMER = new NameTransformer();
+		public static final class NameTransformer
+			extends TransformerAdapter<Employee, String>
+		{
+			@Override
+			public String transform(Employee employee) {
+				return employee.getName();
+			}
+		}
+		public static final BiClosure<Employee, String> SET_NAME_CLOSURE = new SetNameClosure();
+		public static final class SetNameClosure
+			extends BiClosureAdapter<Employee, String>
+		{
+			@Override
+			public void execute(Employee employee, String name) {
+				employee.setName(name);
+			}
+		}
+
+		private String title;
 		static final String TITLE_PROPERTY = "title";
+		public static final Transformer<Employee, String> TITLE_TRANSFORMER = new TitleTransformer();
+		public static final class TitleTransformer
+			extends TransformerAdapter<Employee, String>
+		{
+			@Override
+			public String transform(Employee employee) {
+				return employee.getTitle();
+			}
+		}
+		public static final BiClosure<Employee, String> SET_TITLE_CLOSURE = new SetTitleClosure();
+		public static final class SetTitleClosure
+			extends BiClosureAdapter<Employee, String>
+		{
+			@Override
+			public void execute(Employee employee, String title) {
+				employee.setTitle(title);
+			}
+		}
 
 		Employee(String name, String title, String manager) {
 			super();
@@ -959,33 +1020,30 @@ public class TableModelAdapterTest {
 		}
 
 		String getManager() {
-			return manager;
+			return this.manager;
 		}
 
 		String getName() {
-			return name;
+			return this.name;
 		}
 
 		String getTitle() {
-			return title;
+			return this.title;
 		}
 
 		void setManager(String manager) {
 			String oldManager = this.manager;
-			this.manager = manager;
-			firePropertyChanged(MANAGER_PROPERTY, oldManager, manager);
+			this.firePropertyChanged(MANAGER_PROPERTY, oldManager, this.manager = manager);
 		}
 
 		void setName(String name) {
 			String oldName = this.name;
-			this.name = name;
-			firePropertyChanged(NAME_PROPERTY, oldName, name);
+			this.firePropertyChanged(NAME_PROPERTY, oldName, this.name = name);
 		}
 
 		void setTitle(String title) {
 			String oldTitle = this.title;
-			this.title = title;
-			firePropertyChanged(TITLE_PROPERTY, oldTitle, title);
+			this.firePropertyChanged(TITLE_PROPERTY, oldTitle, this.title = title);
 		}
 	}
 
@@ -1074,45 +1132,30 @@ public class TableModelAdapterTest {
 		static final int TITLE_COLUMN = 1;
 
 		private ModifiablePropertyValueModel<String> buildManagerHolder(Employee subject) {
-			return new PropertyAspectAdapterXXXX<Employee, String>(Employee.MANAGER_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return subject.getManager();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					subject.setManager(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					subject,
+					Employee.MANAGER_PROPERTY,
+					Employee.MANAGER_TRANSFORMER,
+					Employee.SET_MANAGER_CLOSURE
+				);
 		}
 
 		private ModifiablePropertyValueModel<String> buildNameHolder(Employee subject) {
-			return new PropertyAspectAdapterXXXX<Employee, String>(Employee.NAME_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return subject.getName();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					subject.setName(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					subject,
+					Employee.NAME_PROPERTY,
+					Employee.NAME_TRANSFORMER,
+					Employee.SET_NAME_CLOSURE
+				);
 		}
 
 		private ModifiablePropertyValueModel<String> buildTitleHolder(Employee subject) {
-			return new PropertyAspectAdapterXXXX<Employee, String>(Employee.TITLE_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return subject.getTitle();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					subject.setTitle(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					subject,
+					Employee.TITLE_PROPERTY,
+					Employee.TITLE_TRANSFORMER,
+					Employee.SET_TITLE_CLOSURE
+				);
 		}
 
 		public ModifiablePropertyValueModel<?>[] cellModels(Employee subject) {
