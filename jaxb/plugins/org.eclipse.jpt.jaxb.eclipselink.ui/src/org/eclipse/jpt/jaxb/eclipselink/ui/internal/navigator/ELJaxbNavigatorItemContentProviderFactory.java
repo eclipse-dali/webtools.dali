@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,8 +22,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCurator;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -94,12 +94,11 @@ public class ELJaxbNavigatorItemContentProviderFactory
 	protected CollectionValueModel<JaxbContextNode> buildOxmFileChildrenModel(final ELJaxbPackage jaxbPackage) {
 		return new FilteringCollectionValueModel<JaxbContextNode>(
 				new PropertyCollectionValueModelAdapter<JaxbContextNode>(
-						new PropertyAspectAdapterXXXX<ELJaxbPackage, JaxbContextNode>(ELJaxbPackage.OXM_FILE_PROPERTY, jaxbPackage) {
-							@Override
-							protected JaxbContextNode buildValue_() {
-								return this.subject.getOxmFile();
-							}
-						}),
+						PropertyValueModelTools.modelAspectAdapter(
+								jaxbPackage,
+								ELJaxbPackage.OXM_FILE_PROPERTY,
+								ELJaxbPackage.OXM_FILE_TRANSFORMER
+							)),
 				PredicateTools.<JaxbContextNode>isNotNull());
 	}
 	
@@ -170,12 +169,11 @@ public class ELJaxbNavigatorItemContentProviderFactory
 	}
 	
 	protected PropertyValueModel<OxmXmlBindings> buildXmlBindingsModel(OxmFile oxmFile) {
-		return new PropertyAspectAdapterXXXX<OxmFile, OxmXmlBindings>(OxmFile.XML_BINDINGS_PROPERTY, oxmFile) {
-			@Override
-			protected OxmXmlBindings buildValue_() {
-				return this.subject.getXmlBindings();
-			}
-		};
+		return PropertyValueModelTools.modelAspectAdapter(
+				oxmFile,
+				OxmFile.XML_BINDINGS_PROPERTY,
+				OxmFile.XML_BINDINGS_TRANSFORMER
+			);
 	}
 
 

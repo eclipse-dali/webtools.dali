@@ -1,15 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessTypeHolder;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaAttribute;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaAttribute;
  * @since 3.3
  */
 public interface OxmJavaAttribute
-		extends JaxbContextNode, JaxbPersistentAttribute, XmlAccessTypeHolder {
+		extends JaxbPersistentAttribute, XmlAccessTypeHolder {
 	
 	EJavaAttribute getEJavaAttribute();
 	
@@ -40,6 +41,15 @@ public interface OxmJavaAttribute
 	static final String JAVA_ATTRIBUTE_NAME_PROPERTY = "javaAttributeName"; //$NON-NLS-1$
 	
 	String getJavaAttributeName();
+	Transformer<OxmJavaAttribute, String> JAVA_ATTRIBUTE_NAME_TRANSFORMER = new JavaAttributeNameTransformer();
+	class JavaAttributeNameTransformer
+		extends TransformerAdapter<OxmJavaAttribute, String>
+	{
+		@Override
+		public String transform(OxmJavaAttribute javaAttribute) {
+			return javaAttribute.getJavaAttributeName();
+		}
+	}
 	
 	void setJavaAttributeName(String newName);
 }

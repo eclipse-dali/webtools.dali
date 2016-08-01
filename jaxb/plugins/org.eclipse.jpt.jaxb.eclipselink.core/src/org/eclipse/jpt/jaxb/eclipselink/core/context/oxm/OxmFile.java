@@ -1,15 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 
@@ -48,4 +50,13 @@ public interface OxmFile
 	static final String XML_BINDINGS_PROPERTY = "xmlBindings"; //$NON-NLS-1$
 	
 	OxmXmlBindings getXmlBindings();
+	Transformer<OxmFile, OxmXmlBindings> XML_BINDINGS_TRANSFORMER = new XmlBindingsTransformer();
+	class XmlBindingsTransformer
+		extends TransformerAdapter<OxmFile, OxmXmlBindings>
+	{
+		@Override
+		public OxmXmlBindings transform(OxmFile file) {
+			return file.getXmlBindings();
+		}
+	}
 }

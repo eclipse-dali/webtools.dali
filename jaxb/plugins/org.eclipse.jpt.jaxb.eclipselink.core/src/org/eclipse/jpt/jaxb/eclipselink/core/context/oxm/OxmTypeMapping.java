@@ -1,15 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.context.java.JavaType;
@@ -44,6 +47,15 @@ public interface OxmTypeMapping
 	// ***** type name *****
 	
 	String TYPE_NAME_PROPERTY = "typeName"; //$NON-NLS-1$
+	Transformer<OxmTypeMapping, TypeName> TYPE_NAME_TRANSFORMER = new TypeNameTransformer();
+	class TypeNameTransformer
+		extends TransformerAdapter<OxmTypeMapping, TypeName>
+	{
+		@Override
+		public TypeName transform(OxmTypeMapping mapping) {
+			return mapping.getTypeName();
+		}
+	}
 	
 	
 	// ***** java type *****

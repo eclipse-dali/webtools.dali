@@ -14,10 +14,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.TypeName;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
@@ -100,8 +103,8 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 				item,
 				manager,
 				this.buildOxmJavaTypeImageDescriptorModel(item),
-				this.buildOxmJavaTypeTextModel(item),
-				this.buildOxmJavaTypeDescriptionModel(item)
+				this.buildOxmTypeMappingTextModel(item),
+				this.buildOxmTypeMappingDescriptionModel(item)
 			);
 	}
 
@@ -109,22 +112,26 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 		return PropertyValueModelTools.staticModel(JptJaxbUiImages.JAXB_CLASS);
 	}
 
-	protected PropertyValueModel<String> buildOxmJavaTypeTextModel(OxmJavaType item) {
-		return new PropertyAspectAdapterXXXX<OxmJavaType, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getTypeName().getTypeQualifiedName();
-			}
-		};
+	protected PropertyValueModel<String> buildOxmTypeMappingTextModel(OxmTypeMapping item) {
+		return PropertyValueModelTools.transform(
+				this.buildOxmTypeMappingNameModel(item),
+				TypeName.TYPE_QUALIFIED_NAME_TRANSFORMER
+			);
 	}
 
-	protected PropertyValueModel<String> buildOxmJavaTypeDescriptionModel(OxmJavaType item) {
-		return new PropertyAspectAdapterXXXX<OxmJavaType, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getTypeName().getFullyQualifiedName();
-			}
-		};
+	protected PropertyValueModel<String> buildOxmTypeMappingDescriptionModel(OxmTypeMapping item) {
+		return PropertyValueModelTools.transform(
+				this.buildOxmTypeMappingNameModel(item),
+				TypeName.FULLY_QUALIFIED_NAME_TRANSFORMER
+			);
+	}
+
+	protected PropertyValueModel<TypeName> buildOxmTypeMappingNameModel(OxmTypeMapping item) {
+		return PropertyValueModelTools.modelAspectAdapter(
+				item,
+				OxmTypeMapping.TYPE_NAME_PROPERTY,
+				OxmTypeMapping.TYPE_NAME_TRANSFORMER
+			);
 	}
 	
 
@@ -135,33 +142,14 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 				item,
 				manager,
 				this.buildOxmXmlEnumImageDescriptorModel(item),
-				this.buildOxmXmlEnumTextModel(item),
-				this.buildOxmXmlEnumDescriptionModel(item)
+				this.buildOxmTypeMappingTextModel(item),
+				this.buildOxmTypeMappingDescriptionModel(item)
 			);
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildOxmXmlEnumImageDescriptorModel(@SuppressWarnings("unused") OxmXmlEnum item) {
 		return PropertyValueModelTools.staticModel(JptJaxbUiImages.JAXB_ENUM);
 	}
-	
-	protected PropertyValueModel<String> buildOxmXmlEnumTextModel(OxmXmlEnum item) {
-		return new PropertyAspectAdapterXXXX<OxmXmlEnum, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getTypeName().getTypeQualifiedName();
-			}
-		};
-	}
-
-	protected PropertyValueModel<String> buildOxmXmlEnumDescriptionModel(OxmXmlEnum item) {
-		return new PropertyAspectAdapterXXXX<OxmXmlEnum, String>(OxmTypeMapping.TYPE_NAME_PROPERTY, item) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getTypeName().getFullyQualifiedName();
-			}
-		};
-	}
-	
 
 	// ********** oxm java attribute **********
 
@@ -176,25 +164,37 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildOxmJavaAttributeImageDescriptorModel(OxmJavaAttribute item) {
-		return new PropertyAspectAdapterXXXX<OxmJavaAttribute, ImageDescriptor>(JaxbPersistentAttribute.MAPPING_PROPERTY, item) {
-			@Override
-			protected ImageDescriptor buildValue_() {
-				return ELJaxbNavigatorItemLabelProviderFactory.this.buildOxmJavaAttributeImageDescriptor(this.subject.getMappingKey());
-			}
-		};
+		return PropertyValueModelTools.transform(this.buildOxmJavaAttributeMappingKeyModel(item), MAPPING_KEY_IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 
-	protected ImageDescriptor buildOxmJavaAttributeImageDescriptor(String mappingKey) {
-		return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
+	protected PropertyValueModel<String> buildOxmJavaAttributeMappingKeyModel(OxmJavaAttribute item) {
+		return PropertyValueModelTools.transform(this.buildOxmJavaAttributeMappingModel(item), JaxbAttributeMapping.KEY_TRANSFORMER);
+	}
+
+	protected PropertyValueModel<JaxbAttributeMapping> buildOxmJavaAttributeMappingModel(OxmJavaAttribute item) {
+		return PropertyValueModelTools.modelAspectAdapter(
+				item,
+				JaxbPersistentAttribute.MAPPING_PROPERTY,
+				JaxbPersistentAttribute.MAPPING_TRANSFORMER
+			);
+	}
+
+	protected static final Transformer<String, ImageDescriptor> MAPPING_KEY_IMAGE_DESCRIPTOR_TRANSFORMER = new MappingKeyImageDescriptorTransformer();
+	protected static final class MappingKeyImageDescriptorTransformer
+		extends TransformerAdapter<String, ImageDescriptor>
+	{
+		@Override
+		public ImageDescriptor transform(String mappingKey) {
+			return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
+		}
 	}
 	
 	protected PropertyValueModel<String> buildOxmJavaAttributeTextModel(OxmJavaAttribute item) {
-		return new PropertyAspectAdapterXXXX<OxmJavaAttribute, String>(OxmJavaAttribute.JAVA_ATTRIBUTE_NAME_PROPERTY, item) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getJavaAttributeName();
-			}
-		};
+		return PropertyValueModelTools.modelAspectAdapter(
+				item,
+				OxmJavaAttribute.JAVA_ATTRIBUTE_NAME_PROPERTY,
+				OxmJavaAttribute.JAVA_ATTRIBUTE_NAME_TRANSFORMER
+			);
 	}
 
 	protected PropertyValueModel<String> buildOxmJavaAttributeDescriptionModel(OxmJavaAttribute item) {
