@@ -829,7 +829,7 @@ public abstract class AbstractJpaProject
 	 */
 	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceTypes() {
 		// i.e. the type has a valid JPA type annotation
-		return IterableTools.filter(this.getInternalSourceJavaResourceTypes(), JavaResourceAnnotatedElement.IS_ANNOTATED);
+		return IterableTools.filter(this.getInternalSourceJavaResourceTypes(), JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 	}
 
 	/**

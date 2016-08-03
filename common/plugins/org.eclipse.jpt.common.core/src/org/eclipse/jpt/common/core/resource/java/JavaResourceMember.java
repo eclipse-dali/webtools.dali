@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,8 +58,8 @@ public interface JavaResourceMember
 	 */
 	boolean isFinal();
 		String FINAL_PROPERTY = "final"; //$NON-NLS-1$
-	Predicate<JavaResourceMember> IS_FINAL = new IsFinal();
-	class IsFinal
+	Predicate<JavaResourceMember> FINAL_PREDICATE = new FinalPredicate();
+	class FinalPredicate
 		extends PredicateAdapter<JavaResourceMember>
 	{
 		@Override
@@ -70,8 +70,8 @@ public interface JavaResourceMember
 
 	boolean isTransient();
 		String TRANSIENT_PROPERTY = "transient"; //$NON-NLS-1$
-	Predicate<JavaResourceMember> IS_TRANSIENT = new IsTransient();
-	class IsTransient
+	Predicate<JavaResourceMember> TRANSIENT_PREDICATE = new TransientPredicate();
+	class TransientPredicate
 		extends PredicateAdapter<JavaResourceMember>
 	{
 		@Override
@@ -82,8 +82,8 @@ public interface JavaResourceMember
 
 	boolean isPublic();
 		String PUBLIC_PROPERTY = "public"; //$NON-NLS-1$
-	Predicate<JavaResourceMember> IS_PUBLIC = new IsPublic();
-	class IsPublic
+	Predicate<JavaResourceMember> PUBLIC_PREDICATE = new PublicPredicate();
+	class PublicPredicate
 		extends PredicateAdapter<JavaResourceMember>
 	{
 		@Override
@@ -94,8 +94,8 @@ public interface JavaResourceMember
 
 	boolean isStatic();
 		String STATIC_PROPERTY = "static"; //$NON-NLS-1$
-	Predicate<JavaResourceMember> IS_STATIC = new IsStatic();
-	class IsStatic
+	Predicate<JavaResourceMember> STATIC_PREDICATE = new StaticPredicate();
+	class StaticPredicate
 		extends PredicateAdapter<JavaResourceMember>
 	{
 		@Override
@@ -106,8 +106,8 @@ public interface JavaResourceMember
 
 	boolean isProtected();
 		String PROTECTED_PROPERTY = "protected"; //$NON-NLS-1$
-	Predicate<JavaResourceMember> IS_PROTECTED = new IsProtected();
-	class IsProtected
+	Predicate<JavaResourceMember> PROTECTED_PREDICATE = new ProtectedPredicate();
+	class ProtectedPredicate
 		extends PredicateAdapter<JavaResourceMember>
 	{
 		@Override

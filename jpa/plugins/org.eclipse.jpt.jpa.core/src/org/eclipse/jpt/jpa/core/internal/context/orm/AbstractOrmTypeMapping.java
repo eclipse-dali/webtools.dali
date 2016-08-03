@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,9 +16,11 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JavaProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping.KeyEquals;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -318,7 +320,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 	
 	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
-		return new FilteringIterable<AttributeMapping>(getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
+		return IterableTools.filter(getAllAttributeMappings(), PredicateTools.not(new KeyEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY)));
 	}
 	
 	public Iterable<AttributeMapping> getIdAttributeMappings() {

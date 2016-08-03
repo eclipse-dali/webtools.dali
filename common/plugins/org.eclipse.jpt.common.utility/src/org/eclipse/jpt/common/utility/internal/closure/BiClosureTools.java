@@ -28,7 +28,7 @@ public final class BiClosureTools {
 
 	/**
 	 * Adapt the specified {@link Command} to the {@link BiClosure} interface.
-	 * The closure's argument is ignored.
+	 * The closure's arguments are ignored.
 	 * 
 	 * @param <A1> the type of the first object passed to the closure
 	 * @param <A2> the type of the second object passed to the closure
@@ -39,7 +39,7 @@ public final class BiClosureTools {
 
 	/**
 	 * Adapt the specified {@link InterruptibleCommand} to the {@link InterruptibleBiClosure} interface.
-	 * The closure's argument is ignored.
+	 * The closure's arguments are ignored.
 	 * 
 	 * @param <A1> the type of the first object passed to the closure
 	 * @param <A2> the type of the second object passed to the closure
@@ -50,7 +50,7 @@ public final class BiClosureTools {
 
 	/**
 	 * Adapt the specified {@link Factory} to the {@link BiClosure} interface.
-	 * The closure's argument and the factory's output are ignored. This really
+	 * The closure's arguments and the factory's output are ignored. This really
 	 * only useful for a factory that has side-effects.
 	 * 
 	 * @param <A1> the type of the first object passed to the closure
@@ -62,7 +62,7 @@ public final class BiClosureTools {
 
 	/**
 	 * Adapt the specified {@link InterruptibleFactory} to the {@link InterruptibleBiClosure} interface.
-	 * The closure's argument and the factory's output are ignored. This really
+	 * The closure's arguments and the factory's output are ignored. This really
 	 * only useful for a factory that has side-effects.
 	 * 
 	 * @param <A1> the type of the first object passed to the closure

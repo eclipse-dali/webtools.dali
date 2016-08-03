@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -333,7 +333,7 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	protected Iterable<JavaResourceMethod> getJavaResourceGetters(JavaResourceType javaResourceType) {
-		return this.filterJavaResourceMethods(javaResourceType, JavaResourceMethod.IS_PROPERTY_GETTER);
+		return this.filterJavaResourceMethods(javaResourceType, JavaResourceMethod.PROPERTY_GETTER_PREDICATE);
 	}
 
 	protected Iterable<JavaResourceMethod> filterJavaResourceMethods(JavaResourceType javaResourceType, Predicate<JavaResourceMethod> predicate) {

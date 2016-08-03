@@ -167,7 +167,7 @@ public class GenericJavaAttributesContainer
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
 	private void intializePropertyAccessAttributes() {
-		this.initializeFieldAttributes(JavaResourceAnnotatedElement.IS_ANNOTATED);
+		this.initializeFieldAttributes(JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 		
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
@@ -188,7 +188,7 @@ public class GenericJavaAttributesContainer
 	 * 2. all annotated methods getters/setters (some will have a matching getter/setter, some will be standalone)
 	 */
 	private void intializeNoneAccessAttributes() {
-		this.initializeFieldAttributes(JavaResourceAnnotatedElement.IS_ANNOTATED);
+		this.initializeFieldAttributes(JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 		this.initializeAnnotatedPropertyAttributes();
 	}
 	
@@ -275,7 +275,7 @@ public class GenericJavaAttributesContainer
 	}
 
 	protected Iterable<JavaResourceMethod> getResourcePropertyGetters() {
-		return this.filterResourceMethods(JavaResourceMethod.IS_PROPERTY_GETTER);
+		return this.filterResourceMethods(JavaResourceMethod.PROPERTY_GETTER_PREDICATE);
 	}
 	
 	/**
@@ -362,7 +362,7 @@ public class GenericJavaAttributesContainer
 	private void syncPropertyAccessAttributes() {
 		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 		
-		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
+		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 		
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
@@ -397,7 +397,7 @@ public class GenericJavaAttributesContainer
 	private void syncNoneAccessAttributes() {
 		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 		
-		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED);
+		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
 	}
 	

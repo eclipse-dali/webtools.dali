@@ -174,7 +174,7 @@ public class JoiningStrategyJoinColumnsComposite
 		return STRATEGY_IS_VIRTUAL_PREDICATE;
 	}
 
-	public static final PredicateAdapter<JoinColumnRelationshipStrategy> STRATEGY_IS_VIRTUAL_PREDICATE = new StrategyIsVirtualPredicate();
+	public static final Predicate<JoinColumnRelationshipStrategy> STRATEGY_IS_VIRTUAL_PREDICATE = new StrategyIsVirtualPredicate();
 
 	public static class StrategyIsVirtualPredicate
 		extends PredicateAdapter<JoinColumnRelationshipStrategy>

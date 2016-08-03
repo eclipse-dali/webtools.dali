@@ -52,7 +52,7 @@ public class JoinTableComposite
 		return TABLE_IS_VIRTUAL_PREDICATE;
 	}
 
-	public static final PredicateAdapter<JoinTable> TABLE_IS_VIRTUAL_PREDICATE = new TableIsVirtualPredicate();
+	public static final Predicate<JoinTable> TABLE_IS_VIRTUAL_PREDICATE = new TableIsVirtualPredicate();
 
 	public static class TableIsVirtualPredicate
 		extends PredicateAdapter<JoinTable>

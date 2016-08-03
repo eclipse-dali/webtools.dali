@@ -86,7 +86,7 @@ public class CollectionTableComposite2_0
 		return TABLE_IS_VIRTUAL_PREDICATE;
 	}
 
-	public static final PredicateAdapter<ReferenceTable> TABLE_IS_VIRTUAL_PREDICATE = new TableIsVirtualPredicate();
+	public static final Predicate<ReferenceTable> TABLE_IS_VIRTUAL_PREDICATE = new TableIsVirtualPredicate();
 
 	public static class TableIsVirtualPredicate
 		extends PredicateAdapter<ReferenceTable>

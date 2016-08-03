@@ -672,7 +672,7 @@ public abstract class AbstractJaxbProject
 	}
 	
 	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceResourceTypes() {
-		return IterableTools.filter(getJavaSourceResourceTypes(), JavaResourceAnnotatedElement.IS_ANNOTATED);
+		return IterableTools.filter(getJavaSourceResourceTypes(), JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 	}
 	
 //	public Iterable<String> getAnnotatedJavaSourceClassNames() {
@@ -721,7 +721,7 @@ public abstract class AbstractJaxbProject
 	}
 	
 	public Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages() {
-		return IterableTools.filter(this.getJavaResourcePackages(), JavaResourceAnnotatedElement.IS_ANNOTATED);
+		return IterableTools.filter(this.getJavaResourcePackages(), JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 	}
 	
 	public JavaResourcePackage getAnnotatedJavaResourcePackage(String packageName) {

@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.db;
 import java.sql.Connection;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Database connection profile
@@ -136,13 +136,13 @@ public interface ConnectionProfile
 	 * @see #isActive()
 	 */
 	boolean isConnected();
-	Transformer<ConnectionProfile, Boolean> CONNECTED_TRANSFORMER = new DisconnectedTransformer();
-	class ConnectedTransformer
-		extends TransformerAdapter<ConnectionProfile, Boolean>
+	Predicate<ConnectionProfile> CONNECTED_PREDICATE = new ConnectedPredicate();
+	class ConnectedPredicate
+		extends PredicateAdapter<ConnectionProfile>
 	{
 		@Override
-		public Boolean transform(ConnectionProfile connectionProfile) {
-			return Boolean.valueOf(connectionProfile.isConnected());
+		public boolean evaluate(ConnectionProfile connectionProfile) {
+			return connectionProfile.isConnected();
 		}
 	}
 
@@ -153,13 +153,13 @@ public interface ConnectionProfile
 	 * @see #isConnected()
 	 */
 	boolean isDisconnected();
-	Transformer<ConnectionProfile, Boolean> DISCONNECTED_TRANSFORMER = new DisconnectedTransformer();
-	class DisconnectedTransformer
-		extends TransformerAdapter<ConnectionProfile, Boolean>
+	Predicate<ConnectionProfile> DISCONNECTED_PREDICATE = new DisconnectedPredicate();
+	class DisconnectedPredicate
+		extends PredicateAdapter<ConnectionProfile>
 	{
 		@Override
-		public Boolean transform(ConnectionProfile connectionProfile) {
-			return Boolean.valueOf(connectionProfile.isDisconnected());
+		public boolean evaluate(ConnectionProfile connectionProfile) {
+			return connectionProfile.isDisconnected();
 		}
 	}
 

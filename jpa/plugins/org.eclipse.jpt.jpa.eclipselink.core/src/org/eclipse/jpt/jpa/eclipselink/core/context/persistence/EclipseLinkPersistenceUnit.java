@@ -679,7 +679,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkDynamicPersistentTypes() {
-		return IterableTools.filter(this.getEclipseLinkOrmPersistentTypes(), EclipseLinkOrmPersistentType.IS_DYNAMIC);
+		return IterableTools.filter(this.getEclipseLinkOrmPersistentTypes(), EclipseLinkOrmPersistentType.DYNAMIC_PREDICATE);
 	}
 
 	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkOrmPersistentTypes() {

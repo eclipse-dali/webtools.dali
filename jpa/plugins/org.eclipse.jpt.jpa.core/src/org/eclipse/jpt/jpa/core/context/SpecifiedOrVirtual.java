@@ -34,8 +34,8 @@ public interface SpecifiedOrVirtual {
 	default boolean isSpecified() {
 		return ! this.isVirtual();
 	}
-		Predicate<SpecifiedOrVirtual> IS_SPECIFIED_PREDICATE = new IsSpecifiedPredicate();
-	class IsSpecifiedPredicate
+		Predicate<SpecifiedOrVirtual> SPECIFIED_PREDICATE = new SpecifiedPredicate();
+	class SpecifiedPredicate
 		extends PredicateAdapter<SpecifiedOrVirtual>
 	{
 		@Override
@@ -51,5 +51,5 @@ public interface SpecifiedOrVirtual {
 	 * @see #isSpecified()
 	 */
 	boolean isVirtual();
-		Predicate<SpecifiedOrVirtual> IS_VIRTUAL_PREDICATE = PredicateTools.not(IS_SPECIFIED_PREDICATE);
+		Predicate<SpecifiedOrVirtual> VIRTUAL_PREDICATE = PredicateTools.not(SPECIFIED_PREDICATE);
 }

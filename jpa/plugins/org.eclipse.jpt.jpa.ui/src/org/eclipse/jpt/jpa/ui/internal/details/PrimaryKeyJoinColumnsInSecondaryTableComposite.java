@@ -84,7 +84,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private PropertyValueModel<Boolean> buildControlBooleanModel() {
-		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE, false);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), SpecifiedOrVirtual.SPECIFIED_PREDICATE, false);
 	}
 
 	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnModel() {

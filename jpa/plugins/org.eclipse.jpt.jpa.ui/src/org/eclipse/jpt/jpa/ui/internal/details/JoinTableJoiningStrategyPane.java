@@ -116,6 +116,6 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	private PropertyValueModel<Boolean> buildJoinTablePaneEnablerModel() {
-		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), SpecifiedOrVirtual.IS_SPECIFIED_PREDICATE);
+		return PropertyValueModelTools.valueAffirms(this.getSubjectHolder(), SpecifiedOrVirtual.SPECIFIED_PREDICATE);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -446,7 +446,7 @@ public abstract class AbstractJavaPersistentType
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
 	private void intializePropertyAccessAttributes() {
-		this.initializeFieldAttributes(JavaResourceAnnotatedElement.IS_ANNOTATED);
+		this.initializeFieldAttributes(JavaResourceAnnotatedElement.ANNOTATED_PREDICATE);
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
@@ -521,7 +521,7 @@ public abstract class AbstractJavaPersistentType
 	private void syncPropertyAccessAttributes(IProgressMonitor monitor) {
 		HashSet<JavaSpecifiedPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getAttributes());
 
-		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED, monitor);
+		this.syncFieldAttributes(contextAttributes, JavaResourceAnnotatedElement.ANNOTATED_PREDICATE, monitor);
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
@@ -637,7 +637,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected Iterable<JavaResourceMethod> getResourcePropertyGetters() {
-		return this.filterResourceMethods(JavaResourceMethod.IS_PROPERTY_GETTER);
+		return this.filterResourceMethods(JavaResourceMethod.PROPERTY_GETTER_PREDICATE);
 	}
 
 	protected Iterable<JavaResourceMethod> filterResourceMethods(Predicate<JavaResourceMethod> predicate) {

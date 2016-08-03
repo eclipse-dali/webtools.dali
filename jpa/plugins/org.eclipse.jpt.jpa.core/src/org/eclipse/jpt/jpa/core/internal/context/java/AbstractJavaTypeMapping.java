@@ -14,9 +14,11 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping.KeyEquals;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -132,7 +134,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
-		return new FilteringIterable<>(getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
+		return IterableTools.filter(getAllAttributeMappings(), PredicateTools.not(new KeyEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY)));
 	}
 	
 	public Iterable<AttributeMapping> getIdAttributeMappings() {

@@ -350,7 +350,7 @@ public class JpaProjectPropertiesPage
 	private PropertyValueModel<Boolean> buildDisconnectedModel() {
 		return PropertyValueModelTools.aspectAdapter(
 				this.connectionProfileModel,
-				new ConnectionProfilePropertyAspectAdapter.Factory<>(ConnectionProfile.DISCONNECTED_TRANSFORMER)
+				new ConnectionProfilePropertyAspectAdapter.Factory<>(TransformerTools.adapt(ConnectionProfile.DISCONNECTED_PREDICATE))
 			);
 	}
 
@@ -508,7 +508,7 @@ public class JpaProjectPropertiesPage
 		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.jpaProjectModel,
 				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PROPERTY,
-				JpaProject.DISCOVERS_ANNOTATED_CLASSES_TRANSFORMER,
+				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PREDICATE,
 				JpaProject.SET_DISCOVERS_ANNOTATED_CLASSES_CLOSURE
 			);
 	}

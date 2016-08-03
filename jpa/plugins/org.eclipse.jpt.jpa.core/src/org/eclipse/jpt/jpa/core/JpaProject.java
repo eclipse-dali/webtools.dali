@@ -26,8 +26,12 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.closure.BiClosure;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandContext;
 import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.model.BooleanSetClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.model.BooleanSetClosure;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
@@ -557,13 +561,13 @@ public interface JpaProject
 	 * by the JPA implementation.
 	 */
 	boolean discoversAnnotatedClasses();
-		Transformer<JpaProject, Boolean> DISCOVERS_ANNOTATED_CLASSES_TRANSFORMER = new DiscoversAnnotatedClassesTransformer();
-	class DiscoversAnnotatedClassesTransformer
-		extends TransformerAdapter<JpaProject, Boolean>
+		Predicate<JpaProject> DISCOVERS_ANNOTATED_CLASSES_PREDICATE = new DiscoversAnnotatedClassesPredicate();
+	class DiscoversAnnotatedClassesPredicate
+		extends PredicateAdapter<JpaProject>
 	{
 		@Override
-		public Boolean transform(JpaProject jpaProject) {
-			return Boolean.valueOf(jpaProject.discoversAnnotatedClasses());
+		public boolean evaluate(JpaProject jpaProject) {
+			return jpaProject.discoversAnnotatedClasses();
 		}
 	}
 
@@ -574,13 +578,13 @@ public interface JpaProject
 	 * @see #discoversAnnotatedClasses()
 	 */
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
-		BiClosure<JpaProject, Boolean> SET_DISCOVERS_ANNOTATED_CLASSES_CLOSURE = new SetDiscoversAnnotatedClassesClosure();
+		BooleanSetClosure<JpaProject> SET_DISCOVERS_ANNOTATED_CLASSES_CLOSURE = new SetDiscoversAnnotatedClassesClosure();
 	class SetDiscoversAnnotatedClassesClosure
-		extends BiClosureAdapter<JpaProject, Boolean>
+		extends BooleanSetClosureAdapter<JpaProject>
 	{
 		@Override
-		public void execute(JpaProject jpaProject, Boolean discoversAnnotatedClasses) {
-			jpaProject.setDiscoversAnnotatedClasses(discoversAnnotatedClasses.booleanValue());
+		public void execute(JpaProject jpaProject, boolean discoversAnnotatedClasses) {
+			jpaProject.setDiscoversAnnotatedClasses(discoversAnnotatedClasses);
 		}
 	}
 

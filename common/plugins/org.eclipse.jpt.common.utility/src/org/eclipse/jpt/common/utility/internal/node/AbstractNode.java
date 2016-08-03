@@ -642,11 +642,11 @@ public abstract class AbstractNode
 	 * Only really used for testing and debugging.
 	 */
 	public final Iterator<Node> allDirtyNodes() {
-		return IteratorTools.filter(this.allNodes(), IS_DIRTY);
+		return IteratorTools.filter(this.allNodes(), DIRTY_PREDICATE);
 	}
 
-	public static final Predicate<Node> IS_DIRTY = new IsDirty();
-	public static class IsDirty
+	public static final Predicate<Node> DIRTY_PREDICATE = new DirtyPredicate();
+	public static class DirtyPredicate
 		extends PredicateAdapter<Node>
 	{
 		@Override

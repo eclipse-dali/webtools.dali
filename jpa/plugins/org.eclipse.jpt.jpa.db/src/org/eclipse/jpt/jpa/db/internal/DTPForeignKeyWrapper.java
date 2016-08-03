@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -153,7 +153,7 @@ final class DTPForeignKeyWrapper
 	public Iterable<Column> getNonPrimaryKeyBaseColumns() {
 		return IterableTools.filter(this.getBaseColumns(), IS_NOT_PART_OF_PRIMARY_KEY);
 	}
-	private static final Predicate<Column> IS_NOT_PART_OF_PRIMARY_KEY = PredicateTools.not(Column.IS_PART_OF_PRIMARY_KEY);
+	private static final Predicate<Column> IS_NOT_PART_OF_PRIMARY_KEY = PredicateTools.not(Column.PART_OF_PRIMARY_KEY_PREDICATE);
 
 	public Iterable<Column> getReferencedColumns() {
 		return IterableTools.transform(this.getLocalColumnPairs(), LocalColumnPair.REFERENCED_COLUMN_TRANSFORMER);

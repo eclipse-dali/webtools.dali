@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,8 +58,8 @@ public interface JavaResourceMethod
 	String CONSTRUCTOR_PROPERTY = "constructor"; //$NON-NLS-1$
 	
 	boolean isConstructor();
-	Predicate<JavaResourceMethod> IS_CONSTRUCTOR = new IsConstructor();
-	class IsConstructor
+	Predicate<JavaResourceMethod> CONSTRUCTOR_PREDICATE = new ConstructorPredicate();
+	class ConstructorPredicate
 		extends PredicateAdapter<JavaResourceMethod>
 	{
 		@Override
@@ -84,9 +84,9 @@ public interface JavaResourceMethod
 	/**
 	 * Return whether the method is a standard property "getter" method.
 	 */
-	Predicate<JavaResourceMethod> IS_PROPERTY_GETTER = new IsPropertyGetter();
+	Predicate<JavaResourceMethod> PROPERTY_GETTER_PREDICATE = new PropertyGetterPredicate();
 	@SuppressWarnings("nls")
-	class IsPropertyGetter
+	class PropertyGetterPredicate
 		extends PredicateAdapter<JavaResourceMethod>
 	{
 		@Override

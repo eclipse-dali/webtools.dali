@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -646,7 +646,7 @@ public abstract class SpecifiedOrmPersistentType
 		HashSet<OrmPersistentAttribute> contextAttributes = CollectionTools.hashSet(this.getDefaultAttributes());
 
 		if ( ! this.mapping.isMetadataComplete()) {
-			this.syncFieldDefaultAttributes(contextAttributes, JavaResourceAnnotatedElement.IS_ANNOTATED, monitor);
+			this.syncFieldDefaultAttributes(contextAttributes, JavaResourceAnnotatedElement.ANNOTATED_PREDICATE, monitor);
 		}
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.hashBag(this.getJavaResourceMethods());
@@ -793,7 +793,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected Iterable<JavaResourceMethod> getJavaResourcePropertyGetters() {
-		return this.filterJavaResourceMethods(JavaResourceMethod.IS_PROPERTY_GETTER);
+		return this.filterJavaResourceMethods(JavaResourceMethod.PROPERTY_GETTER_PREDICATE);
 	}
 
 	protected Iterable<JavaResourceMethod> filterJavaResourceMethods(Predicate<JavaResourceMethod> predicate) {

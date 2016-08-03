@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,8 +37,8 @@ public interface Column
 	 * Return whether the column is part of its table's primary key.
 	 */
 	boolean isPartOfPrimaryKey();
-	Predicate<Column> IS_PART_OF_PRIMARY_KEY = new IsPartOfPrimaryKey();
-	public static class IsPartOfPrimaryKey
+	Predicate<Column> PART_OF_PRIMARY_KEY_PREDICATE = new PartOfPrimaryKeyPredicate();
+	public static class PartOfPrimaryKeyPredicate
 		extends PredicateAdapter<Column>
 	{
 		@Override

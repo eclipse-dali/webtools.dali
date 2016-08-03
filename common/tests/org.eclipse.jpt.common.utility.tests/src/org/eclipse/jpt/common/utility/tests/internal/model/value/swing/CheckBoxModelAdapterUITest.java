@@ -26,16 +26,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import org.eclipse.jpt.common.utility.closure.BiClosure;
-import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.model.BooleanSetClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.CheckBoxModelAdapter;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.model.BooleanSetClosure;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 
 /**
  * Play around with a set of check boxes.
@@ -76,7 +76,7 @@ public class CheckBoxModelAdapterUITest {
 		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				vm,
 				TestModel.FLAG1_PROPERTY,
-				TestModel.FLAG1_TRANSFORMER,
+				TestModel.FLAG1_PREDICATE,
 				TestModel.SET_FLAG1_CLOSURE
 			);
 	}
@@ -85,7 +85,7 @@ public class CheckBoxModelAdapterUITest {
 		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				vm,
 				TestModel.FLAG2_PROPERTY,
-				TestModel.FLAG2_TRANSFORMER,
+				TestModel.FLAG2_PREDICATE,
 				TestModel.SET_FLAG2_CLOSURE
 			);
 	}
@@ -94,7 +94,7 @@ public class CheckBoxModelAdapterUITest {
 		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				vm,
 				TestModel.NOT_FLAG2_PROPERTY,
-				TestModel.NOT_FLAG2_TRANSFORMER,
+				TestModel.NOT_FLAG2_PREDICATE,
 				TestModel.SET_NOT_FLAG2_CLOSURE
 			);
 	}
@@ -263,62 +263,62 @@ public class CheckBoxModelAdapterUITest {
 	{
 		private boolean flag1;
 			public static final String FLAG1_PROPERTY = "flag1";
-			public static final Transformer<TestModel, Boolean> FLAG1_TRANSFORMER = new Flag1Transformer();
-			public static final class Flag1Transformer
-				extends TransformerAdapter<TestModel, Boolean>
+			public static final Predicate<TestModel> FLAG1_PREDICATE = new Flag1Predicate();
+			public static final class Flag1Predicate
+				extends PredicateAdapter<TestModel>
 			{
 				@Override
-				public Boolean transform(TestModel model) {
-					return Boolean.valueOf(model.isFlag1());
+				public boolean evaluate(TestModel model) {
+					return model.isFlag1();
 				}
 			}
-			public static final BiClosure<TestModel, Boolean> SET_FLAG1_CLOSURE = new SetFlag1Closure();
+			public static final BooleanSetClosure<TestModel> SET_FLAG1_CLOSURE = new SetFlag1Closure();
 			public static final class SetFlag1Closure
-				extends BiClosureAdapter<TestModel, Boolean>
+				extends BooleanSetClosureAdapter<TestModel>
 			{
 				@Override
-				public void execute(TestModel model, Boolean flag1) {
-					model.setFlag1(flag1.booleanValue());
+				public void execute(TestModel model, boolean value) {
+					model.setFlag1(value);
 				}
 			}
 		private boolean flag2;
 			public static final String FLAG2_PROPERTY = "flag2";
-			public static final Transformer<TestModel, Boolean> FLAG2_TRANSFORMER = new Flag2Transformer();
-			public static final class Flag2Transformer
-				extends TransformerAdapter<TestModel, Boolean>
+			public static final Predicate<TestModel> FLAG2_PREDICATE = new Flag2Predicate();
+			public static final class Flag2Predicate
+				extends PredicateAdapter<TestModel>
 			{
 				@Override
-				public Boolean transform(TestModel model) {
-					return Boolean.valueOf(model.isFlag2());
+				public boolean evaluate(TestModel model) {
+					return model.isFlag2();
 				}
 			}
-			public static final BiClosure<TestModel, Boolean> SET_FLAG2_CLOSURE = new SetFlag2Closure();
+			public static final BooleanSetClosure<TestModel> SET_FLAG2_CLOSURE = new SetFlag2Closure();
 			public static final class SetFlag2Closure
-				extends BiClosureAdapter<TestModel, Boolean>
+				extends BooleanSetClosureAdapter<TestModel>
 			{
 				@Override
-				public void execute(TestModel model, Boolean flag2) {
-					model.setFlag2(flag2.booleanValue());
+				public void execute(TestModel model, boolean value) {
+					model.setFlag2(value);
 				}
 			}
 		private boolean notFlag2;
 			public static final String NOT_FLAG2_PROPERTY = "notFlag2";
-			public static final Transformer<TestModel, Boolean> NOT_FLAG2_TRANSFORMER = new NotFlag2Transformer();
-			public static final class NotFlag2Transformer
-				extends TransformerAdapter<TestModel, Boolean>
+			public static final Predicate<TestModel> NOT_FLAG2_PREDICATE = new NotFlag2Predicate();
+			public static final class NotFlag2Predicate
+				extends PredicateAdapter<TestModel>
 			{
 				@Override
-				public Boolean transform(TestModel model) {
-					return Boolean.valueOf(model.isNotFlag2());
+				public boolean evaluate(TestModel model) {
+					return model.isNotFlag2();
 				}
 			}
-			public static final BiClosure<TestModel, Boolean> SET_NOT_FLAG2_CLOSURE = new SetNotFlag2Closure();
+			public static final BooleanSetClosure<TestModel> SET_NOT_FLAG2_CLOSURE = new SetNotFlag2Closure();
 			public static final class SetNotFlag2Closure
-				extends BiClosureAdapter<TestModel, Boolean>
+				extends BooleanSetClosureAdapter<TestModel>
 			{
 				@Override
-				public void execute(TestModel model, Boolean flag2) {
-					model.setNotFlag2(flag2.booleanValue());
+				public void execute(TestModel model, boolean value) {
+					model.setNotFlag2(value);
 				}
 			}
 	

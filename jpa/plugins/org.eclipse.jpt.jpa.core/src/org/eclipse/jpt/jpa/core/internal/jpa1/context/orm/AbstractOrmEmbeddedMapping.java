@@ -128,7 +128,7 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 	}
 
 	protected Iterable<AttributeMapping> getAllOverridableAssociations_() {
-		return IterableTools.filter(this.targetEmbeddable.getAttributeMappings(), AttributeMapping.IS_OVERRIDABLE_ASSOCIATION_MAPPING);
+		return IterableTools.filter(this.targetEmbeddable.getAttributeMappings(), AttributeMapping.OVERRIDABLE_ASSOCIATION_MAPPING_PREDICATE);
 	}
 
 	@Override

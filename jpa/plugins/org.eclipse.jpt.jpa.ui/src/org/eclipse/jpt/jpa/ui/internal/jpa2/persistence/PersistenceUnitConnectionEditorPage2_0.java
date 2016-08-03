@@ -205,11 +205,11 @@ public class PersistenceUnitConnectionEditorPage2_0
 	}
 
 	private PropertyValueModel<Boolean> buildJTADataSourceModel() {
-		return PropertyValueModelTools.valueAffirms_(this.buildTransactionTypeModel(), JTA_DATA_SOURCE_PREDICATE);
+		return PropertyValueModelTools.valueAffirms_(this.buildTransactionTypeModel(), TRANSACTION_TYPE_IS_JTA);
 	}
 
-	private static final Predicate<PersistenceUnitTransactionType> JTA_DATA_SOURCE_PREDICATE = new JTADataSourcePredicate();
-	static class JTADataSourcePredicate
+	private static final Predicate<PersistenceUnitTransactionType> TRANSACTION_TYPE_IS_JTA = new TransactionTypeIsJTA();
+	static class TransactionTypeIsJTA
 		extends PredicateAdapter<PersistenceUnitTransactionType>
 	{
 		@Override

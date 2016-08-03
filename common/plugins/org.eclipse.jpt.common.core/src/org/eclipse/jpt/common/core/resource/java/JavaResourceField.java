@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,27 +49,25 @@ public interface JavaResourceField
 	/**
 	 * Field is (annotated) or (non-static and non-transient);
 	 */
-	@SuppressWarnings("unchecked")
 	Predicate<JavaResourceField> IS_RELEVANT_FOR_FIELD_ACCESS = 
 			PredicateTools.or(
-				IS_ANNOTATED,
+				ANNOTATED_PREDICATE,
 				PredicateTools.and(
-						PredicateTools.not(IS_TRANSIENT),
-						PredicateTools.not(IS_STATIC)
+						PredicateTools.not(TRANSIENT_PREDICATE),
+						PredicateTools.not(STATIC_PREDICATE)
 				)
 			);
 
 	/**
 	 * Field is (annotated) or (public and non-static and non-transient);
 	 */
-	@SuppressWarnings("unchecked")
 	Predicate<JavaResourceField> IS_RELEVANT_FOR_PUBLIC_MEMBER_ACCESS = 
 			PredicateTools.or(
-				IS_ANNOTATED,
+				ANNOTATED_PREDICATE,
 				PredicateTools.and(
-						IS_PUBLIC,
-						PredicateTools.not(IS_TRANSIENT),
-						PredicateTools.not(IS_STATIC)
+						PUBLIC_PREDICATE,
+						PredicateTools.not(TRANSIENT_PREDICATE),
+						PredicateTools.not(STATIC_PREDICATE)
 				)
 			);
 }

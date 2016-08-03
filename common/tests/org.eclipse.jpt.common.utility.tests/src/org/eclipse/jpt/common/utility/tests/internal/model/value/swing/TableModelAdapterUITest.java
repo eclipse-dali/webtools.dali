@@ -63,6 +63,7 @@ import org.eclipse.jpt.common.utility.internal.swing.CheckBoxTableCellRenderer;
 import org.eclipse.jpt.common.utility.internal.swing.ComboBoxTableCellRenderer;
 import org.eclipse.jpt.common.utility.internal.swing.SpinnerTableCellRenderer;
 import org.eclipse.jpt.common.utility.internal.swing.TableCellEditorAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -616,8 +617,8 @@ public class TableModelAdapterUITest {
 		return PropertyValueModelTools.modifiableModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.EVIL_PROPERTY,
-				Person.EVIL_TRANSFORMER,
-				PropertyValueModelTools.downcast(Person.SET_EVIL_CLOSURE)
+				TransformerTools.adapt(Person.EVIL_PREDICATE),
+				PropertyValueModelTools.downcast(PropertyValueModelTools.booleanSetBiClosureAdapter(Person.SET_EVIL_CLOSURE))
 			);
 	}
 

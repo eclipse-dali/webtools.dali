@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
-import org.eclipse.jpt.jpa.core.MappingKeys;
 
 /**
  * JPA attribute mapping.
@@ -86,16 +85,6 @@ public interface AttributeMapping
 		}
 	}
 
-	Predicate<AttributeMapping> IS_NOT_TRANSIENT = new IsNotTransient();
-	public static class IsNotTransient
-		extends PredicateAdapter<AttributeMapping>
-	{
-		@Override
-		public boolean evaluate(AttributeMapping mapping) {
-			return mapping.getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
-		}
-	}
-
 	/**
 	 * Return whether the "attribute" mapping can be overridden.
 	 * The mapping must be a {@link ColumnMapping}.
@@ -108,8 +97,8 @@ public interface AttributeMapping
 	 */
 	boolean isOverridableAssociationMapping();
 
-	Predicate<AttributeMapping> IS_OVERRIDABLE_ASSOCIATION_MAPPING = new IsOverridableAssociationMapping();
-	public static class IsOverridableAssociationMapping
+	Predicate<AttributeMapping> OVERRIDABLE_ASSOCIATION_MAPPING_PREDICATE = new OverridableAssociationMappingPredicate();
+	public static class OverridableAssociationMappingPredicate
 		extends PredicateAdapter<AttributeMapping>
 	{
 		@Override

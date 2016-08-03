@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.IdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping.KeyEquals;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JpaValidator;
@@ -568,8 +570,8 @@ public abstract class AbstractPrimaryKeyValidator
 	 * Return all the attribute mappings of the given type  
 	 * mapping with transient attribute mappings being excluded
 	 */
-	protected Iterable<AttributeMapping> getAttributeMappings(TypeMapping typeMapping) {
-		return IterableTools.filter(typeMapping.getAllAttributeMappings(), AttributeMapping.IS_NOT_TRANSIENT);
+	protected Iterable<AttributeMapping> getAttributeMappings(TypeMapping mapping) {
+		return IterableTools.filter(mapping.getAllAttributeMappings(), PredicateTools.not(new KeyEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY)));
 	}
 	
 	/**

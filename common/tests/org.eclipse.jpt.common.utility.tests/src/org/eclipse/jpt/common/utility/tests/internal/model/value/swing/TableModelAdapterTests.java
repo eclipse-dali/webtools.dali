@@ -26,16 +26,21 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.model.BooleanSetClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TableModelAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.model.BooleanSetClosure;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
@@ -357,8 +362,8 @@ public class TableModelAdapterTests
 			return PropertyValueModelTools.modifiableModelAspectAdapter(
 					person,
 					Person.EVIL_PROPERTY,
-					Person.EVIL_TRANSFORMER,
-					PropertyValueModelTools.downcast(Person.SET_EVIL_CLOSURE)
+					TransformerTools.adapt(Person.EVIL_PREDICATE),
+					PropertyValueModelTools.downcast(PropertyValueModelTools.booleanSetBiClosureAdapter(Person.SET_EVIL_CLOSURE))
 				);
 		}
 	
@@ -552,22 +557,22 @@ public class TableModelAdapterTests
 			public static final String DEFAULT_EYE_COLOR = EYE_COLOR_BLUE;
 		private boolean evil;
 			public static final String EVIL_PROPERTY= "evil";
-			public static final Transformer<Person, Boolean> EVIL_TRANSFORMER = new EvilTransformer();
-			public static final class EvilTransformer
-				extends TransformerAdapter<Person, Boolean>
+			public static final Predicate<Person> EVIL_PREDICATE = new EvilPredicate();
+			public static final class EvilPredicate
+				extends PredicateAdapter<Person>
 			{
 				@Override
-				public Boolean transform(Person person) {
-					return Boolean.valueOf(person.isEvil());
+				public boolean evaluate(Person model) {
+					return model.isEvil();
 				}
 			}
-			public static final BiClosure<Person, Boolean> SET_EVIL_CLOSURE = new SetEvilClosure();
+			public static final BooleanSetClosure<Person> SET_EVIL_CLOSURE = new SetEvilClosure();
 			public static final class SetEvilClosure
-				extends BiClosureAdapter<Person, Boolean>
+				extends BooleanSetClosureAdapter<Person>
 			{
 				@Override
-				public void execute(Person person, Boolean evil) {
-					person.setEvil(evil.booleanValue());
+				public void execute(Person model, boolean value) {
+					model.setEvil(value);
 				}
 			}
 		private int rank;
