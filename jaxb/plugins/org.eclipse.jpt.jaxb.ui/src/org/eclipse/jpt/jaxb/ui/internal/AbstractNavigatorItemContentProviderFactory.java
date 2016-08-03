@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
@@ -125,12 +125,11 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 	
 	protected PropertyValueModel<JavaClassMapping> buildMappingModel(JavaClass javaClass) {
-		return new PropertyAspectAdapterXXXX<JavaClass, JavaClassMapping>(JavaType.MAPPING_PROPERTY, javaClass) {
-			@Override
-			protected JavaClassMapping buildValue_() {
-				return this.subject.getMapping();
-			}
-		};
+		return PropertyValueModelTools.modelAspectAdapter(
+				javaClass,
+				JavaType.MAPPING_PROPERTY,
+				JavaClass.MAPPING_TRANSFORMER
+			);
 	}
 	
 	protected CollectionValueModel<JavaPersistentAttribute> buildAttributesModel(
@@ -169,11 +168,10 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<JavaEnumMapping> buildMappingModel(JavaEnum javaEnum) {
-		return new PropertyAspectAdapterXXXX<JavaEnum, JavaEnumMapping>(JavaType.MAPPING_PROPERTY, javaEnum) {
-			@Override
-			protected JavaEnumMapping buildValue_() {
-				return this.subject.getMapping();
-			}
-		};
+		return PropertyValueModelTools.modelAspectAdapter(
+				javaEnum,
+				JavaType.MAPPING_PROPERTY,
+				JavaEnum.MAPPING_TRANSFORMER
+			);
 	}
 }

@@ -17,16 +17,18 @@ import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClass;
 import org.eclipse.jpt.jaxb.core.context.java.JavaClassMapping;
 import org.eclipse.jpt.jaxb.core.context.java.JavaEnum;
@@ -139,9 +141,9 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		protected final JavaClass javaClass;
 		protected final PluggablePropertyValueModel.Adapter.Listener<ImageDescriptor> listener;
 
-		protected final PropertyValueModel<Boolean> xmlRegistryModel;
-		protected volatile Boolean xmlRegistry;
-		protected final PropertyChangeListener xmlRegistryListener;
+		protected final PropertyValueModel<Boolean> xmlRegistryIsPresentModel;
+		protected volatile Boolean xmlRegistryIsPresent;
+		protected final PropertyChangeListener xmlRegistryIsPresentListener;
 			
 		protected final PropertyValueModel<JavaClassMapping> mappingModel;
 		protected volatile JavaClassMapping mapping;
@@ -163,8 +165,8 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 			}
 			this.listener = listener;
 
-			this.xmlRegistryModel = this.buildXmlRegistryModel();
-			this.xmlRegistryListener = this.buildXmlRegistryListener();
+			this.xmlRegistryIsPresentModel = this.buildXmlRegistryIsPresentModel();
+			this.xmlRegistryIsPresentListener = this.buildXmlRegistryIsPresentListener();
 
 			this.mappingModel = this.buildMappingModel();
 			this.mappingListener = this.buildMappingListener();
@@ -173,37 +175,38 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 			this.xmlTransientListener = buildXmlTransientListener();
 		}
 		
-		protected PropertyValueModel<Boolean> buildXmlRegistryModel() {
-			return new PropertyAspectAdapterXXXX<JavaClass, Boolean>(JavaClass.XML_REGISTRY_PROPERTY, this.javaClass) {
-				@Override
-				protected Boolean buildValue_() {
-					return Boolean.valueOf(this.subject.getXmlRegistry() != null);
-				}
-			};
+		protected PropertyValueModel<Boolean> buildXmlRegistryIsPresentModel() {
+			return PropertyValueModelTools.valueIsNotNull(this.buildXmlRegistryModel());
+		}
+		
+		protected PropertyValueModel<XmlRegistry> buildXmlRegistryModel() {
+			return PropertyValueModelTools.modelAspectAdapter(
+					this.javaClass,
+					JavaClass.XML_REGISTRY_PROPERTY,
+					JavaClass.XML_REGISTRY_TRANSFORMER
+				);
 		}
 		
 		protected PropertyValueModel<JavaClassMapping> buildMappingModel() {
-			return new PropertyAspectAdapterXXXX<JavaClass, JavaClassMapping> (JavaType.MAPPING_PROPERTY, this.javaClass) {
-				@Override
-				protected JavaClassMapping buildValue_() {
-					return this.subject.getMapping();
-				}
-			};
+			return PropertyValueModelTools.modelAspectAdapter(
+					this.javaClass,
+					JavaType.MAPPING_PROPERTY,
+					JavaClass.MAPPING_TRANSFORMER
+				);
 		}
 		
 		protected PropertyValueModel<Boolean> buildXmlTransientModel() {
-			return new PropertyAspectAdapterXXXX<JavaClassMapping, Boolean>(this.mappingModel, JaxbTypeMapping.XML_TRANSIENT_PROPERTY) {
-				@Override
-				protected Boolean buildValue_() {
-					return Boolean.valueOf(this.subject.isXmlTransient());
-				}
-			};
+			return PropertyValueModelTools.modelAspectAdapter(
+					this.mappingModel,
+					JaxbTypeMapping.XML_TRANSIENT_PROPERTY,
+					JaxbTypeMapping.XML_TRANSIENT_PREDICATE
+				);
 		}
 
-		protected PropertyChangeListener buildXmlRegistryListener() {
+		protected PropertyChangeListener buildXmlRegistryIsPresentListener() {
 			return new PropertyChangeListener() {
 				public void propertyChanged(PropertyChangeEvent event) {
-					JavaClassImageDescriptorModelAdapter.this.xmlRegistry = (Boolean) event.getNewValue();
+					JavaClassImageDescriptorModelAdapter.this.xmlRegistryIsPresent = (Boolean) event.getNewValue();
 					JavaClassImageDescriptorModelAdapter.this.update();
 				}
 			};
@@ -235,15 +238,15 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 			if ((this.mapping != null) && ObjectTools.equals(this.xmlTransient, Boolean.TRUE)) {
 				return JptJaxbUiImages.JAXB_TRANSIENT_CLASS;
 			}
-			if (ObjectTools.equals(this.xmlRegistry, Boolean.TRUE)) {
+			if (ObjectTools.equals(this.xmlRegistryIsPresent, Boolean.TRUE)) {
 				return JptJaxbUiImages.JAXB_REGISTRY;
 			}
 			return JptJaxbUiImages.JAXB_CLASS;
 		}
 		
 		public ImageDescriptor engageModel() {
-			this.xmlRegistryModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.xmlRegistryListener);
-			this.xmlRegistry = this.xmlRegistryModel.getValue();
+			this.xmlRegistryIsPresentModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.xmlRegistryIsPresentListener);
+			this.xmlRegistryIsPresent = this.xmlRegistryIsPresentModel.getValue();
 			this.mappingModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.mappingListener);
 			this.mapping = this.mappingModel.getValue();
 			this.xmlTransientModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.xmlTransientListener);
@@ -252,8 +255,8 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		public ImageDescriptor disengageModel() {
-			this.xmlRegistryModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.xmlRegistryListener);
-			this.xmlRegistry = null;
+			this.xmlRegistryIsPresentModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.xmlRegistryIsPresentListener);
+			this.xmlRegistryIsPresent = null;
 			this.mappingModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.mappingListener);
 			this.mapping = null;
 			this.xmlTransientModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.xmlTransientListener);
@@ -343,12 +346,11 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		
 		
 		protected PropertyValueModel<JavaEnumMapping> buildMappingModel() {
-			return new PropertyAspectAdapterXXXX<JavaEnum, JavaEnumMapping> (JavaType.MAPPING_PROPERTY, this.javaEnum) {
-				@Override
-				protected JavaEnumMapping buildValue_() {
-					return this.subject.getMapping();
-				}
-			};
+			return PropertyValueModelTools.modelAspectAdapter(
+					this.javaEnum,
+					JavaType.MAPPING_PROPERTY,
+					JavaEnum.MAPPING_TRANSFORMER
+				);
 		}
 		
 		protected PropertyChangeListener buildMappingListener() {
@@ -361,12 +363,11 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<Boolean> buildXmlTransientModel() {
-			return new PropertyAspectAdapterXXXX<JavaEnumMapping, Boolean>(this.mappingModel, JaxbTypeMapping.XML_TRANSIENT_PROPERTY) {
-				@Override
-				protected Boolean buildValue_() {
-					return Boolean.valueOf(this.subject.isXmlTransient());
-				}
-			};
+			return PropertyValueModelTools.modelAspectAdapter(
+					this.mappingModel,
+					JaxbTypeMapping.XML_TRANSIENT_PROPERTY,
+					JaxbTypeMapping.XML_TRANSIENT_PREDICATE
+				);
 		}
 		
 		protected PropertyChangeListener buildXmlTransientListener() {
@@ -467,22 +468,30 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	}
 
 	public PropertyValueModel<ImageDescriptor> buildJavaPersistentAttributeImageDescriptorModel(JavaPersistentAttribute item) {
-		return new PropertyAspectAdapterXXXX<JavaPersistentAttribute, ImageDescriptor>(PropertyValueModelTools.staticModel(item), IMAGE_ASPECT_NAMES) {
-			@Override
-			protected ImageDescriptor buildValue_() {
-				return AbstractNavigatorItemLabelProviderFactory.this.buildJavaPersistentAttributeImageDescriptor(this.subject.getMappingKey());
-			}
-		};
+		return PropertyValueModelTools.transform(
+				this.buildJavaPersistentAttributeMappingKeyModel(item),
+				this.getMappingKeyImageDescriptorTransformer()
+			);
 	}
 
-	protected ImageDescriptor buildJavaPersistentAttributeImageDescriptor(String mappingKey) {
-		return JaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
+	protected Transformer<String, ImageDescriptor> getMappingKeyImageDescriptorTransformer() {
+		return JaxbMappingKeyImageDescriptorTransformer.instance();
 	}
 
-	protected static final String[] IMAGE_ASPECT_NAMES = new String[] {
-		JavaPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY,
-		JaxbPersistentAttribute.MAPPING_PROPERTY
-	};
+	public PropertyValueModel<String> buildJavaPersistentAttributeMappingKeyModel(JavaPersistentAttribute item) {
+		return PropertyValueModelTools.transform(
+				this.buildJavaPersistentAttributeMappingModel(item),
+				JaxbAttributeMapping.KEY_TRANSFORMER
+			);
+	}
+
+	public PropertyValueModel<JaxbAttributeMapping> buildJavaPersistentAttributeMappingModel(JavaPersistentAttribute item) {
+		return PropertyValueModelTools.modelAspectAdapter(
+				item,
+				JaxbPersistentAttribute.MAPPING_PROPERTY,
+				JaxbPersistentAttribute.MAPPING_TRANSFORMER
+			);
+	}
 
 	public PropertyValueModel<String> buildJavaPersistentAttributeTextModel(JavaPersistentAttribute item) {
 		return PropertyValueModelTools.staticModel(this.buildJavaPersistentAttributeText(item));

@@ -1,14 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 
 /**
@@ -46,6 +48,15 @@ public interface JaxbTypeMapping
 	String XML_TRANSIENT_PROPERTY = "xmlTransient";  //$NON-NLS-1$
 	
 	boolean isXmlTransient();
+	Predicate<JaxbTypeMapping> XML_TRANSIENT_PREDICATE = new XmlTransientPredicate();
+	class XmlTransientPredicate
+		extends PredicateAdapter<JaxbTypeMapping>
+	{
+		@Override
+		public boolean evaluate(JaxbTypeMapping mapping) {
+			return mapping.isXmlTransient();
+		}
+	}
 	
 	
 	// ***** XmlType.name and XmlType.namespace *****

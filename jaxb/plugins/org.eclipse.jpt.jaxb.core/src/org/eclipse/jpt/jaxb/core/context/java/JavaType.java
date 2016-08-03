@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.jaxb.core.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -58,7 +60,7 @@ public interface JavaType
 	
 	// ***** type mapping *****
 	
-	final String MAPPING_PROPERTY = "mapping";  //$NON-NLS-1$
+	String MAPPING_PROPERTY = "mapping";  //$NON-NLS-1$
 	
 	/**
 	 * Return the mapping of this type.  
@@ -67,11 +69,20 @@ public interface JavaType
 	 * or if this type is default mapped.
 	 */
 	JavaTypeMapping getMapping();
+	Transformer<JavaType, JavaTypeMapping> MAPPING_TRANSFORMER = new MappingTransformer();
+	class MappingTransformer
+		extends TransformerAdapter<JavaType, JavaTypeMapping>
+	{
+		@Override
+		public JavaTypeMapping transform(JavaType javaType) {
+			return javaType.getMapping();
+		}
+	}
 	
 	
 	// ***** default mapped *****
 	
-	final String DEFAULT_MAPPED_PROPERTY = "defaultMapped";  //$NON-NLS-1$
+	String DEFAULT_MAPPED_PROPERTY = "defaultMapped";  //$NON-NLS-1$
 	
 	/**
 	 * Return true if this type is mapped by reference.

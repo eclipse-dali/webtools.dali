@@ -51,6 +51,7 @@ import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -619,9 +620,27 @@ public class JaxbSchemasPropertiesPage
 		
 		private String namespace;
 		final static String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
+		public static final Transformer<Schema, String> NAMESPACE_TRANSFORMER = new NamespaceTransformer();
+		public static final class NamespaceTransformer
+			extends TransformerAdapter<Schema, String>
+		{
+			@Override
+			public String transform(Schema schema) {
+				return schema.getNamespace();
+			}
+		}
 		
 		private String location;
 		final static String LOCATION_PROPERTY = "location"; //$NON-NLS-1$
+		public static final Transformer<Schema, String> LOCATION_TRANSFORMER = new LocationTransformer();
+		public static final class LocationTransformer
+			extends TransformerAdapter<Schema, String>
+		{
+			@Override
+			public String transform(Schema schema) {
+				return schema.getLocation();
+			}
+		}
 		
 		
 		String getNamespace() {
@@ -689,21 +708,21 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNamespaceCellModel(Schema subject) {
-			return new PropertyAspectAdapterXXXX<Schema, String>(Schema.NAMESPACE_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getNamespace();
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					subject,
+					Schema.NAMESPACE_PROPERTY,
+					Schema.NAMESPACE_TRANSFORMER,
+					BiClosureTools.nullBiClosure()
+				);
 		}
 		
 		private ModifiablePropertyValueModel<String> buildLocationCellModel(Schema subject) {
-			return new PropertyAspectAdapterXXXX<Schema, String>(Schema.LOCATION_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getLocation();
-				}
-			};
+			return PropertyValueModelTools.modifiableModelAspectAdapter(
+					subject,
+					Schema.LOCATION_PROPERTY,
+					Schema.LOCATION_TRANSFORMER,
+					BiClosureTools.nullBiClosure()
+				);
 		}
 	}
 	

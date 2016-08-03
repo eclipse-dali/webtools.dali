@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.ui.internal.jface.ModelItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
@@ -27,7 +26,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmTypeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlEnum;
 import org.eclipse.jpt.jaxb.eclipselink.ui.JptJaxbEclipseLinkUiImages;
-import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbMappingImageHelper;
+import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbMappingKeyImageDescriptorTransformer;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiImages;
 import org.eclipse.jpt.jaxb.ui.internal.AbstractNavigatorItemLabelProviderFactory;
 
@@ -68,8 +67,8 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	@Override
-	protected ImageDescriptor buildJavaPersistentAttributeImageDescriptor(String mappingKey) {
-		return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
+	protected Transformer<String, ImageDescriptor> getMappingKeyImageDescriptorTransformer() {
+		return ELJaxbMappingKeyImageDescriptorTransformer.instance();
 	}
 
 	protected ItemExtendedLabelProvider buildOxmFileLabelProvider(OxmFile file, ItemExtendedLabelProvider.Manager manager) {
@@ -164,7 +163,10 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<ImageDescriptor> buildOxmJavaAttributeImageDescriptorModel(OxmJavaAttribute item) {
-		return PropertyValueModelTools.transform(this.buildOxmJavaAttributeMappingKeyModel(item), MAPPING_KEY_IMAGE_DESCRIPTOR_TRANSFORMER);
+		return PropertyValueModelTools.transform(
+				this.buildOxmJavaAttributeMappingKeyModel(item),
+				ELJaxbMappingKeyImageDescriptorTransformer.instance()
+			);
 	}
 
 	protected PropertyValueModel<String> buildOxmJavaAttributeMappingKeyModel(OxmJavaAttribute item) {
@@ -177,16 +179,6 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 				JaxbPersistentAttribute.MAPPING_PROPERTY,
 				JaxbPersistentAttribute.MAPPING_TRANSFORMER
 			);
-	}
-
-	protected static final Transformer<String, ImageDescriptor> MAPPING_KEY_IMAGE_DESCRIPTOR_TRANSFORMER = new MappingKeyImageDescriptorTransformer();
-	protected static final class MappingKeyImageDescriptorTransformer
-		extends TransformerAdapter<String, ImageDescriptor>
-	{
-		@Override
-		public ImageDescriptor transform(String mappingKey) {
-			return ELJaxbMappingImageHelper.imageDescriptorForAttributeMapping(mappingKey);
-		}
 	}
 	
 	protected PropertyValueModel<String> buildOxmJavaAttributeTextModel(OxmJavaAttribute item) {
