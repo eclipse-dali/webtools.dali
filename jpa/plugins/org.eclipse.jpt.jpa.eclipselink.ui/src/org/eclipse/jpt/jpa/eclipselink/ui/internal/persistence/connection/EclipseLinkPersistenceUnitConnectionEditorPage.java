@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionTy
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkBatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -259,7 +259,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		return PropertyValueModelTools.transform_(this.buildDefaultNativeSqlModel(), NATIVE_SQL_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> NATIVE_SQL_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> NATIVE_SQL_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_NATIVE_SQL_LABEL
 		);

@@ -20,11 +20,13 @@ import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.BooleanSetClosure;
+import org.eclipse.jpt.common.utility.model.IntSetClosure;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.IntTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
@@ -888,7 +890,48 @@ public final class PropertyValueModelTools {
 	}
 
 	/**
-	 * Construct a "set" bi-closure that wraps a boolean "set" closure and
+	 * Construct a "set" bi-closure that wraps an <code>int</code> "set" closure and
+	 * forwards its arguments to it, converting the {@link Integer} to
+	 * an <code>int</code>.
+	 * 
+	 * @param <S> the type of the "set" closure's "target" object
+	 */
+	public static <S> BiClosure<S, Integer> intSetBiClosureAdapter(IntSetClosure<? super S> closure) {
+		return new IntSetBiClosureAdapter<>(closure);
+	}
+
+	/**
+	 * "Set" bi-closure that wraps an <code>int</code> "set" closure and
+	 * forwards its arguments to it, converting the {@link Integer} to
+	 * an <code>int</code>.
+	 * 
+	 * @param <S> the type of the "set" closure's "target" object
+	 */
+	public static final class IntSetBiClosureAdapter<S>
+		implements BiClosure<S, Integer>
+	{
+		private final IntSetClosure<? super S> closure;
+		
+		public IntSetBiClosureAdapter(IntSetClosure<? super S> closure) {
+			super();
+			if (closure == null) {
+				throw new NullPointerException();
+			}
+			this.closure = closure;
+		}
+
+		public void execute(S subject, Integer value) {
+			this.closure.execute(subject, value.intValue());
+		}
+
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.closure);
+		}
+	}
+
+	/**
+	 * Construct a "set" bi-closure that wraps a <code>boolean</code> "set" closure and
 	 * forwards its arguments to it, converting the {@link Boolean} to
 	 * a <code>boolean</code>.
 	 * 
@@ -899,7 +942,7 @@ public final class PropertyValueModelTools {
 	}
 
 	/**
-	 * "Set" bi-closure that wraps a boolean "set" closure and
+	 * "Set" bi-closure that wraps a <code>boolean</code> "set" closure and
 	 * forwards its arguments to it, converting the {@link Boolean} to
 	 * a <code>boolean</code>.
 	 * 
@@ -1123,6 +1166,43 @@ public final class PropertyValueModelTools {
 	// ********** aspect adapters **********
 
 	/**
+	 * Construct an <code>int</code> model property aspect adapter for the
+	 * specified subject, aspect name, and transformer.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
+	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code>
+	 * <code>Integer</code> value.
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model> PropertyValueModel<Integer> modelAspectAdapter(
+			S subject,
+			String aspectName,
+			IntTransformer<? super S> transformer
+	) {
+		return modelAspectAdapter(subject, aspectName, TransformerTools.adapt(transformer));
+	}
+
+
+	/**
+	 * Construct an <code>int</code> model property aspect adapter for the
+	 * specified subject, aspect name, and transformer.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model> PropertyValueModel<Integer> modelAspectAdapter_(
+			S subject,
+			String aspectName,
+			IntTransformer<? super S> transformer
+	) {
+		return modelAspectAdapter_(subject, aspectName, TransformerTools.adapt(transformer));
+	}
+
+	/**
 	 * Construct a boolean model property aspect adapter for the
 	 * specified subject, aspect name, and predicate.
 	 * <p>
@@ -1193,6 +1273,42 @@ public final class PropertyValueModelTools {
 			Transformer<? super S, ? extends V> transformer
 	) {
 		return modelAspectAdapter_(staticModel(subject), aspectName, transformer);
+	}
+
+	/**
+	 * Construct an <code>int</code> model property aspect adapter for the
+	 * specified subject model, aspect name, and transformer.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
+	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code>
+	 * <code>Integer</code> value.
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Integer> modelAspectAdapter(
+			SM subjectModel,
+			String aspectName,
+			IntTransformer<? super S> transformer
+	) {
+		return modelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(transformer));
+	}
+
+	/**
+	 * Construct an <code>int</code> model property aspect adapter for the
+	 * specified subject model, aspect name, and transformer.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Integer> modelAspectAdapter_(
+			SM subjectModel,
+			String aspectName,
+			IntTransformer<? super S> transformer
+	) {
+		return modelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(transformer));
 	}
 
 	/**
@@ -1345,6 +1461,48 @@ public final class PropertyValueModelTools {
 	// ********** modifiable aspect adapters **********
 
 	/**
+	 * Construct an <code>int</code> modifiable property aspect adapter for the
+	 * specified subject, aspect name, transformer, and closure.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
+	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code>
+	 * <code>Integer</code> value.
+	 * Likewise, if the subject is <code>null</code>, the specified closure will
+	 * not be executed.
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter(
+			S subject,
+			String aspectName,
+			IntTransformer<? super S> getTransformer,
+			IntSetClosure<? super S> setClosure
+	) {
+		return modifiableModelAspectAdapter(subject, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
+	}
+
+	/**
+	 * Construct an <code>int</code> modifiable property aspect adapter for the
+	 * specified subject, aspect name, transformer, and closure.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * Likewise, the specified closure must be able to handle a <code>null</code>
+	 * subject (i.e. first argument).
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter_(
+			S subject,
+			String aspectName,
+			IntTransformer<? super S> getTransformer,
+			IntSetClosure<? super S> setClosure
+	) {
+		return modifiableModelAspectAdapter_(subject, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
+	}
+
+	/**
 	 * Construct a boolean modifiable property aspect adapter for the
 	 * specified subject, aspect name, predicate, and closure.
 	 * <p>
@@ -1427,6 +1585,48 @@ public final class PropertyValueModelTools {
 			BiClosure<? super S, ? super V> setClosure
 	) {
 		return modifiableModelAspectAdapter_(staticModel(subject), aspectName, getTransformer, setClosure);
+	}
+
+	/**
+	 * Construct an <code>int</code> modifiable property aspect adapter for the
+	 * specified subject model, aspect name, transformer, and closure.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer will <em>never</em> be passed a <code>null</code> subject.
+	 * Instead, a <code>null</code> subject will be transformed into a <code>null</code>
+	 * <code>Integer</code> value.
+	 * Likewise, if the subject is <code>null</code>, the specified closure will
+	 * not be executed.
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter(
+			SM subjectModel,
+			String aspectName,
+			IntTransformer<? super S> getTransformer,
+			IntSetClosure<? super S> setClosure
+	) {
+		return modifiableModelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
+	}
+
+	/**
+	 * Construct an <code>int</code> modifiable property aspect adapter for the
+	 * specified subject model, aspect name, transformer, and closure.
+	 * <p>
+	 * <strong>NB:</strong>
+	 * The specified transformer must be able to handle a <code>null</code> subject.
+	 * Likewise, the specified closure must be able to handle a <code>null</code>
+	 * subject (i.e. first argument).
+	 * 
+	 * @param <S> the type of the subject
+	 */
+	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter_(
+			SM subjectModel,
+			String aspectName,
+			IntTransformer<? super S> getTransformer,
+			IntSetClosure<? super S> setClosure
+	) {
+		return modifiableModelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
 	}
 
 	/**

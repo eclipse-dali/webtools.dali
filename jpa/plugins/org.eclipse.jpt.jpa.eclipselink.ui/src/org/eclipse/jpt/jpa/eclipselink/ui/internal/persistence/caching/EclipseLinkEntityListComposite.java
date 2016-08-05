@@ -117,7 +117,7 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 			public void removeSelectedItems(CollectionValueModel<EclipseLinkCachingEntity> selectedItemsModel) {
 				//assume only 1 item since remove button is disabled otherwise
 				EclipseLinkCachingEntity cachingEntity = selectedItemsModel.iterator().next();
-				getSubject().removeEntity(cachingEntity.getName());
+				getSubject().removeCachingEntity(cachingEntity.getName());
 			}
 		};
 	}
@@ -132,8 +132,8 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 				entityName = type.getElementName();
 			}
 			
-			if( ! this.getSubject().entityExists(entityName)) {
-				return this.getSubject().addEntity(entityName);
+			if( ! this.getSubject().cachingEntityExists(entityName)) {
+				return this.getSubject().addCachingEntity(entityName);
 			}
 		}
 		return null;
@@ -183,14 +183,14 @@ public class EclipseLinkEntityListComposite<T extends EclipseLinkCaching>
 
 	private ListValueModel<EclipseLinkCachingEntity> buildEntitiesListModel() {
 		return new ListAspectAdapter<EclipseLinkCaching, EclipseLinkCachingEntity>(
-					this.getSubjectHolder(), EclipseLinkCaching.ENTITIES_LIST) {
+					this.getSubjectHolder(), EclipseLinkCaching.CACHING_ENTITIES_LIST) {
 			@Override
 			protected ListIterable<EclipseLinkCachingEntity> getListIterable() {
-				return this.subject.getEntities();
+				return this.subject.getCachingEntities();
 			}
 			@Override
 			protected int size_() {
-				return this.subject.getEntitiesSize();
+				return this.subject.getCachingEntitiesSize();
 			}
 		};
 	}

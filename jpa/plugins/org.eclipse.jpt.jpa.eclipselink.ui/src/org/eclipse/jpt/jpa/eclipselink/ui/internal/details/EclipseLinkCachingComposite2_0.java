@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
@@ -163,7 +163,7 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		return PropertyValueModelTools.transform_(this.buildDefaultCacheableModel(cacheableModel), CACHEABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> CACHEABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> CACHEABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_WITH_DEFAULT_LABEL,
 			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL
 		);

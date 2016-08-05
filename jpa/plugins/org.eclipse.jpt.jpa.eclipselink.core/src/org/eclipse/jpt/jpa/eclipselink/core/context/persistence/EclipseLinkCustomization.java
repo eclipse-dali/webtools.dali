@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -24,7 +28,25 @@ public interface EclipseLinkCustomization extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_THROW_EXCEPTIONS = "eclipselink.orm.throw.exceptions"; //$NON-NLS-1$
 		static final Boolean DEFAULT_THROW_EXCEPTIONS = Boolean.TRUE;
-	
+		Transformer<EclipseLinkCustomization, Boolean> THROW_EXCEPTIONS_TRANSFORMER = new ThrowExceptionsTransformer();
+		class ThrowExceptionsTransformer
+			extends TransformerAdapter<EclipseLinkCustomization, Boolean>
+		{
+			@Override
+			public Boolean transform(EclipseLinkCustomization model) {
+				return model.getThrowExceptions();
+			}
+		}
+		BiClosure<EclipseLinkCustomization, Boolean> SET_THROW_EXCEPTIONS_CLOSURE = new SetThrowExceptionsClosure();
+		class SetThrowExceptionsClosure
+			extends BiClosureAdapter<EclipseLinkCustomization, Boolean>
+		{
+			@Override
+			public void execute(EclipseLinkCustomization model, Boolean name) {
+				model.setThrowExceptions(name);
+			}
+		}
+
 	EclipseLinkWeaving getDefaultWeaving();
 	EclipseLinkWeaving getWeaving();
 	void setWeaving(EclipseLinkWeaving newWeaving);

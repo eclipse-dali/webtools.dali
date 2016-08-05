@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2_1.persistence.JptJpaUiPersistenceMessages2_1;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -318,7 +318,7 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 		return PropertyValueModelTools.transform_(this.buildDefaultCreateDatabaseSchemasModel(), CREATE_DATABASE_SCHEMAS_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> CREATE_DATABASE_SCHEMAS_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> CREATE_DATABASE_SCHEMAS_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_DEFAULT_CREATE_DATABASE_SCHEMAS_LABEL,
 			JptJpaUiPersistenceMessages2_1.SCHEMA_GENERATION_COMPOSITE_CREATE_DATABASE_SCHEMAS_LABEL
 		);

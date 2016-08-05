@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutableMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -125,12 +126,7 @@ public abstract class EclipseLinkVersionMappingComposite<T extends EclipseLinkVe
 	}
 
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkMutable>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkMutable buildValue_() {
-				return this.subject.getMutable();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkMutableMapping.MUTABLE_TRANSFORMER);
 	}
 
 	protected void initializeConvertersCollapsibleSection(Composite container) {

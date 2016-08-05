@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,15 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.OneToOneRelationship;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwnedMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToOneMappingComposite;
@@ -44,6 +46,7 @@ public abstract class EclipseLinkAbstractOneToOneMappingComposite<T extends Ecli
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	protected Control initializeOneToOneSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
@@ -81,20 +84,10 @@ public abstract class EclipseLinkAbstractOneToOneMappingComposite<T extends Ecli
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkJoinFetch buildValue_() {
-				return this.subject.getJoinFetch();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkJoinFetchMapping.JOIN_FETCH_TRANSFORMER);
 	}
 	
 	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnedModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkPrivateOwned>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkPrivateOwned buildValue_() {
-				return this.subject.getPrivateOwned();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkPrivateOwnedMapping.PRIVATE_OWNED_TRANSFORMER);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2016 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,7 +69,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.options.addPropertyChangeListener(EclipseLinkOptions.TARGET_SERVER_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(EclipseLinkOptions.SESSION_EVENT_LISTENER_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(
-			EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, propertyChangeListener);
+			EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
@@ -304,7 +304,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			this.options.setSessionName((String) newValue);
 		else if (propertyName.equals(EclipseLinkOptions.SESSIONS_XML_PROPERTY))
 			this.options.setSessionsXml((String) newValue);
-		else if (propertyName.equals(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
 			this.options.setIncludeDescriptorQueries((Boolean) newValue);
 		else if (propertyName.equals(EclipseLinkOptions.TARGET_DATABASE_PROPERTY))
 			this.setTargetDatabaseProperty(newValue);
@@ -339,7 +339,7 @@ public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			modelValue = this.options.getSessionName();
 		else if (propertyName.equals(EclipseLinkOptions.SESSIONS_XML_PROPERTY))
 			modelValue = this.options.getSessionsXml();
-		else if (propertyName.equals(EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
+		else if (propertyName.equals(EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
 			modelValue = this.options.getIncludeDescriptorQueries();
 		else if (propertyName.equals(EclipseLinkOptions.TARGET_DATABASE_PROPERTY))
 			modelValue = this.options.getTargetDatabase();

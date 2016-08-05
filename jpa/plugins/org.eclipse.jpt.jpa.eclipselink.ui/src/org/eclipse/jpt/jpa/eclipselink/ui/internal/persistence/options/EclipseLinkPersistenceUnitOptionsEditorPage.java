@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTarge
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -699,7 +699,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** include descriptor queries *********
 	
 	private ModifiablePropertyValueModel<Boolean> buildIncludeDescriptorQueriesModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(this.optionsModel, EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(this.optionsModel, EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getIncludeDescriptorQueries();
@@ -716,7 +716,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		return PropertyValueModelTools.transform_(this.buildDefaultIncludeDescriptorQueriesModel(), INCLUDE_DESCRIPTOR_QUERIES_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> INCLUDE_DESCRIPTOR_QUERIES_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> INCLUDE_DESCRIPTOR_QUERIES_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_INCLUDE_DESCRIPTOR_QUERIES_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_INCLUDE_DESCRIPTOR_QUERIES_LABEL
 		);
@@ -724,7 +724,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	private PropertyValueModel<Boolean> buildDefaultIncludeDescriptorQueriesModel() {
 		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(
 			this.optionsModel,
-			EclipseLinkOptions.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)
+			EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -757,7 +757,7 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		return PropertyValueModelTools.transform_(this.buildDefaultTemporalMutableModel(), TEMPORAL_MUTABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> TEMPORAL_MUTABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> TEMPORAL_MUTABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_OPTIONS_TAB_TEMPORAL_MUTABLE_LABEL
 		);

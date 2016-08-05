@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkDdlGenerationType;
@@ -83,18 +83,13 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** DdlGenerationType ******* */
-	private ModifiablePropertyValueModel<EclipseLinkDdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, EclipseLinkDdlGenerationType>(subjectHolder, EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
-			@Override
-			protected EclipseLinkDdlGenerationType buildValue_() {
-				return this.subject.getDdlGenerationType();
-			}
-
-			@Override
-			protected void setValue_(EclipseLinkDdlGenerationType enumValue) {
-				this.subject.setDdlGenerationType(enumValue);
-			}
-		};
+	private ModifiablePropertyValueModel<EclipseLinkDdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectModel) {
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectModel,
+				EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY,
+				EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_TRANSFORMER,
+				EclipseLinkSchemaGeneration.SET_DDL_GENERATION_TYPE_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildDdlGenerationTypeChangeListener() {
@@ -106,18 +101,13 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** OutputMode ******* */
-	private ModifiablePropertyValueModel<EclipseLinkOutputMode> buildOutputModeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, EclipseLinkOutputMode>(subjectHolder, EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY) {
-			@Override
-			protected EclipseLinkOutputMode buildValue_() {
-				return this.subject.getOutputMode();
-			}
-
-			@Override
-			protected void setValue_(EclipseLinkOutputMode enumValue) {
-				this.subject.setOutputMode(enumValue);
-			}
-		};
+	private ModifiablePropertyValueModel<EclipseLinkOutputMode> buildOutputModeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectModel) {
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectModel,
+				EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY,
+				EclipseLinkSchemaGeneration.OUTPUT_MODE_TRANSFORMER,
+				EclipseLinkSchemaGeneration.SET_OUTPUT_MODE_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildOutputModeChangeListener() {

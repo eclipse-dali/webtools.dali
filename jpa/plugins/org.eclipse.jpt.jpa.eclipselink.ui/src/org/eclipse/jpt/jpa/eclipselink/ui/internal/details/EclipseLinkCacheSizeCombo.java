@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.swt.widgets.Composite;
 
@@ -55,26 +55,20 @@ public class EclipseLinkCacheSizeCombo
 
 	@Override
 	protected PropertyValueModel<Integer> buildDefaultModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Integer>(this.getSubjectHolder(), EclipseLinkCaching.DEFAULT_SIZE_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return Integer.valueOf(this.subject.getDefaultSize());
-			}
-		};
+		return PropertyValueModelTools.modelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.DEFAULT_SIZE_PROPERTY,
+				EclipseLinkCaching.DEFAULT_SIZE_TRANSFORMER
+			);
 	}
 
 	@Override
 	protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Integer>(this.getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SIZE_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return this.subject.getSpecifiedSize();
-			}
-
-			@Override
-			protected void setValue_(Integer value) {
-				this.subject.setSpecifiedSize(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.SPECIFIED_SIZE_PROPERTY,
+				EclipseLinkCaching.SPECIFIED_SIZE_TRANSFORMER,
+				EclipseLinkCaching.SET_SPECIFIED_SIZE_CLOSURE
+			);
 	}
 }

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -90,7 +90,7 @@ public class EclipseLinkReadOnlyTriStateCheckBox
 		return PropertyValueModelTools.transform_(this.buildDefaultReadOnlyModel(), READ_ONLY_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> READ_ONLY_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> READ_ONLY_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_WITH_DEFAULT,
 				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_READ_ONLY_COMPOSITE_READ_ONLY_LABEL
 			);

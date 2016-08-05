@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -94,7 +94,7 @@ public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>
 		return PropertyValueModelTools.transform_(this.buildDefaultOrphanRemovalModel(), ORPHAN_REMOVAL_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> ORPHAN_REMOVAL_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> ORPHAN_REMOVAL_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL_DEFAULT,
 			JptJpaUiDetailsMessages2_0.ORPHAN_REMOVAL_COMPOSITE_ORPHAN_REMOVAL_LABEL
 		);

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.model;
 
 /**
- * Simple interface for implementing a boolean "set" command that takes two
- * arguments, the model and the new value of the model's boolean attribute.
+ * Simple interface for implementing a <code>boolean</code> "set" command that takes two
+ * arguments, the model and the new value of the model's <code>boolean</code> attribute.
  * The expectation is the closure will have side effects.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -26,7 +26,7 @@ public interface BooleanSetClosure<M> {
 
 	/**
 	 * The intent of this method is to set the value of the specified
-	 * model's attribute to the specified boolean value.
+	 * model's attribute to the specified <code>boolean</code> value.
 	 */
 	void execute(M model, boolean value);
 }

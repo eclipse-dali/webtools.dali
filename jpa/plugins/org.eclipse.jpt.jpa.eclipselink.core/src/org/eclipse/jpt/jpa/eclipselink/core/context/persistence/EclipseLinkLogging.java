@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
+import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -20,59 +24,78 @@ public interface EclipseLinkLogging
 	EclipseLinkLoggingLevel getDefaultLevel();
 	EclipseLinkLoggingLevel getLevel();
 	void setLevel(EclipseLinkLoggingLevel level);
-		static final String LEVEL_PROPERTY = "level"; //$NON-NLS-1$
+		String LEVEL_PROPERTY = "level"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_LEVEL = "eclipselink.logging.level"; //$NON-NLS-1$
-		static final EclipseLinkLoggingLevel DEFAULT_LEVEL = EclipseLinkLoggingLevel.info;
+		String ECLIPSELINK_LEVEL = "eclipselink.logging.level"; //$NON-NLS-1$
+		EclipseLinkLoggingLevel DEFAULT_LEVEL = EclipseLinkLoggingLevel.info;
 	
 	Boolean getDefaultTimestamp();
 	Boolean getTimestamp();
 	void setTimestamp(Boolean timestamp);
-		static final String TIMESTAMP_PROPERTY = "timestamp"; //$NON-NLS-1$
+		String TIMESTAMP_PROPERTY = "timestamp"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_TIMESTAMP = "eclipselink.logging.timestamp"; //$NON-NLS-1$
-		static final Boolean DEFAULT_TIMESTAMP = Boolean.TRUE;
+		String ECLIPSELINK_TIMESTAMP = "eclipselink.logging.timestamp"; //$NON-NLS-1$
+		Boolean DEFAULT_TIMESTAMP = Boolean.TRUE;
+		Transformer<EclipseLinkLogging, Boolean> TIMESTAMP_TRANSFORMER = new TimestampTransformer();
+		class TimestampTransformer
+			extends TransformerAdapter<EclipseLinkLogging, Boolean>
+		{
+			@Override
+			public Boolean transform(EclipseLinkLogging logging) {
+				return logging.getTimestamp();
+			}
+		}
+	
+		BiClosure<EclipseLinkLogging, Boolean> SET_TIMESTAMP_CLOSURE = new SetTimestampClosure();
+		class SetTimestampClosure
+			extends BiClosureAdapter<EclipseLinkLogging, Boolean>
+		{
+			@Override
+			public void execute(EclipseLinkLogging logging, Boolean timestamp) {
+				logging.setTimestamp(timestamp);
+			}
+		}
 	
 	Boolean getDefaultThread();
 	Boolean getThread();
 	void setThread(Boolean thread);
-		static final String THREAD_PROPERTY = "thread"; //$NON-NLS-1$
+		String THREAD_PROPERTY = "thread"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_THREAD = "eclipselink.logging.thread"; //$NON-NLS-1$
-		static final Boolean DEFAULT_THREAD = Boolean.TRUE;
+		String ECLIPSELINK_THREAD = "eclipselink.logging.thread"; //$NON-NLS-1$
+		Boolean DEFAULT_THREAD = Boolean.TRUE;
 	
 	Boolean getDefaultSession();
 	Boolean getSession();
 	void setSession(Boolean session);
-		static final String SESSION_PROPERTY = "session"; //$NON-NLS-1$
+		String SESSION_PROPERTY = "session"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_SESSION = "eclipselink.logging.session"; //$NON-NLS-1$
-		static final Boolean DEFAULT_SESSION = Boolean.TRUE;
+		String ECLIPSELINK_SESSION = "eclipselink.logging.session"; //$NON-NLS-1$
+		Boolean DEFAULT_SESSION = Boolean.TRUE;
 	
 	Boolean getDefaultExceptions();
 	Boolean getExceptions();
 	void setExceptions(Boolean exceptions);
-		static final String EXCEPTIONS_PROPERTY = "exceptions"; //$NON-NLS-1$
+		String EXCEPTIONS_PROPERTY = "exceptions"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_EXCEPTIONS = "eclipselink.logging.exceptions"; //$NON-NLS-1$
-		static final Boolean DEFAULT_EXCEPTIONS = Boolean.FALSE;
+		String ECLIPSELINK_EXCEPTIONS = "eclipselink.logging.exceptions"; //$NON-NLS-1$
+		Boolean DEFAULT_EXCEPTIONS = Boolean.FALSE;
 		
 	String getDefaultLogFileLocation();
 	String getLogFileLocation();
 	void setLogFileLocation(String newLogFileLocation);
-		static final String LOG_FILE_LOCATION_PROPERTY = "logFileLocation"; //$NON-NLS-1$
+		String LOG_FILE_LOCATION_PROPERTY = "logFileLocation"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_LOG_FILE_LOCATION = "eclipselink.logging.file"; //$NON-NLS-1$
-		static final String DEFAULT_LOG_FILE_LOCATION = null;		// No Default
+		String ECLIPSELINK_LOG_FILE_LOCATION = "eclipselink.logging.file"; //$NON-NLS-1$
+		String DEFAULT_LOG_FILE_LOCATION = null;		// No Default
 		
 	String getDefaultLogger();
 	String getLogger();
 	void setLogger(String newLogger);
 	void setLogger(EclipseLinkLogger newLogger);
-		static final String LOGGER_PROPERTY = "logger"; //$NON-NLS-1$
+		String LOGGER_PROPERTY = "logger"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_LOGGER = "eclipselink.logging.logger"; //$NON-NLS-1$
-		static final String DEFAULT_LOGGER = EclipseLinkLogger.default_logger.getPropertyValue();
-		static final String[] RESERVED_LOGGER_NAMES = {EclipseLinkLogger.default_logger.getPropertyValue(), EclipseLinkLogger.java_logger.getPropertyValue(), EclipseLinkLogger.server_logger.getPropertyValue()};
+		String ECLIPSELINK_LOGGER = "eclipselink.logging.logger"; //$NON-NLS-1$
+		String DEFAULT_LOGGER = EclipseLinkLogger.default_logger.getPropertyValue();
+		String[] RESERVED_LOGGER_NAMES = {EclipseLinkLogger.default_logger.getPropertyValue(), EclipseLinkLogger.java_logger.getPropertyValue(), EclipseLinkLogger.server_logger.getPropertyValue()};
 		String ECLIPSELINK_LOGGER_CLASS_NAME = "org.eclipse.persistence.logging.SessionLog"; //$NON-NLS-1$
 }

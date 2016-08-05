@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkLoggingComposite;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -156,7 +156,7 @@ public class EclipseLinkLoggingComposite2_0
 		return PropertyValueModelTools.transform_(this.buildDefaultConnectionModel(), CONNECTION_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> CONNECTION_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> CONNECTION_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_CONNECTION_LABEL
 		);

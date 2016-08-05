@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConne
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.graphics.Image;
@@ -234,7 +234,7 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		return PropertyValueModelTools.transform_(this.buildDefaultBindParametersModel(), BIND_PARAMETERS_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> BIND_PARAMETERS_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> BIND_PARAMETERS_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_BIND_PARAMETERS_LABEL
 		);

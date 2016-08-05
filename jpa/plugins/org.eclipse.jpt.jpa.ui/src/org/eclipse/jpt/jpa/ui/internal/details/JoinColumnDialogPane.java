@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Composite;
 
@@ -49,7 +49,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		return PropertyValueModelTools.transform_(this.buildDefaultInsertableModel(), INSERTABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> INSERTABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> INSERTABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE_WITH_DEFAULT,
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_INSERTABLE
 		);
@@ -90,7 +90,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		return PropertyValueModelTools.transform_(this.buildDefaultNullableModel(), NULLABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> NULLABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> NULLABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE_WITH_DEFAULT,
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_NULLABLE
 		);
@@ -131,7 +131,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		return PropertyValueModelTools.transform_(this.buildDefaultUniqueModel(), UNIQUE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> UNIQUE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> UNIQUE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE_WITH_DEFAULT,
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UNIQUE
 		);
@@ -169,7 +169,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		return PropertyValueModelTools.transform_(this.buildDefaultUpdatableModel(), UPDATABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> UPDATABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> UPDATABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE_WITH_DEFAULT,
 			JptJpaUiDetailsMessages.JOIN_COLUMN_DIALOG_PANE_UPDATABLE
 		);

@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -176,7 +176,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		return PropertyValueModelTools.transform_(this.buildDefaultValidationOnlyModel(), VALIDATION_ONLY_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> VALIDATION_ONLY_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> VALIDATION_ONLY_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATION_ONLY_LABEL
 		);
@@ -217,7 +217,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		return PropertyValueModelTools.transform_(this.buildDefaultValidateSchemaModel(), VALIDATE_SCHEMA_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> VALIDATE_SCHEMA_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> VALIDATE_SCHEMA_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_VALIDATE_SCHEMA_LABEL
 		);
@@ -257,7 +257,7 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		return PropertyValueModelTools.transform_(this.buildDefaultThrowExceptionsModel(), THROW_EXCEPTIONS_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> THROW_EXCEPTIONS_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> THROW_EXCEPTIONS_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_THROW_EXCEPTIONS_LABEL
 		);

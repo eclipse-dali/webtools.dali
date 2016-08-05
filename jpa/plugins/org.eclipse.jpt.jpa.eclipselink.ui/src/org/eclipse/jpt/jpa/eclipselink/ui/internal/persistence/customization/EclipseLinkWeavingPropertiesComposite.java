@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCusto
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -182,7 +182,7 @@ public class EclipseLinkWeavingPropertiesComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultWeavingLazyModel(), WEAVING_LAZY_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> WEAVING_LAZY_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> WEAVING_LAZY_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_LAZY_LABEL
 		);
@@ -223,7 +223,7 @@ public class EclipseLinkWeavingPropertiesComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultWeavingFetchGroupsModel(), WEAVING_FETCH_GROUPS_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> WEAVING_FETCH_GROUPS_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> WEAVING_FETCH_GROUPS_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_FETCH_GROUPS_LABEL
 		);
@@ -264,7 +264,7 @@ public class EclipseLinkWeavingPropertiesComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultWeavingInternalModel(), WEAVING_INTERNAL_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> WEAVING_INTERNAL_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> WEAVING_INTERNAL_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_INTERNAL_LABEL
 		);
@@ -305,7 +305,7 @@ public class EclipseLinkWeavingPropertiesComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultWeavingEagerModel(), WEAVING_EAGER_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> WEAVING_EAGER_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> WEAVING_EAGER_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_EAGER_LABEL
 		);
@@ -346,7 +346,7 @@ public class EclipseLinkWeavingPropertiesComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultWeavingChangeTrackingModel(), WEAVING_CHANGE_TRACKING_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> WEAVING_CHANGE_TRACKING_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> WEAVING_CHANGE_TRACKING_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CUSTOMIZATION_TAB_WEAVING_CHANGE_TRACKING_LABEL
 		);

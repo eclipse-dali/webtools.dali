@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
@@ -30,14 +30,6 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	private EclipseLinkCaching caching;
 	private PropertyValueModel<EclipseLinkCaching> cachingHolder;
 	
-	private ModifiablePropertyValueModel<EclipseLinkCacheType> cacheTypeHolder;
-	private PropertyChangeListener cacheTypeListener;
-	private PropertyChangeEvent cacheTypeEvent;
-
-	private ModifiablePropertyValueModel<Boolean> sharedCacheHolder;
-	private PropertyChangeListener sharedCacheListener;
-	private PropertyChangeEvent sharedCacheEvent;
-
 	private ModifiablePropertyValueModel<EclipseLinkCacheType> cacheTypeDefaultHolder;
 	private PropertyChangeListener cacheTypeDefaultListener;
 	private PropertyChangeEvent cacheTypeDefaultEvent;
@@ -62,16 +54,6 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 		this.caching = this.subject.getCaching(); // Subject
 		this.cachingHolder = new SimplePropertyValueModel<EclipseLinkCaching>(this.caching);
 		
-		this.cacheTypeHolder = this.buildCacheTypeAA(this.cachingHolder);
-		this.cacheTypeListener = this.buildCacheTypeChangeListener();
-		this.cacheTypeHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.cacheTypeListener);
-		this.cacheTypeEvent = null;
-		
-		this.sharedCacheHolder = this.buildSharedCacheAA(this.cachingHolder);
-		this.sharedCacheListener = this.buildSharedCacheChangeListener();
-		this.sharedCacheHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.sharedCacheListener);
-		this.sharedCacheEvent = null;
-		
 		this.cacheTypeDefaultHolder = this.buildCacheTypeDefaultAA(this.cachingHolder);
 		this.cacheTypeDefaultListener = this.buildCacheTypeDefaultChangeListener();
 		this.cacheTypeDefaultHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.cacheTypeDefaultListener);
@@ -85,21 +67,6 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	public void testHasListeners() {
 		AbstractModel subjectCaching = (AbstractModel) this.caching; // Subject
-		AbstractModel cacheTypeAA = (AbstractModel) this.cacheTypeHolder;
-		assertTrue(cacheTypeAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.CACHE_TYPE_PROPERTY));
-		
-		cacheTypeAA.removePropertyChangeListener(PropertyValueModel.VALUE, this.cacheTypeListener);
-		assertFalse(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.CACHE_TYPE_PROPERTY));
-		assertFalse(cacheTypeAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		
-		AbstractModel sharedCacheAA = (AbstractModel) this.sharedCacheHolder;
-		assertTrue(sharedCacheAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		assertTrue(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.SHARED_CACHE_PROPERTY));
-		
-		sharedCacheAA.removePropertyChangeListener(PropertyValueModel.VALUE, this.sharedCacheListener);
-		assertFalse(subjectCaching.hasAnyPropertyChangeListeners(EclipseLinkCaching.SHARED_CACHE_PROPERTY));
-		assertFalse(sharedCacheAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		
 		AbstractModel cacheTypeDefaultAA = (AbstractModel) this.cacheTypeDefaultHolder;
 		assertTrue(cacheTypeDefaultAA.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
@@ -143,65 +110,14 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 		return this.caching;
 	}
 
-	/** ****** CacheType ******* */
-	private ModifiablePropertyValueModel<EclipseLinkCacheType> buildCacheTypeAA(PropertyValueModel<EclipseLinkCaching> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType>(subjectHolder, EclipseLinkCaching.CACHE_TYPE_PROPERTY) {
-			@Override
-			protected EclipseLinkCacheType buildValue_() {
-				return this.subject.getCacheTypeOf(ENTITY_NAME_TEST_VALUE);
-			}
-
-			@Override
-			protected void setValue_(EclipseLinkCacheType enumValue) {
-				this.subject.setCacheTypeOf(ENTITY_NAME_TEST_VALUE, enumValue);
-			}
-		};
-	}
-
-	private PropertyChangeListener buildCacheTypeChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				CachingValueModelTests.this.cacheTypeEvent = e;
-			}
-		};
-	}
-
-	/** ****** SharedCache ******* */
-	private ModifiablePropertyValueModel<Boolean> buildSharedCacheAA(PropertyValueModel<EclipseLinkCaching> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(subjectHolder, EclipseLinkCaching.SHARED_CACHE_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSharedCacheOf(ENTITY_NAME_TEST_VALUE);
-			}
-
-			@Override
-			protected void setValue_(Boolean enumValue) {
-				this.subject.setSharedCacheOf(ENTITY_NAME_TEST_VALUE, enumValue);
-			}
-		};
-	}
-
-	private PropertyChangeListener buildSharedCacheChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				CachingValueModelTests.this.sharedCacheEvent = e;
-			}
-		};
-	}
-
 	/** ****** CacheTypeDefault ******* */
-	private ModifiablePropertyValueModel<EclipseLinkCacheType> buildCacheTypeDefaultAA(PropertyValueModel<EclipseLinkCaching> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType>(subjectHolder, EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
-			@Override
-			protected EclipseLinkCacheType buildValue_() {
-				return this.subject.getCacheTypeDefault();
-			}
-
-			@Override
-			protected void setValue_(EclipseLinkCacheType enumValue) {
-				this.subject.setCacheTypeDefault(enumValue);
-			}
-		};
+	private ModifiablePropertyValueModel<EclipseLinkCacheType> buildCacheTypeDefaultAA(PropertyValueModel<EclipseLinkCaching> subjectModel) {
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectModel,
+				EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY,
+				EclipseLinkCaching.CACHE_TYPE_DEFAULT_TRANSFORMER,
+				EclipseLinkCaching.SET_CACHE_TYPE_DEFAULT_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildCacheTypeDefaultChangeListener() {
@@ -213,18 +129,13 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	/** ****** SharedCacheDefault ******* */
-	private ModifiablePropertyValueModel<Boolean> buildSharedCacheDefaultAA(PropertyValueModel<EclipseLinkCaching> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(subjectHolder, EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSharedCacheDefault();
-			}
-
-			@Override
-			protected void setValue_(Boolean enumValue) {
-				this.subject.setSharedCacheDefault(enumValue);
-			}
-		};
+	private ModifiablePropertyValueModel<Boolean> buildSharedCacheDefaultAA(PropertyValueModel<EclipseLinkCaching> subjectModel) {
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectModel,
+				EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY,
+				EclipseLinkCaching.SHARED_CACHE_DEFAULT_TRANSFORMER,
+				EclipseLinkCaching.SET_SHARED_CACHE_DEFAULT_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildSharedCacheDefaultChangeListener() {
@@ -255,7 +166,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	public void testIsEmpty() {
 		EclipseLinkCachingEntity entity = this.buildEntity("TestEntity");
 		assertTrue(entity.isEmpty());
-		this.caching.setCacheSizeOf(entity.getName(), 100);
+		this.caching.setEntityCacheSize(entity.getName(), 100);
 		assertFalse(entity.isEmpty());
 	}
 
@@ -266,25 +177,23 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	private EclipseLinkCachingEntity buildEntity(String name) {
-		return this.caching.addEntity(name);
+		return this.caching.addCachingEntity(name);
 	}
 
 	private EclipseLinkCachingEntity buildEntity(String name, EclipseLinkCacheType cacheType, Integer size, Boolean isShared) {
-		EclipseLinkCachingEntity entity = this.caching.addEntity(name);
-		this.caching.setCacheTypeOf(entity.getName(), cacheType);
-		this.caching.setCacheSizeOf(entity.getName(), size);
-		this.caching.setSharedCacheOf(entity.getName(), isShared);
+		EclipseLinkCachingEntity entity = this.caching.addCachingEntity(name);
+		this.caching.setEntityCacheType(entity.getName(), cacheType);
+		this.caching.setEntityCacheSize(entity.getName(), size);
+		this.caching.setEntitySharedCache(entity.getName(), isShared);
 		return entity;
 	}
 	
 	/** ****** Caching Tests ******* */
 	public void testValue() {
 		/** ****** CacheType - defaults for entity level caching are equal to the persistence unit settings ******* */
-		this.verifyCacheTypeAAValue(CACHE_TYPE_TEST_VALUE);
-		assertEquals(this.caching.getCacheTypeDefault(), this.caching.getDefaultCacheType());
+		assertEquals(this.caching.getCacheTypeDefault(), this.caching.getDefaultEntityCacheType());
 		/** ****** SharedCache - defaults for entity level caching are equal to the persistence unit settings ******* */
-		this.verifySharedCacheAAValue(SHARED_CACHE_TEST_VALUE);
-		assertEquals(this.caching.getSharedCacheDefault(), this.caching.getDefaultSharedCache());
+		assertEquals(this.caching.getSharedCacheDefault(), this.caching.getDefaultEntitySharedCache());
 		/** ****** CacheTypeDefault ******* */
 		this.verifyCacheTypeDefaultAAValue(CACHE_TYPE_DEFAULT_TEST_VALUE);
 		assertEquals(EclipseLinkCaching.DEFAULT_CACHE_TYPE_DEFAULT, this.caching.getDefaultCacheTypeDefault());
@@ -294,22 +203,6 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	public void testSetValue() throws Exception {
-		/** ****** CacheType ******* */
-		this.cacheTypeEvent = null;
-		this.verifyHasListeners(this.cacheTypeHolder, PropertyValueModel.VALUE);
-		EclipseLinkCacheType newCacheType = EclipseLinkCacheType.full;
-		// Modify the property holder
-		this.cacheTypeHolder.setValue(newCacheType);
-		this.verifyCacheTypeAAValue(newCacheType);
-		assertNotNull(this.cacheTypeEvent);
-		/** ****** SharedCache ******* */
-		this.sharedCacheEvent = null;
-		this.verifyHasListeners(this.sharedCacheHolder, PropertyValueModel.VALUE);
-		Boolean newSharedCache = !SHARED_CACHE_TEST_VALUE;
-		// Modify the property holder
-		this.sharedCacheHolder.setValue(newSharedCache);
-		this.verifySharedCacheAAValue(newSharedCache);
-		assertNotNull(this.sharedCacheEvent);
 		/** ****** CacheTypeDefault ******* */
 		this.cacheTypeDefaultEvent = null;
 		this.verifyHasListeners(this.cacheTypeDefaultHolder, PropertyValueModel.VALUE);
@@ -330,24 +223,6 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	public void testSetNullValue() {
 		String notDeleted = "Property not deleted";
-		/** ****** CacheType ******* */
-		this.cacheTypeEvent = null;
-		// Setting the property holder
-		this.cacheTypeHolder.setValue(null);
-		// testing Holder
-		this.verifyCacheTypeAAValue(null);
-		assertNotNull(this.cacheTypeEvent);
-		// testing PU properties
-		this.verifyPuHasNotProperty(EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE + ENTITY_NAME_TEST_VALUE, notDeleted);
-		/** ****** SharedCache ******* */
-		this.sharedCacheEvent = null;
-		// Setting the property holder
-		this.sharedCacheHolder.setValue(null);
-		// testing Holder
-		this.verifySharedCacheAAValue(null);
-		assertNotNull(this.sharedCacheEvent);
-		// testing PU properties
-		this.verifyPuHasNotProperty(EclipseLinkCaching.ECLIPSELINK_SHARED_CACHE + ENTITY_NAME_TEST_VALUE, notDeleted);
 		/** ****** CacheTypeDefault ******* */
 		this.cacheTypeDefaultEvent = null;
 		// Setting the property holder
@@ -369,34 +244,6 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	/** ****** convenience methods ******* */
-	/**
-	 * Performs three value tests:<br>
-	 * 1. subject value<br>
-	 * 2. aspect adapter value<br>
-	 * 3. persistenceUnit property value<br>
-	 */
-	protected void verifyCacheTypeAAValue(EclipseLinkCacheType testValue) {
-		this.verifyAAValue(
-			testValue, 
-			this.caching.getCacheTypeOf(ENTITY_NAME_TEST_VALUE), 
-			this.cacheTypeHolder, 
-			EclipseLinkCaching.ECLIPSELINK_CACHE_TYPE + ENTITY_NAME_TEST_VALUE);
-	}
-
-	/**
-	 * Performs three value tests:<br>
-	 * 1. subject value<br>
-	 * 2. aspect adapter value<br>
-	 * 3. persistenceUnit property value<br>
-	 */
-	protected void verifySharedCacheAAValue(Boolean testValue) {
-		this.verifyAAValue(
-			testValue, 
-			this.caching.getSharedCacheOf(ENTITY_NAME_TEST_VALUE), 
-			this.sharedCacheHolder, 
-			EclipseLinkCaching.ECLIPSELINK_SHARED_CACHE + ENTITY_NAME_TEST_VALUE);
-	}
-
 	/**
 	 * Performs three value tests:<br>
 	 * 1. subject value<br>

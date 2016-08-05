@@ -26,7 +26,9 @@ import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
+import org.eclipse.jpt.common.utility.internal.transformer.int_.IntObjectTransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.common.utility.transformer.IntTransformer;
 import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -36,6 +38,15 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 public final class TransformerTools {
 
 	// ********** adapters **********
+
+	/**
+	 * Adapt the specified {@link IntTransformer} to the {@link Transformer} interface.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 */
+	public static <I> Transformer<I, Integer> adapt(IntTransformer<? super I> intTransformer) {
+		return new IntObjectTransformerAdapter<>(intTransformer);
+	}
 
 	/**
 	 * Adapt the specified {@link Closure} to the {@link Transformer} interface.

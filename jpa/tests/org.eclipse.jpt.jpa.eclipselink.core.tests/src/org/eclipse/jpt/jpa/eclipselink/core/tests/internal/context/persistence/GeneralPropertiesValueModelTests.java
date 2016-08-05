@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties;
 
@@ -78,18 +78,13 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	}
 
 	// ****** ExcludeEclipselinkOrm *******
-	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmAA(PropertyValueModel<EclipseLinkGeneralProperties> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean>(subjectHolder, EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getExcludeEclipselinkOrm();
-			}
-
-			@Override
-			protected void setValue_(Boolean enumValue) {
-				this.subject.setExcludeEclipselinkOrm(enumValue);
-			}
-		};
+	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmAA(PropertyValueModel<EclipseLinkGeneralProperties> subjectModel) {
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectModel,
+				EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY,
+				EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_TRANSFORMER,
+				EclipseLinkGeneralProperties.SET_EXCLUDE_ECLIPSELINK_ORM_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildExcludeEclipselinkOrmChangeListener() {

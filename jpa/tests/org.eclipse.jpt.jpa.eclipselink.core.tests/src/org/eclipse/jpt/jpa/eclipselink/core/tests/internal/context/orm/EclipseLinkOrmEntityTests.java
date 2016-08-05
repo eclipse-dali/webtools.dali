@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -916,7 +916,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, javaContextCaching.isAlwaysRefresh());
 		assertEquals(false, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 		
 		// set xml cache, check defaults
@@ -924,7 +924,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getAlwaysRefresh());
 		assertEquals(false, javaContextCaching.isAlwaysRefresh());
 		assertEquals(false, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 
 		
@@ -933,7 +933,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getAlwaysRefresh());
 		assertEquals(false, javaContextCaching.isAlwaysRefresh());
 		assertEquals(true, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedAlwaysRefresh());
 
 			
@@ -944,7 +944,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getAlwaysRefresh());
 		assertEquals(true, javaContextCaching.isAlwaysRefresh());
 		assertEquals(true, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedAlwaysRefresh());
 
 		// set xml cache always refresh to false
@@ -952,7 +952,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getCache().getAlwaysRefresh());
 		assertEquals(true, javaContextCaching.isAlwaysRefresh());
 		assertEquals(false, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedAlwaysRefresh());
 
 		// clear xml cache always refresh, check defaults
@@ -961,7 +961,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getAlwaysRefresh());
 		assertEquals(true, javaContextCaching.isAlwaysRefresh());
 		assertEquals(false, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 	
 		
@@ -971,7 +971,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isAlwaysRefresh());
 		assertEquals(true, ormContextCaching.isAlwaysRefresh());
-		assertEquals(true, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(true, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 	
 		
@@ -982,7 +982,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isAlwaysRefresh());
 		assertEquals(false, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 
 		
@@ -992,7 +992,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isAlwaysRefresh());
 		assertEquals(true, ormContextCaching.isAlwaysRefresh());
-		assertEquals(true, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(true, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 	}
 	
@@ -1007,7 +1007,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 		
 		// set context cache size, check resource
@@ -1015,7 +1015,7 @@ public class EclipseLinkOrmEntityTests
 		ormContextEntity.getCaching().setSpecifiedAlwaysRefresh(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getAlwaysRefresh());
 		assertEquals(true, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedAlwaysRefresh());
 				
 		// set context cache size to null, check resource
@@ -1024,7 +1024,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, ormContextCaching.isAlwaysRefresh());
-		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(false, ormContextCaching.getDefaultAlwaysRefresh());
 		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
 	}
 	
@@ -1042,7 +1042,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 		
 		// set xml cache, check defaults
@@ -1050,7 +1050,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getRefreshOnlyIfNewer());
 		assertEquals(false, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 
 		
@@ -1059,7 +1059,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getRefreshOnlyIfNewer());
 		assertEquals(false, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 
 			
@@ -1070,7 +1070,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getRefreshOnlyIfNewer());
 		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 
 		// set xml cache always refresh to false
@@ -1078,7 +1078,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getCache().getRefreshOnlyIfNewer());
 		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 
 		// clear xml cache always refresh, check defaults
@@ -1087,7 +1087,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getRefreshOnlyIfNewer());
 		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 	
 		
@@ -1097,7 +1097,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(true, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 	
 		
@@ -1108,7 +1108,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 
 		
@@ -1118,7 +1118,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
 		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(true, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 	}
 	
@@ -1133,7 +1133,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 		
 		// set context cache size, check resource
@@ -1141,7 +1141,7 @@ public class EclipseLinkOrmEntityTests
 		ormContextEntity.getCaching().setSpecifiedRefreshOnlyIfNewer(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getRefreshOnlyIfNewer());
 		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 				
 		// set context cache size to null, check resource
@@ -1150,7 +1150,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
-		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.getDefaultRefreshOnlyIfNewer());
 		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
 	}
 	
@@ -1168,7 +1168,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, javaContextCaching.isDisableHits());
 		assertEquals(false, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 		
 		// set xml cache, check defaults
@@ -1176,7 +1176,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getDisableHits());
 		assertEquals(false, javaContextCaching.isDisableHits());
 		assertEquals(false, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 
 		
@@ -1185,7 +1185,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getDisableHits());
 		assertEquals(false, javaContextCaching.isDisableHits());
 		assertEquals(true, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedDisableHits());
 
 			
@@ -1196,7 +1196,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getDisableHits());
 		assertEquals(true, javaContextCaching.isDisableHits());
 		assertEquals(true, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedDisableHits());
 
 		// set xml cache always refresh to false
@@ -1204,7 +1204,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getCache().getDisableHits());
 		assertEquals(true, javaContextCaching.isDisableHits());
 		assertEquals(false, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedDisableHits());
 
 		// clear xml cache always refresh, check defaults
@@ -1213,7 +1213,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getDisableHits());
 		assertEquals(true, javaContextCaching.isDisableHits());
 		assertEquals(false, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 	
 		
@@ -1223,7 +1223,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isDisableHits());
 		assertEquals(true, ormContextCaching.isDisableHits());
-		assertEquals(true, ormContextCaching.isDefaultDisableHits());
+		assertEquals(true, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 	
 		
@@ -1234,7 +1234,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isDisableHits());
 		assertEquals(false, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 
 		
@@ -1244,7 +1244,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isDisableHits());
 		assertEquals(true, ormContextCaching.isDisableHits());
-		assertEquals(true, ormContextCaching.isDefaultDisableHits());
+		assertEquals(true, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 	}
 	
@@ -1259,7 +1259,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 		
 		// set context cache size, check resource
@@ -1267,7 +1267,7 @@ public class EclipseLinkOrmEntityTests
 		ormContextEntity.getCaching().setSpecifiedDisableHits(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getDisableHits());
 		assertEquals(true, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedDisableHits());
 				
 		// set context cache size to null, check resource
@@ -1276,7 +1276,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, ormContextCaching.isDisableHits());
-		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(false, ormContextCaching.getDefaultDisableHits());
 		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
 	}
 	
@@ -1294,7 +1294,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, javaContextCaching.isShared());
 		assertEquals(true, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 		
 		// set xml cache, check defaults
@@ -1302,7 +1302,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getShared());
 		assertEquals(true, javaContextCaching.isShared());
 		assertEquals(true, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 
 		
@@ -1311,7 +1311,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getCache().getShared());
 		assertEquals(true, javaContextCaching.isShared());
 		assertEquals(false, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedShared());
 
 			
@@ -1322,7 +1322,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getCache().getShared());
 		assertEquals(false, javaContextCaching.isShared());
 		assertEquals(false, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedShared());
 
 		// set xml cache always refresh to false
@@ -1330,7 +1330,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getCache().getShared());
 		assertEquals(false, javaContextCaching.isShared());
 		assertEquals(true, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedShared());
 
 		// clear xml cache always refresh, check defaults
@@ -1339,7 +1339,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache().getShared());
 		assertEquals(false, javaContextCaching.isShared());
 		assertEquals(true, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	
 		
@@ -1349,7 +1349,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, javaContextCaching.isShared());
 		assertEquals(false, ormContextCaching.isShared());
-		assertEquals(false, ormContextCaching.isDefaultShared());
+		assertEquals(false, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	
 		
@@ -1360,7 +1360,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, javaContextCaching.isShared());
 		assertEquals(true, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 
 		
@@ -1370,7 +1370,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(false, javaContextCaching.isShared());
 		assertEquals(false, ormContextCaching.isShared());
-		assertEquals(false, ormContextCaching.isDefaultShared());
+		assertEquals(false, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	}
 	
@@ -1385,7 +1385,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 		
 		// set context cache size, check resource
@@ -1393,7 +1393,7 @@ public class EclipseLinkOrmEntityTests
 		ormContextEntity.getCaching().setSpecifiedShared(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, resourceEntity.getCache().getShared());
 		assertEquals(false, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedShared());
 				
 		// set context cache size to null, check resource
@@ -1402,7 +1402,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(true, ormContextCaching.isShared());
-		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(true, ormContextCaching.getDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	}
 	public void testSetSpecifiedSharedFalseUnsetsOtherCacheSettings() throws Exception {

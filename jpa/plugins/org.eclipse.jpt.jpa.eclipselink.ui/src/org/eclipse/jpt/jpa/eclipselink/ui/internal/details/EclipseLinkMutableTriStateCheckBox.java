@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -89,7 +89,7 @@ public class EclipseLinkMutableTriStateCheckBox
 		return PropertyValueModelTools.transform_(this.buildDefaultMutableModel(), MUTABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> MUTABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> MUTABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL_DEFAULT,
 				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL
 			);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -147,7 +147,7 @@ public class EclipseLinkOptionsImpl
 			SESSIONS_XML_PROPERTY);
 		propertyNames.put(
 			ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES,
-			SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY);
+			INCLUDE_DESCRIPTOR_QUERIES_PROPERTY);
 		propertyNames.put(
 			ECLIPSELINK_TARGET_DATABASE,
 			TARGET_DATABASE_PROPERTY);
@@ -215,8 +215,8 @@ public class EclipseLinkOptionsImpl
 	public void setIncludeDescriptorQueries(Boolean newIncludeDescriptorQueries) {
 		Boolean old = this.includeDescriptorQueries;
 		this.includeDescriptorQueries = newIncludeDescriptorQueries;
-		this.putProperty(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, newIncludeDescriptorQueries);
-		this.firePropertyChanged(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, old, newIncludeDescriptorQueries);
+		this.putProperty(INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, newIncludeDescriptorQueries);
+		this.firePropertyChanged(INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, old, newIncludeDescriptorQueries);
 	}
 
 	private void includeDescriptorQueriesChanged(String stringValue) {
@@ -224,7 +224,7 @@ public class EclipseLinkOptionsImpl
 		
 		Boolean old = this.includeDescriptorQueries;
 		this.includeDescriptorQueries = newValue;
-		this.firePropertyChanged(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, old, newValue);
+		this.firePropertyChanged(INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultIncludeDescriptorQueries() {

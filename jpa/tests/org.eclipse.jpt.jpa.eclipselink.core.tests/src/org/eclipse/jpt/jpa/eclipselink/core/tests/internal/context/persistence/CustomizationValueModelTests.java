@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomizationEntity;
@@ -81,18 +81,13 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	}
 
 	// ****** ThrowExceptions *******
-	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<EclipseLinkCustomization> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(subjectHolder, EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getThrowExceptions();
-			}
-
-			@Override
-			protected void setValue_(Boolean enumValue) {
-				this.subject.setThrowExceptions(enumValue);
-			}
-		};
+	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<EclipseLinkCustomization> subjectModel) {
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectModel,
+				EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY,
+				EclipseLinkCustomization.THROW_EXCEPTIONS_TRANSFORMER,
+				EclipseLinkCustomization.SET_THROW_EXCEPTIONS_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildThrowExceptionsChangeListener() {

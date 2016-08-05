@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,24 +44,42 @@ public class EclipseLinkJavaCachingImpl
 	implements EclipseLinkJavaCaching, JavaCacheableReference2_0
 {
 	protected EclipseLinkCacheType specifiedType;
+	protected EclipseLinkCacheType defaultType;
+	protected EclipseLinkCacheType type;
+
 	protected Integer specifiedSize;
+	protected int defaultSize;
+	protected int size;
+
 	protected Boolean specifiedShared;
+	protected boolean defaultShared;
+	protected boolean shared;
+
 	protected Boolean specifiedAlwaysRefresh;
+	protected boolean alwaysRefresh;
+
 	protected Boolean specifiedRefreshOnlyIfNewer;
+	protected boolean refreshOnlyIfNewer;
+
 	protected Boolean specifiedDisableHits;
+	protected boolean disableHits;
 
 	protected EclipseLinkCacheCoordinationType specifiedCoordinationType;
+	protected EclipseLinkCacheCoordinationType coordinationType;
 
 	protected Integer expiry;
 	protected EclipseLinkJavaTimeOfDay expiryTimeOfDay;
 
 	protected boolean existenceChecking;
+
 	protected EclipseLinkExistenceType specifiedExistenceType;
 	protected EclipseLinkExistenceType defaultExistenceType;
+	protected EclipseLinkExistenceType existenceType;
 
 	protected final Cacheable2_0 cacheable;
 
 	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
+	protected EclipseLinkCacheIsolationType2_2 isolation;
 
 	public EclipseLinkJavaCachingImpl(EclipseLinkJavaNonEmbeddableTypeMapping parent) {
 		super(parent);
@@ -120,17 +138,49 @@ public class EclipseLinkJavaCachingImpl
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+
+		this.setDefaultType(this.buildDefaultType());
+		this.setType(this.buildType());
+
+		this.setDefaultSize(this.buildDefaultSize());
+		this.setSize(this.buildSize());
+
+		this.setDefaultShared(this.buildDefaultShared());
+		this.setShared(this.buildShared());
+
+		this.setAlwaysRefresh(this.buildAlwaysRefresh());
+
+		this.setRefreshOnlyIfNewer(this.buildRefreshOnlyIfNewer());
+
+		this.setDisableHits(this.buildDisableHits());
+
+		this.setCoordinationType(this.buildCoordinationType());
+
 		if (this.expiryTimeOfDay != null) {
 			this.expiryTimeOfDay.update(monitor);
 		}
+
 		this.setDefaultExistenceType(this.buildDefaultExistenceType());
+		this.setExistenceType(this.buildExistenceType());
+
 		this.cacheable.update(monitor);
+
+		this.setIsolation(this.buildIsolation());
 	}
 
 
 	// ********** type **********
 
 	public EclipseLinkCacheType getType() {
+		return this.type;
+	}
+
+	protected void setType(EclipseLinkCacheType type) {
+		EclipseLinkCacheType old = this.type;
+		this.firePropertyChanged(TYPE_PROPERTY, old, this.type = type);
+	}
+
+	protected EclipseLinkCacheType buildType() {
 		return (this.specifiedType != null) ? this.specifiedType : this.getDefaultType();
 	}
 
@@ -154,12 +204,21 @@ public class EclipseLinkJavaCachingImpl
 	}
 
 	public EclipseLinkCacheType getDefaultType() {
-		String puDefaultCacheTypeName = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheTypePropertyValue();
-		if (!StringTools.isBlank(puDefaultCacheTypeName)) {
+		return this.defaultType;
+	}
+
+	protected void setDefaultType(EclipseLinkCacheType type) {
+		EclipseLinkCacheType old = this.defaultType;
+		this.firePropertyChanged(DEFAULT_TYPE_PROPERTY, old, this.defaultType = type);
+	}
+
+	protected EclipseLinkCacheType buildDefaultType() {
+		String puDefaultCacheTypeName = this.getPersistenceUnit().getDefaultCacheTypePropertyValue();
+		if (StringTools.isNotBlank(puDefaultCacheTypeName)) {
 			try { 
 				return EclipseLinkCacheType.valueOf(StringTools.convertCamelCaseToAllCaps(puDefaultCacheTypeName));
 			} catch (IllegalArgumentException exception) {
-				//no match, return default
+				// no match, return default
 			}
 		}
 		return DEFAULT_TYPE;
@@ -168,6 +227,15 @@ public class EclipseLinkJavaCachingImpl
 	// ********** size **********
 
 	public int getSize() {
+		return this.size;
+	}
+
+	protected void setSize(int size) {
+		int old = this.size;
+		this.firePropertyChanged(SIZE_PROPERTY, old, this.size = size);
+	}
+
+	protected int buildSize() {
 		return (this.specifiedSize != null) ? this.specifiedSize.intValue() : this.getDefaultSize();
 	}
 
@@ -186,17 +254,25 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setSpecifiedSize_(Integer size) {
 		Integer old = this.specifiedSize;
-		this.specifiedSize = size;
-		this.firePropertyChanged(SPECIFIED_SIZE_PROPERTY, old, size);
+		this.firePropertyChanged(SPECIFIED_SIZE_PROPERTY, old, this.specifiedSize = size);
 	}
 
 	public int getDefaultSize() {
-		String puDefaultCacheSize = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSizePropertyValue();
-		if (!StringTools.isBlank(puDefaultCacheSize)) {
+		return this.defaultSize;
+	}
+
+	protected void setDefaultSize(int size) {
+		int old = this.defaultSize;
+		this.firePropertyChanged(DEFAULT_SIZE_PROPERTY, old, this.defaultSize = size);
+	}
+
+	protected int buildDefaultSize() {
+		String puDefaultCacheSize = this.getPersistenceUnit().getDefaultCacheSizePropertyValue();
+		if (StringTools.isNotBlank(puDefaultCacheSize)) {
 			try {
 				return Integer.valueOf(puDefaultCacheSize).intValue();
 			} catch (NumberFormatException exception) {
-				//couldn't parse, return default
+				// unable to parse, return default
 			}
 		}
 		return DEFAULT_SIZE;
@@ -206,7 +282,16 @@ public class EclipseLinkJavaCachingImpl
 	// ********** shared **********
 
 	public boolean isShared() {
-		return (this.specifiedShared != null) ? this.specifiedShared.booleanValue() : this.isDefaultShared();
+		return this.shared;
+	}
+
+	protected void setShared(boolean shared) {
+		boolean old = this.shared;
+		this.firePropertyChanged(SHARED_PROPERTY, old, this.shared = shared);
+	}
+
+	protected boolean buildShared() {
+		return (this.specifiedShared != null) ? this.specifiedShared.booleanValue() : this.getDefaultShared();
 	}
 
 	public Boolean getSpecifiedShared() {
@@ -235,16 +320,34 @@ public class EclipseLinkJavaCachingImpl
 		this.firePropertyChanged(SPECIFIED_SHARED_PROPERTY, old, shared);
 	}
 
-	public boolean isDefaultShared() {
-		String puDefaultSharedCache = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSharedPropertyValue();
-		return !StringTools.isBlank(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache).booleanValue() : DEFAULT_SHARED;
+	public boolean getDefaultShared() {
+		return this.defaultShared;
+	}
+
+	protected void setDefaultShared(boolean shared) {
+		boolean old = this.defaultShared;
+		this.firePropertyChanged(DEFAULT_SHARED_PROPERTY, old, this.defaultShared = shared);
+	}
+
+	protected boolean buildDefaultShared() {
+		String puDefaultSharedCache = this.getPersistenceUnit().getDefaultCacheSharedPropertyValue();
+		return StringTools.isNotBlank(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache).booleanValue() : DEFAULT_SHARED;
 	}
 
 
 	// ********** always refresh **********
 
 	public boolean isAlwaysRefresh() {
-		return (this.specifiedAlwaysRefresh != null) ? this.specifiedAlwaysRefresh.booleanValue() : this.isDefaultAlwaysRefresh();
+		return this.alwaysRefresh;
+	}
+
+	protected void setAlwaysRefresh(boolean alwaysRefresh) {
+		boolean old = this.alwaysRefresh;
+		this.firePropertyChanged(ALWAYS_REFRESH_PROPERTY, old, this.alwaysRefresh = alwaysRefresh);
+	}
+
+	protected boolean buildAlwaysRefresh() {
+		return (this.specifiedAlwaysRefresh != null) ? this.specifiedAlwaysRefresh.booleanValue() : this.getDefaultAlwaysRefresh();
 	}
 
 	public Boolean getSpecifiedAlwaysRefresh() {
@@ -262,11 +365,10 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setSpecifiedAlwaysRefresh_(Boolean alwaysRefresh) {
 		Boolean old = this.specifiedAlwaysRefresh;
-		this.specifiedAlwaysRefresh = alwaysRefresh;
-		this.firePropertyChanged(SPECIFIED_ALWAYS_REFRESH_PROPERTY, old, alwaysRefresh);
+		this.firePropertyChanged(SPECIFIED_ALWAYS_REFRESH_PROPERTY, old, this.specifiedAlwaysRefresh = alwaysRefresh);
 	}
 
-	public boolean isDefaultAlwaysRefresh() {
+	public boolean getDefaultAlwaysRefresh() {
 		return DEFAULT_ALWAYS_REFRESH;
 	}
 
@@ -274,7 +376,16 @@ public class EclipseLinkJavaCachingImpl
 	// ********** refresh only if newer **********
 
 	public boolean isRefreshOnlyIfNewer() {
-		return (this.specifiedRefreshOnlyIfNewer != null) ? this.specifiedRefreshOnlyIfNewer.booleanValue() : this.isDefaultRefreshOnlyIfNewer();
+		return this.refreshOnlyIfNewer;
+	}
+
+	protected void setRefreshOnlyIfNewer(boolean refreshOnlyIfNewer) {
+		boolean old = this.refreshOnlyIfNewer;
+		this.firePropertyChanged(REFRESH_ONLY_IF_NEWER_PROPERTY, old, this.refreshOnlyIfNewer = refreshOnlyIfNewer);
+	}
+
+	protected boolean buildRefreshOnlyIfNewer() {
+		return (this.specifiedRefreshOnlyIfNewer != null) ? this.specifiedRefreshOnlyIfNewer.booleanValue() : this.getDefaultRefreshOnlyIfNewer();
 	}
 
 	public Boolean getSpecifiedRefreshOnlyIfNewer() {
@@ -292,11 +403,10 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setSpecifiedRefreshOnlyIfNewer_(Boolean refreshOnlyIfNewer) {
 		Boolean old = this.specifiedRefreshOnlyIfNewer;
-		this.specifiedRefreshOnlyIfNewer = refreshOnlyIfNewer;
-		this.firePropertyChanged(SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, old, refreshOnlyIfNewer);
+		this.firePropertyChanged(SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, old, this.specifiedRefreshOnlyIfNewer = refreshOnlyIfNewer);
 	}
 
-	public boolean isDefaultRefreshOnlyIfNewer() {
+	public boolean getDefaultRefreshOnlyIfNewer() {
 		return DEFAULT_REFRESH_ONLY_IF_NEWER;
 	}
 
@@ -304,7 +414,16 @@ public class EclipseLinkJavaCachingImpl
 	// ********** disable hits **********
 
 	public boolean isDisableHits() {
-		return (this.specifiedDisableHits != null) ? this.specifiedDisableHits.booleanValue() : this.isDefaultDisableHits();
+		return this.disableHits;
+	}
+
+	protected void setDisableHits(boolean disableHits) {
+		boolean old = this.disableHits;
+		this.firePropertyChanged(DISABLE_HITS_PROPERTY, old, this.disableHits = disableHits);
+	}
+
+	protected boolean buildDisableHits() {
+		return (this.specifiedDisableHits != null) ? this.specifiedDisableHits.booleanValue() : this.getDefaultDisableHits();
 	}
 
 	public Boolean getSpecifiedDisableHits() {
@@ -322,11 +441,10 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setSpecifiedDisableHits_(Boolean disableHits) {
 		Boolean old = this.specifiedDisableHits;
-		this.specifiedDisableHits = disableHits;
-		this.firePropertyChanged(SPECIFIED_DISABLE_HITS_PROPERTY, old, disableHits);
+		this.firePropertyChanged(SPECIFIED_DISABLE_HITS_PROPERTY, old, this.specifiedDisableHits = disableHits);
 	}
 
-	public boolean isDefaultDisableHits() {
+	public boolean getDefaultDisableHits() {
 		return DEFAULT_DISABLE_HITS;
 	}
 
@@ -334,6 +452,15 @@ public class EclipseLinkJavaCachingImpl
 	// ********** coordination type **********
 
 	public EclipseLinkCacheCoordinationType getCoordinationType() {
+		return this.coordinationType;
+	}
+
+	protected void setCoordinationType(EclipseLinkCacheCoordinationType type) {
+		EclipseLinkCacheCoordinationType old = this.coordinationType;
+		this.firePropertyChanged(COORDINATION_TYPE_PROPERTY, old, this.coordinationType = type);
+	}
+
+	protected EclipseLinkCacheCoordinationType buildCoordinationType() {
 		return (this.specifiedCoordinationType != null) ? this.specifiedCoordinationType : this.getDefaultCoordinationType();
 	}
 
@@ -352,8 +479,7 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setSpecifiedCoordinationType_(EclipseLinkCacheCoordinationType type) {
 		EclipseLinkCacheCoordinationType old = this.specifiedCoordinationType;
-		this.specifiedCoordinationType = type;
-		this.firePropertyChanged(SPECIFIED_COORDINATION_TYPE_PROPERTY, old, type);
+		this.firePropertyChanged(SPECIFIED_COORDINATION_TYPE_PROPERTY, old, this.specifiedCoordinationType = type);
 	}
 
 	public EclipseLinkCacheCoordinationType getDefaultCoordinationType() {
@@ -379,8 +505,7 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setExpiry_(Integer expiry) {
 		Integer old = this.expiry;
-		this.expiry = expiry;
-		this.firePropertyChanged(EXPIRY_PROPERTY, old, expiry);
+		this.firePropertyChanged(EXPIRY_PROPERTY, old, this.expiry = expiry);
 	}
 
 
@@ -422,10 +547,9 @@ public class EclipseLinkJavaCachingImpl
 		this.setExpiryTimeOfDay(null);
 	}
 
-	public void setExpiryTimeOfDay(EclipseLinkJavaTimeOfDay timeOfDay) {
+	protected void setExpiryTimeOfDay(EclipseLinkJavaTimeOfDay timeOfDay) {
 		EclipseLinkJavaTimeOfDay old = this.expiryTimeOfDay;
-		this.expiryTimeOfDay = timeOfDay;
-		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, timeOfDay);
+		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, this.expiryTimeOfDay = timeOfDay);
 	}
 
 	protected void syncExpiryTimeOfDay(TimeOfDayAnnotation timeOfDayAnnotation, IProgressMonitor monitor) {
@@ -467,14 +591,22 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setExistenceChecking_(boolean existenceChecking) {
 		boolean old = this.existenceChecking;
-		this.existenceChecking = existenceChecking;
-		this.firePropertyChanged(EXISTENCE_CHECKING_PROPERTY, old, existenceChecking);
+		this.firePropertyChanged(EXISTENCE_CHECKING_PROPERTY, old, this.existenceChecking = existenceChecking);
 	}
 
 
 	// ********** existence type **********
 
 	public EclipseLinkExistenceType getExistenceType() {
+		return this.existenceType;
+	}
+
+	protected void setExistenceType(EclipseLinkExistenceType type) {
+		EclipseLinkExistenceType old = this.existenceType;
+		this.firePropertyChanged(EXISTENCE_TYPE_PROPERTY, old, this.existenceType = type);
+	}
+
+	protected EclipseLinkExistenceType buildExistenceType() {
 		return (this.specifiedExistenceType != null) ? this.specifiedExistenceType : this.defaultExistenceType;
 	}
 
@@ -494,8 +626,7 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setSpecifiedExistenceType_(EclipseLinkExistenceType type) {
 		EclipseLinkExistenceType old = this.specifiedExistenceType;
-		this.specifiedExistenceType = type;
-		this.firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, old, type);
+		this.firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, old, this.specifiedExistenceType = type);
 	}
 
 	protected EclipseLinkExistenceType buildSpecifiedExistenceType(ExistenceCheckingAnnotation ecAnnotation) {
@@ -508,8 +639,7 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setDefaultExistenceType(EclipseLinkExistenceType type) {
 		EclipseLinkExistenceType old = this.defaultExistenceType;
-		this.defaultExistenceType = type;
-		this.firePropertyChanged(DEFAULT_EXISTENCE_TYPE_PROPERTY, old, type);
+		this.firePropertyChanged(DEFAULT_EXISTENCE_TYPE_PROPERTY, old, this.defaultExistenceType = type);
 	}
 
 	protected EclipseLinkExistenceType buildDefaultExistenceType() {
@@ -551,6 +681,15 @@ public class EclipseLinkJavaCachingImpl
 	// ********** isolation **********
 
 	public EclipseLinkCacheIsolationType2_2 getIsolation() {
+		return this.isolation;
+	}
+
+	protected void setIsolation(EclipseLinkCacheIsolationType2_2 isolation) {
+		EclipseLinkCacheIsolationType2_2 old = this.isolation;
+		this.firePropertyChanged(ISOLATION_PROPERTY, old, this.isolation = isolation);
+	}
+
+	protected EclipseLinkCacheIsolationType2_2 buildIsolation() {
 		return (this.specifiedIsolation != null) ? this.specifiedIsolation : this.getDefaultIsolation();
 	}
 
@@ -569,8 +708,7 @@ public class EclipseLinkJavaCachingImpl
 
 	protected void setSpecifiedIsolation_(EclipseLinkCacheIsolationType2_2 isolation) {
 		EclipseLinkCacheIsolationType2_2 old = this.specifiedIsolation;
-		this.specifiedIsolation = isolation;
-		this.firePropertyChanged(SPECIFIED_ISOLATION_PROPERTY, old, isolation);
+		this.firePropertyChanged(SPECIFIED_ISOLATION_PROPERTY, old, this.specifiedIsolation = isolation);
 	}
 
 	public EclipseLinkCacheIsolationType2_2 getDefaultIsolation() {
@@ -611,6 +749,11 @@ public class EclipseLinkJavaCachingImpl
 
 	protected EclipseLinkJavaNonEmbeddableTypeMapping getTypeMapping() {
 		return this.parent;
+	}
+
+	@Override
+	public EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 
 	protected JavaPersistentType getPersistentType() {

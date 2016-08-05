@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -248,7 +248,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		return PropertyValueModelTools.transform_(this.buildDefaultTimestampModel(), TIMESTAMP_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> TIMESTAMP_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> TIMESTAMP_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_TIMESTAMP_LABEL
 		);
@@ -289,7 +289,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		return PropertyValueModelTools.transform_(this.buildDefaultThreadModel(), THREAD_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> THREAD_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> THREAD_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_THREAD_LABEL
 		);
@@ -330,7 +330,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		return PropertyValueModelTools.transform_(this.buildDefaultSessionModel(), SESSION_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> SESSION_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> SESSION_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_SESSION_LABEL
 		);
@@ -371,7 +371,7 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		return PropertyValueModelTools.transform_(this.buildDefaultExceptionsModel(), EXCEPTIONS_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> EXCEPTIONS_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> EXCEPTIONS_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_LOGGING_TAB_EXCEPTIONS_LABEL
 		);

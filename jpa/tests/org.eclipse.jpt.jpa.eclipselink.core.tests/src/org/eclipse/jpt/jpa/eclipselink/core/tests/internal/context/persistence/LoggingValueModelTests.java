@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging;
 
@@ -78,18 +78,13 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	// ****** Timestamp *******
-	private ModifiablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<EclipseLinkLogging> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(subjectHolder, EclipseLinkLogging.TIMESTAMP_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getTimestamp();
-			}
-
-			@Override
-			protected void setValue_(Boolean enumValue) {
-				this.subject.setTimestamp(enumValue);
-			}
-		};
+	private ModifiablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<EclipseLinkLogging> subjectModel) {
+		return PropertyValueModelTools.modifiableModelAspectAdapter(
+				subjectModel,
+				EclipseLinkLogging.TIMESTAMP_PROPERTY,
+				EclipseLinkLogging.TIMESTAMP_TRANSFORMER,
+				EclipseLinkLogging.SET_TIMESTAMP_CLOSURE
+			);
 	}
 
 	private PropertyChangeListener buildTimestampChangeListener() {

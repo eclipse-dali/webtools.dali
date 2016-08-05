@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -204,7 +204,7 @@ public class EclipseLinkMultitenancyComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultIncludeCriteriaModel(), INCLUDE_CRITERIA_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> INCLUDE_CRITERIA_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> INCLUDE_CRITERIA_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA_WITH_DEFAULT,
 				JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA
 			);

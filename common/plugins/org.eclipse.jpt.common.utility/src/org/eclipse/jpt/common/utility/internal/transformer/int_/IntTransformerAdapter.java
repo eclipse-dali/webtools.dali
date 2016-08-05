@@ -7,21 +7,21 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal.model;
+package org.eclipse.jpt.common.utility.internal.transformer.int_;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.model.BooleanSetClosure;
+import org.eclipse.jpt.common.utility.transformer.IntTransformer;
 
 /**
- * Convenience <code>boolean</code> "set" closure that does nothing.
+ * Convenience <code>int</code> transformer that returns zero.
  * 
- * @param <M> the type of the model (i.e. first object) passed to the closure
+ * @param <I> input: the type of the object passed to the transformer
  */
-public class BooleanSetClosureAdapter<M>
-	implements BooleanSetClosure<M>
+public class IntTransformerAdapter<I>
+	implements IntTransformer<I>
 {
-	public void execute(M model, boolean value) {
-		// NOP
+	public int transform(I input) {
+		return 0;
 	}
 
 	@Override

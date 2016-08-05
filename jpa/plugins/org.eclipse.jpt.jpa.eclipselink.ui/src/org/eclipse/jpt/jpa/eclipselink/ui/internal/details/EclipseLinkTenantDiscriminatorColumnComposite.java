@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
 import org.eclipse.osgi.util.NLS;
@@ -411,7 +411,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultPrimaryKeyModel(), PRIMARY_KEY_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> PRIMARY_KEY_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> PRIMARY_KEY_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 				JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY_WITH_DEFAULT,
 				JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY
 			);

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
@@ -21,7 +20,9 @@ import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutableMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
@@ -50,8 +51,8 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 	}
 
 	
-	@SuppressWarnings("unused")
 	@Override
+	@SuppressWarnings("unused")
 	protected Control initializeTypeSection(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
@@ -109,12 +110,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 	}
 
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkMutable>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkMutable buildValue_() {
-				return this.subject.getMutable();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkMutableMapping.MUTABLE_TRANSFORMER);
 	}
 	
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
@@ -140,11 +136,6 @@ public abstract class EclipseLinkBasicMappingComposite<T extends EclipseLinkBasi
 	}
 
 	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkConverterContainer buildValue_() {
-				return this.subject.getConverterContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConvertibleMapping.CONVERTER_CONTAINER_TRANSFORMER);
 	}
 }

@@ -46,7 +46,7 @@ import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
@@ -173,7 +173,7 @@ public class PersistenceUnitClassesComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultExcludeUnlistedClassesModel(), EXCLUDE_UNLISTED_CLASSES_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> EXCLUDE_UNLISTED_CLASSES_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> EXCLUDE_UNLISTED_CLASSES_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES_WITH_DEFAULT,
 			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES
 		);

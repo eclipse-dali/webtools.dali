@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCache
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -189,7 +189,7 @@ public class EclipseLinkCacheDefaultsComposite<T extends EclipseLinkCaching>
 		return PropertyValueModelTools.transform_(this.buildDefaultDefaultSharedCacheModel(), DEFAULT_SHARED_CACHE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> DEFAULT_SHARED_CACHE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> DEFAULT_SHARED_CACHE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 				JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_DEFAULT_SHARED_CACHE_DEFAULT_LABEL,
 				JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SHARED_CACHE_DEFAULT_LABEL
 			);

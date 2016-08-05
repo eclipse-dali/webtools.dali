@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.swt.layout.GridData;
@@ -162,7 +162,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		return PropertyValueModelTools.transform_(this.buildDefaultInsertableModel(), INSERTABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> INSERTABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> INSERTABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE_WITH_DEFAULT,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE
 		);
@@ -204,7 +204,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		return PropertyValueModelTools.transform_(this.buildDefaultNullableModel(), NULLABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> NULLABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> NULLABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE_WITH_DEFAULT,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE
 		);
@@ -248,7 +248,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		return PropertyValueModelTools.transform_(this.buildDefaultUpdatableModel(), UPDATABLE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> UPDATABLE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> UPDATABLE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE_WITH_DEFAULT,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE
 		);

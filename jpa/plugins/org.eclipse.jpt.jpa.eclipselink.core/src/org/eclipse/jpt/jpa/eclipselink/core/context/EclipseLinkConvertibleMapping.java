@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,15 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 public interface EclipseLinkConvertibleMapping {
 
 	EclipseLinkConverterContainer getConverterContainer();
+	Transformer<EclipseLinkConvertibleMapping, EclipseLinkConverterContainer> CONVERTER_CONTAINER_TRANSFORMER = new ConverterContainerTransformer();
+	class ConverterContainerTransformer
+		extends TransformerAdapter<EclipseLinkConvertibleMapping, EclipseLinkConverterContainer>
+	{
+		@Override
+		public EclipseLinkConverterContainer transform(EclipseLinkConvertibleMapping mapping) {
+			return mapping.getConverterContainer();
+		}
+	}
 
 	Transformer<AttributeMapping, Iterable<EclipseLinkConverter>> ATTRIBUTE_MAPPING_CONVERTERS_TRANSFORMER = new AttributeMappingConvertersTransformer();
 	class AttributeMappingConvertersTransformer

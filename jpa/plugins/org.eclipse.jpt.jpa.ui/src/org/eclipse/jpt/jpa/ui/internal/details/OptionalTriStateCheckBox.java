@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -85,7 +85,7 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 		return PropertyValueModelTools.transform_(this.buildDefaultOptionalModel(), OPTIONAL_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> OPTIONAL_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> OPTIONAL_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL_DEFAULT,
 			JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_OPTIONAL_LABEL
 		);

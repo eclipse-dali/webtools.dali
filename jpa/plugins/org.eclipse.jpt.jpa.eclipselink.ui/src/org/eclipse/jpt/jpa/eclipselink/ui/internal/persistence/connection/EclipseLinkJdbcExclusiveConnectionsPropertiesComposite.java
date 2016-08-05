@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -134,7 +134,7 @@ public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends Ec
 		return PropertyValueModelTools.transform_(this.buildDefaultLazyConnectionModel(), LAZY_CONNECTION_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> LAZY_CONNECTION_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> LAZY_CONNECTION_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CONNECTION_TAB_LAZY_CONNECTION_LABEL
 		);

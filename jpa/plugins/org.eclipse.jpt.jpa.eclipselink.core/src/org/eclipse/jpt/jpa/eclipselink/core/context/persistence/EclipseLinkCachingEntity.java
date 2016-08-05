@@ -27,9 +27,9 @@ public class EclipseLinkCachingEntity
 	private String name;
 	private EclipseLinkCaching parent;
 
-	public static final String CACHE_TYPE_PROPERTY = EclipseLinkCaching.CACHE_TYPE_PROPERTY;
-	public static final String CACHE_SIZE_PROPERTY = EclipseLinkCaching.CACHE_SIZE_PROPERTY;
-	public static final String SHARED_CACHE_PROPERTY = EclipseLinkCaching.SHARED_CACHE_PROPERTY;
+	public static final String CACHE_TYPE_PROPERTY = "cacheType"; //$NON-NLS-1$
+	public static final String CACHE_SIZE_PROPERTY = "cacheSize"; //$NON-NLS-1$
+	public static final String SHARED_CACHE_PROPERTY = "sharedCache"; //$NON-NLS-1$
 
 	// ********** EclipseLink properties **********
 	private EclipseLinkCacheType cacheType;

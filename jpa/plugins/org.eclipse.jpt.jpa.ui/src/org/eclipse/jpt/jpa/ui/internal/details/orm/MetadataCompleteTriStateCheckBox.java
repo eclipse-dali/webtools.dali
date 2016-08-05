@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -78,7 +78,7 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 		return PropertyValueModelTools.transform_(this.buildOverrideMetadataCompleteModel(), METADATA_COMPLETE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> METADATA_COMPLETE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> METADATA_COMPLETE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE_WITH_DEFAULT,
 			JptJpaUiDetailsOrmMessages.METADATA_COMPLETE_COMPOSITE_METADATA_COMPLETE
 		);

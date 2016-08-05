@@ -18,14 +18,16 @@ import org.eclipse.osgi.util.NLS;
  * If the value is non-<code>null</code>, bind it to the supplied string.
  * If the value is <code>null</code>, convert it into the supplied null string,
  * which can, itself, be <code>null</code>.
+ * 
+ * @see TriStateCheckBoxLabelModelAdapter
  */
-public class BooleanStringTransformer
+public class TriStateCheckBoxLabelModelStringTransformer
 	extends TransformerAdapter<Boolean, String>
 {
 	private final String string;
 	private final String nullString;
 
-	public BooleanStringTransformer(String string, String nullString) {
+	public TriStateCheckBoxLabelModelStringTransformer(String string, String nullString) {
 		super();
 		if (string == null) {
 			throw new NullPointerException();

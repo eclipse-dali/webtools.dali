@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutableMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
@@ -104,12 +105,7 @@ public abstract class EclipseLinkIdMappingComposite<T extends EclipseLinkIdMappi
 	}
 
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkMutable>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkMutable buildValue_() {
-				return this.subject.getMutable();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkMutableMapping.MUTABLE_TRANSFORMER);
 	}
 
 

@@ -10,17 +10,17 @@
 package org.eclipse.jpt.common.utility.internal.model;
 
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
-import org.eclipse.jpt.common.utility.model.BooleanSetClosure;
+import org.eclipse.jpt.common.utility.model.IntSetClosure;
 
 /**
- * Convenience <code>boolean</code> "set" closure that does nothing.
+ * Convenience <code>int</code> "set" closure that does nothing.
  * 
  * @param <M> the type of the model (i.e. first object) passed to the closure
  */
-public class BooleanSetClosureAdapter<M>
-	implements BooleanSetClosure<M>
+public class IntSetClosureAdapter<M>
+	implements IntSetClosure<M>
 {
-	public void execute(M model, boolean value) {
+	public void execute(M model, int value) {
 		// NOP
 	}
 

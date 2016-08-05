@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -131,7 +131,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 		@Override
 		protected EclipseLinkCacheType getDefaultValue() {
-			return getSubjectParent().getDefaultCacheType();
+			return getSubjectParent().getDefaultEntityCacheType();
 		}
 
 		@Override
@@ -163,7 +163,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 		@Override
 		protected EclipseLinkCacheType getValue() {
-			return getSubjectParent().getCacheTypeOf(getSubjectName());
+			return getSubjectParent().getEntityCacheType(getSubjectName());
 		}
 
 		@Override
@@ -181,7 +181,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 		@Override
 		protected void setValue(EclipseLinkCacheType value) {
-			getSubjectParent().setCacheTypeOf(getSubjectName(), value);
+			getSubjectParent().setEntityCacheType(getSubjectName(), value);
 		}
 
 		@Override
@@ -239,12 +239,12 @@ public class EclipseLinkEntityCachingPropertyComposite
 			return new PropertyAspectAdapterXXXX<EclipseLinkCachingEntity, Integer>(getSubjectHolder(), EclipseLinkCachingEntity.CACHE_SIZE_PROPERTY) {
 				@Override
 				protected Integer buildValue_() {
-					return getSubjectParent().getCacheSizeOf(getSubjectName());
+					return getSubjectParent().getEntityCacheSize(getSubjectName());
 				}
 
 				@Override
 				protected void setValue_(Integer value) {
-					getSubjectParent().setCacheSizeOf(getSubjectName(), value);
+					getSubjectParent().setEntityCacheSize(getSubjectName(), value);
 				}
 			};
 		}
@@ -259,12 +259,12 @@ public class EclipseLinkEntityCachingPropertyComposite
 					getSubjectHolder(), EclipseLinkCachingEntity.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return getSubjectParent().getSharedCacheOf(getSubjectName());
+				return getSubjectParent().getEntitySharedCache(getSubjectName());
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				getSubjectParent().setSharedCacheOf(getSubjectName(), value);
+				getSubjectParent().setEntitySharedCache(getSubjectName(), value);
 			}
 		};
 	}
@@ -273,7 +273,7 @@ public class EclipseLinkEntityCachingPropertyComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultAndNonDefaultSharedCacheModel(), SHARED_CACHE_TRANSFORMER);
 	}
 
-	private static final Transformer<Boolean, String> SHARED_CACHE_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> SHARED_CACHE_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_DEFAULT_SHARED_CACHE_LABEL,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_CACHING_TAB_SHARED_CACHE_LABEL
 		);

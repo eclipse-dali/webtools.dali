@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.BooleanStringTransformer;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitMappingFilesComposite;
 import org.eclipse.swt.widgets.Composite;
@@ -70,7 +70,7 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		return PropertyValueModelTools.transform_(this.buildDefaultExcludeEclipselinkOrmModel(), EXCLUDE_ECLIPSELINK_ORM_TRANSFORMER);
 	}	
 
-	private static final Transformer<Boolean, String> EXCLUDE_ECLIPSELINK_ORM_TRANSFORMER = new BooleanStringTransformer(
+	private static final Transformer<Boolean, String> EXCLUDE_ECLIPSELINK_ORM_TRANSFORMER = new TriStateCheckBoxLabelModelStringTransformer(
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM_WITH_DEFAULT,
 			JptJpaEclipseLinkUiMessages.PERSISTENCE_XML_GENERAL_TAB_EXCLUDE_ECLIPSELINK_ORM
 		);
