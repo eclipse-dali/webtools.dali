@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.int_.IntObjectTransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
@@ -280,7 +281,6 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer (and
 	 *   forwarded to the wrapped predicate)
 	 * 
-	 * @see PredicateTransformer
 	 * @see #adapt(Predicate, Boolean)
 	 * @see #adapt(Predicate)
 	 */
@@ -299,7 +299,6 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer (and
 	 *   forwarded to the wrapped predicate)
 	 * 
-	 * @see PredicateTransformer
 	 * @see #adapt_(Predicate)
 	 * @see #adapt(Predicate)
 	 */
@@ -317,12 +316,11 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer (and
 	 *   forwarded to the wrapped predicate)
 	 * 
-	 * @see PredicateTransformer
 	 * @see #adapt_(Predicate)
 	 * @see #adapt(Predicate, Boolean)
 	 */
 	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate) {
-		return new PredicateTransformer<>(predicate);
+		return input -> Boolean.valueOf(predicate.evaluate(input));
 	}
 
 
@@ -428,9 +426,11 @@ public final class TransformerTools {
 	 * If the collection is empty, the transformer returns <code>null</code>.
 	 * 
 	 * @param <E> the type of elements held by the collection
+	 * 
+	 * @see #collectionFirstElementTransformer_()
 	 */
 	public static <E> Transformer<Collection<? extends E>, E> collectionFirstElementTransformer() {
-		return CollectionFirstElementTransformer.instance();
+		return collection -> collection.isEmpty() ? null : collection.iterator().next();
 	}
 
 	/**
@@ -439,9 +439,11 @@ public final class TransformerTools {
 	 * {@link java.util.NoSuchElementException}.
 	 * 
 	 * @param <E> the type of elements held by the collection
+	 * 
+	 * @see #collectionFirstElementTransformer()
 	 */
 	public static <E> Transformer<Collection<? extends E>, E> collectionFirstElementTransformer_() {
-		return CollectionFirstElementTransformer_.instance();
+		return collection -> collection.iterator().next();
 	}
 
 	/**
@@ -449,9 +451,11 @@ public final class TransformerTools {
 	 * If the collection is empty, the transformer returns <code>null</code>.
 	 * 
 	 * @param <E> the type of elements held by the collection
+	 * 
+	 * @see #collectionLastElementTransformer_()
 	 */
 	public static <E> Transformer<Collection<? extends E>, E> collectionLastElementTransformer() {
-		return CollectionLastElementTransformer.instance();
+		return collection -> collection.isEmpty() ? null : IterableTools.last(collection);
 	}
 
 	/**
@@ -460,9 +464,11 @@ public final class TransformerTools {
 	 * {@link java.util.NoSuchElementException}.
 	 * 
 	 * @param <E> the type of elements held by the collection
+	 * 
+	 * @see #collectionLastElementTransformer()
 	 */
 	public static <E> Transformer<Collection<? extends E>, E> collectionLastElementTransformer_() {
-		return CollectionLastElementTransformer_.instance();
+		return collection -> IterableTools.last(collection);
 	}
 
 	/**
@@ -473,7 +479,7 @@ public final class TransformerTools {
 	 * @param <E> the type of elements held by the collection
 	 */
 	public static <E> Transformer<Collection<? extends E>, E> collectionSingleElementTransformer() {
-		return CollectionSingleElementTransformer.instance();
+		return collection -> (collection.size() == 1) ? collection.iterator().next() : null;
 	}
 
 	/**

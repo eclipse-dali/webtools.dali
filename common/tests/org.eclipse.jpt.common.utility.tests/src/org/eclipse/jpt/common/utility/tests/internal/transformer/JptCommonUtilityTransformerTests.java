@@ -20,15 +20,11 @@ public class JptCommonUtilityTransformerTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonUtilityTransformerTests.class.getPackage().getName());
 
-		suite.addTestSuite(CollectionFirstElementTransformerTests.class);
-		suite.addTestSuite(CollectionFirstElementTransformer_Tests.class);
-		suite.addTestSuite(CollectionLastElementTransformerTests.class);
-		suite.addTestSuite(CollectionLastElementTransformer_Tests.class);
-		suite.addTestSuite(CollectionSingleElementTransformerTests.class);
 		suite.addTestSuite(FilteringTransformerTests.class);
 		suite.addTestSuite(ListLastElementTransformerTests.class);
 		suite.addTestSuite(ListLastElementTransformer_Tests.class);
 		suite.addTestSuite(NullCheckTransformerTests.class);
+		suite.addTestSuite(TransformerToolsTests.class);
 		suite.addTestSuite(XMLStringDecoderTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
