@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
@@ -417,18 +418,12 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 			);
 
 	PropertyValueModel<Boolean> buildDefaultPrimaryKeyModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(
-				getSubjectHolder(),
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
 				EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY,
-				EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY_PROPERTY) {
-
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedPrimaryKey() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isPrimaryKey());
-			}
-		};
+				tdc -> tdc.getSpecifiedPrimaryKey(),
+				EclipseLinkTenantDiscriminatorColumn2_3.DEFAULT_PRIMARY_KEY_PROPERTY,
+				tdc -> tdc.getDefaultPrimaryKey()
+			);
 	}
 }

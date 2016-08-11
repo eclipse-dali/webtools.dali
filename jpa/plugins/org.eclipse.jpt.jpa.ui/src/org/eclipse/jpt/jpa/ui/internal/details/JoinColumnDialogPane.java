@@ -16,8 +16,9 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 
 public class JoinColumnDialogPane<T extends JoinColumnStateObject>
@@ -55,18 +56,13 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultInsertableModel() {
-		return new PropertyAspectAdapterXXXX<T, Boolean>(
-			getSubjectHolder(),
-			JoinColumnStateObject.INSERTABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getInsertable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultInsertable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				JoinColumnStateObject.INSERTABLE_PROPERTY,
+				m -> m.getInsertable(),
+				JoinColumnStateObject.DEFAULT_INSERTABLE_PROPERTY,
+				m -> m.getDefaultInsertable()
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNullableModel() {
@@ -96,18 +92,13 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultNullableModel() {
-		return new PropertyAspectAdapterXXXX<T, Boolean>(
-			getSubjectHolder(),
-			JoinColumnStateObject.NULLABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getNullable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultNullable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				JoinColumnStateObject.NULLABLE_PROPERTY,
+				m -> m.getNullable(),
+				JoinColumnStateObject.DEFAULT_NULLABLE_PROPERTY,
+				m -> m.getDefaultNullable()
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildUniqueModel() {
@@ -137,18 +128,13 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultUniqueModel() {
-		return new PropertyAspectAdapterXXXX<T, Boolean>(
-			getSubjectHolder(),
-			JoinColumnStateObject.UNIQUE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getUnique() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultUnique());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				JoinColumnStateObject.UNIQUE_PROPERTY,
+				m -> m.getUnique(),
+				JoinColumnStateObject.DEFAULT_UNIQUE_PROPERTY,
+				m -> m.getDefaultUnique()
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
@@ -175,18 +161,13 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultUpdatableModel() {
-		return new PropertyAspectAdapterXXXX<T, Boolean>(
-			getSubjectHolder(),
-			JoinColumnStateObject.UPDATABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getUpdatable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultUpdatable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				JoinColumnStateObject.UPDATABLE_PROPERTY,
+				m -> m.getUpdatable(),
+				JoinColumnStateObject.DEFAULT_UPDATABLE_PROPERTY,
+				m -> m.getDefaultUpdatable()
+			);
 	}
 
 	@Override

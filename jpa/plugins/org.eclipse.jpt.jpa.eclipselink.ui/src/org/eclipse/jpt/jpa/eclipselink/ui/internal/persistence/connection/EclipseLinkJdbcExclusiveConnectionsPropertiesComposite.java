@@ -21,8 +21,9 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkExclusiveConnectionMode;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -140,17 +141,12 @@ public class EclipseLinkJdbcExclusiveConnectionsPropertiesComposite<T extends Ec
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultLazyConnectionModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
-			this.getSubjectHolder(),
-			EclipseLinkConnection.LAZY_CONNECTION_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getLazyConnection() != null) {
-					return null;
-				}
-				return this.subject.getDefaultLazyConnection();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkConnection.LAZY_CONNECTION_PROPERTY,
+				c -> c.getLazyConnection(),
+				EclipseLinkConnection.DEFAULT_LAZY_CONNECTION_PROPERTY,
+				c -> c.getDefaultLazyConnection()
+			);
 	}
 }

@@ -41,7 +41,7 @@ public class SpinnerModelAdapterTest {
 	}
 
 	private ModifiablePropertyValueModel<Integer> buildValueHolder() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.subjectHolder,
 				Model.VALUE_PROPERTY,
 				Model.VALUE_TRANSFORMER,

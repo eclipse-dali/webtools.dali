@@ -708,7 +708,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNamespaceCellModel(Schema subject) {
-			return PropertyValueModelTools.modifiableModelAspectAdapter(
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
 					subject,
 					Schema.NAMESPACE_PROPERTY,
 					Schema.NAMESPACE_TRANSFORMER,
@@ -717,7 +717,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		private ModifiablePropertyValueModel<String> buildLocationCellModel(Schema subject) {
-			return PropertyValueModelTools.modifiableModelAspectAdapter(
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
 					subject,
 					Schema.LOCATION_PROPERTY,
 					Schema.LOCATION_TRANSFORMER,

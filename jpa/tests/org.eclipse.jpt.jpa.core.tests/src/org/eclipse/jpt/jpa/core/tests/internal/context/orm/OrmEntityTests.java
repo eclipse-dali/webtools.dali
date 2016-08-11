@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -611,24 +611,24 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormEntity.getSpecifiedMetadataComplete());
-		assertFalse(ormEntity.isOverrideMetadataComplete());
+		assertFalse(ormEntity.getOverrideMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		getXmlEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(ormEntity.isOverrideMetadataComplete());
+		assertTrue(ormEntity.getOverrideMetadataComplete());
 		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(ormEntity.getSpecifiedMetadataComplete());
-		assertFalse(ormEntity.isOverrideMetadataComplete());
+		assertFalse(ormEntity.getOverrideMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, ormEntity.getSpecifiedMetadataComplete());
-		assertTrue(ormEntity.isOverrideMetadataComplete());
+		assertTrue(ormEntity.getOverrideMetadataComplete());
 		assertTrue(ormEntity.isMetadataComplete());
 	}
 

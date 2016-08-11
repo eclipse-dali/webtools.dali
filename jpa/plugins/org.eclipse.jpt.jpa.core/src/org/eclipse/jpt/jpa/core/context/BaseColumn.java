@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ public interface BaseColumn
 	boolean isUnique();
 	Boolean getSpecifiedUnique();
 		String SPECIFIED_UNIQUE_PROPERTY = "specifiedUnique"; //$NON-NLS-1$
-	boolean isDefaultUnique();
+	boolean getDefaultUnique();
 		String DEFAULT_UNIQUE_PROPERTY = "defaultUnique"; //$NON-NLS-1$
 	boolean DEFAULT_UNIQUE = false;
 
@@ -46,7 +46,7 @@ public interface BaseColumn
 	boolean isNullable();
 	Boolean getSpecifiedNullable();
 		String SPECIFIED_NULLABLE_PROPERTY = "specifiedNullable"; //$NON-NLS-1$
-	boolean isDefaultNullable();
+	boolean getDefaultNullable();
 		String DEFAULT_NULLABLE_PROPERTY = "defaultNullable"; //$NON-NLS-1$
 	boolean DEFAULT_NULLABLE = true;
 
@@ -60,7 +60,7 @@ public interface BaseColumn
 	boolean isInsertable();
 	Boolean getSpecifiedInsertable();
 		String SPECIFIED_INSERTABLE_PROPERTY = "specifiedInsertable"; //$NON-NLS-1$
-	boolean isDefaultInsertable();
+	boolean getDefaultInsertable();
 		String DEFAULT_INSERTABLE_PROPERTY = "defaultInsertable"; //$NON-NLS-1$
 	boolean DEFAULT_INSERTABLE = true;
 
@@ -74,7 +74,7 @@ public interface BaseColumn
 	boolean isUpdatable();
 	Boolean getSpecifiedUpdatable();
 		String SPECIFIED_UPDATABLE_PROPERTY = "specifiedUpdatable"; //$NON-NLS-1$
-	boolean isDefaultUpdatable();
+	boolean getDefaultUpdatable();
 		String DEFAULT_UPDATABLE_PROPERTY = "defaultUpdatable"; //$NON-NLS-1$
 	boolean DEFAULT_UPDATABLE = true;
 }

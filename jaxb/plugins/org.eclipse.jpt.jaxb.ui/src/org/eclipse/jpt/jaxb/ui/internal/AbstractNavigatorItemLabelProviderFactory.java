@@ -180,7 +180,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<XmlRegistry> buildXmlRegistryModel() {
-			return PropertyValueModelTools.modelAspectAdapter(
+			return PropertyValueModelTools.subjectAspectAdapter(
 					this.javaClass,
 					JavaClass.XML_REGISTRY_PROPERTY,
 					JavaClass.XML_REGISTRY_TRANSFORMER
@@ -188,7 +188,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<JavaClassMapping> buildMappingModel() {
-			return PropertyValueModelTools.modelAspectAdapter(
+			return PropertyValueModelTools.subjectAspectAdapter(
 					this.javaClass,
 					JavaType.MAPPING_PROPERTY,
 					JavaClass.MAPPING_TRANSFORMER
@@ -196,7 +196,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<Boolean> buildXmlTransientModel() {
-			return PropertyValueModelTools.modelAspectAdapter(
+			return PropertyValueModelTools.booleanSubjectModelAspectAdapter(
 					this.mappingModel,
 					JaxbTypeMapping.XML_TRANSIENT_PROPERTY,
 					JaxbTypeMapping.XML_TRANSIENT_PREDICATE
@@ -346,7 +346,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		
 		
 		protected PropertyValueModel<JavaEnumMapping> buildMappingModel() {
-			return PropertyValueModelTools.modelAspectAdapter(
+			return PropertyValueModelTools.subjectAspectAdapter(
 					this.javaEnum,
 					JavaType.MAPPING_PROPERTY,
 					JavaEnum.MAPPING_TRANSFORMER
@@ -363,7 +363,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 		}
 		
 		protected PropertyValueModel<Boolean> buildXmlTransientModel() {
-			return PropertyValueModelTools.modelAspectAdapter(
+			return PropertyValueModelTools.booleanSubjectModelAspectAdapter(
 					this.mappingModel,
 					JaxbTypeMapping.XML_TRANSIENT_PROPERTY,
 					JaxbTypeMapping.XML_TRANSIENT_PREDICATE
@@ -486,7 +486,7 @@ public abstract class AbstractNavigatorItemLabelProviderFactory
 	}
 
 	public PropertyValueModel<JaxbAttributeMapping> buildJavaPersistentAttributeMappingModel(JavaPersistentAttribute item) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				item,
 				JaxbPersistentAttribute.MAPPING_PROPERTY,
 				JaxbPersistentAttribute.MAPPING_TRANSFORMER

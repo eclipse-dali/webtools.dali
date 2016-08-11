@@ -38,8 +38,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConne
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JpaWorkbench;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2.persistence.JptJpaUiPersistenceMessages2_0;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -240,18 +241,13 @@ public class EclipseLinkJdbcConnectionPropertiesComposite<T extends EclipseLinkC
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultBindParametersModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkConnection.BIND_PARAMETERS_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getBindParameters() != null) {
-					return null;
-				}
-				return this.subject.getDefaultBindParameters();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkConnection.BIND_PARAMETERS_PROPERTY,
+				c -> c.getBindParameters(),
+				EclipseLinkConnection.DEFAULT_BIND_PARAMETERS_PROPERTY,
+				c -> c.getDefaultBindParameters()
+			);
 	}
 
 	void promptConnection() {

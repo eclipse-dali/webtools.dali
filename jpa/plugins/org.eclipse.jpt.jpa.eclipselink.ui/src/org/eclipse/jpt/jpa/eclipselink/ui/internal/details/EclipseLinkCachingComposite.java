@@ -13,7 +13,6 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -24,8 +23,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -180,7 +179,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	protected abstract void initializeExistenceCheckingComposite(Composite container);
 	
 	private PropertyValueModel<Boolean> buildSharedCacheEnabler() {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.booleanSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SHARED_PROPERTY,
 				EclipseLinkCaching.SHARED_PREDICATE
@@ -188,11 +187,11 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	}	
 	
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedSharedModel() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY,
-				EclipseLinkCaching.SPECIFIED_SHARED_TRANSFORMER,
-				EclipseLinkCaching.SET_SPECIFIED_SHARED_CLOSURE
+				c -> c.getSpecifiedShared(),
+				(c, value) -> c.setSpecifiedShared(value)
 			);
 	}
 
@@ -206,21 +205,21 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultSharedModel() {
-		return TriStateCheckBoxLabelModelAdapter.propertyValueModel(
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY,
-				EclipseLinkCaching.SPECIFIED_SHARED_TRANSFORMER,
+				c -> c.getSpecifiedShared(),
 				EclipseLinkCaching.DEFAULT_SHARED_PROPERTY,
-				EclipseLinkCaching.DEFAULT_SHARED_PREDICATE
+				c -> c.getDefaultShared()
 			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildAlwaysRefreshModel() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
-				EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_TRANSFORMER,
-				EclipseLinkCaching.SET_SPECIFIED_ALWAYS_REFRESH_CLOSURE
+				c -> c.getSpecifiedAlwaysRefresh(),
+				(c, value) -> c.setSpecifiedAlwaysRefresh(value)
 			);
 	}
 
@@ -234,27 +233,21 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		);
 	
 	private PropertyValueModel<Boolean> buildDefaultAlwaysRefreshModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
-			EclipseLinkCaching.DEFAULT_ALWAYS_REFRESH_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedAlwaysRefresh() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.getDefaultAlwaysRefresh());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
+				c -> c.getSpecifiedAlwaysRefresh(),
+				EclipseLinkCaching.DEFAULT_ALWAYS_REFRESH_PROPERTY,
+				c -> c.getDefaultAlwaysRefresh()
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerModel() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY,
-				EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_TRANSFORMER,
-				EclipseLinkCaching.SET_SPECIFIED_REFRESH_ONLY_IF_NEWER_CLOSURE
+				c -> c.getSpecifiedRefreshOnlyIfNewer(),
+				(c, value) -> c.setSpecifiedRefreshOnlyIfNewer(value)
 			);
 	}
 
@@ -268,26 +261,21 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultRefreshOnlyIfNewerModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY,
-			EclipseLinkCaching.DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedRefreshOnlyIfNewer() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.getDefaultRefreshOnlyIfNewer());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY,
+				c -> c.getSpecifiedRefreshOnlyIfNewer(),
+				EclipseLinkCaching.DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY,
+				c -> c.getDefaultRefreshOnlyIfNewer()
+			);
 	}	
+
 	private ModifiablePropertyValueModel<Boolean> buildDisableHitsModel() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY,
-				EclipseLinkCaching.SPECIFIED_DISABLE_HITS_TRANSFORMER,
-				EclipseLinkCaching.SET_SPECIFIED_DISABLE_HITS_CLOSURE
+				c -> c.getSpecifiedDisableHits(),
+				(c, value) -> c.setSpecifiedDisableHits(value)
 			);
 	}
 
@@ -301,19 +289,13 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			);
 	
 	private PropertyValueModel<Boolean> buildDefaultDisableHitsModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY,
-			EclipseLinkCaching.DEFAULT_DISABLE_HITS_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedDisableHits() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.getDefaultDisableHits());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY,
+				c -> c.getSpecifiedDisableHits(),
+				EclipseLinkCaching.DEFAULT_DISABLE_HITS_PROPERTY,
+				c -> c.getDefaultDisableHits()
+			);
 	}
 
 	private EnumFormComboViewer<EclipseLinkCaching, EclipseLinkCacheCoordinationType> addCacheCoordinationTypeCombo(Composite container, PropertyValueModel<Boolean> sharedCacheEnableModel) {

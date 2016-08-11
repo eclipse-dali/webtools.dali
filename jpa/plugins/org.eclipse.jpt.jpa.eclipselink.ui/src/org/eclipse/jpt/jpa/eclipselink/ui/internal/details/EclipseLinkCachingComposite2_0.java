@@ -21,8 +21,9 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -169,18 +170,12 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultCacheableModel(PropertyValueModel<Cacheable2_0> cacheableModel) {
-		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(
-			cacheableModel,
-			Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
-			Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedCacheable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultCacheable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				cacheableModel,
+				Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
+				c -> c.getSpecifiedCacheable(),
+				Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY,
+				c -> c.getDefaultCacheable()
+			);
 	}
 }

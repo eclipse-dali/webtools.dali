@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -207,10 +207,10 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		assertNull(ormColumn.getSpecifiedScale());
 		
 		assertEquals("foo", ormColumn.getDefaultName());
-		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(true, ormColumn.isDefaultNullable());
-		assertEquals(true, ormColumn.isDefaultInsertable());
-		assertEquals(true, ormColumn.isDefaultUpdatable());
+		assertEquals(false, ormColumn.getDefaultUnique());
+		assertEquals(true, ormColumn.getDefaultNullable());
+		assertEquals(true, ormColumn.getDefaultInsertable());
+		assertEquals(true, ormColumn.getDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTableName());
 		assertEquals(255, ormColumn.getDefaultLength());
@@ -269,10 +269,10 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		
 		OrmSpecifiedColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
-		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(true, ormColumn.isDefaultNullable());
-		assertEquals(true, ormColumn.isDefaultInsertable());
-		assertEquals(true, ormColumn.isDefaultUpdatable());
+		assertEquals(false, ormColumn.getDefaultUnique());
+		assertEquals(true, ormColumn.getDefaultNullable());
+		assertEquals(true, ormColumn.getDefaultInsertable());
+		assertEquals(true, ormColumn.getDefaultUpdatable());
 		assertNull(ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getTableName());
 		assertEquals(255, ormColumn.getLength());
@@ -306,10 +306,10 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		assertNull(ormColumn.getSpecifiedScale());
 		
 		assertEquals("id", ormColumn.getDefaultName());
-		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(true, ormColumn.isDefaultNullable());
-		assertEquals(true, ormColumn.isDefaultInsertable());
-		assertEquals(true, ormColumn.isDefaultUpdatable());
+		assertEquals(false, ormColumn.getDefaultUnique());
+		assertEquals(true, ormColumn.getDefaultNullable());
+		assertEquals(true, ormColumn.getDefaultInsertable());
+		assertEquals(true, ormColumn.getDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTableName());
 		assertEquals(255, ormColumn.getDefaultLength());

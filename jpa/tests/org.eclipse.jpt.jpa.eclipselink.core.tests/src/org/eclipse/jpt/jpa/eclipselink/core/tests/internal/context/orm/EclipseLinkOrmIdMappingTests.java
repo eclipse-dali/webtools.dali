@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -95,7 +95,7 @@ public class EclipseLinkOrmIdMappingTests
 		// check defaults
 		
 		assertNull(resourceId.getMutable());
-		assertTrue(contextId.getMutable().isDefaultMutable());
+		assertTrue(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		
@@ -104,7 +104,7 @@ public class EclipseLinkOrmIdMappingTests
 		resourceId.setMutable(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, resourceId.getMutable());
-		assertTrue(contextId.getMutable().isDefaultMutable());
+		assertTrue(contextId.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
@@ -113,7 +113,7 @@ public class EclipseLinkOrmIdMappingTests
 		resourceId.setMutable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, resourceId.getMutable());
-		assertTrue(contextId.getMutable().isDefaultMutable());
+		assertTrue(contextId.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		
@@ -122,7 +122,7 @@ public class EclipseLinkOrmIdMappingTests
 		resourceId.setMutable(null);
 		
 		assertNull(resourceId.getMutable());
-		assertTrue(contextId.getMutable().isDefaultMutable());
+		assertTrue(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		
@@ -133,7 +133,7 @@ public class EclipseLinkOrmIdMappingTests
 		
 		javaIdMapping.getMutable().setSpecifiedMutable(Boolean.FALSE);
 		assertNull(resourceId.getMutable());
-		assertTrue(contextId.getMutable().isDefaultMutable());
+		assertTrue(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		assertFalse(javaIdMapping.getMutable().isMutable());
@@ -145,7 +145,7 @@ public class EclipseLinkOrmIdMappingTests
 		EclipseLinkIdMapping virtualIdMapping = (EclipseLinkIdMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceId.getMutable());
-		assertTrue(virtualIdMapping.getMutable().isDefaultMutable());
+		assertTrue(virtualIdMapping.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, virtualIdMapping.getMutable().getSpecifiedMutable());
 		assertFalse(virtualIdMapping.getMutable().isMutable());
 		assertFalse(javaIdMapping.getMutable().isMutable());
@@ -155,7 +155,7 @@ public class EclipseLinkOrmIdMappingTests
 		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		EclipseLinkBasicMapping virtualBasicMapping = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		assertNull(resourceId.getMutable());
-		assertTrue(virtualBasicMapping.getMutable().isDefaultMutable());
+		assertTrue(virtualBasicMapping.getMutable().getDefaultMutable());
 		assertNull(virtualBasicMapping.getMutable().getSpecifiedMutable());
 		assertTrue(virtualBasicMapping.getMutable().isMutable());
 		assertFalse(javaIdMapping.getMutable().isMutable());
@@ -178,7 +178,7 @@ public class EclipseLinkOrmIdMappingTests
 		// check defaults
 		
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
@@ -187,7 +187,7 @@ public class EclipseLinkOrmIdMappingTests
 		resourceId.setMutable(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
@@ -196,7 +196,7 @@ public class EclipseLinkOrmIdMappingTests
 		resourceId.setMutable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		
@@ -205,26 +205,26 @@ public class EclipseLinkOrmIdMappingTests
 		resourceId.setMutable(null);
 		
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.TRUE);
 		assertNull(resourceId.getMutable());
-		assertTrue(contextId.getMutable().isDefaultMutable());
+		assertTrue(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.FALSE);
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(null);
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
@@ -232,7 +232,7 @@ public class EclipseLinkOrmIdMappingTests
 		
 		javaIdMapping.getMutable().setSpecifiedMutable(Boolean.TRUE);
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		assertTrue(javaIdMapping.getMutable().isMutable());
@@ -244,7 +244,7 @@ public class EclipseLinkOrmIdMappingTests
 		EclipseLinkIdMapping virtualIdMapping = (EclipseLinkIdMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceId.getMutable());
-		assertFalse(virtualIdMapping.getMutable().isDefaultMutable());
+		assertFalse(virtualIdMapping.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, virtualIdMapping.getMutable().getSpecifiedMutable());
 		assertTrue(virtualIdMapping.getMutable().isMutable());
 		assertTrue(javaIdMapping.getMutable().isMutable());
@@ -254,7 +254,7 @@ public class EclipseLinkOrmIdMappingTests
 		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
 		EclipseLinkBasicMapping virtualBasicMapping = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		assertNull(resourceId.getMutable());
-		assertFalse(virtualBasicMapping.getMutable().isDefaultMutable());
+		assertFalse(virtualBasicMapping.getMutable().getDefaultMutable());
 		assertNull(virtualBasicMapping.getMutable().getSpecifiedMutable());
 		assertFalse(virtualBasicMapping.getMutable().isMutable());
 		assertTrue(javaIdMapping.getMutable().isMutable());
@@ -275,7 +275,7 @@ public class EclipseLinkOrmIdMappingTests
 		// check defaults
 		
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
@@ -284,7 +284,7 @@ public class EclipseLinkOrmIdMappingTests
 		contextId.getMutable().setSpecifiedMutable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, contextId.getMutable().getSpecifiedMutable());
 		assertTrue(contextId.getMutable().isMutable());
 		
@@ -293,7 +293,7 @@ public class EclipseLinkOrmIdMappingTests
 		contextId.getMutable().setSpecifiedMutable(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 		
@@ -302,7 +302,7 @@ public class EclipseLinkOrmIdMappingTests
 		contextId.getMutable().setSpecifiedMutable(null);
 		
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertFalse(contextId.getMutable().getDefaultMutable());
 		assertNull(contextId.getMutable().getSpecifiedMutable());
 		assertFalse(contextId.getMutable().isMutable());
 	}

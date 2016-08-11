@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -260,19 +260,19 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EclipseLinkBasicMapping basicMapping = (EclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkMutable mutable = basicMapping.getMutable();
-		assertTrue(mutable.isDefaultMutable());
+		assertTrue(mutable.getDefaultMutable());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
-		assertTrue(mutable.isDefaultMutable());
+		assertTrue(mutable.getDefaultMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.FALSE);	
-		assertTrue(mutable.isDefaultMutable());
+		assertTrue(mutable.getDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.FALSE);
-		assertTrue(mutable.isDefaultMutable());
+		assertTrue(mutable.getDefaultMutable());
 	}
 	
 	public void testIsDefaultMutableForDate() throws Exception {
@@ -282,25 +282,25 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		SpecifiedPersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		EclipseLinkBasicMapping basicMapping = (EclipseLinkBasicMapping) persistentAttribute.getMapping();
 		EclipseLinkMutable mutable = basicMapping.getMutable();
-		assertFalse(mutable.isDefaultMutable());
+		assertFalse(mutable.getDefaultMutable());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, AstNodeType.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
-		assertFalse(mutable.isDefaultMutable());
+		assertFalse(mutable.getDefaultMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
-		assertFalse(mutable.isDefaultMutable());
+		assertFalse(mutable.getDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.TRUE);
-		assertTrue(mutable.isDefaultMutable());
+		assertTrue(mutable.getDefaultMutable());
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.FALSE);
-		assertFalse(mutable.isDefaultMutable());
+		assertFalse(mutable.getDefaultMutable());
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(null);
-		assertFalse(mutable.isDefaultMutable());
+		assertFalse(mutable.getDefaultMutable());
 	}
 	
 	public void testIsMutable() throws Exception {

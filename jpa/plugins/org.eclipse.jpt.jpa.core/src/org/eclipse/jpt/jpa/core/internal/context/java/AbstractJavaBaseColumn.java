@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -140,7 +140,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	// ********** unique **********
 
 	public boolean isUnique() {
-		return (this.specifiedUnique != null) ? this.specifiedUnique.booleanValue() : this.isDefaultUnique();
+		return (this.specifiedUnique != null) ? this.specifiedUnique.booleanValue() : this.getDefaultUnique();
 	}
 
 	public Boolean getSpecifiedUnique() {
@@ -165,7 +165,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 		return columnAnnotation.getUnique();
 	}
 
-	public boolean isDefaultUnique() {
+	public boolean getDefaultUnique() {
 		return this.defaultUnique;
 	}
 
@@ -183,7 +183,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	// ********** nullable **********
 
 	public boolean isNullable() {
-		return (this.specifiedNullable != null) ? this.specifiedNullable.booleanValue() : this.isDefaultNullable();
+		return (this.specifiedNullable != null) ? this.specifiedNullable.booleanValue() : this.getDefaultNullable();
 	}
 
 	public Boolean getSpecifiedNullable() {
@@ -208,7 +208,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 		return columnAnnotation.getNullable();
 	}
 
-	public boolean isDefaultNullable() {
+	public boolean getDefaultNullable() {
 		return this.defaultNullable;
 	}
 
@@ -226,7 +226,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	// ********** insertable **********
 
 	public boolean isInsertable() {
-		return (this.specifiedInsertable != null) ? this.specifiedInsertable.booleanValue() : this.isDefaultInsertable();
+		return (this.specifiedInsertable != null) ? this.specifiedInsertable.booleanValue() : this.getDefaultInsertable();
 	}
 
 	public Boolean getSpecifiedInsertable() {
@@ -251,7 +251,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 		return columnAnnotation.getInsertable();
 	}
 
-	public boolean isDefaultInsertable() {
+	public boolean getDefaultInsertable() {
 		return this.defaultInsertable;
 	}
 
@@ -269,7 +269,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 	// ********** updatable **********
 
 	public boolean isUpdatable() {
-		return (this.specifiedUpdatable != null) ? this.specifiedUpdatable.booleanValue() : this.isDefaultUpdatable();
+		return (this.specifiedUpdatable != null) ? this.specifiedUpdatable.booleanValue() : this.getDefaultUpdatable();
 	}
 
 	public Boolean getSpecifiedUpdatable() {
@@ -294,7 +294,7 @@ public abstract class AbstractJavaBaseColumn<PA extends TableColumn.ParentAdapte
 		return columnAnnotation.getUpdatable();
 	}
 
-	public boolean isDefaultUpdatable() {
+	public boolean getDefaultUpdatable() {
 		return this.defaultUpdatable;
 	}
 

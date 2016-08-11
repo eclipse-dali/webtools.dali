@@ -70,7 +70,7 @@ public class DocumentAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameHolder(PropertyValueModel<TestModel> vm) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				vm,
 				TestModel.NAME_PROPERTY,
 				TestModel.NAME_TRANSFORMER,

@@ -1069,7 +1069,7 @@ public final class PropertyValueModelTools {
 	 * @param <OM> the type of the "outer" model
 	 */
 	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundModelAdapterFactory(OM outerModel) {
-		return modelAspectAdapterFactory_(
+		return subjectModelAspectAdapterFactory_(
 				outerModel,
 				PropertyValueModel.VALUE,
 				valueTransformer()
@@ -1089,7 +1089,7 @@ public final class PropertyValueModelTools {
 	 * @param <OM> the type of the "outer" model
 	 */
 	public static <V, IM extends PropertyValueModel<? extends V>, OM extends PropertyValueModel<? extends IM>> PluggablePropertyAspectAdapter.Factory<V, IM, OM> compoundModelAdapterFactory_(OM outerModel) {
-		return modelAspectAdapterFactory_(
+		return subjectModelAspectAdapterFactory_(
 				outerModel,
 				PropertyValueModel.VALUE,
 				valueTransformer_()
@@ -1176,12 +1176,12 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> PropertyValueModel<Integer> modelAspectAdapter(
+	public static <S extends Model> PropertyValueModel<Integer> intSubjectAspectAdapter(
 			S subject,
 			String aspectName,
 			IntTransformer<? super S> transformer
 	) {
-		return modelAspectAdapter(subject, aspectName, TransformerTools.adapt(transformer));
+		return subjectAspectAdapter(subject, aspectName, TransformerTools.adapt(transformer));
 	}
 
 
@@ -1194,12 +1194,12 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> PropertyValueModel<Integer> modelAspectAdapter_(
+	public static <S extends Model> PropertyValueModel<Integer> intSubjectAspectAdapter_(
 			S subject,
 			String aspectName,
 			IntTransformer<? super S> transformer
 	) {
-		return modelAspectAdapter_(subject, aspectName, TransformerTools.adapt(transformer));
+		return subjectAspectAdapter_(subject, aspectName, TransformerTools.adapt(transformer));
 	}
 
 	/**
@@ -1213,12 +1213,12 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> PropertyValueModel<Boolean> modelAspectAdapter(
+	public static <S extends Model> PropertyValueModel<Boolean> booleanSubjectAspectAdapter(
 			S subject,
 			String aspectName,
 			Predicate<? super S> predicate
 	) {
-		return modelAspectAdapter(subject, aspectName, TransformerTools.adapt(predicate));
+		return subjectAspectAdapter(subject, aspectName, TransformerTools.adapt(predicate));
 	}
 
 	/**
@@ -1230,12 +1230,12 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> PropertyValueModel<Boolean> modelAspectAdapter_(
+	public static <S extends Model> PropertyValueModel<Boolean> booleanSubjectAspectAdapter_(
 			S subject,
 			String aspectName,
 			Predicate<? super S> predicate
 	) {
-		return modelAspectAdapter_(subject, aspectName, TransformerTools.adapt(predicate));
+		return subjectAspectAdapter_(subject, aspectName, TransformerTools.adapt(predicate));
 	}
 
 	/**
@@ -1249,12 +1249,12 @@ public final class PropertyValueModelTools {
 	 * @param <V> the type of the model's value
 	 * @param <S> the type of the subject
 	 */
-	public static <V, S extends Model> PropertyValueModel<V> modelAspectAdapter(
+	public static <V, S extends Model> PropertyValueModel<V> subjectAspectAdapter(
 			S subject,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return modelAspectAdapter(staticModel(subject), aspectName, transformer);
+		return subjectModelAspectAdapter(staticModel(subject), aspectName, transformer);
 	}
 
 	/**
@@ -1267,12 +1267,12 @@ public final class PropertyValueModelTools {
 	 * @param <V> the type of the model's value
 	 * @param <S> the type of the subject
 	 */
-	public static <V, S extends Model> PropertyValueModel<V> modelAspectAdapter_(
+	public static <V, S extends Model> PropertyValueModel<V> subjectAspectAdapter_(
 			S subject,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return modelAspectAdapter_(staticModel(subject), aspectName, transformer);
+		return subjectModelAspectAdapter_(staticModel(subject), aspectName, transformer);
 	}
 
 	/**
@@ -1286,12 +1286,12 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Integer> modelAspectAdapter(
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Integer> intSubjectModelAspectAdapter(
 			SM subjectModel,
 			String aspectName,
 			IntTransformer<? super S> transformer
 	) {
-		return modelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(transformer));
+		return subjectModelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(transformer));
 	}
 
 	/**
@@ -1303,12 +1303,12 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Integer> modelAspectAdapter_(
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Integer> intSubjectModelAspectAdapter_(
 			SM subjectModel,
 			String aspectName,
 			IntTransformer<? super S> transformer
 	) {
-		return modelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(transformer));
+		return subjectModelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(transformer));
 	}
 
 	/**
@@ -1323,12 +1323,12 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> modelAspectAdapter(
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> booleanSubjectModelAspectAdapter(
 			SM subjectModel,
 			String aspectName,
 			Predicate<? super S> predicate
 	) {
-		return modelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(predicate));
+		return subjectModelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(predicate));
 	}
 
 	/**
@@ -1341,12 +1341,12 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> modelAspectAdapter_(
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> booleanSubjectModelAspectAdapter_(
 			SM subjectModel,
 			String aspectName,
 			Predicate<? super S> predicate
 	) {
-		return modelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(predicate));
+		return subjectModelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(predicate));
 	}
 
 	/**
@@ -1361,12 +1361,12 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> modelAspectAdapter(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> subjectModelAspectAdapter(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return propertyValueModel(modelAspectAdapterFactory(subjectModel, aspectName, transformer));
+		return propertyValueModel(subjectModelAspectAdapterFactory(subjectModel, aspectName, transformer));
 	}
 
 	/**
@@ -1380,12 +1380,12 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> modelAspectAdapter_(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> subjectModelAspectAdapter_(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return propertyValueModel(modelAspectAdapterFactory_(subjectModel, aspectName, transformer));
+		return propertyValueModel(subjectModelAspectAdapterFactory_(subjectModel, aspectName, transformer));
 	}
 
 	/**
@@ -1400,12 +1400,12 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> modelAspectAdapterFactory(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> subjectModelAspectAdapterFactory(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return modelAspectAdapterFactory_(subjectModel, aspectName, TransformerTools.nullCheck(transformer));
+		return subjectModelAspectAdapterFactory_(subjectModel, aspectName, TransformerTools.nullCheck(transformer));
 	}
 
 	/**
@@ -1419,12 +1419,12 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> modelAspectAdapterFactory_(
+	public static <V, S extends Model, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> subjectModelAspectAdapterFactory_(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> transformer
 	) {
-		return pluggableAspectAdapterFactory(subjectModel, new ModelPropertyAspectAdapter.Factory<>(aspectName, transformer));
+		return pluggableSubjectModelAspectAdapterFactory(subjectModel, new ModelPropertyAspectAdapter.Factory<>(aspectName, transformer));
 	}
 
 	/**
@@ -1435,11 +1435,11 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> aspectAdapter(
+	public static <V, S, SM extends PropertyValueModel<? extends S>> PropertyValueModel<V> subjectModelAspectAdapter(
 			SM subjectModel,
 			PluggablePropertyAspectAdapter.SubjectAdapter.Factory<V, S> subjectAdapterFactory
 	) {
-		return propertyValueModel(pluggableAspectAdapterFactory(subjectModel, subjectAdapterFactory));
+		return propertyValueModel(pluggableSubjectModelAspectAdapterFactory(subjectModel, subjectAdapterFactory));
 	}
 
 	/**
@@ -1450,7 +1450,7 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> pluggableAspectAdapterFactory(
+	public static <V, S, SM extends PropertyValueModel<? extends S>> PluggablePropertyAspectAdapter.Factory<V, S, SM> pluggableSubjectModelAspectAdapterFactory(
 			SM subjectModel,
 			PluggablePropertyAspectAdapter.SubjectAdapter.Factory<V, S> subjectAdapterFactory
 	) {
@@ -1473,13 +1473,13 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter(
+	public static <S extends Model> ModifiablePropertyValueModel<Integer> modifiableIntSubjectAspectAdapter(
 			S subject,
 			String aspectName,
 			IntTransformer<? super S> getTransformer,
 			IntSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter(subject, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
+		return modifiableSubjectAspectAdapter(subject, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1493,13 +1493,13 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter_(
+	public static <S extends Model> ModifiablePropertyValueModel<Integer> modifiableIntSubjectAspectAdapter_(
 			S subject,
 			String aspectName,
 			IntTransformer<? super S> getTransformer,
 			IntSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter_(subject, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
+		return modifiableSubjectAspectAdapter_(subject, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1515,13 +1515,13 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> ModifiablePropertyValueModel<Boolean> modifiableModelAspectAdapter(
+	public static <S extends Model> ModifiablePropertyValueModel<Boolean> modifiableBooleanSubjectAspectAdapter(
 			S subject,
 			String aspectName,
 			Predicate<? super S> getPredicate,
 			BooleanSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter(subject, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
+		return modifiableSubjectAspectAdapter(subject, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1535,13 +1535,13 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model> ModifiablePropertyValueModel<Boolean> modifiableModelAspectAdapter_(
+	public static <S extends Model> ModifiablePropertyValueModel<Boolean> modifiableBooleanSubjectAspectAdapter_(
 			S subject,
 			String aspectName,
 			Predicate<? super S> getPredicate,
 			BooleanSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter_(subject, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
+		return modifiableSubjectAspectAdapter_(subject, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1557,13 +1557,13 @@ public final class PropertyValueModelTools {
 	 * @param <V> the type of the model's value
 	 * @param <S> the type of the subject
 	 */
-	public static <V, S extends Model> ModifiablePropertyValueModel<V> modifiableModelAspectAdapter(
+	public static <V, S extends Model> ModifiablePropertyValueModel<V> modifiableSubjectAspectAdapter(
 			S subject,
 			String aspectName,
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiableModelAspectAdapter(staticModel(subject), aspectName, getTransformer, setClosure);
+		return modifiableSubjectModelAspectAdapter(staticModel(subject), aspectName, getTransformer, setClosure);
 	}
 
 	/**
@@ -1578,13 +1578,13 @@ public final class PropertyValueModelTools {
 	 * @param <V> the type of the model's value
 	 * @param <S> the type of the subject
 	 */
-	public static <V, S extends Model> ModifiablePropertyValueModel<V> modifiableModelAspectAdapter_(
+	public static <V, S extends Model> ModifiablePropertyValueModel<V> modifiableSubjectAspectAdapter_(
 			S subject,
 			String aspectName,
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiableModelAspectAdapter_(staticModel(subject), aspectName, getTransformer, setClosure);
+		return modifiableSubjectModelAspectAdapter_(staticModel(subject), aspectName, getTransformer, setClosure);
 	}
 
 	/**
@@ -1600,13 +1600,13 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter(
+	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Integer> modifiableIntSubjectModelAspectAdapter(
 			SM subjectModel,
 			String aspectName,
 			IntTransformer<? super S> getTransformer,
 			IntSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
+		return modifiableSubjectModelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1620,13 +1620,13 @@ public final class PropertyValueModelTools {
 	 * 
 	 * @param <S> the type of the subject
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Integer> modifiableModelAspectAdapter_(
+	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Integer> modifiableIntSubjectModelAspectAdapter_(
 			SM subjectModel,
 			String aspectName,
 			IntTransformer<? super S> getTransformer,
 			IntSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
+		return modifiableSubjectModelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(getTransformer), intSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1643,13 +1643,13 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Boolean> modifiableModelAspectAdapter(
+	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Boolean> modifiableBooleanSubjectModelAspectAdapter(
 			SM subjectModel,
 			String aspectName,
 			Predicate<? super S> getPredicate,
 			BooleanSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
+		return modifiableSubjectModelAspectAdapter(subjectModel, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1664,13 +1664,13 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Boolean> modifiableModelAspectAdapter_(
+	public static <S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<Boolean> modifiableBooleanSubjectModelAspectAdapter_(
 			SM subjectModel,
 			String aspectName,
 			Predicate<? super S> getPredicate,
 			BooleanSetClosure<? super S> setClosure
 	) {
-		return modifiableModelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
+		return modifiableSubjectModelAspectAdapter_(subjectModel, aspectName, TransformerTools.adapt(getPredicate), booleanSetBiClosureAdapter(setClosure));
 	}
 
 	/**
@@ -1687,13 +1687,13 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<V> modifiableModelAspectAdapter(
+	public static <V, S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<V> modifiableSubjectModelAspectAdapter(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiableModel(modifiableModelAspectAdapterFactory(subjectModel, aspectName, getTransformer, setClosure));
+		return modifiableModel(modifiableSubjectModelAspectAdapterFactory(subjectModel, aspectName, getTransformer, setClosure));
 	}
 
 	/**
@@ -1709,13 +1709,13 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<V> modifiableModelAspectAdapter_(
+	public static <V, S extends Model, SM extends PropertyValueModel<S>> ModifiablePropertyValueModel<V> modifiableSubjectModelAspectAdapter_(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return modifiableModel(modifiableModelAspectAdapterFactory_(subjectModel, aspectName, getTransformer, setClosure));
+		return modifiableModel(modifiableSubjectModelAspectAdapterFactory_(subjectModel, aspectName, getTransformer, setClosure));
 	}
 
 	/**
@@ -1732,13 +1732,13 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiableModelAspectAdapterFactory(
+	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiableSubjectModelAspectAdapterFactory(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return pluggableModifiableAspectAdapterFactory(modelAspectAdapterFactory(subjectModel, aspectName, getTransformer), setClosure);
+		return pluggableModifiableAspectAdapterFactory(subjectModelAspectAdapterFactory(subjectModel, aspectName, getTransformer), setClosure);
 	}
 
 	/**
@@ -1754,13 +1754,13 @@ public final class PropertyValueModelTools {
 	 * @param <S> the type of the subject
 	 * @param <SM> the type of the subject model
 	 */
-	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiableModelAspectAdapterFactory_(
+	public static <V, S extends Model, SM extends PropertyValueModel<S>> PluggableModifiablePropertyValueModel.Adapter.Factory<V> modifiableSubjectModelAspectAdapterFactory_(
 			SM subjectModel,
 			String aspectName,
 			Transformer<? super S, ? extends V> getTransformer,
 			BiClosure<? super S, ? super V> setClosure
 	) {
-		return pluggableModifiableAspectAdapterFactory_(modelAspectAdapterFactory_(subjectModel, aspectName, getTransformer), setClosure);
+		return pluggableModifiableAspectAdapterFactory_(subjectModelAspectAdapterFactory_(subjectModel, aspectName, getTransformer), setClosure);
 	}
 
 	/**

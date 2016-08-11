@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -520,30 +520,30 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		EclipseLinkJavaMultitenancy2_3 multitenancy = getJavaMultitenancy();
 		assertTrue(multitenancy.isMultitenant()); //multitenant by default from root entity
-		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertFalse(multitenancy.getSpecifiedMultitenant());
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("ROOT_ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
 
 		getJavaEntity().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		assertTrue(multitenancy.isMultitenant()); //multitenant by default from root entity
-		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertFalse(multitenancy.getSpecifiedMultitenant());
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("ROOT_ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
 
 		getJavaEntity().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		assertFalse(multitenancy.isMultitenant()); //not multitenant since inheritance strategy is table per class
-		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertFalse(multitenancy.getSpecifiedMultitenant());
 		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
 
 		EclipseLinkPersistenceUnitDefaults persistenceUnitDefaults = (EclipseLinkPersistenceUnitDefaults) getMappingFile().getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 		persistenceUnitDefaults.addTenantDiscriminatorColumn().setSpecifiedName("PU_TENANT_ID");
 		assertFalse(multitenancy.isMultitenant()); //not multitenant since inheritance strategy is table per class
-		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertFalse(multitenancy.getSpecifiedMultitenant());
 		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
 
 		//get the default tenant discriminator column from the persistence unit defaults instead of the root entity since inheritance strategy is table per class
 		multitenancy.setSpecifiedMultitenant(true);
-		assertTrue(multitenancy.isSpecifiedMultitenant());
+		assertTrue(multitenancy.getSpecifiedMultitenant());
 		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
 		assertEquals("PU_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());		
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,11 +37,11 @@ public class EclipseLinkNullOrmMultitenancy2_3
 		return false;
 	}
 
-	public boolean isDefaultMultitenant() {
+	public boolean getDefaultMultitenant() {
 		return false;
 	}
 
-	public boolean isSpecifiedMultitenant() {
+	public boolean getSpecifiedMultitenant() {
 		return false;
 	}
 
@@ -83,7 +83,7 @@ public class EclipseLinkNullOrmMultitenancy2_3
 		throw new UnsupportedOperationException("Multitenancy is only supported in EclipseLink version 2.3 and higher"); //$NON-NLS-1$
 	}
 
-	public boolean isDefaultIncludeCriteria() {
+	public boolean getDefaultIncludeCriteria() {
 		return false;
 	}
 

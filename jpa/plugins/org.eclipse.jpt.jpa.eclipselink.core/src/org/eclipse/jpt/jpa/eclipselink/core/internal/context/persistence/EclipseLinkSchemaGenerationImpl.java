@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -132,7 +132,7 @@ public class EclipseLinkSchemaGenerationImpl
 	}
 
 	public EclipseLinkDdlGenerationType getDefaultDdlGenerationType() {
-		return DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE;
+		return DEFAULT_DDL_GENERATION_TYPE;
 	}
 
 	// ********** OutputMode **********
@@ -155,7 +155,7 @@ public class EclipseLinkSchemaGenerationImpl
 	}
 
 	public EclipseLinkOutputMode getDefaultOutputMode() {
-		return DEFAULT_SCHEMA_GENERATION_OUTPUT_MODE;
+		return DEFAULT_OUTPUT_MODE;
 	}
 
 	// ********** CreateFileName **********
@@ -177,7 +177,7 @@ public class EclipseLinkSchemaGenerationImpl
 	}
 
 	public String getDefaultCreateFileName() {
-		return DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME;
+		return DEFAULT_CREATE_FILE_NAME;
 	}
 
 	// ********** dropFileName **********
@@ -199,7 +199,7 @@ public class EclipseLinkSchemaGenerationImpl
 	}
 
 	public String getDefaultDropFileName() {
-		return DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME;
+		return DEFAULT_DROP_FILE_NAME;
 	}
 
 	// ********** applicationLocation **********
@@ -223,6 +223,6 @@ public class EclipseLinkSchemaGenerationImpl
 	}
 
 	public String getDefaultApplicationLocation() {
-		return DEFAULT_SCHEMA_GENERATION_APPLICATION_LOCATION;
+		return DEFAULT_APPLICATION_LOCATION;
 	}
 }

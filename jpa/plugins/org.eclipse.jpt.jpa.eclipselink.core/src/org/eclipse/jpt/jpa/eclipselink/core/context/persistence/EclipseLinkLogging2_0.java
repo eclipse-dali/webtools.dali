@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,65 +15,65 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 public interface EclipseLinkLogging2_0
 	extends EclipseLinkLogging
 {
-	public static final String CATEGORY_PREFIX_ = "eclipselink.logging.level."; //$NON-NLS-1$
+	public String CATEGORY_PREFIX_ = "eclipselink.logging.level."; //$NON-NLS-1$
 
-	Boolean getDefaultConnection();
 	Boolean getConnection();
 	void setConnection(Boolean connection);
-		static final String CONNECTION_PROPERTY = "connection"; //$NON-NLS-1$
+		String CONNECTION_PROPERTY = "connection"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CONNECTION = "eclipselink.logging.connection"; //$NON-NLS-1$
-		static final Boolean DEFAULT_CONNECTION = Boolean.TRUE;
+		String ECLIPSELINK_CONNECTION = "eclipselink.logging.connection"; //$NON-NLS-1$
+	Boolean getDefaultConnection();
+		String DEFAULT_CONNECTION_PROPERTY = "defaultConnection"; //$NON-NLS-1$
+		Boolean DEFAULT_CONNECTION = Boolean.TRUE;
 		
-	EclipseLinkLoggingLevel getCategoriesDefaultLevel();
 	EclipseLinkLoggingLevel getLevel(String category);
 	void setLevel(String category, EclipseLinkLoggingLevel level);
+	EclipseLinkLoggingLevel getCategoriesDefaultLevel();
 	void setDefaultLevel(EclipseLinkLoggingLevel level);
-	static final String CATEGORIES_DEFAULT_LOGGING_PROPERTY = "categoriesDefaultLoggingLevel"; //$NON-NLS-1$
+	String CATEGORIES_DEFAULT_LOGGING_PROPERTY = "categoriesDefaultLoggingLevel"; //$NON-NLS-1$
 
-		static final String SQL_CATEGORY_LOGGING_PROPERTY = "sqlLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "sql"; //$NON-NLS-1$
+		String SQL_CATEGORY_LOGGING_PROPERTY = "sqlLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "sql"; //$NON-NLS-1$
 	
-		static final String TRANSACTION_CATEGORY_LOGGING_PROPERTY = "transactionLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_TRANSACTION_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "transaction"; //$NON-NLS-1$
+		String TRANSACTION_CATEGORY_LOGGING_PROPERTY = "transactionLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_TRANSACTION_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "transaction"; //$NON-NLS-1$
 	
-		static final String EVENT_CATEGORY_LOGGING_PROPERTY = "eventLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_EVENT_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "event"; //$NON-NLS-1$
+		String EVENT_CATEGORY_LOGGING_PROPERTY = "eventLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_EVENT_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "event"; //$NON-NLS-1$
 	
-		static final String CONNECTION_CATEGORY_LOGGING_PROPERTY = "connectionLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_CONNECTION_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "connection"; //$NON-NLS-1$
+		String CONNECTION_CATEGORY_LOGGING_PROPERTY = "connectionLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_CONNECTION_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "connection"; //$NON-NLS-1$
 	
-		static final String QUERY_CATEGORY_LOGGING_PROPERTY = "queryLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_QUERY_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "query"; //$NON-NLS-1$
+		String QUERY_CATEGORY_LOGGING_PROPERTY = "queryLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_QUERY_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "query"; //$NON-NLS-1$
 	
-		static final String CACHE_CATEGORY_LOGGING_PROPERTY = "cacheLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_CACHE_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "cache"; //$NON-NLS-1$
+		String CACHE_CATEGORY_LOGGING_PROPERTY = "cacheLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_CACHE_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "cache"; //$NON-NLS-1$
 	
-		static final String PROPAGATION_CATEGORY_LOGGING_PROPERTY = "propagationLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_PROPAGATION_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "propagation"; //$NON-NLS-1$
+		String PROPAGATION_CATEGORY_LOGGING_PROPERTY = "propagationLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_PROPAGATION_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "propagation"; //$NON-NLS-1$
 	
-		static final String SEQUENCING_CATEGORY_LOGGING_PROPERTY = "sequencingLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_SEQUENCING_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "sequencing"; //$NON-NLS-1$
+		String SEQUENCING_CATEGORY_LOGGING_PROPERTY = "sequencingLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_SEQUENCING_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "sequencing"; //$NON-NLS-1$
 	
-		static final String EJB_CATEGORY_LOGGING_PROPERTY = "ejbLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_EJB_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "ejb"; //$NON-NLS-1$
+		String EJB_CATEGORY_LOGGING_PROPERTY = "ejbLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_EJB_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "ejb"; //$NON-NLS-1$
 	
-		static final String DMS_CATEGORY_LOGGING_PROPERTY = "dmsLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_DMS_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "dms"; //$NON-NLS-1$
+		String DMS_CATEGORY_LOGGING_PROPERTY = "dmsLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_DMS_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "dms"; //$NON-NLS-1$
 	
-		static final String EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY = "ejb_or_metadataLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_EJB_OR_METADATA_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "ejb_or_metadata"; //$NON-NLS-1$
+		String EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY = "ejb_or_metadataLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_EJB_OR_METADATA_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "ejb_or_metadata"; //$NON-NLS-1$
 	
-		static final String JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY = "jpa_metamodelLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_JPA_METAMODEL_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "jpa_metamodel"; //$NON-NLS-1$
+		String JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY = "jpa_metamodelLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_JPA_METAMODEL_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "jpa_metamodel"; //$NON-NLS-1$
 
-		static final String WEAVER_CATEGORY_LOGGING_PROPERTY = "weaverLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_WEAVER_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "weaver"; //$NON-NLS-1$
+		String WEAVER_CATEGORY_LOGGING_PROPERTY = "weaverLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_WEAVER_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "weaver"; //$NON-NLS-1$
 
-		static final String PROPERTIES_CATEGORY_LOGGING_PROPERTY = "propertiesLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_PROPERTIES_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "properties"; //$NON-NLS-1$
+		String PROPERTIES_CATEGORY_LOGGING_PROPERTY = "propertiesLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_PROPERTIES_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "properties"; //$NON-NLS-1$
 
-		static final String SERVER_CATEGORY_LOGGING_PROPERTY = "serverLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_SERVER_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "server"; //$NON-NLS-1$
-
+		String SERVER_CATEGORY_LOGGING_PROPERTY = "serverLoggingLevel"; //$NON-NLS-1$
+		String ECLIPSELINK_SERVER_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "server"; //$NON-NLS-1$
 }

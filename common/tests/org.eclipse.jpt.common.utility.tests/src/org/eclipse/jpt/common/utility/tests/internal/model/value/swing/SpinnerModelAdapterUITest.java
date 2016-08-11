@@ -84,7 +84,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildBirthDateHolder(PropertyValueModel<TestModel> vm) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				vm,
 				TestModel.BIRTH_DATE_PROPERTY,
 				TestModel.BIRTH_DATE_TRANSFORMER,
@@ -97,7 +97,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildAgeHolder(PropertyValueModel<TestModel> vm) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				vm,
 				TestModel.AGE_PROPERTY,
 				TestModel.AGE_TRANSFORMER,
@@ -110,7 +110,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildEyeColorHolder(PropertyValueModel<TestModel> vm) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				vm,
 				TestModel.EYE_COLOR_PROPERTY,
 				TestModel.EYE_COLOR_TRANSFORMER,

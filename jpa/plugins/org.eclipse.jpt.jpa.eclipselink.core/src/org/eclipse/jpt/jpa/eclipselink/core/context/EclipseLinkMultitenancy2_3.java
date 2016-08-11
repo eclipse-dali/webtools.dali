@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,13 +27,13 @@ import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 public interface EclipseLinkMultitenancy2_3
 	extends JpaContextModel
 {
-
 	boolean isMultitenant();
-	boolean isDefaultMultitenant();
-		String DEFAULT_MULTITENANT_PROPERTY = "defaultMultitenant"; //$NON-NLS-1$
-	boolean isSpecifiedMultitenant();
-	void setSpecifiedMultitenant(boolean isMultitenant);
+		String MULTITENANT_PROPERTY = "multitenant"; //$NON-NLS-1$
+	boolean getSpecifiedMultitenant();
+	void setSpecifiedMultitenant(boolean multitenant);
 		String SPECIFIED_MULTITENANT_PROPERTY = "specifiedMultitenant"; //$NON-NLS-1$
+	boolean getDefaultMultitenant();
+		String DEFAULT_MULTITENANT_PROPERTY = "defaultMultitenant"; //$NON-NLS-1$
 
 	// ********** type **********
 
@@ -42,11 +42,10 @@ public interface EclipseLinkMultitenancy2_3
 	 * If getSpecifiedType() returns null, then return getDefaultType()
 	 */
 	EclipseLinkMultitenantType2_3 getType();
-
-	EclipseLinkMultitenantType2_3 getSpecifiedType();	
+		String TYPE_PROPERTY = "type"; //$NON-NLS-1$
+	EclipseLinkMultitenantType2_3 getSpecifiedType();
 	void setSpecifiedType(EclipseLinkMultitenantType2_3 type);
 		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
-
 	EclipseLinkMultitenantType2_3 getDefaultType();		
 		String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
 		EclipseLinkMultitenantType2_3 DEFAULT_TYPE = EclipseLinkMultitenantType2_3.SINGLE_TABLE;
@@ -59,12 +58,12 @@ public interface EclipseLinkMultitenancy2_3
 	 * If getSpecifiedIncludeCriteria() returns null, then return isDefaultIncludeCriteria()
 	 */
 	boolean isIncludeCriteria();
+		String INCLUDE_CRITERIA_PROPERTY = "includeCriteria"; //$NON-NLS-1$
 
 	Boolean getSpecifiedIncludeCriteria();
 	void setSpecifiedIncludeCriteria(Boolean includeCriteria);
 		String SPECIFIED_INCLUDE_CRITERIA_PROPERTY = "specifiedIncludeCriteria"; //$NON-NLS-1$
-
-	boolean isDefaultIncludeCriteria();
+	boolean getDefaultIncludeCriteria();
 		String DEFAULT_INCLUDE_CRITERIA_PROPERTY = "defaultIncludeCriteria"; //$NON-NLS-1$
 		boolean DEFAULT_INCLUDE_CRITERIA = true;
 
@@ -158,5 +157,4 @@ public interface EclipseLinkMultitenancy2_3
 	 * have the primaryKey option set to true
 	 */
  	boolean usesPrimaryKeyTenantDiscriminatorColumns();
-
 }

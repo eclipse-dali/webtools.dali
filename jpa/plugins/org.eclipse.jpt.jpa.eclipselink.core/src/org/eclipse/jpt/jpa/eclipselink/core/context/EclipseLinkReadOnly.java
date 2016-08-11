@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,12 +27,11 @@ public interface EclipseLinkReadOnly
 	extends JpaContextModel
 {
 	boolean isReadOnly();
-
-	boolean isDefaultReadOnly();
-		String DEFAULT_READ_ONLY_PROPERTY = "defaultReadOnly"; //$NON-NLS-1$
-		boolean DEFAULT_READ_ONLY = false;
-
+		String READ_ONLY_PROPERTY = "readOnly"; //$NON-NLS-1$
 	Boolean getSpecifiedReadOnly();
 	void setSpecifiedReadOnly(Boolean newSpecifiedReadOnly);
 		String SPECIFIED_READ_ONLY_PROPERTY = "specifiedReadOnly"; //$NON-NLS-1$
+	boolean getDefaultReadOnly();
+		String DEFAULT_READ_ONLY_PROPERTY = "defaultReadOnly"; //$NON-NLS-1$
+		boolean DEFAULT_READ_ONLY = false;
 }

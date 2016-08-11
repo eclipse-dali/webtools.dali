@@ -345,11 +345,11 @@ public class TreeLabelProviderUiTest
 	}
 
 	/* CU private */ static PropertyValueModel<ImageDescriptor> buildImageDescriptorModel(Vehicle vehicle) {
-		return PropertyValueModelTools.modelAspectAdapter(vehicle, Vehicle.IMAGE_DESCRIPTOR_PROPERTY, Vehicle.IMAGE_DESCRIPTOR_TRANSFORMER);
+		return PropertyValueModelTools.subjectAspectAdapter(vehicle, Vehicle.IMAGE_DESCRIPTOR_PROPERTY, Vehicle.IMAGE_DESCRIPTOR_TRANSFORMER);
 	}
 
 	/* CU private */ static PropertyValueModel<String> buildTextModel(Vehicle vehicle) {
-		return PropertyValueModelTools.modelAspectAdapter(vehicle, Vehicle.TEXT_PROPERTY, Vehicle.TEXT_TRANSFORMER);
+		return PropertyValueModelTools.subjectAspectAdapter(vehicle, Vehicle.TEXT_PROPERTY, Vehicle.TEXT_TRANSFORMER);
 	}
 
 	/* CU private */ static PropertyValueModel<String> buildDescriptionModel(Vehicle vehicle) {

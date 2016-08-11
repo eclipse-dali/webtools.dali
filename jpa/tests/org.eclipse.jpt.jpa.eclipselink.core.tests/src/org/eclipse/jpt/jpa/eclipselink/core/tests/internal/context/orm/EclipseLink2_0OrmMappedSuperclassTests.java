@@ -195,7 +195,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to false, check override
@@ -205,7 +205,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -215,7 +215,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// clear xml read only, set java read only to true, check defaults
@@ -226,7 +226,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertTrue(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set metadataComplete to True, check defaults not from java
@@ -236,7 +236,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 
 		ormContextMappedSuperclass.setSpecifiedMetadataComplete(null);
@@ -248,7 +248,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertTrue(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -258,7 +258,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertTrue(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// clear xml read only, set java read only to false, check defaults
@@ -269,7 +269,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to false, check override
@@ -279,7 +279,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -289,7 +289,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 	}
 	
@@ -303,7 +303,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to true, check resource
@@ -312,7 +312,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to false, check resource
@@ -321,7 +321,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to null, check resource
@@ -330,7 +330,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());	
 	}
 	
@@ -2218,22 +2218,22 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		Cacheable2_0 cacheable = ((CacheableReference2_0) ormPersistentType.getMapping()).getCacheable();
 		PersistenceUnit2_0 persistenceUnit2_0 = getPersistenceUnit();
 		assertEquals(SharedCacheMode2_0.DISABLE_SELECTIVE, persistenceUnit2_0.getSharedCacheMode());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ALL);
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.UNSPECIFIED);
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 	}
 	
 	public void testIsDefaultCacheableFromSuperType() throws Exception {
@@ -2246,38 +2246,38 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) ormPersistentType.getMapping();
 		Cacheable2_0 subCacheable = ((CacheableReference2_0) subMappedSuperclass).getCacheable();
 		Cacheable2_0 cacheable = ((CacheableReference2_0) mappedSuperclass).getCacheable();
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		PersistenceUnit2_0 persistenceUnit2_0 = getPersistenceUnit();
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 	
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(null);
 		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 				
 		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 		
 		cacheable.setSpecifiedCacheable(Boolean.TRUE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 	}
 	
 	public void testIsDefaultCacheableFromJava() throws Exception {
@@ -2291,37 +2291,37 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		
 		Cacheable2_0 javaCacheable = ((CacheableReference2_0) ormPersistentType.getJavaPersistentType().getMapping()).getCacheable();
 		javaCacheable.setSpecifiedCacheable(Boolean.TRUE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		PersistenceUnit2_0 persistenceUnit2_0 = getPersistenceUnit();
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 				
 		javaCacheable.setSpecifiedCacheable(Boolean.FALSE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 		
 		javaCacheable.setSpecifiedCacheable(Boolean.TRUE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		javaCacheable.setSpecifiedCacheable(Boolean.FALSE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 	}
 	
 	public void testIsDefaultCacheableFromMappedSuperClass() throws Exception {
@@ -2334,37 +2334,37 @@ public class EclipseLink2_0OrmMappedSuperclassTests
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) ormPersistentType.getMapping();
 		Cacheable2_0 subCacheable = ((CacheableReference2_0) subMappedSuperclass).getCacheable();
 		Cacheable2_0 cacheable = ((CacheableReference2_0) mappedSuperclass).getCacheable();
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		PersistenceUnit2_0 persistenceUnit2_0 = getPersistenceUnit();
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 	
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(null);
 		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.DISABLE_SELECTIVE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 				
 		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(true, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.ENABLE_SELECTIVE);
-		assertEquals(false, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 		
 		cacheable.setSpecifiedCacheable(Boolean.TRUE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode2_0.NONE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(true, subCacheable.getDefaultCacheable());
+		assertEquals(false, cacheable.getDefaultCacheable());
 	}
 }

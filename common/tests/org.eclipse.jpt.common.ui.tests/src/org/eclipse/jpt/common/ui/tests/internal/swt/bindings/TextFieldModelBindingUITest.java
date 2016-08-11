@@ -67,7 +67,7 @@ public class TextFieldModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameModel(PropertyValueModel<TestModel> vm) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				vm,
 				TestModel.NAME_PROPERTY,
 				TestModel.NAME_TRANSFORMER,

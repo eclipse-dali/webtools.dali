@@ -1132,7 +1132,7 @@ public class TableModelAdapterTest {
 		static final int TITLE_COLUMN = 1;
 
 		private ModifiablePropertyValueModel<String> buildManagerHolder(Employee subject) {
-			return PropertyValueModelTools.modifiableModelAspectAdapter(
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
 					subject,
 					Employee.MANAGER_PROPERTY,
 					Employee.MANAGER_TRANSFORMER,
@@ -1141,7 +1141,7 @@ public class TableModelAdapterTest {
 		}
 
 		private ModifiablePropertyValueModel<String> buildNameHolder(Employee subject) {
-			return PropertyValueModelTools.modifiableModelAspectAdapter(
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
 					subject,
 					Employee.NAME_PROPERTY,
 					Employee.NAME_TRANSFORMER,
@@ -1150,7 +1150,7 @@ public class TableModelAdapterTest {
 		}
 
 		private ModifiablePropertyValueModel<String> buildTitleHolder(Employee subject) {
-			return PropertyValueModelTools.modifiableModelAspectAdapter(
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
 					subject,
 					Employee.TITLE_PROPERTY,
 					Employee.TITLE_TRANSFORMER,

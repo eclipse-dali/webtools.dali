@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,11 +51,12 @@ public interface EclipseLinkTenantDiscriminatorColumn2_3
 	 * default primaryKey setting.
 	 */
 	boolean isPrimaryKey();
+		String PRIMARY_KEY_PROPERTY = "primaryKey"; //$NON-NLS-1$
 	Boolean getSpecifiedPrimaryKey();
 		String SPECIFIED_PRIMARY_KEY_PROPERTY = "specifiedPrimaryKey"; //$NON-NLS-1$
-	boolean isDefaultPrimaryKey();
+	boolean getDefaultPrimaryKey();
 		String DEFAULT_PRIMARY_KEY_PROPERTY = "defaultPrimaryKey"; //$NON-NLS-1$
-	boolean DEFAULT_PRIMARY_KEY = false;
+		boolean DEFAULT_PRIMARY_KEY = false;
 
 
 	// ********** parent adapter **********

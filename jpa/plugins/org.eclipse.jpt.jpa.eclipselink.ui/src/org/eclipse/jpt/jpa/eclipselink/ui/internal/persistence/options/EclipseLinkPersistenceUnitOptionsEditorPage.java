@@ -45,6 +45,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTarge
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkTargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -722,18 +723,13 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultIncludeDescriptorQueriesModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(
-			this.optionsModel,
-			EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getIncludeDescriptorQueries() != null) {
-					return null;
-				}
-				return this.subject.getDefaultIncludeDescriptorQueries();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.optionsModel,
+				EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY,
+				m -> m.getIncludeDescriptorQueries(),
+				EclipseLinkOptions.DEFAULT_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY,
+				m -> m.getDefaultIncludeDescriptorQueries()
+			);
 	}
 
 
@@ -763,17 +759,12 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultTemporalMutableModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, Boolean>(
-			this.optionsModel,
-			EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getTemporalMutable() != null) {
-					return null;
-				}
-				return this.subject.getDefaultTemporalMutable();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.optionsModel,
+				EclipseLinkOptions.TEMPORAL_MUTABLE_PROPERTY,
+				m -> m.getTemporalMutable(),
+				EclipseLinkOptions.DEFAULT_TEMPORAL_MUTABLE_PROPERTY,
+				m -> m.getDefaultTemporalMutable()
+			);
 	}
 }

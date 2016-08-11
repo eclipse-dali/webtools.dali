@@ -26,8 +26,9 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionTy
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkBatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -265,18 +266,13 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultNativeSqlModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkConnection.NATIVE_SQL_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getNativeSql() != null) {
-					return null;
-				}
-				return this.subject.getDefaultNativeSql();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkConnection.NATIVE_SQL_PROPERTY,
+				c -> c.getNativeSql(),
+				EclipseLinkConnection.DEFAULT_NATIVE_SQL_PROPERTY,
+				c -> c.getDefaultNativeSql()
+			);
 	}
 
 
@@ -324,7 +320,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_CACHE_STATEMENTS_SIZE_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), c -> c.getDefaultCacheStatementsSize());
 		}
 
 		@Override

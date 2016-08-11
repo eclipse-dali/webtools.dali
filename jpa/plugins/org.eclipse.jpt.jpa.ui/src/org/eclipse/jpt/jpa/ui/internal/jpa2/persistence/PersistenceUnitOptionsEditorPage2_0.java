@@ -135,7 +135,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), Options2_0.DEFAULT_LOCK_TIMEOUT_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), o -> o.getDefaultLockTimeout());
 		}
 
 		@Override
@@ -180,7 +180,7 @@ public class PersistenceUnitOptionsEditorPage2_0
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), Options2_0.DEFAULT_QUERY_TIMEOUT_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), o -> o.getDefaultQueryTimeout());
 		}
 
 		@Override

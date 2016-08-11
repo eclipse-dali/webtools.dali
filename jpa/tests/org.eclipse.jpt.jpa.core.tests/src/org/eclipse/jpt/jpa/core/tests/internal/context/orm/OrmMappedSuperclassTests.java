@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -178,18 +178,18 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		XmlMappedSuperclass mappedSuperclassResource = getXmlEntityMappings().getMappedSuperclasses().get(0);
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(ormMappedSuperclass.isOverrideMetadataComplete());
+		assertFalse(ormMappedSuperclass.getOverrideMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		getXmlEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(ormMappedSuperclass.isOverrideMetadataComplete());
+		assertTrue(ormMappedSuperclass.getOverrideMetadataComplete());
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(ormMappedSuperclass.isOverrideMetadataComplete());
+		assertFalse(ormMappedSuperclass.getOverrideMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 	}
 	

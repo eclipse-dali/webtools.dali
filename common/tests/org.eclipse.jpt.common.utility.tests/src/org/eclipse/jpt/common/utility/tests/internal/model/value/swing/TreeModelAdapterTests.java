@@ -737,7 +737,7 @@ public class TreeModelAdapterTests extends TestCase {
 			};
 		}
 		protected ModifiablePropertyValueModel<String> buildNameAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectAspectAdapter(
 				this.getTestModel(),
 				TestModel.NAME_PROPERTY,
 				TestModel.NAME_TRANSFORMER,

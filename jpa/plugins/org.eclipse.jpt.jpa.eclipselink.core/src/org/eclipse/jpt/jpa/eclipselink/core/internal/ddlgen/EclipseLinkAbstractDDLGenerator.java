@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -272,10 +272,10 @@ public abstract class EclipseLinkAbstractDDLGenerator extends AbstractJptGenerat
 
 		this.putProperty(properties,  
 			EclipseLinkSchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME,
-			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
+			EclipseLinkSchemaGeneration.DEFAULT_CREATE_FILE_NAME);
 		this.putProperty(properties,  
 			EclipseLinkSchemaGeneration.ECLIPSELINK_DROP_FILE_NAME,
-			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME);
+			EclipseLinkSchemaGeneration.DEFAULT_DROP_FILE_NAME);
 	}
 	
 	private void buildConnectionPoolingProperties(Properties properties) {

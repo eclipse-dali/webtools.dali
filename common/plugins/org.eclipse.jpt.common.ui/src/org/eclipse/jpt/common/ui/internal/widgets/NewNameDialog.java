@@ -121,7 +121,7 @@ public class NewNameDialog
 		}
 
 		private ModifiablePropertyValueModel<String> buildNameModel() {
-			return PropertyValueModelTools.modifiableModelAspectAdapter(
+			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 					this.getSubjectHolder(),
 					NewNameStateObject.NAME_PROPERTY,
 					NewNameStateObject.NAME_TRANSFORMER,

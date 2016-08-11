@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
@@ -254,18 +255,13 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultTimestampModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkLogging.TIMESTAMP_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getTimestamp() != null) {
-					return null;
-				}
-				return this.subject.getDefaultTimestamp();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkLogging.TIMESTAMP_PROPERTY,
+				m -> m.getTimestamp(),
+				EclipseLinkLogging.DEFAULT_TIMESTAMP_PROPERTY,
+				m -> m.getDefaultTimestamp()
+			);
 	}
 
 
@@ -295,18 +291,13 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultThreadModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkLogging.THREAD_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getThread() != null) {
-					return null;
-				}
-				return this.subject.getDefaultThread();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkLogging.THREAD_PROPERTY,
+				m -> m.getThread(),
+				EclipseLinkLogging.DEFAULT_THREAD_PROPERTY,
+				m -> m.getDefaultThread()
+			);
 	}
 
 
@@ -336,18 +327,13 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultSessionModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkLogging.SESSION_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSession() != null) {
-					return null;
-				}
-				return this.subject.getDefaultSession();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkLogging.SESSION_PROPERTY,
+				m -> m.getSession(),
+				EclipseLinkLogging.DEFAULT_SESSION_PROPERTY,
+				m -> m.getDefaultSession()
+			);
 	}
 
 
@@ -377,17 +363,12 @@ public class EclipseLinkLoggingComposite<T extends EclipseLinkLogging>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultExceptionsModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkLogging.EXCEPTIONS_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getExceptions() != null) {
-					return null;
-				}
-				return this.subject.getDefaultExceptions();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkLogging.EXCEPTIONS_PROPERTY,
+				m -> m.getExceptions(),
+				EclipseLinkLogging.DEFAULT_EXCEPTIONS_PROPERTY,
+				m -> m.getDefaultExceptions()
+			);
 	}
 }

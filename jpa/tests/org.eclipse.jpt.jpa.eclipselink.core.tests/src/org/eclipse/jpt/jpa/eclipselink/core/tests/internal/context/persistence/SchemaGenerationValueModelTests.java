@@ -84,11 +84,11 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 
 	/** ****** DdlGenerationType ******* */
 	private ModifiablePropertyValueModel<EclipseLinkDdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_PROPERTY,
-				EclipseLinkSchemaGeneration.DDL_GENERATION_TYPE_TRANSFORMER,
-				EclipseLinkSchemaGeneration.SET_DDL_GENERATION_TYPE_CLOSURE
+				sg -> sg.getDdlGenerationType(),
+				(sg, value) -> sg.setDdlGenerationType(value)
 			);
 	}
 
@@ -102,11 +102,11 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 
 	/** ****** OutputMode ******* */
 	private ModifiablePropertyValueModel<EclipseLinkOutputMode> buildOutputModeAA(PropertyValueModel<EclipseLinkSchemaGeneration> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkSchemaGeneration.OUTPUT_MODE_PROPERTY,
-				EclipseLinkSchemaGeneration.OUTPUT_MODE_TRANSFORMER,
-				EclipseLinkSchemaGeneration.SET_OUTPUT_MODE_CLOSURE
+				sg -> sg.getOutputMode(),
+				(sg, value) -> sg.setOutputMode(value)
 			);
 	}
 
@@ -122,12 +122,12 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 		/** ****** DdlGenerationType ******* */
 		this.verifyDdlGenerationTypeAAValue(DDL_GENERATION_TYPE_TEST_VALUE);
 		assertEquals(
-			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE,
+			EclipseLinkSchemaGeneration.DEFAULT_DDL_GENERATION_TYPE,
 			this.schemaGen.getDefaultDdlGenerationType());
 		/** ****** OutputMode ******* */
 		this.verifyOutputModeAAValue(OUTPUT_MODE_TEST_VALUE);
 		assertEquals(
-			EclipseLinkSchemaGeneration.DEFAULT_SCHEMA_GENERATION_OUTPUT_MODE,
+			EclipseLinkSchemaGeneration.DEFAULT_OUTPUT_MODE,
 			this.schemaGen.getDefaultOutputMode());
 	}
 

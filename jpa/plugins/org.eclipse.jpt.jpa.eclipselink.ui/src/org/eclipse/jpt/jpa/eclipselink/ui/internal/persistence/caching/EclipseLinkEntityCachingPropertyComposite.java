@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -286,10 +287,10 @@ public class EclipseLinkEntityCachingPropertyComposite
 	}
 
 	private ListValueModel<Boolean> buildDefaultAndNonDefaultSharedCacheListModel() {
-		ArrayList<ListValueModel<Boolean>> holders = new ArrayList<>(2);
-		holders.add(buildSharedCacheListModel());
-		holders.add(buildDefaultSharedCacheListModel());
-		return CompositeListValueModel.forModels(holders);
+		ArrayList<ListValueModel<Boolean>> models = new ArrayList<>(2);
+		models.add(buildSharedCacheListModel());
+		models.add(buildDefaultSharedCacheListModel());
+		return CompositeListValueModel.forModels(models);
 	}
 
 	private ListValueModel<Boolean> buildSharedCacheListModel() {
@@ -305,15 +306,12 @@ public class EclipseLinkEntityCachingPropertyComposite
 	}
 
 	private PropertyValueModel<Boolean> buildDefaultSharedCacheModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(this.buildCachingModel(), EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Boolean b = this.subject.getSharedCacheDefault();
-				if (b == null) {
-					b = this.subject.getDefaultSharedCacheDefault();
-				}
-				return b;
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.buildCachingModel(),
+				EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY,
+				c -> c.getSharedCacheDefault(),
+				EclipseLinkCaching.DEFAULT_SHARED_CACHE_DEFAULT_PROPERTY,
+				c -> c.getDefaultSharedCacheDefault()
+			);
 	}
 }

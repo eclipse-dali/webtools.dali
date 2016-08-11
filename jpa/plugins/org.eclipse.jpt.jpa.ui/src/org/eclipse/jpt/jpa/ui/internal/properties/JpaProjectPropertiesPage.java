@@ -316,7 +316,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildConnectionModel_() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.buildDataSourceModel(),
 				JpaDataSource.CONNECTION_PROFILE_NAME_PROPERTY,
 				JpaDataSource.CONNECTION_PROFILE_NAME_TRANSFORMER,
@@ -348,7 +348,7 @@ public class JpaProjectPropertiesPage
 	 * (used to enable the "Connect" link)
 	 */
 	private PropertyValueModel<Boolean> buildDisconnectedModel() {
-		return PropertyValueModelTools.aspectAdapter(
+		return PropertyValueModelTools.subjectModelAspectAdapter(
 				this.connectionProfileModel,
 				new ConnectionProfilePropertyAspectAdapter.Factory<>(TransformerTools.adapt(ConnectionProfile.DISCONNECTED_PREDICATE))
 			);
@@ -375,7 +375,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserOverrideDefaultCatalogModel_() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.jpaProjectModel,
 				JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY,
 				JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_TRANSFORMER,
@@ -399,7 +399,7 @@ public class JpaProjectPropertiesPage
 	 * Database-determined default catalog
 	 */
 	private PropertyValueModel<String> buildDatabaseDefaultCatalogModel() {
-		return PropertyValueModelTools.aspectAdapter(
+		return PropertyValueModelTools.subjectModelAspectAdapter(
 				this.connectionProfileModel,
 				new ConnectionProfilePropertyAspectAdapter.Factory<>(CONNECTION_PROFILE_DATABASE_DEFAULT_CATALOG_TRANSFORMER)
 			);
@@ -450,7 +450,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<String> buildUserOverrideDefaultSchemaModel_() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.jpaProjectModel,
 				JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY,
 				JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_TRANSFORMER,
@@ -505,7 +505,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildDiscoverAnnotatedClassesModel_() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableBooleanSubjectModelAspectAdapter(
 				this.jpaProjectModel,
 				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PROPERTY,
 				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PREDICATE,
@@ -540,7 +540,7 @@ public class JpaProjectPropertiesPage
 	 * The folder where the source for the generated Canonical Metamodel is written.
 	 */
 	private ModifiablePropertyValueModel<String> buildMetamodelSourceFolderModel_() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.jpaProject2_0Model,
 				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_PROPERTY,
 				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_TRANSFORMER,

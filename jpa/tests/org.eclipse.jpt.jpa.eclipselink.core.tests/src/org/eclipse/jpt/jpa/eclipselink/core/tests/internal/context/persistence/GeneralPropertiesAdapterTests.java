@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2016 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -83,7 +83,7 @@ public class GeneralPropertiesAdapterTests extends EclipseLinkPersistenceUnitTes
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
 		if (propertyName.equals(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
-			modelValue = this.generalProperties.getExcludeEclipselinkOrm();
+			modelValue = this.generalProperties.getExcludeEclipseLinkOrm();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;
@@ -92,7 +92,7 @@ public class GeneralPropertiesAdapterTests extends EclipseLinkPersistenceUnitTes
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		if (propertyName.equals(EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
-			this.generalProperties.setExcludeEclipselinkOrm((Boolean) newValue);
+			this.generalProperties.setExcludeEclipseLinkOrm((Boolean) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
 	}

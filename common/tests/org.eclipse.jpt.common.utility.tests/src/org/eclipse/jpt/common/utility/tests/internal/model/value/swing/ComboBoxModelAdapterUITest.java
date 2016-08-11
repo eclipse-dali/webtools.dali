@@ -86,7 +86,7 @@ public class ComboBoxModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> vm) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				vm,
 				TestModel.COLOR_PROPERTY,
 				TestModel.COLOR_TRANSFORMER,

@@ -531,7 +531,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.NAME_PROPERTY,
 				Person.NAME_TRANSFORMER,
@@ -551,7 +551,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildBirthDateAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.BIRTH_DATE_PROPERTY,
 				Person.BIRTH_DATE_TRANSFORMER,
@@ -571,7 +571,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildGoneWestDateAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.GONE_WEST_DATE_PROPERTY,
 				Person.GONE_WEST_DATE_TRANSFORMER,
@@ -591,7 +591,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Object> buildEyeColorAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.EYE_COLOR_PROPERTY,
 				Person.EYE_COLOR_TRANSFORMER,
@@ -614,7 +614,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildEvilAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.EVIL_PROPERTY,
 				TransformerTools.adapt(Person.EVIL_PREDICATE),
@@ -634,7 +634,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildRankAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.RANK_PROPERTY,
 				Person.RANK_TRANSFORMER,
@@ -654,7 +654,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<Number> buildAdventureCountAdapter() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.selectedPersonHolder,
 				Person.ADVENTURE_COUNT_PROPERTY,
 				Person.ADVENTURE_COUNT_TRANSFORMER,

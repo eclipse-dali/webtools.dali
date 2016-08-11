@@ -169,7 +169,7 @@ public class EclipseLinkOrmEntityTests
 		assertNull(resourceEntity.getReadOnly());
 		assertFalse(javaContextEntity.getReadOnly().isReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to false, check override
@@ -179,7 +179,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getReadOnly());
 		assertFalse(javaContextEntity.getReadOnly().isReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -189,7 +189,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getReadOnly());
 		assertFalse(javaContextEntity.getReadOnly().isReadOnly());
 		assertTrue(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// clear xml read only, set java read only to true, check defaults
@@ -200,7 +200,7 @@ public class EclipseLinkOrmEntityTests
 		assertNull(resourceEntity.getReadOnly());
 		assertTrue(javaContextEntity.getReadOnly().isReadOnly());
 		assertTrue(ormContextEntity.getReadOnly().isReadOnly());
-		assertTrue(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 
 		// set metadataComplete to True, check defaults not from java
@@ -210,7 +210,7 @@ public class EclipseLinkOrmEntityTests
 		assertNull(resourceEntity.getReadOnly());
 		assertTrue(javaContextEntity.getReadOnly().isReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 
 		ormContextEntity.setSpecifiedMetadataComplete(null);
@@ -222,7 +222,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getReadOnly());
 		assertTrue(javaContextEntity.getReadOnly().isReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertTrue(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -232,7 +232,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getReadOnly());
 		assertTrue(javaContextEntity.getReadOnly().isReadOnly());
 		assertTrue(ormContextEntity.getReadOnly().isReadOnly());
-		assertTrue(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 				
 		// clear xml read only, set java read only to false, check defaults
@@ -243,7 +243,7 @@ public class EclipseLinkOrmEntityTests
 		assertNull(resourceEntity.getReadOnly());
 		assertFalse(javaContextEntity.getReadOnly().isReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		
@@ -255,7 +255,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.FALSE, resourceEntity.getReadOnly());
 		assertFalse(javaContextEntity.getReadOnly().isReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -265,7 +265,7 @@ public class EclipseLinkOrmEntityTests
 		assertEquals(Boolean.TRUE, resourceEntity.getReadOnly());
 		assertFalse(javaContextEntity.getReadOnly().isReadOnly());
 		assertTrue(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 	}
 	
@@ -279,7 +279,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertNull(resourceEntity.getReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to true, check resource
@@ -288,7 +288,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(Boolean.TRUE, resourceEntity.getReadOnly());
 		assertTrue(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to false, check resource
@@ -297,7 +297,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertEquals(Boolean.FALSE, resourceEntity.getReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextEntity.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to null, check resource
@@ -306,7 +306,7 @@ public class EclipseLinkOrmEntityTests
 		
 		assertNull(resourceEntity.getReadOnly());
 		assertFalse(ormContextEntity.getReadOnly().isReadOnly());
-		assertFalse(ormContextEntity.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextEntity.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextEntity.getReadOnly().getSpecifiedReadOnly());	
 	}
 	

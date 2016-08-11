@@ -117,7 +117,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildPersistenceUnitTextModel(PersistenceUnit persistenceUnit) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistenceUnit,
 				PersistenceUnit.NAME_PROPERTY,
 				PersistenceUnit.NAME_TRANSFORMER
@@ -125,7 +125,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildPersistenceUnitDescriptionModel(PersistenceUnit persistenceUnit) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistenceUnit,
 				PersistenceUnit.NAME_PROPERTY,
 				PERSISTENT_UNIT_DESCRIPTION_TRANSFORMER
@@ -165,7 +165,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildMappingFileRefTextModel(MappingFileRef mappingFileRef) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				mappingFileRef,
 				MappingFileRef.FILE_NAME_PROPERTY,
 				MappingFileRef.FILE_NAME_TRANSFORMER
@@ -196,7 +196,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildClassRefTextModel(ClassRef classRef) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				classRef,
 				ClassRef.CLASS_NAME_PROPERTY,
 				ClassRef.CLASS_NAME_TRANSFORMER
@@ -228,7 +228,7 @@ public class PersistenceStructureItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildJarFileRefTextModel(JarFileRef jarFileRef) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				jarFileRef,
 				JarFileRef.FILE_NAME_PROPERTY,
 				JarFileRef.FILE_NAME_TRANSFORMER

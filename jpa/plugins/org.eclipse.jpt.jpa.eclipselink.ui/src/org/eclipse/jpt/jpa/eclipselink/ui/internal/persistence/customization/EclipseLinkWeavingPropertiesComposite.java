@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCusto
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkWeaving;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -188,18 +189,13 @@ public class EclipseLinkWeavingPropertiesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultWeavingLazyModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.WEAVING_LAZY_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getWeavingLazy() != null) {
-					return null;
-				}
-				return this.subject.getDefaultWeavingLazy();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.WEAVING_LAZY_PROPERTY,
+				c -> c.getWeavingLazy(),
+				EclipseLinkCustomization.DEFAULT_WEAVING_LAZY_PROPERTY,
+				c -> c.getDefaultWeavingLazy()
+			);
 	}
 
 
@@ -229,18 +225,13 @@ public class EclipseLinkWeavingPropertiesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultWeavingFetchGroupsModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getWeavingFetchGroups() != null) {
-					return null;
-				}
-				return this.subject.getDefaultWeavingFetchGroups();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.WEAVING_FETCH_GROUPS_PROPERTY,
+				c -> c.getWeavingFetchGroups(),
+				EclipseLinkCustomization.DEFAULT_WEAVING_FETCH_GROUPS_PROPERTY,
+				c -> c.getDefaultWeavingFetchGroups()
+			);
 	}
 
 
@@ -270,18 +261,13 @@ public class EclipseLinkWeavingPropertiesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultWeavingInternalModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getWeavingInternal() != null) {
-					return null;
-				}
-				return this.subject.getDefaultWeavingInternal();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.WEAVING_INTERNAL_PROPERTY,
+				c -> c.getWeavingInternal(),
+				EclipseLinkCustomization.DEFAULT_WEAVING_INTERNAL_PROPERTY,
+				c -> c.getDefaultWeavingInternal()
+			);
 	}
 
 
@@ -311,18 +297,13 @@ public class EclipseLinkWeavingPropertiesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultWeavingEagerModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.WEAVING_EAGER_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getWeavingEager() != null) {
-					return null;
-				}
-				return this.subject.getDefaultWeavingEager();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.WEAVING_EAGER_PROPERTY,
+				c -> c.getWeavingEager(),
+				EclipseLinkCustomization.DEFAULT_WEAVING_EAGER_PROPERTY,
+				c -> c.getDefaultWeavingEager()
+			);
 	}
 
 
@@ -352,17 +333,12 @@ public class EclipseLinkWeavingPropertiesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultWeavingChangeTrackingModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getWeavingChangeTracking() != null) {
-					return null;
-				}
-				return this.subject.getDefaultWeavingChangeTracking();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.WEAVING_CHANGE_TRACKING_PROPERTY,
+				c -> c.getWeavingChangeTracking(),
+				EclipseLinkCustomization.DEFAULT_WEAVING_CHANGE_TRACKING_PROPERTY,
+				c -> c.getDefaultWeavingChangeTracking()
+			);
 	}
 }

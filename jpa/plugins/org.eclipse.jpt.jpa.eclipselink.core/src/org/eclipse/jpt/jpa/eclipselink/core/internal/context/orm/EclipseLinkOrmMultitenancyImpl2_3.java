@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -123,10 +123,10 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 	// ********** multitenant **********
 
 	public boolean isMultitenant() {
-		return isSpecifiedMultitenant() || isDefaultMultitenant();
+		return getSpecifiedMultitenant() || getDefaultMultitenant();
 	}
 
-	public boolean isDefaultMultitenant() {
+	public boolean getDefaultMultitenant() {
 		return this.defaultMultitenant;
 	}
 
@@ -140,7 +140,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 		return this.isMultitenantInheritanceHierarchy() || this.isSuperMappedSuperclassMultitenant();
 	}
 
-	public boolean isSpecifiedMultitenant() {
+	public boolean getSpecifiedMultitenant() {
 		return this.specifiedMultitenant;
 	}
 
@@ -214,7 +214,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 		if (!isMultitenant()) {
 			return null;
 		}
-		if (isSpecifiedMultitenant()) {
+		if (getSpecifiedMultitenant()) {
 			return DEFAULT_TYPE;
 		}
 		if (this.isMultitenantInheritanceHierarchy()) {
@@ -255,7 +255,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 	}
 
 
-	public boolean isDefaultIncludeCriteria() {
+	public boolean getDefaultIncludeCriteria() {
 		return this.defaultIncludeCriteria;
 	}
 
@@ -411,7 +411,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 			return EmptyListIterable.instance();
 		}
 		EclipseLinkJavaMultitenancy2_3 javaMultitenancy = this.getJavaMultitenancyPolicyForDefaults();
-		if (javaMultitenancy != null && !this.isSpecifiedMultitenant()) {
+		if (javaMultitenancy != null && !this.getSpecifiedMultitenant()) {
 			if (javaMultitenancy.hasSpecifiedTenantDiscriminatorColumns()) {
 				return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(javaMultitenancy.getSpecifiedTenantDiscriminatorColumns());
 			}
@@ -419,7 +419,7 @@ public class EclipseLinkOrmMultitenancyImpl2_3
 		if (this.isMultitenantInheritanceHierarchy()) {
 			return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(this.getRootEntity().getMultitenancy().getTenantDiscriminatorColumns());
 		}
-		if (!isSpecifiedMultitenant()) {
+		if (!getSpecifiedMultitenant()) {
 			EclipseLinkMappedSuperclass superMappedSuperclass = this.getSuperMappedSuperclass();
 			if (superMappedSuperclass != null && superMappedSuperclass.getMultitenancy().isMultitenant()) {
 				return new SuperListIterableWrapper<EclipseLinkTenantDiscriminatorColumn2_3>(superMappedSuperclass.getMultitenancy().getTenantDiscriminatorColumns());

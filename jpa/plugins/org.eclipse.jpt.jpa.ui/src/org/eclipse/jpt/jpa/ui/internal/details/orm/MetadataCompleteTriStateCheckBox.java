@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -84,18 +85,12 @@ public class MetadataCompleteTriStateCheckBox extends Pane<OrmTypeMapping> {
 		);
 
 	private PropertyValueModel<Boolean> buildOverrideMetadataCompleteModel() {
-		return new PropertyAspectAdapterXXXX<OrmTypeMapping, Boolean>(
-			getSubjectHolder(),
-			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY,
-			OrmTypeMapping.OVERRIDE_METADATA_COMPLETE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedMetadataComplete() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isOverrideMetadataComplete());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY,
+				m -> m.getSpecifiedMetadataComplete(),
+				OrmTypeMapping.OVERRIDE_METADATA_COMPLETE_PROPERTY,
+				m -> m.getOverrideMetadataComplete()
+			);
 	}
 }

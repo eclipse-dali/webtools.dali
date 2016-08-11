@@ -164,59 +164,59 @@ public class TriStateCheckBoxLabelModelAdapter
 
 	// ********** Convenience methods **********
 
-	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> propertyValueModel(
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> adaptSubjectModelAspects_(
 			SM subjectModel,
 			String specifiedAspectName,
 			Transformer<? super S, Boolean> specifiedTransformer,
 			String defaultAspectName,
 			Predicate<? super S> defaultPredicate
 	) {
-		return propertyValueModel(
-				PropertyValueModelTools.modelAspectAdapter(subjectModel, specifiedAspectName, specifiedTransformer),
-				PropertyValueModelTools.modelAspectAdapter(subjectModel, defaultAspectName, defaultPredicate)
+		return adaptModels(
+				PropertyValueModelTools.subjectModelAspectAdapter(subjectModel, specifiedAspectName, specifiedTransformer),
+				PropertyValueModelTools.booleanSubjectModelAspectAdapter(subjectModel, defaultAspectName, defaultPredicate)
 			);
 	}
 
-	public static <S extends Model> PropertyValueModel<Boolean> propertyValueModel(
+	public static <S extends Model> PropertyValueModel<Boolean> adaptSubjectAspects_(
 			S subject,
 			String specifiedAspectName,
 			Transformer<? super S, Boolean> specifiedTransformer,
 			String defaultAspectName,
 			Predicate<? super S> defaultPredicate
 	) {
-		return propertyValueModel(
-				PropertyValueModelTools.modelAspectAdapter(subject, specifiedAspectName, specifiedTransformer),
-				PropertyValueModelTools.modelAspectAdapter(subject, defaultAspectName, defaultPredicate)
+		return adaptModels(
+				PropertyValueModelTools.subjectAspectAdapter(subject, specifiedAspectName, specifiedTransformer),
+				PropertyValueModelTools.booleanSubjectAspectAdapter(subject, defaultAspectName, defaultPredicate)
 			);
 	}
 
-	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> propertyValueModel(
+	public static <S extends Model, SM extends PropertyValueModel<? extends S>> PropertyValueModel<Boolean> adaptSubjectModelAspects(
 			SM subjectModel,
 			String specifiedAspectName,
 			Transformer<? super S, Boolean> specifiedTransformer,
 			String defaultAspectName,
 			Transformer<? super S, Boolean> defaultTransformer
 	) {
-		return propertyValueModel(
-				PropertyValueModelTools.modelAspectAdapter(subjectModel, specifiedAspectName, specifiedTransformer),
-				PropertyValueModelTools.modelAspectAdapter(subjectModel, defaultAspectName, defaultTransformer)
+		return adaptModels(
+				PropertyValueModelTools.subjectModelAspectAdapter(subjectModel, specifiedAspectName, specifiedTransformer),
+				PropertyValueModelTools.subjectModelAspectAdapter(subjectModel, defaultAspectName, defaultTransformer)
 			);
 	}
 
-	public static <S extends Model> PropertyValueModel<Boolean> propertyValueModel(
+	public static <S extends Model> PropertyValueModel<Boolean> adaptSubjectAspects(
 			S subject,
 			String specifiedAspectName,
 			Transformer<? super S, Boolean> specifiedTransformer,
 			String defaultAspectName,
 			Transformer<? super S, Boolean> defaultTransformer
 	) {
-		return propertyValueModel(
-				PropertyValueModelTools.modelAspectAdapter(subject, specifiedAspectName, specifiedTransformer),
-				PropertyValueModelTools.modelAspectAdapter(subject, defaultAspectName, defaultTransformer)
+		return adaptModels(
+				PropertyValueModelTools.subjectAspectAdapter(subject, specifiedAspectName, specifiedTransformer),
+				PropertyValueModelTools.subjectAspectAdapter(subject, defaultAspectName, defaultTransformer)
 			);
 	}
 
-	public static PropertyValueModel<Boolean> propertyValueModel(PropertyValueModel<Boolean> specifiedModel, PropertyValueModel<Boolean> defaultModel) {
+	public static PropertyValueModel<Boolean> adaptModels(PropertyValueModel<Boolean> specifiedModel, PropertyValueModel<Boolean> defaultModel) {
 		return PropertyValueModelTools.propertyValueModel(new Factory(specifiedModel, defaultModel));
 	}
 }

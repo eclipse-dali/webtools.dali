@@ -55,20 +55,20 @@ public class EclipseLinkCacheSizeCombo
 
 	@Override
 	protected PropertyValueModel<Integer> buildDefaultModel() {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.intSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.DEFAULT_SIZE_PROPERTY,
-				EclipseLinkCaching.DEFAULT_SIZE_TRANSFORMER
+				c -> c.getDefaultSize()
 			);
 	}
 
 	@Override
 	protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_SIZE_PROPERTY,
-				EclipseLinkCaching.SPECIFIED_SIZE_TRANSFORMER,
-				EclipseLinkCaching.SET_SPECIFIED_SIZE_CLOSURE
+				c -> c.getSpecifiedSize(),
+				(c, value) -> c.setSpecifiedSize(value)
 			);
 	}
 }

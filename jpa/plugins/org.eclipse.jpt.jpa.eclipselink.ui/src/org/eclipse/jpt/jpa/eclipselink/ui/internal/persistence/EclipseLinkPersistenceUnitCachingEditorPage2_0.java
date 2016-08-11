@@ -255,7 +255,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkCaching.DEFAULT_CACHE_SIZE_DEFAULT_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), c -> c.getDefaultCacheSizeDefault());
 		}
 
 		@Override

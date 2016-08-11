@@ -114,7 +114,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		this.firePropertyChanged(SPECIFIED_METADATA_COMPLETE_PROPERTY, old, metadataComplete);
 	}
 
-	public boolean isOverrideMetadataComplete() {
+	public boolean getOverrideMetadataComplete() {
 		return this.overrideMetadataComplete;
 	}
 
@@ -253,7 +253,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	 */
 	public void initializeFrom(OrmTypeMapping oldMapping) {
 		this.setSpecifiedMetadataComplete(oldMapping.getSpecifiedMetadataComplete());
-		this.setOverrideMetadataComplete(oldMapping.isOverrideMetadataComplete());
+		this.setOverrideMetadataComplete(oldMapping.getOverrideMetadataComplete());
 	}
 
 	public X getXmlTypeMapping() {

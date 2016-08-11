@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,7 +70,7 @@ public class GenericOrmOrderColumn2_0
 	// ********** nullable **********
 
 	public boolean isNullable() {
-		return (this.specifiedNullable != null) ? this.specifiedNullable.booleanValue() : this.isDefaultNullable();
+		return (this.specifiedNullable != null) ? this.specifiedNullable.booleanValue() : this.getDefaultNullable();
 	}
 
 	public Boolean getSpecifiedNullable() {
@@ -97,7 +97,7 @@ public class GenericOrmOrderColumn2_0
 		return (xmlColumn == null) ? null : xmlColumn.getNullable();
 	}
 
-	public boolean isDefaultNullable() {
+	public boolean getDefaultNullable() {
 		return DEFAULT_NULLABLE;
 	}
 
@@ -105,7 +105,7 @@ public class GenericOrmOrderColumn2_0
 	// ********** insertable **********
 
 	public boolean isInsertable() {
-		return (this.specifiedInsertable != null) ? this.specifiedInsertable.booleanValue() : this.isDefaultInsertable();
+		return (this.specifiedInsertable != null) ? this.specifiedInsertable.booleanValue() : this.getDefaultInsertable();
 	}
 
 	public Boolean getSpecifiedInsertable() {
@@ -132,7 +132,7 @@ public class GenericOrmOrderColumn2_0
 		return (xmlColumn == null) ? null : xmlColumn.getInsertable();
 	}
 
-	public boolean isDefaultInsertable() {
+	public boolean getDefaultInsertable() {
 		return DEFAULT_INSERTABLE;
 	}
 
@@ -140,7 +140,7 @@ public class GenericOrmOrderColumn2_0
 	// ********** updatable **********
 
 	public boolean isUpdatable() {
-		return (this.specifiedUpdatable != null) ? this.specifiedUpdatable.booleanValue() : this.isDefaultUpdatable();
+		return (this.specifiedUpdatable != null) ? this.specifiedUpdatable.booleanValue() : this.getDefaultUpdatable();
 	}
 
 	public Boolean getSpecifiedUpdatable() {
@@ -167,7 +167,7 @@ public class GenericOrmOrderColumn2_0
 		return (xmlColumn == null) ? null : xmlColumn.getUpdatable();
 	}
 
-	public boolean isDefaultUpdatable() {
+	public boolean getDefaultUpdatable() {
 		return DEFAULT_UPDATABLE;
 	}
 

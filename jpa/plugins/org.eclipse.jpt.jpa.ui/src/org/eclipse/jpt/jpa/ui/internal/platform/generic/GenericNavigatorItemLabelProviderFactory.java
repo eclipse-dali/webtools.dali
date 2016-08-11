@@ -122,7 +122,7 @@ public class GenericNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<String> buildConverterTypeTextModel(ManagedType managedType) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				managedType,
 				ManagedType.SIMPLE_NAME_PROPERTY,
 				ManagedType.SIMPLE_NAME_TRANSFORMER

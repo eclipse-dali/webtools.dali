@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -337,7 +337,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		
 		EclipseLinkEntity mappedSuperclass = (EclipseLinkEntity) getJavaPersistentType().getMapping();
 		EclipseLinkReadOnly readOnly = mappedSuperclass.getReadOnly();
-		assertEquals(false, readOnly.isDefaultReadOnly());
+		assertEquals(false, readOnly.getDefaultReadOnly());
 	}
 
 	public void testSetSpecifiedReadOnly() throws Exception {
@@ -377,7 +377,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		getJpaProject().synchronizeContextModel();
 		
 		assertNull(readOnly.getSpecifiedReadOnly());
-		assertEquals(false, readOnly.isDefaultReadOnly());
+		assertEquals(false, readOnly.getDefaultReadOnly());
 		
 		resourceType.addAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();

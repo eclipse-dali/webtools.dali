@@ -82,11 +82,11 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 
 	// ****** ThrowExceptions *******
 	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<EclipseLinkCustomization> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY,
-				EclipseLinkCustomization.THROW_EXCEPTIONS_TRANSFORMER,
-				EclipseLinkCustomization.SET_THROW_EXCEPTIONS_CLOSURE
+				c -> c.getThrowExceptions(),
+				(c, value) -> c.setThrowExceptions(value)
 			);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1098,10 +1098,10 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 	
 		assertEquals("addresses", ormColumn.getDefaultName());
 		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTableName());
-		assertEquals(true, ormColumn.isDefaultInsertable());
-		assertEquals(true, ormColumn.isDefaultUpdatable());
-		assertEquals(true, ormColumn.isDefaultNullable());
-		assertEquals(false, ormColumn.isDefaultUnique());
+		assertEquals(true, ormColumn.getDefaultInsertable());
+		assertEquals(true, ormColumn.getDefaultUpdatable());
+		assertEquals(true, ormColumn.getDefaultNullable());
+		assertEquals(false, ormColumn.getDefaultUnique());
 		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
 		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
 		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
@@ -1452,10 +1452,10 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 
 		assertEquals("addresses_KEY", ormColumn.getDefaultName());
 		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTableName());
-		assertEquals(true, ormColumn.isDefaultInsertable());
-		assertEquals(true, ormColumn.isDefaultUpdatable());
-		assertEquals(true, ormColumn.isDefaultNullable());
-		assertEquals(false, ormColumn.isDefaultUnique());
+		assertEquals(true, ormColumn.getDefaultInsertable());
+		assertEquals(true, ormColumn.getDefaultUpdatable());
+		assertEquals(true, ormColumn.getDefaultNullable());
+		assertEquals(false, ormColumn.getDefaultUnique());
 		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
 		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
 		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());

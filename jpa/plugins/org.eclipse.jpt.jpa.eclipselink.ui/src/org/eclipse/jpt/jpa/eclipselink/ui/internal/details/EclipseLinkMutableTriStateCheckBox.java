@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -95,18 +96,12 @@ public class EclipseLinkMutableTriStateCheckBox
 			);
 
 	private PropertyValueModel<Boolean> buildDefaultMutableModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkMutable, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY,
-			EclipseLinkMutable.DEFAULT_MUTABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedMutable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultMutable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY,
+				m -> m.getSpecifiedMutable(),
+				EclipseLinkMutable.DEFAULT_MUTABLE_PROPERTY,
+				m -> m.getDefaultMutable()
+			);
 	}
 }

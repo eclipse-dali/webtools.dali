@@ -168,7 +168,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to false, check override
@@ -178,7 +178,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -188,7 +188,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// clear xml read only, set java read only to true, check defaults
@@ -199,7 +199,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertTrue(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set metadataComplete to True, check defaults not from java
@@ -209,7 +209,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 
 		ormContextMappedSuperclass.setSpecifiedMetadataComplete(null);
@@ -221,7 +221,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertTrue(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -231,7 +231,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertTrue(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertTrue(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// clear xml read only, set java read only to false, check defaults
@@ -242,7 +242,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to false, check override
@@ -252,7 +252,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set xml read only to true, check override
@@ -262,7 +262,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(javaContextMappedSuperclass.getReadOnly().isReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 	}
 	
@@ -276,7 +276,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to true, check resource
@@ -285,7 +285,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		
 		assertEquals(Boolean.TRUE, resourceMappedSuperclass.getReadOnly());
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.TRUE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to false, check resource
@@ -294,7 +294,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		
 		assertEquals(Boolean.FALSE, resourceMappedSuperclass.getReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertEquals(Boolean.FALSE, ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
 		// set context read only to null, check resource
@@ -303,7 +303,7 @@ public class EclipseLinkOrmMappedSuperclassTests
 		
 		assertNull(resourceMappedSuperclass.getReadOnly());
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
-		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().getDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());	
 	}
 	

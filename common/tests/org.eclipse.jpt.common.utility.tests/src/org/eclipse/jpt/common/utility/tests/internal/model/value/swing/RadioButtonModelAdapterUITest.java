@@ -69,7 +69,7 @@ public class RadioButtonModelAdapterUITest {
 	}
 
 	private ModifiablePropertyValueModel<String> buildColorModel(PropertyValueModel<ColoredThing> ctm) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				ctm,
 				ColoredThing.COLOR_PROPERTY,
 				ColoredThing.COLOR_TRANSFORMER,

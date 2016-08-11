@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.widgets.Composite;
@@ -100,18 +101,12 @@ public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultOrphanRemovalModel() {
-		return new PropertyAspectAdapterXXXX<OrphanRemovable2_0, Boolean>(
-			this.getSubjectHolder(),
-			OrphanRemovable2_0.SPECIFIED_ORPHAN_REMOVAL_PROPERTY,
-			OrphanRemovable2_0.DEFAULT_ORPHAN_REMOVAL_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedOrphanRemoval() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultOrphanRemoval());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				OrphanRemovable2_0.SPECIFIED_ORPHAN_REMOVAL_PROPERTY,
+				m -> m.getSpecifiedOrphanRemoval(),
+				OrphanRemovable2_0.DEFAULT_ORPHAN_REMOVAL_PROPERTY,
+				m -> m.getDefaultOrphanRemoval()
+			);
 	}
 }

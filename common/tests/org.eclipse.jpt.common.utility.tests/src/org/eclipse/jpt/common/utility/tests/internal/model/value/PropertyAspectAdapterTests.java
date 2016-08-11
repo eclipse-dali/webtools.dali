@@ -58,7 +58,7 @@ public class PropertyAspectAdapterTests
 	}
 
 	private ModifiablePropertyValueModel<String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectHolder,
 				TestSubject.NAME_PROPERTY,
 				TestSubject.NAME_TRANSFORMER,
@@ -234,7 +234,7 @@ public class PropertyAspectAdapterTests
 	}
 
 	private ModifiablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter_(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
 				subjectHolder,
 				TestSubject.NAME_PROPERTY,
 				TestSubject.CUSTOM_NAME_TRANSFORMER,

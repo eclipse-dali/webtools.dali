@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCache
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -152,7 +153,7 @@ public class EclipseLinkCacheDefaultsComposite<T extends EclipseLinkCaching>
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkCaching.DEFAULT_CACHE_SIZE_DEFAULT_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), c -> c.getDefaultCacheSizeDefault());
 		}
 
 		@Override
@@ -195,17 +196,12 @@ public class EclipseLinkCacheDefaultsComposite<T extends EclipseLinkCaching>
 			);
 
 	private PropertyValueModel<Boolean> buildDefaultDefaultSharedCacheModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSharedCacheDefault() != null) {
-					return null;
-				}
-				return this.subject.getDefaultSharedCacheDefault();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY,
+				c -> c.getSharedCacheDefault(),
+				EclipseLinkCaching.DEFAULT_SHARED_CACHE_DEFAULT_PROPERTY,
+				c -> c.getDefaultSharedCacheDefault()
+			);
 	}
 }

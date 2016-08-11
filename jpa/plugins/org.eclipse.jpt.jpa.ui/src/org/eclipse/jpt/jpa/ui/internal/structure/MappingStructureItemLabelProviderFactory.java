@@ -69,7 +69,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 	
 	protected static PropertyValueModel<TypeMapping> buildPersistentTypeMappingModel(PersistentType persistentType) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistentType,
 				PersistentType.MAPPING_PROPERTY,
 				PersistentType.MAPPING_TRANSFORMER
@@ -101,7 +101,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildPersistentTypeTextModel(PersistentType persistentType) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistentType,
 				ManagedType.TYPE_QUALIFIED_NAME_PROPERTY,
 				ManagedType.TYPE_QUALIFIED_NAME_TRANSFORMER
@@ -136,7 +136,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<AttributeMapping> buildPersistentAttributeMappingModel(PersistentAttribute persistentAttribute) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistentAttribute,
 				PersistentAttribute.MAPPING_PROPERTY,
 				PersistentAttribute.MAPPING_TRANSFORMER
@@ -168,7 +168,7 @@ public abstract class MappingStructureItemLabelProviderFactory
 	}
 
 	protected static PropertyValueModel<String> buildPersistentAttributeTextModel(PersistentAttribute persistentAttribute) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistentAttribute,
 				PersistentAttribute.NAME_PROPERTY,
 				PersistentAttribute.NAME_TRANSFORMER

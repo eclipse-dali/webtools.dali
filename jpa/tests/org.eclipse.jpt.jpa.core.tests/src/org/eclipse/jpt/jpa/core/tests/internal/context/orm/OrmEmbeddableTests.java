@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -163,18 +163,18 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) ormPersistentType.getMapping();
 		XmlEmbeddable embeddableResource = getXmlEntityMappings().getEmbeddables().get(0);
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());
-		assertFalse(ormEmbeddable.isOverrideMetadataComplete());
+		assertFalse(ormEmbeddable.getOverrideMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		getXmlEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(ormEmbeddable.isOverrideMetadataComplete());
+		assertTrue(ormEmbeddable.getOverrideMetadataComplete());
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());
-		assertFalse(ormEmbeddable.isOverrideMetadataComplete());
+		assertFalse(ormEmbeddable.getOverrideMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 	}
 	

@@ -81,7 +81,7 @@ public class BufferedPropertyValueModelTests
 	}
 
 	private ModifiablePropertyValueModel<Integer> buildIDModel(PropertyValueModel<Employee> eHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				eHolder,
 				Employee.ID_PROPERTY,
 				Employee.ID_TRANSFORMER,
@@ -90,7 +90,7 @@ public class BufferedPropertyValueModelTests
 	}
 
 	private ModifiablePropertyValueModel<String> buildNameModel(PropertyValueModel<Employee> eHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				eHolder,
 				Employee.NAME_PROPERTY,
 				Employee.NAME_TRANSFORMER,
@@ -99,7 +99,7 @@ public class BufferedPropertyValueModelTests
 	}
 
 	private ModifiablePropertyValueModel<Date> buildHireDateModel(PropertyValueModel<Employee> eHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				eHolder,
 				Employee.HIRE_DATE_PROPERTY,
 				Employee.HIRE_DATE_TRANSFORMER,

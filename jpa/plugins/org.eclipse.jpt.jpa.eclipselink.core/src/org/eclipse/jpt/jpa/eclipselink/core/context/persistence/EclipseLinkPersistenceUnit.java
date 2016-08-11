@@ -434,7 +434,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected boolean impliedEclipseLinkMappingFileIsExcluded() {
-		return this.getGeneralProperties().getExcludeEclipselinkOrm() == Boolean.TRUE;
+		return this.getGeneralProperties().getExcludeEclipseLinkOrm() == Boolean.TRUE;
 	}
 
 	protected boolean impliedEclipseLinkMappingFileIsNotSpecified() {

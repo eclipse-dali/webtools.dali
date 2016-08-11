@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -96,18 +97,12 @@ public class EclipseLinkReadOnlyTriStateCheckBox
 			);
 
 	private PropertyValueModel<Boolean> buildDefaultReadOnlyModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkReadOnly, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY,
-			EclipseLinkReadOnly.DEFAULT_READ_ONLY_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedReadOnly() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultReadOnly());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY,
+				ro -> ro.getSpecifiedReadOnly(),
+				EclipseLinkReadOnly.DEFAULT_READ_ONLY_PROPERTY,
+				ro -> ro.getDefaultReadOnly()
+			);
 	}
 }

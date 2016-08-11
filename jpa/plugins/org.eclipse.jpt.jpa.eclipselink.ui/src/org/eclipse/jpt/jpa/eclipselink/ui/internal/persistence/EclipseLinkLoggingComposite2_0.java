@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.EclipseLinkLoggingComposite;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -162,18 +163,13 @@ public class EclipseLinkLoggingComposite2_0
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultConnectionModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkLogging2_0, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkLogging2_0.CONNECTION_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getConnection() != null) {
-					return null;
-				}
-				return this.subject.getDefaultConnection();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkLogging2_0.CONNECTION_PROPERTY,
+				m -> m.getConnection(),
+				EclipseLinkLogging2_0.DEFAULT_CONNECTION_PROPERTY,
+				m -> m.getDefaultConnection()
+			);
 	}
 	private static final String DEFAULT_PROPERTY = EclipseLinkLogging2_0.CATEGORIES_DEFAULT_LOGGING_PROPERTY;
 

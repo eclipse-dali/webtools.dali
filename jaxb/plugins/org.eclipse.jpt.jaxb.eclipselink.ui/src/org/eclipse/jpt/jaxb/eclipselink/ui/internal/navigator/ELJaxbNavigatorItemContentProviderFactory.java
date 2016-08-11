@@ -94,7 +94,7 @@ public class ELJaxbNavigatorItemContentProviderFactory
 	protected CollectionValueModel<JaxbContextNode> buildOxmFileChildrenModel(final ELJaxbPackage jaxbPackage) {
 		return new FilteringCollectionValueModel<JaxbContextNode>(
 				new PropertyCollectionValueModelAdapter<JaxbContextNode>(
-						PropertyValueModelTools.modelAspectAdapter(
+						PropertyValueModelTools.subjectAspectAdapter(
 								jaxbPackage,
 								ELJaxbPackage.OXM_FILE_PROPERTY,
 								ELJaxbPackage.OXM_FILE_TRANSFORMER
@@ -169,7 +169,7 @@ public class ELJaxbNavigatorItemContentProviderFactory
 	}
 	
 	protected PropertyValueModel<OxmXmlBindings> buildXmlBindingsModel(OxmFile oxmFile) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				oxmFile,
 				OxmFile.XML_BINDINGS_PROPERTY,
 				OxmFile.XML_BINDINGS_TRANSFORMER

@@ -79,11 +79,11 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 
 	// ****** ExcludeEclipselinkOrm *******
 	private ModifiablePropertyValueModel<Boolean> buildExcludeEclipselinkOrmAA(PropertyValueModel<EclipseLinkGeneralProperties> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY,
-				EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_TRANSFORMER,
-				EclipseLinkGeneralProperties.SET_EXCLUDE_ECLIPSELINK_ORM_CLOSURE
+				gp -> gp.getExcludeEclipseLinkOrm(),
+				(gp, value) -> gp.setExcludeEclipseLinkOrm(value)
 			);
 	}
 
@@ -99,7 +99,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	public void testValue() {
 		// ****** ExcludeEclipselinkOrm ******* 
 		this.verifyExcludeEclipselinkOrmAAValue(EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE);
-		assertEquals(EclipseLinkGeneralProperties.DEFAULT_EXCLUDE_ECLIPSELINK_ORM, this.generalProperty.getDefaultExcludeEclipselinkOrm());
+		assertEquals(EclipseLinkGeneralProperties.DEFAULT_EXCLUDE_ECLIPSELINK_ORM, this.generalProperty.getDefaultExcludeEclipseLinkOrm());
 	}
 
 	public void testSetValue() throws Exception {
@@ -137,7 +137,7 @@ public class GeneralPropertiesValueModelTests extends EclipseLinkPersistenceUnit
 	protected void verifyExcludeEclipselinkOrmAAValue(Boolean testValue) {
 		this.verifyAAValue(
 			testValue, 
-			this.generalProperty.getExcludeEclipselinkOrm(), 
+			this.generalProperty.getExcludeEclipseLinkOrm(), 
 			this.excludeEclipselinkOrmHolder, 
 			EclipseLinkGeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM);
 	}

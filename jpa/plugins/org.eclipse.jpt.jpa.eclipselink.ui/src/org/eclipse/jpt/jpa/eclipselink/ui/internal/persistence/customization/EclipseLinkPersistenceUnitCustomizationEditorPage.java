@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -182,18 +183,13 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultValidationOnlyModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getValidationOnly() != null) {
-					return null;
-				}
-				return this.subject.getDefaultValidationOnly();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.VALIDATION_ONLY_PROPERTY,
+				c -> c.getValidationOnly(),
+				EclipseLinkCustomization.DEFAULT_VALIDATION_ONLY_PROPERTY,
+				c -> c.getDefaultValidationOnly()
+			);
 	}
 
 
@@ -223,18 +219,13 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultValidateSchemaModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getValidateSchema() != null) {
-					return null;
-				}
-				return this.subject.getDefaultValidateSchema();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.VALIDATE_SCHEMA_PROPERTY,
+				c -> c.getValidateSchema(),
+				EclipseLinkCustomization.DEFAULT_VALIDATE_SCHEMA_PROPERTY,
+				c -> c.getDefaultValidateSchema()
+			);
 	}
 
 
@@ -263,18 +254,13 @@ public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Eclipse
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultThrowExceptionsModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getThrowExceptions() != null) {
-					return null;
-				}
-				return this.subject.getDefaultThrowExceptions();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.THROW_EXCEPTIONS_PROPERTY,
+				c -> c.getThrowExceptions(),
+				EclipseLinkCustomization.DEFAULT_THROW_EXCEPTIONS_PROPERTY,
+				c -> c.getDefaultThrowExceptions()
+			);
 	}
 
 

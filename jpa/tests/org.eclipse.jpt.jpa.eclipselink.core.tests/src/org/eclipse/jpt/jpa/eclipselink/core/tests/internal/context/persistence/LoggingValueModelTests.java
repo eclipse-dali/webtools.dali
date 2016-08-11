@@ -79,11 +79,11 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	// ****** Timestamp *******
 	private ModifiablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<EclipseLinkLogging> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkLogging.TIMESTAMP_PROPERTY,
-				EclipseLinkLogging.TIMESTAMP_TRANSFORMER,
-				EclipseLinkLogging.SET_TIMESTAMP_CLOSURE
+				m -> m.getTimestamp(),
+				(m, value) -> m.setTimestamp(value)
 			);
 	}
 

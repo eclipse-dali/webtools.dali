@@ -125,7 +125,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 	
 	protected PropertyValueModel<JavaClassMapping> buildMappingModel(JavaClass javaClass) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				javaClass,
 				JavaType.MAPPING_PROPERTY,
 				JavaClass.MAPPING_TRANSFORMER
@@ -168,7 +168,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<JavaEnumMapping> buildMappingModel(JavaEnum javaEnum) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				javaEnum,
 				JavaType.MAPPING_PROPERTY,
 				JavaEnum.MAPPING_TRANSFORMER

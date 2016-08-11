@@ -19,8 +19,9 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkConnection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -159,18 +160,13 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultReadConnectionsSharedModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, Boolean>(
-			getSubjectHolder(),
-			EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getReadConnectionsShared() != null) {
-					return null;
-				}
-				return this.subject.getDefaultReadConnectionsShared();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				EclipseLinkConnection.READ_CONNECTIONS_SHARED_PROPERTY,
+				c -> c.getReadConnectionsShared(),
+				EclipseLinkConnection.DEFAULT_READ_CONNECTIONS_SHARED_PROPERTY,
+				c -> c.getDefaultReadConnectionsShared()
+			);
 	}
 
 	
@@ -193,7 +189,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_READ_CONNECTIONS_MIN_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), c -> c.getDefaultReadConnectionsMin());
 		}
 
 		@Override
@@ -231,7 +227,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_READ_CONNECTIONS_MAX_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), c -> c.getDefaultReadConnectionsMax());
 		}
 
 		@Override
@@ -269,7 +265,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_WRITE_CONNECTIONS_MIN_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), c -> c.getDefaultWriteConnectionsMin());
 		}
 
 		@Override
@@ -307,7 +303,7 @@ public class EclipseLinkJdbcPropertiesComposite<T extends EclipseLinkConnection>
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return PropertyValueModelTools.transform(this.getSubjectHolder(), EclipseLinkConnection.DEFAULT_WRITE_CONNECTIONS_MAX_TRANSFORMER);
+			return PropertyValueModelTools.transform(this.getSubjectHolder(), c -> c.getDefaultWriteConnectionsMax());
 		}
 
 		@Override

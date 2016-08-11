@@ -46,8 +46,9 @@ import org.eclipse.jpt.jpa.ui.JavaManagedTypeUiDefinition;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.PersistenceResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Composite;
@@ -179,19 +180,13 @@ public class PersistenceUnitClassesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultExcludeUnlistedClassesModel() {
-		return new PropertyAspectAdapterXXXX<PersistenceUnit, Boolean>(
-			getSubjectHolder(),
-			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
-			PersistenceUnit.DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedExcludeUnlistedClasses() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.getDefaultExcludeUnlistedClasses());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
+				m -> m.getSpecifiedExcludeUnlistedClasses(),
+				PersistenceUnit.DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
+				m -> m.getDefaultExcludeUnlistedClasses()
+			);
 	}
 
 	@SuppressWarnings("unused")

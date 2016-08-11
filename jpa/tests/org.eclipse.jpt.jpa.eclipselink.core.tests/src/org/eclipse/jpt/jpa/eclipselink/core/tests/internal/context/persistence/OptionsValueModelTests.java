@@ -78,11 +78,11 @@ public class OptionsValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	// ****** IncludeDescriptorQueries *******
 	private ModifiablePropertyValueModel<Boolean> buildIncludeDescriptorQueriesAA(PropertyValueModel<EclipseLinkOptions> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_PROPERTY,
-				EclipseLinkOptions.INCLUDE_DESCRIPTOR_QUERIES_TRANSFORMER,
-				EclipseLinkOptions.SET_INCLUDE_DESCRIPTOR_QUERIES_CLOSURE
+				o -> o.getIncludeDescriptorQueries(),
+				(o, value) -> o.setIncludeDescriptorQueries(value)
 			);
 	}
 

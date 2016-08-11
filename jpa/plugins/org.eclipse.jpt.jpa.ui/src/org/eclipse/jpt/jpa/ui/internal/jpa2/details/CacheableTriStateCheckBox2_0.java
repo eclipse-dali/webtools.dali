@@ -17,8 +17,9 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2.details.JptJpaUiDetailsMessages2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -95,18 +96,12 @@ public class CacheableTriStateCheckBox2_0
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultCacheableModel() {
-		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(
-			getSubjectHolder(),
-			Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
-			Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedCacheable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultCacheable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
+				m -> m.getSpecifiedCacheable(),
+				Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY,
+				m -> m.getDefaultCacheable()
+			);
 	}
 }

@@ -112,11 +112,11 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	/** ****** CacheTypeDefault ******* */
 	private ModifiablePropertyValueModel<EclipseLinkCacheType> buildCacheTypeDefaultAA(PropertyValueModel<EclipseLinkCaching> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY,
-				EclipseLinkCaching.CACHE_TYPE_DEFAULT_TRANSFORMER,
-				EclipseLinkCaching.SET_CACHE_TYPE_DEFAULT_CLOSURE
+				c -> c.getCacheTypeDefault(),
+				(EclipseLinkCaching c, EclipseLinkCacheType type) -> c.setCacheTypeDefault(type)
 			);
 	}
 
@@ -130,11 +130,11 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 
 	/** ****** SharedCacheDefault ******* */
 	private ModifiablePropertyValueModel<Boolean> buildSharedCacheDefaultAA(PropertyValueModel<EclipseLinkCaching> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectModel,
 				EclipseLinkCaching.SHARED_CACHE_DEFAULT_PROPERTY,
-				EclipseLinkCaching.SHARED_CACHE_DEFAULT_TRANSFORMER,
-				EclipseLinkCaching.SET_SHARED_CACHE_DEFAULT_CLOSURE
+				c -> c.getSharedCacheDefault(),
+				(EclipseLinkCaching c, Boolean value) -> c.setSharedCacheDefault(value)
 			);
 	}
 

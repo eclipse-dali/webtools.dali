@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -546,7 +546,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormManyToOneMapping.getName());
 		assertEquals(FetchType.EAGER, ormManyToOneMapping.getDefaultFetch());
-		assertEquals(true, ormManyToOneMapping.isDefaultOptional());
+		assertEquals(true, ormManyToOneMapping.getDefaultOptional());
 		//TODO hmm, is this correct?
 		assertEquals("test.Address", ormManyToOneMapping.getDefaultTargetEntity());
 		

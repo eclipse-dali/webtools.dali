@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -181,7 +181,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	// ********** primaryKey **********
 
 	public boolean isPrimaryKey() {
-		return (this.specifiedPrimaryKey != null) ? this.specifiedPrimaryKey.booleanValue() : this.isDefaultPrimaryKey();
+		return (this.specifiedPrimaryKey != null) ? this.specifiedPrimaryKey.booleanValue() : this.getDefaultPrimaryKey();
 	}
 
 	public Boolean getSpecifiedPrimaryKey() {
@@ -206,7 +206,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 		return this.getColumnAnnotation().getPrimaryKey();
 	}
 
-	public boolean isDefaultPrimaryKey() {
+	public boolean getDefaultPrimaryKey() {
 		return this.defaultPrimaryKey;
 	}
 

@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -125,7 +126,7 @@ public class EclipseLinkMultitenancyComposite
 		return new PropertyAspectAdapterXXXX<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_MULTITENANT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isSpecifiedMultitenant());
+				return Boolean.valueOf(this.subject.getSpecifiedMultitenant());
 			}
 
 			@Override
@@ -210,19 +211,13 @@ public class EclipseLinkMultitenancyComposite
 			);
 
 	PropertyValueModel<Boolean> buildDefaultIncludeCriteriaModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkMultitenancy2_3, Boolean>(
-				getSubjectHolder(),
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
 				EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY,
-				EclipseLinkMultitenancy2_3.DEFAULT_INCLUDE_CRITERIA_PROPERTY) {
-
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedIncludeCriteria() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isIncludeCriteria());
-			}
-		};
+				m -> m.getSpecifiedIncludeCriteria(),
+				EclipseLinkMultitenancy2_3.DEFAULT_INCLUDE_CRITERIA_PROPERTY,
+				m -> m.getDefaultIncludeCriteria()
+			);
 	}
 
 	protected EclipseLinkTenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>  buildTenantDiscriminatorColumnsComposite(Composite container) {

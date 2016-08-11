@@ -114,7 +114,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<PersistenceXml> buildJpaContextRootPersistenceXmlModel(JpaContextRoot jpaContextRoot) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				jpaContextRoot,
 				JpaContextRoot.PERSISTENCE_XML_PROPERTY,
 				JpaContextRoot.PERSISTENCE_XML_TRANSFORMER
@@ -136,7 +136,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<Persistence> buildPersistenceXmlPersistenceModel(PersistenceXml persistenceXml) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistenceXml,
 				XmlFile.ROOT_PROPERTY,
 				TransformerTools.downcast(XmlFile.ROOT_TRANSFORMER)
@@ -235,7 +235,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<MappingFileRef> buildPersistenceUnitImpliedMappingFileRefModel(PersistenceUnit persistenceUnit) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				persistenceUnit,
 				PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
 				PersistenceUnit.IMPLIED_MAPPING_FILE_REF_TRANSFORMER
@@ -243,7 +243,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<MappingFile> buildPersistenceUnitImpliedMappingFileModel(PropertyValueModel<MappingFileRef> refModel) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectModelAspectAdapter(
 				refModel,
 				MappingFileRef.MAPPING_FILE_PROPERTY,
 				MappingFileRef.MAPPING_FILE_TRANSFORMER
@@ -390,7 +390,7 @@ public abstract class AbstractNavigatorItemContentProviderFactory
 	}
 
 	protected PropertyValueModel<EntityMappings> buildOrmXmlEntityMappingsModel(OrmXml ormXml) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				ormXml,
 				XmlFile.ROOT_PROPERTY,
 				TransformerTools.downcast(XmlFile.ROOT_TRANSFORMER)

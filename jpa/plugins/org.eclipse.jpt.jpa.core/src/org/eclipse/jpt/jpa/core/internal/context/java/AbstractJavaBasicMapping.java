@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -153,7 +153,7 @@ public abstract class AbstractJavaBasicMapping
 	// ********** optional **********
 
 	public boolean isOptional() {
-		return (this.specifiedOptional != null) ? this.specifiedOptional.booleanValue() : this.isDefaultOptional();
+		return (this.specifiedOptional != null) ? this.specifiedOptional.booleanValue() : this.getDefaultOptional();
 	}
 
 	public Boolean getSpecifiedOptional() {
@@ -178,7 +178,7 @@ public abstract class AbstractJavaBasicMapping
 		return (annotation == null) ? null : annotation.getOptional();
 	}
 
-	public boolean isDefaultOptional() {
+	public boolean getDefaultOptional() {
 		return this.defaultOptional;
 	}
 

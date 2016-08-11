@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -96,7 +96,7 @@ public class EclipseLinkOrmVersionMappingTests
 		// check defaults
 		
 		assertNull(resourceVersion.getMutable());
-		assertTrue(contextVersion.getMutable().isDefaultMutable());
+		assertTrue(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		
@@ -105,7 +105,7 @@ public class EclipseLinkOrmVersionMappingTests
 		resourceVersion.setMutable(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, resourceVersion.getMutable());
-		assertTrue(contextVersion.getMutable().isDefaultMutable());
+		assertTrue(contextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
@@ -114,7 +114,7 @@ public class EclipseLinkOrmVersionMappingTests
 		resourceVersion.setMutable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, resourceVersion.getMutable());
-		assertTrue(contextVersion.getMutable().isDefaultMutable());
+		assertTrue(contextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		
@@ -123,7 +123,7 @@ public class EclipseLinkOrmVersionMappingTests
 		resourceVersion.setMutable(null);
 		
 		assertNull(resourceVersion.getMutable());
-		assertTrue(contextVersion.getMutable().isDefaultMutable());
+		assertTrue(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		
@@ -134,7 +134,7 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		javaVersionMapping.getMutable().setSpecifiedMutable(Boolean.FALSE);
 		assertNull(resourceVersion.getMutable());
-		assertTrue(contextVersion.getMutable().isDefaultMutable());
+		assertTrue(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		assertFalse(javaVersionMapping.getMutable().isMutable());
@@ -145,7 +145,7 @@ public class EclipseLinkOrmVersionMappingTests
 		EclipseLinkVersionMapping virtualContextVersion = (EclipseLinkVersionMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceVersion.getMutable());
-		assertTrue(virtualContextVersion.getMutable().isDefaultMutable());
+		assertTrue(virtualContextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, virtualContextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(virtualContextVersion.getMutable().isMutable());
 		assertFalse(javaVersionMapping.getMutable().isMutable());
@@ -155,7 +155,7 @@ public class EclipseLinkOrmVersionMappingTests
 		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		EclipseLinkBasicMapping contextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		assertNull(resourceVersion.getMutable());
-		assertTrue(contextBasic.getMutable().isDefaultMutable());
+		assertTrue(contextBasic.getMutable().getDefaultMutable());
 		assertNull(contextBasic.getMutable().getSpecifiedMutable());
 		assertTrue(contextBasic.getMutable().isMutable());
 		assertFalse(javaVersionMapping.getMutable().isMutable());
@@ -178,7 +178,7 @@ public class EclipseLinkOrmVersionMappingTests
 		// check defaults
 		
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
@@ -187,7 +187,7 @@ public class EclipseLinkOrmVersionMappingTests
 		resourceVersion.setMutable(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
@@ -196,7 +196,7 @@ public class EclipseLinkOrmVersionMappingTests
 		resourceVersion.setMutable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		
@@ -205,26 +205,26 @@ public class EclipseLinkOrmVersionMappingTests
 		resourceVersion.setMutable(null);
 		
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.TRUE);
 		assertNull(resourceVersion.getMutable());
-		assertTrue(contextVersion.getMutable().isDefaultMutable());
+		assertTrue(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(Boolean.FALSE);
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
 		getPersistenceUnit().getEclipseLinkOptions().setTemporalMutable(null);
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
@@ -232,7 +232,7 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		javaVersionMapping.getMutable().setSpecifiedMutable(Boolean.TRUE);
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		assertTrue(javaVersionMapping.getMutable().isMutable());
@@ -243,7 +243,7 @@ public class EclipseLinkOrmVersionMappingTests
 		EclipseLinkVersionMapping virtualContextVersion = (EclipseLinkVersionMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceVersion.getMutable());
-		assertFalse(virtualContextVersion.getMutable().isDefaultMutable());
+		assertFalse(virtualContextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, virtualContextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(virtualContextVersion.getMutable().isMutable());
 		assertTrue(javaVersionMapping.getMutable().isMutable());
@@ -253,7 +253,7 @@ public class EclipseLinkOrmVersionMappingTests
 		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
 		EclipseLinkBasicMapping contextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertFalse(contextBasic.getMutable().getDefaultMutable());
 		assertNull(contextBasic.getMutable().getSpecifiedMutable());
 		assertFalse(contextBasic.getMutable().isMutable());
 		assertTrue(javaVersionMapping.getMutable().isMutable());
@@ -275,7 +275,7 @@ public class EclipseLinkOrmVersionMappingTests
 		// check defaults
 		
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
@@ -284,7 +284,7 @@ public class EclipseLinkOrmVersionMappingTests
 		contextVersion.getMutable().setSpecifiedMutable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.TRUE, contextVersion.getMutable().getSpecifiedMutable());
 		assertTrue(contextVersion.getMutable().isMutable());
 		
@@ -293,7 +293,7 @@ public class EclipseLinkOrmVersionMappingTests
 		contextVersion.getMutable().setSpecifiedMutable(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertEquals(Boolean.FALSE, contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 		
@@ -302,7 +302,7 @@ public class EclipseLinkOrmVersionMappingTests
 		contextVersion.getMutable().setSpecifiedMutable(null);
 		
 		assertNull(resourceVersion.getMutable());
-		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertFalse(contextVersion.getMutable().getDefaultMutable());
 		assertNull(contextVersion.getMutable().getSpecifiedMutable());
 		assertFalse(contextVersion.getMutable().isMutable());
 	}

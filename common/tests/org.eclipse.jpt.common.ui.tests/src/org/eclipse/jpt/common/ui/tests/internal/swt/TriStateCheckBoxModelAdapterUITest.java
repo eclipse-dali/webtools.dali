@@ -67,7 +67,7 @@ public class TriStateCheckBoxModelAdapterUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectHolder,
 				TestModel.FLAG1_PROPERTY,
 				TestModel.FLAG1_TRANSFORMER,
@@ -76,7 +76,7 @@ public class TriStateCheckBoxModelAdapterUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectHolder,
 				TestModel.FLAG2_PROPERTY,
 				TestModel.FLAG2_TRANSFORMER,
@@ -85,7 +85,7 @@ public class TriStateCheckBoxModelAdapterUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> subjectHolder) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectHolder,
 				TestModel.NOT_FLAG2_PROPERTY,
 				TestModel.NOT_FLAG2_TRANSFORMER,

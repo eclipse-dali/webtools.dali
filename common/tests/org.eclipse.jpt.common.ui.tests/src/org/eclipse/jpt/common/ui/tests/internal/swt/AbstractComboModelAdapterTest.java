@@ -84,7 +84,7 @@ public abstract class AbstractComboModelAdapterTest {
 	}
 
 	private ModifiablePropertyValueModel<SimpleDisplayable> buildSelectedItemHolder() {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.subjectHolder,
 				Model.ITEM_PROPERTY,
 				Model.ITEM_TRANSFORMER,

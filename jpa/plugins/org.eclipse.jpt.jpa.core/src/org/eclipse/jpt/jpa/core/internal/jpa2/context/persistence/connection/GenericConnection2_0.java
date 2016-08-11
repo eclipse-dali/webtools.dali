@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -119,7 +119,7 @@ public class GenericConnection2_0
 	}
 
 	public String getDefaultDriver() {
-		return DEFAULT_JDBC_DRIVER;
+		return DEFAULT_DRIVER;
 	}
 
 	// ********** URL **********
@@ -141,7 +141,7 @@ public class GenericConnection2_0
 	}
 
 	public String getDefaultUrl() {
-		return DEFAULT_JDBC_URL;
+		return DEFAULT_URL;
 	}
 
 	// ********** User **********
@@ -163,7 +163,7 @@ public class GenericConnection2_0
 	}
 
 	public String getDefaultUser() {
-		return DEFAULT_JDBC_USER;
+		return DEFAULT_USER;
 	}
 
 	// ********** Password **********
@@ -185,6 +185,6 @@ public class GenericConnection2_0
 	}
 
 	public String getDefaultPassword() {
-		return DEFAULT_JDBC_PASSWORD;
+		return DEFAULT_PASSWORD;
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -574,10 +574,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().isDefaultUnique());
+		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().getDefaultUnique());
 		basicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().isDefaultUnique());
+		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().getDefaultUnique());
 	}	
 	
 	public void testGetSpecifiedUnique() throws Exception {
@@ -642,10 +642,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().isDefaultInsertable());
+		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().getDefaultInsertable());
 		basicMapping.getColumn().setSpecifiedInsertable(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().isDefaultInsertable());
+		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().getDefaultInsertable());
 	}	
 	
 	public void testGetSpecifiedInsertable() throws Exception {
@@ -710,10 +710,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().isDefaultNullable());
+		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().getDefaultNullable());
 		basicMapping.getColumn().setSpecifiedNullable(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().isDefaultNullable());
+		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().getDefaultNullable());
 	}	
 	
 	public void testGetSpecifiedNullable() throws Exception {
@@ -778,10 +778,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().isDefaultUpdatable());
+		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().getDefaultUpdatable());
 		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().isDefaultUpdatable());
+		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().getDefaultUpdatable());
 	}	
 	
 	public void testGetSpecifiedUpdatable() throws Exception {

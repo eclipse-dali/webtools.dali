@@ -70,7 +70,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag1Model(PropertyValueModel<TestModel> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableBooleanSubjectModelAspectAdapter(
 				subjectModel,
 				TestModel.FLAG1_PROPERTY,
 				TestModel.FLAG1_PREDICATE,
@@ -79,7 +79,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildFlag2Model(PropertyValueModel<TestModel> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableBooleanSubjectModelAspectAdapter(
 				subjectModel,
 				TestModel.FLAG2_PROPERTY,
 				TestModel.FLAG2_PREDICATE,
@@ -88,7 +88,7 @@ public class CheckBoxModelBindingUITest
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Model(PropertyValueModel<TestModel> subjectModel) {
-		return PropertyValueModelTools.modifiableModelAspectAdapter(
+		return PropertyValueModelTools.modifiableBooleanSubjectModelAspectAdapter(
 				subjectModel,
 				TestModel.NOT_FLAG2_PROPERTY,
 				TestModel.NOT_FLAG2_PREDICATE,

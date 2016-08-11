@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationAction2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.SchemaGenerationTarget2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.jpa2_1.persistence.JptJpaUiPersistenceMessages2_1;
 import org.eclipse.swt.layout.GridData;
@@ -324,18 +325,13 @@ public class SchemaGenerationComposite2_1 extends Pane<SchemaGeneration2_1>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultCreateDatabaseSchemasModel() {
-		return new PropertyAspectAdapterXXXX<SchemaGeneration2_1, Boolean>(
-			this.getSubjectHolder(),
-			SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getCreateDatabaseSchemas() != null) {
-					return null;
-				}
-				return this.subject.getDefaultCreateDatabaseSchemas();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.getSubjectHolder(),
+				SchemaGeneration2_1.CREATE_DATABASE_SCHEMAS_PROPERTY,
+				m -> m.getCreateDatabaseSchemas(),
+				SchemaGeneration2_1.DEFAULT_CREATE_DATABASE_SCHEMAS_PROPERTY,
+				m -> m.getDefaultCreateDatabaseSchemas()
+			);
 	}
 	
 	// ********** DatabaseAction **********

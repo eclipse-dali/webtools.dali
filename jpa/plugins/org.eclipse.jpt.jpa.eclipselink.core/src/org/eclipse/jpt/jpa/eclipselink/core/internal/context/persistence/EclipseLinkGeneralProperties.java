@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2016 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,11 +69,11 @@ public class EclipseLinkGeneralProperties
 
 	
 	// ********** ExcludeEclipselinkOrm **********
-	public Boolean getExcludeEclipselinkOrm() {
+	public Boolean getExcludeEclipseLinkOrm() {
 		return this.excludeEclipselinkOrm;
 	}
 
-	public void setExcludeEclipselinkOrm(Boolean newExcludeEclipselinkOrm) {
+	public void setExcludeEclipseLinkOrm(Boolean newExcludeEclipselinkOrm) {
 		Boolean old = this.excludeEclipselinkOrm;
 		this.excludeEclipselinkOrm = newExcludeEclipselinkOrm;
 		this.putProperty(EXCLUDE_ECLIPSELINK_ORM_PROPERTY, newExcludeEclipselinkOrm);
@@ -88,7 +88,7 @@ public class EclipseLinkGeneralProperties
 		this.firePropertyChanged(EXCLUDE_ECLIPSELINK_ORM_PROPERTY, old, newValue);
 	}
 
-	public Boolean getDefaultExcludeEclipselinkOrm() {
+	public Boolean getDefaultExcludeEclipseLinkOrm() {
 		return DEFAULT_EXCLUDE_ECLIPSELINK_ORM;
 	}
 	

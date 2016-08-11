@@ -18,8 +18,9 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.OptionalMapping;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -91,18 +92,12 @@ public class OptionalTriStateCheckBox extends Pane<OptionalMapping>
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultOptionalModel() {
-		return new PropertyAspectAdapterXXXX<OptionalMapping, Boolean>(
-			getSubjectHolder(),
-			OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY,
-			OptionalMapping.DEFAULT_OPTIONAL_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedOptional() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultOptional());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY,
+				m -> m.getSpecifiedOptional(),
+				OptionalMapping.DEFAULT_OPTIONAL_PROPERTY,
+				m -> m.getDefaultOptional()
+			);
 	}
 }

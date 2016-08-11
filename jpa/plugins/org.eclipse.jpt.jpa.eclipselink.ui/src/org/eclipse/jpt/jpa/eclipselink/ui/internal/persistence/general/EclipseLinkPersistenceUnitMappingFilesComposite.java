@@ -17,10 +17,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkGeneralProperties;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkLogging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitMappingFilesComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -56,12 +58,12 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return this.subject.getExcludeEclipselinkOrm();
+				return this.subject.getExcludeEclipseLinkOrm();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setExcludeEclipselinkOrm(value);
+				this.subject.setExcludeEclipseLinkOrm(value);
 			}
 		};
 	}
@@ -76,17 +78,12 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultExcludeEclipselinkOrmModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkGeneralProperties, Boolean>(
-			buildGeneralPropertiesModel(),
-			EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getExcludeEclipselinkOrm() != null) {
-					return null;
-				}
-				return this.subject.getDefaultExcludeEclipselinkOrm();
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects(
+				this.buildGeneralPropertiesModel(),
+				EclipseLinkGeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY,
+				m -> m.getExcludeEclipseLinkOrm(),
+				EclipseLinkGeneralProperties.DEFAULT_EXCLUDE_ECLIPSELINK_ORM_PROPERTY,
+				m -> m.getDefaultExcludeEclipseLinkOrm()
+			);
 	}
 }

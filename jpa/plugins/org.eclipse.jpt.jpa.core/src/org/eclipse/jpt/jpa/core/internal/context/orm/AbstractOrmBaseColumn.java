@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -121,7 +121,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	// ********** unique **********
 
 	public boolean isUnique() {
-		return (this.specifiedUnique != null) ? this.specifiedUnique.booleanValue() : this.isDefaultUnique();
+		return (this.specifiedUnique != null) ? this.specifiedUnique.booleanValue() : this.getDefaultUnique();
 	}
 
 	public Boolean getSpecifiedUnique() {
@@ -148,7 +148,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 		return (xmlColumn == null) ? null : xmlColumn.getUnique();
 	}
 
-	public boolean isDefaultUnique() {
+	public boolean getDefaultUnique() {
 		return DEFAULT_UNIQUE;
 	}
 
@@ -156,7 +156,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	// ********** nullable **********
 
 	public boolean isNullable() {
-		return (this.specifiedNullable != null) ? this.specifiedNullable.booleanValue() : this.isDefaultNullable();
+		return (this.specifiedNullable != null) ? this.specifiedNullable.booleanValue() : this.getDefaultNullable();
 	}
 
 	public Boolean getSpecifiedNullable() {
@@ -183,7 +183,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 		return (xmlColumn == null) ? null : xmlColumn.getNullable();
 	}
 
-	public boolean isDefaultNullable() {
+	public boolean getDefaultNullable() {
 		return DEFAULT_NULLABLE;
 	}
 
@@ -191,7 +191,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	// ********** insertable **********
 
 	public boolean isInsertable() {
-		return (this.specifiedInsertable != null) ? this.specifiedInsertable.booleanValue() : this.isDefaultInsertable();
+		return (this.specifiedInsertable != null) ? this.specifiedInsertable.booleanValue() : this.getDefaultInsertable();
 	}
 
 	public Boolean getSpecifiedInsertable() {
@@ -218,7 +218,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 		return (xmlColumn == null) ? null : xmlColumn.getInsertable();
 	}
 
-	public boolean isDefaultInsertable() {
+	public boolean getDefaultInsertable() {
 		return DEFAULT_INSERTABLE;
 	}
 
@@ -226,7 +226,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 	// ********** updatable **********
 
 	public boolean isUpdatable() {
-		return (this.specifiedUpdatable != null) ? this.specifiedUpdatable.booleanValue() : this.isDefaultUpdatable();
+		return (this.specifiedUpdatable != null) ? this.specifiedUpdatable.booleanValue() : this.getDefaultUpdatable();
 	}
 
 	public Boolean getSpecifiedUpdatable() {
@@ -253,7 +253,7 @@ public abstract class AbstractOrmBaseColumn<PA extends TableColumn.ParentAdapter
 		return (xmlColumn == null) ? null : xmlColumn.getUpdatable();
 	}
 
-	public boolean isDefaultUpdatable() {
+	public boolean getDefaultUpdatable() {
 		return DEFAULT_UPDATABLE;
 	}
 

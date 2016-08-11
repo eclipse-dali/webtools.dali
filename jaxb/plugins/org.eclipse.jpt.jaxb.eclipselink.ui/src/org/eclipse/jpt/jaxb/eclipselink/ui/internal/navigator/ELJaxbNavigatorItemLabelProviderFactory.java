@@ -126,7 +126,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<TypeName> buildOxmTypeMappingNameModel(OxmTypeMapping item) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				item,
 				OxmTypeMapping.TYPE_NAME_PROPERTY,
 				OxmTypeMapping.TYPE_NAME_TRANSFORMER
@@ -174,7 +174,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 
 	protected PropertyValueModel<JaxbAttributeMapping> buildOxmJavaAttributeMappingModel(OxmJavaAttribute item) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				item,
 				JaxbPersistentAttribute.MAPPING_PROPERTY,
 				JaxbPersistentAttribute.MAPPING_TRANSFORMER
@@ -182,7 +182,7 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	}
 	
 	protected PropertyValueModel<String> buildOxmJavaAttributeTextModel(OxmJavaAttribute item) {
-		return PropertyValueModelTools.modelAspectAdapter(
+		return PropertyValueModelTools.subjectAspectAdapter(
 				item,
 				OxmJavaAttribute.JAVA_ATTRIBUTE_NAME_PROPERTY,
 				OxmJavaAttribute.JAVA_ATTRIBUTE_NAME_TRANSFORMER

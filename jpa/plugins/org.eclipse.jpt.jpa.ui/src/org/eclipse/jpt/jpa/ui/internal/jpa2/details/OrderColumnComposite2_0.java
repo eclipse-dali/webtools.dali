@@ -22,8 +22,9 @@ import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.SpecifiedOrderColumn2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelAdapter;
+import org.eclipse.jpt.jpa.ui.internal.TriStateCheckBoxLabelModelStringTransformer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -168,19 +169,13 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultInsertableModel() {
-		return new PropertyAspectAdapterXXXX<SpecifiedOrderColumn2_0, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
-			BaseColumn.DEFAULT_INSERTABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedInsertable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultInsertable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
+				m -> m.getSpecifiedInsertable(),
+				BaseColumn.DEFAULT_INSERTABLE_PROPERTY,
+				m -> m.getDefaultInsertable()
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNullableModel() {
@@ -210,19 +205,13 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultNullableModel() {
-		return new PropertyAspectAdapterXXXX<SpecifiedOrderColumn2_0, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
-			BaseColumn.DEFAULT_NULLABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedNullable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultNullable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+				m -> m.getSpecifiedNullable(),
+				BaseColumn.DEFAULT_NULLABLE_PROPERTY,
+				m -> m.getDefaultNullable()
+			);
 	}
 
 
@@ -254,19 +243,13 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		);
 
 	private PropertyValueModel<Boolean> buildDefaultUpdatableModel() {
-		return new PropertyAspectAdapterXXXX<SpecifiedOrderColumn2_0, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
-			BaseColumn.DEFAULT_UPDATABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				if (this.subject.getSpecifiedUpdatable() != null) {
-					return null;
-				}
-				return Boolean.valueOf(this.subject.isDefaultUpdatable());
-			}
-		};
+		return TriStateCheckBoxLabelModelAdapter.adaptSubjectModelAspects_(
+				this.getSubjectHolder(),
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+				m -> m.getSpecifiedUpdatable(),
+				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+				m -> m.getDefaultUpdatable()
+			);
 	}
 
 	@Override

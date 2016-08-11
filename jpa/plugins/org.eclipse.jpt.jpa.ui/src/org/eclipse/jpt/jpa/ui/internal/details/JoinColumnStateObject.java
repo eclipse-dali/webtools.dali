@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,9 +37,13 @@ public abstract class JoinColumnStateObject
 	private Boolean updatable;
 
 	public static final String INSERTABLE_PROPERTY = "insertable";
+	public static final String DEFAULT_INSERTABLE_PROPERTY = "defaultInsertable";
 	public static final String NULLABLE_PROPERTY = "nullable";
+	public static final String DEFAULT_NULLABLE_PROPERTY = "defaultNullable";
 	public static final String UNIQUE_PROPERTY = "unique";
+	public static final String DEFAULT_UNIQUE_PROPERTY = "defaultUnique";
 	public static final String UPDATABLE_PROPERTY = "updatable";
+	public static final String DEFAULT_UPDATABLE_PROPERTY = "defaultUpdatable";
 
 	/**
 	 * Creates a new <code>JoinColumnStateObject</code>.
@@ -51,45 +55,45 @@ public abstract class JoinColumnStateObject
 		super(owner, joinColumn);
 	}
 
-	public boolean isDefaultInsertable() {
+	public boolean getDefaultInsertable() {
 
 		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.isDefaultInsertable();
+			return joinColumn.getDefaultInsertable();
 		}
 
 		return BaseColumn.DEFAULT_INSERTABLE;
 	}
 
-	public boolean isDefaultNullable() {
+	public boolean getDefaultNullable() {
 
 		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.isDefaultNullable();
+			return joinColumn.getDefaultNullable();
 		}
 
 		return BaseColumn.DEFAULT_NULLABLE;
 	}
 
-	public boolean isDefaultUnique() {
+	public boolean getDefaultUnique() {
 
 		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.isDefaultUnique();
+			return joinColumn.getDefaultUnique();
 		}
 
 		return BaseColumn.DEFAULT_UNIQUE;
 	}
 
-	public boolean isDefaultUpdatable() {
+	public boolean getDefaultUpdatable() {
 
 		SpecifiedJoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.isDefaultUpdatable();
+			return joinColumn.getDefaultUpdatable();
 		}
 
 		return BaseColumn.DEFAULT_UPDATABLE;

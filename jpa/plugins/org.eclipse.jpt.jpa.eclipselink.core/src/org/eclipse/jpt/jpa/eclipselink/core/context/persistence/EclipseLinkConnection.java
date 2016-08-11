@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -19,182 +17,148 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 public interface EclipseLinkConnection
 	extends PersistenceUnitProperties
 {
-	Boolean getDefaultNativeSql();
 	Boolean getNativeSql();
 	void setNativeSql(Boolean newNativeSql);
-		static final String NATIVE_SQL_PROPERTY = "nativeSql"; //$NON-NLS-1$
+		String NATIVE_SQL_PROPERTY = "nativeSql"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_NATIVE_SQL = "eclipselink.jdbc.native-sql"; //$NON-NLS-1$
-		static final Boolean DEFAULT_NATIVE_SQL = Boolean.FALSE;
+		String ECLIPSELINK_NATIVE_SQL = "eclipselink.jdbc.native-sql"; //$NON-NLS-1$
+	Boolean getDefaultNativeSql();
+		String DEFAULT_NATIVE_SQL_PROPERTY = "defaultNativeSql"; //$NON-NLS-1$
+		Boolean DEFAULT_NATIVE_SQL = Boolean.FALSE;
 
-	EclipseLinkBatchWriting getDefaultBatchWriting();
 	EclipseLinkBatchWriting getBatchWriting();
 	void setBatchWriting(EclipseLinkBatchWriting newBatchWriting);
-		static final String BATCH_WRITING_PROPERTY = "batchWriting"; //$NON-NLS-1$
+		String BATCH_WRITING_PROPERTY = "batchWriting"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_BATCH_WRITING = "eclipselink.jdbc.batch-writing"; //$NON-NLS-1$
-		static final EclipseLinkBatchWriting DEFAULT_BATCH_WRITING = EclipseLinkBatchWriting.none;
+		String ECLIPSELINK_BATCH_WRITING = "eclipselink.jdbc.batch-writing"; //$NON-NLS-1$
+	EclipseLinkBatchWriting getDefaultBatchWriting();
+		String DEFAULT_BATCH_WRITING_PROPERTY = "defaultBatchWriting"; //$NON-NLS-1$
+		EclipseLinkBatchWriting DEFAULT_BATCH_WRITING = EclipseLinkBatchWriting.none;
 
-	Boolean getDefaultCacheStatements();
 	Boolean getCacheStatements();
 	void setCacheStatements(Boolean newCacheStatements);
-		static final String CACHE_STATEMENTS_PROPERTY = "cacheStatements"; //$NON-NLS-1$
+		String CACHE_STATEMENTS_PROPERTY = "cacheStatements"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CACHE_STATEMENTS = "eclipselink.jdbc.cache-statements"; //$NON-NLS-1$
-		static final Boolean DEFAULT_CACHE_STATEMENTS = Boolean.FALSE;
-
-	Integer getDefaultCacheStatementsSize();
-	Transformer<EclipseLinkConnection, Integer> DEFAULT_CACHE_STATEMENTS_SIZE_TRANSFORMER = new DefaultCacheStatementsSizeTransformer();
-	class DefaultCacheStatementsSizeTransformer
-		extends TransformerAdapter<EclipseLinkConnection, Integer>
-	{
-		@Override
-		public Integer transform(EclipseLinkConnection connection) {
-			return connection.getDefaultCacheStatementsSize();
-		}
-	}
+		String ECLIPSELINK_CACHE_STATEMENTS = "eclipselink.jdbc.cache-statements"; //$NON-NLS-1$
+	Boolean getDefaultCacheStatements();
+		String DEFAULT_CACHE_STATEMENTS_PROPERTY = "defaultCacheStatements"; //$NON-NLS-1$
+		Boolean DEFAULT_CACHE_STATEMENTS = Boolean.FALSE;
 
 	Integer getCacheStatementsSize();
 	void setCacheStatementsSize(Integer newCacheStatementsSize);
-		static final String CACHE_STATEMENTS_SIZE_PROPERTY = "cacheStatementsSize"; //$NON-NLS-1$
+		String CACHE_STATEMENTS_SIZE_PROPERTY = "cacheStatementsSize"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CACHE_STATEMENTS_SIZE = "eclipselink.jdbc.cache-statements.size"; //$NON-NLS-1$
-		static final Integer DEFAULT_CACHE_STATEMENTS_SIZE = Integer.valueOf(50);
+		String ECLIPSELINK_CACHE_STATEMENTS_SIZE = "eclipselink.jdbc.cache-statements.size"; //$NON-NLS-1$
+	Integer getDefaultCacheStatementsSize();
+		String DEFAULT_CACHE_STATEMENTS_SIZE_PROPERTY = "defaultCacheStatementsSize"; //$NON-NLS-1$
+		Integer DEFAULT_CACHE_STATEMENTS_SIZE = Integer.valueOf(50);
 
-	String getDefaultDriver();
 	String getDriver();
 	void setDriver(String newDriver);
-		static final String DRIVER_PROPERTY = "driver"; //$NON-NLS-1$
+		String DRIVER_PROPERTY = "driver"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_DRIVER = "eclipselink.jdbc.driver"; //$NON-NLS-1$
-		static final String DEFAULT_DRIVER = ""; //$NON-NLS-1$
+		String ECLIPSELINK_DRIVER = "eclipselink.jdbc.driver"; //$NON-NLS-1$
+	String getDefaultDriver();
+		String DEFAULT_DRIVER_PROPERTY = "defaultDriver"; //$NON-NLS-1$
+		String DEFAULT_DRIVER = ""; //$NON-NLS-1$
 
-	String getDefaultUrl();
 	String getUrl();
 	void setUrl(String newUrl);
-		static final String URL_PROPERTY = "url"; //$NON-NLS-1$
+		String URL_PROPERTY = "url"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_URL = "eclipselink.jdbc.url"; //$NON-NLS-1$
-		static final String DEFAULT_URL = ""; //$NON-NLS-1$
+		String ECLIPSELINK_URL = "eclipselink.jdbc.url"; //$NON-NLS-1$
+	String getDefaultUrl();
+		String DEFAULT_URL_PROPERTY = "defaultUrl"; //$NON-NLS-1$
+		String DEFAULT_URL = ""; //$NON-NLS-1$
 
-	String getDefaultUser();
 	String getUser();
 	void setUser(String newUser);
-		static final String USER_PROPERTY = "user"; //$NON-NLS-1$
+		String USER_PROPERTY = "user"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_USER = "eclipselink.jdbc.user"; //$NON-NLS-1$
-		static final String DEFAULT_USER = ""; //$NON-NLS-1$
+		String ECLIPSELINK_USER = "eclipselink.jdbc.user"; //$NON-NLS-1$
+	String getDefaultUser();
+		String DEFAULT_USER_PROPERTY = "defaultUser"; //$NON-NLS-1$
+		String DEFAULT_USER = ""; //$NON-NLS-1$
 
-	String getDefaultPassword();
 	String getPassword();
 	void setPassword(String newPassword);
-		static final String PASSWORD_PROPERTY = "password"; //$NON-NLS-1$
+		String PASSWORD_PROPERTY = "password"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_PASSWORD = "eclipselink.jdbc.password"; //$NON-NLS-1$
-		static final String DEFAULT_PASSWORD = ""; //$NON-NLS-1$
+		String ECLIPSELINK_PASSWORD = "eclipselink.jdbc.password"; //$NON-NLS-1$
+	String getDefaultPassword();
+		String DEFAULT_PASSWORD_PROPERTY = "defaultPassword"; //$NON-NLS-1$
+		String DEFAULT_PASSWORD = ""; //$NON-NLS-1$
 
-	Boolean getDefaultBindParameters();
 	Boolean getBindParameters();
 	void setBindParameters(Boolean newBindParameters);
-		static final String BIND_PARAMETERS_PROPERTY = "bindParameters"; //$NON-NLS-1$
+		String BIND_PARAMETERS_PROPERTY = "bindParameters"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_BIND_PARAMETERS = "eclipselink.jdbc.bind-parameters"; //$NON-NLS-1$
-		static final Boolean DEFAULT_BIND_PARAMETERS = Boolean.TRUE;
+		String ECLIPSELINK_BIND_PARAMETERS = "eclipselink.jdbc.bind-parameters"; //$NON-NLS-1$
+	Boolean getDefaultBindParameters();
+		String DEFAULT_BIND_PARAMETERS_PROPERTY = "defaultBindParameters"; //$NON-NLS-1$
+		Boolean DEFAULT_BIND_PARAMETERS = Boolean.TRUE;
 
-	Boolean getDefaultReadConnectionsShared();
 	Boolean getReadConnectionsShared();
 	void setReadConnectionsShared(Boolean newReadConnectionsShared);
-		static final String READ_CONNECTIONS_SHARED_PROPERTY = "readConnectionsShared"; //$NON-NLS-1$
+		String READ_CONNECTIONS_SHARED_PROPERTY = "readConnectionsShared"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_READ_CONNECTIONS_SHARED = "eclipselink.jdbc.read-connections.shared"; //$NON-NLS-1$
-		static final Boolean DEFAULT_READ_CONNECTIONS_SHARED = Boolean.FALSE;
-
-	Integer getDefaultReadConnectionsMin();
-	Transformer<EclipseLinkConnection, Integer> DEFAULT_READ_CONNECTIONS_MIN_TRANSFORMER = new DefaultReadConnectionsMinTransformer();
-	class DefaultReadConnectionsMinTransformer
-		extends TransformerAdapter<EclipseLinkConnection, Integer>
-	{
-		@Override
-		public Integer transform(EclipseLinkConnection connection) {
-			return connection.getDefaultReadConnectionsMin();
-		}
-	}
+		String ECLIPSELINK_READ_CONNECTIONS_SHARED = "eclipselink.jdbc.read-connections.shared"; //$NON-NLS-1$
+	Boolean getDefaultReadConnectionsShared();
+		String DEFAULT_READ_CONNECTIONS_SHARED_PROPERTY = "defaultReadConnectionsShared"; //$NON-NLS-1$
+		Boolean DEFAULT_READ_CONNECTIONS_SHARED = Boolean.FALSE;
 
 	Integer getReadConnectionsMin();
 	void setReadConnectionsMin(Integer newReadConnectionsMin);
-		static final String READ_CONNECTIONS_MIN_PROPERTY = "readConnectionsMin"; //$NON-NLS-1$
+		String READ_CONNECTIONS_MIN_PROPERTY = "readConnectionsMin"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_READ_CONNECTIONS_MIN = "eclipselink.jdbc.read-connections.min"; //$NON-NLS-1$
-		static final Integer DEFAULT_READ_CONNECTIONS_MIN = Integer.valueOf(2);
-
-	Integer getDefaultReadConnectionsMax();
-	Transformer<EclipseLinkConnection, Integer> DEFAULT_READ_CONNECTIONS_MAX_TRANSFORMER = new DefaultReadConnectionsMaxTransformer();
-	class DefaultReadConnectionsMaxTransformer
-		extends TransformerAdapter<EclipseLinkConnection, Integer>
-	{
-		@Override
-		public Integer transform(EclipseLinkConnection connection) {
-			return connection.getDefaultReadConnectionsMax();
-		}
-	}
+		String ECLIPSELINK_READ_CONNECTIONS_MIN = "eclipselink.jdbc.read-connections.min"; //$NON-NLS-1$
+	Integer getDefaultReadConnectionsMin();
+		String DEFAULT_READ_CONNECTIONS_MIN_PROPERTY = "defaultReadConnectionsMin"; //$NON-NLS-1$
+		Integer DEFAULT_READ_CONNECTIONS_MIN = Integer.valueOf(2);
 
 	Integer getReadConnectionsMax();
 	void setReadConnectionsMax(Integer newReadConnectionsMax);
-		static final String READ_CONNECTIONS_MAX_PROPERTY = "readConnectionsMax"; //$NON-NLS-1$
+		String READ_CONNECTIONS_MAX_PROPERTY = "readConnectionsMax"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_READ_CONNECTIONS_MAX = "eclipselink.jdbc.read-connections.max"; //$NON-NLS-1$
-		static final Integer DEFAULT_READ_CONNECTIONS_MAX = Integer.valueOf(2);
-
-	Integer getDefaultWriteConnectionsMin();
-	Transformer<EclipseLinkConnection, Integer> DEFAULT_WRITE_CONNECTIONS_MIN_TRANSFORMER = new DefaultWriteConnectionsMinTransformer();
-	class DefaultWriteConnectionsMinTransformer
-		extends TransformerAdapter<EclipseLinkConnection, Integer>
-	{
-		@Override
-		public Integer transform(EclipseLinkConnection connection) {
-			return connection.getDefaultWriteConnectionsMin();
-		}
-	}
+		String ECLIPSELINK_READ_CONNECTIONS_MAX = "eclipselink.jdbc.read-connections.max"; //$NON-NLS-1$
+	Integer getDefaultReadConnectionsMax();
+		String DEFAULT_READ_CONNECTIONS_MAX_PROPERTY = "defaultReadConnectionsMax"; //$NON-NLS-1$
+		Integer DEFAULT_READ_CONNECTIONS_MAX = Integer.valueOf(2);
 
 	Integer getWriteConnectionsMin();
 	void setWriteConnectionsMin(Integer newWriteConnectionsMin);
-		static final String WRITE_CONNECTIONS_MIN_PROPERTY = "writeConnectionsMin"; //$NON-NLS-1$
+		String WRITE_CONNECTIONS_MIN_PROPERTY = "writeConnectionsMin"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_WRITE_CONNECTIONS_MIN = "eclipselink.jdbc.write-connections.min"; //$NON-NLS-1$
-		static final Integer DEFAULT_WRITE_CONNECTIONS_MIN = Integer.valueOf(5);
+		String ECLIPSELINK_WRITE_CONNECTIONS_MIN = "eclipselink.jdbc.write-connections.min"; //$NON-NLS-1$
+	Integer getDefaultWriteConnectionsMin();
+		String DEFAULT_WRITE_CONNECTIONS_MIN_PROPERTY = "defaultWriteConnectionsMin"; //$NON-NLS-1$
+		Integer DEFAULT_WRITE_CONNECTIONS_MIN = Integer.valueOf(5);
 
-	Integer getDefaultWriteConnectionsMax();
-	Transformer<EclipseLinkConnection, Integer> DEFAULT_WRITE_CONNECTIONS_MAX_TRANSFORMER = new DefaultWriteConnectionsMaxTransformer();
-	class DefaultWriteConnectionsMaxTransformer
-		extends TransformerAdapter<EclipseLinkConnection, Integer>
-	{
-		@Override
-		public Integer transform(EclipseLinkConnection connection) {
-			return connection.getDefaultWriteConnectionsMax();
-		}
-	}
 
 	Integer getWriteConnectionsMax();
 	void setWriteConnectionsMax(Integer newWriteConnectionsMax);
-		static final String WRITE_CONNECTIONS_MAX_PROPERTY = "writeConnectionsMax"; //$NON-NLS-1$
+		String WRITE_CONNECTIONS_MAX_PROPERTY = "writeConnectionsMax"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_WRITE_CONNECTIONS_MAX = "eclipselink.jdbc.write-connections.max"; //$NON-NLS-1$
-		static final Integer DEFAULT_WRITE_CONNECTIONS_MAX = Integer.valueOf(10);
+		String ECLIPSELINK_WRITE_CONNECTIONS_MAX = "eclipselink.jdbc.write-connections.max"; //$NON-NLS-1$
+	Integer getDefaultWriteConnectionsMax();
+		String DEFAULT_WRITE_CONNECTIONS_MAX_PROPERTY = "defaultWriteConnectionsMax"; //$NON-NLS-1$
+		Integer DEFAULT_WRITE_CONNECTIONS_MAX = Integer.valueOf(10);
 
-	EclipseLinkExclusiveConnectionMode getDefaultExclusiveConnectionMode();
 	EclipseLinkExclusiveConnectionMode getExclusiveConnectionMode();
 	void setExclusiveConnectionMode(EclipseLinkExclusiveConnectionMode newExclusiveConnectionMode);
-		static final String EXCLUSIVE_CONNECTION_MODE_PROPERTY = "exclusiveConnectionMode"; //$NON-NLS-1$
+		String EXCLUSIVE_CONNECTION_MODE_PROPERTY = "exclusiveConnectionMode"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE = "eclipselink.jdbc.exclusive-connection.mode"; //$NON-NLS-1$
-		static final EclipseLinkExclusiveConnectionMode DEFAULT_EXCLUSIVE_CONNECTION_MODE = EclipseLinkExclusiveConnectionMode.transactional;
+		String ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE = "eclipselink.jdbc.exclusive-connection.mode"; //$NON-NLS-1$
+	EclipseLinkExclusiveConnectionMode getDefaultExclusiveConnectionMode();
+		String DEFAULT_EXCLUSIVE_CONNECTION_MODE_PROPERTY = "defaultExclusiveConnectionMode"; //$NON-NLS-1$
+		EclipseLinkExclusiveConnectionMode DEFAULT_EXCLUSIVE_CONNECTION_MODE = EclipseLinkExclusiveConnectionMode.transactional;
 
-	Boolean getDefaultLazyConnection();
 	Boolean getLazyConnection();
 	void setLazyConnection(Boolean newLazyConnection);
-		static final String LAZY_CONNECTION_PROPERTY = "lazyConnection"; //$NON-NLS-1$
+		String LAZY_CONNECTION_PROPERTY = "lazyConnection"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_LAZY_CONNECTION = "eclipselink.jdbc.exclusive-connection.is-lazy"; //$NON-NLS-1$
-		static final Boolean DEFAULT_LAZY_CONNECTION = Boolean.TRUE;
-
+		String ECLIPSELINK_LAZY_CONNECTION = "eclipselink.jdbc.exclusive-connection.is-lazy"; //$NON-NLS-1$
+	Boolean getDefaultLazyConnection();
+		String DEFAULT_LAZY_CONNECTION_PROPERTY = "defaultLazyConnection"; //$NON-NLS-1$
+		Boolean DEFAULT_LAZY_CONNECTION = Boolean.TRUE;
 }
