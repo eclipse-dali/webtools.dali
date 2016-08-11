@@ -31,7 +31,6 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
-import org.eclipse.jpt.common.utility.internal.transformer.int_.IntObjectTransformerAdapter;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.IntTransformer;
 import org.eclipse.jpt.common.utility.transformer.InterruptibleTransformer;
@@ -50,7 +49,18 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 */
 	public static <I> Transformer<I, Integer> adapt(IntTransformer<? super I> intTransformer) {
-		return new IntObjectTransformerAdapter<>(intTransformer);
+		ObjectTools.assertNotNull(intTransformer);
+		return input -> Integer.valueOf(intTransformer.transform(input));
+	}
+
+	/**
+	 * Adapt an {@link Integer} transformer to the {@link IntTransformer} interface.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 */
+	public static <I> IntTransformer<I> adapt(Transformer<? super I, Integer> transformer) {
+		ObjectTools.assertNotNull(transformer);
+		return input -> transformer.transform(input).intValue();
 	}
 
 	/**
