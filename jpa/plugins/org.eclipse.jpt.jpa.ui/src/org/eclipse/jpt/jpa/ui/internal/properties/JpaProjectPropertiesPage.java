@@ -509,7 +509,7 @@ public class JpaProjectPropertiesPage
 				this.jpaProjectModel,
 				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PROPERTY,
 				JpaProject.DISCOVERS_ANNOTATED_CLASSES_PREDICATE,
-				JpaProject.SET_DISCOVERS_ANNOTATED_CLASSES_CLOSURE
+				(jpaProject, value) -> jpaProject.setDiscoversAnnotatedClasses(value)
 			);
 	}
 

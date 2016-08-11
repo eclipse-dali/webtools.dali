@@ -618,7 +618,7 @@ public class TableModelAdapterUITest {
 				this.selectedPersonHolder,
 				Person.EVIL_PROPERTY,
 				TransformerTools.adapt(Person.EVIL_PREDICATE),
-				PropertyValueModelTools.downcast(PropertyValueModelTools.booleanSetBiClosureAdapter(Person.SET_EVIL_CLOSURE))
+				PropertyValueModelTools.downcast(PropertyValueModelTools.booleanSetBiClosureAdapter((p, evil) -> p.setEvil(evil)))
 			);
 	}
 

@@ -578,15 +578,6 @@ public interface JpaProject
 	 * @see #discoversAnnotatedClasses()
 	 */
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
-		BooleanSetClosure<JpaProject> SET_DISCOVERS_ANNOTATED_CLASSES_CLOSURE = new SetDiscoversAnnotatedClassesClosure();
-	class SetDiscoversAnnotatedClassesClosure
-		extends BooleanSetClosureAdapter<JpaProject>
-	{
-		@Override
-		public void execute(JpaProject jpaProject, boolean discoversAnnotatedClasses) {
-			jpaProject.setDiscoversAnnotatedClasses(discoversAnnotatedClasses);
-		}
-	}
 
 
 	// ********** manager **********

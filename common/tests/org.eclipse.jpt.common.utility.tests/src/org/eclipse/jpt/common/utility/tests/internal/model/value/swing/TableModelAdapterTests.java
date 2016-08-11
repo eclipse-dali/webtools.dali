@@ -363,7 +363,7 @@ public class TableModelAdapterTests
 					person,
 					Person.EVIL_PROPERTY,
 					TransformerTools.adapt(Person.EVIL_PREDICATE),
-					PropertyValueModelTools.downcast(PropertyValueModelTools.booleanSetBiClosureAdapter(Person.SET_EVIL_CLOSURE))
+					PropertyValueModelTools.downcast(PropertyValueModelTools.booleanSetBiClosureAdapter((p, evil) -> p.setEvil(evil)))
 				);
 		}
 	
@@ -564,15 +564,6 @@ public class TableModelAdapterTests
 				@Override
 				public boolean evaluate(Person model) {
 					return model.isEvil();
-				}
-			}
-			public static final BooleanSetClosure<Person> SET_EVIL_CLOSURE = new SetEvilClosure();
-			public static final class SetEvilClosure
-				extends BooleanSetClosureAdapter<Person>
-			{
-				@Override
-				public void execute(Person model, boolean value) {
-					model.setEvil(value);
 				}
 			}
 		private int rank;

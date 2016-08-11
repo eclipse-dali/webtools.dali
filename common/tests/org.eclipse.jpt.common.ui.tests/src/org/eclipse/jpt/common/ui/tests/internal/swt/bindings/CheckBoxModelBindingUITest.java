@@ -74,7 +74,7 @@ public class CheckBoxModelBindingUITest
 				subjectModel,
 				TestModel.FLAG1_PROPERTY,
 				TestModel.FLAG1_PREDICATE,
-				TestModel.SET_FLAG1_CLOSURE
+				(model, value) -> model.setFlag1(value)
 			);
 	}
 
@@ -83,7 +83,7 @@ public class CheckBoxModelBindingUITest
 				subjectModel,
 				TestModel.FLAG2_PROPERTY,
 				TestModel.FLAG2_PREDICATE,
-				TestModel.SET_FLAG2_CLOSURE
+				(model, value) -> model.setFlag2(value)
 			);
 	}
 
@@ -92,7 +92,7 @@ public class CheckBoxModelBindingUITest
 				subjectModel,
 				TestModel.NOT_FLAG2_PROPERTY,
 				TestModel.NOT_FLAG2_PREDICATE,
-				TestModel.SET_NOT_FLAG2_CLOSURE
+				(model, value) -> model.setNotFlag2(value)
 			);
 	}
 
@@ -278,15 +278,6 @@ public class CheckBoxModelBindingUITest
 					return model.isFlag1();
 				}
 			}
-			public static final BooleanSetClosure<TestModel> SET_FLAG1_CLOSURE = new SetFlag1Closure();
-			public static final class SetFlag1Closure
-				extends BooleanSetClosureAdapter<TestModel>
-			{
-				@Override
-				public void execute(TestModel model, boolean value) {
-					model.setFlag1(value);
-				}
-			}
 		private boolean flag2;
 			public static final String FLAG2_PROPERTY = "flag2";
 			public static final Predicate<TestModel> FLAG2_PREDICATE = new Flag2Predicate();
@@ -298,15 +289,6 @@ public class CheckBoxModelBindingUITest
 					return model.isFlag2();
 				}
 			}
-			public static final BooleanSetClosure<TestModel> SET_FLAG2_CLOSURE = new SetFlag2Closure();
-			public static final class SetFlag2Closure
-				extends BooleanSetClosureAdapter<TestModel>
-			{
-				@Override
-				public void execute(TestModel model, boolean value) {
-					model.setFlag2(value);
-				}
-			}
 		private boolean notFlag2;
 			public static final String NOT_FLAG2_PROPERTY = "notFlag2";
 			public static final Predicate<TestModel> NOT_FLAG2_PREDICATE = new NotFlag2Predicate();
@@ -316,15 +298,6 @@ public class CheckBoxModelBindingUITest
 				@Override
 				public boolean evaluate(TestModel model) {
 					return model.isNotFlag2();
-				}
-			}
-			public static final BooleanSetClosure<TestModel> SET_NOT_FLAG2_CLOSURE = new SetNotFlag2Closure();
-			public static final class SetNotFlag2Closure
-				extends BooleanSetClosureAdapter<TestModel>
-			{
-				@Override
-				public void execute(TestModel model, boolean value) {
-					model.setNotFlag2(value);
 				}
 			}
 	
