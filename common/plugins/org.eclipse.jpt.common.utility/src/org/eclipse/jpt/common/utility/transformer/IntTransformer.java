@@ -22,6 +22,7 @@ package org.eclipse.jpt.common.utility.transformer;
  * 
  * @see org.eclipse.jpt.common.utility.transformer.Transformer
  */
+@FunctionalInterface
 public interface IntTransformer<I> {
 	/**
 	 * Return the transformed <code>int</code>.
