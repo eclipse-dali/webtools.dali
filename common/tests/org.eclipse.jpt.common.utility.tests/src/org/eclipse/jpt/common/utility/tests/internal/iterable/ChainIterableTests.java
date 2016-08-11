@@ -13,10 +13,10 @@ import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.Vector;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class ChainIterableTests
@@ -37,7 +37,7 @@ public class ChainIterableTests
 	}
 
 	public void testException() {
-		Iterable<Class<?>> iterable = IterableTools.chainIterable(Vector.class, DisabledTransformer.<Class<?>, Class<?>>instance());
+		Iterable<Class<?>> iterable = IterableTools.chainIterable(Vector.class, TransformerTools.disabledTransformer());
 		Iterator<Class<?>> iterator = iterable.iterator();
 		boolean exCaught = false;
 		try {

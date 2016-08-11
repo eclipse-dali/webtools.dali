@@ -11,11 +11,11 @@ package org.eclipse.jpt.common.utility.tests.internal.iterable;
 
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class TransformationListIterableTests
@@ -59,7 +59,7 @@ public class TransformationListIterableTests
 	}
 
 	public void testMissingTransformer() {
-		Iterable<Integer> iterable = IterableTools.transform(this.buildNestedList(), DisabledTransformer.<String, Integer>instance());
+		Iterable<Integer> iterable = IterableTools.transform(this.buildNestedList(), TransformerTools.disabledTransformer());
 		boolean exCaught = false;
 		try {
 			int i = 1;

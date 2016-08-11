@@ -71,6 +71,18 @@ public final class IterableTools {
 	}
 
 	/**
+	 * If the specified iterable is <code>null</code>
+	 * or, if it is not <code>null</code>, contains a <code>null</code>,
+	 * throw a {@link NullPointerException}.
+	 * Convenient for argument checking.
+	 */
+	public static void assertNeitherIsNorContainsNull(Iterable<?> iterable) {
+		if (isOrContainsNull(iterable)) {
+			throw new NullPointerException();
+		}
+	}
+
+	/**
 	 * Return whether the specified iterable is <code>null</code>
 	 * or, if it is not <code>null</code>, contains a <code>null</code>.
 	 * Convenient for argument checking.

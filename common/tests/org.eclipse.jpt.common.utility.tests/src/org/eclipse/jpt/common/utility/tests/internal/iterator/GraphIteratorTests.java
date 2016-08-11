@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class GraphIteratorTests
@@ -80,7 +80,7 @@ public class GraphIteratorTests
 		boolean exCaught = false;
 		try {
 			// missing method override
-			Iterator<GraphNode> iterator = IteratorTools.graphIterator(this.buildGraphRoot(), DisabledTransformer.<GraphNode, Iterator<? extends GraphNode>>instance());
+			Iterator<GraphNode> iterator = IteratorTools.graphIterator(this.buildGraphRoot(), TransformerTools.disabledTransformer());
 			GraphNode gn = iterator.next();
 			fail("invalid graph node: " + gn);
 		} catch (UnsupportedOperationException ex) {

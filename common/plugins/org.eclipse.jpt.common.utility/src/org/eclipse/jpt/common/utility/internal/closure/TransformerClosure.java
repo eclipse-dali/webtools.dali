@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <A> the type of the object passed to the closure and forwarded to the
  *     transformer
  * 
- * @see org.eclipse.jpt.common.utility.internal.transformer.ClosureTransformer
+ * @see org.eclipse.jpt.common.utility.internal.transformer.TransformerTools#adapt(Closure)
  */
 public class TransformerClosure<A>
 	implements Closure<A>

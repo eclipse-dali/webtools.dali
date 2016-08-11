@@ -14,8 +14,8 @@ import java.util.Collection;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
@@ -64,7 +64,7 @@ public class GraphIterableTests
 	public void testBogusTransformer() {
 		boolean exCaught = false;
 		try {
-			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), DisabledTransformer.<GraphNode, Iterable<? extends GraphNode>>instance())) {
+			for (GraphNode gn : IterableTools.graphIterable(this.buildGraphRoot(), TransformerTools.disabledTransformer())) {
 				assertTrue(this.nodes.contains(gn));
 			}
 			fail();

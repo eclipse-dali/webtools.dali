@@ -18,10 +18,14 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.closure.Closure;
+import org.eclipse.jpt.common.utility.closure.InterruptibleClosure;
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.factory.Factory;
+import org.eclipse.jpt.common.utility.factory.InterruptibleFactory;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.BooleanTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.exception.DefaultExceptionHandler;
@@ -57,7 +61,44 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 */
 	public static <I, O> Transformer<I, O> adapt(Closure<? super I> closure) {
-		return new ClosureTransformer<>(closure);
+		ObjectTools.assertNotNull(closure);
+		return input -> {
+				closure.execute(input);
+				return null;
+			};
+	}
+
+	/**
+	 * Adapt the specified {@link InterruptibleClosure} to the
+	 * {@link InterruptibleTransformer} interface.
+	 * The returned transformer will always return <code>null</code>.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> adapt(InterruptibleClosure<? super I> closure) {
+		ObjectTools.assertNotNull(closure);
+		return input -> {
+				closure.execute(input);
+				return null;
+			};
+	}
+
+	/**
+	 * Adapt the specified {@link InterruptibleCommand} to the
+	 * {@link InterruptibleTransformer} interface.
+	 * The returned transformer will always return <code>null</code> and its
+	 * input will be ignored.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> adapt(InterruptibleCommand command) {
+		ObjectTools.assertNotNull(command);
+		return input -> {
+				command.execute();
+				return null;
+			};
 	}
 
 	/**
@@ -69,7 +110,11 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 */
 	public static <I, O> Transformer<I, O> adapt(Command command) {
-		return new CommandTransformer<>(command);
+		ObjectTools.assertNotNull(command);
+		return input -> {
+				command.execute();
+				return null;
+			};
 	}
 
 	/**
@@ -81,7 +126,22 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 */
 	public static <I, O> Transformer<I, O> adapt(Factory<? extends O> factory) {
-		return new FactoryTransformer<>(factory);
+		ObjectTools.assertNotNull(factory);
+		return input -> factory.create();
+	}
+
+	/**
+	 * Adapt the specified {@link InterruptibleFactory} to the
+	 * {@link InterruptibleTransformer} interface.
+	 * The returned transformer will return the factory's output and its
+	 * input will be ignored.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> adapt(InterruptibleFactory<? extends O> factory) {
+		ObjectTools.assertNotNull(factory);
+		return input -> factory.create();
 	}
 
 	/**
@@ -109,8 +169,9 @@ public final class TransformerTools {
 	 * @param <O> output: the type of the object returned by the transformer
 	 * (and callable)
 	 */
-	public static <I, O> TransformerCallable<I, O> callable(InterruptibleTransformer<? super I, ? extends O> transformer, I input) {
-		return new TransformerCallable<>(transformer, input);
+	public static <I, O> Callable<O> callable(InterruptibleTransformer<? super I, ? extends O> transformer, I input) {
+		ObjectTools.assertNotNull(transformer);
+		return () -> transformer.transform(input);
 	}
 
 
@@ -127,7 +188,6 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * 
-	 * @see ObjectToStringTransformer
 	 * @see String#valueOf(Object)
 	 * @see #objectToStringTransformer()
 	 * @see #objectToStringTransformer(String)
@@ -146,7 +206,6 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * 
-	 * @see ObjectToStringTransformer
 	 * @see Object#toString()
 	 * @see #objectToStringTransformer(String)
 	 * @see #objectToStringTransformer_()
@@ -164,7 +223,6 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * 
-	 * @see ObjectToStringTransformer
 	 * @see Object#toString()
 	 * @see #objectToStringTransformer()
 	 * @see #objectToStringTransformer_()
@@ -183,14 +241,13 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * 
-	 * @see ObjectToStringTransformer
 	 * @see Object#toString()
 	 * @see #objectToStringTransformer()
 	 * @see #objectToStringTransformer(String)
 	 * @see #stringFromObjectTransformer()
 	 */
 	public static <I> Transformer<I, String> objectToStringTransformer_() {
-		return ObjectToStringTransformer.instance();
+		return input -> input.toString();
 	}
 
 
@@ -206,7 +263,6 @@ public final class TransformerTools {
 	 * <li>If the original {@link Boolean} is <code>null</code>,
 	 * the transformer will return the specified value.
 	 * </ul>
-	 * @see NotBooleanTransformer
 	 * @see #notBooleanTransformer()
 	 */
 	public static Transformer<Boolean, Boolean> notBooleanTransformer(Boolean nullBoolean) {
@@ -223,11 +279,10 @@ public final class TransformerTools {
 	 * <li>If the original {@link Boolean} is <code>null</code>,
 	 * the transformer will return <code>null</code>.
 	 * </ul>
-	 * @see NotBooleanTransformer
 	 * @see #notBooleanTransformer(Boolean)
 	 */
 	public static Transformer<Boolean, Boolean> notBooleanTransformer() {
-		return NotBooleanTransformer.instance();
+		return b -> (b == null) ? null : BooleanTools.not(b);
 	}
 
 	/**
@@ -320,6 +375,7 @@ public final class TransformerTools {
 	 * @see #adapt(Predicate, Boolean)
 	 */
 	public static <I> Transformer<I, Boolean> adapt(Predicate<? super I> predicate) {
+		ObjectTools.assertNotNull(predicate);
 		return input -> Boolean.valueOf(predicate.evaluate(input));
 	}
 
@@ -333,7 +389,6 @@ public final class TransformerTools {
 	 * <strong>NB:</strong> The transformer will return <code>null</code>
 	 * if it is passed a <code>null</code> input.
 	 * 
-	 * @see StringToBooleanTransformer
 	 * @see Boolean#valueOf(String)
 	 * @see #stringToBooleanTransformer(Boolean)
 	 * @see #stringToBooleanTransformer_()
@@ -347,7 +402,6 @@ public final class TransformerTools {
 	 * {@link Boolean}. The transformer will return the specified value
 	 * if it is passed a <code>null</code> input.
 	 * 
-	 * @see StringToBooleanTransformer
 	 * @see Boolean#valueOf(String)
 	 * @see #stringToBooleanTransformer()
 	 * @see #stringToBooleanTransformer_()
@@ -363,13 +417,12 @@ public final class TransformerTools {
 	 * <strong>NB:</strong> The transformer will return {@link Boolean#FALSE}
 	 * if it is passed a <code>null</code> input.
 	 * 
-	 * @see StringToBooleanTransformer
 	 * @see Boolean#valueOf(String)
 	 * @see #stringToBooleanTransformer(Boolean)
 	 * @see #stringToBooleanTransformer()
 	 */
 	public static Transformer<String, Boolean> stringToBooleanTransformer_() {
-		return StringToBooleanTransformer.instance();
+		return string -> Boolean.valueOf(string);
 	}
 
 	/**
@@ -379,7 +432,6 @@ public final class TransformerTools {
 	 * <strong>NB:</strong> The transformer will return <code>null</code>
 	 * if it is passed a <code>null</code> input.
 	 * 
-	 * @see StringToIntegerTransformer
 	 * @see Integer#valueOf(String)
 	 * @see #stringToIntegerTransformer(Integer)
 	 * @see #stringToIntegerTransformer_()
@@ -393,7 +445,6 @@ public final class TransformerTools {
 	 * {@link Integer}.  The transformer will return the specified value
 	 * if it is passed a <code>null</code> input.
 	 * 
-	 * @see StringToIntegerTransformer
 	 * @see Integer#valueOf(String)
 	 * @see #stringToIntegerTransformer()
 	 * @see #stringToIntegerTransformer_()
@@ -409,13 +460,12 @@ public final class TransformerTools {
 	 * <strong>NB:</strong> The transformer will throw a
 	 * {@link NumberFormatException} if it is passed a <code>null</code> input.
 	 * 
-	 * @see StringToIntegerTransformer
 	 * @see Integer#valueOf(String)
 	 * @see #stringToIntegerTransformer()
 	 * @see #stringToIntegerTransformer(Integer)
 	 */
 	public static Transformer<String, Integer> stringToIntegerTransformer_() {
-		return StringToIntegerTransformer.instance();
+		return string -> Integer.valueOf(string);
 	}
 
 
@@ -544,9 +594,11 @@ public final class TransformerTools {
 	 * If the list is empty, the transformer returns <code>null</code>.
 	 * 
 	 * @param <E> the type of elements held by the list
+	 * 
+	 * @see #listLastElementTransformer_()
 	 */
 	public static <E> Transformer<List<? extends E>, E> listLastElementTransformer() {
-		return ListLastElementTransformer.instance();
+		return list -> list.isEmpty() ? null : list.get(list.size() - 1);
 	}
 
 	/**
@@ -554,9 +606,11 @@ public final class TransformerTools {
 	 * If the list is empty, the transformer throws an {@link IndexOutOfBoundsException}.
 	 * 
 	 * @param <E> the type of elements held by the list
+	 * 
+	 * @see #listLastElementTransformer()
 	 */
 	public static <E> Transformer<List<? extends E>, E> listLastElementTransformer_() {
-		return ListLastElementTransformer_.instance();
+		return list -> list.get(list.size() - 1);
 	}
 
 
@@ -616,7 +670,7 @@ public final class TransformerTools {
 	 * @see ThreadLocalTransformer
 	 */
 	public static <I, O> ThreadLocalTransformer<I, O> threadLocalTransformer() {
-		return threadLocalTransformer(NullOutputTransformer.<I, O>instance());
+		return threadLocalTransformer(nullOutputTransformer());
 	}
 
 	/**
@@ -673,11 +727,10 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer; also the
 	 *   type of object returned by the output iterator
-	 *   
-	 * @see IterableTransformerWrapper
 	 */
 	public static <I> Transformer<I, Iterator<? extends I>> toIterator(Transformer<? super I, ? extends Iterable<? extends I>> transformer) {
-		return new IterableTransformerWrapper<>(transformer);
+		ObjectTools.assertNotNull(transformer);
+		return input -> transformer.transform(input).iterator();
 	}
 
 	/**
@@ -689,12 +742,11 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to and
 	 *   returned by the transformer
 	 *   
-	 * @see NullCheckTransformer
 	 * @see #nullCheck(Transformer)
 	 * @see #nullCheck(Transformer, Object)
 	 */
 	public static <I> Transformer<I, I> nullCheck(I nullOutput) {
-		return new NullCheckTransformer<>(nullOutput);
+		return input -> (input != null) ? input : nullOutput;
 	}
 
 	/**
@@ -706,7 +758,6 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see NullCheckTransformerWrapper
 	 * @see #nullCheck(Transformer, Object)
 	 * @see #nullCheck(Object)
 	 */
@@ -723,12 +774,45 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see NullCheckTransformerWrapper
 	 * @see #nullCheck(Transformer)
 	 * @see #nullCheck(Object)
 	 */
 	public static <I, O> Transformer<I, O> nullCheck(Transformer<? super I, ? extends O> transformer, O nullOutput) {
-		return new NullCheckTransformerWrapper<>(transformer, nullOutput);
+		ObjectTools.assertNotNull(transformer);
+		return input -> (input == null) ? nullOutput : transformer.transform(input);
+	}
+
+	/**
+	 * Return a transformer that wraps the specified transformer and checks
+	 * for <code>null</code> input before forwarding the input to the specified
+	 * transformer. If the input is <code>null</code>, the transformer will
+	 * return <code>null</code>.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * 
+	 * @see #nullCheck(InterruptibleTransformer, Object)
+	 * @see #nullCheck(Object)
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> nullCheck(InterruptibleTransformer<? super I, ? extends O> transformer) {
+		return nullCheck(transformer, null);
+	}
+
+	/**
+	 * Return a transformer that wraps the specified transformer and checks
+	 * for <code>null</code> input before forwarding the input to the specified
+	 * transformer. If the input is <code>null</code>, the transformer will
+	 * return the specified output value.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * 
+	 * @see #nullCheck(InterruptibleTransformer)
+	 * @see #nullCheck(Object)
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> nullCheck(InterruptibleTransformer<? super I, ? extends O> transformer, O nullOutput) {
+		ObjectTools.assertNotNull(transformer);
+		return input -> (input == null) ? nullOutput : transformer.transform(input);
 	}
 
 	/**
@@ -758,12 +842,13 @@ public final class TransformerTools {
 	 *   is the same object returned by the wrapped transformer, simply
 	 *   cast to <code>O</code>
 	 *   
-	 * @see CastingTransformerWrapper
 	 * @see #upcast(Transformer)
 	 * @see #downcast(Transformer)
 	 */
+	@SuppressWarnings("unchecked")
 	public static <I, X, O> Transformer<I, O> cast(Transformer<? super I, ? extends X> transformer) {
-		return new CastingTransformerWrapper<I, X, O>(transformer);
+		ObjectTools.assertNotNull(transformer);
+		return input -> (O) transformer.transform(input);
 	}
 
 	/**
@@ -776,12 +861,13 @@ public final class TransformerTools {
 	 *   is the same object returned by the wrapped transformer, simply
 	 *   cast to <code>O</code>
 	 * 
-	 * @see DowncastingTransformerWrapper
 	 * @see #cast(Transformer)
 	 * @see #upcast(Transformer)
 	 */
+	@SuppressWarnings("unchecked")
 	public static <I, X, O extends X> Transformer<I, O> downcast(Transformer<? super I, ? extends X> transformer) {
-		return new DowncastingTransformerWrapper<>(transformer);
+		ObjectTools.assertNotNull(transformer);
+		return input -> (O) transformer.transform(input);
 	}
 
 	/**
@@ -794,12 +880,68 @@ public final class TransformerTools {
 	 * @param <X> intermediate: the type of object returned by the wrapped
 	 *   transformer
 	 * 
-	 * @see UpcastingTransformerWrapper
 	 * @see #cast(Transformer)
 	 * @see #downcast(Transformer)
 	 */
 	public static <I, O, X extends O> Transformer<I, O> upcast(Transformer<? super I, ? extends X> transformer) {
-		return new UpcastingTransformerWrapper<I, O, X>(transformer);
+		ObjectTools.assertNotNull(transformer);
+		return input -> (O) transformer.transform(input);
+	}
+
+	/**
+	 * Return a transformer that simply casts the specified transformer's return type.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <X> intermediate: the type of object returned by the wrapped
+	 *   transformer
+	 * @param <O> output: the type of object returned by the transformer - this
+	 *   is the same object returned by the wrapped transformer, simply
+	 *   cast to <code>O</code>
+	 *   
+	 * @see #upcast(InterruptibleTransformer)
+	 * @see #downcast(InterruptibleTransformer)
+	 */
+	@SuppressWarnings("unchecked")
+	public static <I, X, O> InterruptibleTransformer<I, O> cast(InterruptibleTransformer<? super I, ? extends X> transformer) {
+		ObjectTools.assertNotNull(transformer);
+		return input -> (O) transformer.transform(input);
+	}
+
+	/**
+	 * Return a transformer that simply downcasts the specified transformer's return type.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <X> intermediate: the type of object returned by the wrapped
+	 *   transformer
+	 * @param <O> output: the type of object returned by the transformer - this
+	 *   is the same object returned by the wrapped transformer, simply
+	 *   cast to <code>O</code>
+	 * 
+	 * @see #cast(InterruptibleTransformer)
+	 * @see #upcast(InterruptibleTransformer)
+	 */
+	@SuppressWarnings("unchecked")
+	public static <I, X, O extends X> InterruptibleTransformer<I, O> downcast(InterruptibleTransformer<? super I, ? extends X> transformer) {
+		ObjectTools.assertNotNull(transformer);
+		return input -> (O) transformer.transform(input);
+	}
+
+	/**
+	 * Return a transformer that simply upcasts the specified transformer's return type.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of object returned by the transformer - this
+	 *   is the same object returned by the wrapped transformer, simply
+	 *   cast to <code>O</code>
+	 * @param <X> intermediate: the type of object returned by the wrapped
+	 *   transformer
+	 * 
+	 * @see #cast(InterruptibleTransformer)
+	 * @see #downcast(InterruptibleTransformer)
+	 */
+	public static <I, O, X extends O> InterruptibleTransformer<I, O> upcast(InterruptibleTransformer<? super I, ? extends X> transformer) {
+		ObjectTools.assertNotNull(transformer);
+		return input -> (O) transformer.transform(input);
 	}
 
 
@@ -815,7 +957,9 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see SafeTransformerWrapper
+	 * @see #safe(Transformer, Object)
+	 * @see #safe(Transformer, ExceptionHandler)
+	 * @see #safe(Transformer, ExceptionHandler, Object)
 	 * @see DefaultExceptionHandler
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer) {
@@ -832,7 +976,9 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see SafeTransformerWrapper
+	 * @see #safe(Transformer)
+	 * @see #safe(Transformer, ExceptionHandler)
+	 * @see #safe(Transformer, ExceptionHandler, Object)
 	 * @see DefaultExceptionHandler
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, O exceptionOutput) {
@@ -848,7 +994,9 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see SafeTransformerWrapper
+	 * @see #safe(Transformer)
+	 * @see #safe(Transformer, Object)
+	 * @see #safe(Transformer, ExceptionHandler, Object)
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler) {
 		return safe(transformer, exceptionHandler, null);
@@ -863,10 +1011,107 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see SafeTransformerWrapper
+	 * @see #safe(Transformer)
+	 * @see #safe(Transformer, Object)
+	 * @see #safe(Transformer, ExceptionHandler)
+	 * @see #safe(InterruptibleTransformer, ExceptionHandler, Object)
 	 */
 	public static <I, O> Transformer<I, O> safe(Transformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
-		return new SafeTransformerWrapper<>(transformer, exceptionHandler, exceptionOutput);
+		ObjectTools.assertNotNull(transformer);
+		ObjectTools.assertNotNull(exceptionHandler);
+		return input -> {
+				try {
+					return transformer.transform(input);
+				} catch (Throwable ex) {
+					exceptionHandler.handleException(ex);
+					return exceptionOutput;
+				}
+			};
+	}
+
+	/**
+	 * Return a transformer that wraps the specified transformer and handles
+	 * any exceptions thrown during the transformation. If an exception is
+	 * thrown, the exception's stack trace will be printed to {@link System#err
+	 * the "standard" error output stream} and <code>null</code> will be
+	 * returned.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * 
+	 * @see #safe(InterruptibleTransformer, Object)
+	 * @see #safe(InterruptibleTransformer, ExceptionHandler)
+	 * @see #safe(InterruptibleTransformer, ExceptionHandler, Object)
+	 * @see DefaultExceptionHandler
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> safe(InterruptibleTransformer<? super I, ? extends O> transformer) {
+		return safe(transformer, DefaultExceptionHandler.instance(), null);
+	}
+
+	/**
+	 * Return a transformer that wraps the specified transformer and handles
+	 * any exceptions thrown during the transformation. If an exception is
+	 * thrown, the exception's stack trace will be printed to {@link System#err
+	 * the "standard" error output stream}
+	 * and specified output will be returned.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * 
+	 * @see #safe(InterruptibleTransformer)
+	 * @see #safe(InterruptibleTransformer, ExceptionHandler)
+	 * @see #safe(InterruptibleTransformer, ExceptionHandler, Object)
+	 * @see DefaultExceptionHandler
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> safe(InterruptibleTransformer<? super I, ? extends O> transformer, O exceptionOutput) {
+		return safe(transformer, DefaultExceptionHandler.instance(), exceptionOutput);
+	}
+
+	/**
+	 * Return a transformer that wraps the specified transformer and handles
+	 * any exceptions thrown during the transformation. If an exception is
+	 * thrown, the exception will be passed to the specified exception handler
+	 * and <code>null</code> will be returned.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * 
+	 * @see #safe(InterruptibleTransformer)
+	 * @see #safe(InterruptibleTransformer, Object)
+	 * @see #safe(InterruptibleTransformer, ExceptionHandler, Object)
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> safe(InterruptibleTransformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler) {
+		return safe(transformer, exceptionHandler, null);
+	}
+
+	/**
+	 * Return a transformer that wraps the specified transformer and handles
+	 * any exceptions (other than {@link InterruptedException}) thrown
+	 * during the transformation. If an exception is
+	 * thrown, the exception will be passed to the specified exception handler
+	 * and specified output will be returned.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 * 
+	 * @see #safe(InterruptibleTransformer)
+	 * @see #safe(InterruptibleTransformer, Object)
+	 * @see #safe(InterruptibleTransformer, ExceptionHandler)
+	 * @see #safe(Transformer, ExceptionHandler, Object)
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> safe(InterruptibleTransformer<? super I, ? extends O> transformer, ExceptionHandler exceptionHandler, O exceptionOutput) {
+		ObjectTools.assertNotNull(transformer);
+		ObjectTools.assertNotNull(exceptionHandler);
+		return input -> {
+				try {
+					return transformer.transform(input);
+				} catch (InterruptedException ex) {
+					throw ex;
+				} catch (Throwable ex) {
+					exceptionHandler.handleException(ex);
+					return exceptionOutput;
+				}
+			};
 	}
 
 
@@ -879,11 +1124,10 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 *   (and returned by the transformer)
 	 * 
-	 * @see PassThruTransformer
 	 * @see #passThruTransformer(Object)
 	 */
 	public static <I> Transformer<I, I> passThruTransformer() {
-		return PassThruTransformer.instance();
+		return input -> input;
 	}
 
 	/**
@@ -895,7 +1139,6 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 *   (and returned by the transformer)
 	 * 
-	 * @see PassThruTransformer
 	 * @see #passThruTransformer()
 	 */
 	public static <I> Transformer<I, I> passThruTransformer(I nullOutput) {
@@ -928,7 +1171,8 @@ public final class TransformerTools {
 	 * returned by the transformer
 	 */
 	public static <I> Transformer<I, I> filteringTransformer(Predicate<? super I> filter, I defaultOutput) {
-		return new FilteringTransformer<>(filter, defaultOutput);
+		ObjectTools.assertNotNull(filter);
+		return input -> filter.evaluate(input) ? input : defaultOutput;
 	}
 
 
@@ -939,11 +1183,10 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 *   (and returned by the transformer)
-	 * 
-	 * @see CloneTransformer
 	 */
+	@SuppressWarnings("unchecked")
 	public static <I extends Cloneable> Transformer<I, I> cloneTransformer() {
-		return CloneTransformer.instance();
+		return input -> (I) ObjectTools.execute(input, "clone"); //$NON-NLS-1$
 	}
 
 	/**
@@ -953,11 +1196,9 @@ public final class TransformerTools {
 	 * 
 	 * @param <O> output: the type of the object returned by the transformer (and
 	 *   the class, or superclass of the class, passed to the transformer)
-	 * 
-	 * @see InstantiationTransformer
 	 */
 	public static <O> Transformer<Class<? extends O>, O> instantiationTransformer() {
-		return InstantiationTransformer.instance();
+		return input -> ClassTools.newInstance(input);
 	}
 
 	/**
@@ -970,11 +1211,10 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see FieldTransformer
 	 */
+	@SuppressWarnings("unchecked")
 	public static <I, O> Transformer<I, O> get(String fieldName) {
-		return new FieldTransformer<>(fieldName);
+		return input -> (O) ObjectTools.get(input, fieldName);
 	}
 
 	/**
@@ -988,8 +1228,6 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see MethodTransformer
 	 */
 	public static <I, O> Transformer<I, O> execute(String methodName) {
 		return execute(methodName, ClassTools.EMPTY_ARRAY, ObjectTools.EMPTY_OBJECT_ARRAY);
@@ -1006,8 +1244,6 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see MethodTransformer
 	 */
 	public static <I, O> Transformer<I, O> execute(String methodName, Class<?> parameterType, Object argument) {
 		return execute(methodName, new Class<?>[] { parameterType }, new Object[] { argument });
@@ -1024,11 +1260,13 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see MethodTransformer
 	 */
+	@SuppressWarnings("unchecked")
 	public static <I, O> Transformer<I, O> execute(String methodName, Class<?>[] parameterTypes, Object[] arguments) {
-		return new MethodTransformer<>(methodName, parameterTypes, arguments);
+		ObjectTools.assertNotNull(methodName);
+		ArrayTools.assertNeitherIsNorContainsNull(parameterTypes);
+		ObjectTools.assertNotNull(arguments);
+		return input -> (O) ObjectTools.execute(input, methodName, parameterTypes, arguments);
 	}
 
 
@@ -1052,11 +1290,48 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see TransformerChain
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <I, O> Transformer<I, O> chain(Iterable<Transformer<?, ?>> transformers) {
-		return new TransformerChain<>(transformers);
+		ObjectTools.assertNotNull(transformers);
+		return input -> {
+				Object result = input;
+				for (Transformer transformer : transformers) {
+					result = transformer.transform(result);
+				}
+				return (O) result;
+			};
+	}
+
+	/**
+	 * @see #chain(Iterable)
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> chain(@SuppressWarnings("rawtypes") InterruptibleTransformer... transformers) {
+		return interuptibleChain(ArrayTools.<InterruptibleTransformer<?, ?>>iterable(transformers));
+	}
+
+	/**
+	 * Chain the specified transformers. Pass the chain's input to the first
+	 * transformer; take that transformer's output and pass it to the following
+	 * transformer in the chain; etc. The output from the final transformer is
+	 * returned as the chain's output.
+	 * <p>
+	 * <strong>NB:</strong> The transformer's generic types are for convenience only
+	 * and cannot be enforced on the transformers in the chain.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <I, O> InterruptibleTransformer<I, O> interuptibleChain(Iterable<InterruptibleTransformer<?, ?>> transformers) {
+		ObjectTools.assertNotNull(transformers);
+		return input -> {
+				Object result = input;
+				for (InterruptibleTransformer transformer : transformers) {
+					result = transformer.transform(result);
+				}
+				return (O) result;
+			};
 	}
 
 
@@ -1070,11 +1345,9 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see ClosureTransformer
 	 */
 	public static <I, O> Transformer<I, O> conditionalTransformer(Predicate<? super I> predicate, Transformer<? super I, ? extends O> transformer) {
-		return conditionalTransformer(predicate, transformer, NullOutputTransformer.<I, O>instance());
+		return conditionalTransformer(predicate, transformer, nullOutputTransformer());
 	}
 
 	/**
@@ -1083,11 +1356,30 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see ClosureTransformer
 	 */
 	public static <I, O> Transformer<I, O> conditionalTransformer(Predicate<? super I> predicate, Transformer<? super I, ? extends O> trueTransformer, Transformer<? super I, ? extends O> falseTransformer) {
-		return new ConditionalTransformer<>(predicate, trueTransformer, falseTransformer);
+		ObjectTools.assertNotNull(predicate);
+		ObjectTools.assertNotNull(trueTransformer);
+		ObjectTools.assertNotNull(falseTransformer);
+		return input -> predicate.evaluate(input) ?
+				trueTransformer.transform(input) :
+				falseTransformer.transform(input);
+	}
+
+	/**
+	 * Return a transformer that passes its input to the specified predicate to
+	 * determine which of the two specified transformers to execute.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> conditionalTransformer(Predicate<? super I> predicate, InterruptibleTransformer<? super I, ? extends O> trueTransformer, InterruptibleTransformer<? super I, ? extends O> falseTransformer) {
+		ObjectTools.assertNotNull(predicate);
+		ObjectTools.assertNotNull(trueTransformer);
+		ObjectTools.assertNotNull(falseTransformer);
+		return input -> predicate.evaluate(input) ?
+				trueTransformer.transform(input) :
+				falseTransformer.transform(input);
 	}
 
 
@@ -1112,11 +1404,9 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see SwitchTransformer
 	 */
 	public static <I, O> Transformer<I, O> switchTransformer(Iterable<Association<Predicate<? super I>, Transformer<? super I, ? extends O>>> transformers) {
-		return switchTransformer(transformers, NullOutputTransformer.<I, O>instance());
+		return switchTransformer(transformers, nullOutputTransformer());
 	}
 
 	/**
@@ -1130,11 +1420,67 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see SwitchTransformer
 	 */
 	public static <I, O> Transformer<I, O> switchTransformer(Iterable<Association<Predicate<? super I>, Transformer<? super I, ? extends O>>> transformers, Transformer<? super I, ? extends O> defaultTransformer) {
-		return new SwitchTransformer<>(transformers, defaultTransformer);
+		IterableTools.assertNeitherIsNorContainsNull(transformers);
+		ObjectTools.assertNotNull(defaultTransformer);
+		return input -> {
+				for (Association<Predicate<? super I>, Transformer<? super I, ? extends O>> association : transformers) {
+					if (association.getKey().evaluate(input)) {
+						return association.getValue().transform(input); // execute only one transformer
+					}
+				}
+				return defaultTransformer.transform(input);
+			};
+	}
+
+	/**
+	 * @see #switchTransformer(Iterable)
+	 */
+	@SafeVarargs
+	public static <I, O> InterruptibleTransformer<I, O> interruptibleSwitchTransformer(Association<Predicate<? super I>, InterruptibleTransformer<? super I, ? extends O>>... transformers) {
+		return interruptibleSwitchTransformer(ArrayTools.iterable(transformers));
+	}
+
+	/**
+	 * Return a transformer that loops over the specified set of
+	 * predicate/transformer pairs, passing its input to each predicate to
+	 * determine which of the transformers to execute. Only the first
+	 * transformer whose predicate evaluates to <code>true</code> is executed,
+	 * even if other, following, predicates would evaluate to <code>true</code>.
+	 * If none of the predicates evaluates to <code>true</code>, the transformer
+	 * returns <code>null</code>.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> interruptibleSwitchTransformer(Iterable<Association<Predicate<? super I>, InterruptibleTransformer<? super I, ? extends O>>> transformers) {
+		return interruptibleSwitchTransformer(transformers, nullOutputTransformer());
+	}
+
+	/**
+	 * Return a transformer that loops over the specified set of
+	 * predicate/transformer pairs, passing its input to each predicate to
+	 * determine which of the transformers to execute. Only the first
+	 * transformer whose predicate evaluates to <code>true</code> is executed,
+	 * even if other, following, predicates would evaluate to <code>true</code>.
+	 * If none of the predicates evaluates to <code>true</code>, the default transformer
+	 * is executed.
+	 * 
+	 * @param <I> input: the type of the object passed to the transformer
+	 * @param <O> output: the type of the object returned by the transformer
+	 */
+	public static <I, O> InterruptibleTransformer<I, O> interruptibleSwitchTransformer(Iterable<Association<Predicate<? super I>, InterruptibleTransformer<? super I, ? extends O>>> transformers, InterruptibleTransformer<? super I, ? extends O> defaultTransformer) {
+		IterableTools.assertNeitherIsNorContainsNull(transformers);
+		ObjectTools.assertNotNull(defaultTransformer);
+		return input -> {
+				for (Association<Predicate<? super I>, InterruptibleTransformer<? super I, ? extends O>> association : transformers) {
+					if (association.getKey().evaluate(input)) {
+						return association.getValue().transform(input); // execute only one transformer
+					}
+				}
+				return defaultTransformer.transform(input);
+			};
 	}
 
 
@@ -1148,11 +1494,9 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see DisabledTransformer
 	 */
 	public static <I, O> Transformer<I, O> disabledTransformer() {
-		return DisabledTransformer.instance();
+		return input -> {throw new UnsupportedOperationException();};
 	}
 
 
@@ -1164,11 +1508,10 @@ public final class TransformerTools {
 	 * 
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
-	 * 
-	 * @see MapTransformer
 	 */
 	public static <I, O> Transformer<I, O> mapTransformer(Map<? super I, ? extends O> map) {
-		return new MapTransformer<>(map);
+		ObjectTools.assertNotNull(map);
+		return input -> map.get(input);
 	}
 
 
@@ -1180,10 +1523,10 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see NullOutputTransformer
+	 * @see #staticOutputTransformer(Object)
 	 */
 	public static <I, O> Transformer<I, O> nullOutputTransformer() {
-		return NullOutputTransformer.instance();
+		return input -> null;
 	}
 
 	/**
@@ -1193,11 +1536,10 @@ public final class TransformerTools {
 	 * @param <I> input: the type of the object passed to the transformer
 	 * @param <O> output: the type of the object returned by the transformer
 	 * 
-	 * @see StaticOutputTransformer
 	 * @see #nullOutputTransformer()
 	 */
 	public static <I, O> Transformer<I, O> staticOutputTransformer(O output) {
-		return new StaticOutputTransformer<>(output);
+		return input -> output;
 	}
 
 

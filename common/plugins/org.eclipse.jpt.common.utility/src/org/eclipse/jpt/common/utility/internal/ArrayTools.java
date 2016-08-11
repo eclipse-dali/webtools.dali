@@ -907,6 +907,17 @@ public final class ArrayTools {
 	}
 
 	/**
+	 * Throw a {@link NullPointerException} if the specified array is <code>null</code>
+	 * or, if it is not <code>null</code>, contains a <code>null</code>.
+	 * Convenient for argument checking.
+	 */
+	public static void assertNeitherIsNorContainsNull(Object[] array) {
+		if (isOrContainsNull(array)) {
+			throw new NullPointerException();
+		}
+	}
+
+	/**
 	 * Return whether the specified array contains a <code>null</code>.
 	 */
 	public static boolean containsNull(Object[] array) {

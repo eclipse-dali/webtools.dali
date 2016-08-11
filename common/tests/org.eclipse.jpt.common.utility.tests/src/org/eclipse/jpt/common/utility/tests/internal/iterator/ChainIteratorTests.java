@@ -14,11 +14,11 @@ import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
-import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
-import org.eclipse.jpt.common.utility.internal.transformer.DisabledTransformer;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
+import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class ChainIteratorTests
@@ -85,7 +85,7 @@ public class ChainIteratorTests
 
 	public void testInvalidChainIterator() {
 		// missing method override
-		Iterator<Class<?>> iterator = new ChainIterator<Class<?>>(Vector.class, DisabledTransformer.<Class<?>, Class<?>>instance());
+		Iterator<Class<?>> iterator = new ChainIterator<Class<?>>(Vector.class, TransformerTools.disabledTransformer());
 		boolean exCaught = false;
 		try {
 			Class<?> c = iterator.next();

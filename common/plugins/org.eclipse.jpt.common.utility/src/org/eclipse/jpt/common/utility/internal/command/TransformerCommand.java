@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * ignored. This really only useful for a transformer that accepts
  * <code>null</code> input and has side-effects.
  * 
- * @see org.eclipse.jpt.common.utility.internal.transformer.CommandTransformer
+ * @see org.eclipse.jpt.common.utility.internal.transformer.TransformerTools#adapt(Command)
  */
 public class TransformerCommand
 	implements Command

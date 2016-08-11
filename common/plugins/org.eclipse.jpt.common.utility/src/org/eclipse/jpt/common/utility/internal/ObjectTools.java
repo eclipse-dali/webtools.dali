@@ -42,6 +42,20 @@ public final class ObjectTools {
 	public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
 
+	// ********** assertions **********
+
+	/**
+	 * Return whether the specified objects are equal, with the appropriate
+	 * <code>null</code> checks.
+	 * @see Object#equals(Object)
+	 */
+	public static void assertNotNull(Object object) {
+		if (object == null) {
+			throw new NullPointerException();
+		}
+	}
+
+
 	// ********** object comparison **********
 
 	/**

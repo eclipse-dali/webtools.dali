@@ -11,8 +11,12 @@ package org.eclipse.jpt.common.utility.tests.internal.transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import junit.framework.TestCase;
 
@@ -22,6 +26,55 @@ public class TransformerToolsTests
 {
 	public TransformerToolsTests(String name) {
 		super(name);
+	}
+
+	public void testNullCheck() {
+		Transformer<String, String> transformer = TransformerTools.nullCheck("");
+
+		assertEquals("foo", transformer.transform("foo"));
+		assertEquals("bar", transformer.transform("bar"));
+		assertEquals("barbar", transformer.transform("barbar"));
+		assertEquals("b", transformer.transform("b"));
+		assertEquals("", transformer.transform(""));
+		assertEquals("", transformer.transform(null));
+	}
+
+	public void testFilteringTransformer() {
+		Predicate<String> nonNullFilter = new Filter(3);
+		Predicate<String> filter = PredicateTools.nullCheck(nonNullFilter, false);
+		Transformer<String, String> transformer = TransformerTools.filteringTransformer(filter);
+
+		assertEquals("foo", transformer.transform("foo"));
+		assertEquals("bar", transformer.transform("bar"));
+		assertNull(transformer.transform("barbar"));
+		assertNull(transformer.transform("b"));
+		assertNull(transformer.transform(""));
+		assertNull(transformer.transform(null));
+	}
+
+	public void testFilteringTransformer_NPE() {
+		boolean exCaught = false;
+		try {
+			Transformer<String, String> transformer = TransformerTools.filteringTransformer(null);
+			fail("bogus: " + transformer);
+		} catch (NullPointerException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public static class Filter
+		extends PredicateAdapter<String>
+	{
+		public final int length;
+		public Filter(int length) {
+			super();
+			this.length =length;
+		}
+		@Override
+		public boolean evaluate(String variable) {
+			return variable.length() == this.length;
+		}
 	}
 
 	public void testCollectionFirstElementTransformer() {
@@ -178,5 +231,46 @@ public class TransformerToolsTests
 			exCaught = true;
 		}
 		assertTrue(exCaught);
+	}
+
+	public void testListLastElementTransformer_() {
+		List<String> list = new ArrayList<>();
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer_();
+		boolean exCaught = false;
+		try {
+			String bogus = transformer.transform(list);
+			fail("bogus output: " + bogus);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+		list.add("foo");
+		assertEquals("foo", transformer.transform(list));
+		list.add("bar");
+		assertEquals("bar", transformer.transform(list));
+		list.remove("foo");
+		assertEquals("bar", transformer.transform(list));
+		list.remove("bar");
+		exCaught = false;
+		try {
+			String bogus = transformer.transform(list);
+			fail("bogus output: " + bogus);
+		} catch (IndexOutOfBoundsException ex) {
+			exCaught = true;
+		}
+	}
+
+	public void testListLastElementTransformer() {
+		List<String> list = new ArrayList<>();
+		Transformer<List<? extends String>, String> transformer = TransformerTools.listLastElementTransformer();
+		assertNull(transformer.transform(list));
+		list.add("foo");
+		assertEquals("foo", transformer.transform(list));
+		list.add("bar");
+		assertEquals("bar", transformer.transform(list));
+		list.remove("foo");
+		assertEquals("bar", transformer.transform(list));
+		list.remove("bar");
+		assertNull(transformer.transform(list));
 	}
 }

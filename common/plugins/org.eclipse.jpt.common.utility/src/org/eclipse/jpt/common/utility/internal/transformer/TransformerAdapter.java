@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @param <I> input: the type of the object passed to the transformer
  * @param <O> output: the type of the object returned by the transformer
  * 
- * @see NullOutputTransformer
+ * @see TransformerTools#nullOutputTransformer()
  */
 public class TransformerAdapter<I, O>
 	implements Transformer<I, O>

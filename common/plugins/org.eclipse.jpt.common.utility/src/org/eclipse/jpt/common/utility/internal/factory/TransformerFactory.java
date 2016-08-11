@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * 
  * @param <T> the type of the object returned by the factory
  * 
- * @see org.eclipse.jpt.common.utility.internal.transformer.FactoryTransformer
+ * @see org.eclipse.jpt.common.utility.internal.transformer.TransformerTools#adapt(Factory)
  */
 public class TransformerFactory<T>
 	implements Factory<T>
