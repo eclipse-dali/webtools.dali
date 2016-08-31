@@ -289,21 +289,11 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableModel() {
-		return new PropertyAspectAdapterXXXX<M, CollectionTable2_0>(getSubjectHolder()) {
-			@Override
-			protected CollectionTable2_0 buildValue_() {
-				return this.subject.getCollectionTable();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getCollectionTable());
 	}
 	
 	protected PropertyValueModel<SpecifiedColumn> buildValueColumnModel() {
-		return new PropertyAspectAdapterXXXX<ElementCollectionMapping2_0, SpecifiedColumn>(getSubjectHolder()) {
-			@Override
-			protected SpecifiedColumn buildValue_() {
-				return this.subject.getValueColumn();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getValueColumn());
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildNoConverterModel() {

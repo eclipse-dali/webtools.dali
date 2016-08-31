@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmMappedSuperclass;
@@ -75,13 +75,7 @@ public class EclipseLinkOrmMappedSuperclassComposite2_3
 	}
 
 	private PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOrmMappedSuperclass, QueryContainer>(
-				getSubjectHolder()) {
-			@Override
-			protected QueryContainer buildValue_() {
-				return this.subject.getQueryContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getQueryContainer());
 	}
 	
 	protected void initializeMultitenancyCollapsibleSection(Composite container) {
@@ -104,11 +98,6 @@ public class EclipseLinkOrmMappedSuperclassComposite2_3
 	}
 
 	private PropertyValueModel<EclipseLinkOrmMultitenancy2_3> buildMultitenancyModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOrmMappedSuperclass, EclipseLinkOrmMultitenancy2_3>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkOrmMultitenancy2_3 buildValue_() {
-				return this.subject.getMultitenancy();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getMultitenancy());
 	}
 }

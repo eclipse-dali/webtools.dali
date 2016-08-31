@@ -11,11 +11,12 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -45,14 +46,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<SpecifiedPrimaryKeyJoinColumnRelationshipStrategy> buildPrimaryKeyJoinColumnJoiningStrategyModel() {
-		return new PropertyAspectAdapterXXXX
-				<PrimaryKeyJoinColumnRelationship, SpecifiedPrimaryKeyJoinColumnRelationshipStrategy>(
-					getSubjectHolder()) {
-			@Override
-			protected SpecifiedPrimaryKeyJoinColumnRelationshipStrategy buildValue_() {
-				return this.subject.getPrimaryKeyJoinColumnStrategy();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getPrimaryKeyJoinColumnStrategy());
 	}
 
 	@Override

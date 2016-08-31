@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
@@ -64,12 +64,7 @@ public abstract class EclipseLinkAbstractJavaEmbeddableComposite<T extends Eclip
 	}
 
 	protected PropertyValueModel<EclipseLinkJavaConverterContainer> buildConverterContainerValueModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkJavaConverterContainer>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkJavaConverterContainer buildValue_() {
-				return this.subject.getConverterContainer();
-			}	
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getConverterContainer());
 	}
 
 	protected void initializeAdvancedCollapsibleSection(Composite container) {

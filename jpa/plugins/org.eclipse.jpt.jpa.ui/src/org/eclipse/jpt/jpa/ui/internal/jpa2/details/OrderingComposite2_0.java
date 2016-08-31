@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
@@ -115,11 +116,6 @@ public class OrderingComposite2_0
 	}
 	
 	protected PropertyValueModel<SpecifiedOrderColumn2_0> buildOrderColumnModel(PropertyValueModel<Orderable2_0> orderableModel) {
-		return new PropertyAspectAdapterXXXX<Orderable2_0, SpecifiedOrderColumn2_0>(orderableModel) {
-			@Override
-			protected SpecifiedOrderColumn2_0 buildValue_() {
-				return this.subject.getOrderColumn();
-			}
-		};
+		return PropertyValueModelTools.transform(orderableModel, m -> m.getOrderColumn());
 	}
 }

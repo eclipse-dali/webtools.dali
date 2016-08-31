@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneRelationship2_0;
@@ -95,20 +95,10 @@ public class EclipseLinkJavaOneToOneMappingComposite2_0
 	}	
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOneToOneMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkJoinFetch buildValue_() {
-				return this.subject.getJoinFetch();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getJoinFetch());
 	}
 	
 	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnedModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOneToOneMapping2_0, EclipseLinkPrivateOwned>(this.getSubjectHolder()) {
-			@Override
-			protected EclipseLinkPrivateOwned buildValue_() {
-				return this.subject.getPrivateOwned();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getPrivateOwned());
 	}
 }

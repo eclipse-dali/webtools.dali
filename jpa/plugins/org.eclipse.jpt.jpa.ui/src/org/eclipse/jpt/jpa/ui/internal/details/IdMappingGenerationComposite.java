@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapt
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -205,12 +206,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 	
 	private PropertyValueModel<GeneratorContainer> buildGeneratorContainer() {
-		return new PropertyAspectAdapterXXXX<IdMapping, GeneratorContainer>(getSubjectHolder()) {
-			@Override
-			protected GeneratorContainer buildValue_() {
-				return this.subject.getGeneratorContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getGeneratorContainer());
 	}
 
 	protected Section initializeSequenceGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
@@ -529,12 +525,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	protected PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
-		return new PropertyAspectAdapterXXXX<IdMapping, PersistenceUnit>(getSubjectHolder()) {
-			@Override
-			protected PersistenceUnit buildValue_() {
-				return this.subject.getPersistenceUnit();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getPersistenceUnit());
 	}
 
 	/* CU private */ GeneratedValue getGeneratedValueForUpdate() {

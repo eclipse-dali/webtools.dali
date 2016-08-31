@@ -161,12 +161,7 @@ public class EclipseLinkPersistenceUnitConnectionEditorPage
 	}
 
 	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConnection, PersistenceUnit>(getSubjectHolder()) {
-			@Override
-			protected PersistenceUnit buildValue_() {
-				return this.subject.getPersistenceUnit();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getPersistenceUnit());
 	}
 
 	void clearJTAProperties() {

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -84,12 +84,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	}
 
 	protected PropertyValueModel<OrmPersistentType> buildPersistentTypeReferenceModel() {
-		return new PropertyAspectAdapterXXXX<T, OrmPersistentType>(getSubjectHolder()) {
-			@Override
-			protected OrmPersistentType buildValue_() {
-				return this.subject.getPersistentType();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getPersistentType());
 	}
 
 	protected void initializeCachingCollapsibleSection(Composite container) {
@@ -112,12 +107,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	}
 	
 	protected PropertyValueModel<EclipseLinkCaching> buildCachingModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkCaching>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkCaching buildValue_() {
-				return this.subject.getCaching();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getCaching());
 	}
 
 	protected void initializeConvertersCollapsibleSection(Composite container) {
@@ -140,12 +130,7 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	}
 
 	private PropertyValueModel<EclipseLinkOrmConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkOrmConverterContainer>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkOrmConverterContainer buildValue_() {
-				return this.subject.getConverterContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getConverterContainer());
 	}
 
 	protected void initializeAdvancedCollapsibleSection(Composite container) {
@@ -187,11 +172,6 @@ public abstract class EclipseLinkAbstractOrmMappedSuperclassComposite<T extends 
 	}
 
 	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
-		return new PropertyAspectAdapterXXXX<T, GeneratorContainer>(getSubjectHolder()) {
-			@Override
-			protected GeneratorContainer buildValue_() {
-				return this.subject.getGeneratorContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getGeneratorContainer());
 	}
 }

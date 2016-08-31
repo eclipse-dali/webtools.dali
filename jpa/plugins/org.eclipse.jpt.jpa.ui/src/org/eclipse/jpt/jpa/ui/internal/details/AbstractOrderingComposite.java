@@ -20,20 +20,15 @@ import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractOrderingComposite<T extends Orderable>
-		extends Pane<CollectionMapping> {
-	
+	extends Pane<CollectionMapping>
+{
 	protected AbstractOrderingComposite(Pane<? extends CollectionMapping> parentPane, Composite parentComposite) {
 		super(parentPane, parentComposite);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected PropertyValueModel<T> buildOrderableModel() {
-		return new PropertyAspectAdapterXXXX<CollectionMapping, T>(getSubjectHolder()) {
-			@SuppressWarnings("unchecked")
-			@Override
-			protected T buildValue_() {
-				return (T) this.subject.getOrderable();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> (T) m.getOrderable());
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildNoOrderingModel(PropertyValueModel<T> orderableModel) {

@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
@@ -194,12 +195,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 	}
 
 	private PropertyValueModel<SpecifiedDiscriminatorColumn> buildDiscriminatorColumnModel() {
-		return new PropertyAspectAdapterXXXX<Entity, SpecifiedDiscriminatorColumn>(getSubjectHolder()) {
-			@Override
-			protected SpecifiedDiscriminatorColumn buildValue_() {
-				return this.subject.getDiscriminatorColumn();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getDiscriminatorColumn());
 	}
 
 	private EnumFormComboViewer<SpecifiedDiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(

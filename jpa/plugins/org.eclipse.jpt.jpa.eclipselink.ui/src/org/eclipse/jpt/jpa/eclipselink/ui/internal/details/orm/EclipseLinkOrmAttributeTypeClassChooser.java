@@ -14,6 +14,7 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionP
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -95,12 +96,7 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 	}
 
 	private static PropertyValueModel<SpecifiedAccessReference> buildAccessReferenceModel(PropertyValueModel<? extends AttributeMapping> mappingModel) {
-		return new PropertyAspectAdapterXXXX<AttributeMapping, SpecifiedAccessReference>(mappingModel) {
-			@Override
-			protected SpecifiedAccessReference buildValue_() {
-				return this.subject.getPersistentAttribute();
-			}
-		};
+		return PropertyValueModelTools.transform(mappingModel, m -> m.getPersistentAttribute());
 	}
 
 	private static PropertyValueModel<Boolean> buildVirtualAttributeModel(PropertyValueModel<? extends AttributeMapping> mappingModel) {

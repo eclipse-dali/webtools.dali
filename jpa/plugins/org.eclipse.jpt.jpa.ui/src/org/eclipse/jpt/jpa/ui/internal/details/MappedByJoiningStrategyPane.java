@@ -15,9 +15,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelToo
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -68,13 +68,7 @@ public class MappedByJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<SpecifiedMappedByRelationshipStrategy> buildMappedByJoiningStrategyModel() {
-		return new PropertyAspectAdapterXXXX<MappedByRelationship, SpecifiedMappedByRelationshipStrategy>(
-				getSubjectHolder()) {
-			@Override
-			protected SpecifiedMappedByRelationshipStrategy buildValue_() {
-				return this.subject.getMappedByStrategy();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getMappedByStrategy());
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyModel(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {

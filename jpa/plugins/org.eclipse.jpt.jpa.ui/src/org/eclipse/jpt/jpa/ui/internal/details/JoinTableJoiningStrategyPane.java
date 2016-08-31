@@ -17,10 +17,10 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -73,14 +73,7 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<JoinTableRelationshipStrategy> buildJoinTableJoiningStrategyModel() {
-		return new PropertyAspectAdapterXXXX
-				<JoinTableRelationship, JoinTableRelationshipStrategy>(
-					getSubjectHolder()) {
-			@Override
-			protected JoinTableRelationshipStrategy buildValue_() {
-				return this.subject.getJoinTableStrategy();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getJoinTableStrategy());
 	}
 
 	protected PropertyValueModel<JoinTable> buildJoinTableModel() {

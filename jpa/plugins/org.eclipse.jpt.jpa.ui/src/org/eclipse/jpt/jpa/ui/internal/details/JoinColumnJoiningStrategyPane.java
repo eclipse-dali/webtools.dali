@@ -11,12 +11,13 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumnRelationship;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -118,14 +119,7 @@ public class JoinColumnJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<JoinColumnRelationshipStrategy> buildJoinColumnJoiningStrategyModel() {
-		return new PropertyAspectAdapterXXXX
-				<JoinColumnRelationship, JoinColumnRelationshipStrategy>(
-					getSubjectHolder()) {
-			@Override
-			protected JoinColumnRelationshipStrategy buildValue_() {
-				return this.subject.getJoinColumnStrategy();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getJoinColumnStrategy());
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyModel(PropertyValueModel<? extends JoinColumnRelationship> subjectHolder) {

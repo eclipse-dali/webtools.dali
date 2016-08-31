@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingOverridesComposite;
 import org.eclipse.swt.widgets.Composite;
@@ -38,12 +38,7 @@ public class EmbeddedMappingOverridesComposite2_0
 	
 	@Override
 	protected PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerModel() {
-		return new PropertyAspectAdapterXXXX<EmbeddedMapping2_0, AttributeOverrideContainer>(getSubjectHolder()) {
-			@Override
-			protected AttributeOverrideContainer buildValue_() {
-				return this.subject.getAttributeOverrideContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getAttributeOverrideContainer());
 	}
 	
 	@Override
@@ -53,11 +48,6 @@ public class EmbeddedMappingOverridesComposite2_0
 	
 	@Override
 	protected PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerModel() {
-		return new PropertyAspectAdapterXXXX<EmbeddedMapping2_0, AssociationOverrideContainer>(getSubjectHolder()) {
-			@Override
-			protected AssociationOverrideContainer buildValue_() {
-				return this.subject.getAssociationOverrideContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getAssociationOverrideContainer());
 	}
 }

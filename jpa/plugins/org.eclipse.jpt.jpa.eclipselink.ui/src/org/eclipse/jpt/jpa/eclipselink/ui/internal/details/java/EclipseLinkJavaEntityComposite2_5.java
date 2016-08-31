@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaMultitenancy2_3;
@@ -72,12 +72,7 @@ public class EclipseLinkJavaEntityComposite2_5
 	}
 
 	private PropertyValueModel<EclipseLinkJavaMultitenancy2_3> buildMultitenancyModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkJavaEntity, EclipseLinkJavaMultitenancy2_3>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkJavaMultitenancy2_3 buildValue_() {
-				return this.subject.getMultitenancy();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getMultitenancy());
 	}
 
 	@Override

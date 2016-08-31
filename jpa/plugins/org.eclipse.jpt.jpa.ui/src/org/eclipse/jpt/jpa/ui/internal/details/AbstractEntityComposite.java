@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -142,12 +141,7 @@ public abstract class AbstractEntityComposite<E extends Entity>
 	}
 	
 	protected PropertyValueModel<IdClassReference> buildIdClassReferenceModel() {
-		return new PropertyAspectAdapterXXXX<E, IdClassReference>(getSubjectHolder()) {
-			@Override
-			protected IdClassReference buildValue_() {
-				return this.subject.getIdClassReference();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getIdClassReference());
 	}
 	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
@@ -170,12 +164,7 @@ public abstract class AbstractEntityComposite<E extends Entity>
 	}
 	
 	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapterXXXX<E, QueryContainer>(getSubjectHolder()) {
-			@Override
-			protected QueryContainer buildValue_() {
-				return this.subject.getQueryContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getQueryContainer());
 	}
 
 	protected void initializeAttributeOverridesCollapsibleSection(Composite container) {
@@ -234,12 +223,7 @@ public abstract class AbstractEntityComposite<E extends Entity>
 	}
 	
 	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerModel() {
-		return new PropertyAspectAdapterXXXX<E, GeneratorContainer>(getSubjectHolder()) {
-			@Override
-			protected GeneratorContainer buildValue_() {
-				return this.subject.getGeneratorContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getGeneratorContainer());
 	}
 	
 	protected void initializeSecondaryTablesCollapsibleSection(Composite container) {

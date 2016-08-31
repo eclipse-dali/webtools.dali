@@ -96,12 +96,7 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Model() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, PersistenceUnit2_0>(this.getSubjectHolder()) {
-			@Override
-			protected PersistenceUnit2_0 buildValue_() {
-				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> (PersistenceUnit2_0) m.getPersistenceUnit());
 	}
 
 

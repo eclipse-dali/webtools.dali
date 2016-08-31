@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
@@ -43,14 +43,8 @@ import org.eclipse.ui.forms.widgets.Section;
  * -----------------------------------------------------------------------------</pre>
  */
 public abstract class AbstractJavaMappedSuperclassComposite<T extends JavaMappedSuperclass>
-	extends AbstractMappedSuperclassComposite<T> {
-	/**
-	 * Creates a new <code>MappedSuperclassComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
+	extends AbstractMappedSuperclassComposite<T>
+{
 	public AbstractJavaMappedSuperclassComposite(
 			PropertyValueModel<? extends T> mappedSuperclassModel,
 			Composite parentComposite,
@@ -85,11 +79,6 @@ public abstract class AbstractJavaMappedSuperclassComposite<T extends JavaMapped
 	}
 	
 	protected PropertyValueModel<QueryContainer> buildQueryContainerModel() {
-		return new PropertyAspectAdapterXXXX<T, QueryContainer>(this.getSubjectHolder()) {
-			@Override
-			protected QueryContainer buildValue_() {
-				return this.subject.getQueryContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getQueryContainer());
 	}
 }
