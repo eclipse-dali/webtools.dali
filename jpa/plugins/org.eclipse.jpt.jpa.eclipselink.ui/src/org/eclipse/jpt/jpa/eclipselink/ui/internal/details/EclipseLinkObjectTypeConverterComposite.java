@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -420,31 +421,21 @@ public class EclipseLinkObjectTypeConverterComposite
 		public static final int OBJECT_VALUE_COLUMN = 1;
 
 		ModifiablePropertyValueModel<String> buildDataValueModel(EclipseLinkConversionValue subject) {
-			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.DATA_VALUE_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getDataValue();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					this.subject.setDataValue(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
+					subject,
+					EclipseLinkConversionValue.DATA_VALUE_PROPERTY,
+					m -> m.getDataValue(),
+					(m, value) -> m.setDataValue(value)
+				);
 		}
 
 		private ModifiablePropertyValueModel<String> buildObjectValueModel(EclipseLinkConversionValue subject) {
-			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getObjectValue();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					this.subject.setObjectValue(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
+					subject,
+					EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY,
+					m -> m.getObjectValue(),
+					(m, value) -> m.setObjectValue(value)
+				);
 		}
 
 		public ModifiablePropertyValueModel<?>[] cellModels(EclipseLinkConversionValue subject) {

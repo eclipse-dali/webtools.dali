@@ -45,14 +45,6 @@ public abstract class PropertyAspectAdapterXXXX<S extends Model, V>
 	// ********** constructors **********
 
 	/**
-	 * Construct a property aspect adapter for the specified subject
-	 * and property aspect.
-	 */
-	protected PropertyAspectAdapterXXXX(String aspectName, S subject) {
-		this(PropertyValueModelTools.staticModel(subject), new String[] {aspectName});
-	}
-
-	/**
 	 * Construct a property aspect adapter for the specified subject model
 	 * and property aspects.
 	 */

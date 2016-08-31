@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -141,31 +141,21 @@ public class QueryHintsComposite extends Pane<Query>
 		static final int VALUE_COLUMN_INDEX = 1;
 
 		private ModifiablePropertyValueModel<String> buildNameHolder(QueryHint subject) {
-			return new PropertyAspectAdapterXXXX<QueryHint, String>(QueryHint.NAME_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return subject.getName();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					subject.setName(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
+					subject,
+					QueryHint.NAME_PROPERTY,
+					m -> m.getName(),
+					(m, value) -> m.setName(value)
+				);
 		}
 
 		private ModifiablePropertyValueModel<?> buildValueHolder(QueryHint subject) {
-			return new PropertyAspectAdapterXXXX<QueryHint, String>(QueryHint.VALUE_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return subject.getValue();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					subject.setValue(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectAspectAdapter(
+					subject,
+					QueryHint.VALUE_PROPERTY,
+					m -> m.getValue(),
+					(m, value) -> m.setValue(value)
+				);
 		}
 
 		public ModifiablePropertyValueModel<?>[] cellModels(QueryHint subject) {
