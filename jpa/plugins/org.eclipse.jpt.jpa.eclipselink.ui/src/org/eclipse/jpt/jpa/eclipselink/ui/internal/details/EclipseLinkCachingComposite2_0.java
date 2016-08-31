@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -126,38 +125,24 @@ public abstract class EclipseLinkCachingComposite2_0<T extends EclipseLinkCachin
 	}
 	
 	protected PropertyValueModel<Cacheable2_0> buildCacheableModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Cacheable2_0>(getSubjectHolder()) {
-			@Override
-			protected Cacheable2_0 buildValue_() {
-				return ((CacheableReference2_0) this.subject).getCacheable();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> ((CacheableReference2_0) m).getCacheable());
 	}
 	
 	private PropertyValueModel<Boolean> buildCacheableEnabler(PropertyValueModel<Cacheable2_0> cacheableModel) {
-		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(
+		return PropertyValueModelTools.booleanSubjectModelAspectAdapter(
 				cacheableModel,
-				Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY, 
-				Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isCacheable());
-			}
-		};
+				Cacheable2_0.CACHEABLE_PROPERTY,
+				m -> m.isCacheable()
+			);
 	}	
 	
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedCacheableModel(PropertyValueModel<Cacheable2_0> cacheableModel) {
-		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(cacheableModel, Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSpecifiedCacheable();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedCacheable(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				cacheableModel,
+				Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
+				m -> m.getSpecifiedCacheable(),
+				(m, value) -> m.setSpecifiedCacheable(value)
+			);
 	}
 
 	private PropertyValueModel<String> buildCacheableStringModel(PropertyValueModel<Cacheable2_0> cacheableModel) {

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -72,12 +71,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 	}
 
 	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapterXXXX<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkConverterContainer buildValue_() {
-				return this.subject.getConverterContainer();
-			}
-		};
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getConverterContainer());
 	}
 
 	@SuppressWarnings("unused")
@@ -90,7 +84,7 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 		Button elConverterButton = addRadioButton(
 			container, 
 			JptJpaEclipseLinkUiDetailsMessages.TYPE_SECTION_CONVERTED, 
-			buildConverterBooleanHolder(EclipseLinkConvert.class), 
+			buildConverterBooleanModel(EclipseLinkConvert.class), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
@@ -105,22 +99,19 @@ public abstract class EclipseLinkElementCollectionMappingComposite2_0<T extends 
 		return container;
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
-		return new PropertyAspectAdapterXXXX<ConvertibleMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getConverterType() == converterType);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(converterType);
-				}
-			}
-		};
+	protected ModifiablePropertyValueModel<Boolean> buildConverterBooleanModel(final Class<? extends Converter> converterType) {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				ConvertibleMapping.CONVERTER_PROPERTY,
+				m -> Boolean.valueOf(m.getConverter().getConverterType() == converterType),
+				(m, value) -> {
+						if (value.booleanValue()) {
+							m.setConverter(converterType);
+						}
+					}
+			);
 	}
+
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConvertModel(PropertyValueModel<Converter> converterModel) {
 		return PropertyValueModelTools.transform(converterModel, EclipseLinkConvert.CONVERTER_TRANSFORMER);
 	}

@@ -27,6 +27,7 @@ public class GenericJavaCacheable2_0
 {
 	protected Boolean specifiedCacheable;
 	protected boolean defaultCacheable;
+	protected boolean cacheable;
 
 
 	public GenericJavaCacheable2_0(JavaCacheableReference2_0 parent) {
@@ -47,12 +48,22 @@ public class GenericJavaCacheable2_0
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultCacheable(this.buildDefaultCacheable());
+		this.setCacheable(this.buildCacheable());
 	}
 
 
 	// ********** cacheable **********
 
 	public boolean isCacheable() {
+		return this.cacheable;
+	}
+
+	protected void setCacheable(boolean cacheable) {
+		boolean old = this.cacheable;
+		this.firePropertyChanged(CACHEABLE_PROPERTY, old, this.cacheable = cacheable);
+	}
+
+	protected boolean buildCacheable() {
 		return (this.specifiedCacheable != null) ? this.specifiedCacheable.booleanValue() : this.defaultCacheable;
 	}
 

@@ -25,6 +25,7 @@ public class GenericOrmCacheable2_0
 {
 	protected Boolean specifiedCacheable;
 	protected boolean defaultCacheable;
+	protected boolean cacheable;
 
 
 	public GenericOrmCacheable2_0(OrmCacheableReference2_0 parent) {
@@ -45,12 +46,22 @@ public class GenericOrmCacheable2_0
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultCacheable(this.buildDefaultCacheable());
+		this.setCacheable(this.buildCacheable());
 	}
 
 
 	// ********** cacheable **********
 
 	public boolean isCacheable() {
+		return this.cacheable;
+	}
+
+	protected void setCacheable(boolean cacheable) {
+		boolean old = this.cacheable;
+		this.firePropertyChanged(CACHEABLE_PROPERTY, old, this.cacheable = cacheable);
+	}
+
+	protected boolean buildCacheable() {
 		return (this.specifiedCacheable != null) ? this.specifiedCacheable.booleanValue() : this.defaultCacheable;
 	}
 
@@ -75,8 +86,7 @@ public class GenericOrmCacheable2_0
 
 	protected void setDefaultCacheable(boolean cacheable) {
 		boolean old = this.defaultCacheable;
-		this.defaultCacheable = cacheable;
-		this.firePropertyChanged(DEFAULT_CACHEABLE_PROPERTY, old, cacheable);
+		this.firePropertyChanged(DEFAULT_CACHEABLE_PROPERTY, old, this.defaultCacheable = cacheable);
 	}
 
 	protected boolean buildDefaultCacheable() {

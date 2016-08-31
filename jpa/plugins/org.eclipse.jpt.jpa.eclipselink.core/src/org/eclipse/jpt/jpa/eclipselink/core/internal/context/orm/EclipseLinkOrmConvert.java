@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,7 @@ public class EclipseLinkOrmConvert
 	implements EclipseLinkConvert
 {
 	protected String specifiedConverterName;
+	private String converterName;
 
 	public EclipseLinkOrmConvert(OrmConverter.ParentAdapter parentAdapter) {
 		super(parentAdapter);
@@ -52,9 +53,24 @@ public class EclipseLinkOrmConvert
 		this.setSpecifiedConverterName_(this.getXmlConvert() != null ? this.getXmlConvert().getConvert() : null);
 	}
 
+	@Override
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.setConverterName(this.buildConverterName());
+	}
+
 	// ********** converter name **********
 
 	public String getConverterName() {
+		return this.converterName;
+	}
+
+	protected void setConverterName(String name) {
+		String old = this.converterName;
+		this.firePropertyChanged(CONVERTER_NAME_PROPERTY, old, this.converterName = name);
+	}
+
+	protected String buildConverterName() {
 		return (this.specifiedConverterName != null) ? this.specifiedConverterName : this.getDefaultConverterName();
 	}
 

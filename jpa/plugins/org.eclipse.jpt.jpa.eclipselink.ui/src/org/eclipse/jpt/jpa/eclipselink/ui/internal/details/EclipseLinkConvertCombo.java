@@ -18,8 +18,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapt
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
@@ -77,62 +77,47 @@ public class EclipseLinkConvertCombo
 	protected void initializeLayout(Composite container) {
 		this.combo = this.addEditableCombo(
 			container,
-			buildConvertNameListHolder(),
-			buildConvertNameHolder(),
-			buildConverterNameTransformer(),
+			this.buildConverterNameListModel(),
+			this.buildSpecifiedConverterNameModel(),
+			this.buildConverterNameTransformer(),
 			(String) null
 		);
 		ComboTools.handleDefaultValue(this.combo);
 	}
 
-	protected final ModifiablePropertyValueModel<String> buildConvertNameHolder() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getSpecifiedConverterName();
-			}
-
-			@Override
-			protected void setValue_(String value) {
-				// Convert the default value to the default converter
-				if ((value != null) && (value.startsWith(DEFAULT_KEY))) {
-					value = EclipseLinkConvert.DEFAULT_CONVERTER_NAME;
-				}
-				this.subject.setSpecifiedConverterName(value);
-			}
-		};
+	protected final ModifiablePropertyValueModel<String> buildSpecifiedConverterNameModel() {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkConvert.SPECIFIED_CONVERTER_NAME_PROPERTY,
+				m -> m.getSpecifiedConverterName(),
+				(m, value) -> m.setSpecifiedConverterName(((value != null) && value.startsWith(DEFAULT_KEY)) ? EclipseLinkConvert.DEFAULT_CONVERTER_NAME : value)
+			);
 	}
 
-	private ListValueModel<String> buildConvertNameListHolder() {
-		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
-		list.add(buildDefaultNameListHolder());
-		list.add(buildReservedConverterNameListHolder());
-		list.add(buildSortedConverterNamesModel());
+	private ListValueModel<String> buildConverterNameListModel() {
+		java.util.List<ListValueModel<String>> list = new ArrayList<>();
+		list.add(this.buildDefaultNameListModel());
+		list.add(this.buildReservedConverterNameListModel());
+		list.add(this.buildSortedConverterNamesModel());
 		return CompositeListValueModel.forModels(list);
 	}
 
-	protected ListValueModel<String> buildDefaultNameListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			buildDefaultNameHolder()
+	protected ListValueModel<String> buildDefaultNameListModel() {
+		return new PropertyListValueModelAdapter<>(
+			this.buildDefaultConverterNameModel()
 		);
 	}
 
-	private ModifiablePropertyValueModel<String> buildDefaultNameHolder() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				String name = this.subject.getDefaultConverterName();
+	private PropertyValueModel<String> buildDefaultConverterNameModel() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY,
+				m -> convertDefaultConverterName(m.getDefaultConverterName())
+			);
+	}
 
-				if (name == null) {
-					name = DEFAULT_KEY;
-				}
-				else {
-					name = DEFAULT_KEY + name;
-				}
-
-				return name;
-			}
-		};
+	private static String convertDefaultConverterName(String name) {
+		return (name == null) ? DEFAULT_KEY : DEFAULT_KEY + name;
 	}
 
 	private Transformer<String, String> buildConverterNameTransformer() {
@@ -151,13 +136,7 @@ public class EclipseLinkConvertCombo
 
 			if (value == null) {
 				value = EclipseLinkConvertCombo.this.getSubject().getDefaultConverterName();
-
-				if (value != null) {
-					value = DEFAULT_KEY + value;
-				}
-				else {
-					value = DEFAULT_KEY;
-				}
+				value = (value == null) ? DEFAULT_KEY : DEFAULT_KEY + value;
 			}
 
 			if (value.startsWith(DEFAULT_KEY)) {
@@ -168,8 +147,7 @@ public class EclipseLinkConvertCombo
 						JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 						defaultName
 					);
-				}
-				else {
+				} else {
 					value = NLS.bind(
 						JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 						EclipseLinkConvert.NO_CONVERTER
@@ -181,16 +159,16 @@ public class EclipseLinkConvertCombo
 		}
 	}
 
-	protected ListValueModel<String> buildReservedConverterNameListHolder() {
-		return new StaticListValueModel<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
+	protected ListValueModel<String> buildReservedConverterNameListModel() {
+		return new StaticListValueModel<>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
 	}
 
 	protected ListValueModel<String> buildSortedConverterNamesModel() {
-		return new SortedListValueModelAdapter<String>(this.buildUniqueConverterNamesModel());
+		return new SortedListValueModelAdapter<>(this.buildUniqueConverterNamesModel());
 	}
 
 	protected CollectionValueModel<String> buildUniqueConverterNamesModel() {
-		return new SetCollectionValueModel<String>(this.buildConverterNamesModel());
+		return new SetCollectionValueModel<>(this.buildConverterNamesModel());
 	}
 
 	protected CollectionValueModel<String> buildConverterNamesModel() {
@@ -207,11 +185,11 @@ public class EclipseLinkConvertCombo
 	}
 
 	protected ListValueModel<EclipseLinkConverter> buildConvertersModel() {
-		return new ItemPropertyListValueModelAdapter<EclipseLinkConverter>(this.buildConvertersModel_(), JpaNamedContextModel.NAME_PROPERTY);
+		return new ItemPropertyListValueModelAdapter<>(this.buildConvertersModel_(), JpaNamedContextModel.NAME_PROPERTY);
 	}
 
 	protected CollectionValueModel<EclipseLinkConverter> buildConvertersModel_() {
-		return new CollectionAspectAdapter<EclipseLinkPersistenceUnit, EclipseLinkConverter>(this.buildPersistenceUnitHolder(), EclipseLinkPersistenceUnit.CONVERTERS_COLLECTION) {
+		return new CollectionAspectAdapter<EclipseLinkPersistenceUnit, EclipseLinkConverter>(this.buildPersistenceUnitModel(), EclipseLinkPersistenceUnit.CONVERTERS_COLLECTION) {
 			@Override
 			protected Iterable<EclipseLinkConverter> getIterable() {
 				return this.subject.getConverters();
@@ -223,12 +201,7 @@ public class EclipseLinkConvertCombo
 		};
 	}
 
-	protected PropertyValueModel<EclipseLinkPersistenceUnit> buildPersistenceUnitHolder() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkConvert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
-			@Override
-			protected EclipseLinkPersistenceUnit buildValue_() {
-				return this.subject.getPersistenceUnit();
-			}
-		};
+	protected PropertyValueModel<EclipseLinkPersistenceUnit> buildPersistenceUnitModel() {
+		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getPersistenceUnit());
 	}
 }

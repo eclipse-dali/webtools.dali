@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,7 @@ public class EclipseLinkJavaConvert
 
 	private String specifiedConverterName;
 	private String defaultConverterName;
+	private String converterName;
 
 
 	public EclipseLinkJavaConvert(Converter.ParentAdapter<JavaAttributeMapping> parentAdapter, ConvertAnnotation convertAnnotation) {
@@ -58,12 +59,22 @@ public class EclipseLinkJavaConvert
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultConverterName(this.buildDefaultConverterName());
+		this.setConverterName(this.buildConverterName());
 	}
 
 
 	// ********** converter name **********
 
 	public String getConverterName() {
+		return this.converterName;
+	}
+
+	protected void setConverterName(String name) {
+		String old = this.converterName;
+		this.firePropertyChanged(CONVERTER_NAME_PROPERTY, old, this.converterName = name);
+	}
+
+	protected String buildConverterName() {
 		return (this.specifiedConverterName != null) ? this.specifiedConverterName : this.defaultConverterName;
 	}
 
@@ -78,8 +89,7 @@ public class EclipseLinkJavaConvert
 
 	protected void setSpecifiedConverterName_(String name) {
 		String old = this.specifiedConverterName;
-		this.specifiedConverterName = name;
-		this.firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, old, this.specifiedConverterName = name);
 	}
 
 	public String getDefaultConverterName() {
@@ -88,8 +98,7 @@ public class EclipseLinkJavaConvert
 
 	protected void setDefaultConverterName(String name) {
 		String old = this.defaultConverterName;
-		this.defaultConverterName = name;
-		this.firePropertyChanged(DEFAULT_CONVERTER_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(DEFAULT_CONVERTER_NAME_PROPERTY, old, this.defaultConverterName = name);
 	}
 
 	protected String buildDefaultConverterName() {
@@ -126,7 +135,7 @@ public class EclipseLinkJavaConvert
 	}
 
 	protected Iterable<String> getJavaCandidateConverterNames() {
-		return new TransformationIterable<String, String>(this.getConverterNames(),
+		return new TransformationIterable<>(this.getConverterNames(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 

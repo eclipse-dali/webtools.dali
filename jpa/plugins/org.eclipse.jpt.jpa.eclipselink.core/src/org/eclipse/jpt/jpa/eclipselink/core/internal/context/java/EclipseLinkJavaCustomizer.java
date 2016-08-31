@@ -30,6 +30,7 @@ public class EclipseLinkJavaCustomizer
 	implements EclipseLinkCustomizer
 {
 	private String specifiedCustomizerClass;
+	private String customizerClass;
 
 	private String fullyQualifiedCustomizerClass;
 
@@ -51,6 +52,7 @@ public class EclipseLinkJavaCustomizer
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setCustomizerClass(this.buildCustomizerClass());
 		this.setFullyQualifiedCustomizerClass(this.buildFullyQualifiedCustomizerClass());
 	}
 
@@ -58,6 +60,15 @@ public class EclipseLinkJavaCustomizer
 	// ********** customizer class **********
 
 	public String getCustomizerClass() {
+		return this.customizerClass;
+	}
+
+	protected void setCustomizerClass(String customizerClass) {
+		String old = this.customizerClass;
+		this.firePropertyChanged(CUSTOMIZER_CLASS_PROPERTY, old, this.customizerClass = customizerClass);
+	}
+
+	protected String buildCustomizerClass() {
 		return (this.specifiedCustomizerClass != null) ? this.specifiedCustomizerClass : null;
 	}
 
@@ -85,8 +96,7 @@ public class EclipseLinkJavaCustomizer
 
 	protected void setSpecifiedCustomizerClass_(String customizerClass) {
 		String old = this.specifiedCustomizerClass;
-		this.specifiedCustomizerClass = customizerClass;
-		this.firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, old, customizerClass);
+		this.firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, old, this.specifiedCustomizerClass = customizerClass);
 	}
 
 	protected String buildSpecifiedCustomizerClass() {

@@ -42,6 +42,8 @@ public class EclipseLinkOrmCustomizer
 {
 	protected String specifiedCustomizerClass;
 	protected String defaultCustomizerClass;
+	protected String customizerClass;
+
 	protected String fullyQualifiedCustomizerClass;
 
 
@@ -63,6 +65,7 @@ public class EclipseLinkOrmCustomizer
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultCustomizerClass(this.buildDefaultCustomizerClass());
+		this.setCustomizerClass(this.buildCustomizerClass());
 		this.setFullyQualifiedCustomizerClass(this.buildFullyQualifiedCustomizerClass());
 	}
 
@@ -70,6 +73,15 @@ public class EclipseLinkOrmCustomizer
 	// ********** customizer class **********
 
 	public String getCustomizerClass() {
+		return this.customizerClass;
+	}
+
+	protected void setCustomizerClass(String customizerClass) {
+		String old = this.customizerClass;
+		this.firePropertyChanged(CUSTOMIZER_CLASS_PROPERTY, old, this.customizerClass = customizerClass);
+	}
+
+	protected String buildCustomizerClass() {
 		return (this.specifiedCustomizerClass != null) ? this.specifiedCustomizerClass : this.defaultCustomizerClass;
 	}
 

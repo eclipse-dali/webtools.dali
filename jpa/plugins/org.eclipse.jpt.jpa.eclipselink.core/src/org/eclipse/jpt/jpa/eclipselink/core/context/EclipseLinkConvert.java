@@ -33,6 +33,7 @@ public interface EclipseLinkConvert
 	EclipseLinkPersistenceUnit getPersistenceUnit();
 
 	String getConverterName();
+		String CONVERTER_NAME_PROPERTY = "converterName"; //$NON-NLS-1$
 	
 	String getSpecifiedConverterName();
 	void setSpecifiedConverterName(String converterName);

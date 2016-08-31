@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextModel;
@@ -60,21 +60,12 @@ public class EclipseLinkCustomConverterComposite
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomConverter, String>(
-				getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getName();
-			}
-		
-			@Override
-			protected void setValue_(String value) {
-				if (value.length() == 0) {
-					value = null;
-				}
-				this.subject.setName(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				JpaNamedContextModel.NAME_PROPERTY,
+				m -> m.getName(),
+				(m, value) -> m.setName((value.length() == 0) ? null : value)
+			);
 	}
 
 	
@@ -84,22 +75,12 @@ public class EclipseLinkCustomConverterComposite
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextModel() {
-				return new PropertyAspectAdapterXXXX<EclipseLinkCustomConverter, String>(getSubjectHolder(), EclipseLinkConverterClassConverter.CONVERTER_CLASS_PROPERTY) {
-					@Override
-					protected String buildValue_() {
-						return this.subject.getConverterClass();
-					}
-
-					@Override
-					protected void setValue_(String value) {
-
-						if (value.length() == 0) {
-							value = null;
-						}
-
-						this.subject.setConverterClass(value);
-					}
-				};
+				return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+						this.getSubjectHolder(),
+						EclipseLinkConverterClassConverter.CONVERTER_CLASS_PROPERTY,
+						m -> m.getConverterClass(),
+						(m, value) -> m.setConverterClass((value.length() == 0) ? null : value)
+					);
 			}
 
 			@Override

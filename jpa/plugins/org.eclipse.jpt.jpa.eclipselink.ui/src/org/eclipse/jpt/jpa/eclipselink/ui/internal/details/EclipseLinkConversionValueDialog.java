@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
@@ -177,31 +177,21 @@ public class EclipseLinkConversionValueDialog
 		}
 
 		private ModifiablePropertyValueModel<String> buildDataValueHolder() {
-			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.DATA_VALUE_PROPERTY) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getDataValue();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					this.subject.setDataValue(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					EclipseLinkConversionValueStateObject.DATA_VALUE_PROPERTY,
+					m -> m.getDataValue(),
+					(m, value) -> m.setDataValue(value)
+				);
 		}
 
 		private ModifiablePropertyValueModel<String> buildObjectValueHolder() {
-			return new PropertyAspectAdapterXXXX<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.OBJECT_VALUE_PROPERTY) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getObjectValue();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					this.subject.setObjectValue(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					EclipseLinkConversionValueStateObject.OBJECT_VALUE_PROPERTY,
+					m -> m.getObjectValue(),
+					(m, value) -> m.setObjectValue(value)
+				);
 		}
 
 		void selectAll() {

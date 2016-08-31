@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -132,7 +132,7 @@ public class EclipseLinkConverterDialog
 		}
 
 		protected ListValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeListHolder() {
-			return new StaticListValueModel<Class<? extends EclipseLinkConverter>>(CONVERTER_TYPES);
+			return new StaticListValueModel<>(CONVERTER_TYPES);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -173,31 +173,21 @@ public class EclipseLinkConverterDialog
 		}
 		
 		private ModifiablePropertyValueModel<String> buildNameHolder() {
-			return new PropertyAspectAdapterXXXX<EclipseLinkConverterStateObject, String>(getSubjectHolder(), EclipseLinkConverterStateObject.NAME_PROPERTY) {
-				@Override
-				protected String buildValue_() {
-					return this.subject.getName();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					this.subject.setName(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					EclipseLinkConverterStateObject.NAME_PROPERTY,
+					m -> m.getName(),
+					(m, value) -> m.setName(value)
+				);
 		}
 
 		private ModifiablePropertyValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeHolder() {
-			return new PropertyAspectAdapterXXXX<EclipseLinkConverterStateObject, Class<? extends EclipseLinkConverter>>(getSubjectHolder(), EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY) {
-				@Override
-				protected Class<? extends EclipseLinkConverter> buildValue_() {
-					return this.subject.getConverterType();
-				}
-
-				@Override
-				protected void setValue_(Class<? extends EclipseLinkConverter> value) {
-					this.subject.setConverterType(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY,
+					m -> m.getConverterType(),
+					(m, value) -> m.setConverterType(value)
+				);
 		}
 
 		void selectAll() {
