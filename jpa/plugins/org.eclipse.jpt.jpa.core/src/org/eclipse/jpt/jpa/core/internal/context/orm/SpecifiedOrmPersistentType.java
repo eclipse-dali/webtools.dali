@@ -89,6 +89,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;  // never null
+	protected AccessType access;  // never null
 
 	protected final Vector<OrmSpecifiedPersistentAttribute> specifiedAttributes = new Vector<>();
 	protected final SpecifiedAttributeContainerAdapter specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
@@ -129,6 +130,7 @@ public abstract class SpecifiedOrmPersistentType
 		super.update(monitor);
 		this.mapping.update(monitor);
 		this.setDefaultAccess(this.buildDefaultAccess());
+		this.setAccess(this.buildAccess());
 		this.updateModels(this.getSpecifiedAttributes(), monitor);
 		this.updateDefaultAttributes(monitor);
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
@@ -197,6 +199,15 @@ public abstract class SpecifiedOrmPersistentType
 	// ********** access **********
 
 	public AccessType getAccess() {
+		return this.access;
+	}
+
+	protected void setAccess(AccessType access) {
+		AccessType old = this.access;
+		this.firePropertyChanged(ACCESS_PROPERTY, old, this.access = access);
+	}
+
+	protected AccessType buildAccess() {
 		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
 	}
 
@@ -211,8 +222,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, this.specifiedAccess = access);
 	}
 
 	protected AccessType buildSpecifiedAccess() {
@@ -225,8 +235,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected void setDefaultAccess(AccessType access) {
 		AccessType old = this.defaultAccess;
-		this.defaultAccess = access;
-		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, this.defaultAccess = access);
 	}
 
 	protected AccessType buildDefaultAccess() {

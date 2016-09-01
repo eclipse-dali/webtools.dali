@@ -63,6 +63,7 @@ public abstract class AbstractJavaPersistentType
 {
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;  // never null
+	protected AccessType access;  // never null
 
 	protected JavaTypeMapping mapping;  // never null
 
@@ -98,6 +99,7 @@ public abstract class AbstractJavaPersistentType
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultAccess(this.buildDefaultAccess());
+		this.setAccess(this.buildAccess());
 		this.mapping.update(monitor);
 		this.updateAttributes(monitor);
 		this.updateStructureChildren();
@@ -137,6 +139,15 @@ public abstract class AbstractJavaPersistentType
 	// ********** access **********
 
 	public AccessType getAccess() {
+		return this.access;
+	}
+
+	protected void setAccess(AccessType access) {
+		AccessType old = this.access;
+		this.firePropertyChanged(ACCESS_PROPERTY, old, this.access = access);
+	}
+
+	protected AccessType buildAccess() {
 		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
 	}
 
@@ -154,8 +165,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, this.specifiedAccess = access);
 	}
 
 	protected AccessType buildSpecifiedAccess() {
@@ -168,8 +178,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected void setDefaultAccess(AccessType access) {
 		AccessType old = this.defaultAccess;
-		this.defaultAccess = access;
-		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, this.defaultAccess = access);
 	}
 
 	/**

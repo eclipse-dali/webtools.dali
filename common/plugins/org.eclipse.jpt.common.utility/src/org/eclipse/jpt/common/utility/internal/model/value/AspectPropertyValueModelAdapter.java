@@ -156,7 +156,7 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	 * Return the aspect's value.
 	 * At this point the subject may be <code>null</code>.
 	 */
-	protected V buildValue() {
+	protected final V buildValue() {
 		return (this.subject == null) ? null : this.buildValue_();
 	}
 

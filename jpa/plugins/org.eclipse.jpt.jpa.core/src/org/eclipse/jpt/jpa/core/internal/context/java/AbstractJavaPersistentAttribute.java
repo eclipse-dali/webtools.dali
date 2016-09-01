@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,6 +59,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected AccessType defaultAccess;
 	protected AccessType specifiedAccess;
+	protected AccessType access;
 
 	protected JavaAttributeMapping mapping;  // never null
 	protected String defaultMappingKey;
@@ -106,6 +107,7 @@ public abstract class AbstractJavaPersistentAttribute
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setAccess(this.buildAccess());
 		this.updateJpaContainerDefinition();
 		this.updateMapping(monitor);
 	}
@@ -151,8 +153,16 @@ public abstract class AbstractJavaPersistentAttribute
 	// ********** access **********
 
 	public AccessType getAccess() {
-		AccessType access = this.getSpecifiedAccess();
-		return (access != null) ? access : this.defaultAccess;
+		return this.access;
+	}
+
+	protected void setAccess(AccessType access) {
+		AccessType old = this.access;
+		this.firePropertyChanged(ACCESS_PROPERTY, old, this.access = access);
+	}
+
+	protected AccessType buildAccess() {
+		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
 	}
 
 	public AccessType getDefaultAccess() {
@@ -184,8 +194,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, this.specifiedAccess = access);
 	}
 
 	/**

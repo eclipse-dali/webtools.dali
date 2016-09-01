@@ -10,13 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
-import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
-import org.eclipse.jpt.jpa.core.context.SpecifiedJoinTableRelationship;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -93,40 +91,28 @@ public class ManyToManyJoiningStrategyPane
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMappedByStrategyModel() {
-		return new PropertyAspectAdapterXXXX<MappedByRelationship, Boolean>(
-				this.getSubjectHolder(), Relationship.STRATEGY_PROPERTY) {
-			@Override
-			protected Boolean buildValue() {
-				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.strategyIsMappedBy());
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value == Boolean.TRUE) {
-					this.subject.setStrategyToMappedBy();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				this.getSubjectHolder(),
+				Relationship.STRATEGY_PROPERTY,
+				m -> Boolean.valueOf((m != null) && m.strategyIsMappedBy()),
+				(m, value) -> {
+					if ((m != null) && (value != null) && value.booleanValue()) {
+						m.setStrategyToMappedBy();
+					}
 				}
-				//value == FALSE - selection of another radio button causes this strategy to get unset
-			}
-		};
+			);
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesJoinTableStrategyModel() {
-		return new PropertyAspectAdapterXXXX<SpecifiedJoinTableRelationship, Boolean>(
-				this.getSubjectHolder(), Relationship.STRATEGY_PROPERTY) {
-			@Override
-			protected Boolean buildValue() {
-				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.strategyIsJoinTable());
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value == Boolean.TRUE) {
-					this.subject.setStrategyToJoinTable();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				this.getSubjectHolder(),
+				Relationship.STRATEGY_PROPERTY,
+				m -> Boolean.valueOf((m != null) && m.strategyIsJoinTable()),
+				(m, value) -> {
+					if ((m != null) && (value != null) && value.booleanValue()) {
+						m.setStrategyToJoinTable();
+					}
 				}
-				//value == FALSE - selection of another radio button causes this strategy to get unset
-			}
-		};
+			);
 	}
 }

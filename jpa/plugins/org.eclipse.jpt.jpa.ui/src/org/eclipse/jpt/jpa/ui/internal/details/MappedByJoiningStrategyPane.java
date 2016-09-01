@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -72,22 +71,16 @@ public class MappedByJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyModel(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<MappedByRelationship, Boolean>(
-				subjectHolder, Relationship.STRATEGY_PROPERTY) {
-			@Override
-			protected Boolean buildValue() {
-				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.strategyIsMappedBy());
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value == Boolean.TRUE) {
-					this.subject.setStrategyToMappedBy();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				subjectHolder,
+				Relationship.STRATEGY_PROPERTY,
+				m -> Boolean.valueOf((m != null) && m.strategyIsMappedBy()),
+				(m, value) -> {
+					if ((m != null) && (value != null) && value.booleanValue()) {
+						m.setStrategyToMappedBy();
+					}
 				}
-				//value == FALSE - selection of another radio button causes this strategy to get unset
-			}
-		};
+			);
 	}
 
 

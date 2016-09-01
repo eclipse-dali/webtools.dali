@@ -78,6 +78,7 @@ public abstract class AbstractOrmPersistentAttribute
 
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;
+	protected AccessType access;
 
 
 	protected AbstractOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
@@ -103,6 +104,7 @@ public abstract class AbstractOrmPersistentAttribute
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultAccess(this.buildDefaultAccess());
+		this.setAccess(this.buildAccess());
 		this.setJavaPersistentAttribute(this.buildJavaPersistentAttribute());
 		this.mapping.update(monitor);
 		if (this.cachedJavaPersistentAttribute != null) {
@@ -354,8 +356,23 @@ public abstract class AbstractOrmPersistentAttribute
 	// ********** access **********
 
 	public AccessType getAccess() {
-		AccessType access = this.getSpecifiedAccess();
-		return (access != null) ? access : this.defaultAccess;
+		return this.access;
+	}
+
+	protected void setAccess(AccessType access) {
+		if (access != this.access) {
+			AccessType old = this.access;
+			this.firePropertyChanged(ACCESS_PROPERTY, old, this.access = access);
+			// clear out the cached 'javaAttribute' is the access has changed, it will no longer apply
+			if (this.cachedJavaPersistentAttribute != null) {
+				this.setJavaPersistentAttribute(null);
+				this.cachedJavaPersistentAttribute = null;
+			}
+		}
+	}
+
+	protected AccessType buildAccess() {
+		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
 	}
 
 	public AccessType getDefaultAccess() {
@@ -390,17 +407,8 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	protected void setSpecifiedAccess_(AccessType access) {
-		AccessType oldAccess = this.getAccess();
-		AccessType oldSpecifiedAccess = this.specifiedAccess;
-		this.specifiedAccess = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, access);
-		if (oldAccess != this.getAccess()) {
-			//clear out the cached 'javaAttribute' is the access has changed, it will no longer apply
-			if (this.cachedJavaPersistentAttribute != null) {
-				this.setJavaPersistentAttribute(null);
-				this.cachedJavaPersistentAttribute = null;
-			}
-		}
+		AccessType old = this.specifiedAccess;
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, this.specifiedAccess = access);
 	}
 
 	protected AccessType buildSpecifiedAccess() {

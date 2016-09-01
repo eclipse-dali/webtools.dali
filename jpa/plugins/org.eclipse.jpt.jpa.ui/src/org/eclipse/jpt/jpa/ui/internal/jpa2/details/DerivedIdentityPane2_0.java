@@ -120,22 +120,16 @@ public class DerivedIdentityPane2_0
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
-		return new PropertyAspectAdapterXXXX<DerivedIdentity2_0, Boolean>(
-				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
-			
-			@Override
-			protected Boolean buildValue() {
-				return (this.subject == null) ? Boolean.FALSE : this.subject.usesMapsIdDerivedIdentityStrategy();
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				// radio button - should only have true values here
-				if (value) {
-					this.subject.setMapsIdDerivedIdentityStrategy();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				this.getSubjectHolder(),
+				DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY,
+				m -> Boolean.valueOf((m != null) && m.usesMapsIdDerivedIdentityStrategy()),
+				(m, value) -> {
+					if ((m != null) && (value != null) && value.booleanValue()) {
+						m.setMapsIdDerivedIdentityStrategy();
+					}
 				}
-			}
-		};
+			);
 	}
 	
 	protected ComboPane buildMapsIdValueComboPane(Composite parent, PropertyValueModel<Boolean> usesMapsIdModel) {

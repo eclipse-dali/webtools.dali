@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,6 +43,7 @@ public interface OrmPersistenceUnitDefaults
 
 	// ********** catalog **********
 	String getSpecifiedCatalog();
+		String CATALOG_PROPERTY = "catalog"; //$NON-NLS-1$
 	void setSpecifiedCatalog(String newSpecifiedCatalog);
 		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
 	String getDefaultCatalog();
@@ -51,6 +52,7 @@ public interface OrmPersistenceUnitDefaults
 
 	// ********** schema **********
 	String getSpecifiedSchema();
+		String SCHEMA_PROPERTY = "schema"; //$NON-NLS-1$
 	void setSpecifiedSchema(String newSpecifiedSchema);
 		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
 	String getDefaultSchema();

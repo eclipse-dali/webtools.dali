@@ -106,12 +106,15 @@ public abstract class AbstractEntityMappings
 
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;
+	protected AccessType access;
 
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
+	protected String catalog;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
+	protected String schema;
 
 	protected final OrmPersistenceUnitMetadata persistenceUnitMetadata;
 
@@ -181,8 +184,13 @@ public abstract class AbstractEntityMappings
 		super.update(monitor);
 
 		this.setDefaultAccess(this.buildDefaultAccess());
+		this.setAccess(this.buildAccess());
+
 		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setCatalog(this.buildCatalog());
+
 		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setSchema(this.buildSchema());
 
 		this.persistenceUnitMetadata.update(monitor);
 
@@ -376,6 +384,15 @@ public abstract class AbstractEntityMappings
 	// ********** access **********
 
 	public AccessType getAccess() {
+		return this.access;
+	}
+
+	protected void setAccess(AccessType access) {
+		AccessType old = this.access;
+		this.firePropertyChanged(ACCESS_PROPERTY, old, this.access = access);
+	}
+
+	protected AccessType buildAccess() {
 		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
 	}
 
@@ -390,8 +407,7 @@ public abstract class AbstractEntityMappings
 
 	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, this.specifiedAccess = access);
 	}
 
 	protected AccessType buildSpecifiedAccess() {
@@ -404,8 +420,7 @@ public abstract class AbstractEntityMappings
 
 	protected void setDefaultAccess(AccessType access) {
 		AccessType old = this.defaultAccess;
-		this.defaultAccess = access;
-		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, this.defaultAccess = access);
 	}
 
 	protected AccessType buildDefaultAccess() {
@@ -416,6 +431,15 @@ public abstract class AbstractEntityMappings
 	// ********** catalog **********
 
 	public String getCatalog() {
+		return this.catalog;
+	}
+
+	protected void setCatalog(String catalog) {
+		String old = this.catalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, this.catalog = catalog);
+	}
+
+	protected String buildCatalog() {
 		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
 	}
 
@@ -430,8 +454,7 @@ public abstract class AbstractEntityMappings
 
 	protected void setSpecifiedCatalog_(String catalog) {
 		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, this.specifiedCatalog = catalog);
 	}
 
 	public String getDefaultCatalog() {
@@ -440,8 +463,7 @@ public abstract class AbstractEntityMappings
 
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
-		this.defaultCatalog = catalog;
-		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, this.defaultCatalog = catalog);
 	}
 
 	protected String buildDefaultCatalog() {
@@ -453,14 +475,23 @@ public abstract class AbstractEntityMappings
 	 * catalog), then the database probably does not support catalogs.
 	 */
 	public Catalog getDbCatalog() {
-		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
+		String catalogString = this.getCatalog();
+		return (catalogString == null) ? null : this.resolveDbCatalog(catalogString);
 	}
 
 
 	// ********** schema **********
 
 	public String getSchema() {
+		return this.schema;
+	}
+
+	protected void setSchema(String schema) {
+		String old = this.schema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
+	}
+
+	protected String buildSchema() {
 		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
 	}
 
@@ -475,8 +506,7 @@ public abstract class AbstractEntityMappings
 
 	protected void setSpecifiedSchema_(String schema) {
 		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
 	}
 
 	public String getDefaultSchema() {
@@ -485,8 +515,7 @@ public abstract class AbstractEntityMappings
 
 	protected void setDefaultSchema(String schema) {
 		String old = this.defaultSchema;
-		this.defaultSchema = schema;
-		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
 	}
 
 	protected String buildDefaultSchema() {
@@ -507,8 +536,8 @@ public abstract class AbstractEntityMappings
 	 * get the schema directly from the database.
 	 */
 	public SchemaContainer getDbSchemaContainer() {
-		String catalog = this.getCatalog();
-		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
+		String catalogString = this.getCatalog();
+		return (catalogString != null) ? this.resolveDbCatalog(catalogString) : this.getDatabase();
 	}
 
 

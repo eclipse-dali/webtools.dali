@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,12 +34,15 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	implements OrmPersistenceUnitDefaults2_0
 {
 	protected AccessType specifiedAccess;
+	protected AccessType access;
 
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
+	protected String catalog;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
+	protected String schema;
 
 	protected boolean cascadePersist;
 
@@ -77,15 +80,30 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+
+		this.setAccess(this.buildAccess());
+
 		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setCatalog(this.buildCatalog());
+
 		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setSchema(this.buildSchema());
 	}
 
 
 	// ********** access **********
 
 	public AccessType getAccess() {
-		return this.getSpecifiedAccess();
+		return this.access;
+	}
+
+	protected void setAccess(AccessType access) {
+		AccessType old = this.access;
+		this.firePropertyChanged(ACCESS_PROPERTY, old, this.access = access);
+	}
+
+	protected AccessType buildAccess() {
+		return this.specifiedAccess;
 	}
 
 	public AccessType getDefaultAccess() {
@@ -107,8 +125,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, this.specifiedAccess = access);
 	}
 
 	protected AccessType buildSpecifiedAccess() {
@@ -125,14 +142,23 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	 * get the schema directly from the database.
 	 */
 	public SchemaContainer getDbSchemaContainer() {
-		String catalog = this.getCatalog();
-		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
+		String catalogString = this.getCatalog();
+		return (catalogString != null) ? this.resolveDbCatalog(catalogString) : this.getDatabase();
 	}
 
 
 	// ********** catalog **********
 
 	public String getCatalog() {
+		return this.catalog;
+	}
+
+	protected void setCatalog(String catalog) {
+		String old = this.catalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, this.catalog = catalog);
+	}
+
+	protected String buildCatalog() {
 		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
 	}
 
@@ -151,8 +177,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected void setSpecifiedCatalog_(String catalog) {
 		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, this.specifiedCatalog = catalog);
 	}
 
 	protected String buildSpecifiedCatalog() {
@@ -166,8 +191,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
-		this.defaultCatalog = catalog;
-		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, this.defaultCatalog = catalog);
 	}
 
 	protected String buildDefaultCatalog() {
@@ -179,14 +203,23 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	 * catalog), then the database probably does not support catalogs.
 	 */
 	public Catalog getDbCatalog() {
-		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
+		String catalogString = this.getCatalog();
+		return (catalogString == null) ? null : this.resolveDbCatalog(catalogString);
 	}
 
 
 	// ********** schema **********
 
 	public String getSchema() {
+		return this.schema;
+	}
+
+	protected void setSchema(String schema) {
+		String old = this.schema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
+	}
+
+	protected String buildSchema() {
 		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
 	}
 
@@ -205,8 +238,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected void setSpecifiedSchema_(String schema) {
 		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
 	}
 
 	protected String buildSpecifiedSchema() {
@@ -220,8 +252,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected void setDefaultSchema(String schema) {
 		String old = this.defaultSchema;
-		this.defaultSchema = schema;
-		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
 	}
 
 	protected String buildDefaultSchema() {

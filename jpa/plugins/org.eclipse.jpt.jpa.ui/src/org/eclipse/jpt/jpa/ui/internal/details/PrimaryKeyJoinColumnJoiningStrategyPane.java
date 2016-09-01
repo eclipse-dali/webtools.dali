@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -55,21 +54,15 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyModel(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<PrimaryKeyJoinColumnRelationship, Boolean>(
-				subjectHolder, Relationship.STRATEGY_PROPERTY) {
-			@Override
-			protected Boolean buildValue() {
-				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.strategyIsPrimaryKeyJoinColumn());
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value == Boolean.TRUE) {
-					this.subject.setStrategyToPrimaryKeyJoinColumn();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				subjectHolder,
+				Relationship.STRATEGY_PROPERTY,
+				m -> Boolean.valueOf((m != null) && m.strategyIsPrimaryKeyJoinColumn()),
+				(m, value) -> {
+					if ((m != null) && (value != null) && value.booleanValue()) {
+						m.setStrategyToPrimaryKeyJoinColumn();
+					}
 				}
-				//value == FALSE - selection of another radio button causes this strategy to get unset
-			}
-		};
+			);
 	}
 }

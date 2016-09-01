@@ -87,25 +87,16 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyModel(PropertyValueModel<? extends JoinTableRelationship> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<JoinTableRelationship, Boolean>(
-			subjectHolder, Relationship.STRATEGY_PROPERTY) {
-			@Override
-			protected Boolean buildValue() {
-				return Boolean.valueOf(this.buildBooleanValue());
-			}
-			
-			protected boolean buildBooleanValue() {
-				return (this.subject != null) && this.subject.strategyIsJoinTable();
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value == Boolean.TRUE) {
-					((SpecifiedJoinTableRelationship) this.subject).setStrategyToJoinTable();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				subjectHolder,
+				Relationship.STRATEGY_PROPERTY,
+				m -> Boolean.valueOf((m != null) && m.strategyIsJoinTable()),
+				(m, value) -> {
+					if ((m != null) && (value != null) && value.booleanValue()) {
+						((SpecifiedJoinTableRelationship) m).setStrategyToJoinTable();
+					}
 				}
-				//value == FALSE - selection of another radio button causes this strategy to get unset
-			}
-		};
+			);
 	}
 
 	private PropertyValueModel<Boolean> buildJoinTablePaneEnablerModel() {

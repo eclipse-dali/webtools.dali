@@ -94,6 +94,7 @@ public interface EntityMappings
 	SchemaContainer getDbSchemaContainer();
 
 	String getSpecifiedCatalog();
+		String CATALOG_PROPERTY = "catalog"; //$NON-NLS-1$
 	void setSpecifiedCatalog(String catalog);
 		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
 	String getDefaultCatalog();
@@ -101,6 +102,7 @@ public interface EntityMappings
 	Catalog getDbCatalog();
 
 	String getSpecifiedSchema();
+		String SCHEMA_PROPERTY = "schema"; //$NON-NLS-1$
 	void setSpecifiedSchema(String schema);
 		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
 	String getDefaultSchema();

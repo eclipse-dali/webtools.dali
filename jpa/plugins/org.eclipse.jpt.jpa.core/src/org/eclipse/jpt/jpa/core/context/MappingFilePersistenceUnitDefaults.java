@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,18 +22,12 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.1
  */
 public interface MappingFilePersistenceUnitDefaults
-	extends JpaContextModel
+	extends AccessReference
 {
 	/**
 	 * Covariant override.
 	 */
 	MappingFilePersistenceUnitMetadata getParent();
-
-	/**
-	 * Return the access type for all managed classes in the persistence unit,
-	 * unless overridden by a local annotation or XML setting.
-	 */
-	AccessType getAccess();
 
 	/**
 	 * Return the catalog for all database objects referenced in the

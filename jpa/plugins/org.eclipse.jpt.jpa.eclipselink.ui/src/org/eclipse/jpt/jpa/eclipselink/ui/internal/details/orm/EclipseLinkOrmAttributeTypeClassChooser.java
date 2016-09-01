@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessReference;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -100,22 +101,10 @@ public class EclipseLinkOrmAttributeTypeClassChooser
 	}
 
 	private static PropertyValueModel<Boolean> buildVirtualAttributeModel(PropertyValueModel<? extends AttributeMapping> mappingModel) {
-		return new PropertyAspectAdapterXXXX<SpecifiedAccessReference, Boolean>(
-			buildAccessReferenceModel(mappingModel),
-			SpecifiedAccessReference.SPECIFIED_ACCESS_PROPERTY,
-			SpecifiedAccessReference.DEFAULT_ACCESS_PROPERTY) {
-			@Override
-				protected Boolean buildValue() {
-					if (this.subject == null) {
-						return Boolean.FALSE;
-					}
-					return this.buildValue_();
-				}
-				@Override
-				protected Boolean buildValue_() {
-					return Boolean.valueOf(this.subject.getAccess() == EclipseLinkAccessType.VIRTUAL);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter_(
+				buildAccessReferenceModel(mappingModel),
+				AccessReference.ACCESS_PROPERTY,
+				m -> Boolean.valueOf((m != null) && (m.getAccess() == EclipseLinkAccessType.VIRTUAL))
+			);
 	}
-
 }

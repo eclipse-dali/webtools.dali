@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -123,24 +122,15 @@ public class JoinColumnJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyModel(PropertyValueModel<? extends JoinColumnRelationship> subjectHolder) {
-		return new PropertyAspectAdapterXXXX<JoinColumnRelationship, Boolean>(
-				subjectHolder, Relationship.STRATEGY_PROPERTY) {
-			@Override
-			protected Boolean buildValue() {
-				return Boolean.valueOf(this.buildBooleanValue());
-			}
-			
-			protected boolean buildBooleanValue() {
-				return (this.subject != null) && this.subject.strategyIsJoinColumn();
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value == Boolean.TRUE) {
-					((SpecifiedJoinColumnRelationship) this.subject).setStrategyToJoinColumn();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				subjectHolder,
+				Relationship.STRATEGY_PROPERTY,
+				m -> Boolean.valueOf((m != null) && m.strategyIsJoinColumn()),
+				(m, value) -> {
+					if ((m != null) && (value != null) && value.booleanValue()) {
+						((SpecifiedJoinColumnRelationship) m).setStrategyToJoinColumn();
+					}
 				}
-				//value == FALSE - selection of another radio button causes this strategy to get unset
-			}
-		};
+			);
 	}
 }
