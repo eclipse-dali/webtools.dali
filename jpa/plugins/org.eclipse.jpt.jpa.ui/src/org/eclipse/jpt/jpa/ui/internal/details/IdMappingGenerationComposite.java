@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
+import org.eclipse.jpt.jpa.core.context.GeneratedValueMapping;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
@@ -88,14 +89,14 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 2.2
  * @since 1.0
  */
-public class IdMappingGenerationComposite extends Pane<IdMapping>
+public class IdMappingGenerationComposite
+	extends Pane<IdMapping>
 {
-
 	//These are built to stand alone because we do not want the panels to collapse just
 	//because the generator is removed either in the source or using the check box in the UI.  
 	//We don't want these to be built on the model generator properties.
-	private ModifiablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
-	private ModifiablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
+	private ModifiablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateModel;
+	private ModifiablePropertyValueModel<Boolean> tableGeneratorExpansionStateModel;
 
 
 	/**
@@ -113,15 +114,15 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.sequenceGeneratorExpansionStateHolder = new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
-		this.tableGeneratorExpansionStateHolder    = new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
+		this.sequenceGeneratorExpansionStateModel = new SimplePropertyValueModel<>(Boolean.FALSE);
+		this.tableGeneratorExpansionStateModel    = new SimplePropertyValueModel<>(Boolean.FALSE);
 	}
 
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		this.sequenceGeneratorExpansionStateHolder.setValue(Boolean.valueOf(getSubject() != null && getSubject().getGeneratorContainer().getSequenceGenerator() != null));
-		this.tableGeneratorExpansionStateHolder   .setValue(Boolean.valueOf(getSubject() != null && getSubject().getGeneratorContainer().getTableGenerator() != null));
+		this.sequenceGeneratorExpansionStateModel.setValue(Boolean.valueOf(getSubject() != null && getSubject().getGeneratorContainer().getSequenceGenerator() != null));
+		this.tableGeneratorExpansionStateModel   .setValue(Boolean.valueOf(getSubject() != null && getSubject().getGeneratorContainer().getTableGenerator() != null));
 	}
 
 	@Override
@@ -145,7 +146,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		Button primaryKeyGenerationCheckBox = addCheckBox(
 			container,
 			JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_PRIMARY_KEY_GENERATION_CHECK_BOX,
-			buildPrimaryKeyGenerationHolder(),
+			buildPrimaryKeyGenerationModel(),
 			JpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION
 		);
 		GridData gridData = new GridData();
@@ -166,27 +167,27 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		this.addEditableCombo(
 			container,
 			buildSortedGeneraterNamesModel(),
-			buildGeneratorNameHolder(),
+			buildGeneratorNameModel(),
 			TransformerTools.<String>objectToStringTransformer(),
 			JpaHelpContextIds.MAPPING_GENERATED_VALUE_GENERATOR_NAME
 		);
 
-		PropertyValueModel<GeneratorContainer> generatorHolder = buildGeneratorContainer();
+		PropertyValueModel<GeneratorContainer> generatorModel = buildGeneratorContainer();
 		// Table Generator pane
-		Composite tableGeneratorComposite = initializeTableGeneratorCollapsibleSection(container, generatorHolder);
+		Composite tableGeneratorComposite = initializeTableGeneratorCollapsibleSection(container, generatorModel);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		tableGeneratorComposite.setLayoutData(gridData);
 
 		// Sequence Generator pane
-		Composite sequenceGeneratorComposite = initializeSequenceGeneratorCollapsibleSection(container, generatorHolder);
+		Composite sequenceGeneratorComposite = initializeSequenceGeneratorCollapsibleSection(container, generatorModel);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		sequenceGeneratorComposite.setLayoutData(gridData);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
-		return new PropertyAspectAdapterXXXX<IdMapping, Boolean>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildPrimaryKeyGenerationModel() {
+		return new PropertyAspectAdapterXXXX<IdMapping, Boolean>(getSubjectHolder(), GeneratedValueMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getGeneratedValue() != null);
@@ -209,17 +210,17 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		return PropertyValueModelTools.transform(this.getSubjectHolder(), m -> m.getGeneratorContainer());
 	}
 
-	protected Section initializeSequenceGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
+	protected Section initializeSequenceGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorModel) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_SEQUENCE_GENERATOR_SECTION);
-		SWTBindingTools.bindExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
+		SWTBindingTools.bindExpandedState(this.sequenceGeneratorExpansionStateModel, section);
 
-		section.setClient(this.initializeSequenceGeneratorPane(section, generatorHolder));
+		section.setClient(this.initializeSequenceGeneratorPane(section, generatorModel));
 
 		return section;
 	}
 
-	private Composite initializeSequenceGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
+	private Composite initializeSequenceGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorModel) {
 		Composite client = this.getWidgetFactory().createComposite(container);
 		client.setLayout(new GridLayout(1, false));
 		client.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -228,15 +229,15 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		Button sequenceGeneratorCheckBox = addCheckBox(
 				client,
 			JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_SEQUENCE_GENERATOR_CHECK_BOX,
-			buildSequenceGeneratorBooleanHolder(generatorHolder),
+			buildSequenceGeneratorBooleanModel(generatorModel),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
 
 		// Sequence Generator pane
 		SequenceGeneratorComposite sequenceGeneratorComposite = this.buildSequenceGeneratorComposite(
 				client, 
-			buildSequenceGeneratorHolder(generatorHolder),
-			buildSequenceGeneratorBuilder(generatorHolder));
+			buildSequenceGeneratorModel(generatorModel),
+			buildSequenceGeneratorBuilder(generatorModel));
 			
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = sequenceGeneratorCheckBox.getBorderWidth() + 16;
@@ -245,8 +246,8 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		return client;
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
+	private ModifiablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanModel(PropertyValueModel<GeneratorContainer> generatorModel) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(generatorModel, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getSequenceGenerator() != null);
@@ -275,44 +276,44 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	
 	protected SequenceGeneratorComposite buildSequenceGeneratorComposite(
 			Composite container, 
-			PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder,
+			PropertyValueModel<SequenceGenerator> sequenceGeneratorModel,
 			GeneratorBuilder<SequenceGenerator> generatorBuilder) {
 
 		return new SequenceGeneratorComposite(
 			this,
-			sequenceGeneratorHolder,
+			sequenceGeneratorModel,
 			container,
 			generatorBuilder
 		);
 	}
 
-	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, SequenceGenerator>(generatorHolder, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
+	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorModel(PropertyValueModel<GeneratorContainer> generatorModel) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, SequenceGenerator>(generatorModel, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
 				return this.subject.getSequenceGenerator();
 			}
 		};
 	}
-	private GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder(final PropertyValueModel<GeneratorContainer> generatorHolder) {
+	private GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder(final PropertyValueModel<GeneratorContainer> generatorModel) {
 		return new GeneratorBuilder<SequenceGenerator>() {
 			public SequenceGenerator addGenerator() {
-				return generatorHolder.getValue().addSequenceGenerator();
+				return generatorModel.getValue().addSequenceGenerator();
 			}
 		};
 	}
 
-	protected Section initializeTableGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
+	protected Section initializeTableGeneratorCollapsibleSection(Composite container, PropertyValueModel<GeneratorContainer> generatorModel) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		section.setText(JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_TABLE_GENERATOR_SECTION);
-		SWTBindingTools.bindExpandedState(this.tableGeneratorExpansionStateHolder, section);
+		SWTBindingTools.bindExpandedState(this.tableGeneratorExpansionStateModel, section);
 
-		section.setClient(this.initializeTableGeneratorPane(section, generatorHolder));
+		section.setClient(this.initializeTableGeneratorPane(section, generatorModel));
 
 		return section;
 	}
 
-	private Composite initializeTableGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
+	private Composite initializeTableGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorModel) {
 		Composite client = this.getWidgetFactory().createComposite(container);
 		client.setLayout(new GridLayout(1, false));
 		client.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -320,15 +321,15 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		Button tableGeneratorCheckBox = addCheckBox(
 				client,
 			JptJpaUiDetailsMessages.ID_MAPPING_COMPOSITE_TABLE_GENERATOR_CHECK_BOX,
-			buildTableGeneratorBooleanHolder(generatorHolder),
+			buildTableGeneratorBooleanModel(generatorModel),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 
 		// Table Generator pane
 		TableGeneratorComposite tableGeneratorComposite = this.buildTableGeneratorComposite(
 				client, 
-			buildTableGeneratorHolder(generatorHolder),
-			buildTableGeneratorBuilder(generatorHolder));
+			buildTableGeneratorModel(generatorModel),
+			buildTableGeneratorBuilder(generatorModel));
 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = tableGeneratorCheckBox.getBorderWidth() + 16;
@@ -339,19 +340,19 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	
 	protected TableGeneratorComposite buildTableGeneratorComposite(
 			Composite container, 
-			PropertyValueModel<TableGenerator> tableGeneratorHolder,
+			PropertyValueModel<TableGenerator> tableGeneratorModel,
 			GeneratorBuilder<TableGenerator> generatorBuilder) {
 
 		return new TableGeneratorComposite(
 			this,
-			tableGeneratorHolder,
+			tableGeneratorModel,
 			container,
 			generatorBuilder
 		);
 	}
 
-	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, TableGenerator>(generatorHolder, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
+	private PropertyValueModel<TableGenerator> buildTableGeneratorModel(PropertyValueModel<GeneratorContainer> generatorModel) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, TableGenerator>(generatorModel, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected TableGenerator buildValue_() {
 				return this.subject.getTableGenerator();
@@ -359,16 +360,16 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		};
 	}
 
-	private GeneratorBuilder<TableGenerator> buildTableGeneratorBuilder(final PropertyValueModel<GeneratorContainer> generatorHolder) {
+	private GeneratorBuilder<TableGenerator> buildTableGeneratorBuilder(final PropertyValueModel<GeneratorContainer> generatorModel) {
 		return new GeneratorBuilder<TableGenerator>() {
 			public TableGenerator addGenerator() {
-				return generatorHolder.getValue().addTableGenerator();
+				return generatorModel.getValue().addTableGenerator();
 			}
 		};
 	}
 
- 	private ModifiablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
+ 	private ModifiablePropertyValueModel<Boolean> buildTableGeneratorBooleanModel(PropertyValueModel<GeneratorContainer> generatorModel) {
+		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(generatorModel, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getTableGenerator() != null);
@@ -396,7 +397,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
  
 	private EnumFormComboViewer<GeneratedValue, GenerationType> addStrategyComboViewer(Composite parent) {
-		return new EnumFormComboViewer<GeneratedValue, GenerationType>(this, buildGeneratedValueHolder(), parent) {
+		return new EnumFormComboViewer<GeneratedValue, GenerationType>(this, buildGeneratedValueModel(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -448,50 +449,37 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		};
 	}
 
-	private PropertyValueModel<GeneratedValue> buildGeneratedValueHolder() {
-		return new PropertyAspectAdapterXXXX<IdMapping, GeneratedValue>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
-			@Override
-			protected GeneratedValue buildValue_() {
-				return getSubject().getGeneratedValue();
-			}
-		};
+	private PropertyValueModel<GeneratedValue> buildGeneratedValueModel() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				GeneratedValueMapping.GENERATED_VALUE_PROPERTY,
+				m -> m.getGeneratedValue()
+			);
 	}
 	
-	protected final ModifiablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapterXXXX<GeneratedValue, String>(buildGeneratedValueHolder(), GeneratedValue.SPECIFIED_GENERATOR_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getSpecifiedGenerator();
-			}
-
-			@Override
-			public void setValue(String value) {
-				if (this.subject != null) {
-					setValue_(value);
-					return;
+	protected final ModifiablePropertyValueModel<String> buildGeneratorNameModel() {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				this.buildGeneratedValueModel(),
+				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
+				TransformerTools.nullCheck(m -> m.getSpecifiedGenerator()),
+				(m, value) -> {
+					if (m != null) {
+						m.setSpecifiedGenerator(StringTools.isBlank(value) ? null : value);
+					} else {
+						if (StringTools.isNotBlank(value)) {
+							this.getGeneratedValueForUpdate().setSpecifiedGenerator(value);
+						}
+					}
 				}
-				if (value.length() == 0) {
-					return;
-				}
-				getGeneratedValueForUpdate().setSpecifiedGenerator(value);
-			}
-
-			@Override
-			protected void setValue_(String value) {
-				if (value !=null && value.length() == 0) {
-					value = null;
-				}
-				this.subject.setSpecifiedGenerator(value);
-			}
-		};
+			);
 	}
 
 	protected ListValueModel<String> buildSortedGeneraterNamesModel() {
-		return new SortedListValueModelAdapter<String>(this.buildUniqueGeneratorNamesModel());
+		return new SortedListValueModelAdapter<>(this.buildUniqueGeneratorNamesModel());
 	}
 
 	protected CollectionValueModel<String> buildUniqueGeneratorNamesModel() {
-		return new SetCollectionValueModel<String>(this.buildGeneratorNamesModel());
+		return new SetCollectionValueModel<>(this.buildGeneratorNamesModel());
 	}
 
 	protected CollectionValueModel<String> buildGeneratorNamesModel() {
@@ -508,7 +496,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	protected ListValueModel<Generator> buildGeneratorsModel() {
-		return new ItemPropertyListValueModelAdapter<Generator>(this.buildGeneratorsModel_(), JpaNamedContextModel.NAME_PROPERTY);
+		return new ItemPropertyListValueModelAdapter<>(this.buildGeneratorsModel_(), JpaNamedContextModel.NAME_PROPERTY);
 	}
 
 	protected CollectionValueModel<Generator> buildGeneratorsModel_() {

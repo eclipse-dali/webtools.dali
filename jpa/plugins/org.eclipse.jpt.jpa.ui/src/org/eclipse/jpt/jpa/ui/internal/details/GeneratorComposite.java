@@ -11,7 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -31,9 +34,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 1.0
  */
-public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pane<T>
+public abstract class GeneratorComposite<T extends DatabaseGenerator>
+	extends Pane<T>
 {
-
 	protected GeneratorBuilder<T> generatorBuilder;
 
 	protected GeneratorComposite(Pane<?> parentPane,
@@ -71,32 +74,20 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 	}
 
 	protected final ModifiablePropertyValueModel<String> buildGeneratorNameModel() {
-		return new PropertyAspectAdapterXXXX<Generator, String>(getSubjectHolder(), JpaNamedContextModel.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getName();
-			}
-
-			@Override
-			public void setValue(String value) {
-				if (this.subject != null) {
-					setValue_(value);
-					return;
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				this.getSubjectHolder(),
+				JpaNamedContextModel.NAME_PROPERTY,
+				TransformerTools.nullCheck(m -> m.getName()),
+				(m, value) -> {
+					if (m != null) {
+						m.setName(StringTools.isBlank(value) ? null : value);
+					} else {
+						if (StringTools.isNotBlank(value)) {
+							this.retrieveGenerator().setName(value);
+						}
+					}
 				}
-				if (value.length() == 0) {
-					return;
-				}
-				retrieveGenerator().setName(value);
-			}
-
-			@Override
-			protected void setValue_(String value) {
-				if (value.length() == 0) {
-					value = null;
-				}
-				this.subject.setName(value);
-			}
-		};
+			);
 	}
 
 	@SuppressWarnings("unused")
@@ -129,17 +120,12 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return this.subject.getSpecifiedAllocationSize();
-				}
-
-				@Override
-				public void setValue(Integer value) {
-					retrieveGenerator().setSpecifiedAllocationSize(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+					this.getSubjectHolder(),
+					DatabaseGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY,
+					TransformerTools.nullCheck(m -> m.getSpecifiedAllocationSize()),
+					(m, value) -> retrieveGenerator().setSpecifiedAllocationSize(value)
+				);
 		}
 	}
 
@@ -172,17 +158,12 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator> extends Pa
 
 		@Override
 		protected ModifiablePropertyValueModel<Integer> buildSelectedItemModel() {
-			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return this.subject.getSpecifiedInitialValue();
-				}
-
-				@Override
-				public void setValue(Integer value) {
-					retrieveGenerator().setSpecifiedInitialValue(value);
-				}
-			};
+			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+					this.getSubjectHolder(),
+					DatabaseGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY,
+					TransformerTools.nullCheck(m -> m.getSpecifiedInitialValue()),
+					(m, value) -> retrieveGenerator().setSpecifiedInitialValue(value)
+				);
 		}
 	}
 

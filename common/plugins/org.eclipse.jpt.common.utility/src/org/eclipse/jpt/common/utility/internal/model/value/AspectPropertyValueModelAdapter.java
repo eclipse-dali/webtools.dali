@@ -90,7 +90,7 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	/**
 	 * Set the value of the subject's aspect.
 	 */
-	public void setValue(V value) {
+	public final void setValue(V value) {
 		if (this.subject != null) {
 			this.setValue_(value);
 		}
