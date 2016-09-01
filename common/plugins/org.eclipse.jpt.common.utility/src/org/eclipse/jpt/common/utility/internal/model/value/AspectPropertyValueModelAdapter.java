@@ -110,32 +110,32 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected V getAspectValue() {
+	protected final V getAspectValue() {
 		return this.value;
 	}
 
 	@Override
-	protected Class<? extends EventListener> getListenerClass() {
+	protected final Class<? extends EventListener> getListenerClass() {
 		return PropertyChangeListener.class;
 	}
 
 	@Override
-	protected String getListenerAspectName() {
+	protected final String getListenerAspectName() {
 		return VALUE;
 	}
 
     @Override
-    public boolean hasListeners() {
+    public final boolean hasListeners() {
 		return this.hasAnyPropertyChangeListeners(VALUE);
 	}
 
     @Override
-	protected void fireAspectChanged(V oldValue, V newValue) {
+	protected final void fireAspectChanged(V oldValue, V newValue) {
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
     @Override
-	protected void engageSubject() {
+	protected final void engageSubject() {
 		super.engageSubject();
 		// sync our value *after* we start listening to the subject,
 		// since its value might change when a listener is added
@@ -143,7 +143,7 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	}
 
     @Override
-	protected void disengageSubject() {
+	protected final void disengageSubject() {
 		super.disengageSubject();
 		// clear out our value when we are not listening to the subject
 		this.value = null;
@@ -174,13 +174,13 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	 * This method can be called by subclasses whenever the subject's aspect
 	 * has changed; listeners will be notified appropriately.
 	 */
-	protected void aspectChanged() {
+	protected final void aspectChanged() {
 		V old = this.value;
 		this.fireAspectChanged(old, this.value = this.buildValue());
 	}
 
 	@Override
-	public void toString(StringBuilder sb) {
+	public final void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}
 }
