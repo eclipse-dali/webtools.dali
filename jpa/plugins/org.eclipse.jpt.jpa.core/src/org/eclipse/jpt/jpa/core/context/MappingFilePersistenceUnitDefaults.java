@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * @since 2.1
  */
 public interface MappingFilePersistenceUnitDefaults
-	extends AccessReference
+	extends AccessReference, SchemaReference
 {
 	/**
 	 * Covariant override.
@@ -30,26 +30,9 @@ public interface MappingFilePersistenceUnitDefaults
 	MappingFilePersistenceUnitMetadata getParent();
 
 	/**
-	 * Return the catalog for all database objects referenced in the
-	 * persistence unit, unless overridden by a local annotation or XML setting.
-	 * <p>
-	 * Return the specified catalog if present, otherwise return the
-	 * default catalog as determined by the database connection.
-	 */
-	String getCatalog();
-
-	/**
-	 * Return the schema for all database objects referenced in the
-	 * persistence unit, unless overridden by a local annotation or XML setting.
-	 * <p>
-	 * Return the specified schema if present, otherwise return the
-	 * default schema as determined by the database connection.
-	 */
-	String getSchema();
-
-	/**
 	 * Return all the relationhips in the persistence unit are to be cascade
 	 * persist, unless overridden by a local annotation or XML setting.
 	 */
 	boolean isCascadePersist();
+		String CASCADE_PERSIST_PROPERTY = "cascadePersist"; //$NON-NLS-1$
 }

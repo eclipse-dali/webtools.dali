@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,21 +43,27 @@ public class GenericJavaTableGenerator
 {
 	protected String specifiedTableName;
 	protected String defaultTableName;
+	protected String tableName;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
+	protected String schema;
 
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
+	protected String catalog;
 
 	protected String specifiedPkColumnName;
 	protected String defaultPkColumnName;
+	protected String pkColumnName;
 
 	protected String specifiedValueColumnName;
 	protected String defaultValueColumnName;
+	protected String valueColumnName;
 
 	protected String specifiedPkColumnValue;
 	protected String defaultPkColumnValue;
+	protected String pkColumnValue;
 
 	protected final ContextListContainer<JavaSpecifiedUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
@@ -93,12 +99,25 @@ public class GenericJavaTableGenerator
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+
 		this.setDefaultTableName(this.buildDefaultTableName());
+		this.setTableName(this.buildTableName());
+
 		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setSchema(this.buildSchema());
+
 		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setCatalog(this.buildCatalog());
+
 		this.setDefaultPkColumnName(this.buildDefaultPkColumnName());
+		this.setPkColumnName(this.buildPkColumnName());
+
 		this.setDefaultValueColumnName(this.buildDefaultValueColumnName());
+		this.setValueColumnName(this.buildValueColumnName());
+
 		this.setDefaultPkColumnValue(this.buildDefaultPkColumnValue());
+		this.setPkColumnValue(this.buildPkColumnValue());
+
 		this.updateModels(this.getUniqueConstraints(), monitor);
 	}
 
@@ -114,6 +133,15 @@ public class GenericJavaTableGenerator
 	// ********** table name **********
 
 	public String getTableName() {
+		return this.tableName;
+	}
+
+	protected void setTableName(String tableName) {
+		String old = this.tableName;
+		this.firePropertyChanged(TABLE_NAME_PROPERTY, old, this.tableName = tableName);
+	}
+
+	protected String buildTableName() {
 		return (this.specifiedTableName != null) ? this.specifiedTableName : this.defaultTableName;
 	}
 
@@ -128,8 +156,7 @@ public class GenericJavaTableGenerator
 
 	protected void setSpecifiedTableName_(String tableName) {
 		String old = this.specifiedTableName;
-		this.specifiedTableName = tableName;
-		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, tableName);
+		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, this.specifiedTableName = tableName);
 	}
 
 	public String getDefaultTableName() {
@@ -138,8 +165,7 @@ public class GenericJavaTableGenerator
 
 	protected void setDefaultTableName(String tableName) {
 		String old = this.defaultTableName;
-		this.defaultTableName = tableName;
-		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, tableName);
+		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, this.defaultTableName = tableName);
 	}
 
 	protected String buildDefaultTableName() {
@@ -156,6 +182,15 @@ public class GenericJavaTableGenerator
 
 	@Override
 	public String getSchema() {
+		return this.schema;
+	}
+
+	protected void setSchema(String schema) {
+		String old = this.schema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
+	}
+
+	protected String buildSchema() {
 		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
 	}
 
@@ -170,8 +205,7 @@ public class GenericJavaTableGenerator
 
 	protected void setSpecifiedSchema_(String schema) {
 		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
 	}
 
 	public String getDefaultSchema() {
@@ -180,8 +214,7 @@ public class GenericJavaTableGenerator
 
 	protected void setDefaultSchema(String schema) {
 		String old = this.defaultSchema;
-		this.defaultSchema = schema;
-		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
 	}
 
 	protected String buildDefaultSchema() {
@@ -193,6 +226,15 @@ public class GenericJavaTableGenerator
 
 	@Override
 	public String getCatalog() {
+		return this.catalog;
+	}
+
+	protected void setCatalog(String catalog) {
+		String old = this.catalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, this.catalog = catalog);
+	}
+
+	protected String buildCatalog() {
 		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
 	}
 
@@ -207,8 +249,7 @@ public class GenericJavaTableGenerator
 
 	protected void setSpecifiedCatalog_(String catalog) {
 		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, this.specifiedCatalog = catalog);
 	}
 
 	public String getDefaultCatalog() {
@@ -217,8 +258,7 @@ public class GenericJavaTableGenerator
 
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
-		this.defaultCatalog = catalog;
-		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, this.defaultCatalog = catalog);
 	}
 
 	protected String buildDefaultCatalog() {
@@ -229,6 +269,15 @@ public class GenericJavaTableGenerator
 	// ********** primary key column name **********
 
 	public String getPkColumnName() {
+		return this.pkColumnName;
+	}
+
+	protected void setPkColumnName(String name) {
+		String old = this.pkColumnName;
+		this.firePropertyChanged(PK_COLUMN_NAME_PROPERTY, old, this.pkColumnName = name);
+	}
+
+	protected String buildPkColumnName() {
 		return (this.specifiedPkColumnName != null) ? this.specifiedPkColumnName : this.defaultPkColumnName;
 	}
 
@@ -243,8 +292,7 @@ public class GenericJavaTableGenerator
 
 	protected void setSpecifiedPkColumnName_(String name) {
 		String old = this.specifiedPkColumnName;
-		this.specifiedPkColumnName = name;
-		this.firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, old, this.specifiedPkColumnName = name);
 	}
 
 	public String getDefaultPkColumnName() {
@@ -253,8 +301,7 @@ public class GenericJavaTableGenerator
 
 	protected void setDefaultPkColumnName(String name) {
 		String old = this.defaultPkColumnName;
-		this.defaultPkColumnName = name;
-		this.firePropertyChanged(DEFAULT_PK_COLUMN_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(DEFAULT_PK_COLUMN_NAME_PROPERTY, old, this.defaultPkColumnName = name);
 	}
 
 	protected String buildDefaultPkColumnName() {
@@ -265,6 +312,15 @@ public class GenericJavaTableGenerator
 	// ********** value column name **********
 
 	public String getValueColumnName() {
+		return this.valueColumnName;
+	}
+
+	protected void setValueColumnName(String name) {
+		String old = this.valueColumnName;
+		this.firePropertyChanged(VALUE_COLUMN_NAME_PROPERTY, old, this.valueColumnName = name);
+	}
+
+	protected String buildValueColumnName() {
 		return (this.specifiedValueColumnName != null) ? this.specifiedValueColumnName : this.defaultValueColumnName;
 	}
 
@@ -279,8 +335,7 @@ public class GenericJavaTableGenerator
 
 	protected void setSpecifiedValueColumnName_(String name) {
 		String old = this.specifiedValueColumnName;
-		this.specifiedValueColumnName = name;
-		this.firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, old, this.specifiedValueColumnName = name);
 	}
 
 	public String getDefaultValueColumnName() {
@@ -289,8 +344,7 @@ public class GenericJavaTableGenerator
 
 	protected void setDefaultValueColumnName(String name) {
 		String old = this.defaultValueColumnName;
-		this.defaultValueColumnName = name;
-		this.firePropertyChanged(DEFAULT_VALUE_COLUMN_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(DEFAULT_VALUE_COLUMN_NAME_PROPERTY, old, this.defaultValueColumnName = name);
 	}
 
 	protected String buildDefaultValueColumnName() {
@@ -301,6 +355,15 @@ public class GenericJavaTableGenerator
 	// ********** primary key column value **********
 
 	public String getPkColumnValue() {
+		return this.pkColumnValue;
+	}
+
+	protected void setPkColumnValue(String value) {
+		String old = this.pkColumnValue;
+		this.firePropertyChanged(PK_COLUMN_VALUE_PROPERTY, old, this.pkColumnValue = value);
+	}
+
+	protected String buildPkColumnValue() {
 		return (this.specifiedPkColumnValue != null) ? this.specifiedPkColumnValue : this.defaultPkColumnValue;
 	}
 
@@ -315,8 +378,7 @@ public class GenericJavaTableGenerator
 
 	protected void setSpecifiedPkColumnValue_(String value) {
 		String old = this.specifiedPkColumnValue;
-		this.specifiedPkColumnValue = value;
-		this.firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, old, value);
+		this.firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, old, this.specifiedPkColumnValue = value);
 	}
 
 	public String getDefaultPkColumnValue() {
@@ -325,8 +387,7 @@ public class GenericJavaTableGenerator
 
 	protected void setDefaultPkColumnValue(String value) {
 		String old = this.defaultPkColumnValue;
-		this.defaultPkColumnValue = value;
-		this.firePropertyChanged(DEFAULT_PK_COLUMN_VALUE_PROPERTY, old, value);
+		this.firePropertyChanged(DEFAULT_PK_COLUMN_VALUE_PROPERTY, old, this.defaultPkColumnValue = value);
 	}
 
 	protected String buildDefaultPkColumnValue() {
@@ -465,7 +526,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateTables() {
-		return new TransformationIterable<String, String>(this.getCandidateTables(),
+		return new TransformationIterable<>(this.getCandidateTables(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
@@ -481,7 +542,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata() {
-		return new TransformationIterable<String, String>(this.getCandidateSchemata(),
+		return new TransformationIterable<>(this.getCandidateSchemata(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
@@ -497,7 +558,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs(Predicate<String> filter) {
-		return new TransformationIterable<String, String>(this.getCandidateCatalogs(filter),
+		return new TransformationIterable<>(this.getCandidateCatalogs(filter),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
@@ -517,7 +578,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateColumnNames() {
-		return new TransformationIterable<String, String>(this.getCandidateColumnNames(),
+		return new TransformationIterable<>(this.getCandidateColumnNames(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 

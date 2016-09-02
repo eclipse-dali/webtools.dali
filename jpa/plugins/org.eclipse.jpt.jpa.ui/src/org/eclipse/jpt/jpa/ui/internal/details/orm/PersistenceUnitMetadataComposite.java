@@ -20,6 +20,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelToo
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSchemaReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
@@ -97,7 +99,7 @@ public class PersistenceUnitMetadataComposite
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildCascadePersistModel() {
-		return new PropertyAspectAdapterXXXX<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
+		return new PropertyAspectAdapterXXXX<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsModel(), MappingFilePersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isCascadePersist());
@@ -117,8 +119,8 @@ public class PersistenceUnitMetadataComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmPersistenceUnitDefaults.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(OrmPersistenceUnitDefaults.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -159,8 +161,8 @@ public class PersistenceUnitMetadataComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmPersistenceUnitDefaults.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(OrmPersistenceUnitDefaults.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
@@ -206,8 +208,8 @@ public class PersistenceUnitMetadataComposite
 	}
 
 	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		OrmPersistenceUnitDefaults.DEFAULT_CATALOG_PROPERTY,
-		OrmPersistenceUnitDefaults.SPECIFIED_CATALOG_PROPERTY
+		SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY,
+		SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY
 	});
 
 	protected ModifiablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteModel() {

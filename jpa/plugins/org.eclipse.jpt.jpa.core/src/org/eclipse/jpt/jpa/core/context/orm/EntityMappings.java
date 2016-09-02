@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.DeleteTypeRefactoringParticipant;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
+import org.eclipse.jpt.jpa.core.context.ModifiableSpecifiedSchemaReference;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
@@ -50,6 +51,7 @@ public interface EntityMappings
 		XmlFile.Root,
 		PersistentType.Parent,
 		SpecifiedAccessReference,
+		ModifiableSpecifiedSchemaReference,
 		DeleteTypeRefactoringParticipant,
 		TypeRefactoringParticipant
 {
@@ -93,21 +95,9 @@ public interface EntityMappings
 	 */
 	SchemaContainer getDbSchemaContainer();
 
-	String getSpecifiedCatalog();
-		String CATALOG_PROPERTY = "catalog"; //$NON-NLS-1$
-	void setSpecifiedCatalog(String catalog);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
-	Catalog getDbCatalog();
-
-	String getSpecifiedSchema();
-		String SCHEMA_PROPERTY = "schema"; //$NON-NLS-1$
-	void setSpecifiedSchema(String schema);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
 	Schema getDbSchema();
+
+	Catalog getDbCatalog();
 
 	/**
 	 * Covariant override.

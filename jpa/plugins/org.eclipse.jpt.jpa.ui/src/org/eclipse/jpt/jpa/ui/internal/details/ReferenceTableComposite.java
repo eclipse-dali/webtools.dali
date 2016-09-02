@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedReferenceTable;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSchemaReference;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -120,8 +121,8 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -153,8 +154,8 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
@@ -201,8 +202,8 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 	}
 
 	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		Table.DEFAULT_CATALOG_PROPERTY,
-		Table.SPECIFIED_CATALOG_PROPERTY
+		SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY,
+		SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY
 	});
 
 	protected TableCombo<T> addTableCombo(Composite container, final String helpId) {
@@ -261,8 +262,8 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable>
 
 	/* CU private */ static final Collection<String> TABLE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(StringTools.EMPTY_STRING_ARRAY),
 		new String[] {
-			Table.DEFAULT_SCHEMA_PROPERTY,
-			Table.SPECIFIED_SCHEMA_PROPERTY
+			SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY,
+			SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY
 		}
 	));
 

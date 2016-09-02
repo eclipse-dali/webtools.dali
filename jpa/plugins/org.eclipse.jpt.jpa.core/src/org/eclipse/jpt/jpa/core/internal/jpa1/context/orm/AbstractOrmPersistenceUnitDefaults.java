@@ -36,13 +36,13 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	protected AccessType specifiedAccess;
 	protected AccessType access;
 
-	protected String specifiedCatalog;
-	protected String defaultCatalog;
-	protected String catalog;
-
 	protected String specifiedSchema;
 	protected String defaultSchema;
 	protected String schema;
+
+	protected String specifiedCatalog;
+	protected String defaultCatalog;
+	protected String catalog;
 
 	protected boolean cascadePersist;
 
@@ -54,14 +54,14 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	protected AbstractOrmPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
 		super(parent);
 		this.specifiedAccess = this.buildSpecifiedAccess();
-		this.specifiedCatalog = this.buildSpecifiedCatalog();
 		this.specifiedSchema = this.buildSpecifiedSchema();
+		this.specifiedCatalog = this.buildSpecifiedCatalog();
 		this.cascadePersist = this.buildCascadePersist();
 		this.delimitedIdentifiers = this.buildDelimitedIdentifiers();
 
 		//already available from JpaProject, so set it here, many things depend on these
-		this.defaultCatalog = this.buildDefaultCatalog();
 		this.defaultSchema = this.buildDefaultSchema();
+		this.defaultCatalog = this.buildDefaultCatalog();
 	}
 
 
@@ -71,8 +71,8 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
 		super.synchronizeWithResourceModel(monitor);
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
-		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());
 		this.setSpecifiedSchema_(this.buildSpecifiedSchema());
+		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());
 		this.setCascadePersist_(this.buildCascadePersist());
 		this.setDelimitedIdentifiers_(this.buildDelimitedIdentifiers());
 	}
@@ -83,11 +83,11 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 		this.setAccess(this.buildAccess());
 
-		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setCatalog(this.buildCatalog());
-
 		this.setDefaultSchema(this.buildDefaultSchema());
 		this.setSchema(this.buildSchema());
+
+		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setCatalog(this.buildCatalog());
 	}
 
 
@@ -144,6 +144,63 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	public SchemaContainer getDbSchemaContainer() {
 		String catalogString = this.getCatalog();
 		return (catalogString != null) ? this.resolveDbCatalog(catalogString) : this.getDatabase();
+	}
+
+
+	// ********** schema **********
+
+	public String getSchema() {
+		return this.schema;
+	}
+
+	protected void setSchema(String schema) {
+		String old = this.schema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
+	}
+
+	protected String buildSchema() {
+		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
+	}
+
+	public String getSpecifiedSchema() {
+		return this.specifiedSchema;
+	}
+
+	public void setSpecifiedSchema(String schema) {
+		if (ObjectTools.notEquals(this.specifiedSchema, schema)) {
+			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
+			this.setSpecifiedSchema_(schema);
+			xmlDefaults.setSchema(schema);
+			this.removeXmlDefaultsIfUnset();
+		}
+	}
+
+	protected void setSpecifiedSchema_(String schema) {
+		String old = this.specifiedSchema;
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
+	}
+
+	protected String buildSpecifiedSchema() {
+		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
+		return (xmlDefaults == null) ? null : xmlDefaults.getSchema();
+	}
+
+	public String getDefaultSchema() {
+		return this.defaultSchema;
+	}
+
+	protected void setDefaultSchema(String schema) {
+		String old = this.defaultSchema;
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
+	}
+
+	protected String buildDefaultSchema() {
+		return this.getJpaProject().getDefaultSchema();
+	}
+
+	public Schema getDbSchema() {
+		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
+		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
 	}
 
 
@@ -208,63 +265,6 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	}
 
 
-	// ********** schema **********
-
-	public String getSchema() {
-		return this.schema;
-	}
-
-	protected void setSchema(String schema) {
-		String old = this.schema;
-		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
-	}
-
-	protected String buildSchema() {
-		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
-	}
-
-	public String getSpecifiedSchema() {
-		return this.specifiedSchema;
-	}
-
-	public void setSpecifiedSchema(String schema) {
-		if (ObjectTools.notEquals(this.specifiedSchema, schema)) {
-			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
-			this.setSpecifiedSchema_(schema);
-			xmlDefaults.setSchema(schema);
-			this.removeXmlDefaultsIfUnset();
-		}
-	}
-
-	protected void setSpecifiedSchema_(String schema) {
-		String old = this.specifiedSchema;
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
-	}
-
-	protected String buildSpecifiedSchema() {
-		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
-		return (xmlDefaults == null) ? null : xmlDefaults.getSchema();
-	}
-
-	public String getDefaultSchema() {
-		return this.defaultSchema;
-	}
-
-	protected void setDefaultSchema(String schema) {
-		String old = this.defaultSchema;
-		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
-	}
-
-	protected String buildDefaultSchema() {
-		return this.getJpaProject().getDefaultSchema();
-	}
-
-	public Schema getDbSchema() {
-		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
-		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
-	}
-
-
 	// ********** cascade persist **********
 
 	public boolean isCascadePersist() {
@@ -282,8 +282,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected void setCascadePersist_(boolean cascadePersist) {
 		boolean old = this.cascadePersist;
-		this.cascadePersist = cascadePersist;
-		this.firePropertyChanged(CASCADE_PERSIST_PROPERTY, old, cascadePersist);
+		this.firePropertyChanged(CASCADE_PERSIST_PROPERTY, old, this.cascadePersist = cascadePersist);
 	}
 
 	protected boolean buildCascadePersist() {

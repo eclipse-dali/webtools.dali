@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,12 +54,15 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	protected String specifiedName;
 	protected String defaultName;
+	protected String name;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
+	protected String schema;
 
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
+	protected String catalog;
 
 	protected final ContextListContainer<JavaSpecifiedUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
@@ -93,9 +96,16 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+
 		this.setDefaultName(this.buildDefaultName());
+		this.setName(this.buildName());
+
 		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setSchema(this.buildSchema());
+
 		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setCatalog(this.buildCatalog());
+
 		this.updateModels(this.getUniqueConstraints(), monitor);
 	}
 
@@ -134,6 +144,15 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	// ********** name **********
 
 	public String getName() {
+		return this.name;
+	}
+
+	protected void setName(String name) {
+		String old = this.name;
+		this.firePropertyChanged(NAME_PROPERTY, old, this.name = name);
+	}
+
+	protected String buildName() {
 		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}
 
@@ -151,8 +170,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	protected void setSpecifiedName_(String name) {
 		String old = this.specifiedName;
-		this.specifiedName = name;
-		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, this.specifiedName = name);
 	}
 
 	protected String buildSpecifiedName() {
@@ -165,8 +183,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	protected void setDefaultName(String name) {
 		String old = this.defaultName;
-		this.defaultName = name;
-		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, this.defaultName = name);
 	}
 
 	protected abstract String buildDefaultName();
@@ -175,6 +192,15 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	// ********** schema **********
 
 	public String getSchema() {
+		return this.schema;
+	}
+
+	protected void setSchema(String schema) {
+		String old = this.schema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
+	}
+
+	protected String buildSchema() {
 		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
 	}
 
@@ -192,8 +218,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	protected void setSpecifiedSchema_(String schema) {
 		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
 	}
 
 	protected String buildSpecifiedSchema() {
@@ -206,8 +231,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	protected void setDefaultSchema(String schema) {
 		String old = this.defaultSchema;
-		this.defaultSchema = schema;
-		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
 	}
 
 	protected abstract String buildDefaultSchema();
@@ -216,6 +240,15 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	// ********** catalog **********
 
 	public String getCatalog() {
+		return this.catalog;
+	}
+
+	protected void setCatalog(String catalog) {
+		String old = this.catalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, this.catalog = catalog);
+	}
+
+	protected String buildCatalog() {
 		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
 	}
 
@@ -233,8 +266,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	protected void setSpecifiedCatalog_(String catalog) {
 		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, this.specifiedCatalog = catalog);
 	}
 
 	protected String buildSpecifiedCatalog() {
@@ -247,8 +279,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
-		this.defaultCatalog = catalog;
-		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, this.defaultCatalog = catalog);
 	}
 
 	protected abstract String buildDefaultCatalog();
@@ -342,8 +373,8 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	 * get the schema directly from the database.
 	 */
 	public SchemaContainer getDbSchemaContainer() {
-		String catalog = this.getCatalog();
-		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
+		String catalogString = this.getCatalog();
+		return (catalogString != null) ? this.resolveDbCatalog(catalogString) : this.getDatabase();
 	}
 
 	/**
@@ -351,8 +382,8 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	 * catalog), then the database probably does not support catalogs.
 	 */
 	public Catalog getDbCatalog() {
-		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
+		String catalogString = this.getCatalog();
+		return (catalogString == null) ? null : this.resolveDbCatalog(catalogString);
 	}
 
 	public boolean isResolved() {
@@ -368,8 +399,8 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	 * catalog), then the database probably does not support catalogs.
 	 */
 	public boolean catalogIsResolved() {
-		String catalog = this.getCatalog();
-		return (catalog == null) || (this.resolveDbCatalog(catalog) != null);
+		String catalogString = this.getCatalog();
+		return (catalogString == null) || (this.resolveDbCatalog(catalogString) != null);
 	}
 
 
@@ -425,7 +456,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	}
 
 	protected Iterable<String> getJavaCandidateNames() {
-		return new TransformationIterable<String, String>(this.getCandidateNames(),
+		return new TransformationIterable<>(this.getCandidateNames(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
@@ -439,7 +470,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata() {
-		return new TransformationIterable<String, String>(this.getCandidateSchemata(),
+		return new TransformationIterable<>(this.getCandidateSchemata(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
@@ -452,7 +483,7 @@ public abstract class AbstractJavaTable<P extends JpaContextModel, PA extends Ta
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs() {
-		return new TransformationIterable<String, String>(this.getCandidateCatalogs(),
+		return new TransformationIterable<>(this.getCandidateCatalogs(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 

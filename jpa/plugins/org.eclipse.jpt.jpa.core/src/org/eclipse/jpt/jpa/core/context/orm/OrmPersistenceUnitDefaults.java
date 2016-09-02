@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
+import org.eclipse.jpt.jpa.core.context.ModifiableSpecifiedSchemaReference;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -31,35 +32,18 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * @since 2.1
  */
 public interface OrmPersistenceUnitDefaults
-	extends MappingFilePersistenceUnitDefaults, SpecifiedAccessReference
+	extends MappingFilePersistenceUnitDefaults, SpecifiedAccessReference, ModifiableSpecifiedSchemaReference
 {
 	/**
 	 * Covariant override.
 	 */
 	OrmPersistenceUnitMetadata getParent();
 
-	// ********** schema container **********
 	SchemaContainer getDbSchemaContainer();
 
-	// ********** catalog **********
-	String getSpecifiedCatalog();
-		String CATALOG_PROPERTY = "catalog"; //$NON-NLS-1$
-	void setSpecifiedCatalog(String newSpecifiedCatalog);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
 	Catalog getDbCatalog();
 
-	// ********** schema **********
-	String getSpecifiedSchema();
-		String SCHEMA_PROPERTY = "schema"; //$NON-NLS-1$
-	void setSpecifiedSchema(String newSpecifiedSchema);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
 	Schema getDbSchema();
 
-	// ********** cascade persist **********
 	void setCascadePersist(boolean value);
-		String CASCADE_PERSIST_PROPERTY = "cascadePersist"; //$NON-NLS-1$
 }

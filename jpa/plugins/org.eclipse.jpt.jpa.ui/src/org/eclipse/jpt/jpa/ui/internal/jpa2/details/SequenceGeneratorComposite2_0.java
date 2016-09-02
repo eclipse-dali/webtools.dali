@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSchemaReference;
 import org.eclipse.jpt.jpa.core.jpa2.context.SequenceGenerator2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -75,8 +76,8 @@ public class SequenceGeneratorComposite2_0 extends SequenceGeneratorComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(SequenceGenerator2_0.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(SequenceGenerator2_0.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -116,8 +117,8 @@ public class SequenceGeneratorComposite2_0 extends SequenceGeneratorComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(SequenceGenerator2_0.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(SequenceGenerator2_0.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
@@ -176,8 +177,8 @@ public class SequenceGeneratorComposite2_0 extends SequenceGeneratorComposite
 	}
 
 	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		SequenceGenerator2_0.DEFAULT_CATALOG_PROPERTY,
-		SequenceGenerator2_0.SPECIFIED_CATALOG_PROPERTY
+		SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY,
+		SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY
 	});
 	
 	@Override
@@ -210,8 +211,8 @@ public class SequenceGeneratorComposite2_0 extends SequenceGeneratorComposite
 
 	/* CU private */ static final Collection<String> SEQUENCE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(StringTools.EMPTY_STRING_ARRAY),
 		new String[] {
-			SequenceGenerator2_0.DEFAULT_SCHEMA_PROPERTY,
-			SequenceGenerator2_0.SPECIFIED_SCHEMA_PROPERTY
+			SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY,
+			SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY
 		}
 	));
 }

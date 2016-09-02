@@ -108,13 +108,13 @@ public abstract class AbstractEntityMappings
 	protected AccessType defaultAccess;
 	protected AccessType access;
 
-	protected String specifiedCatalog;
-	protected String defaultCatalog;
-	protected String catalog;
-
 	protected String specifiedSchema;
 	protected String defaultSchema;
 	protected String schema;
+
+	protected String specifiedCatalog;
+	protected String defaultCatalog;
+	protected String catalog;
 
 	protected final OrmPersistenceUnitMetadata persistenceUnitMetadata;
 
@@ -141,8 +141,8 @@ public abstract class AbstractEntityMappings
 		this.package_ = this.xmlEntityMappings.getPackage();
 
 		this.specifiedAccess = this.buildSpecifiedAccess();
-		this.specifiedCatalog = this.xmlEntityMappings.getCatalog();
 		this.specifiedSchema = this.xmlEntityMappings.getSchema();
+		this.specifiedCatalog = this.xmlEntityMappings.getCatalog();
 
 		this.persistenceUnitMetadata = this.buildPersistenceUnitMetadata();
 
@@ -166,8 +166,8 @@ public abstract class AbstractEntityMappings
 		this.setPackage_(this.xmlEntityMappings.getPackage());
 
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
-		this.setSpecifiedCatalog_(this.xmlEntityMappings.getCatalog());
 		this.setSpecifiedSchema_(this.xmlEntityMappings.getSchema());
+		this.setSpecifiedCatalog_(this.xmlEntityMappings.getCatalog());
 
 		this.persistenceUnitMetadata.synchronizeWithResourceModel(monitor);
 
@@ -186,11 +186,11 @@ public abstract class AbstractEntityMappings
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.setAccess(this.buildAccess());
 
-		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setCatalog(this.buildCatalog());
-
 		this.setDefaultSchema(this.buildDefaultSchema());
 		this.setSchema(this.buildSchema());
+
+		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setCatalog(this.buildCatalog());
 
 		this.persistenceUnitMetadata.update(monitor);
 
@@ -428,6 +428,54 @@ public abstract class AbstractEntityMappings
 	}
 
 
+	// ********** schema **********
+
+	public String getSchema() {
+		return this.schema;
+	}
+
+	protected void setSchema(String schema) {
+		String old = this.schema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
+	}
+
+	protected String buildSchema() {
+		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
+	}
+
+	public String getSpecifiedSchema() {
+		return this.specifiedSchema;
+	}
+
+	public void setSpecifiedSchema(String schema) {
+		this.setSpecifiedSchema_(schema);
+		this.xmlEntityMappings.setSchema(schema);
+	}
+
+	protected void setSpecifiedSchema_(String schema) {
+		String old = this.specifiedSchema;
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
+	}
+
+	public String getDefaultSchema() {
+		return this.defaultSchema;
+	}
+
+	protected void setDefaultSchema(String schema) {
+		String old = this.defaultSchema;
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
+	}
+
+	protected String buildDefaultSchema() {
+		return this.getPersistenceUnit().getDefaultSchema();
+	}
+
+	public Schema getDbSchema() {
+		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
+		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
+	}
+
+
 	// ********** catalog **********
 
 	public String getCatalog() {
@@ -477,54 +525,6 @@ public abstract class AbstractEntityMappings
 	public Catalog getDbCatalog() {
 		String catalogString = this.getCatalog();
 		return (catalogString == null) ? null : this.resolveDbCatalog(catalogString);
-	}
-
-
-	// ********** schema **********
-
-	public String getSchema() {
-		return this.schema;
-	}
-
-	protected void setSchema(String schema) {
-		String old = this.schema;
-		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
-	}
-
-	protected String buildSchema() {
-		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
-	}
-
-	public String getSpecifiedSchema() {
-		return this.specifiedSchema;
-	}
-
-	public void setSpecifiedSchema(String schema) {
-		this.setSpecifiedSchema_(schema);
-		this.xmlEntityMappings.setSchema(schema);
-	}
-
-	protected void setSpecifiedSchema_(String schema) {
-		String old = this.specifiedSchema;
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
-	}
-
-	public String getDefaultSchema() {
-		return this.defaultSchema;
-	}
-
-	protected void setDefaultSchema(String schema) {
-		String old = this.defaultSchema;
-		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
-	}
-
-	protected String buildDefaultSchema() {
-		return this.getPersistenceUnit().getDefaultSchema();
-	}
-
-	public Schema getDbSchema() {
-		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
-		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
 	}
 
 

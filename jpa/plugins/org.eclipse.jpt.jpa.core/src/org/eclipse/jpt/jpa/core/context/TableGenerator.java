@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @since 2.0
  */
 public interface TableGenerator
-	extends DatabaseGenerator
+	extends DatabaseGenerator, ModifiableSpecifiedSchemaReference
 {
 	int DEFAULT_INITIAL_VALUE = 0;
 
@@ -37,39 +37,12 @@ public interface TableGenerator
 	 * table name.
 	 */
 	String getTableName();
+		String TABLE_NAME_PROPERTY = "tableName"; //$NON-NLS-1$
 	String getSpecifiedTableName();
 	void setSpecifiedTableName(String tableName);
 		String SPECIFIED_TABLE_NAME_PROPERTY = "specifiedTableName"; //$NON-NLS-1$
 	String getDefaultTableName();
 		String DEFAULT_TABLE_NAME_PROPERTY = "defaultTableName"; //$NON-NLS-1$
-
-
-	// ********** schema **********
-
-	/**
-	 * Return the specified schema if present, otherwise return the default
-	 * schema.
-	 */
-	String getSchema();
-	String getSpecifiedSchema();
-	void setSpecifiedSchema(String value);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
-
-
-	// ********** catalog **********
-
-	/**
-	 * Return the specified catalog if present, otherwise return the default
-	 * catalog.
-	 */
-	String getCatalog();
-	String getSpecifiedCatalog();
-	void setSpecifiedCatalog(String value);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
 
 
 	// ********** primary key column name **********
@@ -79,6 +52,7 @@ public interface TableGenerator
 	 * the default primary key colum name.
 	 */
 	String getPkColumnName();
+		String PK_COLUMN_NAME_PROPERTY = "pkColumnName"; //$NON-NLS-1$
 	String getSpecifiedPkColumnName();
 	void setSpecifiedPkColumnName(String value);
 		String SPECIFIED_PK_COLUMN_NAME_PROPERTY = "specifiedPkColumnName"; //$NON-NLS-1$
@@ -93,6 +67,7 @@ public interface TableGenerator
 	 * the default value colum name.
 	 */
 	String getValueColumnName();
+		String VALUE_COLUMN_NAME_PROPERTY = "valueColumnName"; //$NON-NLS-1$
 	String getSpecifiedValueColumnName();
 	void setSpecifiedValueColumnName(String value);
 		String SPECIFIED_VALUE_COLUMN_NAME_PROPERTY = "specifiedValueColumnName"; //$NON-NLS-1$
@@ -107,6 +82,7 @@ public interface TableGenerator
 	 * the default primary key colum value.
 	 */
 	String getPkColumnValue();
+		String PK_COLUMN_VALUE_PROPERTY = "pkColummValue"; //$NON-NLS-1$
 	String getSpecifiedPkColumnValue();
 	void setSpecifiedPkColumnValue(String value);
 		String SPECIFIED_PK_COLUMN_VALUE_PROPERTY = "specifiedPkColummValue"; //$NON-NLS-1$

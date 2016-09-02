@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSchemaReference;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -140,8 +141,8 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(TableGenerator.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -298,8 +299,8 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(TableGenerator.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
@@ -495,14 +496,14 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	}
 
 	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		TableGenerator.DEFAULT_CATALOG_PROPERTY,
-		TableGenerator.SPECIFIED_CATALOG_PROPERTY
+		SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY,
+		SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY
 	});
 
 	/* CU private */ static final Collection<String> TABLE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(StringTools.EMPTY_STRING_ARRAY),
 		new String[] {
-			TableGenerator.DEFAULT_SCHEMA_PROPERTY,
-			TableGenerator.SPECIFIED_SCHEMA_PROPERTY
+			SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY,
+			SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY
 		}
 	));
 

@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSchemaReference;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -159,8 +160,8 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(EntityMappings.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(EntityMappings.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -200,8 +201,8 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(EntityMappings.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(EntityMappings.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
@@ -247,8 +248,8 @@ public abstract class AbstractEntityMappingsDetailsPageManager
 	}
 	
 	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		EntityMappings.DEFAULT_CATALOG_PROPERTY,
-		EntityMappings.SPECIFIED_CATALOG_PROPERTY
+		SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY,
+		SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY
 	});
 
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {

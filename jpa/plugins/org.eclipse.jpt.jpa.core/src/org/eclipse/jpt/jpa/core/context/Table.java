@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Table
-	extends JpaContextModel
+	extends SpecifiedSchemaReference
 {
 	// ********** name **********
 
@@ -41,6 +41,7 @@ public interface Table
 	 * name.
 	 */
 	String getName();
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	Transformer<Table, String> NAME_TRANSFORMER = new NameTransformer();
 	class NameTransformer
 		extends TransformerAdapter<Table, String>
@@ -80,16 +81,6 @@ public interface Table
 	// ********** schema **********
 
 	/**
-	 * Return the specified schema if present, otherwise return the default
-	 * schema.
-	 */
-	String getSchema();
-	String getSpecifiedSchema();
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
-
-	/**
 	 * Return whether the table's schema can be resolved to a schema on the
 	 * database.
 	 */
@@ -104,16 +95,6 @@ public interface Table
 
 
 	// ********** catalog **********
-
-	/**
-	 * Return the specified catalog if present, otherwise return the default
-	 * catalog.
-	 */
-	String getCatalog();
-	String getSpecifiedCatalog();
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the table has a catalog and it can be resolved to a

@@ -93,24 +93,12 @@ public interface MappingFile
 	 * Common interface for the root of a mapping file.
 	 */
 	interface Root
-		extends JpaStructureNode, PersistentTypeContainer, AccessReference
+		extends JpaStructureNode, PersistentTypeContainer, AccessReference, SchemaReference
 	{
 		/**
 		 * covariant override
 		 */
 		MappingFile getParent();
-
-		/**
-		 * Return the specified catalog if present, otherwise return the default
-		 * catalog.
-		 */
-		String getCatalog();
-
-		/**
-		 * Return the specified schema if present, otherwise return the default
-		 * schema.
-		 */
-		String getSchema();
 
 		/**
 		 * Return the metadata defined within the mapping file

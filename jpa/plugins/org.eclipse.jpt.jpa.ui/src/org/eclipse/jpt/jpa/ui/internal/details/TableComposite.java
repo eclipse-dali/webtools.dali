@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.SpecifiedSchemaReference;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -126,8 +127,8 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -163,8 +164,8 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
@@ -210,8 +211,8 @@ public class TableComposite extends Pane<Entity>
 	}
 
 	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		Table.DEFAULT_CATALOG_PROPERTY,
-		Table.SPECIFIED_CATALOG_PROPERTY
+		SpecifiedSchemaReference.DEFAULT_CATALOG_PROPERTY,
+		SpecifiedSchemaReference.SPECIFIED_CATALOG_PROPERTY
 	});
 
 	private TableCombo<SpecifiedTable> addTableCombo(PropertyValueModel<SpecifiedTable> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
@@ -268,8 +269,8 @@ public class TableComposite extends Pane<Entity>
 
 	/* CU private */ static final Collection<String> TABLE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(StringTools.EMPTY_STRING_ARRAY),
 		new String[] {
-			Table.DEFAULT_SCHEMA_PROPERTY,
-			Table.SPECIFIED_SCHEMA_PROPERTY
+			SpecifiedSchemaReference.DEFAULT_SCHEMA_PROPERTY,
+			SpecifiedSchemaReference.SPECIFIED_SCHEMA_PROPERTY
 		}
 	));
 }

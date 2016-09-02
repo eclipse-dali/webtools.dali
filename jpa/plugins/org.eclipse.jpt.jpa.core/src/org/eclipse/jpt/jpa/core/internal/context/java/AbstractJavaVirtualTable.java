@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,12 +37,15 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 	protected String specifiedName;
 	protected String defaultName;
+	protected String name;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
+	protected String schema;
 
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
+	protected String catalog;
 
 	protected final ContextListContainer<VirtualUniqueConstraint, UniqueConstraint> uniqueConstraintContainer;
 
@@ -63,12 +66,15 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 		this.setSpecifiedName(this.buildSpecifiedName());
 		this.setDefaultName(this.buildDefaultName());
+		this.setName(this.buildName());
 
 		this.setSpecifiedSchema(this.buildSpecifiedSchema());
 		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setSchema(this.buildSchema());
 
 		this.setSpecifiedCatalog(this.buildSpecifiedCatalog());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setCatalog(this.buildCatalog());
 
 		this.updateUniqueConstraints(monitor);
 	}
@@ -87,6 +93,15 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	// ********** name **********
 
 	public String getName() {
+		return this.name;
+	}
+
+	protected void setName(String name) {
+		String old = this.name;
+		this.firePropertyChanged(NAME_PROPERTY, old, this.name = name);
+	}
+
+	protected String buildName() {
 		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}
 
@@ -96,8 +111,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 	protected void setSpecifiedName(String name) {
 		String old = this.specifiedName;
-		this.specifiedName = name;
-		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, this.specifiedName = name);
 	}
 
 	protected String buildSpecifiedName() {
@@ -110,8 +124,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 	protected void setDefaultName(String name) {
 		String old = this.defaultName;
-		this.defaultName = name;
-		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, this.defaultName = name);
 	}
 
 	protected abstract String buildDefaultName();
@@ -120,6 +133,15 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	// ********** schema **********
 
 	public String getSchema() {
+		return this.schema;
+	}
+
+	protected void setSchema(String schema) {
+		String old = this.schema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, this.schema = schema);
+	}
+
+	protected String buildSchema() {
 		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
 	}
 
@@ -129,8 +151,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 	protected void setSpecifiedSchema(String schema) {
 		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, this.specifiedSchema = schema);
 	}
 
 	protected String buildSpecifiedSchema() {
@@ -143,8 +164,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 	protected void setDefaultSchema(String schema) {
 		String old = this.defaultSchema;
-		this.defaultSchema = schema;
-		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, this.defaultSchema = schema);
 	}
 
 	protected abstract String buildDefaultSchema();
@@ -153,6 +173,15 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	// ********** catalog **********
 
 	public String getCatalog() {
+		return this.catalog;
+	}
+
+	protected void setCatalog(String catalog) {
+		String old = this.catalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, this.catalog = catalog);
+	}
+
+	protected String buildCatalog() {
 		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
 	}
 
@@ -162,8 +191,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 	protected void setSpecifiedCatalog(String catalog) {
 		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, this.specifiedCatalog = catalog);
 	}
 
 	protected String buildSpecifiedCatalog() {
@@ -176,8 +204,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
-		this.defaultCatalog = catalog;
-		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, this.defaultCatalog = catalog);
 	}
 
 	protected abstract String buildDefaultCatalog();
@@ -202,7 +229,7 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	}
 
 	protected ListIterable<UniqueConstraint> getOverriddenUniqueConstraints() {
-		return new SuperListIterableWrapper<UniqueConstraint>(this.getOverriddenTable().getUniqueConstraints());
+		return new SuperListIterableWrapper<>(this.getOverriddenTable().getUniqueConstraints());
 	}
 
 	protected void moveUniqueConstraint(int index, VirtualUniqueConstraint constraint) {
@@ -264,8 +291,8 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	 * catalog), then the database probably does not support catalogs.
 	 */
 	public boolean catalogIsResolved() {
-		String catalog = this.getCatalog();
-		return (catalog == null) || (this.resolveDbCatalog(catalog) != null);
+		String string = this.getCatalog();
+		return (string == null) || (this.resolveDbCatalog(string) != null);
 	}
 
 	/**
@@ -274,8 +301,8 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	 * get the schema directly from the database.
 	 */
 	public SchemaContainer getDbSchemaContainer() {
-		String catalog = this.getCatalog();
-		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
+		String string = this.getCatalog();
+		return (string != null) ? this.resolveDbCatalog(string) : this.getDatabase();
 	}
 
 	/**
@@ -283,8 +310,8 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	 * catalog), then the database probably does not support catalogs.
 	 */
 	public Catalog getDbCatalog() {
-		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
+		String string = this.getCatalog();
+		return (string == null) ? null : this.resolveDbCatalog(string);
 	}
 
 	public boolean isResolved() {
@@ -300,8 +327,8 @@ public abstract class AbstractJavaVirtualTable<P extends JpaContextModel, PA ext
 	 * catalog), then the database probably does not support catalogs.
 	 */
 	protected boolean hasResolvedCatalog() {
-		String catalog = this.getCatalog();
-		return (catalog == null) || (this.resolveDbCatalog(catalog) != null);
+		String string = this.getCatalog();
+		return (string == null) || (this.resolveDbCatalog(string) != null);
 	}
 
 
