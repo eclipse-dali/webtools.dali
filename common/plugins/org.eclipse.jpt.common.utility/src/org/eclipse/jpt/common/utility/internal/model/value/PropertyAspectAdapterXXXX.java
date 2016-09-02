@@ -48,12 +48,12 @@ public abstract class PropertyAspectAdapterXXXX<S extends Model, V>
 	 * Construct a property aspect adapter for the specified subject model
 	 * and property aspects.
 	 */
-	protected PropertyAspectAdapterXXXX(PropertyValueModel<? extends S> subjectModel, String... aspectNames) {
+	protected PropertyAspectAdapterXXXX(PropertyValueModel<? extends S> subjectModel, String aspectName) {
 		super(subjectModel);
-		if (aspectNames == null) {
+		if (aspectName == null) {
 			throw new NullPointerException();
 		}
-		this.aspectNames = aspectNames;
+		this.aspectNames = new String[] {aspectName};
 		this.aspectChangeListener = this.buildAspectChangeListener();
 	}
 

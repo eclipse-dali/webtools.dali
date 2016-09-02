@@ -175,11 +175,12 @@ public interface EclipseLinkCaching
 	 * It is not valid to specify both
 	 */
 	Integer getExpiry();
+		String EXPIRY_PROPERTY = "expiry"; //$NON-NLS-1$
+
 	/**
 	 * Setting this to a non-null value will set timeOfDayExpiry to null
 	 */
 	void setExpiry(Integer expiry);
-		String EXPIRY_PROPERTY = "expiry"; //$NON-NLS-1$
 
 
 	// ********** expiry time of day **********
@@ -191,7 +192,7 @@ public interface EclipseLinkCaching
 	 */
 	EclipseLinkTimeOfDay getExpiryTimeOfDay();
 		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDay"; //$NON-NLS-1$
-	
+
 	/**
 	 * Add Cache expiryTimeOfDay annotation or xml element, this will set 
 	 * Expiry to null as it is not valid to set both expiry and timeOfDayExpiry
@@ -203,6 +204,18 @@ public interface EclipseLinkCaching
 	 */
 	void removeExpiryTimeOfDay();
 	
+		
+	// ********** no expiry **********
+
+	/**
+	 * Return whether the caching has neither an expiry nor
+	 * an expiry time of day.
+	 */
+	boolean hasNoExpiry();
+		String NO_EXPIRY_PROPERTY = "noExpiry"; //$NON-NLS-1$
+
+	void setNoExpiry();
+
 
 	// ********** existence type **********
 	// TODO bjv rename existenceCheckingPolicy

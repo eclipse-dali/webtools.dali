@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -61,29 +60,20 @@ public class CacheableTriStateCheckBox2_0
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiDetailsMessages2_0.ENTITY_CACHEABLE_LABEL,
-			buildCacheableBooleanModel(),
+			buildSpecifiedCacheableBooleanModel(),
 			buildCacheableStringModel(),
 			JpaHelpContextIds.ENTITY_CACHEABLE
 		);
 	}
 	
 
-	private ModifiablePropertyValueModel<Boolean> buildCacheableBooleanModel() {
-		return new PropertyAspectAdapterXXXX<Cacheable2_0, Boolean>(
-			getSubjectHolder(),
-			Cacheable2_0.DEFAULT_CACHEABLE_PROPERTY,
-			Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSpecifiedCacheable();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedCacheable(value);
-			}
-		};
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedCacheableBooleanModel() {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				Cacheable2_0.SPECIFIED_CACHEABLE_PROPERTY,
+				m -> m.getSpecifiedCacheable(),
+				(m, value) -> m.setSpecifiedCacheable(value)
+			);
 	}
 
 	private PropertyValueModel<String> buildCacheableStringModel() {

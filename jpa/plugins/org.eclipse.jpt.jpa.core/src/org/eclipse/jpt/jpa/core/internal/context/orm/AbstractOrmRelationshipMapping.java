@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,6 +50,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
+	protected String targetEntity;
 	protected String fullyQualifiedTargetEntity;
 
 	protected final OrmMappingRelationship relationship;
@@ -58,6 +59,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch;
+	protected FetchType fetch;
 
 
 	protected AbstractOrmRelationshipMapping(OrmSpecifiedPersistentAttribute parent, X xmlMapping) {
@@ -84,10 +86,12 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
+		this.setTargetEntity(this.buildTargetEntity());
 		this.setFullyQualifiedTargetEntity(this.buildFullyQualifiedTargetEntity());
 		this.relationship.update(monitor);
 		this.cascade.update(monitor);
 		this.setDefaultFetch(this.buildDefaultFetch());
+		this.setFetch(this.buildFetch());
 	}
 
 
@@ -112,6 +116,15 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	// ********** target entity **********
 
 	public String getTargetEntity() {
+		return this.targetEntity;
+	}
+
+	protected void setTargetEntity(String entity) {
+		String old = this.targetEntity;
+		this.firePropertyChanged(TARGET_ENTITY_PROPERTY, old, this.targetEntity = entity);
+	}
+
+	protected String buildTargetEntity() {
 		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
 	}
 
@@ -126,8 +139,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	protected void setSpecifiedTargetEntity_(String entity) {
 		String old = this.specifiedTargetEntity;
-		this.specifiedTargetEntity = entity;
-		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, entity);
+		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, this.specifiedTargetEntity = entity);
 	}
 
 	public String getDefaultTargetEntity() {
@@ -136,8 +148,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	protected void setDefaultTargetEntity(String entity) {
 		String old = this.defaultTargetEntity;
-		this.defaultTargetEntity = entity;
-		this.firePropertyChanged(DEFAULT_TARGET_ENTITY_PROPERTY, old, entity);
+		this.firePropertyChanged(DEFAULT_TARGET_ENTITY_PROPERTY, old, this.defaultTargetEntity = entity);
 	}
 
 	protected String buildDefaultTargetEntity() {
@@ -202,6 +213,15 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	// ********** fetch **********
 
 	public FetchType getFetch() {
+		return this.fetch;
+	}
+
+	protected void setFetch(FetchType fetch) {
+		FetchType old = this.fetch;
+		this.firePropertyChanged(FETCH_PROPERTY, old, this.fetch = fetch);
+	}
+
+	protected FetchType buildFetch() {
 		return (this.specifiedFetch != null) ? this.specifiedFetch : this.defaultFetch;
 	}
 
@@ -216,8 +236,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	protected void setSpecifiedFetch_(FetchType fetch) {
 		FetchType old = this.specifiedFetch;
-		this.specifiedFetch = fetch;
-		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
+		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, this.specifiedFetch = fetch);
 	}
 
 	protected FetchType buildSpecifiedFetch() {
@@ -230,8 +249,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	protected void setDefaultFetch(FetchType fetch) {
 		FetchType old = this.defaultFetch;
-		this.defaultFetch = fetch;
-		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, fetch);
+		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, this.defaultFetch = fetch);
 	}
 
 	protected abstract FetchType buildDefaultFetch();
@@ -323,7 +341,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		if (this.specifiedTargetEntity != null) {
 			PersistentType targetType = this.getResolvedTargetType();
 			if ((targetType != null) && targetType.isFor(originalType.getFullyQualifiedName('.'))) {
-				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenameTypeEdit(originalType, newName));
+				return new SingleElementIterable<>(this.createTargetEntityRenameTypeEdit(originalType, newName));
 			}
 		}
 		return EmptyIterable.instance();
@@ -346,7 +364,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		if (this.specifiedTargetEntity != null) {
 			PersistentType targetType = this.getResolvedTargetType();
 			if ((targetType != null) && targetType.isFor(originalType.getFullyQualifiedName('.'))) {
-				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenamePackageEdit(newPackage.getElementName()));
+				return new SingleElementIterable<>(this.createTargetEntityRenamePackageEdit(newPackage.getElementName()));
 			}
 		}
 		return EmptyIterable.instance();
@@ -365,7 +383,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		if (this.specifiedTargetEntity != null) {
 			PersistentType targetType = this.getResolvedTargetType();
 			if ((targetType != null) && targetType.isIn(originalPackage)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenamePackageEdit(newName));
+				return new SingleElementIterable<>(this.createTargetEntityRenamePackageEdit(newName));
 			}
 		}
 		return EmptyIterable.instance();

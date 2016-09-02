@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -75,20 +74,12 @@ public class OrphanRemovalTriStateCheckBox2_0 extends Pane<OrphanRemovable2_0>
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSpecifiedOrphanRemovalModel() {
-		return new PropertyAspectAdapterXXXX<OrphanRemovable2_0, Boolean>(
-				this.getSubjectHolder(), 
-				OrphanRemovable2_0.DEFAULT_ORPHAN_REMOVAL_PROPERTY,
-				OrphanRemovable2_0.SPECIFIED_ORPHAN_REMOVAL_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSpecifiedOrphanRemoval();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedOrphanRemoval(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				OrphanRemovable2_0.SPECIFIED_ORPHAN_REMOVAL_PROPERTY,
+				m -> m.getSpecifiedOrphanRemoval(),
+				(m, value) -> m.setSpecifiedOrphanRemoval(value)
+			);
 	}
 
 	private PropertyValueModel<String> buildOrphanRemovalStringModel() {

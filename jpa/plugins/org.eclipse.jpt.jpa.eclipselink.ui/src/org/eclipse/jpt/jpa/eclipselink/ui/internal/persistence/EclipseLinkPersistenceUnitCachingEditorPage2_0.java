@@ -160,15 +160,11 @@ public class EclipseLinkPersistenceUnitCachingEditorPage2_0
 	}
 
 	private PropertyValueModel<SharedCacheMode2_0> buildSharedCacheModeModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
-		return new PropertyAspectAdapterXXXX<PersistenceUnit2_0, SharedCacheMode2_0>(
-								persistenceUnitModel, 
-								PersistenceUnit2_0.SPECIFIED_SHARED_CACHE_MODE_PROPERTY, 
-								PersistenceUnit2_0.DEFAULT_SHARED_CACHE_MODE_PROPERTY) {
-			@Override
-			protected SharedCacheMode2_0 buildValue_() {
-				return this.subject.getSharedCacheMode();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				persistenceUnitModel,
+				PersistenceUnit2_0.SHARED_CACHE_MODE_PROPERTY,
+				m -> m.getSharedCacheMode()
+			);
 	}
 
 	protected EnumFormComboViewer<EclipseLinkCaching, EclipseLinkCacheType> buildDefaultCacheTypeCombo(Composite container) {

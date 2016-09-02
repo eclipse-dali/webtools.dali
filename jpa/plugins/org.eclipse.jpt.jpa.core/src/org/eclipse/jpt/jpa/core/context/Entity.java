@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.predicate.PredicateAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
- * entity
+ * Entity
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,8 +27,8 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * @since 2.0
  */
 public interface Entity
-		extends IdTypeMapping {
-	
+	extends IdTypeMapping
+{
 	// ********** name **********
 
 	String getSpecifiedName();
@@ -132,6 +132,7 @@ public interface Entity
 	 * inheritance strategy.
 	 */
 	InheritanceType getInheritanceStrategy();
+		String INHERITANCE_STRATEGY_PROPERTY = "inheritanceStrategy"; //$NON-NLS-1$
 	InheritanceType getSpecifiedInheritanceStrategy();
 	void setSpecifiedInheritanceStrategy(InheritanceType inheritanceType);
 		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy"; //$NON-NLS-1$
@@ -149,6 +150,7 @@ public interface Entity
 	SpecifiedDiscriminatorColumn getDiscriminatorColumn();
 
 	String getDiscriminatorValue();
+		String DISCRIMINATOR_VALUE_PROPERTY = "discriminatorValue"; //$NON-NLS-1$
 	String getSpecifiedDiscriminatorValue();
 	void setSpecifiedDiscriminatorValue(String value);
 		String SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY = "specifiedDiscriminatorValue"; //$NON-NLS-1$
@@ -325,5 +327,4 @@ public interface Entity
 	 * Else return null.
 	 */
 	SpecifiedPersistentAttribute getIdAttribute();
-
 }

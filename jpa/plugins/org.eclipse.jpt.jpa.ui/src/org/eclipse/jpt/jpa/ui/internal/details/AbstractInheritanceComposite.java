@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -64,21 +65,13 @@ import org.eclipse.swt.widgets.Control;
  * @see Entity
  * @see AbstractEntityComposite - The parent container
  * @see ColumnCombo
- * @see EnumComboViewer
- * @see PrimaryKeyJoinColumnsComposite
  *
  * @version 2.0
  * @since 2.0
  */
-public abstract class AbstractInheritanceComposite<T extends Entity> extends Pane<T> {
-
-
-	/**
-	 * Creates a new <code>InheritanceComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
+public abstract class AbstractInheritanceComposite<T extends Entity>
+	extends Pane<T>
+{
 	public AbstractInheritanceComposite(Pane<? extends T> parentPane,
 	                            Composite parent) {
 
@@ -113,7 +106,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		);
 	
 		// Discriminator column widgets
-		DiscriminatorColumnComposite<Entity> discriminatorColumnComposite = new DiscriminatorColumnComposite<Entity>(this, container);
+		DiscriminatorColumnComposite<Entity> discriminatorColumnComposite = new DiscriminatorColumnComposite<>(this, container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		gridData.verticalIndent = 10;
@@ -136,21 +129,20 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 	}
 
 	private ListValueModel<String> buildDefaultDiscriminatorListValueHolder() {
-		return new PropertyListValueModelAdapter<String>(
+		return new PropertyListValueModelAdapter<>(
 			buildDefaultDiscriminatorValueHolder()
 		);
 	}
 
-	private ModifiablePropertyValueModel<String> buildDefaultDiscriminatorValueHolder() {
-		return new PropertyAspectAdapterXXXX<Entity, String>(getSubjectHolder(), Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return defaultValue(this.subject);
-			}
-		};
+	private PropertyValueModel<String> buildDefaultDiscriminatorValueHolder() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				Entity.DISCRIMINATOR_VALUE_PROPERTY,
+				m -> defaultValue(m)
+			);
 	}
 
-	private String defaultValue(Entity subject) {
+	String defaultValue(Entity subject) {
 		String defaultValue = subject.getDefaultDiscriminatorValue();
 
 		if (defaultValue == null && subject.discriminatorValueIsUndefined()) {
@@ -170,11 +162,11 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		return new PropertyAspectAdapterXXXX<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				String value = this.subject.getSpecifiedDiscriminatorValue();
-				if (value == null) {
+				String v = this.subject.getSpecifiedDiscriminatorValue();
+				if (v == null) {
 					return defaultValue(this.subject);
 				}
-				return value;
+				return v;
 			}
 
 			@Override

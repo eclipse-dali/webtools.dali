@@ -69,6 +69,7 @@ public class EclipseLinkJavaCachingImpl
 
 	protected Integer expiry;
 	protected EclipseLinkJavaTimeOfDay expiryTimeOfDay;
+	protected boolean noExpiry;
 
 	protected boolean existenceChecking;
 
@@ -159,6 +160,7 @@ public class EclipseLinkJavaCachingImpl
 		if (this.expiryTimeOfDay != null) {
 			this.expiryTimeOfDay.update(monitor);
 		}
+		this.setNoExpiry(this.buildNoExpiry());
 
 		this.setDefaultExistenceType(this.buildDefaultExistenceType());
 		this.setExistenceType(this.buildExistenceType());
@@ -568,6 +570,29 @@ public class EclipseLinkJavaCachingImpl
 
 	protected EclipseLinkJavaTimeOfDay buildExpiryTimeOfDay(TimeOfDayAnnotation timeOfDayAnnotation) {
 		return (timeOfDayAnnotation == null) ? null : new EclipseLinkJavaTimeOfDay(this, timeOfDayAnnotation);
+	}
+
+
+	// ********** no expiry **********
+
+	public boolean hasNoExpiry() {
+		return this.noExpiry;
+	}
+
+	public void setNoExpiry() {
+		this.setExpiry(null);
+		if (this.expiryTimeOfDay != null) {
+			this.removeExpiryTimeOfDay_();
+		}
+	}
+
+	protected void setNoExpiry(boolean value) {
+		boolean old = this.noExpiry;
+		this.firePropertyChanged(NO_EXPIRY_PROPERTY, old, this.noExpiry = value);
+	}
+
+	protected boolean buildNoExpiry() {
+		return (this.expiry == null) && (this.expiryTimeOfDay == null);
 	}
 
 

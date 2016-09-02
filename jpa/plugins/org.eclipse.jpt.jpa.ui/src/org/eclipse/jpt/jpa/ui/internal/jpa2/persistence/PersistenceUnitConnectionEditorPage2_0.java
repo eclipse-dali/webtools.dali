@@ -235,14 +235,10 @@ public class PersistenceUnitConnectionEditorPage2_0
 	}
 
 	private PropertyValueModel<PersistenceUnitTransactionType> buildTransactionTypeModel() {
-		return new PropertyAspectAdapterXXXX<PersistenceUnit, PersistenceUnitTransactionType>(
-				buildPersistenceUnitModel(), 
-				PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY, 
-				PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY) {
-			@Override
-			protected PersistenceUnitTransactionType buildValue_() {
-				return this.subject.getTransactionType();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.buildPersistenceUnitModel(),
+				PersistenceUnit.TRANSACTION_TYPE_PROPERTY,
+				m -> m.getTransactionType()
+			);
 	}
 }

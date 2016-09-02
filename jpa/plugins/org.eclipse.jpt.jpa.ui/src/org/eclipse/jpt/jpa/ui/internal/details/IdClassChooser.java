@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -57,34 +58,19 @@ public class IdClassChooser
 
 	@Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapterXXXX<IdClassReference, String>(
-				getSubjectHolder(), 
-				IdClassReference.SPECIFIED_ID_CLASS_NAME_PROPERTY,
-				IdClassReference.DEFAULT_ID_CLASS_NAME_PROPERTY) {
-
-			@Override
-			protected String buildValue_() {
-				String className = this.subject.getSpecifiedIdClassName();
-				return (className == null) ? defaultText(this.subject) : className;
-			}
-
-			@Override
-			protected void setValue_(String value) {
-				if (value == null 
-						|| value.length() == 0 
-						|| value.equals(defaultText(this.subject))) {
-					value = null;
-				}
-				this.subject.setSpecifiedIdClassName(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				IdClassReference.ID_CLASS_NAME_PROPERTY,
+				m -> (m.getSpecifiedIdClassName() == null) ? this.defaultText(m) : m.getSpecifiedIdClassName(),
+				(m, value) -> m.setSpecifiedIdClassName(defaultText(m).equals(value) ? null : value)
+			);
 	}
 
 	protected String defaultText(IdClassReference idClassReference) {
-		String defaultClassName = idClassReference.getDefaultIdClassName();
-		return (defaultClassName == null) ?
-				JptCommonUiMessages.NONE_SELECTED
-				: NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultClassName);
+		String defaultName = idClassReference.getDefaultIdClassName();
+		return (defaultName == null) ?
+				JptCommonUiMessages.NONE_SELECTED :
+				NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultName);
 	}
 
 	@Override

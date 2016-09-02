@@ -15,9 +15,10 @@ import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -75,30 +76,13 @@ public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollecti
 
     @Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapterXXXX<ElementCollectionMapping2_0, String>(
-			this.getSubjectHolder(), 
-			ElementCollectionMapping2_0.SPECIFIED_TARGET_CLASS_PROPERTY,
-			ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-
-				String name = this.subject.getSpecifiedTargetClass();
-				if (name == null) {
-					name = TargetClassChooser2_0.this.getDefaultValue(this.subject);
-				}
-				return name;
-			}
-
-			@Override
-			protected void setValue_(String value) {
-
-				if (getDefaultValue(this.subject).equals(value)) {
-					value = null;
-				}
-				this.subject.setSpecifiedTargetClass(value);
-			}
-		};
-    }
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				ElementCollectionMapping2_0.TARGET_CLASS_PROPERTY,
+				m -> (m.getSpecifiedTargetClass() == null) ? this.defaultValue(m) : m.getSpecifiedTargetClass(),
+				(m, value) -> m.setSpecifiedTargetClass(defaultValue(m).equals(value) ? null : value)
+			);
+	}
 
 	@Override
 	protected ListValueModel<String> buildClassListModel() {
@@ -115,20 +99,15 @@ public class TargetClassChooser2_0 extends ClassChooserComboPane<ElementCollecti
 		return new PropertyAspectAdapterXXXX<ElementCollectionMapping2_0, String>(this.getSubjectHolder(), ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return TargetClassChooser2_0.this.getDefaultValue(this.subject);
+				return TargetClassChooser2_0.this.defaultValue(this.subject);
 			}
 		};
 	}
 
-	String getDefaultValue(ElementCollectionMapping2_0 subject) {
+	String defaultValue(ElementCollectionMapping2_0 subject) {
 		String defaultValue = subject.getDefaultTargetClass();
-
-		if (defaultValue != null) {
-			return NLS.bind(
-				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-				defaultValue
-			);
-		}
-		return JptCommonUiMessages.DEFAULT_EMPTY;
+		return (defaultValue == null) ?
+				JptCommonUiMessages.DEFAULT_EMPTY :
+				NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultValue);
 	}
 }

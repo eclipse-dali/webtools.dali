@@ -76,6 +76,7 @@ public class EclipseLinkOrmCachingImpl
 
 	protected Integer expiry;
 	protected EclipseLinkOrmTimeOfDay expiryTimeOfDay;
+	protected boolean noExpiry;
 
 	protected EclipseLinkExistenceType specifiedExistenceType;
 	protected EclipseLinkExistenceType defaultExistenceType = DEFAULT_EXISTENCE_TYPE;
@@ -165,6 +166,7 @@ public class EclipseLinkOrmCachingImpl
 		if (this.expiryTimeOfDay != null) {
 			this.expiryTimeOfDay.update(monitor);
 		}
+		this.setNoExpiry(this.buildNoExpiry());
 
 		// existence checking is its own xml attribute, it is not part of the cache xml element
 		this.setDefaultExistenceType(this.buildDefaultExistenceType());
@@ -705,6 +707,29 @@ public class EclipseLinkOrmCachingImpl
 
 	protected EclipseLinkOrmTimeOfDay buildExpiryTimeOfDay(XmlTimeOfDay xmlTimeOfDay) {
 		return (xmlTimeOfDay == null) ? null : new EclipseLinkOrmTimeOfDay(this, xmlTimeOfDay);
+	}
+
+
+	// ********** no expiry **********
+
+	public boolean hasNoExpiry() {
+		return this.noExpiry;
+	}
+
+	public void setNoExpiry() {
+		this.setExpiry(null);
+		if (this.expiryTimeOfDay != null) {
+			this.removeExpiryTimeOfDay_();
+		}
+	}
+
+	protected void setNoExpiry(boolean value) {
+		boolean old = this.noExpiry;
+		this.firePropertyChanged(NO_EXPIRY_PROPERTY, old, this.noExpiry = value);
+	}
+
+	protected boolean buildNoExpiry() {
+		return (this.expiry == null) && (this.expiryTimeOfDay == null);
 	}
 
 

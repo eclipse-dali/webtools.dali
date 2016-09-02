@@ -26,8 +26,8 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * @since 3.5
  */
 public interface IdTypeMapping
-		extends TypeMapping {
-	
+	extends TypeMapping
+{	
 	// ***** primary key *****
 	
 	/**

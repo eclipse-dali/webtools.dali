@@ -128,9 +128,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	
 	protected String specifiedName;
 	protected String defaultName;
+	protected String name;
 
 	protected Entity rootEntity;
-	protected final Vector<Entity> descendants = new Vector<Entity>();
+	protected final Vector<Entity> descendants = new Vector<>();
 
 	protected final OrmSpecifiedTable table;
 	protected boolean specifiedTableIsAllowed;
@@ -144,7 +145,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected final ContextListContainer<OrmSpecifiedPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
 
 	// this is the default if there are Java columns
-	protected final Vector<OrmVirtualPrimaryKeyJoinColumn> virtualPrimaryKeyJoinColumns = new Vector<OrmVirtualPrimaryKeyJoinColumn>();
+	protected final Vector<OrmVirtualPrimaryKeyJoinColumn> virtualPrimaryKeyJoinColumns = new Vector<>();
 	protected final VirtualPrimaryKeyJoinColumnContainerAdapter virtualPrimaryKeyJoinColumnContainerAdapter = new VirtualPrimaryKeyJoinColumnContainerAdapter();
 
 	// this is the default if there are *no* Java columns
@@ -152,9 +153,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected InheritanceType specifiedInheritanceStrategy;
 	protected InheritanceType defaultInheritanceStrategy;
+	protected InheritanceType inheritanceStrategy;
 
 	protected String specifiedDiscriminatorValue;
 	protected String defaultDiscriminatorValue;
+	protected String discriminatorValue;
 	protected boolean specifiedDiscriminatorValueIsAllowed;
 	protected boolean discriminatorValueIsUndefined;
 
@@ -220,15 +223,17 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
-		
+
 		this.setDefaultName(this.buildDefaultName());
-		
+		this.setName(this.buildName());
+
 		// calculate root entity early - other things depend on it
 		this.setRootEntity(this.buildRootEntity());
 		this.updateDescendants();
 		
 		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
-		
+		this.setInheritanceStrategy(this.buildInheritanceStrategy());
+
 		this.table.update(monitor);
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
@@ -244,6 +249,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 		
 		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
+		this.setDiscriminatorValue(this.buildDiscriminatorValue());
 		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
 		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
 		
@@ -259,6 +265,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	@Override
 	public String getName() {
+		return this.name;
+	}
+
+	protected void setName(String name) {
+		String old = this.name;
+		this.firePropertyChanged(NAME_PROPERTY, old, this.name = name);
+	}
+
+	protected String buildName() {
 		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}
 
@@ -273,8 +288,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void setSpecifiedName_(String name) {
 		String old = this.specifiedName;
-		this.specifiedName = name;
-		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, this.specifiedName = name);
 	}
 
 	public String getDefaultName() {
@@ -283,8 +297,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void setDefaultName(String name) {
 		String old = this.defaultName;
-		this.defaultName = name;
-		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, this.defaultName = name);
 	}
 
 	protected String buildDefaultName() {
@@ -470,7 +483,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected ListIterable<SecondaryTable> getReadOnlySpecifiedSecondaryTables() {
-		return new SuperListIterableWrapper<SecondaryTable>(this.getSpecifiedSecondaryTables());
+		return new SuperListIterableWrapper<>(this.getSpecifiedSecondaryTables());
 	}
 
 	public int getSpecifiedSecondaryTablesSize() {
@@ -573,7 +586,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected ListIterable<SecondaryTable> getReadOnlyVirtualSecondaryTables() {
-		return new SuperListIterableWrapper<SecondaryTable>(this.getVirtualSecondaryTables());
+		return new SuperListIterableWrapper<>(this.getVirtualSecondaryTables());
 	}
 
 	public int getVirtualSecondaryTablesSize() {
@@ -731,7 +744,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected ListIterable<PrimaryKeyJoinColumn> getReadOnlySpecifiedPrimaryKeyJoinColumns() {
-		return new SuperListIterableWrapper<PrimaryKeyJoinColumn>(this.getSpecifiedPrimaryKeyJoinColumns());
+		return new SuperListIterableWrapper<>(this.getSpecifiedPrimaryKeyJoinColumns());
 	}
 
 	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
@@ -1002,7 +1015,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected ListIterable<PrimaryKeyJoinColumn> getReadOnlyDefaultPrimaryKeyJoinColumns() {
 		return (this.defaultPrimaryKeyJoinColumn != null) ?
-				new SingleElementListIterable<PrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn) :
+				new SingleElementListIterable<>(this.defaultPrimaryKeyJoinColumn) :
 				EmptyListIterable.<PrimaryKeyJoinColumn>instance();
 	}
 
@@ -1026,6 +1039,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	@Override
 	public InheritanceType getInheritanceStrategy() {
+		return this.inheritanceStrategy;
+	}
+
+	protected void setInheritanceStrategy(InheritanceType inheritanceType) {
+		InheritanceType old = this.inheritanceStrategy;
+		this.firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, old, this.inheritanceStrategy = inheritanceType);
+	}
+
+	protected InheritanceType buildInheritanceStrategy() {
 		return (this.specifiedInheritanceStrategy != null) ? this.specifiedInheritanceStrategy : this.defaultInheritanceStrategy;
 	}
 
@@ -1044,8 +1066,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void setSpecifiedInheritanceStrategy_(InheritanceType inheritanceType) {
 		InheritanceType old = this.specifiedInheritanceStrategy;
-		this.specifiedInheritanceStrategy = inheritanceType;
-		this.firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, old, inheritanceType);
+		this.firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, old, this.specifiedInheritanceStrategy = inheritanceType);
 	}
 
 	protected InheritanceType buildSpecifiedInheritanceStrategy() {
@@ -1076,8 +1097,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void setDefaultInheritanceStrategy(InheritanceType inheritanceType) {
 		InheritanceType old = this.defaultInheritanceStrategy;
-		this.defaultInheritanceStrategy = inheritanceType;
-		this.firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, old, inheritanceType);
+		this.firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, old, this.defaultInheritanceStrategy = inheritanceType);
 	}
 
 	protected InheritanceType buildDefaultInheritanceStrategy() {
@@ -1094,6 +1114,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	// ********** discriminator value **********
 
 	public String getDiscriminatorValue() {
+		return this.discriminatorValue;
+	}
+
+	protected void setDiscriminatorValue(String discriminatorValue) {
+		String old = this.discriminatorValue;
+		this.firePropertyChanged(DISCRIMINATOR_VALUE_PROPERTY, old, this.discriminatorValue = discriminatorValue);
+	}
+
+	protected String buildDiscriminatorValue() {
 		return (this.specifiedDiscriminatorValue != null) ? this.specifiedDiscriminatorValue : this.defaultDiscriminatorValue;
 	}
 
@@ -1108,8 +1137,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void setSpecifiedDiscriminatorValue_(String discriminatorValue) {
 		String old = this.specifiedDiscriminatorValue;
-		this.specifiedDiscriminatorValue = discriminatorValue;
-		this.firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, old, discriminatorValue);
+		this.firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, old, this.specifiedDiscriminatorValue = discriminatorValue);
 	}
 
 	public String getDefaultDiscriminatorValue() {
@@ -1118,8 +1146,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void setDefaultDiscriminatorValue(String discriminatorValue) {
 		String old = this.defaultDiscriminatorValue;
-		this.defaultDiscriminatorValue = discriminatorValue;
-		this.firePropertyChanged(DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, old, discriminatorValue);
+		this.firePropertyChanged(DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, old, this.defaultDiscriminatorValue = discriminatorValue);
 	}
 
 	/**
@@ -1366,7 +1393,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected Iterable<String> convertToNames_(Iterable<Table> tables) {
-		return new TransformationIterable<Table, String>(tables, Table.NAME_TRANSFORMER);
+		return new TransformationIterable<>(tables, Table.NAME_TRANSFORMER);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
@@ -1436,7 +1463,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables_() {
-		return new TransformationIterable<Table, org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedTables(), Table.DB_TABLE_TRANSFORMER);
+		return new TransformationIterable<>(this.getAllAssociatedTables(), Table.DB_TABLE_TRANSFORMER);
 	}
 
 	@Override
@@ -1514,9 +1541,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				EmptyIterable.<String>instance();
 	}
 
-	public AttributeMapping resolveAttributeMapping(String name) {
+	public AttributeMapping resolveAttributeMapping(String mappingName) {
 		for (AttributeMapping attributeMapping : this.getAllAttributeMappings()) {
-			AttributeMapping resolvedMapping = attributeMapping.resolveAttributeMapping(name);
+			AttributeMapping resolvedMapping = attributeMapping.resolveAttributeMapping(mappingName);
 			if (resolvedMapping != null) {
 				return resolvedMapping;
 			}
@@ -2136,9 +2163,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			if (this.getXmlColumn() == null) {
 				JavaEntity javaEntity = this.getJavaEntityForDefaults();
 				if (javaEntity != null) {
-					String name = javaEntity.getDiscriminatorColumn().getSpecifiedName();
-					if (name != null) {
-						return name;
+					String columnName = javaEntity.getDiscriminatorColumn().getSpecifiedName();
+					if (columnName != null) {
+						return columnName;
 					}
 				}
 			}

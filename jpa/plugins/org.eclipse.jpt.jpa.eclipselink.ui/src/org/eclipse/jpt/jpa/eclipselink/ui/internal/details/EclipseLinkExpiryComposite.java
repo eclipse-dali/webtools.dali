@@ -51,7 +51,9 @@ import org.eclipse.swt.widgets.Label;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
+public class EclipseLinkExpiryComposite
+	extends Pane<EclipseLinkCaching>
+{
 	protected PropertyValueModel<Boolean> ttlEnabled;
 
 	public EclipseLinkExpiryComposite(Pane<? extends EclipseLinkCaching> parentPane,
@@ -162,23 +164,12 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildNoExpiryModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(
-					getSubjectHolder(), 
-					EclipseLinkCaching.EXPIRY_PROPERTY, 
-					EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getExpiry() == null && this.subject.getExpiryTimeOfDay() == null);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setExpiry(null);
-				if (this.subject.getExpiryTimeOfDay() != null) {
-					this.subject.removeExpiryTimeOfDay();
-				}
-			}
-		};
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.NO_EXPIRY_PROPERTY,
+				m -> Boolean.valueOf(m.hasNoExpiry()),
+				(m, value) -> m.setNoExpiry()
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildExpiryModel() {

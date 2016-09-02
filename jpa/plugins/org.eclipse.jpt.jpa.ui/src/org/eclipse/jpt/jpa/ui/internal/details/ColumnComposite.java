@@ -135,7 +135,7 @@ public class ColumnComposite
 		};
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildInsertableModel() {
+	ModifiablePropertyValueModel<Boolean> buildSpecifiedInsertableModel() {
 		return new PropertyAspectAdapterXXXX<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -168,7 +168,7 @@ public class ColumnComposite
 			);
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildNullableModel() {
+	ModifiablePropertyValueModel<Boolean> buildSpecifiedNullableModel() {
 		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
@@ -256,7 +256,7 @@ public class ColumnComposite
 		};
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildUniqueModel() {
+	ModifiablePropertyValueModel<Boolean> buildSpecifiedUniqueModel() {
 		return new PropertyAspectAdapterXXXX<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
@@ -292,22 +292,13 @@ public class ColumnComposite
 			);
 	}
 	
-	ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
-		return new PropertyAspectAdapterXXXX<Column, Boolean>(
-				getSubjectHolder(),
-				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
-			
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSpecifiedUpdatable();
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				((SpecifiedColumn) this.subject).setSpecifiedUpdatable(value);
-			}
-		};
+	ModifiablePropertyValueModel<Boolean> buildSpecifiedUpdatableModel() {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+				m -> m.getSpecifiedUpdatable(),
+				(m, value) -> ((SpecifiedColumn) m).setSpecifiedUpdatable(value)
+			);
 	}
 	
 	PropertyValueModel<String> buildUpdatableStringModel() {
@@ -376,7 +367,7 @@ public class ColumnComposite
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE,
-				buildInsertableModel(),
+				buildSpecifiedInsertableModel(),
 				buildInsertableStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
 		GridData gridData = new GridData();
@@ -387,7 +378,7 @@ public class ColumnComposite
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE,
-				buildUpdatableModel(),
+				buildSpecifiedUpdatableModel(),
 				buildUpdatableStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
 		gridData = new GridData();
@@ -398,7 +389,7 @@ public class ColumnComposite
 		TriStateCheckBox uniqueCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UNIQUE,
-				buildUniqueModel(),
+				buildSpecifiedUniqueModel(),
 				buildUniqueStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
 		gridData = new GridData();
@@ -409,7 +400,7 @@ public class ColumnComposite
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
 				JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
-				buildNullableModel(),
+				buildSpecifiedNullableModel(),
 				buildNullableStringModel(),
 				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
 		gridData = new GridData();

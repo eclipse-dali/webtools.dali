@@ -93,7 +93,7 @@ public class EclipseLinkMultitenancyComposite
 		TriStateCheckBox includeCriteriaCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MULTITENANCY_COMPOSITE_INCLUDE_CRITERIA,
-			buildIncludeCriteriaModel(),
+			buildSpecifiedIncludeCriteriaModel(),
 			buildIncludeCriteriaStringModel(),
 			EclipseLinkHelpContextIds.MULTITENANCY_INCLUDE_CRITERIA);
 
@@ -187,7 +187,7 @@ public class EclipseLinkMultitenancyComposite
 		};
 	}
 
-	ModifiablePropertyValueModel<Boolean> buildIncludeCriteriaModel() {
+	ModifiablePropertyValueModel<Boolean> buildSpecifiedIncludeCriteriaModel() {
 		return new PropertyAspectAdapterXXXX<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

@@ -71,6 +71,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 
 	protected String specifiedAttributeType;
 	protected String defaultAttributeType;
+	protected String attributeType;
 	protected String fullyQualifiedAttributeType;
 
 
@@ -95,6 +96,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultAttributeType(this.buildDefaultAttributeType());
+		this.setAttributeType(this.buildAttributeType());
 		this.setFullyQualifiedAttributeType(this.buildFullyQualifiedAttributeType());
 	}
 
@@ -141,6 +143,15 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	// ********** attribute type **********
 
 	public String getAttributeType() {
+		return this.attributeType;
+	}
+
+	protected void setAttributeType(String attributeType) {
+		String old = this.attributeType;
+		this.firePropertyChanged(ATTRIBUTE_TYPE_PROPERTY, old, this.attributeType = attributeType);
+	}
+
+	protected String buildAttributeType() {
 		return (this.specifiedAttributeType != null) ? this.specifiedAttributeType : this.defaultAttributeType;
 	}
 
@@ -155,8 +166,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 
 	protected void setSpecifiedAttributeType_(String attributeType) {
 		String old = this.specifiedAttributeType;
-		this.specifiedAttributeType = attributeType;
-		this.firePropertyChanged(SPECIFIED_ATTRIBUTE_TYPE_PROPERTY, old, attributeType);
+		this.firePropertyChanged(SPECIFIED_ATTRIBUTE_TYPE_PROPERTY, old, this.specifiedAttributeType = attributeType);
 	}
 
 	/**
@@ -179,8 +189,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 
 	protected void setDefaultAttributeType(String attributeType) {
 		String old = this.defaultAttributeType;
-		this.defaultAttributeType = attributeType;
-		this.firePropertyChanged(DEFAULT_ATTRIBUTE_TYPE_PROPERTY, old, attributeType);
+		this.firePropertyChanged(DEFAULT_ATTRIBUTE_TYPE_PROPERTY, old, this.defaultAttributeType = attributeType);
 	}
 
 	protected String buildDefaultAttributeType() {
@@ -346,19 +355,19 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 
 	public Iterable<String> getAllMappingNames() {
 		return (this.name != null) ?
-				new SingleElementIterable<String>(this.name) :
+				new SingleElementIterable<>(this.name) :
 				EmptyIterable.<String>instance();
 	}
 
 	public Iterable<String> getAllOverridableAttributeMappingNames() {
 		return ((this.name != null) && this.isOverridableAttributeMapping()) ?
-				new SingleElementIterable<String>(this.name) :
+				new SingleElementIterable<>(this.name) :
 				EmptyIterable.<String>instance();
 	}
 
 	public Iterable<String> getAllOverridableAssociationMappingNames() {
 		return ((this.name != null) && this.isOverridableAssociationMapping()) ?
-				new SingleElementIterable<String>(this.name) :
+				new SingleElementIterable<>(this.name) :
 				EmptyIterable.<String>instance();
 	}
 
@@ -423,7 +432,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	protected final Iterable<String> getMetamodelFieldTypeArgumentNames() {
-		ArrayList<String> typeArgumentNames = new ArrayList<String>(3);
+		ArrayList<String> typeArgumentNames = new ArrayList<>(3);
 		typeArgumentNames.add(this.getTypeMapping().getPersistentType().getName());
 		this.addMetamodelFieldTypeArgumentNamesTo(typeArgumentNames);
 		return typeArgumentNames;

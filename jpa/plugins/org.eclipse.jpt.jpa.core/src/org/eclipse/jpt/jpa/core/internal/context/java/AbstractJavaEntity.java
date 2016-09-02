@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -108,14 +108,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java entity
  */
 public abstract class AbstractJavaEntity
-		extends AbstractJavaIdTypeMapping<EntityAnnotation>
-		implements JavaEntity2_0, JavaGeneratorContainer.Parent, JavaQueryContainer.Parent {
-	
+	extends AbstractJavaIdTypeMapping<EntityAnnotation>
+	implements JavaEntity2_0, JavaGeneratorContainer.Parent, JavaQueryContainer.Parent
+{	
 	protected String specifiedName;
 	protected String defaultName;
+	protected String name;
 
 	protected Entity rootEntity;
-	protected final Vector<Entity> descendants = new Vector<Entity>();
+	protected final Vector<Entity> descendants = new Vector<>();
 
 	protected final JavaSpecifiedTable table;
 	protected boolean specifiedTableIsAllowed;
@@ -130,9 +131,11 @@ public abstract class AbstractJavaEntity
 
 	protected InheritanceType specifiedInheritanceStrategy;
 	protected InheritanceType defaultInheritanceStrategy;
+	protected InheritanceType inheritanceStrategy;
 
 	protected String specifiedDiscriminatorValue;
 	protected String defaultDiscriminatorValue;
+	protected String discriminatorValue;
 	protected boolean specifiedDiscriminatorValueIsAllowed;
 	protected boolean discriminatorValueIsUndefined;
 
@@ -190,14 +193,16 @@ public abstract class AbstractJavaEntity
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
-		
+
 		this.setDefaultName(this.buildDefaultName());
+		this.setName(this.buildName());
 		
 		// calculate root entity early - other things depend on it
 		this.setRootEntity(this.buildRootEntity());
 		this.updateDescendants();
 		
 		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
+		this.setInheritanceStrategy(this.buildInheritanceStrategy());
 		
 		this.table.update(monitor);
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
@@ -213,6 +218,7 @@ public abstract class AbstractJavaEntity
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 		
 		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
+		this.setDiscriminatorValue(this.buildDiscriminatorValue());
 		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
 		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
 		
@@ -228,6 +234,15 @@ public abstract class AbstractJavaEntity
 
 	@Override
 	public String getName() {
+		return this.name;
+	}
+
+	protected void setName(String name) {
+		String old = this.name;
+		this.firePropertyChanged(NAME_PROPERTY, old, this.name = name);
+	}
+
+	protected String buildName() {
 		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}
 
@@ -242,8 +257,7 @@ public abstract class AbstractJavaEntity
 
 	protected void setSpecifiedName_(String name) {
 		String old = this.specifiedName;
-		this.specifiedName = name;
-		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, this.specifiedName = name);
 	}
 
 	public String getDefaultName() {
@@ -252,8 +266,7 @@ public abstract class AbstractJavaEntity
 
 	protected void setDefaultName(String name) {
 		String old = this.defaultName;
-		this.defaultName = name;
-		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, this.defaultName = name);
 	}
 
 	protected String buildDefaultName() {
@@ -438,7 +451,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected ListIterable<SecondaryTableAnnotation> getSecondaryTableAnnotations_() {
-		return new SubListIterableWrapper<NestableAnnotation, SecondaryTableAnnotation>(this.getNestableSecondaryTableAnnotations_());
+		return new SubListIterableWrapper<>(this.getNestableSecondaryTableAnnotations_());
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableSecondaryTableAnnotations_() {
@@ -555,7 +568,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected ListIterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations_() {
-		return new SubListIterableWrapper<NestableAnnotation, PrimaryKeyJoinColumnAnnotation>(this.getNestablePrimaryKeyJoinColumnAnnotations_());
+		return new SubListIterableWrapper<>(this.getNestablePrimaryKeyJoinColumnAnnotations_());
 	}
 
 	protected ListIterable<NestableAnnotation> getNestablePrimaryKeyJoinColumnAnnotations_() {
@@ -605,7 +618,7 @@ public abstract class AbstractJavaEntity
 
 	protected ListIterable<JavaSpecifiedPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
 		return (this.defaultPrimaryKeyJoinColumn != null) ?
-				new SingleElementListIterable<JavaSpecifiedPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn) :
+				new SingleElementListIterable<>(this.defaultPrimaryKeyJoinColumn) :
 				EmptyListIterable.<JavaSpecifiedPrimaryKeyJoinColumn>instance();
 	}
 
@@ -637,6 +650,15 @@ public abstract class AbstractJavaEntity
 	// ********** inheritance strategy **********
 
 	public InheritanceType getInheritanceStrategy() {
+		return this.inheritanceStrategy;
+	}
+
+	protected void setInheritanceStrategy(InheritanceType inheritanceType) {
+		InheritanceType old = this.inheritanceStrategy;
+		this.firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, old, this.inheritanceStrategy = inheritanceType);
+	}
+
+	protected InheritanceType buildInheritanceStrategy() {
 		return (this.specifiedInheritanceStrategy != null) ? this.specifiedInheritanceStrategy : this.defaultInheritanceStrategy;
 	}
 
@@ -654,8 +676,7 @@ public abstract class AbstractJavaEntity
 
 	protected void setSpecifiedInheritanceStrategy_(InheritanceType inheritanceType) {
 		InheritanceType old = this.specifiedInheritanceStrategy;
-		this.specifiedInheritanceStrategy = inheritanceType;
-		this.firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, old, inheritanceType);
+		this.firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, old, this.specifiedInheritanceStrategy = inheritanceType);
 	}
 
 	protected InheritanceType buildSpecifiedInheritanceStrategy() {
@@ -668,8 +689,7 @@ public abstract class AbstractJavaEntity
 
 	protected void setDefaultInheritanceStrategy(InheritanceType inheritanceType) {
 		InheritanceType old = this.defaultInheritanceStrategy;
-		this.defaultInheritanceStrategy = inheritanceType;
-		this.firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, old, inheritanceType);
+		this.firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, old, this.defaultInheritanceStrategy = inheritanceType);
 	}
 
 	protected InheritanceType buildDefaultInheritanceStrategy() {
@@ -697,6 +717,15 @@ public abstract class AbstractJavaEntity
 	// ********** discriminator value **********
 
 	public String getDiscriminatorValue() {
+		return this.discriminatorValue;
+	}
+
+	protected void setDiscriminatorValue(String discriminatorValue) {
+		String old = this.discriminatorValue;
+		this.firePropertyChanged(DISCRIMINATOR_VALUE_PROPERTY, old, this.discriminatorValue = discriminatorValue);
+	}
+
+	protected String buildDiscriminatorValue() {
 		return (this.specifiedDiscriminatorValue != null) ? this.specifiedDiscriminatorValue : this.defaultDiscriminatorValue;
 	}
 
@@ -714,8 +743,7 @@ public abstract class AbstractJavaEntity
 
 	protected void setSpecifiedDiscriminatorValue_(String discriminatorValue) {
 		String old = this.specifiedDiscriminatorValue;
-		this.specifiedDiscriminatorValue = discriminatorValue;
-		this.firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, old, discriminatorValue);
+		this.firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, old, this.specifiedDiscriminatorValue = discriminatorValue);
 	}
 
 	public String getDefaultDiscriminatorValue() {
@@ -724,8 +752,7 @@ public abstract class AbstractJavaEntity
 
 	protected void setDefaultDiscriminatorValue(String discriminatorValue) {
 		String old = this.defaultDiscriminatorValue;
-		this.defaultDiscriminatorValue = discriminatorValue;
-		this.firePropertyChanged(DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, old, discriminatorValue);
+		this.firePropertyChanged(DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, old, this.defaultDiscriminatorValue = discriminatorValue);
 	}
 
 	/**
@@ -1061,9 +1088,9 @@ public abstract class AbstractJavaEntity
 				EmptyIterable.<String>instance();
 	}
 
-	public AttributeMapping resolveAttributeMapping(String name) {
+	public AttributeMapping resolveAttributeMapping(String mappingName) {
 		for (AttributeMapping attributeMapping : this.getAllAttributeMappings()) {
-			AttributeMapping resolvedMapping = attributeMapping.resolveAttributeMapping(name);
+			AttributeMapping resolvedMapping = attributeMapping.resolveAttributeMapping(mappingName);
 			if (resolvedMapping != null) {
 				return resolvedMapping;
 			}

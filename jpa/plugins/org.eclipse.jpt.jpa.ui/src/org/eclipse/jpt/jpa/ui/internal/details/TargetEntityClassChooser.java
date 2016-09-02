@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -88,29 +89,12 @@ public class TargetEntityClassChooser
 
     @Override
 	protected ModifiablePropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapterXXXX<RelationshipMapping, String>(
-			this.getSubjectHolder(),
-			RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY,
-			RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-
-				String name = this.subject.getSpecifiedTargetEntity();
-				if (name == null) {
-					name = TargetEntityClassChooser.this.getDefaultValue(this.subject);
-				}
-				return name;
-			}
-
-			@Override
-			protected void setValue_(String value) {
-
-				if (getDefaultValue(this.subject).equals(value)) {
-					value = null;
-				}
-				this.subject.setSpecifiedTargetEntity(value);
-			}
-		};
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				RelationshipMapping.TARGET_ENTITY_PROPERTY,
+				m -> (m.getSpecifiedTargetEntity() == null) ? this.defaultValue(m) : m.getSpecifiedTargetEntity(),
+				(m, value) -> m.setSpecifiedTargetEntity(defaultValue(m).equals(value) ? null : value)
+			);
     }
 
 	@Override
@@ -128,21 +112,16 @@ public class TargetEntityClassChooser
 		return new PropertyAspectAdapterXXXX<RelationshipMapping, String>(this.getSubjectHolder(), RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return TargetEntityClassChooser.this.getDefaultValue(this.subject);
+				return TargetEntityClassChooser.this.defaultValue(this.subject);
 			}
 		};
 	}
 
-	String getDefaultValue(RelationshipMapping subject) {
+	String defaultValue(RelationshipMapping subject) {
 		String defaultValue = subject.getDefaultTargetEntity();
-
-		if (defaultValue != null) {
-			return NLS.bind(
-				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-				defaultValue
-			);
-		}
-		return JptCommonUiMessages.DEFAULT_EMPTY;
+		return (defaultValue == null) ?
+				JptCommonUiMessages.DEFAULT_EMPTY :
+				NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultValue);
 	}
 	
 	/*

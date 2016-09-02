@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,13 @@ import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
@@ -72,21 +74,19 @@ public class EntityNameCombo
 	protected void initializeLayout(Composite container) {
 		this.combo = addEditableCombo(
 			container,
-			buildDefaultEntityNameListHolder(),
-			buildEntityNameHolder(),
+			buildDefaultEntityNameListModel(),
+			buildEntityNameModel(),
 			TransformerTools.<String>objectToStringTransformer(),
 			JpaHelpContextIds.ENTITY_NAME);
 		
 		ComboTools.handleDefaultValue(this.combo);
 	}
 
-	private ListValueModel<String> buildDefaultEntityNameListHolder() {
-		return new PropertyListValueModelAdapter<String>(
-			buildDefaultEntityNameHolder()
-		);
+	private ListValueModel<String> buildDefaultEntityNameListModel() {
+		return new PropertyListValueModelAdapter<>(this.buildDefaultEntityNameModel());
 	}
 
-	private PropertyValueModel<String> buildDefaultEntityNameHolder() {
+	private PropertyValueModel<String> buildDefaultEntityNameModel() {
 		return new PropertyAspectAdapterXXXX<Entity, String>(getSubjectHolder(), Entity.DEFAULT_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -95,41 +95,19 @@ public class EntityNameCombo
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildEntityNameHolder() {
-		return new PropertyAspectAdapterXXXX<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_NAME_PROPERTY, Entity.DEFAULT_NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-
-				String name = this.subject.getSpecifiedName();
-
-				if (name == null) {
-					name = defaultValue(this.subject);
-				}
-
-				return name;
-			}
-
-			@Override
-			protected void setValue_(String value) {
-
-				if (defaultValue(this.subject).equals(value)) {
-					value = null;
-				}
-
-				this.subject.setSpecifiedName(value);
-			}
-		};
+	private ModifiablePropertyValueModel<String> buildEntityNameModel() {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				TypeMapping.NAME_PROPERTY,
+				m -> (m.getSpecifiedName() == null) ? this.defaultValue(m) : m.getSpecifiedName(),
+				(m, value) -> m.setSpecifiedName(defaultValue(m).equals(value) ? null : value)
+			);
 	}
 
-	private String defaultValue(Entity subject) {
+	String defaultValue(Entity subject) {
 		String defaultValue = subject.getDefaultName();
-
-		if (defaultValue != null) {
-			return NLS.bind(
-				JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
-				defaultValue
-			);
-		}
-		return JptCommonUiMessages.DEFAULT_EMPTY;
+		return (defaultValue == null) ?
+				JptCommonUiMessages.DEFAULT_EMPTY :
+				NLS.bind(JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM, defaultValue);
 	}
 }

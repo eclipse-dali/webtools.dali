@@ -91,7 +91,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 		TriStateCheckBox pkCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.TENANT_DISCRIMINATOR_COLUMN_COMPOSITE_PRIMARY_KEY,
-			buildPrimaryKeyModel(),
+			buildSpecifiedPrimaryKeyModel(),
 			buildPrimaryKeyStringModel(),
 			EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY);
 
@@ -394,7 +394,7 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 		};
 	}
 
-	ModifiablePropertyValueModel<Boolean> buildPrimaryKeyModel() {
+	ModifiablePropertyValueModel<Boolean> buildSpecifiedPrimaryKeyModel() {
 		return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, Boolean>(getSubjectHolder(), EclipseLinkTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

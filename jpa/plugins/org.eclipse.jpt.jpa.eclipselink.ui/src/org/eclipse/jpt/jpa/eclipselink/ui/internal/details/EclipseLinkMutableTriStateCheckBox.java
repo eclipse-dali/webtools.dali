@@ -65,13 +65,13 @@ public class EclipseLinkMutableTriStateCheckBox
 		this.checkBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_MUTABLE_COMPOSITE_MUTABLE_LABEL,
-			buildMutableModel(),
+			buildSpecifiedMutableModel(),
 			buildMutableStringModel(),
 			null
 		);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildMutableModel() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedMutableModel() {
 		return new PropertyAspectAdapterXXXX<EclipseLinkMutable, Boolean>(getSubjectHolder(), EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

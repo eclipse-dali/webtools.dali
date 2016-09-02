@@ -52,7 +52,8 @@ public interface RelationshipMapping
 	// **************** target entity **************************************
 	
 	String getTargetEntity();
-	
+		String TARGET_ENTITY_PROPERTY = "targetEntity"; //$NON-NLS-1$
+
 	String getSpecifiedTargetEntity();
 	void setSpecifiedTargetEntity(String value);
 		String SPECIFIED_TARGET_ENTITY_PROPERTY = "specifiedTargetEntity"; //$NON-NLS-1$

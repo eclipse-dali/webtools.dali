@@ -40,17 +40,13 @@ public interface PersistenceUnit2_0
 	 * whether specified or defaulted.
 	 */
 	SharedCacheMode2_0 getSharedCacheMode();
-
-	/**
-	 * String constant associated with changes to the persistence unit's 
-	 * specified shared cache mode
-	 */
-	String SPECIFIED_SHARED_CACHE_MODE_PROPERTY = "specifiedSharedCacheMode"; //$NON-NLS-1$
+		String SHARED_CACHE_MODE_PROPERTY = "sharedCacheMode"; //$NON-NLS-1$
 
 	/** 
 	 * Return the persistence unit's specified shared cache mode.
 	 */
 	SharedCacheMode2_0 getSpecifiedSharedCacheMode();
+		String SPECIFIED_SHARED_CACHE_MODE_PROPERTY = "specifiedSharedCacheMode"; //$NON-NLS-1$
 
 	/** 
 	 * Set the persistence unit's specified shared cache mode.
@@ -77,17 +73,13 @@ public interface PersistenceUnit2_0
 	 * whether specified or defaulted.
 	 */
 	ValidationMode2_0 getValidationMode();
-
-	/**
-	 * String constant associated with changes to the persistence unit's 
-	 * specified validation mode
-	 */
-	String SPECIFIED_VALIDATION_MODE_PROPERTY = "specifiedValidationMode"; //$NON-NLS-1$
+		String VALIDATION_MODE_PROPERTY = "validationMode"; //$NON-NLS-1$
 
 	/** 
 	 * Return the persistence unit's specified validation mode.
 	 */
 	ValidationMode2_0 getSpecifiedValidationMode();
+		String SPECIFIED_VALIDATION_MODE_PROPERTY = "specifiedValidationMode"; //$NON-NLS-1$
 
 	/** 
 	 * Set the persistence unit's specified validation mode.

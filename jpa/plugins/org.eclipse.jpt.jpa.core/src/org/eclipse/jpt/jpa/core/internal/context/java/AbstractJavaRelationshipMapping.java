@@ -45,6 +45,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
+	protected String targetEntity;
 	protected String fullyQualifiedTargetEntity;
 
 	protected final JavaMappingRelationship relationship;
@@ -53,6 +54,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch;
+	protected FetchType fetch;
 
 
 	protected AbstractJavaRelationshipMapping(JavaSpecifiedPersistentAttribute parent) {
@@ -79,16 +81,27 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
+		this.setTargetEntity(this.buildTargetEntity());
 		this.setFullyQualifiedTargetEntity(this.buildFullyQualifiedTargetEntity());
 		this.relationship.update(monitor);
 		this.cascade.update(monitor);
 		this.setDefaultFetch(this.buildDefaultFetch());
+		this.setFetch(this.buildFetch());
 	}
 
 
 	// ********** target entity **********
 
 	public String getTargetEntity() {
+		return this.targetEntity;
+	}
+
+	protected void setTargetEntity(String entity) {
+		String old = this.targetEntity;
+		this.firePropertyChanged(TARGET_ENTITY_PROPERTY, old, this.targetEntity = entity);
+	}
+
+	protected String buildTargetEntity() {
 		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
 	}
 
@@ -105,8 +118,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected void setSpecifiedTargetEntity_(String entity) {
 		String old = this.specifiedTargetEntity;
-		this.specifiedTargetEntity = entity;
-		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, entity);
+		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, this.specifiedTargetEntity = entity);
 	}
 
 	protected String buildSpecifiedTargetEntity() {
@@ -120,8 +132,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected void setDefaultTargetEntity(String entity) {
 		String old = this.defaultTargetEntity;
-		this.defaultTargetEntity = entity;
-		this.firePropertyChanged(DEFAULT_TARGET_ENTITY_PROPERTY, old, entity);
+		this.firePropertyChanged(DEFAULT_TARGET_ENTITY_PROPERTY, old, this.defaultTargetEntity = entity);
 	}
 
 	protected abstract String buildDefaultTargetEntity();
@@ -180,6 +191,15 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	// ********** fetch **********
 
 	public FetchType getFetch() {
+		return this.fetch;
+	}
+
+	protected void setFetch(FetchType fetch) {
+		FetchType old = this.fetch;
+		this.firePropertyChanged(FETCH_PROPERTY, old, this.fetch = fetch);
+	}
+
+	protected FetchType buildFetch() {
 		return (this.specifiedFetch != null) ? this.specifiedFetch : this.defaultFetch;
 	}
 
@@ -196,8 +216,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected void setSpecifiedFetch_(FetchType fetch) {
 		FetchType old = this.specifiedFetch;
-		this.specifiedFetch = fetch;
-		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
+		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, this.specifiedFetch = fetch);
 	}
 
 	protected FetchType buildSpecifiedFetch() {
@@ -211,8 +230,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected void setDefaultFetch(FetchType fetch) {
 		FetchType old = this.defaultFetch;
-		this.defaultFetch = fetch;
-		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, fetch);
+		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, this.defaultFetch = fetch);
 	}
 
 	protected abstract FetchType buildDefaultFetch();

@@ -138,7 +138,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		TriStateCheckBox alwaysRefreshCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_ALWAYS_REFRESH_COMPOSITE_ALWAYS_REFRESH_LABEL,
-			buildAlwaysRefreshModel(),
+			buildSpecifiedAlwaysRefreshModel(),
 			buildAlwaysRefreshStringModel(),
 			sharedCacheEnableModel,
 			EclipseLinkHelpContextIds.CACHING_ALWAYS_REFRESH
@@ -150,7 +150,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		TriStateCheckBox refreshOnlyIfNewerCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_REFRESH_ONLY_IF_NEWER_COMPOSITE_REFRESH_ONLY_IF_NEWER_LABEL,
-			buildRefreshOnlyIfNewerModel(),
+			buildSpecifiedRefreshOnlyIfNewerModel(),
 			buildRefreshOnlyIfNewerStringModel(),
 			sharedCacheEnableModel,
 			EclipseLinkHelpContextIds.CACHING_REFRESH_ONLY_IF_NEWER
@@ -162,7 +162,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		TriStateCheckBox disableHitsCheckBox = addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaEclipseLinkUiDetailsMessages.ECLIPSELINK_DISABLE_HITS_COMPOSITE_DISABLE_HITS_LABEL,
-			buildDisableHitsModel(),
+			buildSpecifiedDisableHitsModel(),
 			buildDisableHitsStringModel(),
 			sharedCacheEnableModel,
 			EclipseLinkHelpContextIds.CACHING_DISABLE_HITS
@@ -214,7 +214,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildAlwaysRefreshModel() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedAlwaysRefreshModel() {
 		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
@@ -242,7 +242,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerModel() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedRefreshOnlyIfNewerModel() {
 		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY,
@@ -270,7 +270,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			);
 	}	
 
-	private ModifiablePropertyValueModel<Boolean> buildDisableHitsModel() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedDisableHitsModel() {
 		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
 				EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY,

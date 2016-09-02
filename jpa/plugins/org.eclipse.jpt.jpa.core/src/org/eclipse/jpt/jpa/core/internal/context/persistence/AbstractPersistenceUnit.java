@@ -133,6 +133,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected PersistenceUnitTransactionType specifiedTransactionType;
 	protected PersistenceUnitTransactionType defaultTransactionType = PersistenceUnitTransactionType.JTA;
+	protected PersistenceUnitTransactionType transactionType;
 
 	protected String description;
 
@@ -199,9 +200,11 @@ public abstract class AbstractPersistenceUnit
 
 	protected SharedCacheMode2_0 specifiedSharedCacheMode;
 	protected SharedCacheMode2_0 defaultSharedCacheMode;
+	protected SharedCacheMode2_0 sharedCacheMode;
 
 	protected ValidationMode2_0 specifiedValidationMode;
 	protected ValidationMode2_0 defaultValidationMode = DEFAULT_VALIDATION_MODE;
+	protected ValidationMode2_0 validationMode;
 
 	protected final Set<IFile> metamodelFiles = Collections.synchronizedSet(new HashSet<IFile>());
 
@@ -281,6 +284,7 @@ public abstract class AbstractPersistenceUnit
 		this.rebuildManagedTypeMap();
 
 		this.setDefaultTransactionType(this.buildDefaultTransactionType());
+		this.setTransactionType(this.buildTransactionType());
 
 		// update specified class refs before mapping file refs because of
 		// JpaFile root structure nodes - we want the mapping file to "win",
@@ -304,7 +308,10 @@ public abstract class AbstractPersistenceUnit
 		this.setQueries(this.buildQueries());
 
 		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
+		this.setSharedCacheMode(this.buildSharedCacheMode());
+
 		this.setDefaultValidationMode(this.buildDefaultValidationMode());
+		this.setValidationMode(this.buildValidationMode());
 
 		this.updateStructureChildren();
 	}
@@ -406,6 +413,15 @@ public abstract class AbstractPersistenceUnit
 	// ********** transaction type **********
 
 	public PersistenceUnitTransactionType getTransactionType() {
+		return this.transactionType;
+	}
+
+	protected void setTransactionType(PersistenceUnitTransactionType transactionType) {
+		PersistenceUnitTransactionType old = this.transactionType;
+		this.firePropertyChanged(TRANSACTION_TYPE_PROPERTY, old, this.transactionType = transactionType);
+	}
+
+	protected PersistenceUnitTransactionType buildTransactionType() {
 		return (this.specifiedTransactionType != null) ? this.specifiedTransactionType : this.defaultTransactionType;
 	}
 
@@ -420,8 +436,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected void setSpecifiedTransactionType_(PersistenceUnitTransactionType transactionType) {
 		PersistenceUnitTransactionType old = this.specifiedTransactionType;
-		this.specifiedTransactionType = transactionType;
-		this.firePropertyChanged(SPECIFIED_TRANSACTION_TYPE_PROPERTY, old, transactionType);
+		this.firePropertyChanged(SPECIFIED_TRANSACTION_TYPE_PROPERTY, old, this.specifiedTransactionType = transactionType);
 	}
 
 	public PersistenceUnitTransactionType getDefaultTransactionType() {
@@ -430,8 +445,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected void setDefaultTransactionType(PersistenceUnitTransactionType transactionType) {
 		PersistenceUnitTransactionType old = this.defaultTransactionType;
-		this.defaultTransactionType = transactionType;
-		this.firePropertyChanged(DEFAULT_TRANSACTION_TYPE_PROPERTY, old, transactionType);
+		this.firePropertyChanged(DEFAULT_TRANSACTION_TYPE_PROPERTY, old, this.defaultTransactionType = transactionType);
 	}
 
 	protected PersistenceUnitTransactionType buildSpecifiedTransactionType() {
@@ -1412,6 +1426,15 @@ public abstract class AbstractPersistenceUnit
 	// ********** shared cache mode **********
 
 	public SharedCacheMode2_0 getSharedCacheMode() {
+		return this.sharedCacheMode;
+	}
+
+	protected void setSharedCacheMode(SharedCacheMode2_0 sharedCacheMode) {
+		SharedCacheMode2_0 old = this.sharedCacheMode;
+		this.firePropertyChanged(SHARED_CACHE_MODE_PROPERTY, old, this.sharedCacheMode = sharedCacheMode);
+	}
+
+	protected SharedCacheMode2_0 buildSharedCacheMode() {
 		return (this.specifiedSharedCacheMode != null) ? this.specifiedSharedCacheMode : this.defaultSharedCacheMode;
 	}
 
@@ -1426,8 +1449,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected void setSpecifiedSharedCacheMode_(SharedCacheMode2_0 sharedCacheMode) {
 		SharedCacheMode2_0 old = this.specifiedSharedCacheMode;
-		this.specifiedSharedCacheMode = sharedCacheMode;
-		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, sharedCacheMode);
+		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, this.specifiedSharedCacheMode = sharedCacheMode);
 	}
 
 	public SharedCacheMode2_0 getDefaultSharedCacheMode() {
@@ -1436,16 +1458,15 @@ public abstract class AbstractPersistenceUnit
 
 	protected void setDefaultSharedCacheMode(SharedCacheMode2_0 defaultSharedCacheMode) {
 		SharedCacheMode2_0 old = this.defaultSharedCacheMode;
-		this.defaultSharedCacheMode = defaultSharedCacheMode;
-		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
+		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, this.defaultSharedCacheMode = defaultSharedCacheMode);
 	}
 
 	public boolean calculateDefaultCacheable() {
-		SharedCacheMode2_0 sharedCacheMode = this.getSharedCacheMode();
-		if (sharedCacheMode == null) {
+		SharedCacheMode2_0 mode = this.getSharedCacheMode();
+		if (mode == null) {
 			return false;  // this can happen during initial update...
 		}
-		switch (sharedCacheMode) {
+		switch (mode) {
 			case NONE:
 			case ENABLE_SELECTIVE:
 			case UNSPECIFIED:
@@ -1454,7 +1475,7 @@ public abstract class AbstractPersistenceUnit
 			case DISABLE_SELECTIVE:
 				return true;
 			default:
-				throw new IllegalStateException("unknown mode: " + sharedCacheMode); //$NON-NLS-1$
+				throw new IllegalStateException("unknown mode: " + mode); //$NON-NLS-1$
 		}
 	}
 
@@ -1469,6 +1490,15 @@ public abstract class AbstractPersistenceUnit
 	// ********** validation mode **********
 
 	public ValidationMode2_0 getValidationMode() {
+		return this.validationMode;
+	}
+
+	protected void setValidationMode(ValidationMode2_0 validationMode) {
+		ValidationMode2_0 old = this.validationMode;
+		this.firePropertyChanged(VALIDATION_MODE_PROPERTY, old, this.validationMode = validationMode);
+	}
+
+	protected ValidationMode2_0 buildValidationMode() {
 		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
 	}
 
@@ -1483,18 +1513,16 @@ public abstract class AbstractPersistenceUnit
 
 	protected void setSpecifiedValidationMode_(ValidationMode2_0 validationMode) {
 		ValidationMode2_0 old = this.specifiedValidationMode;
-		this.specifiedValidationMode = validationMode;
-		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, validationMode);
+		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, this.specifiedValidationMode = validationMode);
 	}
 
 	public ValidationMode2_0 getDefaultValidationMode() {
 		return this.defaultValidationMode;
 	}
 
-	protected void setDefaultValidationMode(ValidationMode2_0 defaultValidationMode) {
+	protected void setDefaultValidationMode(ValidationMode2_0 validationMode) {
 		ValidationMode2_0 old = this.defaultValidationMode;
-		this.defaultValidationMode = defaultValidationMode;
-		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
+		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, this.defaultValidationMode = validationMode);
 	}
 
 	protected ValidationMode2_0 buildSpecifiedValidationMode() {

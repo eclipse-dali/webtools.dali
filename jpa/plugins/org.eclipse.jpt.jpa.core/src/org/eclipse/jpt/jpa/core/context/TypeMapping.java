@@ -63,6 +63,7 @@ public interface TypeMapping
 	 * Return the name, specified or default if not specified.
 	 */
 	String getName();
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	boolean isMapped();
 	

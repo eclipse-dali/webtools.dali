@@ -46,6 +46,7 @@ public interface OrmAttributeMapping
 	 * (qualified) default type.
 	 */
 	String getAttributeType();
+		String ATTRIBUTE_TYPE_PROPERTY = "attributeType"; //$NON-NLS-1$
 
 	String getFullyQualifiedAttributeType();
 		String FULLY_QUALIFIED_ATTRIBUTE_TYPE_PROPERTY = "fullyQualifiedAttributeType"; //$NON-NLS-1$

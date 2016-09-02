@@ -145,7 +145,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		};
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> buildInsertableModel() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedInsertableModel() {
 		return new PropertyAspectAdapterXXXX<SpecifiedOrderColumn2_0, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -178,7 +178,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 			);
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildNullableModel() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedNullableModel() {
 		return new PropertyAspectAdapterXXXX<SpecifiedOrderColumn2_0, Boolean>(
 			getSubjectHolder(),
 			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
@@ -215,22 +215,13 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 	}
 
 
-	private ModifiablePropertyValueModel<Boolean> buildUpdatableModel() {
-		return new PropertyAspectAdapterXXXX<SpecifiedOrderColumn2_0, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
-		{
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSpecifiedUpdatable();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedUpdatable(value);
-			}
-		};
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedUpdatableModel() {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+				m -> m.getSpecifiedUpdatable(),
+				(m, value) -> m.setSpecifiedUpdatable(value)
+			);
 	}
 
 	private PropertyValueModel<String> buildUpdatableStringModel() {
@@ -279,7 +270,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_INSERTABLE,
-			buildInsertableModel(),
+			buildSpecifiedInsertableModel(),
 			buildInsertableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
@@ -291,7 +282,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_UPDATABLE,
-			buildUpdatableModel(),
+			buildSpecifiedUpdatableModel(),
 			buildUpdatableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
@@ -303,7 +294,7 @@ public class OrderColumnComposite2_0 extends Pane<SpecifiedOrderColumn2_0> {
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 			detailsClient,
 			JptJpaUiDetailsMessages.COLUMN_COMPOSITE_NULLABLE,
-			buildNullableModel(),
+			buildSpecifiedNullableModel(),
 			buildNullableStringModel(),
 			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
 		);

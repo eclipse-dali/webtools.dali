@@ -104,17 +104,13 @@ public interface PersistenceUnit
 	 * whether specified or defaulted.
 	 */
 	PersistenceUnitTransactionType getTransactionType();
-
-	/**
-	 * String constant associated with changes to the persistence unit's
-	 * specified transaction type
-	 */
-	String SPECIFIED_TRANSACTION_TYPE_PROPERTY = "specifiedTransactionType"; //$NON-NLS-1$
+		String TRANSACTION_TYPE_PROPERTY = "transactionType"; //$NON-NLS-1$
 
 	/**
 	 * Return the persistence unit's specified transaction type.
 	 */
 	PersistenceUnitTransactionType getSpecifiedTransactionType();
+		String SPECIFIED_TRANSACTION_TYPE_PROPERTY = "specifiedTransactionType"; //$NON-NLS-1$
 
 	/**
 	 * Set the persistence unit's specified transaction type.

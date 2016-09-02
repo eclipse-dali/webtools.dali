@@ -120,10 +120,12 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 {
 	protected String specifiedTargetClass;
 	protected String defaultTargetClass;
+	protected String targetClass;
 	protected String fullyQualifiedTargetClass;
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch = DEFAULT_FETCH_TYPE;
+	protected FetchType fetch;
 
 	protected final OrmOrderable2_0 orderable;
 
@@ -144,6 +146,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
+	protected String mapKeyClass;
 	protected String fullyQualifiedMapKeyClass;
 
 	protected final OrmSpecifiedColumn mapKeyColumn;
@@ -229,8 +232,10 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
 		this.setDefaultTargetClass(this.buildDefaultTargetClass());
+		this.setTargetClass(this.buildTargetClass());
 		this.setFullyQualifiedTargetClass(this.buildFullyQualifiedTargetClass());
 		this.setDefaultFetch(this.buildDefaultFetch());
+		this.setFetch(this.buildFetch());
 		this.orderable.update(monitor);
 		this.collectionTable.update(monitor);
 
@@ -242,6 +247,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 		this.setKeyType(this.buildKeyType());
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
+		this.setMapKeyClass(this.buildMapKeyClass());
 		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
 
 		this.mapKeyColumn.update(monitor);
@@ -273,6 +279,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** target class **********
 
 	public String getTargetClass() {
+		return this.targetClass;
+	}
+
+	protected void setTargetClass(String targetClass) {
+		String old = this.targetClass;
+		this.firePropertyChanged(TARGET_CLASS_PROPERTY, old, this.targetClass = targetClass);
+	}
+
+	protected String buildTargetClass() {
 		return (this.specifiedTargetClass != null) ? this.specifiedTargetClass : this.defaultTargetClass;
 	}
 
@@ -287,8 +302,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected void setSpecifiedTargetClass_(String targetClass) {
 		String old = this.specifiedTargetClass;
-		this.specifiedTargetClass = targetClass;
-		this.firePropertyChanged(SPECIFIED_TARGET_CLASS_PROPERTY, old, targetClass);
+		this.firePropertyChanged(SPECIFIED_TARGET_CLASS_PROPERTY, old, this.specifiedTargetClass = targetClass);
 	}
 
 	public String getDefaultTargetClass() {
@@ -297,8 +311,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected void setDefaultTargetClass(String targetClass) {
 		String old = this.defaultTargetClass;
-		this.defaultTargetClass = targetClass;
-		this.firePropertyChanged(DEFAULT_TARGET_CLASS_PROPERTY, old, targetClass);
+		this.firePropertyChanged(DEFAULT_TARGET_CLASS_PROPERTY, old, this.defaultTargetClass = targetClass);
 	}
 
 	protected String buildDefaultTargetClass() {
@@ -344,6 +357,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** fetch **********
 
 	public FetchType getFetch() {
+		return this.fetch;
+	}
+
+	protected void setFetch(FetchType fetch) {
+		FetchType old = this.fetch;
+		this.firePropertyChanged(FETCH_PROPERTY, old, this.fetch = fetch);
+	}
+
+	protected FetchType buildFetch() {
 		return (this.specifiedFetch != null) ? this.specifiedFetch : this.defaultFetch;
 	}
 
@@ -358,8 +380,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected void setSpecifiedFetch_(FetchType fetch) {
 		FetchType old = this.specifiedFetch;
-		this.specifiedFetch = fetch;
-		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
+		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, this.specifiedFetch = fetch);
 	}
 
 	protected FetchType buildSpecifiedFetch() {
@@ -372,8 +393,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected void setDefaultFetch(FetchType fetch) {
 		FetchType old = this.defaultFetch;
-		this.defaultFetch = fetch;
-		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, fetch);
+		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, this.defaultFetch = fetch);
 	}
 
 	protected FetchType buildDefaultFetch() {
@@ -824,6 +844,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** map key class **********
 
 	public String getMapKeyClass() {
+		return this.mapKeyClass;
+	}
+
+	protected void setMapKeyClass(String mapKeyClass) {
+		String old = this.mapKeyClass;
+		this.firePropertyChanged(MAP_KEY_CLASS_PROPERTY, old, this.mapKeyClass = mapKeyClass);
+	}
+
+	protected String buildMapKeyClass() {
 		return (this.specifiedMapKeyClass != null) ? this.specifiedMapKeyClass : this.defaultMapKeyClass;
 	}
 
@@ -849,14 +878,13 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected boolean setSpecifiedMapKeyClass_(String mapKeyClass) {
 		String old = this.specifiedMapKeyClass;
-		this.specifiedMapKeyClass = mapKeyClass;
-		return this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+		return this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, this.specifiedMapKeyClass = mapKeyClass);
 	}
 
 	protected XmlClassReference buildXmlMapKeyClassReference() {
-		XmlClassReference mapKeyClass = OrmFactory.eINSTANCE.createXmlClassReference();
-		this.xmlAttributeMapping.setMapKeyClass(mapKeyClass);
-		return mapKeyClass;
+		XmlClassReference ref = OrmFactory.eINSTANCE.createXmlClassReference();
+		this.xmlAttributeMapping.setMapKeyClass(ref);
+		return ref;
 	}
 
 	protected String buildSpecifiedMapKeyClass() {
@@ -870,8 +898,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected void setDefaultMapKeyClass(String mapKeyClass) {
 		String old = this.defaultMapKeyClass;
-		this.defaultMapKeyClass = mapKeyClass;
-		this.firePropertyChanged(DEFAULT_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+		this.firePropertyChanged(DEFAULT_MAP_KEY_CLASS_PROPERTY, old, this.defaultMapKeyClass = mapKeyClass);
 	}
 
 	protected String buildDefaultMapKeyClass() {
@@ -1149,7 +1176,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected ListIterable<OrmSpecifiedJoinColumn> getDefaultMapKeyJoinColumns() {
 		return (this.defaultMapKeyJoinColumn != null) ?
-				new SingleElementListIterable<OrmSpecifiedJoinColumn>(this.defaultMapKeyJoinColumn) :
+				new SingleElementListIterable<>(this.defaultMapKeyJoinColumn) :
 				EmptyListIterable.<OrmSpecifiedJoinColumn>instance();
 	}
 
@@ -1275,7 +1302,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected Iterable<String> getQualifiedEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return new TransformationIterable<String, String>(this.getEmbeddableOverridableMappingNames(transformer), this.buildQualifierTransformer());
+		return new TransformationIterable<>(this.getEmbeddableOverridableMappingNames(transformer), this.buildQualifierTransformer());
 	}
 
 	/**
@@ -1363,7 +1390,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (this.specifiedMapKeyClass != null) {
 			PersistentType mapKeyType = this.getResolvedMapKeyType();
 			if ((mapKeyType != null) && mapKeyType.isFor(originalType.getFullyQualifiedName('.'))) {
-				return new SingleElementIterable<ReplaceEdit>(this.createRenameMapKeyClassEdit(originalType, newName));
+				return new SingleElementIterable<>(this.createRenameMapKeyClassEdit(originalType, newName));
 			}
 		}
 		return EmptyIterable.instance();
@@ -1377,7 +1404,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (this.specifiedTargetClass != null) {
 			PersistentType targetType = this.getResolvedTargetType();
 			if ((targetType != null) && targetType.isFor(originalType.getFullyQualifiedName('.'))) {
-				return new SingleElementIterable<ReplaceEdit>(this.xmlAttributeMapping.createRenameTargetClassEdit(originalType, newName));
+				return new SingleElementIterable<>(this.xmlAttributeMapping.createRenameTargetClassEdit(originalType, newName));
 			}
 		}
 		return EmptyIterable.instance();
@@ -1397,7 +1424,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (this.specifiedMapKeyClass != null) {
 			PersistentType mapKeyType = this.getResolvedMapKeyType();
 			if ((mapKeyType != null) && mapKeyType.isFor(originalType.getFullyQualifiedName('.'))) {
-				return new SingleElementIterable<ReplaceEdit>(this.createMapKeyClassRenamePackageEdit(newPackage.getElementName()));
+				return new SingleElementIterable<>(this.createMapKeyClassRenamePackageEdit(newPackage.getElementName()));
 			}
 		}
 		return EmptyIterable.instance();
@@ -1407,7 +1434,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (this.specifiedTargetClass != null) {
 			PersistentType targetType = this.getResolvedTargetType();
 			if ((targetType != null) && targetType.isFor(originalType.getFullyQualifiedName('.'))) {
-				return new SingleElementIterable<ReplaceEdit>(this.xmlAttributeMapping.createRenameTargetClassPackageEdit(newPackage.getElementName()));
+				return new SingleElementIterable<>(this.xmlAttributeMapping.createRenameTargetClassPackageEdit(newPackage.getElementName()));
 			}
 		}
 		return EmptyIterable.instance();
@@ -1427,7 +1454,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (this.specifiedMapKeyClass != null) {
 			PersistentType mapKeyType = this.getResolvedMapKeyType();
 			if ((mapKeyType != null) && mapKeyType.isIn(originalPackage)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createMapKeyClassRenamePackageEdit(newName));
+				return new SingleElementIterable<>(this.createMapKeyClassRenamePackageEdit(newName));
 			}
 		}
 		return EmptyIterable.instance();
@@ -1441,7 +1468,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (this.specifiedTargetClass != null) {
 			PersistentType targetType = this.getResolvedTargetType();
 			if ((targetType != null) && targetType.isIn(originalPackage)) {
-				return new SingleElementIterable<ReplaceEdit>(this.xmlAttributeMapping.createRenameTargetClassPackageEdit(newName));
+				return new SingleElementIterable<>(this.xmlAttributeMapping.createRenameTargetClassPackageEdit(newName));
 			}
 		}
 		return EmptyIterable.instance();

@@ -118,6 +118,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 {
 	protected String specifiedTargetClass;
 	protected String defaultTargetClass;
+	protected String targetClass;
 	protected String fullyQualifiedTargetClass;
 
 	protected FetchType specifiedFetch;
@@ -229,6 +230,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		super.update(monitor);
 
 		this.setDefaultTargetClass(this.buildDefaultTargetClass());
+		this.setTargetClass(this.buildTargetClass());
 		this.setFullyQualifiedTargetClass(this.buildFullyQualifiedTargetClass());
 		this.setDefaultFetch(this.buildDefaultFetch());
 
@@ -256,6 +258,15 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** target class **********
 
 	public String getTargetClass() {
+		return this.targetClass;
+	}
+
+	protected void setTargetClass(String targetClass) {
+		String old = this.targetClass;
+		this.firePropertyChanged(TARGET_CLASS_PROPERTY, old, this.targetClass = targetClass);
+	}
+
+	protected String buildTargetClass() {
 		return (this.specifiedTargetClass != null) ? this.specifiedTargetClass : this.defaultTargetClass;
 	}
 
@@ -272,8 +283,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected void setSpecifiedTargetClass_(String targetClass) {
 		String old = this.specifiedTargetClass;
-		this.specifiedTargetClass = targetClass;
-		this.firePropertyChanged(SPECIFIED_TARGET_CLASS_PROPERTY, old, targetClass);
+		this.firePropertyChanged(SPECIFIED_TARGET_CLASS_PROPERTY, old, this.specifiedTargetClass = targetClass);
 	}
 
 	protected String buildSpecifiedTargetClass() {
@@ -287,8 +297,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected void setDefaultTargetClass(String targetClass) {
 		String old = this.defaultTargetClass;
-		this.defaultTargetClass = targetClass;
-		this.firePropertyChanged(DEFAULT_TARGET_CLASS_PROPERTY, old, targetClass);
+		this.firePropertyChanged(DEFAULT_TARGET_CLASS_PROPERTY, old, this.defaultTargetClass = targetClass);
 	}
 
 	protected String buildDefaultTargetClass() {
@@ -559,7 +568,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
 			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
 			if (annotation != null) {
-				return new SimpleAssociation<JavaConverter.Adapter, Annotation>(adapter, annotation);
+				return new SimpleAssociation<>(adapter, annotation);
 			}
 		}
 		return null;
@@ -1012,7 +1021,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
 			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
 			if (annotation != null) {
-				return new SimpleAssociation<JavaConverter.Adapter, Annotation>(adapter, annotation);
+				return new SimpleAssociation<>(adapter, annotation);
 			}
 		}
 		return null;
@@ -1151,7 +1160,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected ListIterable<JavaSpecifiedJoinColumn> getDefaultMapKeyJoinColumns() {
 		return (this.defaultMapKeyJoinColumn != null) ?
-				new SingleElementListIterable<JavaSpecifiedJoinColumn>(this.defaultMapKeyJoinColumn) :
+				new SingleElementListIterable<>(this.defaultMapKeyJoinColumn) :
 				EmptyListIterable.<JavaSpecifiedJoinColumn>instance();
 	}
 
@@ -1179,7 +1188,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** map key join column annotations **********
 
 	protected ListIterable<MapKeyJoinColumnAnnotation2_0> getMapKeyJoinColumnAnnotations() {
-		return new SubListIterableWrapper<NestableAnnotation, MapKeyJoinColumnAnnotation2_0>(this.getNestableMapKeyJoinColumnAnnotations());
+		return new SubListIterableWrapper<>(this.getNestableMapKeyJoinColumnAnnotations());
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableMapKeyJoinColumnAnnotations() {
@@ -1244,7 +1253,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected Iterable<String> getQualifiedEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
-		return new TransformationIterable<String, String>(this.getEmbeddableOverridableMappingNames(transformer), this.buildQualifierTransformer());
+		return new TransformationIterable<>(this.getEmbeddableOverridableMappingNames(transformer), this.buildQualifierTransformer());
 	}
 
 	/**
@@ -1395,7 +1404,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected Iterable<String> getJavaCandidateMapKeyNames() {
-		return new TransformationIterable<String, String>(this.getCandidateMapKeyNames(),
+		return new TransformationIterable<>(this.getCandidateMapKeyNames(),
 				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 

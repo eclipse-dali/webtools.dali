@@ -82,7 +82,7 @@ public class PersistenceUnitClassesComposite
 		this.addTriStateCheckBoxWithDefault(
 			container,
 			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES, 
-			buildExcludeUnlistedClassesModel(),
+			buildSpecifiedExcludeUnlistedClassesModel(),
 			buildExcludeUnlistedClassesStringModel(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);
@@ -153,7 +153,7 @@ public class PersistenceUnitClassesComposite
 		};
 	}
 
-	private ModifiablePropertyValueModel<Boolean> buildExcludeUnlistedClassesModel() {
+	private ModifiablePropertyValueModel<Boolean> buildSpecifiedExcludeUnlistedClassesModel() {
 		return new PropertyAspectAdapterXXXX<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
