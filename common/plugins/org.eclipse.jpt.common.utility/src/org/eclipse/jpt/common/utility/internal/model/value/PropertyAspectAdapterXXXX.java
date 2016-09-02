@@ -60,7 +60,7 @@ public abstract class PropertyAspectAdapterXXXX<S extends Model, V>
 
 	// ********** initialization **********
 
-	protected PropertyChangeListener buildAspectChangeListener() {
+	protected final PropertyChangeListener buildAspectChangeListener() {
 		return new AspectChangeListener();
 	}
 
@@ -81,20 +81,20 @@ public abstract class PropertyAspectAdapterXXXX<S extends Model, V>
 	// ********** AspectAdapter implementation **********
 
     @Override
-	protected void engageSubject_() {
+	protected final void engageSubject_() {
     	for (String propertyName : this.aspectNames) {
 			this.subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
 		}
 	}
 
     @Override
-	protected void disengageSubject_() {
+	protected final void disengageSubject_() {
     	for (String propertyName : this.aspectNames) {
 			this.subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
 		}
 	}
 
-	protected void aspectChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
+	protected final void aspectChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
  		//TODO we have multiple PropertyAspectAdapters that depend on the aspectChanged()
     	//behavior because they do a transformation in the buildValue(). It would be
     	//nice to use the new value from the event instead of rebuilding it.
