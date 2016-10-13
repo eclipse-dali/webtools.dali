@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.exception.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import com.ibm.icu.text.MessageFormat;
 
 /**
@@ -72,16 +71,7 @@ public class ItemTreeStateProviderManager
 	}
 
 	public Object[] getChildren(Object parentElement) {
-		ItemTreeContentProvider provider = this.getItemContentProvider(parentElement);
-		if (provider == null) { // 460406
-			if (PLUG_IN != null) {
-				String msg = MessageFormat.format("Unexpected parent: {0}", parentElement); //$NON-NLS-1$
-				IllegalArgumentException ex = new IllegalArgumentException(msg);
-				PLUG_IN.logError(ex);
-			}
-			return ObjectTools.EMPTY_OBJECT_ARRAY;
-		}
-		return provider.getChildren();
+		return this.getItemContentProvider(parentElement).getChildren();
 	}
 
 	/**
