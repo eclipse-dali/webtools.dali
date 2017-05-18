@@ -1346,4 +1346,18 @@
 
 	</extension>
 
+	<extension
+		point="org.eclipse.ui.ide.projectConfigurators">
+
+		<projectConfigurator
+			class="org.eclipse.jpt.jpa.ui.internal.wizards.JPAProjectConfigurator"
+			label="JPA">
+			<activeWhen>
+				<hasFileRecursively
+					filename="persistence.xml">
+				</hasFileRecursively>
+			</activeWhen>
+		</projectConfigurator>
+	</extension>
+
 </plugin>
