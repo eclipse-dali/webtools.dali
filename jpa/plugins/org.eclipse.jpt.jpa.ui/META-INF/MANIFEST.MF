@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.ui;singleton:=true
-Bundle-Version: 3.4.100.qualifier
+Bundle-Version: 3.4.200.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
