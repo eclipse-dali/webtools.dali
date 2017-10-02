@@ -30,6 +30,9 @@ public class GenericOrmManyToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToManyMapping>
 	implements OrmManyToManyRelationship
 {
+	protected boolean strategyIsMappedBy;
+	protected boolean strategyIsJoinTable;
+
 	protected final OrmSpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
 	protected final OrmSpecifiedJoinTableRelationshipStrategy joinTableStrategy;
@@ -56,6 +59,8 @@ public class GenericOrmManyToManyRelationship
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setStrategyIsMappedBy(this.buildStrategyIsMappedBy());
+		this.setStrategyIsJoinTable(this.buildStrategyIsJoinTable());
 		this.mappedByStrategy.update(monitor);
 		this.joinTableStrategy.update(monitor);
 	}
@@ -79,6 +84,15 @@ public class GenericOrmManyToManyRelationship
 	}
 
 	public boolean strategyIsMappedBy() {
+		return this.strategyIsMappedBy;
+	}
+
+	protected void setStrategyIsMappedBy(boolean strategyIsMappedBy) {
+		boolean old = this.strategyIsMappedBy;
+		this.firePropertyChanged(STRATEGY_IS_MAPPED_BY_PROPERTY, old, this.strategyIsMappedBy = strategyIsMappedBy);
+	}
+
+	protected boolean buildStrategyIsMappedBy() {
 		return this.strategy == this.mappedByStrategy;
 	}
 
@@ -104,6 +118,15 @@ public class GenericOrmManyToManyRelationship
 	}
 
 	public boolean strategyIsJoinTable() {
+		return this.strategyIsJoinTable;
+	}
+
+	protected void setStrategyIsJoinTable(boolean strategyIsJoinTable) {
+		boolean old = this.strategyIsJoinTable;
+		this.firePropertyChanged(STRATEGY_IS_JOIN_TABLE_PROPERTY, old, this.strategyIsJoinTable = strategyIsJoinTable);
+	}
+
+	protected boolean buildStrategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 

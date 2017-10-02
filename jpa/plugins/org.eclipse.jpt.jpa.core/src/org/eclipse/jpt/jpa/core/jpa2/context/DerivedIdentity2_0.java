@@ -75,6 +75,7 @@ public interface DerivedIdentity2_0
 	 * Return whether the mapping uses an ID strategy.
 	 */
 	boolean usesIdDerivedIdentityStrategy();
+		String USES_ID_DERIVED_IDENTITY_STRATEGY_PROPERTY = "usesIdDerivedIdentityStrategy"; //$NON-NLS-1$
 	Predicate<DerivedIdentity2_0> USES_ID_DERIVED_IDENTITY_STRATEGY = new UsesIdDerivedIdentityStrategy();
 	class UsesIdDerivedIdentityStrategy
 		extends PredicateAdapter<DerivedIdentity2_0>
@@ -112,6 +113,7 @@ public interface DerivedIdentity2_0
 	 * Return whether the mapping uses a "maps ID" strategy.
 	 */
 	boolean usesMapsIdDerivedIdentityStrategy();
+		String USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY_PROPERTY = "usesMapsIdDerivedIdentityStrategy"; //$NON-NLS-1$
 	Predicate<DerivedIdentity2_0> USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY = new UsesMapsIdDerivedIdentityStrategy();
 	class UsesMapsIdDerivedIdentityStrategy
 		extends PredicateAdapter<DerivedIdentity2_0>

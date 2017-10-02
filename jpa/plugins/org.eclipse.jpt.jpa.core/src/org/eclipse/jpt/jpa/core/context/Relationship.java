@@ -56,12 +56,8 @@ public interface Relationship
 	Entity getEntity();
 
 	/**
-	 * String associated with changes to the predominant strategy property
-	 */
-	final static String STRATEGY_PROPERTY = "strategy";  //$NON-NLS-1$
-
-	/**
 	 * Return the current strategy, this is never <code>null</code>.
 	 */
 	RelationshipStrategy getStrategy();
+		String STRATEGY_PROPERTY = "strategy";  //$NON-NLS-1$
 }

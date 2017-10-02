@@ -460,7 +460,7 @@ public class IdMappingGenerationComposite
 		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
 				this.buildGeneratedValueModel(),
 				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
-				TransformerTools.nullCheck(m -> m.getSpecifiedGenerator()),
+				m -> (m == null) ? null : m.getSpecifiedGenerator(),
 				(m, value) -> {
 					if (m != null) {
 						m.setSpecifiedGenerator(StringTools.isBlank(value) ? null : value);

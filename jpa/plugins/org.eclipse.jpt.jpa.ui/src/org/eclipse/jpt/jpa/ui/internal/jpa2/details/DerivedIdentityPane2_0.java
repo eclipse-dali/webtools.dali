@@ -101,31 +101,25 @@ public class DerivedIdentityPane2_0
 	}
 		
 	protected ModifiablePropertyValueModel<Boolean> buildUsesIdDerivedIdentityStrategyHolder() {
-		return new PropertyAspectAdapterXXXX<DerivedIdentity2_0, Boolean>(
-				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
-			
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.usesIdDerivedIdentityStrategy();
-			}
-			
-			@Override
-			protected void setValue_(Boolean value) {
-				// radio button - should only have true values here
-				if (value) {
-					this.subject.setIdDerivedIdentityStrategy();
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				DerivedIdentity2_0.USES_ID_DERIVED_IDENTITY_STRATEGY_PROPERTY,
+				m -> Boolean.valueOf(m.usesIdDerivedIdentityStrategy()),
+				(m, value) -> {
+					if ((value != null) && value.booleanValue()) {
+						m.setIdDerivedIdentityStrategy();
+					}
 				}
-			}
-		};
+			);
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
-		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
-				DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY,
-				m -> Boolean.valueOf((m != null) && m.usesMapsIdDerivedIdentityStrategy()),
+				DerivedIdentity2_0.USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY_PROPERTY,
+				m -> Boolean.valueOf(m.usesMapsIdDerivedIdentityStrategy()),
 				(m, value) -> {
-					if ((m != null) && (value != null) && value.booleanValue()) {
+					if ((value != null) && value.booleanValue()) {
 						m.setMapsIdDerivedIdentityStrategy();
 					}
 				}

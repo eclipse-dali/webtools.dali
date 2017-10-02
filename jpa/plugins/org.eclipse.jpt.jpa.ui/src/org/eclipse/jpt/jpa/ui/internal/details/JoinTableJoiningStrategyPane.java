@@ -84,12 +84,12 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyModel(PropertyValueModel<? extends JoinTableRelationship> subjectHolder) {
-		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectHolder,
-				Relationship.STRATEGY_PROPERTY,
-				m -> Boolean.valueOf((m != null) && m.strategyIsJoinTable()),
+				JoinTableRelationship.STRATEGY_IS_JOIN_TABLE_PROPERTY,
+				m -> Boolean.valueOf(m.strategyIsJoinTable()),
 				(m, value) -> {
-					if ((m != null) && (value != null) && value.booleanValue()) {
+					if ((value != null) && value.booleanValue()) {
 						((SpecifiedJoinTableRelationship) m).setStrategyToJoinTable();
 					}
 				}

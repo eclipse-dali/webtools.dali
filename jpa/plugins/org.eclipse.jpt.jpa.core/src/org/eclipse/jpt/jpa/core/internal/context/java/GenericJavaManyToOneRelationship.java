@@ -26,6 +26,9 @@ public class GenericJavaManyToOneRelationship
 	extends AbstractJavaMappingRelationship<JavaManyToOneMapping>
 	implements JavaManyToOneRelationship2_0
 {
+	protected boolean strategyIsJoinColumn;
+	protected boolean strategyIsJoinTable;
+
 	protected final JavaSpecifiedJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
@@ -53,6 +56,8 @@ public class GenericJavaManyToOneRelationship
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setStrategyIsJoinColumn(this.buildStrategyIsJoinColumn());
+		this.setStrategyIsJoinTable(this.buildStrategyIsJoinTable());
 		this.joinColumnStrategy.update(monitor);
 		this.joinTableStrategy.update(monitor);
 	}
@@ -71,6 +76,41 @@ public class GenericJavaManyToOneRelationship
 	}
 
 
+	// ********** join column strategy **********
+
+	public JavaSpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy() {
+		return this.joinColumnStrategy;
+	}
+
+	public boolean strategyIsJoinColumn() {
+		return this.strategyIsJoinColumn;
+	}
+
+	protected void setStrategyIsJoinColumn(boolean strategyIsJoinColumn) {
+		boolean old = this.strategyIsJoinColumn;
+		this.firePropertyChanged(STRATEGY_IS_JOIN_COLUMN_PROPERTY, old, this.strategyIsJoinColumn = strategyIsJoinColumn);
+	}
+
+	protected boolean buildStrategyIsJoinColumn() {
+		return this.strategy == this.joinColumnStrategy;
+	}
+
+	public void setStrategyToJoinColumn() {
+		// join column strategy is the default; so no need to add stuff,
+		// just remove all the others
+		this.joinTableStrategy.removeStrategy();
+		this.updateStrategy();
+	}
+
+	public boolean mayHaveDefaultJoinColumn() {
+		return this.joinTableStrategy.getJoinTable() == null;
+	}
+
+	protected JavaSpecifiedJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+		return new GenericJavaMappingJoinColumnRelationshipStrategy(this);
+	}
+
+
 	// ********** join table strategy **********
 
 	public JavaSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy() {
@@ -78,6 +118,15 @@ public class GenericJavaManyToOneRelationship
 	}
 
 	public boolean strategyIsJoinTable() {
+		return this.strategyIsJoinTable;
+	}
+
+	protected void setStrategyIsJoinTable(boolean strategyIsJoinTable) {
+		boolean old = this.strategyIsJoinTable;
+		this.firePropertyChanged(STRATEGY_IS_JOIN_TABLE_PROPERTY, old, this.strategyIsJoinTable = strategyIsJoinTable);
+	}
+
+	protected boolean buildStrategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
@@ -95,32 +144,6 @@ public class GenericJavaManyToOneRelationship
 		return this.isJpa2_0Compatible() ?
 				new GenericJavaMappingJoinTableRelationshipStrategy(this) :
 				new NullJavaJoinTableRelationshipStrategy(this);
-	}
-
-
-	// ********** join column strategy **********
-
-	public JavaSpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy() {
-		return this.joinColumnStrategy;
-	}
-
-	public boolean strategyIsJoinColumn() {
-		return this.strategy == this.joinColumnStrategy;
-	}
-
-	public void setStrategyToJoinColumn() {
-		// join column strategy is the default; so no need to add stuff,
-		// just remove all the others
-		this.joinTableStrategy.removeStrategy();
-		this.updateStrategy();
-	}
-
-	public boolean mayHaveDefaultJoinColumn() {
-		return this.joinTableStrategy.getJoinTable() == null;
-	}
-
-	protected JavaSpecifiedJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
-		return new GenericJavaMappingJoinColumnRelationshipStrategy(this);
 	}
 
 

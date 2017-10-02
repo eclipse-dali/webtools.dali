@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapt
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -36,7 +35,6 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -299,18 +297,7 @@ public class JpaXmlEditor
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {
-		return PropertyValueModelTools.transform(this.editorInputModel, JPA_FILE_MODEL_TRANSFORMER);
-	}
-
-	private static final Transformer<IFileEditorInput, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
-
-	/* CU private */ static class JpaFileModelTransformer
-		extends TransformerAdapter<IFileEditorInput, PropertyValueModel<JpaFile>>
-	{
-		@Override
-		public PropertyValueModel<JpaFile> transform(IFileEditorInput fileEditorInput) {
-			return fileEditorInput.getFile().getAdapter(JpaFileModel.class);
-		}
+		return PropertyValueModelTools.transform(this.editorInputModel, input -> input.getFile().getAdapter(JpaFileModel.class));
 	}
 
 	/* CU private */ class RootStructureNodeListener

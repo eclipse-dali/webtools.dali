@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -221,18 +220,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaProject>> buildJpaProjectModelModel() {
-		return PropertyValueModelTools.transform(this.projectModel, JPA_PROJECT_MODEL_TRANSFORMER);
-	}
-
-	private static final Transformer<IProject, PropertyValueModel<JpaProject>> JPA_PROJECT_MODEL_TRANSFORMER = new JpaProjectModelTransformer();
-
-	/* CU private */ static class JpaProjectModelTransformer
-		extends TransformerAdapter<IProject, PropertyValueModel<JpaProject>>
-	{
-		@Override
-		public PropertyValueModel<JpaProject> transform(IProject project) {
-			return project.getAdapter(JpaProjectModel.class);
-		}
+		return PropertyValueModelTools.transform(this.projectModel, project -> project.getAdapter(JpaProjectModel.class));
 	}
 
 	// ***** JPA 2.0 project model
@@ -543,8 +531,8 @@ public class JpaProjectPropertiesPage
 		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.jpaProject2_0Model,
 				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_PROPERTY,
-				JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_TRANSFORMER,
-				JpaProject2_0.SET_METAMODEL_SOURCE_FOLDER_NAME_CLOSURE
+				m -> m.getMetamodelSourceFolderName(),
+				(m, value) -> m.setMetamodelSourceFolderName(value)
 			);
 	}
 

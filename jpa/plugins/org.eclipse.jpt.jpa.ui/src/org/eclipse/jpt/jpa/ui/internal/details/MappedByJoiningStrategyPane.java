@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelToo
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.swt.widgets.Composite;
@@ -71,12 +70,12 @@ public class MappedByJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyModel(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
-		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectHolder,
-				Relationship.STRATEGY_PROPERTY,
-				m -> Boolean.valueOf((m != null) && m.strategyIsMappedBy()),
+				MappedByRelationship.STRATEGY_IS_MAPPED_BY_PROPERTY,
+				m -> Boolean.valueOf(m.strategyIsMappedBy()),
 				(m, value) -> {
-					if ((m != null) && (value != null) && value.booleanValue()) {
+					if ((value != null) && value.booleanValue()) {
 						m.setStrategyToMappedBy();
 					}
 				}

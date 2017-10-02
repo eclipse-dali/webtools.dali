@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,11 @@ public class GenericOrmOneToOneRelationship
 	extends AbstractOrmMappingRelationship<OrmOneToOneMapping>
 	implements OrmOneToOneRelationship2_0
 {
+	protected boolean strategyIsMappedBy;
+	protected boolean strategyIsPrimaryKeyJoinColumn;
+	protected boolean strategyIsJoinTable;
+	protected boolean strategyIsJoinColumn;
+
 	protected final OrmSpecifiedMappedByRelationshipStrategy mappedByStrategy;
 
 	protected final OrmSpecifiedPrimaryKeyJoinColumnRelationshipStrategy primaryKeyJoinColumnStrategy;
@@ -69,6 +74,10 @@ public class GenericOrmOneToOneRelationship
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setStrategyIsMappedBy(this.buildStrategyIsMappedBy());
+		this.setStrategyIsPrimaryKeyJoinColumn(this.buildStrategyIsPrimaryKeyJoinColumn());
+		this.setStrategyIsJoinTable(this.buildStrategyIsJoinTable());
+		this.setStrategyIsJoinColumn(this.buildStrategyIsJoinColumn());
 		this.mappedByStrategy.update(monitor);
 		this.primaryKeyJoinColumnStrategy.update(monitor);
 		this.joinTableStrategy.update(monitor);
@@ -102,6 +111,15 @@ public class GenericOrmOneToOneRelationship
 	}
 
 	public boolean strategyIsMappedBy() {
+		return this.strategyIsMappedBy;
+	}
+
+	protected void setStrategyIsMappedBy(boolean strategyIsMappedBy) {
+		boolean old = this.strategyIsMappedBy;
+		this.firePropertyChanged(STRATEGY_IS_MAPPED_BY_PROPERTY, old, this.strategyIsMappedBy = strategyIsMappedBy);
+	}
+
+	protected boolean buildStrategyIsMappedBy() {
 		return this.strategy == this.mappedByStrategy;
 	}
 
@@ -129,6 +147,15 @@ public class GenericOrmOneToOneRelationship
 	}
 
 	public boolean strategyIsPrimaryKeyJoinColumn() {
+		return this.strategyIsPrimaryKeyJoinColumn;
+	}
+
+	protected void setStrategyIsPrimaryKeyJoinColumn(boolean strategyIsPrimaryKeyJoinColumn) {
+		boolean old = this.strategyIsPrimaryKeyJoinColumn;
+		this.firePropertyChanged(STRATEGY_IS_PRIMARY_KEY_JOIN_COLUMN_PROPERTY, old, this.strategyIsPrimaryKeyJoinColumn = strategyIsPrimaryKeyJoinColumn);
+	}
+
+	protected boolean buildStrategyIsPrimaryKeyJoinColumn() {
 		return this.strategy == this.primaryKeyJoinColumnStrategy;
 	}
 
@@ -152,6 +179,15 @@ public class GenericOrmOneToOneRelationship
 	}
 
 	public boolean strategyIsJoinTable() {
+		return this.strategyIsJoinTable;
+	}
+
+	protected void setStrategyIsJoinTable(boolean strategyIsJoinTable) {
+		boolean old = this.strategyIsJoinTable;
+		this.firePropertyChanged(STRATEGY_IS_JOIN_TABLE_PROPERTY, old, this.strategyIsJoinTable = strategyIsJoinTable);
+	}
+
+	protected boolean buildStrategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
@@ -181,6 +217,15 @@ public class GenericOrmOneToOneRelationship
 	}
 
 	public boolean strategyIsJoinColumn() {
+		return this.strategyIsJoinColumn;
+	}
+
+	protected void setStrategyIsJoinColumn(boolean strategyIsJoinColumn) {
+		boolean old = this.strategyIsJoinColumn;
+		this.firePropertyChanged(STRATEGY_IS_JOIN_COLUMN_PROPERTY, old, this.strategyIsJoinColumn = strategyIsJoinColumn);
+	}
+
+	protected boolean buildStrategyIsJoinColumn() {
 		return this.strategy == this.joinColumnStrategy;
 	}
 

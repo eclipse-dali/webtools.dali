@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,35 +26,31 @@ import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.weave.EclipseLinkStaticWeave;
 
-public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
+public class EclipseLinkStaticWeavingBuilder
+	extends IncrementalProjectBuilder
 {
     public static final String BUILDER_ID = JptJpaEclipseLinkCorePlugin.instance().getPluginID() + ".builder"; //$NON-NLS-1$
 
 	private EclipseLinkStaticWeavingBuilderConfigurator configurator;
 
-	private final SynchronizedBoolean generationCompleted;
-	private boolean generationSuccessful;
+	final SynchronizedBoolean generationCompleted = new SynchronizedBoolean(false);
+	boolean generationSuccessful = false;
 
-	// ********** constructor **********
 	
 	public EclipseLinkStaticWeavingBuilder() {
-		this.generationCompleted = new SynchronizedBoolean(false);
+		super();
 	}
 	
-	// ********** IncrementalProjectBuilder implementation **********
 	/**
      * Performs static weaving on project's model classes
      */
 	@Override
-	protected IProject[] build(int kind, Map<String, String> parameters, IProgressMonitor monitor) throws CoreException
-	{
+	protected IProject[] build(int kind, Map<String, String> parameters, IProgressMonitor monitor) throws CoreException {
 		this.staticWeaveGeneratorGenerate(monitor);
 
 		return new IProject[0];
 	}
 	
-	// ********** internal methods **********
-
 	private void staticWeaveGeneratorGenerate(IProgressMonitor monitor) throws CoreException {
 		this.generationCompleted.setFalse();
 		this.generationSuccessful = false;
@@ -71,25 +67,21 @@ public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 		staticWeaveGenerator.generate(monitor);
 		try {
 			this.generationCompleted.waitUntilTrue();
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
-		}
-		finally {
+		} finally {
 			staticWeaveGenerator.removeLaunchConfigListener(launchListener);
 			this.generationCompleted.setFalse();
 		}
 		
-		this.postGenerate(this.generationSuccessful);
+		this.postGenerate();
 	}
 	
-	protected void postGenerate(boolean generationSuccessful) throws CoreException {
-		if( ! generationSuccessful) {
+	protected void postGenerate() throws CoreException {
+		if ( ! this.generationSuccessful) {
 			throw new RuntimeException(JptJpaEclipseLinkCoreMessages.ECLIPSELINK_STATIC_WEAVING_BUILDER__STATIC_WEAVING_FAILED);
 		}
-		else {
-			this.refreshProject();
-		}
+		this.refreshProject();
 	}
 
 	private void refreshProject() throws CoreException {
@@ -99,8 +91,8 @@ public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 	private LaunchConfigListener buildLaunchListener() {
 		return new LaunchConfigListener() {
 			
-			public void launchCompleted(boolean generationSuccessful) {
-				EclipseLinkStaticWeavingBuilder.this.generationSuccessful = generationSuccessful;
+			public void launchCompleted(boolean genSuccessful) {
+				EclipseLinkStaticWeavingBuilder.this.generationSuccessful = genSuccessful;
 				EclipseLinkStaticWeavingBuilder.this.generationCompleted.setTrue();
 			}
 		};
@@ -110,8 +102,6 @@ public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 		return JavaCore.create(this.getProject());
 	}
 	
-	// ********** overrides **********
-
 	@Override
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();

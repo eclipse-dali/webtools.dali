@@ -15,12 +15,10 @@ import org.eclipse.jpt.common.ui.internal.PartAdapter2;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -139,18 +137,7 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<PropertyValueModel<JpaFile>> buildEditorManagerJpaFileModel() {
-		return PropertyValueModelTools.transform(this.editorManagerModel, JPA_FILE_MODEL_TRANSFORMER);
-	}
-
-	private static final Transformer<JpaEditorManager, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
-
-	/* CU private */ static class JpaFileModelTransformer
-		extends TransformerAdapter<JpaEditorManager, PropertyValueModel<JpaFile>>
-	{
-		@Override
-		public PropertyValueModel<JpaFile> transform(JpaEditorManager editorManager) {
-			return editorManager.getJpaFileModel();
-		}
+		return PropertyValueModelTools.transform(this.editorManagerModel, mgr -> mgr.getJpaFileModel());
 	}
 
 
@@ -165,18 +152,7 @@ class JpaPageSelectionManager
 	}
 
 	private PropertyValueModel<ModifiablePropertyValueModel<JpaStructureNode>> buildEditorManagerJpaSelectionModel() {
-		return PropertyValueModelTools.transform(this.editorManagerModel, JPA_SELECTION_MODEL_TRANSFORMER);
-	}
-
-	private static final Transformer<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>> JPA_SELECTION_MODEL_TRANSFORMER = new JpaSelectionModelTransformer();
-
-	/* CU private */ static class JpaSelectionModelTransformer
-		extends TransformerAdapter<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>>
-	{
-		@Override
-		public ModifiablePropertyValueModel<JpaStructureNode> transform(JpaEditorManager editorManager) {
-			return editorManager.getJpaSelectionModel();
-		}
+		return PropertyValueModelTools.transform(this.editorManagerModel, mgr -> mgr.getJpaSelectionModel());
 	}
 
 

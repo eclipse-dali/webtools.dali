@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,6 +27,8 @@ public class GenericJavaDerivedIdentity2_0
 {
 	/** this can be <code>null</code> */
 	protected DerivedIdentityStrategy2_0 strategy;
+	protected boolean usesIdDerivedIdentityStrategy;
+	protected boolean usesMapsIdDerivedIdentityStrategy;
 
 	protected final IdDerivedIdentityStrategy2_0 idStrategy;
 
@@ -55,6 +57,8 @@ public class GenericJavaDerivedIdentity2_0
 		this.idStrategy.update(monitor);
 		this.mapsIdStrategy.update(monitor);
 		this.updateStrategy();
+		this.setUsesIdDerivedIdentityStrategy(this.buildUsesIdDerivedIdentityStrategy());
+		this.setUsesMapsIdDerivedIdentityStrategy(this.buildUsesMapsIdDerivedIdentityStrategy());
 	}
 
 
@@ -66,8 +70,7 @@ public class GenericJavaDerivedIdentity2_0
 
 	protected void setStrategy(DerivedIdentityStrategy2_0 strategy) {
 		DerivedIdentityStrategy2_0 old = this.strategy;
-		this.strategy = strategy;
-		this.firePropertyChanged(PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY, old, this.strategy = strategy);
 	}
 
 	protected void updateStrategy() {
@@ -111,6 +114,15 @@ public class GenericJavaDerivedIdentity2_0
 	}
 
 	public boolean usesIdDerivedIdentityStrategy() {
+		return this.usesIdDerivedIdentityStrategy;
+	}
+
+	protected void setUsesIdDerivedIdentityStrategy(boolean usesIdDerivedIdentityStrategy) {
+		boolean old = this.usesIdDerivedIdentityStrategy;
+		this.firePropertyChanged(USES_ID_DERIVED_IDENTITY_STRATEGY_PROPERTY, old, this.usesIdDerivedIdentityStrategy = usesIdDerivedIdentityStrategy);
+	}
+
+	protected boolean buildUsesIdDerivedIdentityStrategy() {
 		return this.strategy == this.idStrategy;
 	}
 
@@ -132,6 +144,15 @@ public class GenericJavaDerivedIdentity2_0
 	}
 
 	public boolean usesMapsIdDerivedIdentityStrategy() {
+		return this.usesMapsIdDerivedIdentityStrategy;
+	}
+
+	protected void setUsesMapsIdDerivedIdentityStrategy(boolean usesMapsIdDerivedIdentityStrategy) {
+		boolean old = this.usesMapsIdDerivedIdentityStrategy;
+		this.firePropertyChanged(USES_MAPS_ID_DERIVED_IDENTITY_STRATEGY_PROPERTY, old, this.usesMapsIdDerivedIdentityStrategy = usesMapsIdDerivedIdentityStrategy);
+	}
+
+	protected boolean buildUsesMapsIdDerivedIdentityStrategy() {
 		return this.strategy == this.mapsIdStrategy;
 	}
 

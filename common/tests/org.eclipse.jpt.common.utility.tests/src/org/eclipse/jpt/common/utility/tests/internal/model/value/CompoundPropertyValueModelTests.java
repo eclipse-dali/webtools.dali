@@ -13,7 +13,6 @@ import java.util.HashMap;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -49,16 +48,7 @@ public class CompoundPropertyValueModelTests
 	}
 
 	protected PropertyValueModel<SimplePropertyValueModel<String>> buildValueModelModel() {
-		return PropertyValueModelTools.transform(this.keyModel, new KeyTransformer());
-	}
-
-	public class KeyTransformer
-		extends TransformerAdapter<String, SimplePropertyValueModel<String>>
-	{
-		@Override
-		public SimplePropertyValueModel<String> transform(String key) {
-			return CompoundPropertyValueModelTests.this.getValueModel(key);
-		}
+		return PropertyValueModelTools.transform(this.keyModel, key -> this.getValueModel(key));
 	}
 
 	protected SimplePropertyValueModel<String> getValueModel(String key) {

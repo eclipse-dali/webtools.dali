@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**
- * This adapter adapts an subject property value model whose value is another model
+ * This adapter adapts a subject property value model whose value is another model
  * and treats the <em>inner</em> model's value as this adapter's models's value.
  * As a result, this adapter listens for changes to either model
  * (<em>inner</em> or <em>subject</em>).

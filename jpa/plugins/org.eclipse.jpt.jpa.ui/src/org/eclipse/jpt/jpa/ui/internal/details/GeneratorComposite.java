@@ -76,7 +76,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator>
 		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
 				this.getSubjectHolder(),
 				JpaNamedContextModel.NAME_PROPERTY,
-				TransformerTools.nullCheck(m -> m.getName()),
+				m -> (m == null) ? null : m.getName(),
 				(m, value) -> {
 					if (m != null) {
 						m.setName(StringTools.isBlank(value) ? null : value);
@@ -121,7 +121,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator>
 			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
 					this.getSubjectHolder(),
 					DatabaseGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY,
-					TransformerTools.nullCheck(m -> m.getSpecifiedAllocationSize()),
+					m -> (m == null) ? null : m.getSpecifiedAllocationSize(),
 					(m, value) -> retrieveGenerator().setSpecifiedAllocationSize(value)
 				);
 		}
@@ -158,7 +158,7 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator>
 			return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
 					this.getSubjectHolder(),
 					DatabaseGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY,
-					TransformerTools.nullCheck(m -> m.getSpecifiedInitialValue()),
+					m -> (m == null) ? null : m.getSpecifiedInitialValue(),
 					(m, value) -> retrieveGenerator().setSpecifiedInitialValue(value)
 				);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2016 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,9 @@ public class GenericOrmManyToOneRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToOneMapping>
 	implements OrmManyToOneRelationship2_0
 {
+	protected boolean strategyIsJoinColumn;
+	protected boolean strategyIsJoinTable;
+
 	protected final OrmSpecifiedJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
@@ -55,6 +58,8 @@ public class GenericOrmManyToOneRelationship
 	@Override
 	public void update(IProgressMonitor monitor) {
 		super.update(monitor);
+		this.setStrategyIsJoinColumn(this.buildStrategyIsJoinColumn());
+		this.setStrategyIsJoinTable(this.buildStrategyIsJoinTable());
 		this.joinColumnStrategy.update(monitor);
 		this.joinTableStrategy.update(monitor);
 	}
@@ -73,6 +78,41 @@ public class GenericOrmManyToOneRelationship
 	}
 
 
+	// ********** join column strategy **********
+
+	public OrmSpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy() {
+		return this.joinColumnStrategy;
+	}
+
+	public boolean strategyIsJoinColumn() {
+		return this.strategyIsJoinColumn;
+	}
+
+	protected void setStrategyIsJoinColumn(boolean strategyIsJoinColumn) {
+		boolean old = this.strategyIsJoinColumn;
+		this.firePropertyChanged(STRATEGY_IS_JOIN_COLUMN_PROPERTY, old, this.strategyIsJoinColumn = strategyIsJoinColumn);
+	}
+
+	protected boolean buildStrategyIsJoinColumn() {
+		return this.strategy == this.joinColumnStrategy;
+	}
+
+	public void setStrategyToJoinColumn() {
+		// join column strategy is the default; so no need to add stuff,
+		// just remove all the others
+		this.joinTableStrategy.removeStrategy();
+		this.updateStrategy();
+	}
+
+	public boolean mayHaveDefaultJoinColumn() {
+		return this.joinTableStrategy.getJoinTable() == null;
+	}
+
+	protected OrmSpecifiedJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+		return new GenericOrmMappingJoinColumnRelationshipStrategy(this);
+	}
+
+
 	// ********** join table strategy **********
 
 	public OrmSpecifiedJoinTableRelationshipStrategy getJoinTableStrategy() {
@@ -80,6 +120,15 @@ public class GenericOrmManyToOneRelationship
 	}
 
 	public boolean strategyIsJoinTable() {
+		return this.strategyIsJoinTable;
+	}
+
+	protected void setStrategyIsJoinTable(boolean strategyIsJoinTable) {
+		boolean old = this.strategyIsJoinTable;
+		this.firePropertyChanged(STRATEGY_IS_JOIN_TABLE_PROPERTY, old, this.strategyIsJoinTable = strategyIsJoinTable);
+	}
+
+	protected boolean buildStrategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
@@ -97,33 +146,6 @@ public class GenericOrmManyToOneRelationship
 		return this.isJpa2_0Compatible() ?
 				new GenericOrmMappingJoinTableRelationshipStrategy(this) :
 				new NullOrmJoinTableRelationshipStrategy(this);
-	}
-
-
-
-	// ********** join column strategy **********
-
-	public OrmSpecifiedJoinColumnRelationshipStrategy getJoinColumnStrategy() {
-		return this.joinColumnStrategy;
-	}
-
-	public boolean strategyIsJoinColumn() {
-		return this.strategy == this.joinColumnStrategy;
-	}
-
-	public void setStrategyToJoinColumn() {
-		// join column strategy is the default; so no need to add stuff,
-		// just remove all the others
-		this.joinTableStrategy.removeStrategy();
-		this.updateStrategy();
-	}
-
-	public boolean mayHaveDefaultJoinColumn() {
-		return this.joinTableStrategy.getJoinTable() == null;
-	}
-
-	protected OrmSpecifiedJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
-		return new GenericOrmMappingJoinColumnRelationshipStrategy(this);
 	}
 
 

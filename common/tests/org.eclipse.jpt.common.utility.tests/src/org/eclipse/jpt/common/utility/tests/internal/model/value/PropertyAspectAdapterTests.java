@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import org.eclipse.jpt.common.utility.closure.BiClosure;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.closure.BiClosureAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
@@ -30,7 +31,7 @@ public class PropertyAspectAdapterTests
 	extends TestCase
 {
 	private TestSubject subject1;
-	private ModifiablePropertyValueModel<TestSubject> subjectHolder1;
+	private ModifiablePropertyValueModel<TestSubject> subjectModel1;
 	private ModifiablePropertyValueModel<String> aa1;
 	private PropertyChangeEvent event1;
 	private PropertyChangeListener listener1;
@@ -48,8 +49,8 @@ public class PropertyAspectAdapterTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject1 = new TestSubject("foo", "test subject 1");
-		this.subjectHolder1 = new SimplePropertyValueModel<>(this.subject1);
-		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
+		this.subjectModel1 = new SimplePropertyValueModel<>(this.subject1);
+		this.aa1 = this.buildAspectAdapter(this.subjectModel1);
 		this.listener1 = this.buildValueChangeListener1();
 		this.aa1.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
 		this.event1 = null;
@@ -57,9 +58,9 @@ public class PropertyAspectAdapterTests
 		this.subject2 = new TestSubject("bar", "test subject 2");
 	}
 
-	private ModifiablePropertyValueModel<String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+	private ModifiablePropertyValueModel<String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectModel) {
 		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
-				subjectHolder,
+				subjectModel,
 				TestSubject.NAME_PROPERTY,
 				TestSubject.NAME_TRANSFORMER,
 				TestSubject.SET_NAME_CLOSURE
@@ -85,11 +86,11 @@ public class PropertyAspectAdapterTests
 		super.tearDown();
 	}
 
-	public void testSubjectHolder() {
+	public void testSubjectModel() {
 		assertEquals("foo", this.aa1.getValue());
 		assertNull(this.event1);
 
-		this.subjectHolder1.setValue(this.subject2);
+		this.subjectModel1.setValue(this.subject2);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(PropertyValueModel.VALUE, this.event1.getPropertyName());
@@ -98,7 +99,7 @@ public class PropertyAspectAdapterTests
 		assertEquals("bar", this.aa1.getValue());
 		
 		this.event1 = null;
-		this.subjectHolder1.setValue(null);
+		this.subjectModel1.setValue(null);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(PropertyValueModel.VALUE, this.event1.getPropertyName());
@@ -107,7 +108,7 @@ public class PropertyAspectAdapterTests
 		assertNull(this.aa1.getValue());
 		
 		this.event1 = null;
-		this.subjectHolder1.setValue(this.subject1);
+		this.subjectModel1.setValue(this.subject1);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(PropertyValueModel.VALUE, this.event1.getPropertyName());
@@ -163,7 +164,7 @@ public class PropertyAspectAdapterTests
 		assertEquals("foo", this.aa1.getValue());
 
 		this.aa1.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
-		this.subjectHolder1.setValue(this.subject2);
+		this.subjectModel1.setValue(this.subject2);
 		assertEquals(null, this.aa1.getValue());
 
 		this.aa1.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
@@ -193,15 +194,16 @@ public class PropertyAspectAdapterTests
 	}
 
 	/**
-	 * test a bug where we would call #buildValue() in
-	 * #engageNonNullSubject(), when we needed to call
-	 * it in #engageSubject(), so the cached value would
-	 * be rebuilt when the this.subject was set to null
+	 * Test a bug:
+	 * we would call <code>buildValue()</code> in
+	 * <code>engageNonNullSubject()</code>, when we needed to call
+	 * it in <code>engageSubject()</code>, so the cached value would
+	 * be rebuilt when the the <code>subject</code> was set to <code>null</code>
 	 */
 	public void testCustomBuildValueWithNullSubject() {
 		TestSubject customSubject = new TestSubject("fred", "laborer");
-		ModifiablePropertyValueModel<TestSubject> customSubjectHolder = new SimplePropertyValueModel<>(customSubject);
-		ModifiablePropertyValueModel<String> customAA = this.buildCustomAspectAdapter(customSubjectHolder);
+		ModifiablePropertyValueModel<TestSubject> customSubjectModel = new SimplePropertyValueModel<>(customSubject);
+		ModifiablePropertyValueModel<String> customAA = this.buildCustomAspectAdapter(customSubjectModel);
 		PropertyChangeListener customListener = this.buildCustomValueChangeListener();
 		customAA.addPropertyChangeListener(PropertyValueModel.VALUE, customListener);
 		assertEquals("fred", customAA.getValue());
@@ -213,7 +215,7 @@ public class PropertyAspectAdapterTests
 		assertEquals("wilma", this.customValueEvent.getNewValue());
 
 		this.customValueEvent = null;
-		customSubjectHolder.setValue(null);
+		customSubjectModel.setValue(null);
 		// this would fail - the value would be null...
 		assertEquals("<unnamed>", customAA.getValue());
 		assertEquals("wilma", this.customValueEvent.getOldValue());
@@ -224,8 +226,8 @@ public class PropertyAspectAdapterTests
 	 * Test a bug:
 	 * If two listeners were added to an aspect adapter, one with an
 	 * aspect name and one without, the aspect adapter would add its
-	 * 'subjectChangeListener' to its 'subjectHolder' twice. As a result,
-	 * the following code will trigger an IllegalArgumentException
+	 * <code>subjectChangeListener</code> to its <code>subjectModel</code> twice. As a result,
+	 * the following code will trigger an {@link IllegalArgumentException}
 	 * if the bug is present; otherwise, it completes silently.
 	 */
 	public void testDuplicateListener() {
@@ -233,11 +235,40 @@ public class PropertyAspectAdapterTests
 		this.aa1.addChangeListener(listener2);
 	}
 
-	private ModifiablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
-				subjectHolder,
+	public void testBogusTransformer() {
+		PropertyValueModel<Boolean> nameIsFooModel = this.buildNameIsFooModel(this.subjectModel1);
+		assertNull(nameIsFooModel.getValue());
+
+		nameIsFooModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
+		assertTrue(nameIsFooModel.getValue().booleanValue());
+		this.subjectModel1.getValue().setName("bar");
+		boolean exCaught = false;
+		try {
+			assertFalse(nameIsFooModel.getValue().booleanValue());
+		} catch (ClassCastException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	// **********
+	// ********** NB: this type of aspect adapter is NOT ALLOWED! :-)
+	// ********** an aspect adapter's value MUST match the aspect's value;
+	// ********** it CANNOT transform it
+	// **********
+	private PropertyValueModel<Boolean> buildNameIsFooModel(PropertyValueModel<TestSubject> subjectModel) {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				subjectModel,
 				TestSubject.NAME_PROPERTY,
-				TestSubject.CUSTOM_NAME_TRANSFORMER,
+				s -> Boolean.valueOf((s != null) && ObjectTools.equals(s.getName(), "foo"))
+			);
+	}
+
+	private ModifiablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectModel) {
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+				subjectModel,
+				TestSubject.NAME_PROPERTY,
+				s -> (s == null) ? "<unnamed>" : s.getName(),
 				TestSubject.SET_NAME_CLOSURE
 			);
 	}
@@ -269,15 +300,6 @@ public class PropertyAspectAdapterTests
 				@Override
 				public String transform(TestSubject model) {
 					return model.getName();
-				}
-			}
-			public static final Transformer<TestSubject, String> CUSTOM_NAME_TRANSFORMER = new CustomNameTransformer();
-			public static final class CustomNameTransformer
-				extends TransformerAdapter<TestSubject, String>
-			{
-				@Override
-				public String transform(TestSubject model) {
-					return (model == null) ? "<unnamed>" : model.getName();
 				}
 			}
 			public static final BiClosure<TestSubject, String> SET_NAME_CLOSURE = new SetNameClosure();

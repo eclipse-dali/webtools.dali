@@ -58,7 +58,6 @@ import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionValueModelTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -144,19 +143,9 @@ public class JaxbSchemasPropertiesPage
 	}
 
 	private PropertyValueModel<PropertyValueModel<JaxbProject>> buildJaxbProjectModelModel() {
-		return PropertyValueModelTools.transform(this.projectModel, JAXB_PROJECT_MODEL_TRANSFORMER);
+		return PropertyValueModelTools.transform(this.projectModel, p -> p.getAdapter(JaxbProjectModel.class));
 	}
 
-	private static final Transformer<IProject, PropertyValueModel<JaxbProject>> JAXB_PROJECT_MODEL_TRANSFORMER = new JaxbProjectModelTransformer();
-
-	/* CU private */ static class JaxbProjectModelTransformer
-		extends TransformerAdapter<IProject, PropertyValueModel<JaxbProject>>
-	{
-		@Override
-		public PropertyValueModel<JaxbProject> transform(IProject project) {
-			return project.getAdapter(JaxbProjectModel.class);
-		}
-	}
 
 	protected IProject getProject() {
 		return this.projectModel.getValue();

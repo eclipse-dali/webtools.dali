@@ -13,8 +13,9 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -91,12 +92,12 @@ public class ManyToManyJoiningStrategyPane
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMappedByStrategyModel() {
-		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
-				Relationship.STRATEGY_PROPERTY,
-				m -> Boolean.valueOf((m != null) && m.strategyIsMappedBy()),
+				MappedByRelationship.STRATEGY_IS_MAPPED_BY_PROPERTY,
+				m -> Boolean.valueOf(m.strategyIsMappedBy()),
 				(m, value) -> {
-					if ((m != null) && (value != null) && value.booleanValue()) {
+					if ((value != null) && value.booleanValue()) {
 						m.setStrategyToMappedBy();
 					}
 				}
@@ -104,12 +105,12 @@ public class ManyToManyJoiningStrategyPane
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesJoinTableStrategyModel() {
-		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				this.getSubjectHolder(),
-				Relationship.STRATEGY_PROPERTY,
-				m -> Boolean.valueOf((m != null) && m.strategyIsJoinTable()),
+				JoinTableRelationship.STRATEGY_IS_JOIN_TABLE_PROPERTY,
+				m -> Boolean.valueOf(m.strategyIsJoinTable()),
 				(m, value) -> {
-					if ((m != null) && (value != null) && value.booleanValue()) {
+					if ((value != null) && value.booleanValue()) {
 						m.setStrategyToJoinTable();
 					}
 				}

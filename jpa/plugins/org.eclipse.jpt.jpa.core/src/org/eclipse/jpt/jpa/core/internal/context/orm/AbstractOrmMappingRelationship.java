@@ -56,8 +56,7 @@ public abstract class AbstractOrmMappingRelationship<P extends OrmRelationshipMa
 
 	protected void setStrategy(SpecifiedRelationshipStrategy strategy) {
 		SpecifiedRelationshipStrategy old = this.strategy;
-		this.strategy = strategy;
-		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, this.strategy = strategy);
 	}
 
 	protected abstract SpecifiedRelationshipStrategy buildStrategy();

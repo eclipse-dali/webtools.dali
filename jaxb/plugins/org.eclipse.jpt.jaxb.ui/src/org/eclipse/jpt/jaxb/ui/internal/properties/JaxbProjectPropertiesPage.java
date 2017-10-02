@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.WorkbenchTools;
@@ -38,7 +37,6 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
@@ -102,18 +100,7 @@ public class JaxbProjectPropertiesPage
 	}
 
 	private PropertyValueModel<PropertyValueModel<JaxbProject>> buildJaxbProjectModelModel() {
-		return PropertyValueModelTools.transform(this.projectModel, JAXB_PROJECT_MODEL_TRANSFORMER);
-	}
-
-	private static final Transformer<IProject, PropertyValueModel<JaxbProject>> JAXB_PROJECT_MODEL_TRANSFORMER = new JaxbProjectModelTransformer();
-
-	/* CU private */ static class JaxbProjectModelTransformer
-		extends TransformerAdapter<IProject, PropertyValueModel<JaxbProject>>
-	{
-		@Override
-		public PropertyValueModel<JaxbProject> transform(IProject project) {
-			return project.getAdapter(JaxbProjectModel.class);
-		}
+		return PropertyValueModelTools.transform(this.projectModel, p -> p.getAdapter(JaxbProjectModel.class));
 	}
 
 	// ***** platform ID model

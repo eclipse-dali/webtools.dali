@@ -20,6 +20,14 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * pluggable property aspect adapter} to convert one of a {@link Model model's}
  * <em>bound</em> properties to a
  * {@link org.eclipse.jpt.common.utility.model.value.PropertyValueModel property value model}.
+ * <p>
+ * <strong>NB:</strong>
+ * The {@link #propertyTransformer} <em>must</em> transform
+ * a non-<code>null</code> subject into the same value as the value
+ * passed by the correponding change event; i.e. it should invoke a
+ * "standard" getter. The only thing, in addition to calling the property's
+ * getter, the transformer can do is return something other than <code>null</code>
+ * if the subject is <code>null</code>.
  * 
  * @param <V> the type of the adapter's value
  * @param <S> the type of the subject whose <em>bound</em> property is transformed into
@@ -67,6 +75,13 @@ public final class ModelPropertyAspectAdapter<V, S extends Model>
 		return this.propertyTransformer.transform(null);
 	}
 
+	/**
+	 * <strong>NB:</strong>
+	 * The event's new value is passed through <em>untouched</em>;
+	 * i.e. the {@link #propertyTransformer} <em>must</em> transform
+	 * a non-<code>null</code> subject into the same value as the value
+	 * passed to the correponding change event.
+	 */
 	public void propertyChanged(PropertyChangeEvent event) {
 		@SuppressWarnings("unchecked")
 		V newValue = (V) event.getNewValue();

@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelToo
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.swt.widgets.Composite;
 
@@ -54,12 +53,12 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyModel(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
-		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter_(
+		return PropertyValueModelTools.modifiableSubjectModelAspectAdapter(
 				subjectHolder,
-				Relationship.STRATEGY_PROPERTY,
-				m -> Boolean.valueOf((m != null) && m.strategyIsPrimaryKeyJoinColumn()),
+				PrimaryKeyJoinColumnRelationship.STRATEGY_IS_PRIMARY_KEY_JOIN_COLUMN_PROPERTY,
+				m -> Boolean.valueOf(m.strategyIsPrimaryKeyJoinColumn()),
 				(m, value) -> {
-					if ((m != null) && (value != null) && value.booleanValue()) {
+					if ((value != null) && value.booleanValue()) {
 						m.setStrategyToPrimaryKeyJoinColumn();
 					}
 				}
