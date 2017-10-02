@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -77,13 +76,11 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<JoinTable> buildJoinTableModel() {
-		return new PropertyAspectAdapterXXXX<JoinTableRelationshipStrategy, JoinTable>(
-				this.buildJoinTableJoiningStrategyModel(), JoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
-			@Override
-			protected JoinTable buildValue_() {
-				return this.subject.getJoinTable();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.buildJoinTableJoiningStrategyModel(),
+				JoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY,
+				m -> m.getJoinTable()
+			);
 	}
 
 	public static ModifiablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyModel(PropertyValueModel<? extends JoinTableRelationship> subjectHolder) {

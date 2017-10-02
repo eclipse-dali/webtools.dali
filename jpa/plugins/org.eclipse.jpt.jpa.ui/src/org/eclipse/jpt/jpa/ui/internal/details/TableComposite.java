@@ -14,13 +14,12 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSchemaReference;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -102,23 +101,20 @@ public class TableComposite extends Pane<Entity>
 		this.addSchemaCombo(subjectHolder, enabledModel, container);
 	}
 	
-	protected ModifiablePropertyValueModel<SpecifiedTable> buildTableHolder() {
-		
-		return new PropertyAspectAdapterXXXX<Entity, SpecifiedTable>(getSubjectHolder(), Entity.TABLE_IS_UNDEFINED_PROPERTY) {
-			@Override
-			protected SpecifiedTable buildValue_() {
-				return this.subject.tableIsUndefined() ? null : this.subject.getTable();
-			}
-		};
+	protected PropertyValueModel<SpecifiedTable> buildTableHolder() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				Entity.TABLE_IS_UNDEFINED_PROPERTY,
+				m -> m.tableIsUndefined() ? null : m.getTable()
+			);
 	}
 	
 	protected PropertyValueModel<Boolean> buildTableEnabledModel() {
-		return new PropertyAspectAdapterXXXX<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_TABLE_IS_ALLOWED_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.specifiedTableIsAllowed());
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				Entity.SPECIFIED_TABLE_IS_ALLOWED_PROPERTY,
+				m -> Boolean.valueOf(m.specifiedTableIsAllowed())
+			);
 	}
 
 	private CatalogCombo<SpecifiedTable> addCatalogCombo(PropertyValueModel<SpecifiedTable> tableHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {

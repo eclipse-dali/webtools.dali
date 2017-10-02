@@ -262,13 +262,12 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		};
 	}
 	
-	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorColumnEnabledModel() {
-		return new PropertyAspectAdapterXXXX<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf( this.subject != null && this.subject.specifiedDiscriminatorColumnIsAllowed());
-			}
-		};
+	protected PropertyValueModel<Boolean> buildDiscriminatorColumnEnabledModel() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY,
+				m -> Boolean.valueOf(m.specifiedDiscriminatorColumnIsAllowed())
+			);
 	}
 
 	@SuppressWarnings("unused")
@@ -288,12 +287,11 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<SpecifiedDiscriminatorColumn, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultLength());
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY,
+					m -> Integer.valueOf(m.getDefaultLength())
+				);
 		}
 
 		@Override

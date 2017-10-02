@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -110,12 +109,11 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator>
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultAllocationSize());
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					DatabaseGenerator.DEFAULT_ALLOCATION_SIZE_PROPERTY,
+					m -> Integer.valueOf(m.getDefaultAllocationSize())
+				);
 		}
 
 		@Override
@@ -148,12 +146,11 @@ public abstract class GeneratorComposite<T extends DatabaseGenerator>
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<DatabaseGenerator, Integer>(getSubjectHolder(), DatabaseGenerator.DEFAULT_INITIAL_VALUE_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultInitialValue());
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					DatabaseGenerator.DEFAULT_INITIAL_VALUE_PROPERTY,
+					m -> Integer.valueOf(m.getDefaultInitialValue())
+				);
 		}
 
 		@Override

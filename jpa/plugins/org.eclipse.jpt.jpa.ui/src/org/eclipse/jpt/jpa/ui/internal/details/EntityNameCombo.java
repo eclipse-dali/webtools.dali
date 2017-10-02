@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.swt.widgets.ComboTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
@@ -87,12 +86,11 @@ public class EntityNameCombo
 	}
 
 	private PropertyValueModel<String> buildDefaultEntityNameModel() {
-		return new PropertyAspectAdapterXXXX<Entity, String>(getSubjectHolder(), Entity.DEFAULT_NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return defaultValue(this.subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				Entity.DEFAULT_NAME_PROPERTY,
+				m -> defaultValue(m)
+			);
 	}
 
 	private ModifiablePropertyValueModel<String> buildEntityNameModel() {

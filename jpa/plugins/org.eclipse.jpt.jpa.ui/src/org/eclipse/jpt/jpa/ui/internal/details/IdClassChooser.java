@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -75,13 +74,14 @@ public class IdClassChooser
 
 	@Override
 	protected ListValueModel<String> buildClassListModel() {
-		return new PropertyListValueModelAdapter<>(
-			new PropertyAspectAdapterXXXX<IdClassReference, String>(
-					getSubjectHolder(), IdClassReference.DEFAULT_ID_CLASS_NAME_PROPERTY) {
-				@Override
-				protected String buildValue_() {
-					return defaultText(this.subject);
-				}
-			});
+		return new PropertyListValueModelAdapter<>(this.buildClassModel());
+	}
+
+	protected PropertyValueModel<String> buildClassModel() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				IdClassReference.DEFAULT_ID_CLASS_NAME_PROPERTY,
+				m -> defaultText(m)
+			);
 	}
 }

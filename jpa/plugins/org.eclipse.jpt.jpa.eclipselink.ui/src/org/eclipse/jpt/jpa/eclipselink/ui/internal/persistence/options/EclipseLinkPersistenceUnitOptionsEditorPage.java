@@ -250,12 +250,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** session name *********
 
 	private PropertyValueModel<String> buildDefaultSessionNameModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_SESSION_NAME) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionNameDefaultValue(this.subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.optionsModel,
+				EclipseLinkOptions.DEFAULT_SESSION_NAME,
+				m -> getSessionNameDefaultValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultSessionNameListModel() {
@@ -303,12 +302,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** sessions xml *********
 
 	private PropertyValueModel<String> buildDefaultSessionsXmlFileNameModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_SESSIONS_XML) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionsXmlDefaultValue(this.subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.optionsModel,
+				EclipseLinkOptions.DEFAULT_SESSIONS_XML,
+				m -> getSessionsXmlDefaultValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultSessionsXmlFileNameListModel() {
@@ -356,12 +354,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** target database *********
 
 	private PropertyValueModel<String> buildDefaultTargetDatabaseModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_TARGET_DATABASE) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetDatabaseDefaultValue(this.subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.optionsModel,
+				EclipseLinkOptions.DEFAULT_TARGET_DATABASE,
+				m -> getTargetDatabaseDefaultValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultTargetDatabaseListModel() {
@@ -520,12 +517,11 @@ public class EclipseLinkPersistenceUnitOptionsEditorPage
 	//******** target server *********
 
 	private PropertyValueModel<String> buildDefaultTargetServerModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkOptions, String>(this.optionsModel, EclipseLinkOptions.DEFAULT_TARGET_SERVER) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetServerDefaultValue(this.subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.optionsModel,
+				EclipseLinkOptions.DEFAULT_TARGET_SERVER,
+				m -> getTargetServerDefaultValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultTargetServerListModel() {

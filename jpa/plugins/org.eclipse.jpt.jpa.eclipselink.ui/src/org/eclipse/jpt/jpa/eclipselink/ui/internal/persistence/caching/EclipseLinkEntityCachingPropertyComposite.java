@@ -99,16 +99,11 @@ public class EclipseLinkEntityCachingPropertyComposite
 		}
 
 		private PropertyValueModel<EclipseLinkCacheType> buildDefaultCacheTypeModel() {
-			return new PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkCacheType>(buildCachingModel(), EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY) {
-				@Override
-				protected EclipseLinkCacheType buildValue_() {
-					EclipseLinkCacheType cacheType = this.subject.getCacheTypeDefault();
-					if (cacheType == null) {
-						cacheType = this.subject.getDefaultCacheTypeDefault();
-					}
-					return cacheType;
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					buildCachingModel(),
+					EclipseLinkCaching.CACHE_TYPE_DEFAULT_PROPERTY,
+					m -> (m.getCacheTypeDefault() != null) ? m.getCacheTypeDefault() : m.getDefaultCacheTypeDefault()
+				);
 		}
 
 		private PropertyChangeListener buildDefaultCachingTypePropertyChangeListener() {
@@ -223,16 +218,11 @@ public class EclipseLinkEntityCachingPropertyComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Integer>(buildCachingModel(), EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					Integer size = this.subject.getCacheSizeDefault();
-					if (size == null) {
-						size = this.subject.getDefaultCacheSizeDefault();
-					}
-					return size;
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					buildCachingModel(),
+					EclipseLinkCaching.CACHE_SIZE_DEFAULT_PROPERTY,
+					m -> (m.getCacheSizeDefault() != null) ? m.getCacheSizeDefault() : m.getDefaultCacheSizeDefault()
+				);
 		}
 
 		@Override

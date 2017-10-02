@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.FolderChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -189,12 +190,11 @@ public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 	//************ Create DDL file name ************
 
 	private PropertyValueModel<String> buildDefaultCreateDdlFileNameHolder() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_CREATE_FILE_NAME) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultCreateFileNameValue(subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkSchemaGeneration.DEFAULT_CREATE_FILE_NAME,
+				m -> getDefaultCreateFileNameValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultCreateDdlFileNameListHolder() {
@@ -243,12 +243,11 @@ public class EclipseLinkPersistenceXmlSchemaGenerationComposite
 
 
 	private PropertyValueModel<String> buildDefaultDropDdlFileNameHolder() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkSchemaGeneration, String>(this.getSubjectHolder(), EclipseLinkSchemaGeneration.DEFAULT_DROP_FILE_NAME) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkPersistenceXmlSchemaGenerationComposite.this.getDefaultDropDdlFileNameValue(subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkSchemaGeneration.DEFAULT_DROP_FILE_NAME,
+				m -> getDefaultDropDdlFileNameValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultDropDdlFileNameListHolder() {

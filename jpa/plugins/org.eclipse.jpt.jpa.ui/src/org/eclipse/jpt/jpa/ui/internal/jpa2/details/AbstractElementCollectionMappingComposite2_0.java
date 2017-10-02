@@ -243,13 +243,11 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	protected PropertyValueModel<M.Type> buildValueModel() {
-		return new PropertyAspectAdapterXXXX<M, M.Type>(
-				this.getSubjectHolder(), CollectionMapping.VALUE_TYPE_PROPERTY) {
-			@Override
-			protected ElementCollectionMapping2_0.Type buildValue_() {
-				return this.subject.getValueType();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				CollectionMapping.VALUE_TYPE_PROPERTY,
+				m -> m.getValueType()
+			);
 	}
 
 	private Transformer<M.Type, Control> buildPaneTransformer(Composite container) {
@@ -330,12 +328,11 @@ public abstract class AbstractElementCollectionMappingComposite2_0<M extends Ele
 	}
 	
 	protected PropertyValueModel<Converter> buildConverterModel() {
-		return new PropertyAspectAdapterXXXX<M, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Converter buildValue_() {
-				return this.subject.getConverter();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				ConvertibleMapping.CONVERTER_PROPERTY,
+				m -> m.getConverter()
+			);
 	}
 	
 	private PropertyValueModel<BaseTemporalConverter> buildTemporalConverterModel(PropertyValueModel<Converter> converterModel) {

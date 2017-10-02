@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -100,12 +101,11 @@ public class EclipseLinkLoggerClassChooser
 	}
 
 	private PropertyValueModel<String> buildDefaultLoggerModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkLogging, String>(this.getSubjectHolder(), EclipseLinkLogging.DEFAULT_LOGGER) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkLoggerClassChooser.this.getDefaultValue(this.subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkLogging.DEFAULT_LOGGER,
+				m -> EclipseLinkLoggerClassChooser.this.getDefaultValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultLoggerListModel() {

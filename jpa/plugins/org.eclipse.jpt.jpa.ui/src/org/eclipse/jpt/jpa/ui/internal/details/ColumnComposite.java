@@ -442,12 +442,11 @@ public class ColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultLength());
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					Column.DEFAULT_LENGTH_PROPERTY,
+					m -> Integer.valueOf(m.getDefaultLength())
+				);
 		}
 
 		@Override
@@ -483,12 +482,11 @@ public class ColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultPrecision());
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					Column.DEFAULT_PRECISION_PROPERTY,
+					m -> Integer.valueOf(m.getDefaultPrecision())
+				);
 		}
 
 		@Override
@@ -526,12 +524,11 @@ public class ColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultScale());
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					Column.DEFAULT_SCALE_PROPERTY,
+					m -> Integer.valueOf(m.getDefaultScale())
+				);
 		}
 
 		@Override

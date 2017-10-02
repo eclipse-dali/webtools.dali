@@ -288,13 +288,13 @@ public class IdMappingGenerationComposite
 	}
 
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorModel(PropertyValueModel<GeneratorContainer> generatorModel) {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, SequenceGenerator>(generatorModel, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
-			@Override
-			protected SequenceGenerator buildValue_() {
-				return this.subject.getSequenceGenerator();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				generatorModel,
+				GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY,
+				m -> m.getSequenceGenerator()
+			);
 	}
+
 	private GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder(final PropertyValueModel<GeneratorContainer> generatorModel) {
 		return new GeneratorBuilder<SequenceGenerator>() {
 			public SequenceGenerator addGenerator() {
@@ -352,12 +352,11 @@ public class IdMappingGenerationComposite
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorModel(PropertyValueModel<GeneratorContainer> generatorModel) {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, TableGenerator>(generatorModel, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
-			@Override
-			protected TableGenerator buildValue_() {
-				return this.subject.getTableGenerator();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				generatorModel,
+				GeneratorContainer.TABLE_GENERATOR_PROPERTY,
+				m -> m.getTableGenerator()
+			);
 	}
 
 	private GeneratorBuilder<TableGenerator> buildTableGeneratorBuilder(final PropertyValueModel<GeneratorContainer> generatorModel) {

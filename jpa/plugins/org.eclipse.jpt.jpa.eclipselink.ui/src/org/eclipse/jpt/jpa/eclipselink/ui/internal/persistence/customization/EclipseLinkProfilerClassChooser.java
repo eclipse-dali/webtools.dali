@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -94,12 +95,11 @@ public class EclipseLinkProfilerClassChooser
     }
 
 	private PropertyValueModel<String> buildDefaultProfilerModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCustomization, String>(this.getSubjectHolder(), EclipseLinkCustomization.DEFAULT_PROFILER) {
-			@Override
-			protected String buildValue_() {
-				return EclipseLinkProfilerClassChooser.this.getDefaultValue(this.subject);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkCustomization.DEFAULT_PROFILER,
+				m -> EclipseLinkProfilerClassChooser.this.getDefaultValue(m)
+			);
 	}
 
 	private ListValueModel<String> buildDefaultProfilerListModel() {

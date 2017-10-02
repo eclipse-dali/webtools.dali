@@ -13,11 +13,9 @@ import java.util.HashMap;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.predicate.CriterionPredicate;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.predicate.Predicate;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
@@ -119,16 +117,12 @@ public abstract class PersistentAttributeDetailsPageManager<A extends Persistent
 	}
 
 
-	private ModifiablePropertyValueModel<AttributeMapping> buildMappingModel() {
-		return new PropertyAspectAdapterXXXX<A, AttributeMapping>(
-			getSubjectHolder(),
-			PersistentAttribute.MAPPING_PROPERTY)
-		{
-			@Override
-			protected AttributeMapping buildValue_() {
-				return this.subject.getMapping();
-			}
-		};
+	private PropertyValueModel<AttributeMapping> buildMappingModel() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				PersistentAttribute.MAPPING_PROPERTY,
+				m -> m.getMapping()
+			);
 	}
 
 	@Override

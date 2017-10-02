@@ -26,7 +26,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PluggablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -38,11 +37,11 @@ import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SpecifiedBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedOrVirtual;
 import org.eclipse.jpt.jpa.core.context.SpecifiedPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.SpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
@@ -88,12 +87,11 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite
 	}
 
 	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnModel() {
-		return new PropertyAspectAdapterXXXX<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
-			@Override
-			protected PrimaryKeyJoinColumn buildValue_() {
-				return this.subject.getDefaultPrimaryKeyJoinColumn();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN,
+				m -> m.getDefaultPrimaryKeyJoinColumn()
+			);
 	}
 
 	private ListValueModel<PrimaryKeyJoinColumn> buildDefaultPrimaryKeyJoinColumnListModel() {

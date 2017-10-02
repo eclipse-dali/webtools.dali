@@ -12,9 +12,10 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
@@ -142,12 +143,11 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 
 	protected PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, SequenceGenerator>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
-			@Override
-			protected SequenceGenerator buildValue_() {
-				return this.subject.getSequenceGenerator();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY,
+				m -> m.getSequenceGenerator()
+			);
 	}
 
 	protected GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder() {
@@ -218,12 +218,11 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, TableGenerator>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
-			@Override
-			protected TableGenerator buildValue_() {
-				return this.subject.getTableGenerator();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				GeneratorContainer.TABLE_GENERATOR_PROPERTY,
+				m -> m.getTableGenerator()
+			);
 	}
 
 	private GeneratorBuilder<TableGenerator> buildTableGeneratorBuilder() {
@@ -235,12 +234,11 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	}
 
 	protected PropertyValueModel<Boolean> buildTableGeneratorExpanstionStateHolder() {
-		return new PropertyAspectAdapterXXXX<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getTableGenerator() != null);
-			}		
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				GeneratorContainer.TABLE_GENERATOR_PROPERTY,
+				m -> Boolean.valueOf(m.getTableGenerator() != null)
+			);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {

@@ -257,30 +257,27 @@ public class EclipseLinkExpiryComposite
 	}
 
 	private PropertyValueModel<Boolean> buildTimeToLiveExpiryEnabler() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getExpiry() != null);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.EXPIRY_PROPERTY,
+				m -> Boolean.valueOf(m.getExpiry() != null)
+			);
 	}
 	
 	private PropertyValueModel<Boolean> buildTimeOfDayExpiryEnabler() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getExpiryTimeOfDay() != null);
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY,
+				m -> Boolean.valueOf(m.getExpiryTimeOfDay() != null)
+			);
 	}
 	
 	private PropertyValueModel<EclipseLinkTimeOfDay> buildTimeOfDayExpiryModel() {
-		return new PropertyAspectAdapterXXXX<EclipseLinkCaching, EclipseLinkTimeOfDay>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
-			@Override
-			protected EclipseLinkTimeOfDay buildValue_() {
-				return this.subject.getExpiryTimeOfDay();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY,
+				m -> m.getExpiryTimeOfDay()
+			);
 	}
 
 	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpiryHourModel(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {

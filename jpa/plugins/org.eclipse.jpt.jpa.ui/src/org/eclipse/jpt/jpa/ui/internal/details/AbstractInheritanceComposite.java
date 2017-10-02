@@ -119,13 +119,12 @@ public abstract class AbstractInheritanceComposite<T extends Entity>
 		pkJoinColumnsComposite.setLayoutData(gridData);
 	}
 	
-	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
-		return new PropertyAspectAdapterXXXX<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.specifiedDiscriminatorValueIsAllowed());
-			}
-		};
+	protected PropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY,
+				m -> Boolean.valueOf(m.specifiedDiscriminatorValueIsAllowed())
+			);
 	}
 
 	private ListValueModel<String> buildDefaultDiscriminatorListValueHolder() {

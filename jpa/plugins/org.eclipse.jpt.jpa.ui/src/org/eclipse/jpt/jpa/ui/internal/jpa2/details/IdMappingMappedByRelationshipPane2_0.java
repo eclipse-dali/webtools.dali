@@ -11,9 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapterXXXX;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyValueModelTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivableIdMapping2_0;
@@ -55,13 +54,12 @@ public class IdMappingMappedByRelationshipPane2_0
 		return this.mappedByRelationshipLabel;
 	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildDerivedModel() {
-		return new PropertyAspectAdapterXXXX<IdMapping2_0, Boolean>(getSubjectHolder(), DerivableIdMapping2_0.DERIVED_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.isDerived());
-			}
-		};
+	protected PropertyValueModel<Boolean> buildDerivedModel() {
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				DerivableIdMapping2_0.DERIVED_PROPERTY,
+				m -> Boolean.valueOf(m.isDerived())
+			);
 	}
 
 	private Transformer<Boolean, Control> buildPaneTransformer(final Composite container) {

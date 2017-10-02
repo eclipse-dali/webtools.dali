@@ -181,12 +181,11 @@ public abstract class AbstractBasicMappingComposite<M extends BasicMapping>
 	}
 	
 	protected PropertyValueModel<Converter> buildConverterModel() {
-		return new PropertyAspectAdapterXXXX<M, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Converter buildValue_() {
-				return this.subject.getConverter();
-			}
-		};
+		return PropertyValueModelTools.subjectModelAspectAdapter(
+				this.getSubjectHolder(),
+				ConvertibleMapping.CONVERTER_PROPERTY,
+				m -> m.getConverter()
+			);
 	}
 	
 	protected PropertyValueModel<BaseTemporalConverter> buildTemporalConverterModel(PropertyValueModel<Converter> converterModel) {

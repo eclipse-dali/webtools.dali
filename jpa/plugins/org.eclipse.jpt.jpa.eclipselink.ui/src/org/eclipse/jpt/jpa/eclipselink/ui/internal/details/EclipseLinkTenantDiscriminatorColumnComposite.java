@@ -354,12 +354,11 @@ public class EclipseLinkTenantDiscriminatorColumnComposite
 
 		@Override
 		protected PropertyValueModel<Integer> buildDefaultModel() {
-			return new PropertyAspectAdapterXXXX<EclipseLinkTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultLength());
-				}
-			};
+			return PropertyValueModelTools.subjectModelAspectAdapter(
+					this.getSubjectHolder(),
+					NamedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY,
+					m -> Integer.valueOf(m.getDefaultLength())
+				);
 		}
 
 		@Override
