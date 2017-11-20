@@ -30,6 +30,20 @@
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/dali/webtools.dali.git</tycho.scmUrl>
   </properties>
 
+  <!-- Bug 526334 - ignore vestigial project settings which appear in Eclipse but are ignored by Tycho, like API access restrictions -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <useProjectSettings>false</useProjectSettings>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <modules>
     <!-- assembly -->
     <module>assembly/features/org.eclipse.jpt.assembly.feature</module>
