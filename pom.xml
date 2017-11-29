@@ -164,5 +164,8 @@
     <module>jpa_diagram_editor/plugins/org.eclipse.jpt.jpadiagrameditor.ui</module>
 
     <module>jpa_diagram_editor/tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
+
+    <module>site</module>
+    
   </modules>
 </project>
