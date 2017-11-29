@@ -6,6 +6,7 @@
  * 
  * Contributors:
  *     Oracle - initial API and implementation
+ *     Nick Boldt (Red Hat) - change value of 1 tick so tests run clean on Hudson slaves
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
@@ -32,7 +33,7 @@ public abstract class MultiThreadedTestCase
 	 * Specify the appropriate system property to override.
 	 */
 	public static final String TICK_SYSTEM_PROPERTY_NAME = "org.eclipse.jpt.common.utility.tests.tick";
-	public static final long TICK = Long.getLong(TICK_SYSTEM_PROPERTY_NAME, 1000).longValue();
+	public static final long TICK = Long.getLong(TICK_SYSTEM_PROPERTY_NAME, 990).longValue();
 	public static final long TWO_TICKS = 2 * TICK;
 	public static final long THREE_TICKS = 3 * TICK;
 
