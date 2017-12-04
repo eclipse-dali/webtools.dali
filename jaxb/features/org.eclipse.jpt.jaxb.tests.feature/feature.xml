@@ -23,10 +23,11 @@
       <import feature="org.eclipse.jpt.common.tests.feature" version="1.0.0"/>
    </requires>
 
-   <plugin
+   <!-- disable tests that don't currently work and are not currently RUN as part of the releng.aggregator build -->
+   <!-- <plugin
          id="org.eclipse.jpt.jaxb.core.tests"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"/> -->
 
 </feature>
