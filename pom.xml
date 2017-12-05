@@ -128,7 +128,8 @@
     <!-- jpa -->
     <module>jpa/features/org.eclipse.jpt.jpa.eclipselink.feature</module>
     <module>jpa/features/org.eclipse.jpt.jpa.eclipselink_sdk.feature</module>
-    <module>jpa/features/org.eclipse.jpt.jpa.eclipselink.tests.feature</module>
+    <!-- disable this test feature since it requires org.eclipse.jpt.jpa.eclipselink.core.tests and org.eclipse.jpt.jpa.core.tests --> 
+    <!-- <module>jpa/features/org.eclipse.jpt.jpa.eclipselink.tests.feature</module> -->
     <module>jpa/features/org.eclipse.jpt.jpa.feature</module>
     <module>jpa/features/org.eclipse.jpt.jpa_sdk.feature</module>
     <module>jpa/features/org.eclipse.jpt.jpa.tests.feature</module>
@@ -150,7 +151,8 @@
     <!-- disable tests that don't currently work and are not currently RUN as part of the releng.aggregator build -->
     <!-- <module>jpa/tests/org.eclipse.jpt.jpa.core.tests</module> -->
     <module>jpa/tests/org.eclipse.jpt.jpa.core.tests.extension.resource</module>
-    <module>jpa/tests/org.eclipse.jpt.jpa.eclipselink.core.tests</module>
+    <!-- disable this test since it requires org.eclipse.jpt.jpa.core.tests --> 
+    <!-- <module>jpa/tests/org.eclipse.jpt.jpa.eclipselink.core.tests</module> -->
 
     <!-- jpa_diagram_editor -->
     <module>jpa_diagram_editor/development/org.eclipse.jpt.jpadiagrameditor.repository</module>

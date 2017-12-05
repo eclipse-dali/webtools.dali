@@ -52,7 +52,8 @@
     <!-- jpa -->
     <feature id="org.eclipse.jpt.jpa.eclipselink.feature"><category name="dali"/></feature>
     <feature id="org.eclipse.jpt.jpa.eclipselink_sdk.feature"><category name="dali.sdk"/></feature>
-    <feature id="org.eclipse.jpt.jpa.eclipselink.tests.feature"><category name="dali"/></feature>
+    <!-- disable this test feature since it requires org.eclipse.jpt.jpa.eclipselink.core.tests and org.eclipse.jpt.jpa.core.tests --> 
+    <!-- <feature id="org.eclipse.jpt.jpa.eclipselink.tests.feature"><category name="dali"/></feature> -->
     <feature id="org.eclipse.jpt.jpa.feature"><category name="dali"/></feature>
     <feature id="org.eclipse.jpt.jpa_sdk.feature"><category name="dali.sdk"/></feature>
     <feature id="org.eclipse.jpt.jpa.tests.feature"><category name="dali"/></feature>
@@ -74,7 +75,8 @@
     <!-- disable tests that don't currently work and are not currently RUN as part of the releng.aggregator build -->
     <!-- <bundle id="org.eclipse.jpt.jpa.core.tests"><category name="dali.tests"/></bundle> -->
     <bundle id="org.eclipse.jpt.jpa.core.tests.extension.resource"><category name="dali.tests"/></bundle>
-    <bundle id="org.eclipse.jpt.jpa.eclipselink.core.tests"><category name="dali.tests"/></bundle>
+    <!-- disable this test since it requires org.eclipse.jpt.jpa.core.tests --> 
+    <!-- <bundle id="org.eclipse.jpt.jpa.eclipselink.core.tests"><category name="dali.tests"/></bundle> -->
 
     <!-- jpa_diagram_editor -->
     <feature id="org.eclipse.jpt.jpadiagrameditor.feature"><category name="dali"/></feature>

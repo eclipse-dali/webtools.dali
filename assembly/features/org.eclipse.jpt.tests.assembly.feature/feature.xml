@@ -31,9 +31,10 @@
          id="org.eclipse.jpt.jpa.tests.feature"
          version="0.0.0"/>
 
-   <includes
+    <!-- disable this test feature since it requires org.eclipse.jpt.jpa.eclipselink.core.tests and org.eclipse.jpt.jpa.core.tests --> 
+   <!-- <includes
          id="org.eclipse.jpt.jpa.eclipselink.tests.feature"
-         version="0.0.0"/>
+         version="0.0.0"/> -->
 
    <includes
          id="org.eclipse.jpt.jaxb.tests.feature"
