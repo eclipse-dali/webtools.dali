@@ -48,6 +48,16 @@
       <layout>p2</layout>
       <url>${webtools-jsdt-site}</url>
     </repository>
+    <repository>
+      <id>webtools-sourceediting-site</id>
+      <layout>p2</layout>
+      <url>${webtools-sourceediting-site}</url>
+    </repository>
+    <repository>
+      <id>webtools-jeetools-site</id>
+      <layout>p2</layout>
+      <url>${webtools-jeetools-site}</url>
+    </repository>
 
     <!-- To reference parent pom -->
     <repository>
