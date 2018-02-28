@@ -22,6 +22,6 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.doc.user</artifactId>
-  <version>3.2.100-SNAPSHOT</version>
+  <version>3.2.101-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>

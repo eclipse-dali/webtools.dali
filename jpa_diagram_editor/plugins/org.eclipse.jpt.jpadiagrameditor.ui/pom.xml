@@ -24,7 +24,7 @@
 	
     <groupId>org.eclipse.webtools.dali</groupId>
 	<artifactId>org.eclipse.jpt.jpadiagrameditor.ui</artifactId>
-	<version>1.2.200-SNAPSHOT</version>
+	<version>1.2.201-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	<name>JPA Diagram Editor Plug-in</name>	
 </project>

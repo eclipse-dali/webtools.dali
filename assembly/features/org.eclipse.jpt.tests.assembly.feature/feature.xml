@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.tests.assembly.feature"
       label="%featureName"
-      version="2.3.1.qualifier"
+      version="2.3.2.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.qualifier">
@@ -23,29 +23,13 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates/"/>
    </url>
 
-   <includes
-         id="org.eclipse.jpt.common.tests.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jpa.tests.feature"
-         version="0.0.0"/>
-
-    <!-- disable this test feature since it requires org.eclipse.jpt.jpa.eclipselink.core.tests and org.eclipse.jpt.jpa.core.tests --> 
-   <!-- <includes
-         id="org.eclipse.jpt.jpa.eclipselink.tests.feature"
-         version="0.0.0"/> -->
-
-   <includes
-         id="org.eclipse.jpt.jaxb.tests.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jaxb.eclipselink.tests.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jpadiagrameditor.tests.feature"
-         version="0.0.0"/>
-
+   <requires>
+    <!-- disable this test feature since it requires org.eclipse.jpt.jpa.eclipselink.core.tests and org.eclipse.jpt.jpa.core.tests -->
+    <!-- <import feature="org.eclipse.jpt.jpa.eclipselink.tests.feature"/> -->
+      <import feature="org.eclipse.jpt.common.tests.feature"/>
+      <import feature="org.eclipse.jpt.jpa.tests.feature"/>
+      <import feature="org.eclipse.jpt.jaxb.tests.feature"/>
+      <import feature="org.eclipse.jpt.jaxb.eclipselink.tests.feature"/>
+      <import feature="org.eclipse.jpt.jpadiagrameditor.tests.feature"/>
+   </requires>
 </feature>

@@ -106,6 +106,7 @@
     <module>common/plugins/org.eclipse.jpt.common.utility</module>
 
     <module>common/tests/org.eclipse.jpt.common.core.tests</module>
+    <module>common/tests/org.eclipse.jpt.common.ui.tests</module>
     <module>common/tests/org.eclipse.jpt.common.utility.tests</module>
 
     <!-- jaxb -->
@@ -160,12 +161,13 @@
     <!-- disable tests that don't currently work and are not currently RUN as part of the releng.aggregator build -->
     <!-- <module>jpa/tests/org.eclipse.jpt.jpa.core.tests</module> -->
     <module>jpa/tests/org.eclipse.jpt.jpa.core.tests.extension.resource</module>
-    <!-- disable this test since it requires org.eclipse.jpt.jpa.core.tests --> 
+    <!-- disable these since they require org.eclipse.jpt.jpa.core.tests --> 
     <!-- <module>jpa/tests/org.eclipse.jpt.jpa.eclipselink.core.tests</module> -->
+    <!-- <module>jpa/tests/org.eclipse.jpt.jpa.ui.tests</module> -->
+    <!-- fails in Jenkins, works locally <module>jpa/tests/org.eclipse.jpt.jpa.gen.tests</module> -->
+    <module>jpa/tests/org.eclipse.jpt.jpa.db.tests</module>
 
     <!-- jpa_diagram_editor -->
-    <module>jpa_diagram_editor/development/org.eclipse.jpt.jpadiagrameditor.repository</module>
-
     <module>jpa_diagram_editor/features/org.eclipse.jpt.jpadiagrameditor.feature</module>
     <module>jpa_diagram_editor/features/org.eclipse.jpt.jpadiagrameditor_sdk.feature</module>
     <module>jpa_diagram_editor/features/org.eclipse.jpt.jpadiagrameditor.tests.feature</module>
@@ -175,6 +177,7 @@
     <module>jpa_diagram_editor/plugins/org.eclipse.jpt.jpadiagrameditor.ui</module>
 
     <module>jpa_diagram_editor/tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
+    <!-- compilation failure <module>jpa_diagram_editor/tests/org.eclipse.jpt.jpadiagrameditor.swtbot.tests</module> -->
 
     <module>site</module>
     

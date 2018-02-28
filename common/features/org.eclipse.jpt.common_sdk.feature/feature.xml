@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.common_sdk.feature"
       label="%featureName"
-      version="1.5.100.qualifier"
+      version="1.5.101.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.qualifier">
@@ -19,12 +19,7 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.jpt.common.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.common.feature.source"
-         version="0.0.0"/>
-
+   <requires>
+      <import feature="org.eclipse.jpt.common.feature"/>
+   </requires>
 </feature>

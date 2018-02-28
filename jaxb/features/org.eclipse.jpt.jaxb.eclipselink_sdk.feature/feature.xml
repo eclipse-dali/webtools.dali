@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.jaxb.eclipselink_sdk.feature"
       label="%featureName"
-      version="1.4.200.qualifier"
+      version="1.4.201.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.qualifier">
@@ -19,12 +19,7 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.jpt.jaxb.eclipselink.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jaxb.eclipselink.feature.source"
-         version="0.0.0"/>
-
+   <requires>
+      <import feature="org.eclipse.jpt.jaxb.eclipselink.feature"/>
+   </requires>
 </feature>

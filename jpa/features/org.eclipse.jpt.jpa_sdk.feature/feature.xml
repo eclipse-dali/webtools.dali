@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.jpa_sdk.feature"
       label="%featureName"
-      version="3.5.100.qualifier"
+      version="3.5.101.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.qualifier">
@@ -19,21 +19,10 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.jpt.jpa.feature"
-         version="0.0.0"/>
+   <requires>
+      <import feature="org.eclipse.jpt.jpa.feature"/>
+   </requires>
 
-   <includes
-         id="org.eclipse.jpt.jpa.feature.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.persistence.jpa.jpql.source"
-         download-size="0"
-         install-size="0"
-         version="2.6.0.qualifier"
-         unpack="false"/>
-         
    <plugin
          id="org.eclipse.jpt.doc.isv"
          download-size="0"

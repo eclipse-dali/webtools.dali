@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.assembly.feature"
       label="%featureName"
-      version="2.3.1.qualifier"
+      version="2.3.2.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"
@@ -25,36 +25,15 @@
       <discovery label="Web Tools Platform (WTP) Updates" url="http://download.eclipse.org/webtools/updates"/>
    </url>
 
-   <includes
-         id="org.eclipse.jpt.common.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.common.eclipselink.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jpa.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jpa.eclipselink.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jaxb.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jaxb.eclipselink.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.dbws.eclipselink.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jpt.jpadiagrameditor.feature"
-         version="0.0.0"/>
+   <requires>
+      <import feature="org.eclipse.jpt.common.feature"/>
+      <import feature="org.eclipse.jpt.common.eclipselink.feature"/>
+      <import feature="org.eclipse.jpt.jpa.feature"/>
+      <import feature="org.eclipse.jpt.jpa.eclipselink.feature"/>
+      <import feature="org.eclipse.jpt.jaxb.feature"/>
+      <import feature="org.eclipse.jpt.jaxb.eclipselink.feature"/>
+      <import feature="org.eclipse.jpt.dbws.eclipselink.feature"/>
+      <import feature="org.eclipse.jpt.jpadiagrameditor.feature"/>
+   </requires>
 
 </feature>
