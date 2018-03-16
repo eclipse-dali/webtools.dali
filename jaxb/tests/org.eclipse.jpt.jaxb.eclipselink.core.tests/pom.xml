@@ -22,12 +22,12 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.jaxb.eclipselink.core.tests</artifactId>
-  <version>1.1.101-SNAPSHOT</version>
+  <version>1.1.102-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
     <jpt-javax-xml-bind-jar>${project.build.directory}/dependency/javax.xml.bind-2.2.0.v201105210648.jar</jpt-javax-xml-bind-jar>
-    <org.eclipse.jpt.eclipselink.jar>${project.build.directory}/dependency/eclipselink-2.5.2.jar</org.eclipse.jpt.eclipselink.jar>
+    <org.eclipse.jpt.eclipselink.jar>${project.build.directory}/dependency/eclipselink-2.7.1.jar</org.eclipse.jpt.eclipselink.jar>
   </properties>
 
   <build>
@@ -48,7 +48,7 @@
                 <artifactItem>
                   <groupId>org.eclipse.persistence</groupId>
                   <artifactId>eclipselink</artifactId>
-                  <version>2.5.2</version>
+                  <version>2.7.1</version>
                 </artifactItem>
               </artifactItems>
             </configuration>

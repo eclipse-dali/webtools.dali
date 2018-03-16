@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.jpa.feature"
       label="%featureName"
-      version="3.5.100.qualifier"
+      version="3.5.101.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jpt.jpa.branding"
       license-feature="org.eclipse.license"
@@ -31,7 +31,7 @@
          id="javax.persistence"
          download-size="0"
          install-size="0"
-         version="2.1.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -87,35 +87,35 @@
          id="org.eclipse.persistence.jpa.jpql"
          download-size="0"
          install-size="0"
-         version="2.6.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.collections"
          download-size="0"
          install-size="0"
-         version="3.2.2.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.lang"
          download-size="0"
          install-size="0"
-         version="2.6.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.velocity"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.jdom"
          download-size="0"
          install-size="0"
-         version="1.1.1.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin

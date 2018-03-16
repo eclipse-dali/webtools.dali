@@ -22,11 +22,11 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.jpa.core.tests</artifactId>
-  <version>3.5.1-SNAPSHOT</version>
+  <version>3.5.2-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
-    <org.eclipse.jpt.jpa.jar>${project.build.directory}/dependency/javax.persistence-2.1.0.jar</org.eclipse.jpt.jpa.jar>
+    <org.eclipse.jpt.jpa.jar>${project.build.directory}/dependency/javax.persistence-2.2.0.jar</org.eclipse.jpt.jpa.jar>
   </properties>
 
   <build>
@@ -47,7 +47,7 @@
                 <artifactItem>
                   <groupId>org.eclipse.persistence</groupId>
                   <artifactId>javax.persistence</artifactId>
-                  <version>2.1.0</version>
+                  <version>2.2.0</version>
                 </artifactItem>
               </artifactItems>
             </configuration>

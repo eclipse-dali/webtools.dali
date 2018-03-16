@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.eclipselink.core.tests;singleton:=true
-Bundle-Version: 2.4.1.qualifier
+Bundle-Version: 2.4.2.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.eclipselink.core.tests.internal.plugin.JptJpaEclipseLinkCoreTestsPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
