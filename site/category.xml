@@ -44,25 +44,25 @@
     <feature id="org.eclipse.jpt.common.eclipselink.feature"><category name="wtp"/></feature>
     <feature id="org.eclipse.jpt.common.eclipselink_sdk.feature"><category name="wtp.sdk"/></feature>
     <feature id="org.eclipse.jpt.common.feature"><category name="wtp"/></feature>
-    <feature id="org.eclipse.jpt.common.tests.feature"><category name="wtp"/></feature>
+    <feature id="org.eclipse.jpt.common.tests.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt.common_sdk.feature"><category name="wtp.sdk"/></feature>
     <feature id="org.eclipse.jpt.dbws.eclipselink.feature"><category name="wtp"/></feature>
     <feature id="org.eclipse.jpt.dbws.eclipselink_sdk.feature"><category name="wtp.sdk"/></feature>
     <feature id="org.eclipse.jpt.jaxb.eclipselink.feature"><category name="wtp"/></feature>
-    <feature id="org.eclipse.jpt.jaxb.eclipselink.tests.feature"><category name="wtp"/></feature>
+    <feature id="org.eclipse.jpt.jaxb.eclipselink.tests.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt.jaxb.eclipselink_sdk.feature"><category name="wtp.sdk"/></feature>
     <feature id="org.eclipse.jpt.jaxb.feature"><category name="wtp"/></feature>
-    <feature id="org.eclipse.jpt.jaxb.tests.feature"><category name="wtp"/></feature>
+    <feature id="org.eclipse.jpt.jaxb.tests.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt.jaxb_sdk.feature"><category name="wtp.sdk"/></feature>
     <feature id="org.eclipse.jpt.jpa.eclipselink.feature"><category name="wtp"/></feature>
     <feature id="org.eclipse.jpt.jpa.eclipselink_sdk.feature"><category name="wtp.sdk"/></feature>
     <feature id="org.eclipse.jpt.jpa.feature"><category name="wtp"/></feature>
-    <feature id="org.eclipse.jpt.jpa.tests.feature"><category name="wtp"/></feature>
+    <feature id="org.eclipse.jpt.jpa.tests.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt.jpa_sdk.feature"><category name="wtp.sdk"/></feature>
     <feature id="org.eclipse.jpt.jpadiagrameditor.feature"><category name="wtp"/></feature>
-    <feature id="org.eclipse.jpt.jpadiagrameditor.tests.feature"><category name="wtp"/></feature>
+    <feature id="org.eclipse.jpt.jpadiagrameditor.tests.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt.jpadiagrameditor_sdk.feature"><category name="wtp.sdk"/></feature>
-    <feature id="org.eclipse.jpt.tests.assembly.feature"><category name="wtp"/></feature>
+    <feature id="org.eclipse.jpt.tests.assembly.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt_sdk.assembly.feature"><category name="wtp.sdk"/></feature>
 
     <!-- disable tests that don't currently work and are not currently RUN as part of the releng.aggregator build -->
