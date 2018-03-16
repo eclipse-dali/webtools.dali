@@ -108,6 +108,8 @@
     <feature id="org.eclipse.jpt.dbws.eclipselink.feature.source"><category name="wtp.sources"/></feature>
     <feature id="org.eclipse.jpt.jaxb.eclipselink.feature.source"><category name="wtp.sources"/></feature>
 
+    <bundle id="org.easymock"><category name="deps"/></bundle>
+
     <category-def name="wtp" label="Web Tools Platform (WTP)"><description>These features provide functionality with the executable code only and are recommended for most users.</description></category-def>
     <category-def name="wtp.sdk" label="Web Tools Platform SDK (WTP SDK)"><description>These features provide functionality with the executable code and the source code and are recommended for those extending or debugging WTP.</description></category-def>
 
@@ -126,4 +128,5 @@
     <category-def name="wtp.tests" label="Web Tools Platform Tests (WTP Tests)"><description>These features provide unit tests for WTP. WTP Committers, or others testing WTP, will need these in at least their PDE Targets.</description></category-def>
     <category-def name="wtp.tests.sources" label="Web Tools Platform Tests (WTP Tests) Sources"><description>These sources provide unit tests for WTP. WTP Committers, or others testing WTP, will need these in at least their PDE Targets.</description></category-def>
 
+    <category-def name="deps" label="Dependencies"><description>These 3rd party bundles are required to install and run WTP.</description></category-def>
 </site>
