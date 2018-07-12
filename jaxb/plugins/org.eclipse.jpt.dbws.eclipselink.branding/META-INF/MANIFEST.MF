@@ -5,3 +5,4 @@ Bundle-SymbolicName: org.eclipse.jpt.dbws.eclipselink.branding;singleton:=true
 Bundle-Version: 1.2.101.qualifier
 Bundle-Localization: plugin
 Bundle-Vendor: %providerName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

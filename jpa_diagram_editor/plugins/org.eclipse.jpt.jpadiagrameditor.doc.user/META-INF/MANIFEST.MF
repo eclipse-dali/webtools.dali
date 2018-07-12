@@ -6,3 +6,4 @@ Bundle-SymbolicName: org.eclipse.jpt.jpadiagrameditor.doc.user; singleton:=true
 Bundle-Version: 1.2.102.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.help;bundle-version="[3.3.100,4.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
