@@ -16,8 +16,10 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2_2.context.persistence.GenericPersistenceXmlDefinition2_2;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceXmlContextModelFactory2_1;
+import org.eclipse.jpt.jpa.core.jpa2_2.context.persistence.PersistenceXmlContextModelFactory2_2;
 
 /**
  * Use this abstract class for context models that are part of an
@@ -51,6 +53,10 @@ public abstract class AbstractPersistenceXmlContextModel<P extends JpaContextMod
 		return this.getResourceType().isKindOf(GenericPersistenceXmlDefinition2_1.instance().getResourceType());
 	}
 
+	protected boolean isPersistenceXml2_2Compatible() {
+		return this.getResourceType().isKindOf(GenericPersistenceXmlDefinition2_2.instance().getResourceType());
+	}
+
 	/**
 	 * Call {@link #isPersistenceXml2_0Compatible()} before calling this method.
 	 */
@@ -63,6 +69,13 @@ public abstract class AbstractPersistenceXmlContextModel<P extends JpaContextMod
 	 */
 	protected PersistenceXmlContextModelFactory2_1 getContextModelFactory2_1() {
 		return (PersistenceXmlContextModelFactory2_1) this.getContextModelFactory();
+	}
+
+	/**
+	 * Call {@link #isPersistenceXml2_1Compatible()} before calling this method.
+	 */
+	protected PersistenceXmlContextModelFactory2_2 getContextModelFactory2_2() {
+		return (PersistenceXmlContextModelFactory2_2) this.getContextModelFactory();
 	}
 
 	protected PersistenceXmlContextModelFactory getContextModelFactory() {

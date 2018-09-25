@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.libval;
 
 import java.util.ArrayList;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.jpa.core.internal.libprov.JpaUserLibraryProviderInstallOp
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollectionAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
+import org.eclipse.jpt.jpa.core.jpa2_2.JpaProject2_2;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 
 public class GenericJpaUserLibraryValidator
@@ -32,6 +34,9 @@ public class GenericJpaUserLibraryValidator
 		}
 		if (config.getProjectFacetVersion().compareTo(JpaProject2_1.FACET_VERSION) >= 0) {
 			classNames.add("javax.persistence.Convert"); //$NON-NLS-1$
+		}
+		if (config.getProjectFacetVersion().compareTo(JpaProject2_2.FACET_VERSION) >= 0) {
+			classNames.add("javax.persistence.Convert"); //$NON-NLS-1$ 		//TODO for 2.2
 		}
 		return LibraryValidatorTools.validateClasses(jpaConfig, classNames);
 	}

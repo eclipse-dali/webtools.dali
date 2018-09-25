@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.persistence.v2_2.JPA2_2;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -211,6 +212,7 @@ public class XmlPersistence extends ERootObjectImpl
 		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_LOCATION);
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_LOCATION);
 		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_LOCATION);
+		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_LOCATION);
 		return map;
 	}
 	
@@ -229,6 +231,7 @@ public class XmlPersistence extends ERootObjectImpl
 		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_NAMESPACE);
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_NAMESPACE);
 		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_NAMESPACE);
+		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_NAMESPACE);
 		return map;
 	}
 

@@ -88,7 +88,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaContextRoot2_0;
-import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
+import org.eclipse.jpt.jpa.core.jpa2_2.JpaProject2_2;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -126,7 +126,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJpaProject
 	extends AbstractJpaModel<JpaModel>
-	implements JpaProject2_1
+	implements JpaProject2_2
 {
 	/**
 	 * The JPA project manager.

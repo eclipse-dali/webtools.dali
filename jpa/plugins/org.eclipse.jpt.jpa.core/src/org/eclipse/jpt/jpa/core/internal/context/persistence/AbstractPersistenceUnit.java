@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2018 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0, which accompanies this distribution
- * and is available at https://www.eclipse.org/legal/epl-2.0/.
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  *
  * Contributors:
  *     Oracle - initial API and implementation
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -89,7 +90,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.connection.NullConnection2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.options.NullOptions2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.schemagen.NullGenericSchemaGeneration2_2;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
@@ -100,8 +101,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.Connection2_
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.Options2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode2_0;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceUnit2_1;
-import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen.SchemaGeneration2_1;
+import org.eclipse.jpt.jpa.core.jpa2_2.context.persistence.PersistenceUnit2_2;
+import org.eclipse.jpt.jpa.core.jpa2_2.context.persistence.schemagen.SchemaGeneration2_2;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -125,7 +126,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractPersistenceUnit
 	extends AbstractPersistenceXmlContextModel<Persistence>
-	implements PersistenceUnit2_1
+	implements PersistenceUnit2_2
 {
 	protected final XmlPersistenceUnit xmlPersistenceUnit;
 
@@ -207,8 +208,8 @@ public abstract class AbstractPersistenceUnit
 
 	protected final Set<IFile> metamodelFiles = Collections.synchronizedSet(new HashSet<IFile>());
 
-	//****** JPA 2.1 features
-	protected SchemaGeneration2_1 schemaGeneration;
+	//****** JPA 2.2 features
+	protected SchemaGeneration2_2 schemaGeneration;
 	
 
 	// ********** construction/initialization **********
@@ -1180,10 +1181,10 @@ public abstract class AbstractPersistenceUnit
 				new NullOptions2_0(this);
 	}
 
-	protected SchemaGeneration2_1 buildSchemaGeneration() {
-		return this.isPersistenceXml2_1Compatible() ?
-				this.getContextModelFactory2_1().buildSchemaGeneration(this) :
-				new NullGenericSchemaGeneration2_1(this);
+	protected SchemaGeneration2_2 buildSchemaGeneration() {
+		return this.isPersistenceXml2_2Compatible() ?
+				this.getContextModelFactory2_2().buildSchemaGeneration(this) :
+				new NullGenericSchemaGeneration2_2(this);
 	}
 
 	protected void syncProperties(IProgressMonitor monitor) {
@@ -1406,7 +1407,7 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** PersistenceUnit2_1 implementation **********
 
-	public SchemaGeneration2_1 getSchemaGeneration() {
+	public SchemaGeneration2_2 getSchemaGeneration() {
 		return this.schemaGeneration;
 	}
 

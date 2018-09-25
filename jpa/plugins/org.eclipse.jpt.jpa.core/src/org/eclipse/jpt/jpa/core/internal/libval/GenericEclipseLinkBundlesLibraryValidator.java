@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
+import org.eclipse.jpt.jpa.core.jpa2_2.JpaProject2_2;
 import org.eclipse.jst.common.project.facet.core.libprov.osgi.OsgiBundlesLibraryProviderInstallOperationConfig;
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -45,6 +46,7 @@ public class GenericEclipseLinkBundlesLibraryValidator
 		versionRanges.put(JpaProject.FACET_VERSION,    buildJpa1_0BundleVersionRanges());
 		versionRanges.put(JpaProject2_0.FACET_VERSION, buildJpa2_0BundleVersionRanges());
 		versionRanges.put(JpaProject2_1.FACET_VERSION, buildJpa2_1BundleVersionRanges());
+		versionRanges.put(JpaProject2_2.FACET_VERSION, buildJpa2_2BundleVersionRanges());
 		return versionRanges;
 	}
 
@@ -63,6 +65,12 @@ public class GenericEclipseLinkBundlesLibraryValidator
 	private static HashMap<String, VersionRange> buildJpa2_1BundleVersionRanges() {
 		HashMap<String, VersionRange> versionRanges = new HashMap<String, VersionRange>();
 		versionRanges.put("javax.persistence", new VersionRange("[2.5, 3.0)"));
+		return versionRanges;
+	}
+	
+	private static HashMap<String, VersionRange> buildJpa2_2BundleVersionRanges() {
+		HashMap<String, VersionRange> versionRanges = new HashMap<String, VersionRange>();
+		versionRanges.put("javax.persistence", new VersionRange("[2.5, 3.0)"));//TODO Need to find and update
 		return versionRanges;
 	}
 }

@@ -230,6 +230,11 @@
 			jpaPlatform="generic2_1"
 			factoryClass="org.eclipse.jpt.jpa.ui.internal.jpa2_1.platform.generic.GenericJpaPlatformUiFactory2_1"/>
 
+		<jpaPlatformUi
+			id="generic2_2.ui"
+			jpaPlatform="generic2_2"
+			factoryClass="org.eclipse.jpt.jpa.ui.internal.jpa2_2.platform.generic.GenericJpaPlatformUiFactory2_2"/>
+
 	</extension>
 
 
