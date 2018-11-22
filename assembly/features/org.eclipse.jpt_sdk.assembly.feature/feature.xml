@@ -32,7 +32,7 @@
       <import feature="org.eclipse.jpt.jpa.eclipselink_sdk.feature"/>
       <import feature="org.eclipse.jpt.jaxb_sdk.feature"/>
       <import feature="org.eclipse.jpt.jaxb.eclipselink_sdk.feature"/>
-      <import feature="org.eclipse.jpt.dbws.eclipselink_sdk.feature"/>
+      <!-- <import feature="org.eclipse.jpt.dbws.eclipselink_sdk.feature"/> -->
       <import feature="org.eclipse.jpt.jpadiagrameditor_sdk.feature"/>
    </requires>
 </feature>

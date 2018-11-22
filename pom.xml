@@ -110,8 +110,8 @@
     <module>common/tests/org.eclipse.jpt.common.utility.tests</module>
 
     <!-- jaxb -->
-    <module>jaxb/features/org.eclipse.jpt.dbws.eclipselink.feature</module>
-    <module>jaxb/features/org.eclipse.jpt.dbws.eclipselink_sdk.feature</module>
+    <!-- <module>jaxb/features/org.eclipse.jpt.dbws.eclipselink.feature</module> -->
+    <!-- <module>jaxb/features/org.eclipse.jpt.dbws.eclipselink_sdk.feature</module> -->
     <module>jaxb/features/org.eclipse.jpt.jaxb.eclipselink.feature</module>
     <module>jaxb/features/org.eclipse.jpt.jaxb.eclipselink_sdk.feature</module>
     <module>jaxb/features/org.eclipse.jpt.jaxb.eclipselink.tests.feature</module>
@@ -119,9 +119,9 @@
     <module>jaxb/features/org.eclipse.jpt.jaxb_sdk.feature</module>
     <module>jaxb/features/org.eclipse.jpt.jaxb.tests.feature</module>
 
-    <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.branding</module>
-    <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.core.gen</module>
-    <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.ui</module>
+    <!-- <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.branding</module> -->
+    <!-- <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.core.gen</module> -->
+    <!-- <module>jaxb/plugins/org.eclipse.jpt.dbws.eclipselink.ui</module> -->
     <module>jaxb/plugins/org.eclipse.jpt.jaxb.branding</module>
     <module>jaxb/plugins/org.eclipse.jpt.jaxb.core</module>
     <module>jaxb/plugins/org.eclipse.jpt.jaxb.core.schemagen</module>

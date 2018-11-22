@@ -10,9 +10,9 @@
     <bundle id="org.eclipse.jpt.common.ui.tests"><category name="wtp.tests"/></bundle>
     <bundle id="org.eclipse.jpt.common.utility"><category name="wtp"/></bundle>
     <bundle id="org.eclipse.jpt.common.utility.tests"><category name="wtp.tests"/></bundle>
-    <bundle id="org.eclipse.jpt.dbws.eclipselink.branding"><category name="wtp"/></bundle>
-    <bundle id="org.eclipse.jpt.dbws.eclipselink.core.gen"><category name="wtp"/></bundle>
-    <bundle id="org.eclipse.jpt.dbws.eclipselink.ui"><category name="wtp"/></bundle>
+    <!-- <bundle id="org.eclipse.jpt.dbws.eclipselink.branding"><category name="wtp"/></bundle> -->
+    <!-- <bundle id="org.eclipse.jpt.dbws.eclipselink.core.gen"><category name="wtp"/></bundle> -->
+    <!-- <bundle id="org.eclipse.jpt.dbws.eclipselink.ui"><category name="wtp"/></bundle> -->
     <bundle id="org.eclipse.jpt.doc.isv"><category name="wtp"/></bundle>
     <bundle id="org.eclipse.jpt.doc.user"><category name="wtp"/></bundle>
     <bundle id="org.eclipse.jpt.jaxb.branding"><category name="wtp"/></bundle>
@@ -46,8 +46,8 @@
     <feature id="org.eclipse.jpt.common.feature"><category name="wtp"/></feature>
     <feature id="org.eclipse.jpt.common.tests.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt.common_sdk.feature"><category name="wtp.sdk"/></feature>
-    <feature id="org.eclipse.jpt.dbws.eclipselink.feature"><category name="wtp"/></feature>
-    <feature id="org.eclipse.jpt.dbws.eclipselink_sdk.feature"><category name="wtp.sdk"/></feature>
+    <!-- <feature id="org.eclipse.jpt.dbws.eclipselink.feature"><category name="wtp"/></feature> -->
+    <!-- <feature id="org.eclipse.jpt.dbws.eclipselink_sdk.feature"><category name="wtp.sdk"/></feature> -->
     <feature id="org.eclipse.jpt.jaxb.eclipselink.feature"><category name="wtp"/></feature>
     <feature id="org.eclipse.jpt.jaxb.eclipselink.tests.feature"><category name="wtp.tests"/></feature>
     <feature id="org.eclipse.jpt.jaxb.eclipselink_sdk.feature"><category name="wtp.sdk"/></feature>
@@ -79,8 +79,8 @@
     <bundle id="org.eclipse.jpt.common.ui.tests.source"><category name="wtp.tests.sources"/></bundle>
     <bundle id="org.eclipse.jpt.common.utility.source"><category name="wtp.sources"/></bundle>
     <bundle id="org.eclipse.jpt.common.utility.tests.source"><category name="wtp.tests.sources"/></bundle>
-    <bundle id="org.eclipse.jpt.dbws.eclipselink.core.gen.source"><category name="wtp.sources"/></bundle>
-    <bundle id="org.eclipse.jpt.dbws.eclipselink.ui.source"><category name="wtp.sources"/></bundle>
+    <!-- <bundle id="org.eclipse.jpt.dbws.eclipselink.core.gen.source"><category name="wtp.sources"/></bundle> -->
+    <!-- <bundle id="org.eclipse.jpt.dbws.eclipselink.ui.source"><category name="wtp.sources"/></bundle> -->
     <bundle id="org.eclipse.jpt.doc.isv.source"><category name="wtp.sources"/></bundle>
     <bundle id="org.eclipse.jpt.doc.user.source"><category name="wtp.sources"/></bundle>
     <bundle id="org.eclipse.jpt.jaxb.core.source"><category name="wtp.sources"/></bundle>
@@ -105,7 +105,7 @@
     <bundle id="org.eclipse.jpt.jpadiagrameditor.ui.tests.source"><category name="wtp.tests.sources"/></bundle>
     <feature id="org.eclipse.jpt.common.eclipselink.feature.source"><category name="wtp.sources"/></feature>
     <feature id="org.eclipse.jpt.common.feature.source"><category name="wtp.sources"/></feature>
-    <feature id="org.eclipse.jpt.dbws.eclipselink.feature.source"><category name="wtp.sources"/></feature>
+    <!-- <feature id="org.eclipse.jpt.dbws.eclipselink.feature.source"><category name="wtp.sources"/></feature> -->
     <feature id="org.eclipse.jpt.jaxb.eclipselink.feature.source"><category name="wtp.sources"/></feature>
 
     <bundle id="org.easymock"><category name="deps"/></bundle>
