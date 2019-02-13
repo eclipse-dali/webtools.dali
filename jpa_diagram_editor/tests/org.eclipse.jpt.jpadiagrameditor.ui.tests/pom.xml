@@ -29,7 +29,7 @@
 	<name>JPA Diagram Editor Test Plug-in</name>
 
     <properties>
-        <org.eclipse.jpt.jpa.jar>../../development/org.eclipse.jpt.jpadiagrameditor.releng/resources/javax.persistence_2.0.4.v201112161009.jar</org.eclipse.jpt.jpa.jar>
+        <org.eclipse.jpt.jpa.jar>lib/javax.persistence_2.0.4.v201112161009.jar</org.eclipse.jpt.jpa.jar>
     </properties>
 	
 	<build>
