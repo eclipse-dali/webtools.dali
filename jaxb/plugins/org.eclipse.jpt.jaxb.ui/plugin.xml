@@ -120,9 +120,10 @@
 	
 		<!-- activate = "true", but our plug-in will only activate if the JAXB proposal category is enabled (has JAXB facet) bug 386358 -->
 		<javaCompletionProposalComputer
-			class="org.eclipse.jpt.jaxb.ui.internal.JaxbJavaCompletionProposalComputer"
-			categoryId="org.eclipse.jpt.jaxb.ui.jaxbCompletionProposals"
-			activate="true">
+        activate="true"
+        categoryId="org.eclipse.jpt.jaxb.ui.jaxbCompletionProposals"
+        class="org.eclipse.jpt.jaxb.ui.internal.JaxbJavaCompletionProposalComputer"
+        requiresUIThread="false">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>
 		</javaCompletionProposalComputer>

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jaxb.ui;singleton:=true
-Bundle-Version: 1.5.101.qualifier
+Bundle-Version: 1.5.200.qualifier
 Bundle-Activator: org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
