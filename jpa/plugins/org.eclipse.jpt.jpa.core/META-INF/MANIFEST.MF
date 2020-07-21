@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.core;singleton:=true
-Bundle-Version: 3.6.0.qualifier
+Bundle-Version: 3.6.1.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
@@ -101,6 +101,7 @@ Export-Package: org.eclipse.jpt.jpa.core,
  org.eclipse.jpt.jpa.core.jpa2_1.context.persistence,
  org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.schemagen,
  org.eclipse.jpt.jpa.core.jpa2_1.resource.java,
+ org.eclipse.jpt.jpa.core.jpa2_2,
  org.eclipse.jpt.jpa.core.jpa2_2.context.persistence,
  org.eclipse.jpt.jpa.core.jpa2_2.context.persistence.schemagen,
  org.eclipse.jpt.jpa.core.jpql,
@@ -113,7 +114,9 @@ Export-Package: org.eclipse.jpt.jpa.core,
  org.eclipse.jpt.jpa.core.resource.orm,
  org.eclipse.jpt.jpa.core.resource.orm.v2_0,
  org.eclipse.jpt.jpa.core.resource.orm.v2_1,
+ org.eclipse.jpt.jpa.core.resource.orm.v2_2,
  org.eclipse.jpt.jpa.core.resource.persistence,
  org.eclipse.jpt.jpa.core.resource.persistence.v2_0,
  org.eclipse.jpt.jpa.core.resource.persistence.v2_1,
+ org.eclipse.jpt.jpa.core.resource.persistence.v2_2,
  org.eclipse.jpt.jpa.core.validation
