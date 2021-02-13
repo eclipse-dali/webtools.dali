@@ -35,7 +35,6 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiImages;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
@@ -52,6 +51,8 @@ import org.w3c.dom.Node;
  * @since 2.3
  */
 public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionProposalComputer {
+
+	private ResourceManager resourceManager;
 
 	public JpaXmlCompletionProposalComputer() {
 	}
@@ -190,12 +191,12 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 					if (proposedValue.startsWith("\"")) { //$NON-NLS-1$
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 
-								this.getImage(context, JptJpaUiImages.JPA_CONTENT), proposedValue, null, 
+								this.getImage(JptJpaUiImages.JPA_CONTENT), proposedValue, null, 
 								JptJpaUiMessages.JPA_XML_COMPLETION_PROPOSAL_COMPUTER_SPECIAL_NAME_MSG);
 					} else {
 						proposal = new CompletionProposal(
 								convertedProposedValue, begin, length, convertedProposedValue.length(), 
-								this.getImage(context, JptJpaUiImages.JPA_CONTENT), proposedValue, null, null);
+								this.getImage(JptJpaUiImages.JPA_CONTENT), proposedValue, null, null);
 					}
 
 					contentAssistRequest.addProposal(proposal);
@@ -297,16 +298,15 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 		return ((node != null) && (node instanceof IDOMElement) && ((IDOMElement) node).isCommentTag());
 	}
 
-	private Image getImage(CompletionProposalInvocationContext context, ImageDescriptor descriptor) {
-		return this.getImage(context.getViewer().getTextWidget(), descriptor);
+	private Image getImage(ImageDescriptor descriptor) {
+		return this.getResourceManager().createImage(descriptor);
 	}
 
-	private Image getImage(Control control, ImageDescriptor descriptor) {
-		return this.getResourceManager(control).createImage(descriptor);
-	}
-
-	private ResourceManager getResourceManager(Control control) {
-		return this.getJpaWorkbench().getResourceManager(control);
+	private ResourceManager getResourceManager() {
+		if (resourceManager == null) {
+			resourceManager = getJpaWorkbench().buildLocalResourceManager();
+		}
+		return resourceManager;
 	}
 
 	private JpaWorkbench getJpaWorkbench() {

@@ -24,7 +24,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -134,8 +133,7 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 			int tokenEnd   = tokenStart + jpqlQuery.length();
 
 			// Now create the proposals
-			ResourceManager resourceManager = this.getResourceManager(context.getViewer().getTextWidget());
-			return buildProposals(namedQuery, jpqlQuery, tokenStart, tokenEnd, position[0], resourceManager);
+			return buildProposals(namedQuery, jpqlQuery, tokenStart, tokenEnd, position[0], getResourceManager());
 		}
 		catch (Exception ex) {
 			JptJpaUiPlugin.instance().logError(ex, JptJpaUiMessages.JPA_JPQL_SSE_COMPLETION_PROPOSAL_COMPUTER_ERROR);

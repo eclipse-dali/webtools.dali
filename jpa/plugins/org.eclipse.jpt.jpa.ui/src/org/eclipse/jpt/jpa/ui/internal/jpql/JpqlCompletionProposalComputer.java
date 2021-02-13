@@ -50,7 +50,6 @@ import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IType;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * The abstract definition of JPQL content assist support.
@@ -112,6 +111,11 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 * The start position of the query within the document.
 	 */
 	int tokenStart;
+
+	/**
+	 * Resource manager
+	 */
+	private ResourceManager resourceManager;
 
 	/**
 	 * Creates a new <code>JpqlCompletionProposalComputer</code>.
@@ -431,8 +435,11 @@ abstract class JpqlCompletionProposalComputer<T> {
 		return WorkbenchTools.getAdapter(JpaWorkbench.class);
 	}
 
-	ResourceManager getResourceManager(Control control) {
-		return this.getJpaWorkbench().getResourceManager(control);
+	ResourceManager getResourceManager() {
+		if (resourceManager == null) {
+			resourceManager = getJpaWorkbench().buildLocalResourceManager();
+		}
+		return resourceManager;
 	}
 
 	private boolean isRealFunction(String identifier) {

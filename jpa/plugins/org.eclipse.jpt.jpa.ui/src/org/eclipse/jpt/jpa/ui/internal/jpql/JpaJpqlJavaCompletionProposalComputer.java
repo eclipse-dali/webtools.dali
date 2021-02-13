@@ -38,7 +38,6 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
-import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -171,8 +170,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		String jpqlQuery = retrieveQuery(astRoot, tokenStart, tokenEnd, position);
 
 		// Now create the proposals
-		ResourceManager resourceManager = this.getResourceManager(context.getViewer().getTextWidget());
-		return buildProposals(namedQuery, jpqlQuery, tokenStart[0], tokenEnd[0], position[0], resourceManager);
+		return buildProposals(namedQuery, jpqlQuery, tokenStart[0], tokenEnd[0], position[0], getResourceManager());
 	}
 
 	/**

@@ -172,8 +172,7 @@
         activate="true"
         categoryId="org.eclipse.jpt.jpa.ui.jpaProposalCategory"
         class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlJavaCompletionProposalComputer"
-        requiresUIThread="true">
-        	<!-- requires UI Thread because it dereferences getViewer() to utlimately ask StyledText.getData() -->
+        requiresUIThread="false">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>
 		</javaCompletionProposalComputer>
