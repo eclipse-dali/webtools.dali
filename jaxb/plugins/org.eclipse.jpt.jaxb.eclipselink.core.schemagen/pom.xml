@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.jaxb.eclipselink.core.schemagen</artifactId>
-  <version>1.2.201-SNAPSHOT</version>
+  <version>1.2.202-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
   <build>
@@ -35,7 +35,7 @@
             <extraRequirements>
               <requirement>
                 <type>eclipse-plugin</type>
-                <id>javax.xml.bind</id>
+                <id>jakarta.xml.bind</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
             </extraRequirements>

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.common.core.tests;singleton:=true
-Bundle-Version: 1.5.1.qualifier
+Bundle-Version: 1.5.2.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-Localization: plugin
@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.jpt.common.core,
  org.eclipse.jpt.common.utility,
  org.eclipse.jpt.common.utility.tests,
+ org.eclipse.jst.common.project.facet.core,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.wst.validation,
  org.junit

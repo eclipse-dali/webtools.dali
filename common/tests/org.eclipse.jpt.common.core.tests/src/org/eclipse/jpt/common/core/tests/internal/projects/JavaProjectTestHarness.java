@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2021 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jst.common.project.facet.core.internal.FacetCorePlugin;
 
 /**
  * This builds and holds a "Java" project.
@@ -43,7 +44,7 @@ public class JavaProjectTestHarness
 		super(projectName, autoBuild);
 		this.installFacet("jst.java", "5.0");
 		this.javaProject = JavaCore.create(this.getProject());
-		this.sourceFolder = this.javaProject.getPackageFragmentRoot(this.getProject().getFolder("src"));
+		this.sourceFolder = this.javaProject.getPackageFragmentRoot(this.getProject().getFolder(FacetCorePlugin.DEFAULT_SOURCE_FOLDER));
 	}
 
 	public void addJar(String jarPath) throws JavaModelException {
