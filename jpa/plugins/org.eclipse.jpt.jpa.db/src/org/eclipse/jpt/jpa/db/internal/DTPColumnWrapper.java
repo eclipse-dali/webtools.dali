@@ -191,7 +191,7 @@ final class DTPColumnWrapper
 				|| javaType.equals(SQL_DATE_JAVA_TYPE)) {
 			return javaType;
 		}
-		if (javaType.equals(BIG_DECIMAL_JAVA_TYPE)) {
+		if (javaType.equals(BIG_DECIMAL_JAVA_TYPE) || javaType.equals(BIG_INTEGER_JAVA_TYPE)) {
 			return LONG_JAVA_TYPE;  // ??
 		}
 		if (javaType.equals(SQL_TIME_JAVA_TYPE)) {
@@ -227,5 +227,7 @@ final class DTPColumnWrapper
 	private static final JavaType SQL_TIMESTAMP_JAVA_TYPE = new SimpleJavaType(java.sql.Timestamp.class);
 
 	private static final JavaType BIG_DECIMAL_JAVA_TYPE = new SimpleJavaType(java.math.BigDecimal.class);
+	private static final JavaType BIG_INTEGER_JAVA_TYPE = new SimpleJavaType(java.math.BigInteger.class);
+
 	private static final JavaType LONG_JAVA_TYPE = new SimpleJavaType(long.class);
 }
