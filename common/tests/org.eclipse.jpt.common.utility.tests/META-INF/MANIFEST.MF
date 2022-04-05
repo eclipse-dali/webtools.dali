@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.common.utility.tests;singleton:=true
-Bundle-Version: 2.4.1.qualifier
+Bundle-Version: 2.4.100.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-Localization: plugin
@@ -31,4 +31,4 @@ Export-Package: org.eclipse.jpt.common.utility.tests.internal;x-internal:=true,
  org.eclipse.jpt.common.utility.tests.internal.reference;x-internal:=true,
  org.eclipse.jpt.common.utility.tests.internal.swing;x-internal:=true,
  org.eclipse.jpt.common.utility.tests.internal.transformer;x-internal:=true
-Import-Package: org.apache.commons.lang.math;version="2.6.0"
+Import-Package: org.apache.commons.lang.math;version="3.6.4"
