@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2022 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -14,6 +14,8 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.commons.math3.fraction.Fraction;
 import org.eclipse.jpt.common.utility.internal.SimplePair;
 import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -1293,9 +1295,9 @@ public class StringBuilderToolsTests
 
 	public void testAppendJSONFraction() throws Exception {
 		StringBuilder sb = new StringBuilder();
-		org.apache.commons.lang.math.Fraction f = org.apache.commons.lang.math.Fraction.getFraction(2, 7);
+		Fraction f = Fraction.getReducedFraction(2, 7);
 		StringBuilderTools.appendJSON(sb, f);
-		assertEquals("{\"denominator\":7,\"hashCode\":0,\"numerator\":2,\"toProperString\":null,\"toString\":\"2/7\"}", sb.toString());
+		assertEquals("{\"denominator\":7,\"numerator\":2}", sb.toString());
 	}
 
 	public void testAppendJSONNumberArray() throws Exception {
