@@ -84,7 +84,15 @@
 
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_5.xsd"
-				uri="platform:/plugin/org.eclipse.persistence.jpa/org/eclipse/persistence/jpa/eclipselink_orm_2_5.xsd"/>
+				uri="schemas/eclipselink_orm_2_5.xsd"/>
+
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_3_0.xsd"
+				uri="schemas/eclipselink_orm_3_0.xsd"/>
+
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_3_1.xsd"
+				uri="schemas/eclipselink_orm_3_1.xsd"/>
 
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_0.xsd"
@@ -108,7 +116,11 @@
 
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_5.xsd"
-				uri="platform:/plugin/org.eclipse.persistence.moxy/org/eclipse/persistence/jaxb/eclipselink_oxm_2_5.xsd"/>
+				uri="schemas/eclipselink_oxm_2_5.xsd"/>
+
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_6.xsd"
+				uri="schemas/eclipselink_oxm_2_6.xsd"/>
 
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_persistence_map_1.0.xsd"
