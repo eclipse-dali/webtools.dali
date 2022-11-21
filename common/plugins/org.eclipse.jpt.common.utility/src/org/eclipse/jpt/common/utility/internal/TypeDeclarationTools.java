@@ -591,7 +591,7 @@ public final class TypeDeclarationTools {
 		return isJavaLangClass8(String.copyValueOf(simpleClassName));
 	}
 
-	// jdk 1.7
+	// jdk 1.8
 	@SuppressWarnings("nls")
 	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY_8 = ArrayTools.sort(
 		ArrayTools.concatenate(
@@ -607,11 +607,55 @@ public final class TypeDeclarationTools {
 	 */
 	public static final Iterable<String> JAVA_LANG_CLASS_NAMES_8 = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY_8);
 
-	// the current release is jdk 1.8
-	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY = JAVA_LANG_CLASS_NAMES_ARRAY_8;
+	/**
+	 * JDK 11
+	 * @see #isJavaLangClass(String)
+	 */
+	public static boolean isJavaLangClass11(String simpleClassName) {
+		return ArrayTools.binarySearch(JAVA_LANG_CLASS_NAMES_ARRAY_11, simpleClassName);
+	}
 
 	/**
-	 * The current release is jdk 1.8.
+	 * @see #isJavaLangClass11(String)
+	 */
+	public static boolean isJavaLangClass11(char[] simpleClassName) {
+		return isJavaLangClass11(String.copyValueOf(simpleClassName));
+	}
+	
+	// jdk 11
+	@SuppressWarnings("nls")
+	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY_11 = ArrayTools.sort(
+			ArrayTools.concatenate(
+				JAVA_LANG_CLASS_NAMES_ARRAY_8,
+				new String[] {
+					"ProcessHandle",
+					"ProcessHandle.Info",
+					"StackWalker.StackFrame",
+					"System.Logger",
+					"Module",
+					"ModuleLayer",
+					"ModuleLayer.Controller",
+					"Runtime.Version",
+					"StackWalker",
+					"System.LoggerFinder",
+					"StackWalker.Option",
+					"System.Logger.Level",
+					"IllegalCallerException",
+					"LayerInstantiationException"
+				}
+			)
+		);
+	
+	/**
+	 * JDK 11.
+	 */
+	public static final Iterable<String> JAVA_LANG_CLASS_NAMES_11 = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY_11);
+	
+	// the current release is jdk 11
+	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY = JAVA_LANG_CLASS_NAMES_ARRAY_11;
+
+	/**
+	 * The current release is jdk 11.
 	 */
 	public static final Iterable<String> JAVA_LANG_CLASS_NAMES = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY);
 

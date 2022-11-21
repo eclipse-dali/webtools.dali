@@ -64,27 +64,27 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 @SuppressWarnings({"restriction", "nls"})
 public class JPACreateFactory {
-	
+
 	public static final String JPA_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
-	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";	
-	
+	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";
+
 	private static JPACreateFactory factory = null;
-	private IFacetedProject facetedProject; 
-	private IProject project; 
+	private IFacetedProject facetedProject;
+	private IProject project;
 	private IJavaProject javaProject;
 	//private IPackageFragmentRoot sourceFolder;
 	JpaProject jpaProject;
-	
+
 	public static synchronized JPACreateFactory instance() {
 		if (factory == null)
 			factory = new JPACreateFactory();
 		return factory;
 	}
-	
+
 	private IProject buildPlatformProject(String projectName) throws CoreException {
 		IWorkspaceDescription description = ResourcesPlugin.getWorkspace().getDescription();
 		description.setAutoBuilding(true);
-		ResourcesPlugin.getWorkspace().setDescription(description);		
+		ResourcesPlugin.getWorkspace().setDescription(description);
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		p.create(null);
 		p.open(null);
@@ -92,14 +92,14 @@ public class JPACreateFactory {
 	}
 
 	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
+		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "2.0");
 		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, null /*GenericPlatform.VERSION_1_0.getId()*/);
 		dataModel.setProperty(JpaFacetDataModelProperties.LIBRARY_PROVIDER_DELEGATE, null);
 //		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}
-	
+
 	public JpaProject createJPAProject(String projectName) throws CoreException {
 		return createJPAProject(projectName, null, "1.0");
 	}
@@ -107,8 +107,8 @@ public class JPACreateFactory {
 	public JpaProject createJPA20Project(String projectName) throws CoreException {
 		return createJPAProject(projectName, null, "2.0");
 	}
-	
-	
+
+
 	public JpaProject createJPAProject(String projectName, IDataModel jpaConfig, String jpaFacetVersion) throws CoreException {
 		project = buildPlatformProject(projectName);
 		javaProject = createJavaProject(project, true);
@@ -137,23 +137,23 @@ public class JPACreateFactory {
 //		jpaProject.setUpdater(new SynchronousJpaProjectUpdater(jpaProject));
 		return jpaProject;
 	}
-	
+
 	private JpaProject getJpaProject(IProject p) {
-		return (JpaProject) p.getAdapter(JpaProject.class);
+		return p.getAdapter(JpaProject.class);
 	}
 
 	public static String eclipseLinkJarName() {
 		return getSystemProperty(ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
 	}
-	
+
 	public void installFacet(IFacetedProject facetedProject,
-							 String facetName, 
+							 String facetName,
 							 String versionName) throws CoreException {
 		installFacet(facetedProject, facetName, versionName, null);
 	}
 
 	public void uninstallFacet(IFacetedProject facetedProject,
-							   String facetName, 
+							   String facetName,
 							   String versionName) throws CoreException {
 		uninstallFacet(facetedProject, facetName, versionName, null);
 	}
@@ -163,15 +163,15 @@ public class JPACreateFactory {
 	 * defined in JpaFacetInstallDataModelProvider#getDefaultProperty(String)
 	 */
 	public void installFacet(IFacetedProject facetedProject,
-							 String facetName, 
-							 String versionName, 
+							 String facetName,
+							 String versionName,
 							 IDataModel config) throws CoreException {
 		facetedProject.installProjectFacet(this.facetVersion(facetName, versionName), config, null);
 	}
 
 	public void uninstallFacet(IFacetedProject facetedProject,
-							   String facetName, 
-							   String versionName, 
+							   String facetName,
+							   String versionName,
 							   IDataModel config) throws CoreException {
 		facetedProject.uninstallProjectFacet(this.facetVersion(facetName, versionName), config, null);
 	}
@@ -179,7 +179,7 @@ public class JPACreateFactory {
 	private IProjectFacetVersion facetVersion(String facetName, String versionName) {
 		return ProjectFacetsManager.getProjectFacet(facetName).getVersion(versionName);
 	}
-	
+
 	protected static String getSystemProperty(String propertyName) {
 		return System.getProperty(propertyName);
 	}
@@ -191,12 +191,12 @@ public class JPACreateFactory {
 	private void addClasspathEntry(IJavaProject javaProject, IClasspathEntry entry) throws JavaModelException {
 		javaProject.setRawClasspath(ArrayTools.add(javaProject.getRawClasspath(), entry), null);
 	}
-	
+
 	private IFacetedProject createFacetedProject(IProject project) throws CoreException {
 		return ProjectFacetsManager.create(project, true, null);		// true = "convert if necessary"
 	}
-	
-	public IJavaProject createJavaProject(IProject project,  
+
+	public IJavaProject createJavaProject(IProject project,
 										  boolean autoBuild) throws CoreException {
 		facetedProject = createFacetedProject(project);
 		installFacet(facetedProject, "jst.java", "5.0");
@@ -204,11 +204,11 @@ public class JPACreateFactory {
 		//sourceFolder = javaProject.getPackageFragmentRoot(project.getFolder("src"));
 		return javaProject;
 	}
-	
+
 	public static String jpaJarName() {
 		return getSystemProperty(JPA_JAR_NAME_SYSTEM_PROPERTY);
 	}
-	
+
 	public IFile createEntity(JpaProject jpaProject, String fullyQualifiedName) throws Exception {
 		StringTokenizer tokenizer = new StringTokenizer(fullyQualifiedName, ".");
 		ArrayList<String> nameElements = new ArrayList<String>();
@@ -229,83 +229,83 @@ public class JPACreateFactory {
 		JpaContextRoot jpaProjectContent = jpaProject.getContextRoot();
 		PersistenceXml persXML = jpaProjectContent.getPersistenceXml();
 		int cnt = 0;
-		while ((persXML == null) && (cnt < 100)) {		
+		while ((persXML == null) && (cnt < 100)) {
 			Thread.sleep(250);
 			persXML = jpaProjectContent.getPersistenceXml();
 			cnt++;
 		}
 		if (persXML == null)
 			throw new NullPointerException("The persistence XML is not created");
-		
+
 		IFile entity1 = createEntityInProject(jpaProject.getProject(), packageStrings, name);
 		JavaResourceAbstractType jrpt = jpaProject.getJavaResourceType(fullyQualifiedName);
 		cnt = 0;
 		while((jrpt == null) && (cnt < 100)) {
 			try {
 				Thread.sleep(250);
-			} catch (Exception e) {} 
+			} catch (Exception e) {}
 			jrpt = jpaProject.getJavaResourceType(fullyQualifiedName);
 			cnt++;
 		}
 		if (jrpt == null)
-			throw new NullPointerException("The entity '" + fullyQualifiedName + "' could not be created");		
+			throw new NullPointerException("The entity '" + fullyQualifiedName + "' could not be created");
 		return entity1;
 	}
-	
-	public IFile createEntityInProject(IProject project, 
-									   String[] packageFragments, 
-									   String entityName) throws IOException, 
-									   							 CoreException, 
+
+	public IFile createEntityInProject(IProject project,
+									   String[] packageFragments,
+									   String entityName) throws IOException,
+									   							 CoreException,
 									   							 JavaModelException {
 		String folderName = getFolderName(project, packageFragments);
-		String packageName = packageFragments[0];		
+		String packageName = packageFragments[0];
 		for (int i = 1; i < packageFragments.length; i++) {
 			packageName += "." + packageFragments[i];
 		}
-		
+
 		IPath path = new Path(folderName);
-		IFolder folder = project.getFolder(path);		 
+		IFolder folder = project.getFolder(path);
 		return createEntity(folder, packageName , entityName);
 	}
 
 	@SuppressWarnings("deprecation")
 	private String getFolderName(IProject project, String[] packageFragments)
 			throws JavaModelException {
-		IJavaProject javaProject = JavaCore.create(project);		
+		IJavaProject javaProject = JavaCore.create(project);
 		IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0];
-		final IClasspathEntry[] classpathEntries =  javaProject.getRawClasspath();		
+		final IClasspathEntry[] classpathEntries =  javaProject.getRawClasspath();
 		for (IClasspathEntry classpathEntry : classpathEntries) {
 			if (classpathEntry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
 				packageFragmentRoots = javaProject.getPackageFragmentRoots(classpathEntry);
 				break;
-			}  			
+			}
 		}
-		
-		String folderName = packageFragmentRoots[0].getResource().getName();
+
+		String folderName = packageFragmentRoots[0].getCorrespondingResource().getProjectRelativePath().toString();
 		for (String fragment : packageFragments) {
 			folderName += Path.SEPARATOR + fragment;
 		}
 		return folderName;
 	}
-	
+
 	private IFile createEntity(IFolder folder, String packageName, String entityName) throws IOException, CoreException {
 		String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
 		if (!folder.exists()) {
 			createDirectories(folder, true, true, new NullProgressMonitor());
 		}
-		IFile file = folder.getFile(entityShortName + ".java");		
+		IFile file = folder.getFile(entityShortName + ".java");
 		if (!file.exists()) {
-			String content = "package " + packageName + ";\n\n" 
-					+ "import javax.persistence.*;\n\n" 
+			String content = "package " + packageName + ";\n\n"
+					+ "import javax.persistence.*;\n\n"
 					+ "@Entity \n"
 					+ "public class " + entityShortName + " {\n"
 					+ "	private int id;\n"
 					+ "	@Id \n"
-					+ "	public int getId() {\n" 
+					+ "	public int getId() {\n"
 					+ "		return id;\n"
 					+ "	}\n"
 					+ "	public void setId(int id) {\n"
-					+ "		this.id = id;\n" 
+					+ "		this.id = id;\n"
 					+ "	}\n"
 					+ "}"; //$NON-NLS-1$
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -315,11 +315,11 @@ public class JPACreateFactory {
 				file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
 			} finally {
 				stream.close();
-			}	
+			}
 		}
 		return file;
-	}	
-	
+	}
+
 	public IFile createEntityWithCompositePKInProject(IProject project,
 			String[] packageFragments, String entityName) throws IOException,
 			CoreException, JavaModelException {
@@ -379,18 +379,18 @@ public class JPACreateFactory {
 		IFolder folder = project.getFolder(path);
 		return createEntityWithEmbeddedPK(folder, packageName, entityName);
 	}
-	
-		
-		
+
+
+
 		private IFile createEntityWithCompositePK(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
 			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
 			if (!folder.exists()) {
 				createDirectories(folder, true, true, new NullProgressMonitor());
 			}
-			IFile file = folder.getFile(entityShortName + ".java");		
+			IFile file = folder.getFile(entityShortName + ".java");
 			if (!file.exists()) {
-				String content = "package " + packageName + ";\n\n" 
-						+ "import javax.persistence.*;\n\n" 
+				String content = "package " + packageName + ";\n\n"
+						+ "import javax.persistence.*;\n\n"
 						+ "@Entity \n"
 						+ "@IdClass("+entityShortName+"Id.class)"
 					+ "public class " + entityShortName + " {\n"
@@ -411,35 +411,35 @@ public class JPACreateFactory {
 					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
 				} finally {
 					stream.close();
-				}	
+				}
 			}
 			return file;
 			}
-		
+
 		private IFile createIdClass(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
 			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
 			if (!folder.exists()) {
 				createDirectories(folder, true, true, new NullProgressMonitor());
 			}
-			IFile file = folder.getFile(entityShortName + "Id.java");		
+			IFile file = folder.getFile(entityShortName + "Id.java");
 			if (!file.exists()) {
-				String content = "package " + packageName + ";\n\n" 
-						+ "import javax.persistence.*;\n\n" 
+				String content = "package " + packageName + ";\n\n"
+						+ "import javax.persistence.*;\n\n"
 						+"import java.io.Serializable;"
 						+ "public class " + entityShortName + "Id {\n"
 						+ "	private String firstName;\n"
 						+ "	private String lastName;\n"
-						+ "	public String getFirstName() {\n" 
+						+ "	public String getFirstName() {\n"
 						+ "		return firstName;\n"
 						+ "	}\n"
 						+ "	public void setFirstName(String firstName) {\n"
-						+ "		this.firstName = firstName;\n" 
+						+ "		this.firstName = firstName;\n"
 						+ "	}\n"
-						+ "	public String getLastName() {\n" 
+						+ "	public String getLastName() {\n"
 						+ "		return lastName;\n"
 						+ "	}\n"
 						+ "	public void setLastName(String lastName) {\n"
-						+ "		this.lastName = lastName;\n" 
+						+ "		this.lastName = lastName;\n"
 						+ "	}\n"
 						+ "}"; //$NON-NLS-1$
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -449,30 +449,30 @@ public class JPACreateFactory {
 					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
 				} finally {
 					stream.close();
-				}	
+				}
 			}
 			return file;
 			}
-		
+
 		private IFile createEntityWithEmbeddedPK(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
 			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
 			if (!folder.exists()) {
 				createDirectories(folder, true, true, new NullProgressMonitor());
 			}
-			IFile file = folder.getFile(entityShortName + ".java");		
+			IFile file = folder.getFile(entityShortName + ".java");
 			if (!file.exists()) {
-				String content = "package " + packageName + ";\n\n" 
-						+ "import javax.persistence.*;\n\n" 					
+				String content = "package " + packageName + ";\n\n"
+						+ "import javax.persistence.*;\n\n"
 						+ "@Entity\n"
 						+ "public class " + entityShortName + " {\n"
 						+ "@EmbeddedId\n"
-						+ "	private "+ entityShortName +"Id id;\n"						
+						+ "	private "+ entityShortName +"Id id;\n"
 						+ "public void setId(" + entityShortName+ "Id param) {\n"
 						+ "	this.id = param;\n"
 						+ "}\n"
 						+ "public "+entityShortName+"Id getId() {\n"
 						+	"return id;\n"
-						+ "}\n"						
+						+ "}\n"
 						+ "}"; //$NON-NLS-1$
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();
 				try {
@@ -481,20 +481,20 @@ public class JPACreateFactory {
 					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
 				} finally {
 					stream.close();
-				}	
+				}
 			}
 			return file;
 			}
-		
+
 		private IFile createEmbeddedClass(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
 			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
 			if (!folder.exists()) {
 				createDirectories(folder, true, true, new NullProgressMonitor());
 			}
-			IFile file = folder.getFile(entityShortName + ".java");		
+			IFile file = folder.getFile(entityShortName + ".java");
 		if (!file.exists()) {
 			String content = "package " + packageName + ";\n\n"
-			                 + "import javax.persistence.*;\n" 
+			                 + "import javax.persistence.*;\n"
 			                 + "@Embeddable\n"
 					         + "public class " + entityShortName + " {\n"
 					     	 +"private String firstName;\n"
@@ -512,12 +512,12 @@ public class JPACreateFactory {
 					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
 				} finally {
 					stream.close();
-				}	
+				}
 			}
 			return file;
 			}
-	
-	
+
+
 	private void createDirectories(IContainer container, boolean force,
 			boolean local, IProgressMonitor monitor) throws CoreException {
 		if (container != null && container instanceof IFolder) {
@@ -531,7 +531,7 @@ public class JPACreateFactory {
 			}
 		}
 	}
-	
+
 	public static PersistentAttribute getPersistentAttribute(IFile entity, String attributeName){
 		Set<PersistentAttribute> result = getEntityFields(entity);
 		for(PersistentAttribute attribute : result){
@@ -541,7 +541,7 @@ public class JPACreateFactory {
 		}
 		return null;
 	}
-	
+
 	public static PersistentType getPersistentType(IFile file){
 		JpaFile jpaFile = getJpaFile(file);
 		for (JpaStructureNode node : getRootNodes(jpaFile)) {
@@ -557,7 +557,7 @@ public class JPACreateFactory {
 		}
 		return jpaFile.getRootStructureNodes();
 	}
-	
+
 	public static Set<PersistentAttribute> getEntityFields(IFile file){
 		Set<PersistentAttribute> result = new HashSet<PersistentAttribute>();
 		JpaFile jpaFile = getJpaFile(file);
@@ -574,11 +574,11 @@ public class JPACreateFactory {
 	}
 
 	private static JpaFile getJpaFile(IFile file) {
-		return (JpaFile) file.getAdapter(JpaFile.class);
+		return file.getAdapter(JpaFile.class);
 	}
-	
+
 	public void addAttributes(IFile entity, String attName, String attType, String annotation, String attActName, boolean isCollection){
-		PersistentType javaPersistentType = (PersistentType)getPersistentType(entity);
+		PersistentType javaPersistentType = getPersistentType(entity);
 		int cnt = 0;
 		while ((javaPersistentType == null) && (cnt < 100)) {
 			try {
@@ -591,25 +591,25 @@ public class JPACreateFactory {
 			throw new RuntimeException("The entity could not be created");
 		JpaArtifactFactory.instance().makeNewAttribute(javaPersistentType, attName, attType, attActName, attType, null, null, isCollection);
 	}
-	
+
 	private IFile createFieldAnnotatedEntity(IFolder folder, String packageName, String entityName) throws IOException, CoreException {
 		String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
 		if (!folder.exists()) {
 			createDirectories(folder, true, true, new NullProgressMonitor());
 		}
-		IFile file = folder.getFile(entityShortName + ".java");		
+		IFile file = folder.getFile(entityShortName + ".java");
 		if (!file.exists()) {
-			String content = "package " + packageName + ";\n\n" 
-					+ "import javax.persistence.*;\n\n" 
+			String content = "package " + packageName + ";\n\n"
+					+ "import javax.persistence.*;\n\n"
 					+ "@Entity \n"
 					+ "public class " + entityShortName + " {\n"
-					+ "	@Id \n"					
+					+ "	@Id \n"
 					+ "	private int id;\n"
-					+ "	public int getId() {\n" 
+					+ "	public int getId() {\n"
 					+ "		return id;\n"
 					+ "	}\n"
 					+ "	public void setId(int id) {\n"
-					+ "		this.id = id;\n" 
+					+ "		this.id = id;\n"
 					+ "	}\n"
 					+ "}"; //$NON-NLS-1$
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -619,22 +619,22 @@ public class JPACreateFactory {
 				file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
 			} finally {
 				stream.close();
-			}	
+			}
 		}
 		return file;
-	}	
+	}
 
 	public IFile createFieldAnnotatedEntityInProject(IProject project, String[] packageFragments, String entityName) throws IOException, CoreException, JavaModelException {
 		String folderName = getFolderName(project, packageFragments);
-		String packageName = packageFragments[0];		
+		String packageName = packageFragments[0];
 		for (int i = 1; i < packageFragments.length; i++) {
 			packageName += "." + packageFragments[i];
 		}
-		
+
 		IPath path = new Path(folderName);
-		IFolder folder = project.getFolder(path);		 
+		IFolder folder = project.getFolder(path);
 		return createFieldAnnotatedEntity(folder, packageName , entityName);
 	}
-	
-	
+
+
 }

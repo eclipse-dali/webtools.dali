@@ -41,32 +41,47 @@ public class ClasspathTests extends TestCase {
 		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
+		path = new Classpath(
+				this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"))
+						.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
+		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar"))
+				.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
+		path = new Classpath(this.morph(
+				"C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"))
+						.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\i18n.jar;C:\\jdk\\i18n.jar;C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
+		path = new Classpath(this.morph(
+				"C:\\jdk\\i18n.jar;C:\\jdk\\i18n.jar;C:\\jdk\\i18n.jar;C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"))
+						.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;;;;C:\\jdk\\jaws.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;;;")).compressed().getPath();
+		path = new Classpath(this.morph(
+				"C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;;;;C:\\jdk\\jaws.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;;;"))
+						.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
 		// no changes
 		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
+		path = new Classpath(
+				this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"))
+						.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\..\\jdk\\i18n.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
+		path = new Classpath(
+				this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\..\\jdk\\i18n.jar;C:\\jdk\\jaws.jar"))
+						.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
-		path = new Classpath(this.morph("C:\\jdk1\\jdk2\\jdk3\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk1\\jdk2\\jdk3\\..\\..\\..\\jdk1\\jdk2\\jdk3\\i18n.jar;C:\\jdk\\jaws.jar")).compressed().getPath();
+		path = new Classpath(this.morph(
+				"C:\\jdk1\\jdk2\\jdk3\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk1\\jdk2\\jdk3\\..\\..\\..\\jdk1\\jdk2\\jdk3\\i18n.jar;C:\\jdk\\jaws.jar"))
+						.compressed().getPath();
 		assertEquals(this.morph("C:\\jdk1\\jdk2\\jdk3\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar"), path);
 
 	}
@@ -138,7 +153,9 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testConvertToURLs() {
-		Iterator<URL> entries = new Classpath(this.morph("C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar")).getURLs().iterator();
+		Iterator<URL> entries = new Classpath(
+				this.morph("C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar"))
+						.getURLs().iterator();
 		assertEquals(this.morphURL("/C:/jdk/rt.jar"), entries.next().getPath());
 		assertEquals(this.morphURL("/C:/jdk/i18n.jar"), entries.next().getPath());
 		assertEquals(this.morphURL("/C:/jdk/jaws.jar"), entries.next().getPath());
@@ -148,7 +165,8 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testGetEntries() {
-		Classpath cp = new Classpath(this.morph("C:\\jdk\\rt.jar;;.;C:\\jdk\\i18n.jar;;;C:\\jdk\\jaws.jar;;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\bar\\bar.jar;"));
+		Classpath cp = new Classpath(this.morph(
+				"C:\\jdk\\rt.jar;;.;C:\\jdk\\i18n.jar;;;C:\\jdk\\jaws.jar;;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\bar\\bar.jar;"));
 		Iterator<Classpath.Entry> entries = cp.getEntries().iterator();
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entries.next().getFileName());
 		assertEquals(this.morph("."), entries.next().getFileName());
@@ -174,27 +192,39 @@ public class ClasspathTests extends TestCase {
 		Classpath.Entry entry = null;
 
 		// in the middle - qualified
-		entry = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(
+				this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\rt.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entry.getFileName());
 
 		// in the middle - unqualified
-		entry = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;rt.jar;C:\\foo\\classes;C:\\bar\\bar.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(
+				this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;rt.jar;C:\\foo\\classes;C:\\bar\\bar.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals("rt.jar", entry.getFileName());
 
 		// at the beginning - qualified
-		entry = new Classpath(this.morph("C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(
+				this.morph("C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entry.getFileName());
 
 		// at the beginning - unqualified
-		entry = new Classpath(this.morph("rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(
+				this.morph("rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals("rt.jar", entry.getFileName());
 
 		// at the end - qualified
-		entry = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\jdk\\rt.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(
+				this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\jdk\\rt.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entry.getFileName());
 
 		// at the end - unqualified
-		entry = new Classpath(this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;rt.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(
+				this.morph("C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;rt.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals("rt.jar", entry.getFileName());
 
 		// alone - qualified
@@ -206,26 +236,36 @@ public class ClasspathTests extends TestCase {
 		assertEquals("rt.jar", entry.getFileName());
 
 		// trick entry at the beginning
-		entry = new Classpath(this.morph("rt.jar.new;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(this.morph(
+				"rt.jar.new;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entry.getFileName());
 
 		// trick entry in the middle
-		entry = new Classpath(this.morph("rt.jar.new;C:\\jdk\\rtrtrt.jar;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(this.morph(
+				"rt.jar.new;C:\\jdk\\rtrtrt.jar;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entry.getFileName());
 
 		// trick entry at the end
-		entry = new Classpath(this.morph("rt.jar.new;C:\\jdk\\rtrtrt.jar;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\jdk\\rtrtrt.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(this.morph(
+				"rt.jar.new;C:\\jdk\\rtrtrt.jar;C:\\jdk\\rt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\jdk\\rtrtrt.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entry.getFileName());
 
 		// missing
-		entry = new Classpath(this.morph("rt.jar.new;C:\\jdk\\rtrtrt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\jdk\\rtrtrt.jar")).getEntryForFileNamed("rt.jar");
+		entry = new Classpath(this.morph(
+				"rt.jar.new;C:\\jdk\\rtrtrt.jar;C:\\jdk\\i18n.jar;C:\\jdk\\jaws.jar;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\jdk\\rtrtrt.jar"))
+						.getEntryForFileNamed("rt.jar");
 		assertEquals("path entry should not be found", null, entry);
 
 	}
 
 	public void testGetEntryForClassNamed() {
-		assertNotNull(Classpath.completeClasspath().getEntryForClassNamed(java.lang.String.class.getName()));
-		assertNull(Classpath.completeClasspath().getEntryForClassNamed("foo.bar.Baz"));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			assertNotNull(Classpath.completeClasspath().getEntryForClassNamed(java.lang.String.class.getName()));
+			assertNull(Classpath.completeClasspath().getEntryForClassNamed("foo.bar.Baz"));
+		}
 	}
 
 	public void testLocationForClass() {
@@ -240,61 +280,80 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testRtJarName() throws IOException {
-		File rtFile = new File(Classpath.rtJarName());
-		assertTrue("rt.jar does not exist", rtFile.exists());
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			File rtFile = new File(Classpath.rtJarName());
+			assertTrue("rt.jar does not exist", rtFile.exists());
 
-		JarFile rtJarFile = new JarFile(rtFile);
-		JarEntry entry = rtJarFile.getJarEntry("java/lang/Object.class");
-		rtJarFile.close();
-		assertTrue("bogus rt.jar", entry != null);
+			JarFile rtJarFile = new JarFile(rtFile);
+			JarEntry entry = rtJarFile.getJarEntry("java/lang/Object.class");
+			rtJarFile.close();
+			assertTrue("bogus rt.jar", entry != null);
+		}
 	}
 
 	public void testJREClassNames() {
-		assertTrue("Vector is missing from JRE class names", IterableTools.contains(Classpath.bootClasspath().getClassNames(), java.util.Vector.class.getName()));
-		assertTrue("File is missing from JRE class names", IterableTools.contains(Classpath.bootClasspath().getClassNames(), java.io.File.class.getName()));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			assertTrue("Vector is missing from JRE class names", IterableTools
+					.contains(Classpath.bootClasspath().getClassNames(), java.util.Vector.class.getName()));
+			assertTrue("File is missing from JRE class names",
+					IterableTools.contains(Classpath.bootClasspath().getClassNames(), java.io.File.class.getName()));
+		}
 	}
 
 	public void testJavaExtensionDirectoryNames() {
-		char sep = File.separatorChar;
-		String stdExtDirName = JAVA_HOME + sep + "lib" + sep + "ext";
-		assertTrue("standard extension dir name missing: " + stdExtDirName, ArrayTools.contains(Classpath.javaExtensionDirectoryNames(), stdExtDirName));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			char sep = File.separatorChar;
+			String stdExtDirName = JAVA_HOME + sep + "lib" + sep + "ext";
+			assertTrue("standard extension dir name missing: " + stdExtDirName,
+					ArrayTools.contains(Classpath.javaExtensionDirectoryNames(), stdExtDirName));
+		}
 	}
 
 	public void testJavaExtensionDirectories() {
-		char sep = File.separatorChar;
-		File stdExtDir = new File(JAVA_HOME + sep + "lib" + sep + "ext");
-		assertTrue("standard extension dir missing: " + stdExtDir.getParent(), ArrayTools.contains(Classpath.javaExtensionDirectories(), stdExtDir));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			char sep = File.separatorChar;
+			File stdExtDir = new File(JAVA_HOME + sep + "lib" + sep + "ext");
+			assertTrue("standard extension dir missing: " + stdExtDir.getParent(),
+					ArrayTools.contains(Classpath.javaExtensionDirectories(), stdExtDir));
+		}
 	}
 
 	public void testJavaExtensionClasspathEntries() {
-		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.8")) {
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4")
+				|| SystemTools.javaSpecificationVersionIsGreaterThan("11")) {
 			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
 		}
 
-		Collection<String> jarNames = new ArrayList<String>();
-		Iterable<Classpath.Entry> entries = Classpath.javaExtensionClasspath().getEntries();
-		for (Classpath.Entry entry : entries) {
-			jarNames.add(entry.getFileName());
-		}
-		char sep = File.separatorChar;
-		String stdExtJarName = JAVA_HOME + sep + "lib" + sep + "ext" + sep + "dnsns.jar";
-		String msg = "JDK standard extension jar missing: " + stdExtJarName;
-		boolean jarPresent = jarNames.contains(stdExtJarName);
-		if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))) {
-			assertTrue(msg, jarPresent);
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Collection<String> jarNames = new ArrayList<String>();
+			Iterable<Classpath.Entry> entries = Classpath.javaExtensionClasspath().getEntries();
+			for (Classpath.Entry entry : entries) {
+				jarNames.add(entry.getFileName());
+			}
+			char sep = File.separatorChar;
+			String stdExtJarName = JAVA_HOME + sep + "lib" + sep + "ext" + sep + "dnsns.jar";
+			String msg = "JDK standard extension jar missing: " + stdExtJarName;
+			boolean jarPresent = jarNames.contains(stdExtJarName);
+			if (SystemTools.jvmIsSun()
+					|| (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))) {
+				assertTrue(msg, jarPresent);
+			}
 		}
 	}
 
 	public void testJavaExtensionClassNames() {
-		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.8")) {
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4")
+				|| SystemTools.javaSpecificationVersionIsGreaterThan("11")) {
 			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
 		}
-
-		String className = "sun.net.spi.nameservice.dns.DNSNameService";
-		String msg = "JDK standard extension class missing: " + className;
-		boolean classPresent = IteratorTools.contains(Classpath.javaExtensionClasspath().classNames(), className);
-		if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))) {
-			assertTrue(msg, classPresent);
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			String className = "sun.net.spi.nameservice.dns.DNSNameService";
+			String msg = "JDK standard extension class missing: " + className;
+			boolean classPresent = IteratorTools.contains(Classpath.javaExtensionClasspath().classNames(), className);
+			if (SystemTools.jvmIsSun()
+					|| (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))) {
+				assertTrue(msg, classPresent);
+			}
 		}
 	}
 
@@ -305,7 +364,8 @@ public class ClasspathTests extends TestCase {
 		// when the tests are executed as an ANT task, they are run under
 		// an ANT class loader and the "Java" classpath does not include this class
 		if (cl.getClass().getName().startsWith("sun.misc")) {
-			assertTrue("class missing: " + className, IterableTools.contains(Classpath.javaClasspath().getClassNames(), className));
+			assertTrue("class missing: " + className,
+					IterableTools.contains(Classpath.javaClasspath().getClassNames(), className));
 		}
 	}
 
@@ -316,62 +376,83 @@ public class ClasspathTests extends TestCase {
 		// when the tests are executed as an ANT task, they are run under
 		// an ANT class loader and the "Java" classpath does not include this class
 		if (cl.getClass().getName().startsWith("sun.misc")) {
-			assertTrue("class missing: " + className, IterableTools.contains(Classpath.completeClasspath().getClassNames(), className));
+			assertTrue("class missing: " + className,
+					IterableTools.contains(Classpath.completeClasspath().getClassNames(), className));
 		}
 	}
 
 	public void testClasspathForClass() {
-		assertNotNull(Classpath.classpathFor(java.lang.String.class));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			assertNotNull(Classpath.classpathFor(java.lang.String.class));
+		}
 	}
 
 	public void testAddClassNamesTo() {
-		Collection<String> classNames = new ArrayList<String>(1000);
-		Classpath.bootClasspath().addClassNamesTo(classNames);
-		assertTrue(classNames.contains(java.util.Vector.class.getName()));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Collection<String> classNames = new ArrayList<String>(1000);
+			Classpath.bootClasspath().addClassNamesTo(classNames);
+			assertTrue(classNames.contains(java.util.Vector.class.getName()));
+		}
 	}
 
 	public void testToString() {
-		assertNotNull(Classpath.bootClasspath().toString());
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			assertNotNull(Classpath.bootClasspath().toString());
+		}
 	}
 
 	public void testEntry_getCanonicalFile() {
-		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(entry.getCanonicalFile().getPath().endsWith(".jar"));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+			assertTrue(entry.getCanonicalFile().getPath().endsWith(".jar"));
+		}
 	}
 
 	public void testEntry_getCanonicalFileName() {
-		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		String name = entry.getCanonicalFileName();
-		if (SystemTools.jvmIsSun()) {
-			assertTrue(name.endsWith("rt.jar"));
-		} else if (SystemTools.jvmIsIBM()) {
-			assertTrue(name.endsWith("vm.jar"));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+			String name = entry.getCanonicalFileName();
+			if (SystemTools.jvmIsSun()) {
+				assertTrue(name.endsWith("rt.jar"));
+			} else if (SystemTools.jvmIsIBM()) {
+				assertTrue(name.endsWith("vm.jar"));
+			}
 		}
 	}
 
 	public void testEntry_equals() {
-		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertFalse(entry.equals("foo"));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+			assertFalse(entry.equals("foo"));
+		}
 	}
 
 	public void testEntry_containsClass() {
-		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(entry.contains(java.lang.String.class));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+			assertTrue(entry.contains(java.lang.String.class));
+		}
 	}
 
 	public void testEntry_containsString() {
-		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(entry.contains(java.lang.String.class.getName()));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+			assertTrue(entry.contains(java.lang.String.class.getName()));
+		}
 	}
 
 	public void testEntry_getClassNames() {
-		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(IterableTools.contains(entry.getClassNames(), java.lang.String.class.getName()));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+			assertTrue(IterableTools.contains(entry.getClassNames(), java.lang.String.class.getName()));
+		}
 	}
 
 	public void testEntry_classNames() {
-		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(IteratorTools.contains(entry.classNames(), java.lang.String.class.getName()));
+		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
+			Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+			assertTrue(IteratorTools.contains(entry.classNames(), java.lang.String.class.getName()));
+		}
 	}
 
 	/**

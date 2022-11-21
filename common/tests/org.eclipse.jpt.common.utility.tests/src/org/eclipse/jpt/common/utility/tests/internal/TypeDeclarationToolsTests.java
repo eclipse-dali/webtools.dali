@@ -353,9 +353,29 @@ public class TypeDeclarationToolsTests
 		assertFalse(TypeDeclarationTools.isJavaLangClass8("".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass8("Collection".toCharArray()));
 	}
+	
+	public void testIsJavaLangClass11String() {
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("Object"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("String"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("AutoCloseable"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("FunctionalInterface"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass11(""));
+		assertFalse(TypeDeclarationTools.isJavaLangClass11("Collection"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("Module"));
+	}
+
+	public void testIsJavaLangClass11CharArray() {
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("Object".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("String".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("AutoCloseable".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("FunctionalInterface".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass11("".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass11("Collection".toCharArray()));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("Module".toCharArray()));
+	}
 
 	public void testJDKVersion() {
 		assertTrue("update TypeDeclarationTools.JAVA_LANG_CLASS_NAMES for new JDK...",
-				SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.8"));
+				SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("11"));
 	}
 }

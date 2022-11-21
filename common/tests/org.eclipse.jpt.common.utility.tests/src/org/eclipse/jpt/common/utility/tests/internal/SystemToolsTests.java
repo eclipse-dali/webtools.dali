@@ -33,6 +33,8 @@ public class SystemToolsTests
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.6"));
 		} else if (version.equals("1.8")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.7"));
+		} else if (version.equals("11")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("10"));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -50,6 +52,8 @@ public class SystemToolsTests
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("2.0"));
 		} else if (version.equals("1.8")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("2.0"));
+		} else if (version.equals("11")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("12"));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -71,6 +75,9 @@ public class SystemToolsTests
 		} else if (version.equals("1.8")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.7"));
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("1.8"));
+		} else if (version.equals("11")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("10"));
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("11"));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -93,6 +100,9 @@ public class SystemToolsTests
 		} else if (version.equals("1.8")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.8"));
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("2.0"));
+		} else if (version.equals("11")) {
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("11"));
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("12"));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
