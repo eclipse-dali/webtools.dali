@@ -46,7 +46,7 @@
 					<systemProperties combine.children="append">
 						<org.eclipse.jpt.jpa.jar>${org.eclipse.jpt.jpa.jar}</org.eclipse.jpt.jpa.jar>
 					</systemProperties>
-					<argLine>-Xms128m -Xmx512m -XX:MaxPermSize=256m</argLine>
+					<argLine>-Xms128m -Xmx768m</argLine>
 					<product>org.eclipse.sdk.ide</product>
 					<application>org.eclipse.ui.ide.workbench</application>
 					<dependencies>
