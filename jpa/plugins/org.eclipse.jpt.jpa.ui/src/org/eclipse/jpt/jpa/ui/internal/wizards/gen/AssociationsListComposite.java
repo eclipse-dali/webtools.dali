@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2023 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -16,6 +16,7 @@ import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.jface.resource.ResourceManager;
@@ -87,10 +88,10 @@ public class AssociationsListComposite extends FigureCanvas {
 	@SuppressWarnings("unchecked")
 	public void updateSelectedAssociation(){
 		Figure figure = (Figure)this.getContents();
-		List<AssociationFigure> associationFigures = figure.getChildren();
-		for(AssociationFigure assocFig : associationFigures){
-			if( assocFig == this.selectedAssociationFigure){
-				assocFig.update(); 
+		List<?> associationFigures = figure.getChildren();
+		for (Object assocFig : associationFigures) {
+			if (assocFig == this.selectedAssociationFigure) {
+				((AssociationFigure) assocFig).update();
 			}
 		}
 	}
@@ -102,13 +103,13 @@ public class AssociationsListComposite extends FigureCanvas {
 	@SuppressWarnings("unchecked")
 	public Association getPreviousAssociation(){
 		Figure figure = (Figure)this.getContents();
-		List<AssociationFigure> associationFigures = figure.getChildren();
+		List<?> associationFigures = figure.getChildren();
 		AssociationFigure ret = null;
-		for(AssociationFigure assocFig : associationFigures){
-			if( assocFig.isSelected() ){
-				break; 
+		for (Object assocFig : associationFigures) {
+			if (((AssociationFigure) assocFig).isSelected()) {
+				break;
 			}
-			ret = assocFig;
+			ret = (AssociationFigure) assocFig;
 		}
 		return ret==null?null:ret.getAssociation();
 	}
