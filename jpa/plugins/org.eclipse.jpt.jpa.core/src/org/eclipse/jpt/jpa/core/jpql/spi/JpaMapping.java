@@ -334,6 +334,16 @@ public abstract class JpaMapping implements IMapping {
 		}
 	}
 
+	@Override
+	public boolean isEmbeddable() {
+		switch (getMappingType()) {
+			case EMBEDDED:
+			case EMBEDDED_ID:
+				return true;
+		}
+		return false;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

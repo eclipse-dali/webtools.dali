@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2012, 2023 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -42,7 +42,7 @@ public class SimpleProjectResourceLocator
 
 	public IContainer getDefaultLocation() {
 		ResourceLocator resourceLocator = this.getResourceLocator();
-		return (resourceLocator == null) ? null : resourceLocator.getDefaultLocation(this.project);
+		return (resourceLocator == null) ? this.project : resourceLocator.getDefaultLocation(this.project);
 	}
 
 	public IPath getWorkspacePath(IPath runtimePath) {
