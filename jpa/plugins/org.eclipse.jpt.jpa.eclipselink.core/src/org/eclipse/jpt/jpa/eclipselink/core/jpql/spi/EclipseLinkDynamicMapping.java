@@ -229,7 +229,6 @@ public class EclipseLinkDynamicMapping implements IMapping {
 	}
 
 
-	@Override
 	public boolean isEmbeddable() {
 		return delegate.isEmbeddable();
 	}
