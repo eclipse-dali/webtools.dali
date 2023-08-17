@@ -3,12 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.dbws.eclipselink.ui;singleton:=true
-Bundle-Version: 1.1.202.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.debug.core;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
