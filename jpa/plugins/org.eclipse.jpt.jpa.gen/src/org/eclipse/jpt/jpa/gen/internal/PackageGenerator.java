@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2024 Oracle and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -63,7 +63,7 @@ import org.osgi.framework.Bundle;
 /**
  * This generator will generate a package of entities for a set of tables.
  */
-public class PackageGenerator { 
+public class PackageGenerator {
 
 	private static final String LOGGER_NAME = "org.eclipse.jpt.entities.gen.log"; //$NON-NLS-1$
 	private final JpaProject jpaProject;
@@ -85,7 +85,7 @@ public class PackageGenerator {
 			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptJpaGenMessages.ERROR_GENERATING_ENTITIES, e));
 		}
 	}
-	
+
 	private PackageGenerator(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer confirmer) {
 		super();
 		this.jpaProject = jpaProject;
@@ -101,11 +101,11 @@ public class PackageGenerator {
 		return this.jpaProject.getJavaProject();
 	}
 
-	
+
 	protected void doGenerate(IProgressMonitor monitor) throws Exception {
 		generateInternal(monitor);
 	}
-	
+
 	protected void doXmlGenerate(IProgressMonitor monitor) throws Exception {
 		generateXmlInternal(monitor);
 	}
@@ -133,8 +133,8 @@ public class PackageGenerator {
 
 			genClasses.add(className);
 			/*
-			 * add the composite key class to persistence.xml because some 
-			 * JPA provider(e.g. Kodo) requires it. Hibernate doesn't seem to care). 
+			 * add the composite key class to persistence.xml because some
+			 * JPA provider(e.g. Kodo) requires it. Hibernate doesn't seem to care).
 			 */
 			if (table.isCompositeKey()) {
 				genClasses.add(table.getQualifiedCompositeKeyClassName());
@@ -143,14 +143,14 @@ public class PackageGenerator {
 		if (sm.isCanceled()) {
 			return;
 		}
-		
+
 		//update persistence.xml
 		if (this.customizer.updatePersistenceXml()) {
 			updatePersistenceXml(genClasses);
 		}
 		sm.worked(2);
 	}
-	
+
 	private void updatePersistenceXml(final List<String> genClasses) {
 		JptXmlResource resource = this.jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
@@ -194,16 +194,16 @@ public class PackageGenerator {
 		if (sm.isCanceled()) {
 			return;
 		}
-		
+
 		updatePersistenceXmlForMappingFile(this.customizer.getXmlMappingFile());
-		
+
 		sm.worked(2);
 	}
-	
+
 	private File prepareTemplatesFolder(String templatesPath) throws IOException, Exception,
 			CoreException {
 		//Prepare the Velocity template folder:
-		//If the plug-in is packaged as a JAR, we need extract the template 
+		//If the plug-in is packaged as a JAR, we need extract the template
 		//folder into the plug-in state location. This is required by Velocity
 		//since we use included templates.
 		Bundle bundle = JptJpaGenPlugin.instance().getBundle();
@@ -211,9 +211,9 @@ public class PackageGenerator {
 		URL url = FileLocator.find(bundle, path, null);
 		if (url == null) {
 			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptJpaGenMessages.TEMPLATES_NOT_FOUND));
-		}		
+		}
 		URL templUrl = FileLocator.resolve(url);
-		
+
 		//Have this check so that the code would work in both PDE and JARed plug-in at runtime
 		File templDir = null;
 		if (UrlUtil.isJarUrl(templUrl)) {
@@ -221,14 +221,14 @@ public class PackageGenerator {
 		} else {
 			templDir = UrlUtil.getUrlFile(templUrl);
 		}
-		
+
 
 		if (templDir == null || !templDir.exists()) {
 			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptJpaGenMessages.TEMPLATES_NOT_FOUND));
 		}
 		return templDir;
 	}
-	
+
 	private void updatePersistenceXmlForMappingFile(final String mappingFile) {
 		JptXmlResource resource = this.jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
@@ -242,7 +242,7 @@ public class PackageGenerator {
 			// invalid content, do not attempt to update
 			return;
 		}
-		
+
 		PersistenceUnit persistenceUnit;
 		// create a persistence unit if one doesn't already exist
 		if (persistence.getPersistenceUnitsSize() == 0) {
@@ -263,15 +263,15 @@ public class PackageGenerator {
 			resource.save();
 		}
 	}
-	
+
 	/**
-	 * Saves/Creates the .java file corresponding to a database table 
+	 * Saves/Creates the .java file corresponding to a database table
 	 * with the given content.
-	 * 
-	 * @param templDir The velocity template file directory. It is assumed 
-	 * that this directory contains the 2 files <em>main.java.vm</em> 
-	 * and <em>pk.java.vm</em> 
-	 * @param progress 
+	 *
+	 * @param templDir The velocity template file directory. It is assumed
+	 * that this directory contains the 2 files <em>main.java.vm</em>
+	 * and <em>pk.java.vm</em>
+	 * @param progress
 	 */
 	protected void generateClass(ORMGenTable table, String templateDirPath, IProgressMonitor monitor) throws Exception {
 
@@ -281,7 +281,7 @@ public class PackageGenerator {
 		try {
 			IFolder javaPackageFolder = getJavaPackageFolder(table, monitor);
 			IFile javaFile = javaPackageFolder.getFile( table.getClassName() + ".java"); //$NON-NLS-1$
-			
+
 			if (javaFile.exists()) {
 				if (this.overwriteConfirmer != null && !this.overwriteConfirmer.overwrite(javaFile.getName())) {
 					return;
@@ -291,7 +291,7 @@ public class PackageGenerator {
 			//Workaround by preset the log level before Velocity is initialized
 			Logger logger = Logger.getLogger( LOGGER_NAME );
 			logger.setLevel( Level.SEVERE );
-			
+
 			Properties vep = new Properties();
 			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
 			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
@@ -304,11 +304,11 @@ public class PackageGenerator {
 			} finally {
 				Thread.currentThread().setContextClassLoader(oldClassLoader);
 			}
-			
+
 		    sm.worked(2);
-		    
+
 		    generateJavaFile(table, javaFile, ve, "main.java.vm", true/*isDomainClass*/, sm.newChild(6)); //$NON-NLS-1$
-		    
+
 		    if (table.isCompositeKey()) {
 		    	IFile compositeKeyFile = javaPackageFolder.getFile( table.getCompositeKeyClassName()+".java"); //$NON-NLS-1$
 		    	generateJavaFile(table, compositeKeyFile, ve, "pk.java.vm", false/*isDomainClass*/, sm.newChild(1)); //$NON-NLS-1$
@@ -317,21 +317,21 @@ public class PackageGenerator {
 		    	sm.setWorkRemaining(1);
 		    }
 			javaFile.refreshLocal(1, sm.newChild(1));
-			
+
 		} catch (Throwable e) {
 			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.ERROR_GENERATING_ENTITIES);
 		}
 	}
-	
+
 	private void generateJavaFile(ORMGenTable table, IFile javaFile, VelocityEngine ve
 			, String templateName, boolean isDomainClass, IProgressMonitor monitor) throws Exception {
 		VelocityContext context = new VelocityContext();
         context.put("table", table); //$NON-NLS-1$
         context.put("customizer", getCustomizer()); //$NON-NLS-1$
-        
+
 		StringWriter w = new StringWriter();
 		ve.mergeTemplate(templateName, context, w);
-		
+
 		String fileContent = w.toString();
 		if (javaFile.exists()) {
 			if (isDomainClass) {
@@ -344,33 +344,33 @@ public class PackageGenerator {
 			byte[] content = fileContent.getBytes(javaFile.getCharset());
 			createFile(javaFile, new ByteArrayInputStream(content));
 		}
-		
+
 		convertLineDelimiter(javaFile);
 	}
-	
-	
+
+
 	/**
 	 * Updates the (existing) Java file corresponding to the given class.
-	 * 
+	 *
 	 * @param className The qualified class name.
-	 * 
+	 *
 	 * @param javaFile The existing Java file of the class to update.
-	 * 
+	 *
 	 * @param fileContent The new file content.
 	 */
 	protected void updateExistingDomainClass(String className, IFile javaFile, String fileContent) throws Exception {
-		/*use CompilationUnitModifier instead of calling WideEnv.getEnv().setFileContent 
-		 * so that if the unit is up to date if it is used before file change 
+		/*use CompilationUnitModifier instead of calling WideEnv.getEnv().setFileContent
+		 * so that if the unit is up to date if it is used before file change
 		 * notifications are delivered (see EJB3ImportSchemaWizard.updateExistingDomainClass for example)*/
 		CompilationUnitModifier modifier = new CompilationUnitModifier(this.getJavaProject(), className);
 		modifier.setJavaSource(fileContent);
 		modifier.save();
 	}
-	
-	public void createFile(IFile file, java.io.InputStream contents) throws CoreException {		
+
+	public void createFile(IFile file, java.io.InputStream contents) throws CoreException {
 		file.create(contents, false, null/*monitor*/);
 	}
-	
+
 	public IFolder getJavaPackageFolder(ORMGenTable table, IProgressMonitor monitor) throws CoreException {
 		IPackageFragmentRoot root = getDefaultJavaSourceLocation(this.getJavaProject(), table.getSourceFolder());
 		String packageName = table.getPackage();
@@ -378,7 +378,7 @@ public class PackageGenerator {
 		IPackageFragment packageFragment = root.getPackageFragment(packageName);
 		if( !packageFragment.exists()){
 			root.createPackageFragment(packageName, true, monitor);
-		}		
+		}
 		return (IFolder) packageFragment.getResource();
 	}
 
@@ -392,9 +392,9 @@ public class PackageGenerator {
 						if (defaultSrcPath == null) {
 							defaultSrcPath = roots[i];
 						}
-						String path = roots[i].getPath().toString(); 
+						String path = roots[i].getPath().toString();
 						if (path.equals('/' + sourceFolder)) {
-							return roots[i] ; 
+							return roots[i] ;
 						}
 					}
 				}
@@ -404,10 +404,10 @@ public class PackageGenerator {
 		}
 		return defaultSrcPath;
 	}
-	
+
 	protected void generateXmlMappingFile(List<String> tableNames, String templateDirPath, IProgressMonitor monitor) throws Exception {
 
-		try {		
+		try {
 			String xmlMappingFileLocation = this.customizer.getXmlMappingFile();
 			JptXmlResource xmlResource = this.jpaProject.getMappingFileXmlResource(new Path(xmlMappingFileLocation));
 			IFile xmlFile;
@@ -418,10 +418,10 @@ public class PackageGenerator {
 				//TODO We currently don't support mapping files very well if in non source/class folders so force file
 				//into the know default directory for resources to ensure that things work.
 				IProject project = jpaProject.getProject();
-				IContainer container = ((ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class)).getDefaultLocation();
+				IContainer container = project.getAdapter(ProjectResourceLocator.class).getDefaultLocation();
 				xmlFile = container.getFile(new Path(xmlMappingFileLocation.substring(xmlMappingFileLocation.lastIndexOf("/")))); //$NON-NLS-1$
 			}
-			
+
 			if (xmlFile.exists()) {
 				if (this.overwriteConfirmer != null && !this.overwriteConfirmer.overwrite(xmlFile.getName())) {
 					return;
@@ -431,7 +431,7 @@ public class PackageGenerator {
 			//Workaround by preset the log level before Velocity is initialized
 			Logger logger = Logger.getLogger( LOGGER_NAME );
 			logger.setLevel( Level.SEVERE );
-			
+
 			Properties vep = new Properties();
 			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
 			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
@@ -453,26 +453,26 @@ public class PackageGenerator {
 		    	ORMGenTable table = this.customizer.getTable(names.next());
 		    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "namedQuery.vm"));
 		    }
-		    
+
 		    List<ORMGenTable> compositeKeyTables = new ArrayList<ORMGenTable>();
-		    
+
 			for (Iterator<String> names = tableNames.iterator(); names.hasNext();) {
-				
+
 				ORMGenTable table = this.customizer.getTable(names.next());
 				String subTaskName = NLS.bind(JptJpaGenMessages.ENTITY_GENERATOR_TASK_NAME, table.getName());
 				SubMonitor sm = SubMonitor.convert(monitor, subTaskName, 10);
-		    
+
 				if (sm.isCanceled()) {
 					return;
 				}
-			
+
 				xmlFileContents.append(generateXmlTypeMetadata(table, ve, "main.xml.vm")); //$NON-NLS-1$
 
 				if (table.isCompositeKey()) {
 					compositeKeyTables.add(table);
 				}
 			}
-			
+
 			//Embeddables need to come after entities in the XML
 			for (ORMGenTable table : compositeKeyTables) {
 				SubMonitor sm = SubMonitor.convert(monitor, NLS.bind(JptJpaGenMessages.ENTITY_GENERATOR_TASK_NAME, table.getName()), 1);
@@ -480,9 +480,9 @@ public class PackageGenerator {
 			    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "embeddable.vm")); //$NON-NLS-1$
 			    }
 			}
-			
+
 			xmlFileContents.append(generateXmlHeaderFooter(ve, "footer.vm")); //$NON-NLS-1$
-			
+
 			if(xmlFile.exists()){
 				byte[] content = xmlFileContents.toString().getBytes(xmlFile.getCharset());
 				xmlFile.setContents(new ByteArrayInputStream(content), false, true, null);
@@ -491,14 +491,14 @@ public class PackageGenerator {
 				byte[] content = xmlFileContents.toString().getBytes(xmlFile.getCharset());
 				createFile(xmlFile, new ByteArrayInputStream(content));
 			}
-			
+
 		    xmlFile.refreshLocal(1, null);
-			
+
 		} catch (Throwable e) {
 			JptJpaGenPlugin.instance().logError(e, JptJpaGenMessages.ERROR_GENERATING_ENTITIES);
 		}
 	}
-	
+
 	private String generateXmlHeaderFooter(VelocityEngine ve, String templateName) throws Exception{
 		StringWriter stringWriter = new StringWriter();
 		VelocityContext context = new VelocityContext();
@@ -507,19 +507,19 @@ public class PackageGenerator {
 		return stringWriter.toString();
 	}
 
-	
+
 	private String generateXmlTypeMetadata(ORMGenTable table, VelocityEngine ve
 			, String templateName) throws Exception {
 		VelocityContext context = new VelocityContext();
         context.put("table", table); //$NON-NLS-1$
         context.put("customizer", getCustomizer()); //$NON-NLS-1$
-        
+
 		StringWriter w = new StringWriter();
 		ve.mergeTemplate(templateName, context, w);
-		
+
 		return w.toString();
 	}
-	
+
 	private static void convertLineDelimiter(IFile file) {
 		IPath[] paths = new IPath[] {file.getFullPath()};
 		ITextFileBufferManager buffManager = FileBuffers.getTextFileBufferManager();
@@ -534,5 +534,5 @@ public class PackageGenerator {
 			JptJpaGenPlugin.instance().logError(ce);
 		}
 	}
-	
+
 }
