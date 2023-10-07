@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +38,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
@@ -330,7 +333,10 @@ public class PackageGenerator {
         context.put("customizer", getCustomizer()); //$NON-NLS-1$
 
 		StringWriter w = new StringWriter();
-		ve.mergeTemplate(templateName, context, w);
+		String charset = javaFile.getCharset();
+		charset = checkCharsetAndFallbackToUTF8IfNecessary(charset);
+
+		ve.mergeTemplate(templateName, charset, context, w);
 
 		String fileContent = w.toString();
 		if (javaFile.exists()) {
@@ -346,6 +352,16 @@ public class PackageGenerator {
 		}
 
 		convertLineDelimiter(javaFile);
+	}
+
+	private String checkCharsetAndFallbackToUTF8IfNecessary(String charset) {
+		try {
+			Charset.forName(charset);
+		} catch (Exception e) {
+			JptJpaGenPlugin.instance().log(IStatus.WARNING, e, "Failed to find charset " + charset + " , falling back to UTF-8");
+			charset = StandardCharsets.UTF_8.name();
+		}
+		return charset;
 	}
 
 
@@ -445,13 +461,15 @@ public class PackageGenerator {
 				Thread.currentThread().setContextClassLoader(oldClassLoader);
 			}
 
-		    StringBuilder xmlFileContents = new StringBuilder();
-		    xmlFileContents.append(generateXmlHeaderFooter(ve, "header.vm")); //$NON-NLS-1$
+			String charset = xmlFile.getCharset();
+			charset = checkCharsetAndFallbackToUTF8IfNecessary(charset);
+			StringBuilder xmlFileContents = new StringBuilder();
+			xmlFileContents.append(generateXmlHeaderFooter(ve, "header.vm", charset)); //$NON-NLS-1$
 
 		    // Build sample named queries
 		    for (Iterator<String> names = tableNames.iterator(); names.hasNext();) {
 		    	ORMGenTable table = this.customizer.getTable(names.next());
-		    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "namedQuery.vm"));
+		    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "namedQuery.vm", charset));
 		    }
 
 		    List<ORMGenTable> compositeKeyTables = new ArrayList<ORMGenTable>();
@@ -466,7 +484,7 @@ public class PackageGenerator {
 					return;
 				}
 
-				xmlFileContents.append(generateXmlTypeMetadata(table, ve, "main.xml.vm")); //$NON-NLS-1$
+				xmlFileContents.append(generateXmlTypeMetadata(table, ve, "main.xml.vm", charset)); //$NON-NLS-1$
 
 				if (table.isCompositeKey()) {
 					compositeKeyTables.add(table);
@@ -477,11 +495,11 @@ public class PackageGenerator {
 			for (ORMGenTable table : compositeKeyTables) {
 				SubMonitor sm = SubMonitor.convert(monitor, NLS.bind(JptJpaGenMessages.ENTITY_GENERATOR_TASK_NAME, table.getName()), 1);
 			    if (table.isCompositeKey()) {
-			    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "embeddable.vm")); //$NON-NLS-1$
+			    	xmlFileContents.append(generateXmlTypeMetadata(table, ve, "embeddable.vm", charset)); //$NON-NLS-1$
 			    }
 			}
 
-			xmlFileContents.append(generateXmlHeaderFooter(ve, "footer.vm")); //$NON-NLS-1$
+			xmlFileContents.append(generateXmlHeaderFooter(ve, "footer.vm", charset)); //$NON-NLS-1$
 
 			if(xmlFile.exists()){
 				byte[] content = xmlFileContents.toString().getBytes(xmlFile.getCharset());
@@ -499,23 +517,23 @@ public class PackageGenerator {
 		}
 	}
 
-	private String generateXmlHeaderFooter(VelocityEngine ve, String templateName) throws Exception{
+	private String generateXmlHeaderFooter(VelocityEngine ve, String templateName, String charset) throws Exception{
 		StringWriter stringWriter = new StringWriter();
 		VelocityContext context = new VelocityContext();
 		context.put("customizer", getCustomizer());
-		ve.mergeTemplate(templateName, context, stringWriter);
+		ve.mergeTemplate(templateName, charset, context, stringWriter);
 		return stringWriter.toString();
 	}
 
 
 	private String generateXmlTypeMetadata(ORMGenTable table, VelocityEngine ve
-			, String templateName) throws Exception {
+			, String templateName, String charset) throws Exception {
 		VelocityContext context = new VelocityContext();
         context.put("table", table); //$NON-NLS-1$
         context.put("customizer", getCustomizer()); //$NON-NLS-1$
 
 		StringWriter w = new StringWriter();
-		ve.mergeTemplate(templateName, context, w);
+		ve.mergeTemplate(templateName, charset, context, w);
 
 		return w.toString();
 	}
