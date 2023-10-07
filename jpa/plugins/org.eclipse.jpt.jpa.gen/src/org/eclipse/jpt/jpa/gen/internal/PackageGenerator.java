@@ -85,7 +85,7 @@ public class PackageGenerator {
 				generator.doGenerate(sm.newChild(19));
 			}
 		} catch (Exception e) {
-			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptJpaGenMessages.ERROR_GENERATING_ENTITIES, e));
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(e, JptJpaGenMessages.ERROR_GENERATING_ENTITIES));
 		}
 	}
 
