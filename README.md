@@ -18,11 +18,11 @@ more.
 
 The project maintains the following source code repository (this is not a cloning URL):
 
-* https://git.eclipse.org/c/dali/webtools.dali.git/
+* https://github.com/eclipse-dali/webtools.dali
 
-This project uses Bugzilla to track ongoing development and issues.
+This project uses GitHub Issues to track ongoing development and issues.
 
-* Search for older issues from Bugzilla, while they last: https://bugs.eclipse.org/bugs/buglist.cgi?product=Dali JPA Tools
+* Search for older issues from Bugzilla, while they last: https://bugs.eclipse.org/bugs/buglist.cgi?product=Dali%20JPA%20Tools
 
 Be sure to search for existing bugs before you create another one. Remember that contributions are always welcome!
 
