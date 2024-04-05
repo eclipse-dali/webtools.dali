@@ -271,7 +271,7 @@ public class PackageGenerator {
 	 * Saves/Creates the .java file corresponding to a database table
 	 * with the given content.
 	 *
-	 * @param templDir The velocity template file directory. It is assumed
+	 * @param templateDirPath The velocity template file directory. It is assumed
 	 * that this directory contains the 2 files <em>main.java.vm</em>
 	 * and <em>pk.java.vm</em>
 	 * @param progress
