@@ -21,7 +21,7 @@
 	<extension point="org.eclipse.jst.common.project.facet.core.downloadableLibraries">
 
 		<import-definitions 
-			url="http://www.eclipse.org/webtools/dali/dev/eclipselink/eclipselink-downloadable-libs.xml">
+			url="https://eclipse.dev/webtools/dali/dev/eclipselink/eclipselink-downloadable-libs.xml">
 			<enablement>
 				<with variable="requestingProjectFacet">
 					<or>
