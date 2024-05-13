@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2024 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -31,6 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_2.JPA2_2;
+import org.eclipse.jpt.jpa.core.resource.orm.v3_0.JPA3_0;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
@@ -1170,6 +1171,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_LOCATION);
 		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_LOCATION);
 		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_LOCATION);
+		map.put(JPA3_0.SCHEMA_VERSION, JPA3_0.SCHEMA_LOCATION);
 		return map;
 	}
 	
@@ -1189,6 +1191,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_NAMESPACE);
 		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_NAMESPACE);
 		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_NAMESPACE);
+		map.put(JPA3_0.SCHEMA_VERSION, JPA3_0.SCHEMA_NAMESPACE);
 		return map;
 	}
 

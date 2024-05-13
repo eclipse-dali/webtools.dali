@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.core;singleton:=true
-Bundle-Version: 3.7.0.qualifier
+Bundle-Version: 3.8.0.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
@@ -75,6 +75,8 @@ Export-Package: org.eclipse.jpt.jpa.core,
  org.eclipse.jpt.jpa.core.internal.jpa2_2;x-internal:=true,
  org.eclipse.jpt.jpa.core.internal.jpa2_2.context.orm;x-internal:=true,
  org.eclipse.jpt.jpa.core.internal.jpa2_2.context.persistence;x-internal:=true,
+ org.eclipse.jpt.jpa.core.internal.jpa3_0.context.orm,
+ org.eclipse.jpt.jpa.core.internal.jpa3_0.context.persistence,
  org.eclipse.jpt.jpa.core.internal.libprov;x-internal:=true,
  org.eclipse.jpt.jpa.core.internal.libval;x-internal:=true,
  org.eclipse.jpt.jpa.core.internal.operations;x-internal:=true,
@@ -104,6 +106,9 @@ Export-Package: org.eclipse.jpt.jpa.core,
  org.eclipse.jpt.jpa.core.jpa2_2,
  org.eclipse.jpt.jpa.core.jpa2_2.context.persistence,
  org.eclipse.jpt.jpa.core.jpa2_2.context.persistence.schemagen,
+ org.eclipse.jpt.jpa.core.jpa3_0,
+ org.eclipse.jpt.jpa.core.jpa3_0.context.persistence,
+ org.eclipse.jpt.jpa.core.jpa3_0.context.persistence.schemagen,
  org.eclipse.jpt.jpa.core.jpql,
  org.eclipse.jpt.jpa.core.jpql.spi,
  org.eclipse.jpt.jpa.core.libprov,

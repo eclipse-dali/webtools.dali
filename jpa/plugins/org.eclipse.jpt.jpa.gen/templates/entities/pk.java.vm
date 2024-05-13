@@ -3,7 +3,11 @@ package ${table.package};
 #end
 
 import java.io.Serializable;
+#if($isAboveJpa30)
+import jakarta.persistence.*;
+#else
 import javax.persistence.*;
+#end
 
 /**
  * The primary key class for the ${table.name} database table.

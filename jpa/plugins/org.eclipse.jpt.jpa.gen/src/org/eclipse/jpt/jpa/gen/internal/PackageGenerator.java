@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.log.JdkLogChute;
@@ -122,7 +123,7 @@ public class PackageGenerator {
 		/* .java per table, persistence.xml, refresh package folder */
 		SubMonitor sm = SubMonitor.convert(monitor, tableNames.size() + 2);
 
-
+		boolean isAboveJpa30 = JpaProject.isAboveJpa30(this.jpaProject.getProject());
 		for (Iterator<String> iter = tableNames.iterator(); iter.hasNext();) {
 			if (sm.isCanceled()) {
 				return;
@@ -132,7 +133,7 @@ public class PackageGenerator {
 
 			String className = table.getQualifiedClassName();
 
-			generateClass(table, templDir.getAbsolutePath(), sm.newChild(1, SubMonitor.SUPPRESS_NONE));
+			generateClass(table, templDir.getAbsolutePath(), isAboveJpa30, sm.newChild(1, SubMonitor.SUPPRESS_NONE));
 
 			genClasses.add(className);
 			/*
@@ -276,8 +277,7 @@ public class PackageGenerator {
 	 * and <em>pk.java.vm</em>
 	 * @param progress
 	 */
-	protected void generateClass(ORMGenTable table, String templateDirPath, IProgressMonitor monitor) throws Exception {
-
+	protected void generateClass(ORMGenTable table, String templateDirPath, boolean isAboveJpa30, IProgressMonitor monitor) throws Exception {
 		String subTaskName = NLS.bind(JptJpaGenMessages.ENTITY_GENERATOR_TASK_NAME, table.getName());
 		SubMonitor sm = SubMonitor.convert(monitor, subTaskName, 10);
 
@@ -310,11 +310,11 @@ public class PackageGenerator {
 
 		    sm.worked(2);
 
-		    generateJavaFile(table, javaFile, ve, "main.java.vm", true/*isDomainClass*/, sm.newChild(6)); //$NON-NLS-1$
+			generateJavaFile(table, javaFile, ve, "main.java.vm", true/*isDomainClass*/, isAboveJpa30, sm.newChild(6)); //$NON-NLS-1$
 
 		    if (table.isCompositeKey()) {
 		    	IFile compositeKeyFile = javaPackageFolder.getFile( table.getCompositeKeyClassName()+".java"); //$NON-NLS-1$
-		    	generateJavaFile(table, compositeKeyFile, ve, "pk.java.vm", false/*isDomainClass*/, sm.newChild(1)); //$NON-NLS-1$
+				generateJavaFile(table, compositeKeyFile, ve, "pk.java.vm", false/*isDomainClass*/, isAboveJpa30, sm.newChild(1)); //$NON-NLS-1$
 		    }
 		    else {
 		    	sm.setWorkRemaining(1);
@@ -326,11 +326,12 @@ public class PackageGenerator {
 		}
 	}
 
-	private void generateJavaFile(ORMGenTable table, IFile javaFile, VelocityEngine ve
-			, String templateName, boolean isDomainClass, IProgressMonitor monitor) throws Exception {
+	private void generateJavaFile(ORMGenTable table, IFile javaFile, VelocityEngine ve, String templateName,
+			boolean isDomainClass, boolean isAboveJpa30, IProgressMonitor monitor) throws Exception {
 		VelocityContext context = new VelocityContext();
         context.put("table", table); //$NON-NLS-1$
         context.put("customizer", getCustomizer()); //$NON-NLS-1$
+		context.put("isAboveJpa30", isAboveJpa30); //$NON-NLS-1$
 
 		StringWriter w = new StringWriter();
 		String charset = javaFile.getCharset();
