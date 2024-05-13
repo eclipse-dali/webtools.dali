@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <!--
-  Copyright (c) 2007, 2013 Oracle. All rights reserved.
+  Copyright (c) 2007, 2024 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License 2.0, which accompanies this distribution
   and is available at http://www.eclipse.org/legal/epl-2.0/.
@@ -65,6 +65,13 @@
 		<definition id="org.eclipse.jpt.jpa.expression.hasJpa2_2Facet">
 			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
 				value="jpt.jpa:2.2"
+				forcePluginActivation="true"/>
+		</definition>
+
+		<!-- Return whether a resource's project has the JPA 3.0 facet. -->
+		<definition id="org.eclipse.jpt.jpa.expression.hasJpa3_0Facet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="jpt.jpa:3.0"
 				forcePluginActivation="true"/>
 		</definition>
 
@@ -184,6 +191,8 @@
 					value="{http://java.sun.com/xml/ns/persistence}persistence"/>
 				<parameter name="element"
 					value="{http://xmlns.jcp.org/xml/ns/persistence}persistence"/>
+				<parameter name="element"
+					value="{https://jakarta.ee/xml/ns/persistence}persistence"/>
 			</describer>
 		</content-type>
 
@@ -209,6 +218,8 @@
 					value="{http://java.sun.com/xml/ns/persistence/orm}entity-mappings"/>
 				<parameter name="element"
 					value="{http://xmlns.jcp.org/xml/ns/persistence/orm}entity-mappings"/>
+				<parameter name="element"
+					value="{https://jakarta.ee/xml/ns/persistence/orm}entity-mappings"/>
 			</describer>
 		</content-type>
 
@@ -241,6 +252,11 @@
 			version="2.2"/>
 
 		<resource-type
+			content-type="org.eclipse.jpt.jpa.core.content.persistence"
+			id="org.eclipse.jpt.jpa.core.resource.persistence_3_0"
+			version="3.0"/>
+
+		<resource-type
 			id="org.eclipse.jpt.jpa.core.resource.orm_1_0"
 			content-type="org.eclipse.jpt.jpa.core.content.orm"
 			version="1.0"/>
@@ -259,6 +275,11 @@
 			id="org.eclipse.jpt.jpa.core.resource.orm_2_2"
 			content-type="org.eclipse.jpt.jpa.core.content.orm"
 			version="2.2"/>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.core.resource.orm_3_0"
+			content-type="org.eclipse.jpt.jpa.core.content.orm"
+			version="3.0"/>
 
 	</extension>
 
@@ -370,6 +391,14 @@
 			factoryClass="org.eclipse.jpt.jpa.core.internal.jpa2_2.GenericJpaPlatformFactory2_2"
 			group="generic"
 			jpaFacetVersion="2.2"
+			default="false"/>
+
+		<jpaPlatform
+			id="generic3_0"
+			label="%GENERIC_3_0_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jpa.core.internal.jpa3_0.GenericJpaPlatformFactory3_0"
+			group="generic"
+			jpaFacetVersion="3.0"
 			default="false"/>
 
 	</extension>
@@ -643,6 +672,12 @@
 		</project-facet-version>
 
 		<project-facet-version facet="jpt.jpa" version="2.2">
+			<constraint>
+				<requires facet="java" version="[5.0"/>
+			</constraint>
+		</project-facet-version>
+		
+		<project-facet-version facet="jpt.jpa" version="3.0">
 			<constraint>
 				<requires facet="java" version="[5.0"/>
 			</constraint>

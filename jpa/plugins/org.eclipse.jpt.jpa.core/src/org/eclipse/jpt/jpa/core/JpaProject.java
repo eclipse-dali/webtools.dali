@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import java.util.Comparator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
@@ -31,12 +34,14 @@ import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaManagedTypeDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.jpa3_0.JpaProject3_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.wst.common.componentcore.internal.util.FacetedProjectUtilities;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -641,5 +646,25 @@ public interface JpaProject
 		 * Eclipse project.
 		 */
 		Iterable<IMessage> buildValidationMessages(IReporter reporter) throws InterruptedException;
+	}
+
+	static boolean isAboveJpa30(IProject project) {
+		return isAboveJpa30(FacetedProjectUtilities.getProjectFacetVersion(project, JpaProject.FACET_ID));
+	}
+
+	static boolean isAboveJpa30(IProjectFacetVersion facetVersion) {
+		if (facetVersion != null) {
+			try {
+				final String versionString = facetVersion.getVersionString();
+				final Comparator<String> comparator = facetVersion.getProjectFacet().getVersionComparator();
+				final int compareToMin = comparator.compare(versionString, JpaProject3_0.FACET_VERSION_STRING);
+				if (compareToMin >= 0) {
+					return true;
+				}
+			} catch (CoreException e) {
+				JptJpaCorePlugin.instance().logError(e, "Error checking facet version"); //$NON-NLS-1$
+			}
+		}
+		return false;
 	}
 }

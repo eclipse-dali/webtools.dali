@@ -4,7 +4,7 @@ Automatic-Module-Name: org.eclipse.jpt.jpa.gen
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.gen;singleton:=true
-Bundle-Version: 2.4.0.qualifier
+Bundle-Version: 2.5.0.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.gen.internal.plugin.JptJpaGenPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
