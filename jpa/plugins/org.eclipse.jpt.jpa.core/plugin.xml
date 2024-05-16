@@ -75,6 +75,13 @@
 				forcePluginActivation="true"/>
 		</definition>
 
+		<!-- Return whether a resource's project has the JPA 3.1 facet. -->
+		<definition id="org.eclipse.jpt.jpa.expression.hasJpa3_1Facet">
+			<test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+				value="jpt.jpa:3.1"
+				forcePluginActivation="true"/>
+		</definition>
+
 		<!--
 			Return whether a resource's project (or any project referencing the resource's project)
 			has the JPA facet.
@@ -257,6 +264,11 @@
 			version="3.0"/>
 
 		<resource-type
+			content-type="org.eclipse.jpt.jpa.core.content.persistence"
+			id="org.eclipse.jpt.jpa.core.resource.persistence_3_1"
+			version="3.1"/>
+
+		<resource-type
 			id="org.eclipse.jpt.jpa.core.resource.orm_1_0"
 			content-type="org.eclipse.jpt.jpa.core.content.orm"
 			version="1.0"/>
@@ -280,6 +292,11 @@
 			id="org.eclipse.jpt.jpa.core.resource.orm_3_0"
 			content-type="org.eclipse.jpt.jpa.core.content.orm"
 			version="3.0"/>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.core.resource.orm_3_1"
+			content-type="org.eclipse.jpt.jpa.core.content.orm"
+			version="3.1"/>
 
 	</extension>
 
@@ -399,6 +416,14 @@
 			factoryClass="org.eclipse.jpt.jpa.core.internal.jpa3_0.GenericJpaPlatformFactory3_0"
 			group="generic"
 			jpaFacetVersion="3.0"
+			default="false"/>
+		
+		<jpaPlatform
+			id="generic3_1"
+			label="%GENERIC_3_1_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jpa.core.internal.jpa3_1.GenericJpaPlatformFactory3_1"
+			group="generic"
+			jpaFacetVersion="3.1"
 			default="false"/>
 
 	</extension>
@@ -678,6 +703,12 @@
 		</project-facet-version>
 		
 		<project-facet-version facet="jpt.jpa" version="3.0">
+			<constraint>
+				<requires facet="java" version="[5.0"/>
+			</constraint>
+		</project-facet-version>
+
+		<project-facet-version facet="jpt.jpa" version="3.1">
 			<constraint>
 				<requires facet="java" version="[5.0"/>
 			</constraint>

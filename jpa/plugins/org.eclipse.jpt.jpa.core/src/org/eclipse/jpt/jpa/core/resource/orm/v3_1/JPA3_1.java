@@ -12,12 +12,12 @@
  *
  *******************************************************************************/
 
-package org.eclipse.jpt.jpa.core.resource.orm.v3_0;
+package org.eclipse.jpt.jpa.core.resource.orm.v3_1;
 
-import org.eclipse.jpt.jpa.core.resource.orm.v2_2.JPA2_2;
+import org.eclipse.jpt.jpa.core.resource.persistence.v3_0.JPA3_0;
 
 /**
- * JPA 3.0 orm.xml-related stuff (elements, attributes etc.)
+ * JPA 3.1 orm.xml-related stuff (elements, attributes etc.)
  * 
  * Provisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
@@ -25,8 +25,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_2.JPA2_2;
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  */
-public interface JPA3_0 extends JPA2_2 {
+public interface JPA3_1 extends JPA3_0 {
 	String SCHEMA_NAMESPACE = "https://jakarta.ee/xml/ns/persistence/orm";
-	String SCHEMA_LOCATION = "https://jakarta.ee/xml/ns/persistence/orm/orm_3_0.xsd";
-	String SCHEMA_VERSION = "3.0";
+	String SCHEMA_LOCATION = "https://jakarta.ee/xml/ns/persistence/orm/orm_3_1.xsd";
+	String SCHEMA_VERSION = "3.1";
 }

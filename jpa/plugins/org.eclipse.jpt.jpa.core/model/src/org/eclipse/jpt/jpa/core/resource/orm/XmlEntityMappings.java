@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.resource.orm;
 
 import java.util.Collection;
 import java.util.HashMap;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
@@ -24,18 +25,17 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverter_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlNamedStoredProcedureQuery_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
-import org.eclipse.jpt.jpa.core.resource.orm.v2_2.JPA2_2;
-import org.eclipse.jpt.jpa.core.resource.orm.v3_0.JPA3_0;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.OrmV2_1Package;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlConverterContainer_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlEntityMappings_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_2.JPA2_2;
+import org.eclipse.jpt.jpa.core.resource.orm.v3_0.JPA3_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v3_1.JPA3_1;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -1172,6 +1172,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_LOCATION);
 		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_LOCATION);
 		map.put(JPA3_0.SCHEMA_VERSION, JPA3_0.SCHEMA_LOCATION);
+		map.put(JPA3_1.SCHEMA_VERSION, JPA3_1.SCHEMA_LOCATION);
 		return map;
 	}
 	
@@ -1192,6 +1193,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		map.put(JPA2_1.SCHEMA_VERSION, JPA2_1.SCHEMA_NAMESPACE);
 		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_NAMESPACE);
 		map.put(JPA3_0.SCHEMA_VERSION, JPA3_0.SCHEMA_NAMESPACE);
+		map.put(JPA3_1.SCHEMA_VERSION, JPA3_1.SCHEMA_NAMESPACE);
 		return map;
 	}
 
