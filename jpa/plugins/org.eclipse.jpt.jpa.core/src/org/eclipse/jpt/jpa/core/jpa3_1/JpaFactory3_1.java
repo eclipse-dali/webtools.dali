@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lakshminarayana Nekkanti. All rights reserved.
+ * Copyright (c) 2024 Lakshminarayana Nekkanti. All rights reserved.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -11,22 +11,18 @@
  *     Lakshminarayana Nekkanti - initial API and implementation
  *
  *******************************************************************************/
+package org.eclipse.jpt.jpa.core.jpa3_1;
 
-package org.eclipse.jpt.jpa.core.resource.orm.v3_0;
-
-import org.eclipse.jpt.jpa.core.resource.orm.v2_2.JPA2_2;
+import org.eclipse.jpt.jpa.core.jpa3_0.JpaFactory3_0;
 
 /**
- * JPA 3.0 orm.xml-related stuff (elements, attributes etc.)
- * 
+ * JPA 3.1 factory
+ * <p>
  * Provisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
  * It is available at this early stage to solicit feedback from pioneering
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  */
-public interface JPA3_0 extends JPA2_2 {
-	String SCHEMA_NAMESPACE = "https://jakarta.ee/xml/ns/persistence/orm";
-	String SCHEMA_LOCATION = "https://jakarta.ee/xml/ns/persistence/orm/orm_3_0.xsd";
-	String SCHEMA_VERSION = "3.0";
+public interface JpaFactory3_1 extends JpaFactory3_0 {
 }
