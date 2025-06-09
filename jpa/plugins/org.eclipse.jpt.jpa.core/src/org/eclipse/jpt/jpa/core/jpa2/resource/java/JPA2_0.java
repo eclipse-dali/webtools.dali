@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 public interface JPA2_0 
 {
 	// JPA package
-	String PACKAGE = "javax.persistence";
+	String PACKAGE = JPA.PACKAGE;
 	String PACKAGE_ = PACKAGE + '.';
 
 
