@@ -9,6 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
+import java.util.Optional;
+import java.util.function.Function;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+
 /**
  * JPA Java-related stuff (annotations etc.)
  * <p>
@@ -25,15 +32,37 @@ package org.eclipse.jpt.jpa.core.resource.java;
 public interface JPA {
 
 	// JPA package
+	String DEFAULT_PACKAGE = "javax.persistence";
 	String JAKARTA_PACKAGE = "jakarta.persistence";
-	String PACKAGE = "javax.persistence";
-	String PACKAGE_ = PACKAGE + '.';
+	// Maps a JPA facet version to its corresponding package name
+	Function<IProjectFacetVersion, String> mapVersionToPackage = version -> Optional.ofNullable(version)
+			.map(v -> v.getVersionString().startsWith("3") ? "jakarta.persistence" : DEFAULT_PACKAGE)
+			.orElse(DEFAULT_PACKAGE);
 
+	// Retrieves the installed JPA facet version from a project
+	Function<IProject, Optional<IProjectFacetVersion>> getInstalledJpaVersion = project -> {
+		try {
+			IFacetedProject facetedProject = ProjectFacetsManager.create(project);
+			if (facetedProject != null) {
+				IProjectFacet jpaFacet = ProjectFacetsManager.getProjectFacet("jpt.jpa");
+				return Optional.ofNullable(facetedProject.getInstalledVersion(jpaFacet));
+			}
+		} catch (CoreException e) {
+			// Optionally log the exception
+		}
+		return Optional.empty();
+	};
+
+	// Resolves the appropriate JPA package name for a given project
+	Function<IProject, String> PACKAGE = project -> getInstalledJpaVersion.apply(project).map(mapVersionToPackage)
+			.orElse(DEFAULT_PACKAGE);
+
+	Function<IProject, String> PACKAGE_ = project -> PACKAGE.apply(project) + '.';
 
 	// ********** API **********
 
 	// JPA annotations
-	String ASSOCIATION_OVERRIDE = PACKAGE_ + "AssociationOverride";
+	String ASSOCIATION_OVERRIDE = PACKAGE_. + "AssociationOverride";
 		String ASSOCIATION_OVERRIDE__NAME = "name";
 		String ASSOCIATION_OVERRIDE__JOIN_COLUMNS = "joinColumns";
 	String ASSOCIATION_OVERRIDES = PACKAGE_ + "AssociationOverrides";
@@ -300,5 +329,4 @@ public interface JPA {
 	String ENTITY_MANAGER_FACTORY_PROVIDER = SPI_PACKAGE_ + "EntityManagerFactoryProvider";
 	String PERSISTENCE_INFO = SPI_PACKAGE_ + "PersistenceInfo";
 	String PERSISTENCE_PROVIDER = SPI_PACKAGE_ + "PersistenceProvider";
-
 }
