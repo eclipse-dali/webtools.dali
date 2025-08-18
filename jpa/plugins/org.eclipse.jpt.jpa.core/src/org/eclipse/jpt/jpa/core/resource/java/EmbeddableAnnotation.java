@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import java.util.function.Function;
-
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 
 /**
@@ -30,5 +27,5 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 public interface EmbeddableAnnotation
 	extends Annotation
 {
-	Function<IProject, String> ANNOTATION_NAME = JPA.EMBEDDABLE;
+	String ANNOTATION_NAME = JPA.EMBEDDABLE;
 }
