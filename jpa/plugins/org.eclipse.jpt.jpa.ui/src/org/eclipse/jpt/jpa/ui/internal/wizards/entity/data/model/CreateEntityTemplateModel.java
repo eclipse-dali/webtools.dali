@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2025 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2012 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -19,23 +19,18 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.JpaPlatform.Version;
-import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+
 public class CreateEntityTemplateModel {
 	
 	protected IDataModel dataModel;
@@ -45,7 +40,6 @@ public class CreateEntityTemplateModel {
 	private static final String PK_SUFFIX = "PK"; //$NON-NLS-1$
 	private static final String QUALIFIED_SERIALIZABLE = "java.io.Serializable"; //$NON-NLS-1$
 	private static final String PERSISTENCE_PACKAGE = "javax.persistence.*"; //$NON-NLS-1$
-	private static final String JAKARTA_PACKAGE = JPA.JAKARTA_PACKAGE + ".*"; //$NON-NLS-1$
 	private static final String ENTITY_ANNOTATION = "@Entity"; //$NON-NLS-1$
 	private static final String MAPPED_AS_SUPERCLASS_TYPE = "@MappedSuperclass"; //$NON-NLS-1$
 	private static final String INHERITANCE_TYPE = "@Inheritance"; //$NON-NLS-1$	
@@ -89,17 +83,13 @@ public class CreateEntityTemplateModel {
 		}
 		if (isIdClass) {
 			collection.addAll(getIdClassImportList());
-		} else {	
-			double jpaVersion = getJpaVersion();
-			if (jpaVersion >= 3.0) {
-				collection.add(JAKARTA_PACKAGE);
-			} else {
-				collection.add(PERSISTENCE_PACKAGE);
-			}
+		} else {			
+			collection.add(PERSISTENCE_PACKAGE);
 			collection.addAll(getFieldImportList());
+			
 		}
 		return collection;
-	}
+	}	
 
 	/**
 	 * @return class name of the entity
@@ -391,50 +381,14 @@ public class CreateEntityTemplateModel {
 	public String getOrmIdClassName() {
 		return getQualifiedJavaClassName() + PK_SUFFIX;
 	}
-
+	
 	/**
 	 * @return IProject presentation of JPA project
 	 */
 	public IProject getProject() {
 		String projectName = dataModel.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME);
 		return ProjectUtilities.getProject(projectName);
-	}
+	}	
 
-	/**
-	 * Retrieves the JpaProject instance associated with the current IProject.
-	 * 
-	 * @return The JpaProject instance if the project is a JPA project, or null if
-	 *         it is not.
-	 */
-	public JpaProject getJpaProject() {
-		IProject project = getProject();
-		if (project != null) {
-			return (JpaProject) project.getAdapter(JpaProject.class);
-		}
-		return null;
-	}
-
-	/**
-	 * Retrieves the JPA version of the current JpaProject.
-	 * 
-	 * @return The JPA version as a double, or -1 if the version format is invalid.
-	 */
-	private double getJpaVersion() {
-		JpaProject jpaProject = getJpaProject();
-		JpaPlatform jpaPlatform = jpaProject.getJpaPlatform();
-		if (jpaPlatform == null) {
-			JptJpaUiPlugin.instance().logError("JpaPlatform is null for project: " + jpaProject.getProject().getName());
-			return -1;
-		}
-		Version version = jpaPlatform.getJpaVersion();
-		if (version != null) {
-			String versionString = version.getJpaVersion();
-			try {
-				return Double.parseDouble(versionString);
-			} catch (NumberFormatException e) {
-				JptJpaUiPlugin.instance().logError("Invalid JPA version format: " + versionString);
-			}
-		}
-		return -1;
-	}
+	
 }
