@@ -339,6 +339,7 @@ public class JptJpaCoreValidationMessages {
 		PROJECT_INVALID_CONNECTION.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
 		PROJECT_NO_CONNECTION.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
 		TYPE_ANNOTATED_BUT_NOT_LISTED_IN_PERSISTENCE_XML.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
+		UNRESOLVED_GENERATOR_NAME.setDefaultSeverity(IMessage.NORMAL_SEVERITY);
 
 		// INFOs
 		XML_VERSION_NOT_LATEST.setDefaultSeverity(IMessage.LOW_SEVERITY);
