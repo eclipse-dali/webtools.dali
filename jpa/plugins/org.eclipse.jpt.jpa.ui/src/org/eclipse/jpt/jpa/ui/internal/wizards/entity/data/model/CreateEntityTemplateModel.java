@@ -89,7 +89,7 @@ public class CreateEntityTemplateModel {
 		}
 		if (isIdClass) {
 			collection.addAll(getIdClassImportList());
-		} else {	
+		} else {
 			double jpaVersion = getJpaVersion();
 			if (jpaVersion >= 3.0) {
 				collection.add(JAKARTA_PACKAGE);
