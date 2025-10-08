@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.dali</groupId>
   <artifactId>org.eclipse.jpt.jaxb.feature</artifactId>
-  <version>1.5.201-SNAPSHOT</version>
+  <version>1.5.300-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>
