@@ -16,16 +16,14 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.log.JdkLogChute;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.manipulation.ConvertLineDelimitersOperation;
@@ -69,7 +67,6 @@ import org.osgi.framework.Bundle;
  */
 public class PackageGenerator {
 
-	private static final String LOGGER_NAME = "org.eclipse.jpt.entities.gen.log"; //$NON-NLS-1$
 	private final JpaProject jpaProject;
 	private final ORMGenCustomizer customizer;
 	private final OverwriteConfirmer overwriteConfirmer;
@@ -290,23 +287,8 @@ public class PackageGenerator {
 					return;
 				}
 			}
-			//JdkLogChute in this version of Velocity not allow to set log level
-			//Workaround by preset the log level before Velocity is initialized
-			Logger logger = Logger.getLogger( LOGGER_NAME );
-			logger.setLevel( Level.SEVERE );
 
-			Properties vep = new Properties();
-			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
-			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
-			VelocityEngine ve = new VelocityEngine();
-			//Massage TCCL to deal with bug in m2e - see 396554
-			ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-			Thread.currentThread().setContextClassLoader(ve.getClass().getClassLoader());
-			try {
-		    	ve.init(vep);
-			} finally {
-				Thread.currentThread().setContextClassLoader(oldClassLoader);
-			}
+			VelocityEngine ve = createEngine(templateDirPath);
 
 		    sm.worked(2);
 
@@ -444,23 +426,8 @@ public class PackageGenerator {
 					return;
 				}
 			}
-			//JdkLogChute in this version of Velocity not allow to set log level
-			//Workaround by preset the log level before Velocity is initialized
-			Logger logger = Logger.getLogger( LOGGER_NAME );
-			logger.setLevel( Level.SEVERE );
 
-			Properties vep = new Properties();
-			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
-			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
-			VelocityEngine ve = new VelocityEngine();
-			//Massage TCCL to deal with bug in m2e - 396554
-			ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-			Thread.currentThread().setContextClassLoader(ve.getClass().getClassLoader());
-			try {
-		    	ve.init(vep);
-			} finally {
-				Thread.currentThread().setContextClassLoader(oldClassLoader);
-			}
+			VelocityEngine ve = createEngine(templateDirPath);
 
 			String charset = xmlFile.getCharset();
 			charset = checkCharsetAndFallbackToUTF8IfNecessary(charset);
@@ -554,4 +521,19 @@ public class PackageGenerator {
 		}
 	}
 
+	private static VelocityEngine createEngine(String templateDirPath) {
+		Properties vep = new Properties();
+		vep.setProperty("resource.loader.file.path", templateDirPath);
+		System.setProperty("org.slf4j.simpleLogger.log.org.apache.velocity", "error");
+		VelocityEngine ve = new VelocityEngine();
+		//Massage TCCL to deal with bug in m2e - see 396554
+		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(ve.getClass().getClassLoader());
+		try {
+	    	ve.init(vep);
+		} finally {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
+		}
+		return ve;
+	}
 }

@@ -42,8 +42,8 @@
               <excludes>
                 <plugin id="javax.persistence"/>
                 <plugin id="org.apache.commons.collections"/>
-                <plugin id="org.apache.commons.lang"/>
-                <plugin id="org.apache.velocity"/>
+                <plugin id="org.apache.commons.lang3"/>
+                <plugin id="org.apache.velocity.engine-core"/>
                 <plugin id="org.eclipse.jpt.jpa.branding"/>
                 <plugin id="org.jdom"/>
               </excludes>
