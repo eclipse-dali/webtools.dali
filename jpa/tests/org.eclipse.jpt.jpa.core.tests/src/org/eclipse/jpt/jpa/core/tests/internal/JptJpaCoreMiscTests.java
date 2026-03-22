@@ -14,6 +14,7 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.common.core.tests.BundleActivatorTest;
 import org.eclipse.jpt.common.core.tests.ValidationMessageClassTest;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_0.JptJpaCore3_0Tests;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 
 public class JptJpaCoreMiscTests {
@@ -23,6 +24,7 @@ public class JptJpaCoreMiscTests {
 		suite.addTestSuite(JpaPreferencesTests.class);
 		suite.addTest(new BundleActivatorTest(JpaProject.class));
 		suite.addTest(new ValidationMessageClassTest(JptJpaCoreValidationMessages.class));
+		suite.addTest(JptJpaCore3_0Tests.suite());
 		return suite;
 	}
 

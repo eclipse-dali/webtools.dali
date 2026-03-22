@@ -24,6 +24,16 @@ import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.java.Generic2_1Jav
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.orm.Generic2_1OrmContextModelTests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.persistence.Generic2_1PersistenceContextModelTests;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2_1.context.persistence.JptJpa2_1ContextPersistenceModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_0.context.JpaProject3_0Tests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_0.context.java.Generic3_0JavaContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_0.context.orm.Generic3_0OrmContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_0.context.persistence.Generic3_0PersistenceContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_0.context.persistence.JptJpa3_0ContextPersistenceModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_1.context.JpaProject3_1Tests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_1.context.java.Generic3_1JavaContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_1.context.orm.Generic3_1OrmContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_1.context.persistence.Generic3_1PersistenceContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa3_1.context.persistence.JptJpa3_1ContextPersistenceModelTests;
 
 /**
  * Required Java system property:
@@ -49,6 +59,16 @@ public class JptJpaCoreContextModelTests
 			suite.addTest(Generic2_1JavaContextModelTests.suite());
 			suite.addTest(Generic2_1OrmContextModelTests.suite());
 			suite.addTest(Generic2_1PersistenceContextModelTests.suite());
+			suite.addTestSuite(JpaProject3_0Tests.class);
+			suite.addTest(Generic3_0JavaContextModelTests.suite());
+			suite.addTest(Generic3_0OrmContextModelTests.suite());
+			suite.addTest(Generic3_0PersistenceContextModelTests.suite());
+			suite.addTest(JptJpa3_0ContextPersistenceModelTests.suite());
+			suite.addTestSuite(JpaProject3_1Tests.class);
+			suite.addTest(Generic3_1JavaContextModelTests.suite());
+			suite.addTest(Generic3_1OrmContextModelTests.suite());
+			suite.addTest(Generic3_1PersistenceContextModelTests.suite());
+			suite.addTest(JptJpa3_1ContextPersistenceModelTests.suite());
 		} else {
 			suite.addTest(TestSuite.warning(JptJpaCoreTests.buildMissingJarErrorMessage()));
 		}
