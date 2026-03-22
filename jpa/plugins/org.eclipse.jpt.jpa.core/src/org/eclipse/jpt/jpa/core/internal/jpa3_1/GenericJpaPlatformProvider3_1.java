@@ -32,25 +32,15 @@ import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.context.java.JarDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaPersistentTypeDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaBasicMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddableDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedIdMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEntityDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaManyToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaManyToOneMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMappedSuperclassDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToOneMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaVersionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.java.JavaConverterTypeDefinition2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaConverterTypeDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaEmbeddableDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaEntityDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaMappedSuperclassDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.GenericJpaPlatformProvider3_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_2.context.orm.GenericOrmXmlDefinition2_2;
@@ -119,7 +109,7 @@ public class GenericJpaPlatformProvider3_1 extends AbstractJpaPlatformProvider {
 	}
 
 	protected static final JavaManagedTypeDefinition[] JAVA_MANAGED_TYPE_DEFINITIONS_3_1 = new JavaManagedTypeDefinition[] {
-			JavaPersistentTypeDefinition.instance(), JavaConverterTypeDefinition2_1.instance() };
+			JavaPersistentTypeDefinition.instance(), JavaConverterTypeDefinition3_0.instance() };
 
 	// ********** Java type mappings **********
 
@@ -130,8 +120,8 @@ public class GenericJpaPlatformProvider3_1 extends AbstractJpaPlatformProvider {
 
 	// order matches that used by the Reference Implementation (EclipseLink)
 	protected static final JavaTypeMappingDefinition[] JAVA_TYPE_MAPPING_DEFINITIONS = new JavaTypeMappingDefinition[] {
-			JavaEntityDefinition2_0.instance(), JavaEmbeddableDefinition2_0.instance(),
-			JavaMappedSuperclassDefinition2_0.instance() };
+			JavaEntityDefinition3_0.instance(), JavaEmbeddableDefinition3_0.instance(),
+			JavaMappedSuperclassDefinition3_0.instance() };
 
 	// ********** Java attribute mappings **********
 
@@ -141,9 +131,10 @@ public class GenericJpaPlatformProvider3_1 extends AbstractJpaPlatformProvider {
 		CollectionTools.addAll(definitions, DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS);
 	}
 
-	// order matches that used by the Reference Implementation (EclipseLink)
-	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new DefaultJavaAttributeMappingDefinition[] {
-			JavaEmbeddedMappingDefinition2_0.instance(), JavaBasicMappingDefinition2_0.instance() };
+	// JPA 3.1 introduces no new attribute mapping annotations — reuse JPA 3.0's
+	// Jakarta-aware definitions directly.
+	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS =
+			GenericJpaPlatformProvider3_0.DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS;
 
 	@Override
 	protected void addSpecifiedJavaAttributeMappingDefinitionsTo(
@@ -151,14 +142,10 @@ public class GenericJpaPlatformProvider3_1 extends AbstractJpaPlatformProvider {
 		CollectionTools.addAll(definitions, SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS);
 	}
 
-	// order matches that used by the Reference Implementation (EclipseLink)
-	protected static final JavaAttributeMappingDefinition[] SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new JavaAttributeMappingDefinition[] {
-			JavaTransientMappingDefinition.instance(), JavaElementCollectionMappingDefinition2_0.instance(),
-			JavaIdMappingDefinition2_0.instance(), JavaVersionMappingDefinition2_0.instance(),
-			JavaBasicMappingDefinition2_0.instance(), JavaEmbeddedMappingDefinition2_0.instance(),
-			JavaEmbeddedIdMappingDefinition2_0.instance(), JavaManyToManyMappingDefinition2_0.instance(),
-			JavaManyToOneMappingDefinition2_0.instance(), JavaOneToManyMappingDefinition2_0.instance(),
-			JavaOneToOneMappingDefinition2_0.instance() };
+	// JPA 3.1 introduces no new attribute mapping annotations — reuse JPA 3.0's
+	// Jakarta-aware definitions directly.
+	protected static final JavaAttributeMappingDefinition[] SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS =
+			GenericJpaPlatformProvider3_0.SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS;
 
 	// ********** resource definitions **********
 

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryAttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAttributeOverrideAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
@@ -24,25 +25,32 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 public final class AttributeOverrideAnnotationDefinition
 	implements NestableAnnotationDefinition
 {
-	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new AttributeOverrideAnnotationDefinition();
+	// default singleton (javax.persistence)
+	private static final NestableAnnotationDefinition INSTANCE = new AttributeOverrideAnnotationDefinition(JPA.JAVAX_PACKAGE);
 
-	/**
-	 * Return the singleton.
-	 */
 	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	/**
-	 * Ensure single instance.
-	 */
-	private AttributeOverrideAnnotationDefinition() {
+	public static NestableAnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new AttributeOverrideAnnotationDefinition(jpaPackage);
+	}
+
+	private final String jpaPackage;
+
+	private AttributeOverrideAnnotationDefinition(String jpaPackage) {
 		super();
+		this.jpaPackage = jpaPackage;
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceAttributeOverrideAnnotation.buildSourceAttributeOverrideAnnotation(parent, annotatedElement, index);
+		if (JPA.JAVAX_PACKAGE.equals(this.jpaPackage)) {
+			return SourceAttributeOverrideAnnotation.buildSourceAttributeOverrideAnnotation(parent, annotatedElement, index);
+		}
+		return SourceAttributeOverrideAnnotation.buildJakartaSourceAttributeOverrideAnnotation(parent, annotatedElement, index);
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
@@ -50,11 +58,11 @@ public final class AttributeOverrideAnnotationDefinition
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.ATTRIBUTE_OVERRIDE;
+		return this.jpaPackage + AttributeOverrideAnnotation.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getContainerAnnotationName() {
-		return JPA.ATTRIBUTE_OVERRIDES;
+		return this.jpaPackage + JPA.ATTRIBUTE_OVERRIDES.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getElementName() {

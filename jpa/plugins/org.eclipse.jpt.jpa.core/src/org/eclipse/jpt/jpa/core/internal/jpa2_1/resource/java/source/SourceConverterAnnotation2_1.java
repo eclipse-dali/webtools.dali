@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2012, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -11,7 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -29,7 +30,7 @@ public final class SourceConverterAnnotation2_1
 	extends SourceAnnotation
 	implements ConverterAnnotation2_1
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
 
 	private DeclarationAnnotationElementAdapter<Boolean> autoApplyDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> autoApplyAdapter;
@@ -39,6 +40,12 @@ public final class SourceConverterAnnotation2_1
 
 	public SourceConverterAnnotation2_1(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.autoApplyDeclarationAdapter = this.buildAutoApplyDeclarationAdapter();
+		this.autoApplyAdapter = this.buildAutoApplyAdapter();
+	}
+
+	public SourceConverterAnnotation2_1(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.autoApplyDeclarationAdapter = this.buildAutoApplyDeclarationAdapter();
 		this.autoApplyAdapter = this.buildAutoApplyAdapter();
 	}

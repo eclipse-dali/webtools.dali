@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceSequenceGeneratorAnnotation;
@@ -42,6 +43,12 @@ public final class SourceSequenceGeneratorAnnotation2_0
 	// ********** constructor **********
 	public SourceSequenceGeneratorAnnotation2_0(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element);
+		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
+		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);
+	}
+
+	public SourceSequenceGeneratorAnnotation2_0(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
 		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);
 	}

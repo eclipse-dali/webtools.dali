@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -15,7 +15,8 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -36,7 +37,7 @@ public final class SourceElementCollectionAnnotation2_0
 	extends SourceAnnotation
 	implements ElementCollectionAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_CLASS_ADAPTER = buildTargetClassAdapter();
 	private final AnnotationElementAdapter<String> targetClassAdapter;
@@ -58,6 +59,12 @@ public final class SourceElementCollectionAnnotation2_0
 
 	public SourceElementCollectionAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.targetClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, TARGET_CLASS_ADAPTER);
+		this.fetchAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, FETCH_ADAPTER);
+	}
+
+	public SourceElementCollectionAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.targetClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, TARGET_CLASS_ADAPTER);
 		this.fetchAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, FETCH_ADAPTER);
 	}

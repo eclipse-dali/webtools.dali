@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinarySecondaryTableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceSecondaryTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 
 /**
  * javax.persistence.SecondaryTable
@@ -24,25 +25,32 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 public final class SecondaryTableAnnotationDefinition
 	implements NestableAnnotationDefinition
 {
-	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new SecondaryTableAnnotationDefinition();
+	// default singleton (javax.persistence)
+	private static final NestableAnnotationDefinition INSTANCE = new SecondaryTableAnnotationDefinition(JPA.JAVAX_PACKAGE);
 
-	/**
-	 * Return the singleton.
-	 */
 	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	/**
-	 * Ensure single instance.
-	 */
-	private SecondaryTableAnnotationDefinition() {
+	public static NestableAnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new SecondaryTableAnnotationDefinition(jpaPackage);
+	}
+
+	private final String jpaPackage;
+
+	private SecondaryTableAnnotationDefinition(String jpaPackage) {
 		super();
+		this.jpaPackage = jpaPackage;
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceSecondaryTableAnnotation.buildSourceSecondaryTableAnnotation(parent, annotatedElement, index);
+		if (JPA.JAVAX_PACKAGE.equals(this.jpaPackage)) {
+			return SourceSecondaryTableAnnotation.buildSourceSecondaryTableAnnotation(parent, annotatedElement, index);
+		}
+		return SourceSecondaryTableAnnotation.buildJakartaSourceSecondaryTableAnnotation(parent, annotatedElement, index);
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
@@ -50,11 +58,11 @@ public final class SecondaryTableAnnotationDefinition
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.SECONDARY_TABLE;
+		return this.jpaPackage + SecondaryTableAnnotation.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getContainerAnnotationName() {
-		return JPA.SECONDARY_TABLES;
+		return this.jpaPackage + JPA.SECONDARY_TABLES.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getElementName() {

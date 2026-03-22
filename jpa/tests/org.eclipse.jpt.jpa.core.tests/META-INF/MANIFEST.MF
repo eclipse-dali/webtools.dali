@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.core.tests;singleton:=true
-Bundle-Version: 3.5.2.qualifier
+Bundle-Version: 3.5.3.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.core.tests.internal.plugin.JptJpaCoreTestsPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
@@ -49,4 +49,5 @@ Export-Package: org.eclipse.jpt.jpa.core.tests.internal;x-internal:=true,
  org.eclipse.jpt.jpa.core.tests.internal.platform;x-internal:=true,
  org.eclipse.jpt.jpa.core.tests.internal.projects;x-internal:=true,
  org.eclipse.jpt.jpa.core.tests.internal.resource;x-internal:=true,
- org.eclipse.jpt.jpa.core.tests.internal.resource.java;x-internal:=true
+ org.eclipse.jpt.jpa.core.tests.internal.resource.java;x-internal:=true,
+ org.eclipse.jpt.jpa.core.tests.internal.jpa3_0;x-internal:=true

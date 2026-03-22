@@ -18,6 +18,9 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlDefinition2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2_2.context.orm.GenericOrmXmlDefinition2_2;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.orm.GenericOrmXmlDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_1.context.orm.GenericOrmXmlDefinition3_1;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.orm.OrmXmlContextModelFactory2_1;
 
@@ -60,6 +63,18 @@ public abstract class AbstractOrmXmlContextModel<P extends JpaContextModel>
 
 	protected boolean isOrmXml2_1Compatible() {
 		return this.getResourceType().isKindOf(GenericOrmXmlDefinition2_1.instance().getResourceType());
+	}
+
+	protected boolean isOrmXml2_2Compatible() {
+		return this.getResourceType().isKindOf(GenericOrmXmlDefinition2_2.instance().getResourceType());
+	}
+
+	protected boolean isOrmXml3_0Compatible() {
+		return this.getResourceType().isKindOf(GenericOrmXmlDefinition3_0.instance().getResourceType());
+	}
+
+	protected boolean isOrmXml3_1Compatible() {
+		return this.getResourceType().isKindOf(GenericOrmXmlDefinition3_1.instance().getResourceType());
 	}
 
 	/**

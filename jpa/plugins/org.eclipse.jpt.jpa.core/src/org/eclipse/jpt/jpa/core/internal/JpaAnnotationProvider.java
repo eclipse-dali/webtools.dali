@@ -117,6 +117,15 @@ public class JpaAnnotationProvider
 				return nestableAnnotationDefinition;
 			}
 		}
+		// Transparent javax ↔ jakarta fallback
+		String altName = alternateNamespace(containerAnnotationName);
+		if (altName != null) {
+			for (NestableAnnotationDefinition nestableAnnotationDefinition : getNestableAnnotationDefinitions()) {
+				if (nestableAnnotationDefinition.getContainerAnnotationName().equals(altName)) {
+					return nestableAnnotationDefinition;
+				}
+			}
+		}
 		return null;
 	}
 
@@ -129,6 +138,17 @@ public class JpaAnnotationProvider
 				return annotationDefinition;
 			}
 		}
+		// Transparent javax ↔ jakarta fallback: allow context model code that
+		// uses "javax.persistence.*" constants to find definitions registered
+		// under "jakarta.persistence.*" (JPA 3.x), and vice versa.
+		String altName = alternateNamespace(annotationName);
+		if (altName != null) {
+			for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+				if (annotationDefinition.getAnnotationName().equals(altName)) {
+					return annotationDefinition;
+				}
+			}
+		}
 		return null;
 	}
 
@@ -138,6 +158,31 @@ public class JpaAnnotationProvider
 				return annotationDefinition;
 			}
 		}
+		// Transparent javax ↔ jakarta fallback (see selectAnnotationDefinition)
+		String altName = alternateNamespace(annotationName);
+		if (altName != null) {
+			for (NestableAnnotationDefinition annotationDefinition : annotationDefinitions) {
+				if (annotationDefinition.getNestableAnnotationName().equals(altName)) {
+					return annotationDefinition;
+				}
+			}
+		}
 		return null;
 	}
+
+	private static String alternateNamespace(String name) {
+		if (name == null) {
+			return null;
+		}
+		if (name.startsWith(JAVAX_PERSISTENCE_PREFIX)) {
+			return JAKARTA_PERSISTENCE_PREFIX + name.substring(JAVAX_PERSISTENCE_PREFIX.length());
+		}
+		if (name.startsWith(JAKARTA_PERSISTENCE_PREFIX)) {
+			return JAVAX_PERSISTENCE_PREFIX + name.substring(JAKARTA_PERSISTENCE_PREFIX.length());
+		}
+		return null;
+	}
+
+	private static final String JAVAX_PERSISTENCE_PREFIX  = "javax.persistence";  //$NON-NLS-1$
+	private static final String JAKARTA_PERSISTENCE_PREFIX = "jakarta.persistence"; //$NON-NLS-1$
 }

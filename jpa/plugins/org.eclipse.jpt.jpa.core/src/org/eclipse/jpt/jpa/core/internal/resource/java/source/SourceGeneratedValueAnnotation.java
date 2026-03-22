@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -14,7 +14,8 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotatio
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -33,7 +34,7 @@ public final class SourceGeneratedValueAnnotation
 	extends SourceAnnotation
 	implements GeneratedValueAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
 	private final AnnotationElementAdapter<String> strategyAdapter;
@@ -48,6 +49,12 @@ public final class SourceGeneratedValueAnnotation
 		
 	public SourceGeneratedValueAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.strategyAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, STRATEGY_ADAPTER);
+		this.generatorAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, GENERATOR_ADAPTER);
+	}
+
+	public SourceGeneratedValueAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.strategyAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, STRATEGY_ADAPTER);
 		this.generatorAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, GENERATOR_ADAPTER);
 	}

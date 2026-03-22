@@ -49,16 +49,21 @@ public final class SourceAssociationOverrideAnnotation2_0
 	}
 
 	public static SourceAssociationOverrideAnnotation2_0 buildSourceAssociationOverrideAnnotation(
-			JavaResourceAnnotatedElement parent, 
-			AnnotatedElement annotatedElement, 
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildAssociationOverrideDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildAssociationOverrideAnnotationAdapter(annotatedElement, idaa);
-		return new SourceAssociationOverrideAnnotation2_0(
-			parent,
-			annotatedElement,
-			idaa,
-			iaa);
+		return new SourceAssociationOverrideAnnotation2_0(parent, annotatedElement, idaa, iaa);
+	}
+
+	public static SourceAssociationOverrideAnnotation2_0 buildJakartaSourceAssociationOverrideAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
+			int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildJakartaAssociationOverrideDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildAssociationOverrideAnnotationAdapter(annotatedElement, idaa);
+		return new SourceAssociationOverrideAnnotation2_0(parent, annotatedElement, idaa, iaa);
 	}
 
 	public static SourceAssociationOverrideAnnotation2_0 buildNestedSourceAssociationOverrideAnnotation(

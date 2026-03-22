@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -14,7 +14,8 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclar
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -33,19 +34,23 @@ public final class SourceSecondaryTableAnnotation
 	extends SourceBaseTableAnnotation
 	implements SecondaryTableAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.SECONDARY_TABLES);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(JPA.SECONDARY_TABLES);
+	private static final DeclarationAnnotationAdapter JAKARTA_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA.SECONDARY_TABLE.substring(JPA.JAVAX_PACKAGE.length()));
+	private static final DeclarationAnnotationAdapter JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA.SECONDARY_TABLES.substring(JPA.JAVAX_PACKAGE.length()));
 
 	private final PkJoinColumnsAnnotationContainer pkJoinColumnsContainer = new PkJoinColumnsAnnotationContainer();
 
 	public static SourceSecondaryTableAnnotation buildSourceSecondaryTableAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildSecondaryTableDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildSecondaryTableAnnotationAdapter(element, idaa);
-		return new SourceSecondaryTableAnnotation(
-			parent,
-			element,
-			idaa,
-			iaa);
+		return new SourceSecondaryTableAnnotation(parent, element, idaa, iaa);
+	}
+
+	public static SourceSecondaryTableAnnotation buildJakartaSourceSecondaryTableAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildJakartaSecondaryTableDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildSecondaryTableAnnotationAdapter(element, idaa);
+		return new SourceSecondaryTableAnnotation(parent, element, idaa, iaa);
 	}
 
 	private SourceSecondaryTableAnnotation(
@@ -174,12 +179,18 @@ public final class SourceSecondaryTableAnnotation
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableDeclarationAnnotationAdapter(int index) {
-		IndexedDeclarationAnnotationAdapter idaa = 
-			new CombinationIndexedDeclarationAnnotationAdapter(
+		return new CombinationIndexedDeclarationAnnotationAdapter(
 				DECLARATION_ANNOTATION_ADAPTER,
 				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
 				index,
 				ANNOTATION_NAME);
-		return idaa;
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildJakartaSecondaryTableDeclarationAnnotationAdapter(int index) {
+		return new CombinationIndexedDeclarationAnnotationAdapter(
+				JAKARTA_DECLARATION_ANNOTATION_ADAPTER,
+				JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JPA.JAKARTA_PACKAGE + JPA.SECONDARY_TABLE.substring(JPA.JAVAX_PACKAGE.length()));
 	}
 }

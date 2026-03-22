@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2025 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -17,7 +17,13 @@ import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * <code>javax.persistence.Entity</code>
+ * Binary model for a JPA {@code @Entity} annotation.
+ * <p>
+ * Supports both <code>javax.persistence.Entity</code> (JPA 2.x) and
+ * <code>jakarta.persistence.Entity</code> (JPA 3.x). The default constructor
+ * uses <code>javax.persistence.Entity</code>. For JPA 3.x supply the
+ * annotation FQN to
+ * {@link #BinaryEntityAnnotation(JavaResourceAnnotatedElement, IAnnotation, String)}.
  */
 public final class BinaryEntityAnnotation
 	extends BinaryAnnotation
@@ -25,14 +31,39 @@ public final class BinaryEntityAnnotation
 {
 	private String name;
 
+	/**
+	 * The annotation name as reported by {@link #getAnnotationName()}.
+	 * Defaults to {@link EntityAnnotation#ANNOTATION_NAME} (javax).
+	 */
+	private final String annotationName;
 
-	public BinaryEntityAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+
+	// ---- constructors ----
+
+	/**
+	 * Default constructor — reports <code>javax.persistence.Entity</code>.
+	 */
+	public BinaryEntityAnnotation(JavaResourceAnnotatedElement parent,
+			IAnnotation jdtAnnotation) {
+		this(parent, jdtAnnotation, ANNOTATION_NAME);
+	}
+
+	/**
+	 * Package-aware constructor. Pass the fully qualified annotation name
+	 * (e.g. {@code "jakarta.persistence.Entity"}).
+	 */
+	public BinaryEntityAnnotation(JavaResourceAnnotatedElement parent,
+			IAnnotation jdtAnnotation, String annotationFqn) {
 		super(parent, jdtAnnotation);
+		this.annotationName = annotationFqn;
 		this.name = this.buildName();
 	}
 
+
+	// ---- Annotation ----
+
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return this.annotationName;
 	}
 
 	@Override
@@ -47,9 +78,8 @@ public final class BinaryEntityAnnotation
 	}
 
 
-	// ********** EntityAnnotation implementation **********
+	// ---- EntityAnnotation ----
 
-	// ***** name
 	public String getName() {
 		return this.name;
 	}

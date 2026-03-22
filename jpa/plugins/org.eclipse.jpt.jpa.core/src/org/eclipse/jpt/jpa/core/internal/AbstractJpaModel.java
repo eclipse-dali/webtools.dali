@@ -31,6 +31,12 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaFactory2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.JpaProject2_1;
+import org.eclipse.jpt.jpa.core.jpa2_2.JpaFactory2_2;
+import org.eclipse.jpt.jpa.core.jpa2_2.JpaProject2_2;
+import org.eclipse.jpt.jpa.core.jpa3_0.JpaFactory3_0;
+import org.eclipse.jpt.jpa.core.jpa3_0.JpaProject3_0;
+import org.eclipse.jpt.jpa.core.jpa3_1.JpaFactory3_1;
+import org.eclipse.jpt.jpa.core.jpa3_1.JpaProject3_1;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
 
@@ -162,6 +168,18 @@ public abstract class AbstractJpaModel<P extends JpaModel>
 		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JpaProject2_1.FACET_VERSION_STRING);
 	}
 
+	protected boolean isJpa2_2Compatible() {
+		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JpaProject2_2.FACET_VERSION_STRING);
+	}
+
+	protected boolean isJpa3_0Compatible() {
+		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JpaProject3_0.FACET_VERSION_STRING);
+	}
+
+	protected boolean isJpa3_1Compatible() {
+		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JpaProject3_1.FACET_VERSION_STRING);
+	}
+
 	/**
 	 * Call {@link #isJpa2_0Compatible()} before calling this method.
 	 */
@@ -174,6 +192,27 @@ public abstract class AbstractJpaModel<P extends JpaModel>
 	 */
 	protected JpaFactory2_1 getJpaFactory2_1() {
 		return (JpaFactory2_1) this.getJpaFactory();
+	}
+
+	/**
+	 * Call {@link #isJpa2_2Compatible()} before calling this method.
+	 */
+	protected JpaFactory2_2 getJpaFactory2_2() {
+		return (JpaFactory2_2) this.getJpaFactory();
+	}
+
+	/**
+	 * Call {@link #isJpa3_0Compatible()} before calling this method.
+	 */
+	protected JpaFactory3_0 getJpaFactory3_0() {
+		return (JpaFactory3_0) this.getJpaFactory();
+	}
+
+	/**
+	 * Call {@link #isJpa3_1Compatible()} before calling this method.
+	 */
+	protected JpaFactory3_1 getJpaFactory3_1() {
+		return (JpaFactory3_1) this.getJpaFactory();
 	}
 
 	protected JpaFactory getJpaFactory() {

@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
 /**
  * javax.persistence.JoinColumn
@@ -24,25 +25,39 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 public final class JoinColumnAnnotationDefinition
 	implements NestableAnnotationDefinition
 {
-	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new JoinColumnAnnotationDefinition();
+	// default singleton (javax.persistence)
+	private static final NestableAnnotationDefinition INSTANCE = new JoinColumnAnnotationDefinition(JPA.JAVAX_PACKAGE);
 
 	/**
-	 * Return the singleton.
+	 * Return the singleton for the default (javax) package.
 	 */
 	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
-	 * Ensure single instance.
+	 * Return an instance for the given JPA annotations package
+	 * (either {@link JPA#JAVAX_PACKAGE} or {@link JPA#JAKARTA_PACKAGE}).
 	 */
-	private JoinColumnAnnotationDefinition() {
+	public static NestableAnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new JoinColumnAnnotationDefinition(jpaPackage);
+	}
+
+	private final String jpaPackage;
+
+	private JoinColumnAnnotationDefinition(String jpaPackage) {
 		super();
+		this.jpaPackage = jpaPackage;
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceJoinColumnAnnotation.buildSourceJoinColumnAnnotation(parent, annotatedElement, index);
+		if (JPA.JAVAX_PACKAGE.equals(this.jpaPackage)) {
+			return SourceJoinColumnAnnotation.buildSourceJoinColumnAnnotation(parent, annotatedElement, index);
+		}
+		return SourceJoinColumnAnnotation.buildJakartaSourceJoinColumnAnnotation(parent, annotatedElement, index);
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
@@ -50,11 +65,11 @@ public final class JoinColumnAnnotationDefinition
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.JOIN_COLUMN;
+		return this.jpaPackage + JoinColumnAnnotation.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getContainerAnnotationName() {
-		return JPA.JOIN_COLUMNS;
+		return this.jpaPackage + JPA.JOIN_COLUMNS.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getElementName() {

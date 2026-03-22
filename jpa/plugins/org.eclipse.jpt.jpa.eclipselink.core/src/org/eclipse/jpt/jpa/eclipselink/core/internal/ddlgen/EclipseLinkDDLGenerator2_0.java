@@ -29,7 +29,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkOutpu
  */
 public class EclipseLinkDDLGenerator2_0 extends EclipseLinkAbstractDDLGenerator
 {
-	static final String VALIDATION_MODE_PROPERTY = "javax.persistence.validation.mode"; 	  //$NON-NLS-1$
+	static final String VALIDATION_MODE_PROPERTY          = "javax.persistence.validation.mode";  //$NON-NLS-1$
+	static final String JAKARTA_VALIDATION_MODE_PROPERTY  = "jakarta.persistence.validation.mode"; //$NON-NLS-1$
 
 	// ********** constructors **********
 
@@ -44,7 +45,7 @@ public class EclipseLinkDDLGenerator2_0 extends EclipseLinkAbstractDDLGenerator
 		super.buildAllProperties(properties);
 
 		this.putProperty(properties,
-			VALIDATION_MODE_PROPERTY,
+			this.isJakartaProject() ? JAKARTA_VALIDATION_MODE_PROPERTY : VALIDATION_MODE_PROPERTY,
 			NONE);
 	}
 

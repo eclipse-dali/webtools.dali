@@ -171,8 +171,18 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	public Annotation getAnnotation(String annotationName) {
-		return this.annotations.get(annotationName);
+		Annotation annotation = this.annotations.get(annotationName);
+		// Transparent javax → jakarta fallback: when a JPA 3.x project stores
+		// annotations under "jakarta.persistence.*" keys but callers look up
+		// via legacy "javax.persistence.*" constants, return the jakarta variant.
+		if (annotation == null && annotationName != null && annotationName.startsWith(JAVAX_PERSISTENCE_PREFIX)) {
+			annotation = this.annotations.get(JAKARTA_PERSISTENCE_PREFIX + annotationName.substring(JAVAX_PERSISTENCE_PREFIX.length()));
+		}
+		return annotation;
 	}
+
+	private static final String JAVAX_PERSISTENCE_PREFIX  = "javax.persistence";  //$NON-NLS-1$
+	private static final String JAKARTA_PERSISTENCE_PREFIX = "jakarta.persistence"; //$NON-NLS-1$
 
 	public Annotation getContainerAnnotation(String containerAnnotationName) {
 		CombinationAnnotationContainer container = this.annotationContainers.get(this.getAnnotationProvider().getNestableAnnotationName(containerAnnotationName));
@@ -236,21 +246,33 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	public ListIterable<NestableAnnotation> getAnnotations(String nestableAnnotationName) {
-		CombinationAnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
+		CombinationAnnotationContainer container = this.resolveAnnotationContainer(nestableAnnotationName);
 		return (container != null) ? container.getNestedAnnotations() : EmptyListIterable.<NestableAnnotation> instance();
 	}
 
 	public int getAnnotationsSize(String nestableAnnotationName) {
-		CombinationAnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
+		CombinationAnnotationContainer container = this.resolveAnnotationContainer(nestableAnnotationName);
 		return (container == null) ? 0 : container.getNestedAnnotationsSize();
 	}
 
 	public NestableAnnotation getAnnotation(int index, String nestableAnnotationName) {
-		CombinationAnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
+		CombinationAnnotationContainer container = this.resolveAnnotationContainer(nestableAnnotationName);
 		if (container == null) {
 			throw new ArrayIndexOutOfBoundsException("size: 0 index: " + index); //$NON-NLS-1$
 		}
 		return container.getNestedAnnotation(index);
+	}
+
+	/**
+	 * Look up a combination annotation container by nestable annotation name,
+	 * with a transparent javax → jakarta fallback for JPA 3.x projects.
+	 */
+	private CombinationAnnotationContainer resolveAnnotationContainer(String nestableAnnotationName) {
+		CombinationAnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
+		if (container == null && nestableAnnotationName != null && nestableAnnotationName.startsWith(JAVAX_PERSISTENCE_PREFIX)) {
+			container = this.annotationContainers.get(JAKARTA_PERSISTENCE_PREFIX + nestableAnnotationName.substring(JAVAX_PERSISTENCE_PREFIX.length()));
+		}
+		return container;
 	}
 
 	private String getNestableAnnotationName(String containerAnnotationName) {

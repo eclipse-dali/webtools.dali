@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -14,7 +14,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -34,8 +35,10 @@ public final class SourceAttributeOverrideAnnotation
 	extends SourceOverrideAnnotation
 	implements AttributeOverrideAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ATTRIBUTE_OVERRIDES);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(JPA.ATTRIBUTE_OVERRIDES);
+	private static final DeclarationAnnotationAdapter JAKARTA_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA.ATTRIBUTE_OVERRIDE.substring(JPA.JAVAX_PACKAGE.length()));
+	private static final DeclarationAnnotationAdapter JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA.ATTRIBUTE_OVERRIDES.substring(JPA.JAVAX_PACKAGE.length()));
 
 	private ElementAnnotationAdapter columnAdapter;
 	private ColumnAnnotation column;
@@ -50,16 +53,21 @@ public final class SourceAttributeOverrideAnnotation
 	}
 
 	public static SourceAttributeOverrideAnnotation buildSourceAttributeOverrideAnnotation(
-			JavaResourceAnnotatedElement parent, 
-			AnnotatedElement annotatedElement, 
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildAttributeOverrideDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildAttributeOverrideAnnotationAdapter(annotatedElement, idaa);
-		return new SourceAttributeOverrideAnnotation(
-			parent,
-			annotatedElement,
-			idaa,
-			iaa);
+		return new SourceAttributeOverrideAnnotation(parent, annotatedElement, idaa, iaa);
+	}
+
+	public static SourceAttributeOverrideAnnotation buildJakartaSourceAttributeOverrideAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
+			int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildJakartaAttributeOverrideDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildAttributeOverrideAnnotationAdapter(annotatedElement, idaa);
+		return new SourceAttributeOverrideAnnotation(parent, annotatedElement, idaa, iaa);
 	}
 	
 	public static SourceAttributeOverrideAnnotation buildNestedSourceAttributeOverrideAnnotation(
@@ -201,12 +209,18 @@ public final class SourceAttributeOverrideAnnotation
 	}
 
 	protected static IndexedDeclarationAnnotationAdapter buildAttributeOverrideDeclarationAnnotationAdapter(int index) {
-		IndexedDeclarationAnnotationAdapter idaa = 
-			new CombinationIndexedDeclarationAnnotationAdapter(
+		return new CombinationIndexedDeclarationAnnotationAdapter(
 				DECLARATION_ANNOTATION_ADAPTER,
 				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
 				index,
 				ANNOTATION_NAME);
-		return idaa;
+	}
+
+	protected static IndexedDeclarationAnnotationAdapter buildJakartaAttributeOverrideDeclarationAnnotationAdapter(int index) {
+		return new CombinationIndexedDeclarationAnnotationAdapter(
+				JAKARTA_DECLARATION_ANNOTATION_ADAPTER,
+				JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JPA.JAKARTA_PACKAGE + JPA.ATTRIBUTE_OVERRIDE.substring(JPA.JAVAX_PACKAGE.length()));
 	}
 }

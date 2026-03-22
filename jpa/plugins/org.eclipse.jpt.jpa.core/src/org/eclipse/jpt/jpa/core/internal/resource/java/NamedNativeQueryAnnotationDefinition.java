@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryNamedNativeQueryAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedNativeQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
 
 /**
  * javax.persistence.NamedNativeQuery
@@ -24,25 +25,32 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 public final class NamedNativeQueryAnnotationDefinition
 	implements NestableAnnotationDefinition
 {
-	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new NamedNativeQueryAnnotationDefinition();
+	// default singleton (javax.persistence)
+	private static final NestableAnnotationDefinition INSTANCE = new NamedNativeQueryAnnotationDefinition(JPA.JAVAX_PACKAGE);
 
-	/**
-	 * Return the singleton.
-	 */
 	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	/**
-	 * Ensure single instance.
-	 */
-	private NamedNativeQueryAnnotationDefinition() {
+	public static NestableAnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new NamedNativeQueryAnnotationDefinition(jpaPackage);
+	}
+
+	private final String jpaPackage;
+
+	private NamedNativeQueryAnnotationDefinition(String jpaPackage) {
 		super();
+		this.jpaPackage = jpaPackage;
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceNamedNativeQueryAnnotation.buildSourceNamedNativeQueryAnnotation(parent, annotatedElement, index);
+		if (JPA.JAVAX_PACKAGE.equals(this.jpaPackage)) {
+			return SourceNamedNativeQueryAnnotation.buildSourceNamedNativeQueryAnnotation(parent, annotatedElement, index);
+		}
+		return SourceNamedNativeQueryAnnotation.buildJakartaSourceNamedNativeQueryAnnotation(parent, annotatedElement, index);
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
@@ -50,11 +58,11 @@ public final class NamedNativeQueryAnnotationDefinition
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.NAMED_NATIVE_QUERY;
+		return this.jpaPackage + NamedNativeQueryAnnotation.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getContainerAnnotationName() {
-		return JPA.NAMED_NATIVE_QUERIES;
+		return this.jpaPackage + JPA.NAMED_NATIVE_QUERIES.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public String getElementName() {

@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -11,7 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -32,7 +33,7 @@ public final class SourceTableGeneratorAnnotation
 	extends SourceDatabaseGeneratorAnnotation
 	implements TableGeneratorAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__NAME);
 
@@ -75,6 +76,16 @@ public final class SourceTableGeneratorAnnotation
 
 	public SourceTableGeneratorAnnotation(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.tableAdapter = this.buildAdapter(TABLE_ADAPTER);
+		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
+		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);
+		this.pkColumnNameAdapter = this.buildAdapter(PK_COLUMN_NAME_ADAPTER);
+		this.valueColumnNameAdapter = this.buildAdapter(VALUE_COLUMN_NAME_ADAPTER);
+		this.pkColumnValueAdapter = this.buildAdapter(PK_COLUMN_VALUE_ADAPTER);
+	}
+
+	public SourceTableGeneratorAnnotation(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.tableAdapter = this.buildAdapter(TABLE_ADAPTER);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
 		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);

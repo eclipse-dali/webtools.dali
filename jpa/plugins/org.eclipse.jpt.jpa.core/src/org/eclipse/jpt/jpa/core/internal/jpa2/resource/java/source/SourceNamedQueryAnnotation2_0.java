@@ -40,11 +40,13 @@ public final class SourceNamedQueryAnnotation2_0
 	public static SourceNamedQueryAnnotation2_0 buildSourceNamedQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNamedQueryDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildNamedQueryAnnotationAdapter(annotatedElement, idaa);
-		return new SourceNamedQueryAnnotation2_0(
-			parent,
-			annotatedElement,
-			idaa,
-			iaa);
+		return new SourceNamedQueryAnnotation2_0(parent, annotatedElement, idaa, iaa);
+	}
+
+	public static SourceNamedQueryAnnotation2_0 buildJakartaSourceNamedQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildJakartaNamedQueryDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildNamedQueryAnnotationAdapter(annotatedElement, idaa);
+		return new SourceNamedQueryAnnotation2_0(parent, annotatedElement, idaa, iaa);
 	}
 
 	private SourceNamedQueryAnnotation2_0(

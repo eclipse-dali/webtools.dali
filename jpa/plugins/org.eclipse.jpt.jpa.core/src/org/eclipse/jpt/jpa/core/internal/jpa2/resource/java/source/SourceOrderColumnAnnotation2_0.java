@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -29,7 +30,7 @@ public final class SourceOrderColumnAnnotation2_0
 	extends SourceNamedColumnAnnotation
 	implements OrderColumnAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
 
 	private DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> nullableAdapter;
@@ -49,6 +50,16 @@ public final class SourceOrderColumnAnnotation2_0
 
 	public SourceOrderColumnAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
+		this.nullableAdapter = this.buildNullableAdapter();
+		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
+		this.insertableAdapter = this.buildInsertableAdapter();
+		this.updatableDeclarationAdapter = this.buildUpdatableDeclarationAdapter();
+		this.updatableAdapter = this.buildUpdatableAdapter();
+	}
+
+	public SourceOrderColumnAnnotation2_0(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
 		this.nullableAdapter = this.buildNullableAdapter();
 		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();

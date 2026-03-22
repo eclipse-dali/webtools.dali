@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -14,6 +14,8 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBasicAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
@@ -25,7 +27,7 @@ public final class BasicAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new BasicAnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new BasicAnnotationDefinition(JPA.JAVAX_PACKAGE);
 
 	/**
 	 * Return the singleton.
@@ -35,14 +37,29 @@ public final class BasicAnnotationDefinition
 	}
 
 	/**
-	 * Ensure single instance.
+	 * Returns an annotation definition for the given JPA annotations package
+	 * (either {\@link JPA#JAVAX_PACKAGE} or {\@link JPA#JAKARTA_PACKAGE}).
 	 */
-	private BasicAnnotationDefinition() {
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new BasicAnnotationDefinition(jpaPackage);
+	}
+
+	private final String annotationName;
+
+		private BasicAnnotationDefinition(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage + BasicAnnotation.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceBasicAnnotation(parent, annotatedElement);
+		if (BasicAnnotation.ANNOTATION_NAME.equals(this.annotationName)) {
+			return new SourceBasicAnnotation(parent, annotatedElement);
+		}
+		return new SourceBasicAnnotation(parent, annotatedElement,
+				JakartaAwareDeclarationAnnotationAdapter.forJakarta(this.annotationName));
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -54,6 +71,6 @@ public final class BasicAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return BasicAnnotation.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 }

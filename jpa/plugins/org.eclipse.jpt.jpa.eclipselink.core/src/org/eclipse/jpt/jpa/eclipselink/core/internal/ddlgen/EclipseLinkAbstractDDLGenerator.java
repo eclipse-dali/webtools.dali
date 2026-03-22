@@ -356,8 +356,11 @@ public abstract class EclipseLinkAbstractDDLGenerator extends AbstractJptGenerat
 	private Collection<String> getPersistenceOsgiBundlesMemento() throws CoreException {
 
 		Collection<String> result = new HashSet<String>();
-		if (javaxPersistenceBundleExists()) {
-			result.add(this.getBundleClasspathEntry(JAVAX_PERSISTENCE_BUNDLE).getMemento());
+		// Prefer the jakarta.persistence bundle (JPA 3.x); fall back to javax.persistence (JPA 2.x).
+		String persistenceBundle = jakartaPersistenceBundleExists() ? JAKARTA_PERSISTENCE_BUNDLE
+				: (javaxPersistenceBundleExists() ? JAVAX_PERSISTENCE_BUNDLE : null);
+		if (persistenceBundle != null) {
+			result.add(this.getBundleClasspathEntry(persistenceBundle).getMemento());
 			result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE).getMemento());
 			result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE).getMemento());
 			result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE).getMemento());
@@ -417,13 +420,26 @@ public abstract class EclipseLinkAbstractDDLGenerator extends AbstractJptGenerat
 		return null;
 	}
 	
+	private boolean jakartaPersistenceBundleExists() {
+		return Platform.getBundle(JAKARTA_PERSISTENCE_BUNDLE) != null;
+	}
+
 	private boolean javaxPersistenceBundleExists() {
 		return Platform.getBundle(JAVAX_PERSISTENCE_BUNDLE) != null;
 	}
 
+	/**
+	 * Returns true if the current JPA project uses the Jakarta persistence namespace (JPA 3.x).
+	 * Subclasses can use this to select the correct property keys at runtime.
+	 */
+	protected boolean isJakartaProject() {
+		return JpaProject.isAboveJpa30(this.jpaProject.getProject());
+	}
+
 	// ********** constants **********
 
-	private static final String JAVAX_PERSISTENCE_BUNDLE = "javax.persistence";					//$NON-NLS-1$
+	private static final String JAVAX_PERSISTENCE_BUNDLE   = "javax.persistence";				//$NON-NLS-1$
+	private static final String JAKARTA_PERSISTENCE_BUNDLE = "jakarta.persistence";			//$NON-NLS-1$
 	private static final String ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE = "org.eclipse.persistence.core";	//$NON-NLS-1$
 	private static final String ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE = "org.eclipse.persistence.asm";	//$NON-NLS-1$
 	private static final String ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE = "org.eclipse.persistence.antlr";	//$NON-NLS-1$

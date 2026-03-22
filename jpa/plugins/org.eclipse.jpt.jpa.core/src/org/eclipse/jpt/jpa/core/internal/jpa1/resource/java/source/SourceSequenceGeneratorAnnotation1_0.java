@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.resource.java.source;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceSequenceGeneratorAnnotation;
 
 /**
@@ -21,5 +22,9 @@ public final class SourceSequenceGeneratorAnnotation1_0
 {
 	public SourceSequenceGeneratorAnnotation1_0(JavaResourceModel parent, AnnotatedElement element) {
 		super(parent, element);
+	}
+
+	public SourceSequenceGeneratorAnnotation1_0(JavaResourceModel parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 	}
 }

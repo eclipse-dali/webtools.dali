@@ -421,6 +421,9 @@ public class CreateEntityTemplateModel {
 	 */
 	private double getJpaVersion() {
 		JpaProject jpaProject = getJpaProject();
+		if (jpaProject == null) {
+			return -1;
+		}
 		JpaPlatform jpaPlatform = jpaProject.getJpaPlatform();
 		if (jpaPlatform == null) {
 			JptJpaUiPlugin.instance().logError("JpaPlatform is null for project: " + jpaProject.getProject().getName());

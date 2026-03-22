@@ -17,9 +17,13 @@ import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_2.context.persistence.GenericPersistenceXmlDefinition2_2;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.persistence.GenericPersistenceXmlDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_1.context.persistence.GenericPersistenceXmlDefinition3_1;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXmlContextModelFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2_1.context.persistence.PersistenceXmlContextModelFactory2_1;
 import org.eclipse.jpt.jpa.core.jpa2_2.context.persistence.PersistenceXmlContextModelFactory2_2;
+import org.eclipse.jpt.jpa.core.jpa3_0.context.persistence.PersistenceXmlContextModelFactory3_0;
+import org.eclipse.jpt.jpa.core.jpa3_1.context.persistence.PersistenceXmlContextModelFactory3_1;
 
 /**
  * Use this abstract class for context models that are part of an
@@ -57,6 +61,14 @@ public abstract class AbstractPersistenceXmlContextModel<P extends JpaContextMod
 		return this.getResourceType().isKindOf(GenericPersistenceXmlDefinition2_2.instance().getResourceType());
 	}
 
+	protected boolean isPersistenceXml3_0Compatible() {
+		return this.getResourceType().isKindOf(GenericPersistenceXmlDefinition3_0.instance().getResourceType());
+	}
+
+	protected boolean isPersistenceXml3_1Compatible() {
+		return this.getResourceType().isKindOf(GenericPersistenceXmlDefinition3_1.instance().getResourceType());
+	}
+
 	/**
 	 * Call {@link #isPersistenceXml2_0Compatible()} before calling this method.
 	 */
@@ -72,10 +84,24 @@ public abstract class AbstractPersistenceXmlContextModel<P extends JpaContextMod
 	}
 
 	/**
-	 * Call {@link #isPersistenceXml2_1Compatible()} before calling this method.
+	 * Call {@link #isPersistenceXml2_2Compatible()} before calling this method.
 	 */
 	protected PersistenceXmlContextModelFactory2_2 getContextModelFactory2_2() {
 		return (PersistenceXmlContextModelFactory2_2) this.getContextModelFactory();
+	}
+
+	/**
+	 * Call {@link #isPersistenceXml3_0Compatible()} before calling this method.
+	 */
+	protected PersistenceXmlContextModelFactory3_0 getContextModelFactory3_0() {
+		return (PersistenceXmlContextModelFactory3_0) this.getContextModelFactory();
+	}
+
+	/**
+	 * Call {@link #isPersistenceXml3_1Compatible()} before calling this method.
+	 */
+	protected PersistenceXmlContextModelFactory3_1 getContextModelFactory3_1() {
+		return (PersistenceXmlContextModelFactory3_1) this.getContextModelFactory();
 	}
 
 	protected PersistenceXmlContextModelFactory getContextModelFactory() {

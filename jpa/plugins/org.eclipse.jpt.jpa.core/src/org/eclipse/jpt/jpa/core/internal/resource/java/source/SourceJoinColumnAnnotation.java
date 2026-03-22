@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2007, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -12,7 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -30,20 +31,22 @@ public final class SourceJoinColumnAnnotation
 	extends SourceBaseJoinColumnAnnotation
 	implements JoinColumnAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_COLUMNS);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(JPA.JOIN_COLUMNS);
+	private static final DeclarationAnnotationAdapter JAKARTA_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA.JOIN_COLUMN.substring(JPA.JAVAX_PACKAGE.length()));
+	private static final DeclarationAnnotationAdapter JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA.JOIN_COLUMNS.substring(JPA.JAVAX_PACKAGE.length()));
 
-	
+
 	public static SourceJoinColumnAnnotation buildSourceJoinColumnAnnotation(
-			JavaResourceModel parent, 
+			JavaResourceModel parent,
 			AnnotatedElement element) {
-		
+
 		return new SourceJoinColumnAnnotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
 	public static SourceJoinColumnAnnotation buildSourceJoinColumnAnnotation(
-			JavaResourceAnnotatedElement parent, 
-			AnnotatedElement annotatedElement, 
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildJoinColumnDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildJoinColumnAnnotationAdapter(annotatedElement, idaa);
@@ -52,6 +55,15 @@ public final class SourceJoinColumnAnnotation
 			annotatedElement,
 			idaa,
 			iaa);
+	}
+
+	public static SourceJoinColumnAnnotation buildJakartaSourceJoinColumnAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
+			int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildJakartaJoinColumnDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildJoinColumnAnnotationAdapter(annotatedElement, idaa);
+		return new SourceJoinColumnAnnotation(parent, annotatedElement, idaa, iaa);
 	}
 
 	
@@ -136,12 +148,18 @@ public final class SourceJoinColumnAnnotation
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildJoinColumnDeclarationAnnotationAdapter(int index) {
-		IndexedDeclarationAnnotationAdapter idaa = 
-			new CombinationIndexedDeclarationAnnotationAdapter(
+		return new CombinationIndexedDeclarationAnnotationAdapter(
 				DECLARATION_ANNOTATION_ADAPTER,
 				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
 				index,
 				ANNOTATION_NAME);
-		return idaa;
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildJakartaJoinColumnDeclarationAnnotationAdapter(int index) {
+		return new CombinationIndexedDeclarationAnnotationAdapter(
+				JAKARTA_DECLARATION_ANNOTATION_ADAPTER,
+				JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JPA.JAKARTA_PACKAGE + JPA.JOIN_COLUMN.substring(JPA.JAVAX_PACKAGE.length()));
 	}
 }

@@ -25,10 +25,16 @@ package org.eclipse.jpt.jpa.core.resource.java;
 public interface JPA {
 
 	// JPA package
-	String JAKARTA_PACKAGE = "jakarta.persistence";
+	/** Package prefix for JPA 2.2 and earlier (javax.persistence). */
 	String JAVAX_PACKAGE = "javax.persistence";
-	String PACKAGE = Boolean.parseBoolean(System.getProperty("jpa.enable.3x.annotations", "false")) ? JAKARTA_PACKAGE
-			: JAVAX_PACKAGE;
+	/** Package prefix for JPA 3.0 and later (jakarta.persistence). */
+	String JAKARTA_PACKAGE = "jakarta.persistence";
+	/**
+	 * Default package for JPA 1.x/2.x annotations (javax.persistence).
+	 * For JPA 3.x projects use {@link JPA3_0#PACKAGE} or
+	 * {@link org.eclipse.jpt.jpa.core.internal.utility.JpaPackageHelper}.
+	 */
+	String PACKAGE = JAVAX_PACKAGE;
 	String PACKAGE_ = PACKAGE + '.';
 
 	// ********** API **********

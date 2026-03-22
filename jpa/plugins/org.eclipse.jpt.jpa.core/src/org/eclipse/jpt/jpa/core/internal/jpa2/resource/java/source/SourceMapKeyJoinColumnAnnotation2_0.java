@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2009, 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -12,7 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapt
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
  * <code>javax.persistence.MapKeyJoinColumn</code>
@@ -31,8 +33,10 @@ public final class SourceMapKeyJoinColumnAnnotation2_0
 	extends SourceBaseJoinColumnAnnotation
 	implements MapKeyJoinColumnAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA2_0.MAP_KEY_JOIN_COLUMNS);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(JPA2_0.MAP_KEY_JOIN_COLUMNS);
+	private static final DeclarationAnnotationAdapter JAKARTA_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA2_0.MAP_KEY_JOIN_COLUMN.substring(JPA.JAVAX_PACKAGE.length()));
+	private static final DeclarationAnnotationAdapter JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA2_0.MAP_KEY_JOIN_COLUMNS.substring(JPA.JAVAX_PACKAGE.length()));
 
 	
 	public static SourceMapKeyJoinColumnAnnotation2_0 buildSourceMapKeyJoinColumnAnnotation(
@@ -43,16 +47,21 @@ public final class SourceMapKeyJoinColumnAnnotation2_0
 	}
 
 	public static SourceMapKeyJoinColumnAnnotation2_0 buildSourceMapKeyJoinColumnAnnotation(
-			JavaResourceAnnotatedElement parent, 
-			AnnotatedElement annotatedElement, 
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
 			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildMapKeyJoinColumnDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildMapKeyJoinColumnAnnotationAdapter(annotatedElement, idaa);
-		return new SourceMapKeyJoinColumnAnnotation2_0(
-			parent,
-			annotatedElement,
-			idaa,
-			iaa);
+		return new SourceMapKeyJoinColumnAnnotation2_0(parent, annotatedElement, idaa, iaa);
+	}
+
+	public static SourceMapKeyJoinColumnAnnotation2_0 buildJakartaSourceMapKeyJoinColumnAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement,
+			int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildJakartaMapKeyJoinColumnDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildMapKeyJoinColumnAnnotationAdapter(annotatedElement, idaa);
+		return new SourceMapKeyJoinColumnAnnotation2_0(parent, annotatedElement, idaa, iaa);
 	}
 	
 	public static SourceMapKeyJoinColumnAnnotation2_0 buildNestedSourceMapKeyJoinColumnAnnotation(
@@ -134,12 +143,18 @@ public final class SourceMapKeyJoinColumnAnnotation2_0
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildMapKeyJoinColumnDeclarationAnnotationAdapter(int index) {
-		IndexedDeclarationAnnotationAdapter idaa = 
-			new CombinationIndexedDeclarationAnnotationAdapter(
+		return new CombinationIndexedDeclarationAnnotationAdapter(
 				DECLARATION_ANNOTATION_ADAPTER,
 				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
 				index,
 				ANNOTATION_NAME);
-		return idaa;
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildJakartaMapKeyJoinColumnDeclarationAnnotationAdapter(int index) {
+		return new CombinationIndexedDeclarationAnnotationAdapter(
+				JAKARTA_DECLARATION_ANNOTATION_ADAPTER,
+				JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JPA.JAKARTA_PACKAGE + JPA2_0.MAP_KEY_JOIN_COLUMN.substring(JPA.JAVAX_PACKAGE.length()));
 	}
 }

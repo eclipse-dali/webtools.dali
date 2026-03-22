@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -14,6 +14,8 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryDiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceDiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
@@ -25,7 +27,7 @@ public final class DiscriminatorColumnAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new DiscriminatorColumnAnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new DiscriminatorColumnAnnotationDefinition(JPA.JAVAX_PACKAGE);
 
 
 	/**
@@ -36,14 +38,29 @@ public final class DiscriminatorColumnAnnotationDefinition
 	}
 
 	/**
-	 * Ensure single instance.
+	 * Returns an annotation definition for the given JPA annotations package
+	 * (either {\@link JPA#JAVAX_PACKAGE} or {\@link JPA#JAKARTA_PACKAGE}).
 	 */
-	private DiscriminatorColumnAnnotationDefinition() {
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new DiscriminatorColumnAnnotationDefinition(jpaPackage);
+	}
+
+	private final String annotationName;
+
+		private DiscriminatorColumnAnnotationDefinition(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage + DiscriminatorColumnAnnotation.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceDiscriminatorColumnAnnotation(parent, annotatedElement);
+		if (DiscriminatorColumnAnnotation.ANNOTATION_NAME.equals(this.annotationName)) {
+			return new SourceDiscriminatorColumnAnnotation(parent, annotatedElement);
+		}
+		return new SourceDiscriminatorColumnAnnotation(parent, annotatedElement,
+				JakartaAwareDeclarationAnnotationAdapter.forJakarta(this.annotationName));
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -55,7 +72,7 @@ public final class DiscriminatorColumnAnnotationDefinition
 	}
 
 	public String getAnnotationName() {
-		return DiscriminatorColumnAnnotation.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 
 }

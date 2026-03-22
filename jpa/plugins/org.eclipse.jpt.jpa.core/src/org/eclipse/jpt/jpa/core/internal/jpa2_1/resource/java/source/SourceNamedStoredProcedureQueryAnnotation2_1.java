@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2013 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -17,7 +17,8 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExp
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceQueryHintAnn
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.JPA2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.StoredProcedureParameterAnnotation2_1;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 
 /**
@@ -45,8 +47,10 @@ public final class SourceNamedStoredProcedureQueryAnnotation2_1
 	extends SourceQueryAnnotation
 	implements NamedStoredProcedureQueryAnnotation2_1
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA2_1.NAMED_STORED_PROCEDURE_QUERIES);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(JPA2_1.NAMED_STORED_PROCEDURE_QUERIES);
+	private static final DeclarationAnnotationAdapter JAKARTA_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA2_1.NAMED_STORED_PROCEDURE_QUERY.substring(JPA.JAVAX_PACKAGE.length()));
+	private static final DeclarationAnnotationAdapter JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJakarta(JPA.JAKARTA_PACKAGE + JPA2_1.NAMED_STORED_PROCEDURE_QUERIES.substring(JPA.JAVAX_PACKAGE.length()));
 
 	DeclarationAnnotationElementAdapter<String> procedureNameDeclarationAdapter;
 	AnnotationElementAdapter<String> procedureNameAdapter;
@@ -76,17 +80,21 @@ public final class SourceNamedStoredProcedureQueryAnnotation2_1
 	private TextRange resultSetMappingsTextRange;
 
 	public static SourceNamedStoredProcedureQueryAnnotation2_1 buildSourceNamedStoredProcedureQuery2_1Annotation(
-			JavaResourceAnnotatedElement parent, 
-			AnnotatedElement element, 
-			int index)
-	{
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement element,
+			int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNamedStoredProcedureQuery2_1DeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildNamedStoredProcedureQuery2_1AnnotationAdapter(element, idaa);
-		return new SourceNamedStoredProcedureQueryAnnotation2_1(
-			parent,
-			element,
-			idaa,
-			iaa);
+		return new SourceNamedStoredProcedureQueryAnnotation2_1(parent, element, idaa, iaa);
+	}
+
+	public static SourceNamedStoredProcedureQueryAnnotation2_1 buildJakartaSourceNamedStoredProcedureQuery2_1Annotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement element,
+			int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildJakartaNamedStoredProcedureQuery2_1DeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildNamedStoredProcedureQuery2_1AnnotationAdapter(element, idaa);
+		return new SourceNamedStoredProcedureQueryAnnotation2_1(parent, element, idaa, iaa);
 	}
 
 	private SourceNamedStoredProcedureQueryAnnotation2_1(
@@ -467,12 +475,19 @@ public final class SourceNamedStoredProcedureQueryAnnotation2_1
 		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildNamedStoredProcedureQuery2_1DeclarationAnnotationAdapter(int index) 
-	{
+	private static IndexedDeclarationAnnotationAdapter buildNamedStoredProcedureQuery2_1DeclarationAnnotationAdapter(int index) {
 		return new CombinationIndexedDeclarationAnnotationAdapter(
 				DECLARATION_ANNOTATION_ADAPTER,
 				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
 				index,
 				ANNOTATION_NAME);
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildJakartaNamedStoredProcedureQuery2_1DeclarationAnnotationAdapter(int index) {
+		return new CombinationIndexedDeclarationAnnotationAdapter(
+				JAKARTA_DECLARATION_ANNOTATION_ADAPTER,
+				JAKARTA_CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JPA.JAKARTA_PACKAGE + JPA2_1.NAMED_STORED_PROCEDURE_QUERY.substring(JPA.JAVAX_PACKAGE.length()));
 	}
 }
