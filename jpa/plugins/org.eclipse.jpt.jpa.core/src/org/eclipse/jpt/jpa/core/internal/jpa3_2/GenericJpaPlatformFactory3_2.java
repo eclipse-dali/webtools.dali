@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Lakshminarayana Nekkanti. All rights reserved.
+ * Copyright (c) 2024, 2026 Lakshminarayana Nekkanti and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.GenericJpaAnnotationDefinitionProvider2_1;
-import org.eclipse.jpt.jpa.core.internal.jpa2_2.GenericJpaPlatformFactory2_2;
 import org.eclipse.jpt.jpa.core.internal.jpa3_1.GenericJpaPlatformFactory3_1;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_1;
 
