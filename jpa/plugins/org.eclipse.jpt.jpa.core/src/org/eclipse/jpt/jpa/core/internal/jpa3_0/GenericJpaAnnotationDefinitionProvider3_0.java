@@ -39,9 +39,22 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.JoinTableAnnotationDefini
 import org.eclipse.jpt.jpa.core.internal.resource.java.NamedNativeQueryAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.PrimaryKeyJoinColumnAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.SecondaryTableAnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AccessAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AssociationOverrideAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CacheableAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CollectionTableAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.ElementCollectionAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyClassAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyColumnAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyEnumeratedAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyJoinColumnAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyTemporalAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapsIdAnnotationDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NamedQueryAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumnAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.SequenceGeneratorAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.ConverterAnnotationDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.NamedStoredProcedureQueryAnnotationDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AttributeOverrideAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.LobAnnotationDefinition;
@@ -52,7 +65,6 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.MappedSuperclassAnnotatio
 import org.eclipse.jpt.jpa.core.internal.resource.java.OneToManyAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.OneToOneAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.OrderByAnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.resource.java.SequenceGeneratorAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.TableAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.TableGeneratorAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.TemporalAnnotationDefinition;
@@ -234,8 +246,11 @@ public class GenericJpaAnnotationDefinitionProvider3_0
 		if (def == OrderByAnnotationDefinition.instance()) {
 			return OrderByAnnotationDefinition.instance(JPA.JAKARTA_PACKAGE);
 		}
-		if (def == SequenceGeneratorAnnotationDefinition.instance()) {
-			return SequenceGeneratorAnnotationDefinition.instance(JPA.JAKARTA_PACKAGE);
+		if (def == SequenceGeneratorAnnotationDefinition2_0.instance()) {
+			return SequenceGeneratorAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == StaticMetamodelAnnotationDefinition2_0.instance()) {
+			return StaticMetamodelAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
 		}
 		if (def == TableAnnotationDefinition.instance()) {
 			return TableAnnotationDefinition.instance(JPA.JAKARTA_PACKAGE);
@@ -251,6 +266,41 @@ public class GenericJpaAnnotationDefinitionProvider3_0
 		}
 		if (def == VersionAnnotationDefinition.instance()) {
 			return VersionAnnotationDefinition.instance(JPA.JAKARTA_PACKAGE);
+		}
+		// JPA 2.0 annotations
+		if (def == AccessAnnotationDefinition2_0.instance()) {
+			return AccessAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == CacheableAnnotationDefinition2_0.instance()) {
+			return CacheableAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == CollectionTableAnnotationDefinition2_0.instance()) {
+			return CollectionTableAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == ElementCollectionAnnotationDefinition2_0.instance()) {
+			return ElementCollectionAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == MapKeyClassAnnotationDefinition2_0.instance()) {
+			return MapKeyClassAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == MapKeyColumnAnnotationDefinition2_0.instance()) {
+			return MapKeyColumnAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == MapKeyEnumeratedAnnotationDefinition2_0.instance()) {
+			return MapKeyEnumeratedAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == MapKeyTemporalAnnotationDefinition2_0.instance()) {
+			return MapKeyTemporalAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == MapsIdAnnotationDefinition2_0.instance()) {
+			return MapsIdAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		if (def == OrderColumnAnnotationDefinition2_0.instance()) {
+			return OrderColumnAnnotationDefinition2_0.instance(JPA.JAKARTA_PACKAGE);
+		}
+		// JPA 2.1 annotations
+		if (def == ConverterAnnotationDefinition2_1.instance()) {
+			return ConverterAnnotationDefinition2_1.instance(JPA.JAKARTA_PACKAGE);
 		}
 		// Fallback: translate the annotation name for recognition purposes only.
 		// (Handles JPA 2.x-specific definitions not yet migrated to the factory pattern.)

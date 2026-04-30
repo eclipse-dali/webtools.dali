@@ -9,8 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 
@@ -20,19 +19,18 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 public final class SourceNamedAnnotation
 	extends SourceAnnotation
 {
-	private final String annotationName;
+
 
 	public SourceNamedAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, String annotationName) {
-		super(parent, annotatedElement, new SimpleDeclarationAnnotationAdapter(annotationName));
-		this.annotationName = annotationName;
+		super(parent, annotatedElement, JakartaAwareDeclarationAnnotationAdapter.forJavax(annotationName));
 	}
 
 	public String getAnnotationName() {
-		return this.annotationName;
+		return ((JakartaAwareDeclarationAnnotationAdapter) this.daa).getAnnotationName();
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.annotationName);
+		sb.append(this.getAnnotationName());
 	}
 }

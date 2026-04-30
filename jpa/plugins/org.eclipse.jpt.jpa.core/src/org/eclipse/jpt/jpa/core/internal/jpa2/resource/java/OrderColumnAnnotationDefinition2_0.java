@@ -17,28 +17,34 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryOrderColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceOrderColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * <code>javax.persistence.OrderColumn</code>
+ * <code>javax.persistence.OrderColumn</code> / <code>jakarta.persistence.OrderColumn</code>
  */
 public final class OrderColumnAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
-	// singleton
-	private static final AnnotationDefinition INSTANCE = new OrderColumnAnnotationDefinition2_0();
+	private static final AnnotationDefinition INSTANCE =
+			new OrderColumnAnnotationDefinition2_0(JPA.JAVAX_PACKAGE);
 
-	/**
-	 * Return the singleton.
-	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	/**
-	 * Ensure single instance.
-	 */
-	private OrderColumnAnnotationDefinition2_0() {
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new OrderColumnAnnotationDefinition2_0(jpaPackage);
+	}
+
+	private final String annotationName;
+
+	private OrderColumnAnnotationDefinition2_0(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage +
+				OrderColumnAnnotation2_0.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
@@ -54,6 +60,6 @@ public final class OrderColumnAnnotationDefinition2_0
 	}
 
 	public String getAnnotationName() {
-		return OrderColumnAnnotation2_0.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 }

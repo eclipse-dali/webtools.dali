@@ -535,7 +535,17 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	public boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames) {
 		for (Annotation annotation : this.getSignificantAnnotations()) {
-			if (IterableTools.contains(annotationNames, annotation.getAnnotationName())) {
+			String annName = annotation.getAnnotationName();
+			if (IterableTools.contains(annotationNames, annName)) {
+				return true;
+			}
+			// Symmetric namespace fallback: a javax.persistence.* annotation
+			// should match a jakarta.persistence.* entry and vice-versa, so
+			// that JPA 2.x source annotations (which report javax names) are
+			// correctly matched against JPA 3.x context definitions (which
+			// provide jakarta names).
+			String altName = alternateNamespace(annName);
+			if (altName != null && IterableTools.contains(annotationNames, altName)) {
 				return true;
 			}
 		}

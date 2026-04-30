@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
  * <code>javax.persistence.MapKeyJoinColumns</code>
@@ -24,8 +25,8 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 public final class MapKeyJoinColumnsAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
-	// singleton
-	private static final AnnotationDefinition INSTANCE = new MapKeyJoinColumnsAnnotationDefinition2_0();
+	// singleton for javax.persistence (default)
+	private static final AnnotationDefinition INSTANCE = new MapKeyJoinColumnsAnnotationDefinition2_0(JPA.JAVAX_PACKAGE);
 
 	/**
 	 * Return the singleton.
@@ -34,11 +35,21 @@ public final class MapKeyJoinColumnsAnnotationDefinition2_0
 		return INSTANCE;
 	}
 
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new MapKeyJoinColumnsAnnotationDefinition2_0(jpaPackage);
+	}
+
 	/**
 	 * Ensure single instance.
 	 */
-	private MapKeyJoinColumnsAnnotationDefinition2_0() {
+	private final String annotationName;
+
+	private MapKeyJoinColumnsAnnotationDefinition2_0(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage + JPA2_0.MAP_KEY_JOIN_COLUMNS.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
@@ -54,6 +65,6 @@ public final class MapKeyJoinColumnsAnnotationDefinition2_0
 	}
 
 	public String getAnnotationName() {
-		return JPA2_0.MAP_KEY_JOIN_COLUMNS;
+		return this.annotationName;
 	}
 }

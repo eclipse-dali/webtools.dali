@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryStaticMetamodelAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceStaticMetamodelAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
  * <code>javax.persistence.metamodel.StaticMetamodel</code>
@@ -23,8 +24,8 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation2_0;
 public final class StaticMetamodelAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
-	// singleton
-	private static final StaticMetamodelAnnotationDefinition2_0 INSTANCE = new StaticMetamodelAnnotationDefinition2_0();
+	// singleton for javax.persistence (default)
+	private static final StaticMetamodelAnnotationDefinition2_0 INSTANCE = new StaticMetamodelAnnotationDefinition2_0(JPA.JAVAX_PACKAGE);
 
 	/**
 	 * Return the singleton.
@@ -33,15 +34,29 @@ public final class StaticMetamodelAnnotationDefinition2_0
 		return INSTANCE;
 	}
 
+	public static StaticMetamodelAnnotationDefinition2_0 instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new StaticMetamodelAnnotationDefinition2_0(jpaPackage);
+	}
+
 	/**
 	 * Ensure single instance.
 	 */
-	private StaticMetamodelAnnotationDefinition2_0() {
+	private final String annotationName;
+
+	private StaticMetamodelAnnotationDefinition2_0(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage + StaticMetamodelAnnotation2_0.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public StaticMetamodelAnnotation2_0 buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceStaticMetamodelAnnotation2_0(parent, annotatedElement);
+		if (StaticMetamodelAnnotation2_0.ANNOTATION_NAME.equals(this.annotationName)) {
+			return new SourceStaticMetamodelAnnotation2_0(parent, annotatedElement);
+		}
+		return new SourceStaticMetamodelAnnotation2_0(parent, annotatedElement,
+				org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter.forJakarta(this.annotationName));
 	}
 
 	public StaticMetamodelAnnotation2_0 buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -53,6 +68,6 @@ public final class StaticMetamodelAnnotationDefinition2_0
 	}
 
 	public String getAnnotationName() {
-		return StaticMetamodelAnnotation2_0.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 }

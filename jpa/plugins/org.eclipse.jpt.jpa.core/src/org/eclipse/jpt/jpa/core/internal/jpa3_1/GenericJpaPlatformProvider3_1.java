@@ -36,17 +36,16 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinitio
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaConverterTypeDefinition3_0;
-import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaEmbeddableDefinition3_0;
-import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaEntityDefinition3_0;
-import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaMappedSuperclassDefinition3_0;
-import org.eclipse.jpt.jpa.core.internal.jpa3_0.GenericJpaPlatformProvider3_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_2.context.orm.GenericOrmXmlDefinition2_2;
 import org.eclipse.jpt.jpa.core.internal.jpa2_2.context.persistence.GenericPersistenceXmlDefinition2_2;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.GenericJpaPlatformProvider3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaConverterTypeDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaEmbeddableDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaEntityDefinition3_0;
+import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.java.JavaMappedSuperclassDefinition3_0;
 import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.orm.GenericOrmXmlDefinition3_0;
-import org.eclipse.jpt.jpa.core.internal.jpa3_0.context.persistence.GenericPersistenceXmlDefinition3_0;
 import org.eclipse.jpt.jpa.core.internal.jpa3_1.context.orm.GenericOrmXmlDefinition3_1;
 import org.eclipse.jpt.jpa.core.internal.jpa3_1.context.persistence.GenericPersistenceXmlDefinition3_1;
 
@@ -157,8 +156,7 @@ public class GenericJpaPlatformProvider3_1 extends AbstractJpaPlatformProvider {
 	protected static final JpaResourceDefinition[] RESOURCE_DEFINITIONS = new JpaResourceDefinition[] {
 			JavaSourceFileDefinition.instance(), JarDefinition.instance(), GenericPersistenceXmlDefinition.instance(),
 			GenericPersistenceXmlDefinition2_0.instance(), GenericPersistenceXmlDefinition2_1.instance(),
-			GenericPersistenceXmlDefinition2_2.instance(), GenericPersistenceXmlDefinition3_0.instance(),
-			GenericPersistenceXmlDefinition3_1.instance(), GenericOrmXmlDefinition.instance(),
+			GenericPersistenceXmlDefinition2_2.instance(), GenericPersistenceXmlDefinition3_1.instance(), GenericOrmXmlDefinition.instance(),
 			GenericOrmXmlDefinition2_0.instance(), GenericOrmXmlDefinition2_1.instance(),
 			GenericOrmXmlDefinition2_2.instance(), GenericOrmXmlDefinition3_0.instance(),
 			GenericOrmXmlDefinition3_1.instance() };

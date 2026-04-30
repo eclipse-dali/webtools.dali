@@ -37,7 +37,7 @@ public interface JpaProject3_1 extends JpaProject3_0 {
 	String FACET_VERSION_STRING = "3.1"; //$NON-NLS-1$
 
 	/**
-	 * The JPA 3.0 project facet version.
+	 * The JPA 3.1 project facet version.
 	 */
 	IProjectFacetVersion FACET_VERSION = FACET.getVersion(FACET_VERSION_STRING);
 

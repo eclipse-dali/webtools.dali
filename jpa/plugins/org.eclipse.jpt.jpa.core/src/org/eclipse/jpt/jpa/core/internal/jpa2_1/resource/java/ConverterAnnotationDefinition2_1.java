@@ -17,28 +17,34 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.binary.BinaryConverterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.resource.java.source.SourceConverterAnnotation2_1;
 import org.eclipse.jpt.jpa.core.jpa2_1.resource.java.ConverterAnnotation2_1;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * <code>javax.persistence.Converter</code>
+ * <code>javax.persistence.Converter</code> / <code>jakarta.persistence.Converter</code>
  */
 public final class ConverterAnnotationDefinition2_1
 	implements AnnotationDefinition
 {
-	// singleton
-	private static final AnnotationDefinition INSTANCE = new ConverterAnnotationDefinition2_1();
+	private static final AnnotationDefinition INSTANCE =
+			new ConverterAnnotationDefinition2_1(JPA.JAVAX_PACKAGE);
 
-	/**
-	 * Return the singleton.
-	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	/**
-	 * Ensure single instance.
-	 */
-	private ConverterAnnotationDefinition2_1() {
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new ConverterAnnotationDefinition2_1(jpaPackage);
+	}
+
+	private final String annotationName;
+
+	private ConverterAnnotationDefinition2_1(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage +
+				ConverterAnnotation2_1.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
@@ -54,6 +60,6 @@ public final class ConverterAnnotationDefinition2_1
 	}
 
 	public String getAnnotationName() {
-		return ConverterAnnotation2_1.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 }

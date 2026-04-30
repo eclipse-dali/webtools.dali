@@ -33,6 +33,11 @@ public final class GeneratedAnnotationDefinition2_0
 		return INSTANCE;
 	}
 
+	public static GeneratedAnnotationDefinition2_0 instance(String jpaPackage) {
+		// This annotation is not JPA-package-dependent; ignore jpaPackage and return the singleton
+		return INSTANCE;
+	}
+
 	/**
 	 * Ensure single instance.
 	 */

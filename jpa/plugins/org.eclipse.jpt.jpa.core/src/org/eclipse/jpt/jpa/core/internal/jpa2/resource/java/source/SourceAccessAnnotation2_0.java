@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotati
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 
 import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.AbstractDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -33,7 +34,7 @@ public final class SourceAccessAnnotation2_0
 	extends SourceAnnotation
 	implements AccessAnnotation2_0
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
+	private static final AbstractDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -52,7 +53,7 @@ public final class SourceAccessAnnotation2_0
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return DECLARATION_ANNOTATION_ADAPTER.getAnnotationName();
 	}
 
 	@Override

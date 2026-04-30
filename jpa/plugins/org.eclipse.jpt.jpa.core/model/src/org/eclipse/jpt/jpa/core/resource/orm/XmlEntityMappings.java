@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * Copyright (c) 2007, 2024 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_1.XmlQueryContainer_2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_2.JPA2_2;
 import org.eclipse.jpt.jpa.core.resource.orm.v3_0.JPA3_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v3_1.JPA3_1;
+import org.eclipse.jpt.jpa.core.resource.orm.v3_2.JPA3_2;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -1173,6 +1174,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_LOCATION);
 		map.put(JPA3_0.SCHEMA_VERSION, JPA3_0.SCHEMA_LOCATION);
 		map.put(JPA3_1.SCHEMA_VERSION, JPA3_1.SCHEMA_LOCATION);
+		map.put(JPA3_2.SCHEMA_VERSION, JPA3_2.SCHEMA_LOCATION);
 		return map;
 	}
 	
@@ -1194,6 +1196,7 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		map.put(JPA2_2.SCHEMA_VERSION, JPA2_2.SCHEMA_NAMESPACE);
 		map.put(JPA3_0.SCHEMA_VERSION, JPA3_0.SCHEMA_NAMESPACE);
 		map.put(JPA3_1.SCHEMA_VERSION, JPA3_1.SCHEMA_NAMESPACE);
+		map.put(JPA3_2.SCHEMA_VERSION, JPA3_2.SCHEMA_NAMESPACE);
 		return map;
 	}
 
@@ -1302,3 +1305,4 @@ public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContai
 		return (textRange != null) && (textRange.touches(pos));
 	}
 }
+

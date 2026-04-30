@@ -34,6 +34,11 @@ public class EclipseLinkMapKeyConvertAnnotationDefinition2_0
 		return INSTANCE;
 	}
 
+	public static AnnotationDefinition instance(String jpaPackage) {
+		// This definition is vendor-specific; ignore jpaPackage and return the singleton
+		return INSTANCE;
+	}
+
 	/**
 	 * Ensure single instance.
 	 */

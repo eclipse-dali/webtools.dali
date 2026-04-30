@@ -97,7 +97,8 @@ public interface JPA3_0 extends JPA {
 	String ORDER_BY = PACKAGE_ + "OrderBy";
 	String PERSISTENCE_CONTEXT = PACKAGE_ + "PersistenceContext";
 	String PERSISTENCE_CONTEXTS = PACKAGE_ + "PersistenceContexts";
-	String PERSISTENCE_UNIT = PACKAGE_ + "XmlPersistenceUnit";
+	String PERSISTENCE = PACKAGE_ + "Persistence";
+	String PERSISTENCE_UNIT = PACKAGE_ + "PersistenceUnit";
 	String PERSISTENCE_UNITS = PACKAGE_ + "PersistenceUnits";
 	String POST_LOAD = PACKAGE_ + "PostLoad";
 	String POST_PERSIST = PACKAGE_ + "PostPersist";
@@ -156,8 +157,6 @@ public interface JPA3_0 extends JPA {
 		String GENERATION_TYPE__IDENTITY = GENERATION_TYPE_ + "IDENTITY";
 		String GENERATION_TYPE__SEQUENCE = GENERATION_TYPE_ + "SEQUENCE";
 		String GENERATION_TYPE__TABLE    = GENERATION_TYPE_ + "TABLE";
-		/** Added in JPA 3.1 ({@code GenerationType.UUID}). */
-		String GENERATION_TYPE__UUID     = GENERATION_TYPE_ + "UUID";
 
 	String INHERITANCE_TYPE = PACKAGE_ + "InheritanceType";
 		String INHERITANCE_TYPE_ = INHERITANCE_TYPE + '.';
@@ -182,7 +181,6 @@ public interface JPA3_0 extends JPA {
 	String ENTITY_TRANSACTION      = PACKAGE_ + "EntityTransaction";
 	String INSTRUMENTABLE_CLASS_LOADER = PACKAGE_ + "InstrumentableClassLoader";
 	String QUERY                  = PACKAGE_ + "Query";
-	String PERSISTENCE            = PACKAGE_ + "XmlPersistence";
 	String NON_UNIQUE_RESULT_EXCEPTION = PACKAGE_ + "NonUniqueResultException";
 	String OBJECT_NOT_FOUND_EXCEPTION  = PACKAGE_ + "ObjectNotFoundException";
 	String PERSISTENCE_EXCEPTION  = PACKAGE_ + "PersistenceException";
@@ -220,6 +218,8 @@ public interface JPA3_0 extends JPA {
 		String COLLECTION_TABLE__CATALOG            = "catalog";
 		String COLLECTION_TABLE__JOIN_COLUMNS       = "joinColumns";
 		String COLLECTION_TABLE__UNIQUE_CONSTRAINTS = "uniqueConstraints";
+		/** Added in JPA 2.1. */
+		String COLLECTION_TABLE__INDEXES            = "indexes";
 
 	// @ElementCollection
 	String ELEMENT_COLLECTION = PACKAGE_ + "ElementCollection";
@@ -375,6 +375,17 @@ public interface JPA3_0 extends JPA {
 		String NAMED_STORED_PROCEDURE_PARAMETER__MODE = "mode";
 		String NAMED_STORED_PROCEDURE_PARAMETER__TYPE = "type";
 
+	// JPA 2.1 additions to pre-existing annotations (element names only)
+	// @SqlResultSetMapping gained classes= in JPA 2.1
+	String SQL_RESULT_SET_MAPPING__CLASSES = "classes";
+	// @TableGenerator gained indexes= in JPA 2.1
+	String TABLE_GENERATOR__INDEXES = "indexes";
+
+	// @ConstructorResult (added in JPA 2.1 — used in @SqlResultSetMapping)
+	String CONSTRUCTOR_RESULT = PACKAGE_ + "ConstructorResult";
+		String CONSTRUCTOR_RESULT__TARGET_CLASS = "targetClass";
+		String CONSTRUCTOR_RESULT__COLUMNS      = "columns";
+
 	// @ForeignKey (added in JPA 2.1 – used in join column and table annotations)
 	String FOREIGN_KEY = PACKAGE_ + "ForeignKey";
 		String FOREIGN_KEY__NAME                   = "name";
@@ -400,20 +411,4 @@ public interface JPA3_0 extends JPA {
 		String CONSTRAINT_MODE__CONSTRAINT    = CONSTRAINT_MODE_ + "CONSTRAINT";
 		String CONSTRAINT_MODE__NO_CONSTRAINT = CONSTRAINT_MODE_ + "NO_CONSTRAINT";
 		String CONSTRAINT_MODE__PROVIDER_DEFAULT = CONSTRAINT_MODE_ + "PROVIDER_DEFAULT";
-
-
-	// ====================================================================
-	// JPA 2.2 additions  (equivalent of JPA2_2 using jakarta prefix)
-	// ====================================================================
-	// JPA 2.2 mainly added @Repeatable support to existing annotations.
-	// The container annotations themselves (e.g. @AssociationOverrides) were
-	// already present. No fundamentally new annotation types were introduced.
-
-
-	// ====================================================================
-	// JPA 3.1 additions
-	// ====================================================================
-
-	/** Added in JPA 3.1: {@code GenerationType.UUID} — see {@link #GENERATION_TYPE__UUID}. */
-	// No new annotation types in JPA 3.1 beyond what is already declared above.
 }

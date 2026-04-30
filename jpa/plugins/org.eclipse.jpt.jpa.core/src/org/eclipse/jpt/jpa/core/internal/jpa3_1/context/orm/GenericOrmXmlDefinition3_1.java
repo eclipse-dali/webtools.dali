@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlContext
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.persistence.v3_0.JPA3_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v3_1.JPA3_1;
 
 public class GenericOrmXmlDefinition3_1 extends AbstractOrmXmlDefinition {
 	// singleton
@@ -62,7 +62,7 @@ public class GenericOrmXmlDefinition3_1 extends AbstractOrmXmlDefinition {
 	}
 
 	public JptResourceType getResourceType() {
-		return this.getResourceType(XmlEntityMappings.CONTENT_TYPE, JPA3_0.SCHEMA_VERSION);
+		return this.getResourceType(XmlEntityMappings.CONTENT_TYPE, JPA3_1.SCHEMA_VERSION);
 	}
 
 	public EFactory getResourceModelFactory() {

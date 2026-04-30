@@ -37,7 +37,9 @@ public final class SourceMapKeyTemporalAnnotation2_0
 	}
 
 	public String getAnnotationName() {
-		return MapKeyTemporalAnnotation2_0.ANNOTATION_NAME;
+		return (this.daa instanceof JakartaAwareDeclarationAnnotationAdapter)
+				? ((JakartaAwareDeclarationAnnotationAdapter) this.daa).getAnnotationName()
+				: MapKeyTemporalAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	@Override

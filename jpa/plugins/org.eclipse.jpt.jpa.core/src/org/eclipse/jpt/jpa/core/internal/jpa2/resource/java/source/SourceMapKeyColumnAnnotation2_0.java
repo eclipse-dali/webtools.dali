@@ -37,7 +37,9 @@ public final class SourceMapKeyColumnAnnotation2_0
 	}
 
 	public String getAnnotationName() {
-		return MapKeyColumnAnnotation2_0.ANNOTATION_NAME;
+		return (this.daa instanceof JakartaAwareDeclarationAnnotationAdapter)
+				? ((JakartaAwareDeclarationAnnotationAdapter) this.daa).getAnnotationName()
+				: MapKeyColumnAnnotation2_0.ANNOTATION_NAME;
 	}
 
 

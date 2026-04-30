@@ -16,7 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinarySequenceGeneratorAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceSequenceGeneratorAnnotation2_0;
-import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
  * <code>javax.persistence.SequenceGenerator</code>
@@ -24,8 +25,8 @@ import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 public final class SequenceGeneratorAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
-	// singleton
-	private static final AnnotationDefinition INSTANCE = new SequenceGeneratorAnnotationDefinition2_0();
+	// singleton for javax.persistence (default)
+	private static final AnnotationDefinition INSTANCE = new SequenceGeneratorAnnotationDefinition2_0(JPA.JAVAX_PACKAGE);
 
 	/**
 	 * Return the singleton.
@@ -34,15 +35,29 @@ public final class SequenceGeneratorAnnotationDefinition2_0
 		return INSTANCE;
 	}
 
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new SequenceGeneratorAnnotationDefinition2_0(jpaPackage);
+	}
+
 	/**
 	 * Ensure single instance.
 	 */
-	private SequenceGeneratorAnnotationDefinition2_0() {
+	private final String annotationName;
+
+	private SequenceGeneratorAnnotationDefinition2_0(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage + SequenceGeneratorAnnotation2_0.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceSequenceGeneratorAnnotation2_0(parent, annotatedElement);
+		if (SequenceGeneratorAnnotation2_0.ANNOTATION_NAME.equals(this.annotationName)) {
+			return new SourceSequenceGeneratorAnnotation2_0(parent, annotatedElement);
+		}
+		return new SourceSequenceGeneratorAnnotation2_0(parent, annotatedElement,
+				org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter.forJakarta(this.annotationName));
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -54,6 +69,6 @@ public final class SequenceGeneratorAnnotationDefinition2_0
 	}
 
 	public String getAnnotationName() {
-		return SequenceGeneratorAnnotation.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 }

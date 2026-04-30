@@ -17,28 +17,34 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapKeyTemporalAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyTemporalAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * <code>javax.persistence.MapKeyTemporal</code>
+ * <code>javax.persistence.MapKeyTemporal</code> / <code>jakarta.persistence.MapKeyTemporal</code>
  */
 public final class MapKeyTemporalAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
-	// singleton
-	private static final AnnotationDefinition INSTANCE = new MapKeyTemporalAnnotationDefinition2_0();
+	private static final AnnotationDefinition INSTANCE =
+			new MapKeyTemporalAnnotationDefinition2_0(JPA.JAVAX_PACKAGE);
 
-	/**
-	 * Return the singleton.
-	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	/**
-	 * Ensure single instance.
-	 */
-	private MapKeyTemporalAnnotationDefinition2_0() {
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new MapKeyTemporalAnnotationDefinition2_0(jpaPackage);
+	}
+
+	private final String annotationName;
+
+	private MapKeyTemporalAnnotationDefinition2_0(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage +
+				MapKeyTemporalAnnotation2_0.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
@@ -54,6 +60,6 @@ public final class MapKeyTemporalAnnotationDefinition2_0
 	}
 
 	public String getAnnotationName() {
-		return MapKeyTemporalAnnotation2_0.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 }

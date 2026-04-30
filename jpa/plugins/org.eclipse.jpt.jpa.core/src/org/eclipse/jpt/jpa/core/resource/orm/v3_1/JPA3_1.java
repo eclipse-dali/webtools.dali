@@ -14,7 +14,7 @@
 
 package org.eclipse.jpt.jpa.core.resource.orm.v3_1;
 
-import org.eclipse.jpt.jpa.core.resource.persistence.v3_0.JPA3_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v3_0.JPA3_0;
 
 /**
  * JPA 3.1 orm.xml-related stuff (elements, attributes etc.)

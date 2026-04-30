@@ -303,7 +303,13 @@ abstract class BinaryAnnotatedElement
 	
 	public boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames) {
 		for (Annotation annotation : this.getSignificantAnnotations()) {
-			if (IterableTools.contains(annotationNames, annotation.getAnnotationName())) {
+			String annName = annotation.getAnnotationName();
+			if (IterableTools.contains(annotationNames, annName)) {
+				return true;
+			}
+			// Symmetric namespace fallback (see SourceAnnotatedElement)
+			String altName = alternateNamespace(annName);
+			if (altName != null && IterableTools.contains(annotationNames, altName)) {
 				return true;
 			}
 		}

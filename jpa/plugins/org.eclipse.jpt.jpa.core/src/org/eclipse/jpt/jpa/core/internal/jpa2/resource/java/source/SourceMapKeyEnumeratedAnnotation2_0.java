@@ -36,7 +36,9 @@ public final class SourceMapKeyEnumeratedAnnotation2_0
 	}
 
 	public String getAnnotationName() {
-		return MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME;
+		return (this.daa instanceof JakartaAwareDeclarationAnnotationAdapter)
+				? ((JakartaAwareDeclarationAnnotationAdapter) this.daa).getAnnotationName()
+				: MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME;
 	}
 
 	@Override

@@ -41,7 +41,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlContext
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.OrmConverterTypeDefinition2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.persistence.v3_0.JPA3_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v3_0.JPA3_0;
 
 public class GenericOrmXmlDefinition3_0
 	extends AbstractOrmXmlDefinition

@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 
 import org.eclipse.jpt.common.core.internal.utility.jdt.JakartaAwareDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.AbstractDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -30,7 +31,7 @@ public final class SourceConverterAnnotation2_1
 	extends SourceAnnotation
 	implements ConverterAnnotation2_1
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
+	private static final AbstractDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = JakartaAwareDeclarationAnnotationAdapter.forJavax(ANNOTATION_NAME);
 
 	private DeclarationAnnotationElementAdapter<Boolean> autoApplyDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> autoApplyAdapter;
@@ -67,7 +68,7 @@ public final class SourceConverterAnnotation2_1
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return DECLARATION_ANNOTATION_ADAPTER.getAnnotationName();
 	}
 
 

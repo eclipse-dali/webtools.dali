@@ -66,6 +66,8 @@ public interface JPA {
 		String COLUMN__SCALE = "scale";
 	String COLUMN_RESULT = PACKAGE_ + "ColumnResult";
 		String COLUMN_RESULT__NAME = "name";
+		/** Added in JPA 2.1: {@code @ColumnResult(type=...)}. */
+		String COLUMN_RESULT__TYPE = "type";
 	String DISCRIMINATOR_COLUMN = PACKAGE_ + "DiscriminatorColumn";
 		String DISCRIMINATOR_COLUMN__NAME = "name";
 		String DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = "discriminatorType";
@@ -119,6 +121,8 @@ public interface JPA {
 		String JOIN_TABLE__JOIN_COLUMNS = "joinColumns";
 		String JOIN_TABLE__INVERSE_JOIN_COLUMNS = "inverseJoinColumns";
 		String JOIN_TABLE__UNIQUE_CONSTRAINTS = "uniqueConstraints";
+		/** Added in JPA 2.1: {@code @JoinTable(indexes=...)}. */
+		String JOIN_TABLE__INDEXES = "indexes";
 	String LOB = PACKAGE_ + "Lob";
 	String MANY_TO_MANY = PACKAGE_ + "ManyToMany";
 		String MANY_TO_MANY__TARGET_ENTITY = "targetEntity";
@@ -193,6 +197,8 @@ public interface JPA {
 		String SECONDARY_TABLE__SCHEMA = "schema";
 		String SECONDARY_TABLE__PK_JOIN_COLUMNS = "pkJoinColumns";
 		String SECONDARY_TABLE__UNIQUE_CONSTRAINTS = "uniqueConstraints";
+		/** Added in JPA 2.1: {@code @SecondaryTable(indexes=...)}. */
+		String SECONDARY_TABLE__INDEXES = "indexes";
 	String SECONDARY_TABLES = PACKAGE_ + "SecondaryTables";
 		String SECONDARY_TABLES__VALUE = "value";
 	String SEQUENCE_GENERATOR = PACKAGE_ + "SequenceGenerator";
@@ -209,6 +215,8 @@ public interface JPA {
 		String TABLE__CATALOG = "catalog";
 		String TABLE__SCHEMA = "schema";
 		String TABLE__UNIQUE_CONSTRAINTS = "uniqueConstraints";
+		/** Added in JPA 2.1: {@code @Table(indexes=...)}. */
+		String TABLE__INDEXES = "indexes";
 	String TABLE_GENERATOR = PACKAGE_ + "TableGenerator";
 		String TABLE_GENERATOR__NAME = "name";
 		String TABLE_GENERATOR__TABLE = "table";
@@ -225,6 +233,8 @@ public interface JPA {
 	String TRANSIENT = PACKAGE_ + "Transient";
 	String UNIQUE_CONSTRAINT = PACKAGE_ + "UniqueConstraint";
 		String UNIQUE_CONSTRAINT__COLUMN_NAMES = "columnNames";
+		/** Added in JPA 2.1: {@code @UniqueConstraint(name=...)}. */
+		String UNIQUE_CONSTRAINT__NAME = "name";
 	String VERSION = PACKAGE_ + "Version";
 
 	// JPA enums

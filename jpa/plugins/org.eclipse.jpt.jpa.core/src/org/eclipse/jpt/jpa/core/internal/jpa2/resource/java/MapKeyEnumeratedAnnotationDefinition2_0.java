@@ -17,28 +17,34 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryMapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceMapKeyEnumeratedAnnotation2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * <code>javax.persistence.MapKeyEnumerated</code>
+ * <code>javax.persistence.MapKeyEnumerated</code> / <code>jakarta.persistence.MapKeyEnumerated</code>
  */
 public final class MapKeyEnumeratedAnnotationDefinition2_0
 	implements AnnotationDefinition
 {
-	// singleton
-	private static final AnnotationDefinition INSTANCE = new MapKeyEnumeratedAnnotationDefinition2_0();
+	private static final AnnotationDefinition INSTANCE =
+			new MapKeyEnumeratedAnnotationDefinition2_0(JPA.JAVAX_PACKAGE);
 
-	/**
-	 * Return the singleton.
-	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	/**
-	 * Ensure single instance.
-	 */
-	private MapKeyEnumeratedAnnotationDefinition2_0() {
+	public static AnnotationDefinition instance(String jpaPackage) {
+		if (JPA.JAVAX_PACKAGE.equals(jpaPackage)) {
+			return INSTANCE;
+		}
+		return new MapKeyEnumeratedAnnotationDefinition2_0(jpaPackage);
+	}
+
+	private final String annotationName;
+
+	private MapKeyEnumeratedAnnotationDefinition2_0(String jpaPackage) {
 		super();
+		this.annotationName = jpaPackage +
+				MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME.substring(JPA.JAVAX_PACKAGE.length());
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
@@ -54,6 +60,6 @@ public final class MapKeyEnumeratedAnnotationDefinition2_0
 	}
 
 	public String getAnnotationName() {
-		return MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME;
+		return this.annotationName;
 	}
 }
