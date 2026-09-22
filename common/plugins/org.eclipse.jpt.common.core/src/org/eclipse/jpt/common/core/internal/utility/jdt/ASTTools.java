@@ -71,7 +71,7 @@ public class ASTTools {
 	 * Build an <code>ASTParser</code> ignoring method bodies.
 	 */
 	public static ASTParser newParser() {
-		ASTParser parser = ASTParser.newParser(AST.JLS4);
+		ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 		parser.setIgnoreMethodBodies(true);  // we don't need method bodies
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true);  // see bugs 196200, 222735

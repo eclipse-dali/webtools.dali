@@ -10,8 +10,10 @@
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.eclipse.jdt.core.dom.TextBlock;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 
 /**
@@ -46,7 +48,16 @@ public final class StringExpressionConverter
 	@Override
 	protected String convertExpression(Expression expression) {
 		Object value = expression.resolveConstantExpressionValue();
-		return (value instanceof String) ? (String) value : null;
+		if (value instanceof String) {
+			return (String) value;
+		}
+		if (expression.getNodeType() == ASTNode.TEXT_BLOCK) {
+			return ((TextBlock) expression).getLiteralValue();
+		}
+		if (expression.getNodeType() == ASTNode.STRING_LITERAL) {
+			return ((StringLiteral) expression).getLiteralValue();
+		}
+		return null;
 	}
 
 }
