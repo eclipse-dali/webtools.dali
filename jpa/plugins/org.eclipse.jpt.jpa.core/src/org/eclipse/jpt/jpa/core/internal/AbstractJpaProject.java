@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2016 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2026 Oracle and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.ASTRequestor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
@@ -53,6 +54,7 @@ import org.eclipse.jpt.common.core.internal.utility.PackageFragmentRootTools;
 import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.internal.utility.command.NotifyingRepeatingJobCommandWrapper;
 import org.eclipse.jpt.common.core.internal.utility.command.RepeatingJobCommandWrapper;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -1682,9 +1684,22 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void resolveInternalJavaTypes() {
+		final Map<ICompilationUnit, SourceTypeCompilationUnit> jrcus = new HashMap<>();
 		for (JavaResourceCompilationUnit jrcu : this.getInternalJavaResourceCompilationUnits()) {
-			jrcu.resolveTypes();
+			if (jrcu instanceof SourceTypeCompilationUnit) {
+				jrcus.put(jrcu.getCompilationUnit(), (SourceTypeCompilationUnit) jrcu);
+			}
 		}
+		ASTTools.buildASTRoots(
+				jrcus.keySet().toArray(new ICompilationUnit[jrcus.size()]),
+				new ASTRequestor() {
+					@Override
+					public void acceptAST(ICompilationUnit source, CompilationUnit ast) {
+						jrcus.get(source).resolveTypes(ast);
+					}
+				},
+				null
+			);
 	}
 
 	protected void externalProjectChanged(IResourceDelta delta) {
