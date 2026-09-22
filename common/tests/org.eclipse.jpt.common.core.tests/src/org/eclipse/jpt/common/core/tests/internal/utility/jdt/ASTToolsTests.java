@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2026 Oracle and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -9,9 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.tests.internal.utility.jdt;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.ASTRequestor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -28,6 +33,29 @@ public class ASTToolsTests
 	
 	public ASTToolsTests(String name) {
 		super(name);
+	}
+
+	public void testBuildASTRoots() throws Exception {
+		ICompilationUnit referenced = this.javaProjectTestHarness.createCompilationUnit(
+				"batch", "Referenced.java", "package batch; public class Referenced {}");
+		ICompilationUnit referencing = this.javaProjectTestHarness.createCompilationUnit(
+				"batch", "Referencing.java", "package batch; public class Referencing extends Referenced {}");
+		final Map<ICompilationUnit, CompilationUnit> astRoots = new HashMap<>();
+
+		ASTTools.buildASTRoots(
+				new ICompilationUnit[] {referenced, referencing},
+				new ASTRequestor() {
+					@Override
+					public void acceptAST(ICompilationUnit source, CompilationUnit ast) {
+						astRoots.put(source, ast);
+					}
+				},
+				null
+			);
+
+		assertEquals(2, astRoots.size());
+		TypeDeclaration referencingType = (TypeDeclaration) astRoots.get(referencing).types().get(0);
+		assertEquals("batch.Referenced", referencingType.getSuperclassType().resolveBinding().getQualifiedName());
 	}
 	
 	
