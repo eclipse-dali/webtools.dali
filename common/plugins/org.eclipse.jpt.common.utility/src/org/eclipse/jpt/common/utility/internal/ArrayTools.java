@@ -63,7 +63,11 @@ public final class ArrayTools {
 	 * @see Array#newInstance(Class, int)
 	 */
 	public static <E> E[] newInstance(E[] array, int length) {
-		return newInstance(componentType(array), length);
+		// Declare the component type as Class<E> so the call cannot resolve to
+		// this overload; newer Eclipse compilers mis-resolve Class<? extends E>.
+		@SuppressWarnings("unchecked")
+		Class<E> componentType = (Class<E>) componentType(array);
+		return newInstance(componentType, length);
 	}
 
 	/**
