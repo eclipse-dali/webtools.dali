@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2026 Oracle and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0, which accompanies this distribution
  * and is available at https://www.eclipse.org/legal/epl-2.0/.
@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ASTRequestor;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
@@ -55,6 +57,23 @@ public class ASTTools {
 		ASTParser parser = newParser();
 		parser.setSource(compilationUnit);
 		return (CompilationUnit) parser.createAST(null);
+	}
+
+	/**
+	 * Build ASTs without method bodies for the specified compilation units with
+	 * their bindings resolved. Building the ASTs as a batch allows JDT to share
+	 * its binding environment instead of rebuilding it for every compilation
+	 * unit.
+	 * <p>
+	 * All the compilation units must belong to the same Java project.
+	 */
+	public static void buildASTRoots(ICompilationUnit[] compilationUnits, ASTRequestor requestor, IProgressMonitor monitor) {
+		if (compilationUnits.length == 0) {
+			return;
+		}
+		ASTParser parser = newParser();
+		parser.setProject(compilationUnits[0].getJavaProject());
+		parser.createASTs(compilationUnits, new String[0], requestor, monitor);
 	}
 
 	/**
