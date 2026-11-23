@@ -118,6 +118,32 @@
 			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_1"/>
 		</resource-type>
 
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_3_0"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="3.0">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_3_0"/>
+		</resource-type>
+
+		<!--
+			EclipseLink publishes no eclipselink_orm_4_0.xsd: the EclipseLink 4.0
+			runtime ships eclipselink_orm_3_1.xsd as its mapping file schema, so
+			3.1 is the most recent EclipseLink mapping file.
+		-->
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_3_1"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="3.1">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_3_1"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_5_0"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="5.0">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_3_2"/>
+		</resource-type>
+
 	</extension>
 
 
@@ -192,6 +218,41 @@
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_5"
 			group="eclipselink"
 			jpaFacetVersion="2.1"/>
+
+		<jpaPlatform
+			id="eclipselink2_6"
+			label="%ECLIPSELINK2_6_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_6"
+			group="eclipselink"
+			jpaFacetVersion="2.1"/>
+
+		<jpaPlatform
+			id="eclipselink2_7"
+			label="%ECLIPSELINK2_7_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory2_7"
+			group="eclipselink"
+			jpaFacetVersion="2.2"/>
+
+		<jpaPlatform
+			id="eclipselink3_0"
+			label="%ECLIPSELINK3_0_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory3_0"
+			group="eclipselink"
+			jpaFacetVersion="3.0"/>
+
+		<jpaPlatform
+			id="eclipselink4_0"
+			label="%ECLIPSELINK4_0_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory4_0"
+			group="eclipselink"
+			jpaFacetVersion="3.1"/>
+
+		<jpaPlatform
+			id="eclipselink5_0"
+			label="%ECLIPSELINK5_0_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory5_0"
+			group="eclipselink"
+			jpaFacetVersion="3.2"/>
 	</extension>
 
 

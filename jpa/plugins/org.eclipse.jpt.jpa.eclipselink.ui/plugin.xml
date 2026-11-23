@@ -61,6 +61,31 @@
 			jpaPlatform="eclipselink2_5"
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory2_5"/>
 
+		<jpaPlatformUi
+			id="eclipselink2_6.ui"
+			jpaPlatform="eclipselink2_6"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory2_6"/>
+
+		<jpaPlatformUi
+			id="eclipselink2_7.ui"
+			jpaPlatform="eclipselink2_7"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory2_7"/>
+
+		<jpaPlatformUi
+			id="eclipselink3_0.ui"
+			jpaPlatform="eclipselink3_0"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory3_0"/>
+
+		<jpaPlatformUi
+			id="eclipselink4_0.ui"
+			jpaPlatform="eclipselink4_0"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory4_0"/>
+
+		<jpaPlatformUi
+			id="eclipselink5_0.ui"
+			jpaPlatform="eclipselink5_0"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory5_0"/>
+
 	</extension>
 
 

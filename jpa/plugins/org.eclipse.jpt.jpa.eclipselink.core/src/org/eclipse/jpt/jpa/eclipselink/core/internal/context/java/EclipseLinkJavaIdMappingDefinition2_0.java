@@ -52,23 +52,24 @@ public class EclipseLinkJavaIdMappingDefinition2_0
 	@Override
 	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		boolean specSpecified = super.isSpecified(persistentAttribute);
-		return specSpecified && ! this.isDefaultDerivedId(persistentAttribute);
+		return specSpecified && ! isDefaultDerivedId(persistentAttribute);
 	}
 
 	/**
 	 * EclipseLink supports default M:1 and 1:1 mappings.
+	 * Shared with {@link EclipseLinkJavaIdMappingDefinition3_0}.
 	 */
-	private boolean isDefaultDerivedId(JavaSpecifiedPersistentAttribute persistentAttribute) {
+	static boolean isDefaultDerivedId(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		String defaultKey = persistentAttribute.getDefaultMappingKey();
-		return ObjectTools.equals(defaultKey, this.getManyToOneKey()) ||
-				ObjectTools.equals(defaultKey, this.getOneToOneKey());
+		return ObjectTools.equals(defaultKey, getManyToOneKey()) ||
+				ObjectTools.equals(defaultKey, getOneToOneKey());
 	}
 
-	private String getManyToOneKey() {
+	private static String getManyToOneKey() {
 		return EclipseLinkJavaOneToOneMappingDefinition2_0.instance().getKey();
 	}
 
-	private String getOneToOneKey() {
+	private static String getOneToOneKey() {
 		return EclipseLinkJavaOneToOneMappingDefinition2_0.instance().getKey();
 	}
 

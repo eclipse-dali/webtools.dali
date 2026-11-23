@@ -1,0 +1,35 @@
+/*******************************************************************************
+ * Copyright (c) 2026 Lakshminarayana Nekkanti and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Lakshminarayana Nekkanti - initial API and implementation
+ *
+ *******************************************************************************/
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.platform;
+
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+
+public class EclipseLinkJpaPlatformUiFactory2_7
+	extends EclipseLinkJpaPlatformUiFactory2_0
+{
+	/**
+	 * Zero arg constructor for extension point
+	 */
+	public EclipseLinkJpaPlatformUiFactory2_7() {
+		super();
+	}
+
+	@Override
+	public JpaPlatformUi buildJpaPlatformUi() {
+		return new EclipseLinkJpaPlatformUi2_0(
+					EclipseLinkJpaPlatformUiFactory.NAVIGATOR_FACTORY_PROVIDER,
+					EclipseLinkJpaPlatformUiProvider2_7.instance()
+				);
+	}
+}

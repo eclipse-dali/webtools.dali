@@ -1,0 +1,119 @@
+/*******************************************************************************
+ * Copyright (c) 2026 Lakshminarayana Nekkanti and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Lakshminarayana Nekkanti - initial API and implementation
+ *
+ *******************************************************************************/
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
+
+import java.util.List;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition3_1;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkArrayMappingUiDefinition2_3;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkStructureMappingUiDefinition2_3;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
+
+
+/**
+ * EclipseLink 3.1 <code>eclipselink-orm.xml</code> UI - the mapping file schema used by EclipseLink 4.0.
+ * <p>
+ * The EclipseLink mapping file content is that of 2.5 less the deprecated
+ * <code>&lt;cache shared&gt;</code> attribute (hidden by the caching UI on
+ * EclipseLink 3.0 and later), so the mapping UI definitions are shared; only
+ * the resource type answered for differs.
+ */
+public class EclipseLinkOrmXmlUiDefinition3_1
+	extends EclipseLinkOrmXmlUiDefinition2_1
+{
+	// singleton
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXmlUiDefinition3_1();
+
+
+	/**
+	 * Return the singleton
+	 */
+	public static ResourceUiDefinition instance() {
+		return INSTANCE;
+	}
+
+
+	/**
+	 * Enforce singleton usage
+	 */
+	private EclipseLinkOrmXmlUiDefinition3_1() {
+		super();
+	}
+
+	@Override
+	protected JpaUiFactory buildUiFactory() {
+		return new EclipseLinkOrmXmlUiFactory2_5();
+	}
+
+	@Override
+	public boolean providesUi(JptResourceType resourceType) {
+		return resourceType.equals(EclipseLinkOrmXmlDefinition3_1.instance().getResourceType());
+	}
+
+
+	// ********** details providers **********
+
+	@Override
+	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(OrmPersistentTypeDetailsProvider.instance());
+		providers.add(OrmPersistentAttributeDetailsProvider.instance());
+		providers.add(EclipseLinkEntityMappingsDetailsProvider2_5.instance());
+	}
+
+
+	// ********** attribute mapping ui definitions **********
+
+	@Override
+	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
+		definitions.add(IdMappingUiDefinition.instance());
+		definitions.add(EmbeddedIdMappingUiDefinition.instance());
+		definitions.add(BasicMappingUiDefinition.instance());
+		definitions.add(VersionMappingUiDefinition.instance());
+		definitions.add(ManyToOneMappingUiDefinition.instance());
+		definitions.add(OneToManyMappingUiDefinition.instance());
+		definitions.add(OneToOneMappingUiDefinition.instance());
+		definitions.add(ManyToManyMappingUiDefinition.instance());
+		definitions.add(EmbeddedMappingUiDefinition.instance());
+		definitions.add(TransientMappingUiDefinition.instance());
+
+		definitions.add(EclipseLinkBasicCollectionMappingUiDefinition.instance());
+		definitions.add(EclipseLinkBasicMapMappingUiDefinition.instance());
+		definitions.add(EclipseLinkVariableOneToOneMappingUiDefinition.instance());
+		definitions.add(EclipseLinkTransformationMappingUiDefinition.instance());
+
+		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
+		definitions.add(EclipseLinkArrayMappingUiDefinition2_3.instance());
+		definitions.add(EclipseLinkStructureMappingUiDefinition2_3.instance());
+	}
+}

@@ -117,6 +117,11 @@ public class EclipseLinkJpaPlatformFactory
 		 * @see EclipseLinkJpaPlatformFactory2_3#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_4#VERSION
 		 * @see EclipseLinkJpaPlatformFactory2_5#VERSION
+		 * @see EclipseLinkJpaPlatformFactory2_6#VERSION
+		 * @see EclipseLinkJpaPlatformFactory2_7#VERSION
+		 * @see EclipseLinkJpaPlatformFactory3_0#VERSION
+		 * @see EclipseLinkJpaPlatformFactory4_0#VERSION
+		 * @see EclipseLinkJpaPlatformFactory5_0#VERSION
 		 */
 		public boolean isCompatibleWithEclipseLinkVersion(String version) {
 			return ComparatorTools.integerVersionComparator().compare(this.eclipseLinkVersion, version) >= 0;

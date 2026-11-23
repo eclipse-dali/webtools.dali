@@ -11,16 +11,22 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
+import org.eclipse.jpt.common.utility.internal.model.value.PredicatePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.predicate.Predicate;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory3_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.details.JptJpaEclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.EclipseLinkJavaEntityComposite;
@@ -91,6 +97,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		sharedCheckBox.getCheckBox().setLayoutData(gridData);
+		SWTBindingTools.bindVisibleState(this.buildSharedCheckBoxIsVisibleModel(), sharedCheckBox.getCheckBox());
 
 		final PropertyValueModel<Boolean> sharedCacheEnableModel = buildSharedCacheEnabler();
 		
@@ -180,7 +187,23 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	}
 	
 	protected abstract void initializeExistenceCheckingComposite(Composite container);
-	
+
+	/**
+	 * EclipseLink 3.0 removed the deprecated <code>shared</code> setting (use
+	 * <code>isolation</code> instead): <code>@Cache</code> no longer declares
+	 * <code>shared()</code> and <code>eclipselink_orm_3_0.xsd</code> and later
+	 * no longer allow <code>&lt;cache shared="..."&gt;</code>. Hide the check box
+	 * on EclipseLink 3.0 and later platforms so it cannot write code that does
+	 * not compile or a mapping file that fails schema validation.
+	 */
+	private PropertyValueModel<Boolean> buildSharedCheckBoxIsVisibleModel() {
+		return new PredicatePropertyValueModel<T>(this.getSubjectHolder(), SHARED_IS_SUPPORTED);
+	}
+
+	// Show "Shared" only below EclipseLink 3.0; 3.0 removed @Cache(shared) and <cache shared>
+	private static final Predicate<JpaModel> SHARED_IS_SUPPORTED =
+			PredicateTools.nullCheck(PredicateTools.<JpaModel>not(new EclipseLinkVersionIsCompatibleWith(EclipseLinkJpaPlatformFactory3_0.VERSION)));
+
 	private PropertyValueModel<Boolean> buildSharedCacheEnabler() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 				getSubjectHolder(), 

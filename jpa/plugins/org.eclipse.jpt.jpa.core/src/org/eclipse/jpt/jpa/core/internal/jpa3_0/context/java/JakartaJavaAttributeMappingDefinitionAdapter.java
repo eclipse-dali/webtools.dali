@@ -43,9 +43,7 @@ public class JakartaJavaAttributeMappingDefinitionAdapter
 	public JakartaJavaAttributeMappingDefinitionAdapter(JavaAttributeMappingDefinition delegate) {
 		this.delegate = delegate;
 		this.jakartaAnnotationName = toJakarta(delegate.getAnnotationName());
-		this.jakartaSupportingAnnotationNames = IterableTools.transform(
-				delegate.getSupportingAnnotationNames(),
-				ToJakartaAnnotationNameTransformer.INSTANCE);
+		this.jakartaSupportingAnnotationNames = toJakarta(delegate.getSupportingAnnotationNames());
 	}
 
 	// ---- JavaAttributeMappingDefinition ----
@@ -93,17 +91,28 @@ public class JakartaJavaAttributeMappingDefinitionAdapter
 	 * {@code jakarta.persistence.*} equivalent. Names that do not start with
 	 * {@code javax.persistence} are returned unchanged.
 	 */
-	static String toJakarta(String annotationName) {
+	public static String toJakarta(String annotationName) {
 		if (annotationName != null && annotationName.startsWith(JPA.JAVAX_PACKAGE)) {
 			return JPA.JAKARTA_PACKAGE + annotationName.substring(JPA.JAVAX_PACKAGE.length());
 		}
 		return annotationName;
 	}
 
-	static class ToJakartaAnnotationNameTransformer
+	/**
+	 * Translates each name with {@link #toJakarta(String)} once, up front.
+	 * Supporting annotation names are queried on every Java resource sync, so
+	 * the result is a fixed, read-only list rather than a lazily transformed
+	 * view that would redo the string work on each iteration.
+	 */
+	public static Iterable<String> toJakarta(Iterable<String> annotationNames) {
+		return IterableTools.readOnly(IterableTools.list(
+				IterableTools.transform(annotationNames, ToJakartaAnnotationNameTransformer.INSTANCE)));
+	}
+
+	public static class ToJakartaAnnotationNameTransformer
 		extends TransformerAdapter<String, String>
 	{
-		static final ToJakartaAnnotationNameTransformer INSTANCE = new ToJakartaAnnotationNameTransformer();
+		public static final ToJakartaAnnotationNameTransformer INSTANCE = new ToJakartaAnnotationNameTransformer();
 
 		@Override
 		public String transform(String name) {

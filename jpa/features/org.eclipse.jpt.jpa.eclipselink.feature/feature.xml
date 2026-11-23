@@ -15,7 +15,7 @@
 <feature
       id="org.eclipse.jpt.jpa.eclipselink.feature"
       label="%featureName"
-      version="3.4.101.qualifier"
+      version="3.5.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jpt.jpa.eclipselink.branding"
       license-feature="org.eclipse.license"

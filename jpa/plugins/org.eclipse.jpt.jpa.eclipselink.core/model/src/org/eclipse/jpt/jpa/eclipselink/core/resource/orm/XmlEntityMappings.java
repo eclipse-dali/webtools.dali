@@ -61,6 +61,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_5.EclipseLink2_5;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v3_0.EclipseLink3_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v3_1.EclipseLink3_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v5_0.EclipseLink5_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -1248,6 +1251,10 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		map.put(EclipseLink2_3.SCHEMA_VERSION, EclipseLink2_3.SCHEMA_LOCATION);
 		map.put(EclipseLink2_4.SCHEMA_VERSION, EclipseLink2_4.SCHEMA_LOCATION);
 		map.put(EclipseLink2_5.SCHEMA_VERSION, EclipseLink2_5.SCHEMA_LOCATION);
+		// EclipseLink 3.0+ mapping file schemas; no 4.0 schema exists, EclipseLink 4.0 uses 3.1
+		map.put(EclipseLink3_0.SCHEMA_VERSION, EclipseLink3_0.SCHEMA_LOCATION);
+		map.put(EclipseLink3_1.SCHEMA_VERSION, EclipseLink3_1.SCHEMA_LOCATION);
+		map.put(EclipseLink5_0.SCHEMA_VERSION, EclipseLink5_0.SCHEMA_LOCATION);
 		return map;
 	}
 	
@@ -1271,6 +1278,10 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		map.put(EclipseLink2_3.SCHEMA_VERSION, EclipseLink2_3.SCHEMA_NAMESPACE);
 		map.put(EclipseLink2_4.SCHEMA_VERSION, EclipseLink2_4.SCHEMA_NAMESPACE);
 		map.put(EclipseLink2_5.SCHEMA_VERSION, EclipseLink2_5.SCHEMA_NAMESPACE);
+		// EclipseLink 3.0+ mapping file schemas; no 4.0 schema exists, EclipseLink 4.0 uses 3.1
+		map.put(EclipseLink3_0.SCHEMA_VERSION, EclipseLink3_0.SCHEMA_NAMESPACE);
+		map.put(EclipseLink3_1.SCHEMA_VERSION, EclipseLink3_1.SCHEMA_NAMESPACE);
+		map.put(EclipseLink5_0.SCHEMA_VERSION, EclipseLink5_0.SCHEMA_NAMESPACE);
 		return map;
 	}
 

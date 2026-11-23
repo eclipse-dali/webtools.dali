@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.ui;singleton:=true
-Bundle-Version: 3.8.0.qualifier
+Bundle-Version: 3.8.100.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
@@ -75,6 +75,10 @@ Export-Package: org.eclipse.jpt.jpa.ui,
  org.eclipse.jpt.jpa.ui.internal.jpa2_1.details.orm;x-internal:=true,
  org.eclipse.jpt.jpa.ui.internal.jpa2_1.persistence;x-internal:=true,
  org.eclipse.jpt.jpa.ui.internal.jpa2_1.platform.generic;x-internal:=true,
+ org.eclipse.jpt.jpa.ui.internal.jpa2_2.details.orm;x-internal:=true,
+ org.eclipse.jpt.jpa.ui.internal.jpa3_0.details.orm;x-internal:=true,
+ org.eclipse.jpt.jpa.ui.internal.jpa3_1.details.orm;x-internal:=true,
+ org.eclipse.jpt.jpa.ui.internal.jpa3_2.details.orm;x-internal:=true,
  org.eclipse.jpt.jpa.ui.internal.jpql;x-internal:=true,
  org.eclipse.jpt.jpa.ui.internal.listeners;x-internal:=true,
  org.eclipse.jpt.jpa.ui.internal.menus;x-internal:=true,
