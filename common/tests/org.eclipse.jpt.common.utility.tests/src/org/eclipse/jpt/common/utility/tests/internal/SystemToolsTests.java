@@ -35,6 +35,9 @@ public class SystemToolsTests
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.7"));
 		} else if (version.equals("11")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("10"));
+		} else if (isModernJavaVersion(version)) {
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan(previous(version)));
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThan("1.8"));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -54,6 +57,8 @@ public class SystemToolsTests
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("2.0"));
 		} else if (version.equals("11")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThan("12"));
+		} else if (isModernJavaVersion(version)) {
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThan(next(version)));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -78,6 +83,9 @@ public class SystemToolsTests
 		} else if (version.equals("11")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("10"));
 			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo("11"));
+		} else if (isModernJavaVersion(version)) {
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo(previous(version)));
+			assertTrue(SystemTools.javaSpecificationVersionIsGreaterThanOrEqualTo(version));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
@@ -103,8 +111,28 @@ public class SystemToolsTests
 		} else if (version.equals("11")) {
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("11"));
 			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("12"));
+		} else if (isModernJavaVersion(version)) {
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo(version));
+			assertTrue(SystemTools.javaSpecificationVersionIsLessThanOrEqualTo(next(version)));
 		} else {
 			fail("untested Java specification version: " + version);
 		}
+	}
+
+	/**
+	 * Since Java 9 the specification version is a plain number ("17", "25"),
+	 * so Java 12 and later are checked against the versions next to them
+	 * instead of failing as "untested".
+	 */
+	private static boolean isModernJavaVersion(String version) {
+		return version.matches("[0-9]+") && (Integer.parseInt(version) >= 12);
+	}
+
+	private static String previous(String version) {
+		return String.valueOf(Integer.parseInt(version) - 1);
+	}
+
+	private static String next(String version) {
+		return String.valueOf(Integer.parseInt(version) + 1);
 	}
 }

@@ -29,4 +29,19 @@
     <testSuite>${project.artifactId}</testSuite>
     <testClass>org.eclipse.jpt.common.utility.tests.internal.JptCommonUtilityTests</testClass>
   </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <!-- The reflection tests (ClassTools, ObjectTools, preference and Swing models) read
+               private JDK fields; since Java 17 the JDK blocks that unless the package is opened -->
+          <argLine>--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.prefs/java.util.prefs=ALL-UNNAMED --add-opens java.desktop/javax.swing=ALL-UNNAMED --add-opens java.desktop/javax.swing.event=ALL-UNNAMED</argLine>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

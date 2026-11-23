@@ -13,7 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.XMLTools;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -55,21 +54,7 @@ public class XMLToolsWriteTests
 		XMLTools.print(this.testDocument, stream);
 		stream.close();
 		StringBuffer sb = new StringBuffer(2000);
-		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"");
-		if (((SystemTools.jvmIsOracle() || SystemTools.jvmIsApple())
-				&& SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))
-				|| SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("11")) {
-			sb.append(" standalone=\"no\"");
-		}
-		sb.append("?>");
-		if (SystemTools.osIsMac()) {
-			sb.append(' ');
-		}
-		if (((SystemTools.jvmIsOracle() || SystemTools.jvmIsApple())
-				&& SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))
-				|| SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("11")) {
-			sb.append(CR);
-		}
+		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		sb.append("<root-element>");
 		sb.append(CR);
 		sb.append("<element-0>");
@@ -78,17 +63,20 @@ public class XMLToolsWriteTests
 		sb.append(CR);
 		sb.append(string);
 		sb.append("</root-element>");
-		if (SystemTools.osIsMac()) {
-			sb.append(' ');
-		}
-		if (((SystemTools.jvmIsOracle() || SystemTools.jvmIsApple())
-				&& SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))
-				|| SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("11")) {
-			sb.append(CR);
-		}
 		String expected = sb.toString();
 		String actual = stream.toString();
-		assertEquals(StringTools.compressWhitespace(expected), StringTools.compressWhitespace(actual));
+		assertEquals(normalize(expected), normalize(actual));
+	}
+
+	/**
+	 * Compare the content, not the formatting: whether the declaration says
+	 * standalone="no" and where line breaks go depend on the JDK vendor,
+	 * version and O/S, not on XMLTools.
+	 */
+	private static String normalize(String xml) {
+		String s = StringTools.compressWhitespace(xml).trim();
+		s = s.replace(" standalone=\"no\"", "");
+		return s.replaceAll(">\\s+<", "><");
 	}
 
 	public void testAddSimpleTextNode() throws Exception {

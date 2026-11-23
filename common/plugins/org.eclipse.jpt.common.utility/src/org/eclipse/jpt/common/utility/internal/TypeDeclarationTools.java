@@ -382,7 +382,7 @@ public final class TypeDeclarationTools {
 	 * can be declared with a "simple" name and no corresponding
 	 * <code>import</code> statement).
 	 * <p>
-	 * The current release is jdk 1.8.
+	 * The current release is jdk 25.
 	 */
 	public static boolean isJavaLangClass(String simpleClassName) {
 		return ArrayTools.binarySearch(JAVA_LANG_CLASS_NAMES_ARRAY, simpleClassName);
@@ -650,12 +650,57 @@ public final class TypeDeclarationTools {
 	 * JDK 11.
 	 */
 	public static final Iterable<String> JAVA_LANG_CLASS_NAMES_11 = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY_11);
-	
-	// the current release is jdk 11
-	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY = JAVA_LANG_CLASS_NAMES_ARRAY_11;
 
 	/**
-	 * The current release is jdk 11.
+	 * JDK 25
+	 * @see #isJavaLangClass(String)
+	 */
+	public static boolean isJavaLangClass25(String simpleClassName) {
+		return ArrayTools.binarySearch(JAVA_LANG_CLASS_NAMES_ARRAY_25, simpleClassName);
+	}
+
+	/**
+	 * @see #isJavaLangClass25(String)
+	 */
+	public static boolean isJavaLangClass25(char[] simpleClassName) {
+		return isJavaLangClass25(String.copyValueOf(simpleClassName));
+	}
+
+	// jdk 25: the public java.lang types added in jdk 12-25 (final features only;
+	// the jdk 25 preview StableValue is left out), minus Compiler, removed in jdk 21
+	@SuppressWarnings("nls")
+	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY_25 = ArrayTools.sort(
+			ArrayTools.removeAllOccurrences(
+				ArrayTools.concatenate(
+					JAVA_LANG_CLASS_NAMES_ARRAY_11,
+					new String[] {
+						"Enum.EnumDesc",
+						"IO",
+						"MatchException",
+						"Record",
+						"ScopedValue",
+						"ScopedValue.CallableOp",
+						"ScopedValue.Carrier",
+						"Thread.Builder",
+						"Thread.Builder.OfPlatform",
+						"Thread.Builder.OfVirtual",
+						"WrongThreadException"
+					}
+				),
+				"Compiler"
+			)
+		);
+
+	/**
+	 * JDK 25.
+	 */
+	public static final Iterable<String> JAVA_LANG_CLASS_NAMES_25 = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY_25);
+
+	// the current release is jdk 25
+	private static final String[] JAVA_LANG_CLASS_NAMES_ARRAY = JAVA_LANG_CLASS_NAMES_ARRAY_25;
+
+	/**
+	 * The current release is jdk 25.
 	 */
 	public static final Iterable<String> JAVA_LANG_CLASS_NAMES = IterableTools.iterable(JAVA_LANG_CLASS_NAMES_ARRAY);
 

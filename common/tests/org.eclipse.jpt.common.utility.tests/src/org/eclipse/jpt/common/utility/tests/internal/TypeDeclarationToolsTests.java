@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
 public class TypeDeclarationToolsTests
@@ -374,8 +375,34 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass11("Module".toCharArray()));
 	}
 
+	public void testIsJavaLangClass25String() {
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("Object"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("Module"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("Record"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("MatchException"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("Thread.Builder.OfVirtual"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("ScopedValue"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("IO"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass25("Compiler"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass25("StableValue"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass25("Collection"));
+		assertTrue(TypeDeclarationTools.isJavaLangClass11("Compiler"));
+		assertFalse(TypeDeclarationTools.isJavaLangClass11("Record"));
+	}
+
+	public void testIsJavaLangClass25CharArray() {
+		assertTrue(TypeDeclarationTools.isJavaLangClass25("Record".toCharArray()));
+		assertFalse(TypeDeclarationTools.isJavaLangClass25("Compiler".toCharArray()));
+	}
+
+	public void testIsJavaLangClassIsCurrentRelease() {
+		assertTrue(TypeDeclarationTools.isJavaLangClass("Record"));
+		assertEquals(IterableTools.size(TypeDeclarationTools.JAVA_LANG_CLASS_NAMES_25),
+				IterableTools.size(TypeDeclarationTools.JAVA_LANG_CLASS_NAMES));
+	}
+
 	public void testJDKVersion() {
 		assertTrue("update TypeDeclarationTools.JAVA_LANG_CLASS_NAMES for new JDK...",
-				SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("11"));
+				SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("25"));
 	}
 }

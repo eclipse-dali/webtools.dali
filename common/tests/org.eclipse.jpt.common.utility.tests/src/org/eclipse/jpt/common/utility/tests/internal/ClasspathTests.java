@@ -270,7 +270,14 @@ public class ClasspathTests extends TestCase {
 
 	public void testLocationForClass() {
 		Class<?> javaClass = Classpath.class;
-		File entry = new File(Classpath.locationFor(javaClass));
+		String location = Classpath.locationFor(javaClass);
+		// Inside OSGi the class is loaded from a "bundleresource:" URL, which has no
+		// file system location, so the location is empty. Since Java 24 new File("")
+		// is the current directory, so an empty location must not be checked as a file.
+		if (location.length() == 0) {
+			return;
+		}
+		File entry = new File(location);
 		if (entry.isFile() || entry.isDirectory()) {
 			assertTrue(entry.exists());
 		}
@@ -319,8 +326,8 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testJavaExtensionClasspathEntries() {
-		if (SystemTools.javaSpecificationVersionIsLessThan("1.4")
-				|| SystemTools.javaSpecificationVersionIsGreaterThan("11")) {
+		// Java 9 removed the extension mechanism, so from Java 11 on there is nothing to check
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4")) {
 			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
 		}
 
@@ -342,8 +349,8 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testJavaExtensionClassNames() {
-		if (SystemTools.javaSpecificationVersionIsLessThan("1.4")
-				|| SystemTools.javaSpecificationVersionIsGreaterThan("11")) {
+		// Java 9 removed the extension mechanism, so from Java 11 on there is nothing to check
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4")) {
 			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
 		}
 		if (SystemTools.javaSpecificationVersionIsLessThan("11")) {
